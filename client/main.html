@@ -1,0 +1,48 @@
+<head>
+  <title>The Story Unfolds</title>
+  <link href='http://fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+	<header class="header">
+		<div class="title">
+			Headline
+		</div>
+	</header>
+	<article class="content">
+		<div class="vertical-narrative">
+			{{> vertical_narrative}}
+		</div>
+		<div class="horizontal-context">
+			{{> horizontal_context}}
+		</div>
+	</article>
+</body>
+
+<template name="vertical_narrative">
+	{{#each verticalSections}}
+    	{{> section_block}}
+	{{/each}}
+</template>
+
+<template name="horizontal_context">
+	{{#each horizontalSections}}
+	    {{#if horizontalShown}}
+	        {{#each data}}
+        	    {{> section_block}}
+    	    {{/each}}
+	    {{/if}}
+	{{/each}}
+</template>
+
+<template name="section_block">
+	<section class="narrative-section" data-vertical-index="{{index}}">
+		<div class="size-icons">
+			<div class="size-icon plus hidden">+</div>
+			<div class="size-icon minus">-</div>
+		</div>
+		<div class="title">{{title}}</div>
+		<div class="content">{{content}}</div>
+		<div class="connector"></div>
+	</section>
+</template>
