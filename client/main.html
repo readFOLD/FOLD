@@ -21,7 +21,7 @@
 
 <template name="vertical_narrative">
 	{{#each verticalSections}}
-    	{{> section_block}}
+    	{{> vertical_section_block}}
 	{{/each}}
 </template>
 
@@ -29,14 +29,26 @@
 	{{#each horizontalSections}}
 	    {{#if horizontalShown}}
 	        {{#each data}}
-        	    {{> section_block}}
+        	    {{> horizontal_section_block}}
     	    {{/each}}
 	    {{/if}}
 	{{/each}}
 </template>
 
-<template name="section_block">
+<template name="vertical_section_block">
 	<section class="narrative-section" data-vertical-index="{{index}}">
+		<div class="size-icons">
+			<div class="size-icon plus hidden">+</div>
+			<div class="size-icon minus">-</div>
+		</div>
+		<div class="title">{{title}}</div>
+		<div class="content">{{content}}</div>
+		<div class="connector"></div>
+	</section>
+</template>
+
+<template name="horizontal_section_block">
+	<section class="narrative-section">
 		<div class="size-icons">
 			<div class="size-icon plus hidden">+</div>
 			<div class="size-icon minus">-</div>
