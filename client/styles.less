@@ -1,3 +1,7 @@
+*, *:before, *:after {
+	-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+
 html, body { height: 100%; }
 
 body {
@@ -13,29 +17,42 @@ header {
 	font-size: 24px;
 }
 
+article.content {
+	padding-top: 150px;
+	width: 1060px;
+	margin: 0 auto;
+	height: 100%;
+}
+
 div.vertical-narrative {
-	position: absolute;
-	width: 600px;
+	float: left;
+	width: 530px;
+	height: 100%;
 }
 
 div.horizontal-context {
-	position: absolute;
-	width: 600px;
-	left: 800px;
+	float: right;
+	width: 530px;
+	height: 100%;
 }
 
 section.narrative-section {
-	background-color: #f3f3f2;
-	// background-color: #C7C4C1;
+	height: 150px;
+	cursor: pointer;
 
 	float: left;
 	display: inline-block;
 	background-color: white;
 	width: 530px;
-	margin-left: 20px;
-	border-radius: 3px;
 	padding: 15px;
-	margin-bottom: 20px;
+
+	&.odd {
+		background-color: #f3f3f2;
+	}
+
+	&.even {
+		background-color: #C7C4C1;
+	}
 
 	div.title, div.content {
 		pointer-events: none;
@@ -56,6 +73,13 @@ section.narrative-section {
 		}
 	}
 }
+
+section.horizontal-narrative-section {
+	position: absolute;
+	background-color: #1C1D1D;
+	color: #f3f3f2;
+}
+
 
 
 // article.narrative-sections {

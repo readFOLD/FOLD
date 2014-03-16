@@ -15,6 +15,16 @@ verticalSections = [
     index: 1
     title: "Vertical 2",
     content: "Content 2"
+  },
+  {
+    index: 2
+    title: "Vertical 3"
+    content: "Content 3"
+  },
+  {
+    index: 3
+    title: "Vertical 4",
+    content: "Content 4"
   }
 ]
 
@@ -43,6 +53,40 @@ horizontalSections = [
         title: "Horizontal 2"
         content: "Content B"
       },
+      {
+        title: "Horizontal 2"
+        content: "Content B"
+      },
+      {
+        title: "Horizontal 2"
+        content: "Content B"
+      },
+    ]
+  },
+  {
+    index: 2
+    data: [
+      {
+        title: "Horizontal 3"
+        content: "Content A"
+      },
+      {
+        title: "Horizontal 3"
+        content: "Content B"
+      },
+      {
+        title: "Horizontal 3"
+        content: "Content C"
+      },
+    ]
+  },
+  {
+    index: 4
+    data: [
+      {
+        title: "Horizontal 4"
+        content: "Content A"
+      },
     ]
   }
 ]
@@ -54,9 +98,14 @@ for section, i in verticalSections
 for section, i in horizontalSections
   section.index = i
 
+# TODO Listen to keydown events
+# Template.vertical_narrative.events
+#   "document keydown": (d) ->
+#     d.preventDefault()
+#     console.log d
+
 Template.horizontal_context.helpers
-  horizontalShown: ->
-    Session.equals("currentVertical", @index)
+  horizontalShown: -> Session.equals("currentVertical", @index)
 
 Template.vertical_narrative.helpers
   verticalSections: verticalSections
@@ -64,27 +113,15 @@ Template.vertical_narrative.helpers
 Template.horizontal_context.helpers
   horizontalSections: horizontalSections
 
-Template.section_block.events
+Template.vertical_section_block.helpers
+  verticalSelected: -> Session.equals("currentVertical", @index)
+  evenOrOdd: -> if (@index % 2 is 0) then "even" else "odd"
+
+Template.vertical_section_block.events
   "click section.narrative-section": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target
     verticalIndex = $(srcE).data("vertical-index")
-    console.log $(srcE)
     Session.set "currentVertical", verticalIndex
-
-  # "click div.content": (d) ->
-  #   d.stopPropagation()
-  #   srcE = d.srcElement.parentNode
-  #   console.log $(srcE)
-  #   verticalIndex = $(srcE).data("vertical-index").data("vertical-index")
-  #   Session.set "currentVertical", verticalIndex
-
-  # "click div.title": (d) ->
-  #   d.stopPropagation()
-  #   srcE = d.srcElement.parentNode
-  #   console.log $(srcE)
-  #   verticalIndex = $(srcE).data("vertical-index")
-  #   Session.set "currentVertical", verticalIndex
-
 
   "click div.size-icon": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target

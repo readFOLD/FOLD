@@ -36,7 +36,7 @@
 </template>
 
 <template name="vertical_section_block">
-	<section class="narrative-section" data-vertical-index="{{index}}">
+	<section class="narrative-section{{#if verticalSelected}} selected{{/if}} {{evenOrOdd}}" data-vertical-index="{{index}}">
 		<div class="size-icons">
 			<div class="size-icon plus hidden">+</div>
 			<div class="size-icon minus">-</div>
@@ -48,7 +48,7 @@
 </template>
 
 <template name="horizontal_section_block">
-	<section class="narrative-section">
+	<section class="narrative-section horizontal-narrative-section">
 		<div class="size-icons">
 			<div class="size-icon plus hidden">+</div>
 			<div class="size-icon minus">-</div>
