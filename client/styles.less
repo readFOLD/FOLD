@@ -1,0 +1,80 @@
+html, body { height: 100%; }
+
+body {
+	font-family: 'Libre Baskerville', georgia, "times new roman", times, serif;
+	margin: 0;
+	background-color: #f2f2f2;
+}
+
+article.narrative-sections {
+	padding-top: 15px;
+}
+
+section.horizontal {
+	width: 600px;
+	height: 230px;
+	margin: 0 auto;
+}
+
+div.background-strip {
+	position: absolute;
+	width: 600px;
+	left: 50%;
+	margin-left: -300px;
+	background-color: #dbdbda;
+	height: 100%;
+	z-index: -1;
+}
+
+section.narrative-section {
+	float: left;
+	display: inline-block;
+	background-color: white;
+	width: 530px;
+	margin-left: 20px;
+	border-radius: 3px;
+	padding: 15px;
+	margin-bottom: 20px;
+
+	opacity: 0.5;
+
+	&.center {
+		opacity: 1.0;
+	}
+
+	div.size-icons {
+		height: 0;
+		position: relative;
+
+		div.size-icon {
+			float: right;
+			margin-top: -15px;
+			margin-right: -10px;
+			cursor: pointer;
+			&.hidden {
+				display: none;
+			}
+		}
+	}
+
+	div.title {
+		text-align: center;
+	}
+
+	div.content {
+		height: 100%;
+		margin-top: 10px;
+		height: 150px;
+		overflow-y: scroll;
+		&.minimized {
+			height: 0;
+			display: none;
+		}
+	}
+
+	div.connector {
+		width: 10px;
+		background-color: white;
+		margin: 0 auto;
+	}
+}
