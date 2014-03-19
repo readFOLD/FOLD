@@ -40,10 +40,11 @@ div.logo {
 }
 
 div.connector {
-	width: 100%;
+	width: 76.8%;
 	z-index: -1;
 	position: fixed;
 	top: 40%;
+	left: 14.65%;
 	border-style: dotted;
 	border-width: 2px 2px 2px 2px;
 	border-color: white;
@@ -52,8 +53,15 @@ div.connector {
 article.content {
 	padding-top: 80px;
 	margin: 0 auto;
+	margin-bottom: 15px;
+
+	p {
+		margin-top: 15px;
+	}
 
 	img {
+		margin-top: 15px;
+		margin-bottom: 15px;
 		width: 100%;
 		display: block;
 	}
@@ -65,14 +73,18 @@ div.vertical-narrative {
 	margin-top: -125px;
 	z-index: 10;
 	left: 17.96875%;  // 230 / 1280
-	height: 100%;
 	float: left;
 	width: 37.5%;
+	margin-bottom: 500px;
 
 	section.narrative-section {
 		width: 100%;
 		height: 270px;
 		border-bottom: 2px solid #f2f2f2;
+
+		&:last-child {
+			border-bottom: none;
+		}
 	}
 }
 
@@ -81,6 +93,7 @@ div.horizontal-context {
 	z-index: 10;
 	top: 40%;
 	margin-top: -125px;
+	margin-bottom: 500px;
 	height: 100%;
 	width: 100%;
 	left: 58.59375%;
@@ -112,7 +125,7 @@ section.narrative-section {
 	cursor: pointer;
 	float: left;
 	display: inline-block;
-	padding: 15px;
+	padding: 0 15px;
 	background-color: #C7C4C1;
 
 
@@ -142,6 +155,7 @@ section.narrative-section {
 	}
 
 	div.size-icons {
+		margin-top: 15px;
 		height: 0;
 		position: relative;
 
@@ -164,6 +178,10 @@ section.horizontal-narrative-section {
 	color: #f3f3f2;
 	opacity: 0.5;
 	display: none;
+
+	div.content {
+		margin-top: 0px;
+	}
 
 	div.caption {
 		font-size: 12px;
