@@ -59,6 +59,10 @@ horizontalSections = [
         content: "Viktor Yanukovych was the President of Ukraine from 2010 to 2014. He first ran for President in 2004. However, allegations surfaced that voter fraud and intimidation occurred during the election. In response, citizens protested and occupied Kiev’s Independence Square in what became known as the Orange Revolution. In the follow-up run-off election between himself and the other Presidential candidate, Yanukovych lost."
       },
       {
+        image: "http://fordhampoliticalreview.org/wp-content/uploads/2014/02/DE0A086D-D438-41FA-9ECE-F818E514304E_mw1024_n_s.jpg"
+        caption: "Former Ukraine President Viktor Yanukovych with Russian President Vladimir Putin"
+      }
+      {
         image: "http://i2.cdn.turner.com/cnn/dam/assets/131130104754-ukraine-protest-03-horizontal-gallery.jpg"
         caption: "Protester with injuries to the face during the 2014 Ukranian Revolution."
       },
@@ -98,9 +102,13 @@ for section, i in horizontalSections
     datum.index = j
 
 Template.chevrons.events
-  "click div.chevron-right": ->
+  "click div.chevron-left": ->
     e = $("div.horizontal-context section").last()
     e.prependTo(e.parent())
+
+  "click div.chevron-right": ->
+    e = $("div.horizontal-context section").first()
+    e.appendTo(e.parent())
 
 Template.horizontal_context.helpers
   horizontalShown: -> Session.equals("currentVertical", @index)
