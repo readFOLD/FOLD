@@ -7,6 +7,7 @@ html, body { height: 100%; }
 body {
 	font-family: 'Avenir Next', serif;
 	margin: 0;
+	overflow-x: hidden;
 	background-color: #ababac;
 }
 
@@ -19,6 +20,10 @@ header {
   	width: 100%;
   	height: 80px;
   	z-index: 10000;
+
+  	-webkit-box-shadow: 0 0 15px 15px #ababac !important;
+  	-moz-box-shadow: 0 0 15px 15px #ababac !important;
+  	box-shadow: 0 0 15px 15px #ababac !important;
 }
 
 div.title {
@@ -34,46 +39,101 @@ div.logo {
 
 }
 
+div.connector {
+	width: 100%;
+	z-index: -1;
+	position: fixed;
+	top: 50%;
+	height: 2px;
+	background-color: #f3f3f2;
+}
+
 article.content {
 	padding-top: 80px;
-	width: 1060px;
 	margin: 0 auto;
-	height: 100%;
+
+	img {
+		width: 100%;
+		display: block;
+	}
 }
 
 div.vertical-narrative {
-	float: left;
-	width: 530px;
+	position: absolute;
+	top: 50%;
+	margin-top: -125px;
+	z-index: 10;
+	left: 17.96875%;  // 230 / 1280
 	height: 100%;
+	float: left;
+	width: 37.5%;
+
+	section.narrative-section {
+		width: 100%;
+		border-bottom: 2px solid #f2f2f2;
+	}
 }
 
 div.horizontal-context {
 	float: right;
-	padding-top: 150px;
-	width: 530px;
+	z-index: 10;
+	top: 50%;
+	margin-top: -125px;
 	height: 100%;
+	width: 100%;
+	left: 58.59375%;
+	position: fixed;
+}
+
+div.chevron {
+	z-index: 10;
+	position: fixed;
+	top: 50%;
+	font-size: 3em;		
+	cursor: pointer;
+	&:hover {
+		color: white;
+	}
+}
+
+div.chevron-left {
+	left: 20px;
+}
+
+div.chevron-right {
+	position: fixed;
+	right: 20px;
 }
 
 section.narrative-section {
-	height: 150px;
 	cursor: pointer;
 
 	float: left;
 	display: inline-block;
-	background-color: white;
-	width: 530px;
 	padding: 15px;
+	background-color: #C7C4C1;
+	height: 250px;
 
-	&.odd {
+
+
+	&.selected {
 		background-color: #f3f3f2;
-	}
-
-	&.even {
-		background-color: #C7C4C1;
 	}
 
 	div.title, div.content {
 		pointer-events: none;
+	}
+
+	div.title {
+		font-weight: 600;
+	}
+
+	div.content {
+		margin-top: 10px;
+		&.minimized {
+			height: 0;
+			display: none;
+		}
 	}
 
 	div.size-icons {
@@ -94,76 +154,25 @@ section.narrative-section {
 
 section.horizontal-narrative-section {
 	position: absolute;
+	width: 29.6875%;
 	background-color: #1C1D1D;
 	color: #f3f3f2;
+	opacity: 0.5;
+	display: none;
+
+	&:last-child {
+		left: -73.6% !important;
+		display: inline-block;
+	}
+
+	&:first-child {
+		left: 0%;
+		opacity: 1.0;
+		display: inline-block;
+	}
+
+	&:nth-child(2) {
+		left: 32.825%;
+		display: inline-block;
+	}
 }
-
-
-
-// article.narrative-sections {
-// 	padding-top: 15px;
-// 	width: 600px;
-// }
-
-// div.background-strip {
-// 	position: absolute;
-// 	width: 600px;
-// 	left: 50%;
-// 	margin-left: -300px;
-// 	background-color: #dbdbda;
-// 	height: 100%;
-// 	z-index: -1;
-// }
-
-// section.narrative-section {
-// 	float: left;
-// 	display: inline-block;
-// 	background-color: white;
-// 	width: 530px;
-// 	margin-left: 20px;
-// 	border-radius: 3px;
-// 	padding: 15px;
-// 	margin-bottom: 20px;
-
-// 	opacity: 0.5;
-
-// 	&.center {
-// 		opacity: 1.0;
-// 	}
-
-// 	div.size-icons {
-// 		height: 0;
-// 		position: relative;
-
-// 		div.size-icon {
-// 			float: right;
-// 			margin-top: -15px;
-// 			margin-right: -10px;
-// 			cursor: pointer;
-// 			&.hidden {
-// 				display: none;
-// 			}
-// 		}
-// 	}
-
-// 	div.title {
-// 		text-align: center;
-// 	}
-
-// 	div.content {
-// 		height: 100%;
-// 		margin-top: 10px;
-// 		height: 150px;
-// 		overflow-y: scroll;
-// 		&.minimized {
-// 			height: 0;
-// 			display: none;
-// 		}
-// 	}
-
-// 	div.connector {
-// 		width: 10px;
-// 		background-color: white;
-// 		margin: 0 auto;
-// 	}
-// }

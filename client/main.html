@@ -1,12 +1,12 @@
 <head>
-  <title>The Story Unfolds</title>
+  <title>Unfolding the 2014 Crimean Crisis</title>
   <link href='http://fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
 	<header class="header">
 		<div class="title">
-			Headline
+			Unfolding the 2014 Crimean Crisis
 		</div>
 		<div class="logo">
 			<img src="/logo.png">
@@ -20,7 +20,23 @@
 			{{> horizontal_context}}
 		</div>
 	</article>
+	{{> connector}}
+	{{> chevrons}}
 </body>
+
+<template name="connector">
+	<div class="connector">
+	</div>
+</template>
+
+<template name="chevrons">
+	<div class="chevron chevron-left">
+		<
+	</div>
+	<div class="chevron chevron-right">
+		>
+	</div>
+</template>
 
 <template name="vertical_narrative">
 	{{#each verticalSections}}
@@ -39,14 +55,16 @@
 </template>
 
 <template name="vertical_section_block">
-	<section class="narrative-section{{#if verticalSelected}} selected{{/if}} {{evenOrOdd}}" data-vertical-index="{{index}}">
+	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{evenOrOdd}}" data-vertical-index="{{index}}">
 		<div class="size-icons">
 			<div class="size-icon plus hidden">+</div>
 			<div class="size-icon minus">-</div>
 		</div>
 		<div class="title">{{title}}</div>
-		<div class="content">{{content}}</div>
-		<div class="connector"></div>
+		<div class="content">
+			{{content}}d
+			<img src="{{image}}" >
+		</div>
 	</section>
 </template>
 
@@ -56,8 +74,15 @@
 			<div class="size-icon plus hidden">+</div>
 			<div class="size-icon minus">-</div>
 		</div>
-		<div class="title">{{title}}</div>
-		<div class="content">{{content}}</div>
-		<div class="connector"></div>
+		<div class="content">
+			{{content}}
+			{{#if video_embed}}
+    			<iframe width="560" height="315" src="{{video_embed}}" frameborder="0" allowfullscreen></iframe>
+			{{/if}}
+			{{#if image}}
+    			<img src="{{image}}" />
+	    		{{caption}}
+			{{/if}}
+		</div>
 	</section>
 </template>
