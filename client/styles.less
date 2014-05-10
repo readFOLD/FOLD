@@ -16,28 +16,30 @@ header {
 	color: #F2F2F0;
 	padding: 25px;
 	font-size: 24px;
-  	position: fixed;
-  	width: 100%;
-  	height: 80px;
-  	z-index: 10000;
+	position: fixed;
+	width: 100%;
+	height: 80px;
+	z-index: 10000;
 
-  	-webkit-box-shadow: 0 0 15px 15px #ababac !important;
-  	-moz-box-shadow: 0 0 15px 15px #ababac !important;
-  	box-shadow: 0 0 15px 15px #ababac !important;
+	-webkit-box-shadow: 0 0 15px 15px #ababac !important;
+	-moz-box-shadow: 0 0 15px 15px #ababac !important;
+	box-shadow: 0 0 15px 15px #ababac !important;
+
+	div.title {
+		max-width: 1250px;
+	}
+
+	div.logo {
+		width: 93px;
+		height: 52px;
+		position: relative;
+		float: right;
+		top: -42px;
+
+	}
 }
 
-div.title {
-	max-width: 1250px;
-}
 
-div.logo {
-	width: 93px;
-	height: 52px;
-	position: relative;
-	float: right;
-	top: -42px;
-
-}
 
 div.connector {
 	width: 76.8%;
@@ -75,12 +77,18 @@ div.vertical-narrative {
 	left: 17.96875%;  // 230 / 1280
 	float: left;
 	width: 37.5%;
-	margin-bottom: 500px;
+
+	div.spacer {
+		height: 350px;
+		clear: both;
+	}
 
 	section.narrative-section {
 		width: 100%;
 		height: 270px;
 		border-bottom: 2px solid #f2f2f2;
+
+		div.content {}
 
 		&:last-child {
 			border-bottom: none;
@@ -134,7 +142,6 @@ section.narrative-section {
 	}
 
 	div.title, div.content {
-		pointer-events: none;
 	}
 
 	div.title {
@@ -186,6 +193,7 @@ section.horizontal-narrative-section {
 	div.caption {
 		font-size: 12px;
 		margin-top: 15px;
+		margin-bottom: 15px;
 	}
 
 	&:last-child {

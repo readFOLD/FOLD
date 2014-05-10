@@ -6,7 +6,9 @@
 standard-app-packages
 autopublish
 insecure
-preserve-inputs
 less
 coffeescript
 font-awesome
+accounts-ui
+accounts-password
+iron-router

@@ -1,0 +1,57 @@
+@color-light-grey: #f3f3f2;
+
+// Universal Link Styling
+a {
+	text-decoration: none !important;
+	&:hover {
+		color: black;
+	}
+}
+
+section.banner {
+	position: relative;
+	width: 100%;
+	padding-top: 100px;
+	background-color: @color-light-grey;
+
+	div.title {
+		text-align: center;
+		font-size: 40px;
+	}
+
+	div.logo {
+		background-color: black;
+
+		@circle-diameter: 80px;
+		height: @circle-diameter;
+		width: @circle-diameter;
+		border-radius: @circle-diameter / 2;
+
+		position: relative;
+		left: 50%;
+		top: (@circle-diameter / 2);
+		margin-left: -(@circle-diameter / 2);
+
+		img {
+			width: @circle-diameter - 15px;
+			height: auto;
+			margin: 20px 0 0 8px;
+		}
+	}
+
+	div.options {
+		position: absolute;
+		left: 50%;
+		bottom: 0;
+		margin-left: -165px;
+		margin-bottom: 5px;
+		display: inline;
+		div {
+			display: inline;			
+		}
+
+		div#login-buttons {
+			margin-left: 142px;
+		}
+	}
+}
