@@ -1,4 +1,9 @@
-@color-light-grey: #f3f3f2;
+@color-light-grey: #F3F4F4;
+@color-medium-grey: #CCCCCB;
+@color-dark-grey: #A8A8A8;
+@color-light-green: #8CC63E;
+@color-medium-green: #009344;
+@color-fold-black: #1C1C1C;
 
 // Universal Link Styling
 a {
@@ -7,22 +12,41 @@ a {
 		color: black;
 	}
 }
+	
+
 
 section.banner {
 	position: relative;
 	width: 100%;
-	padding-top: 100px;
 	background-color: @color-light-grey;
+	height: 230px;
+
+	div.navbar {
+		height: 38px;
+		background-color: black;
+		padding-top: 0;
+	}
+
+	i.fa-bars {
+		color: white;
+		&:hover {
+			color: @color-light-green;
+		}
+		margin-left: 6px;
+		margin-top: 3px;
+	}
 
 	div.title {
 		text-align: center;
-		font-size: 40px;
+		font-size: 60px;
+		font-weight: 500;
+		padding-top: 50px;
 	}
 
 	div.logo {
 		background-color: black;
 
-		@circle-diameter: 80px;
+		@circle-diameter: 100px;
 		height: @circle-diameter;
 		width: @circle-diameter;
 		border-radius: @circle-diameter / 2;
@@ -31,11 +55,12 @@ section.banner {
 		left: 50%;
 		top: (@circle-diameter / 2);
 		margin-left: -(@circle-diameter / 2);
+		margin-top: -40px;
 
 		img {
 			width: @circle-diameter - 15px;
 			height: auto;
-			margin: 20px 0 0 8px;
+			margin: 24px 0 0 8px;
 		}
 	}
 
@@ -44,7 +69,7 @@ section.banner {
 		left: 50%;
 		bottom: 0;
 		margin-left: -165px;
-		margin-bottom: 5px;
+		margin-bottom: 10px;
 		display: inline;
 		div {
 			display: inline;			
@@ -54,4 +79,78 @@ section.banner {
 			margin-left: 142px;
 		}
 	}
+}
+
+section.stories {
+	width: 100%;
+	height: 100%;
+	background-color: @color-dark-grey;
+
+	div.story-browser {
+		height: 80px;
+	}
+
+	i.fa-chevron-circle-left {
+		color: white;
+		&:hover {
+			color: @color-fold-black;
+		}
+		margin-left: 40px;
+		margin-top: 15px;	
+	}
+
+	i.fa-chevron-circle-right {
+		color: white;
+		&:hover {
+			color: @color-fold-black;
+		}
+		margin-right: 50px;
+		margin-top: 15px;
+		float: right;	
+	}
+
+
+	div.horizontal-line {
+		width: 100%;
+		height: 20px;
+		background-color: @color-light-grey;
+		margin-top: 250px;
+		position: absolute;
+		z-index: 0;
+	}
+
+	div.headline {
+		background-color: @color-light-grey;
+		height: auto;
+		/*height depends on length of story headline*/
+		width: 100%;			
+		position: relative;
+		font-size: 19px;
+		font-weight: 500;
+		padding-left: 15px;
+		padding-right: 15px;
+		padding-top: 15px;
+	}	
+
+	div.byline {
+		font-size: 15px;
+		font-variant: small-caps;
+		font-weight: 400;
+		padding-top: 10px;
+		padding-bottom: 15px;
+
+	}
+
+	div.story {
+		background-color: @color-medium-grey;
+		height: 600px;
+		/*height depends on length of story abstract*/
+		width: 425px;
+		margin-left: 40px;
+		float: left;
+		z-index: 2;
+		position: relative;
+
+	}
+
 }
