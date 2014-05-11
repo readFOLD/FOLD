@@ -5,10 +5,10 @@
 
 
 <template name="home">
+	<div class="navbar">
+		<i class="fa fa-bars fa-2x"></i>	
+	</div>
 	<section class="banner">
-		<div class="navbar">
-			<i class="fa fa-bars fa-2x"></i>	
-		</div>
 		<div class="title">
 			<img src="/fold-title.png">
 		</div>
@@ -27,10 +27,7 @@
 
 
 	<section class="stories">
-		<div class="story-browser">
-			<i class="fa fa-chevron-circle-left fa-3x"></i>
-			<i class="fa fa-chevron-circle-right fa-3x"></i>
-		</div>
+		{{> story_browser}}
 		<div class="horizontal-line">
 		</div>
 		<div class="story">
@@ -58,4 +55,11 @@
 			</div>
 		</div>
 	</section>
+</template>
+
+<template name="story_browser">
+	<div class="story-browser">
+		<i class="fa fa-chevron-circle-left fa-3x"></i>
+		<i class="fa fa-chevron-circle-right fa-3x"></i>
+	</div>
 </template>
