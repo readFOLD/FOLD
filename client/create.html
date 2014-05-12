@@ -1,0 +1,105 @@
+<template name="create">
+	<header class="header">
+		<div class="title editable" contenteditable="true">
+			Story Title
+		</div>
+		<div class="username">
+			{{username}}
+		</div>
+		<div class="logo">
+			<a href="/">
+				<img src="/logo.png">
+			</a>
+		</div>
+	</header>
+	<article class="content">
+		<div class="vertical-narrative">
+			{{> vertical_narrative}}
+			<div class="spacer">
+			</div>
+		</div>
+		<div class="horizontal-context">
+			{{> horizontal_context}}
+		</div>
+		<div class="create-options">
+			<div id="save">
+				Save
+			</div>
+			<div id="publish">
+				Publish
+			</div>
+		</div>
+	</article>
+	{{> connector}}
+	{{#if horizontalExists}}
+    	{{> story_browser}}
+    {{/if}}
+</template>
+
+<template name="vertical_narrative">
+	{{#each verticalSections}}
+    	{{> vertical_section_block}}
+	{{/each}}	
+	{{> add_vertical}}
+</template>
+
+<template name="add_vertical">
+	<section class="narrative-section new-section">
+		<i class="fa fa-plus-circle"></i>
+	</section>
+</template>
+
+<template name="add_horizontal">
+	<section class="horizontal-narrative-section narrative-section new-section">
+		<i class="fa fa-plus-circle"></i>
+	</section>
+</template>
+
+<template name="horizontal_context">
+	{{#each horizontalSections}}
+	    {{#if horizontalShown}}
+	        {{#each data}}
+        	    {{> horizontal_section_block}}
+    	    {{/each}}
+	    {{/if}}
+	{{/each}}
+	{{#if verticalExists}}
+    	{{> add_horizontal}}
+    {{/if}}
+</template>
+
+<template name="connector">
+	<div class="connector">
+	</div>
+</template>
+
+<template name="vertical_section_block">
+	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{evenOrOdd}}" data-vertical-index="{{index}}">
+		<div class="size-icons">
+			<div class="size-icon plus hidden">+</div>
+			<div class="size-icon minus">&mdash;</div>
+		</div>
+		<div class="title editable" contenteditable="true">{{title}}</div>
+		<div class="content editable" contenteditable="true">
+			<p>{{content}}</p>
+			<img src="{{image}}" />
+		</div>
+	</section>
+</template>
+
+<template name="horizontal_section_block">
+	<section class="narrative-section horizontal-narrative-section" data-vertical-index={{index}}>
+		<div class="content">
+			<p class="editable" contenteditable="true">{{content}}</p>
+			{{#if video_embed}}
+    			<iframe width="100%" height="400px" src="{{video_embed}}" frameborder="0" allowfullscreen></iframe>
+			{{/if}}
+			{{#if image}}
+    			<img src="{{image}}" />
+    		{{/if}}
+    		{{#if caption}}
+	    		<div class="caption">{{caption}}</div>
+	    	{{/if}}
+		</div>
+	</section>
+</template>
