@@ -5,11 +5,30 @@ Router.map ->
 	    data: ->
 	    	Session.set "page", @template
 
-   	@route "home",
+   	@route "create",
 	    path: "create"
 	    template: "create"
 	    data: ->
+	    	Session.set "page", @template	
+
+	    	Session.set 'storyTitle', 'Story Title'
+	    	Session.set 'verticalSections', []
+	    	Session.set 'horizontalSections', []
+
+   	@route "edit",
+	    path: "create/:storyId"
+	    template: "create"
+	    waitOn: -> Meteor.subscribe('storiesPub')
+	    data: ->
 	    	Session.set "page", @template
+	    	Session.set "storyId", @.params.storyId
+
+	    	story = Stories.findOne(_id: @.params.storyId)
+	    	console.log("Story:", story.title)
+	    	Session.set "storyTitle", story.title
+	    	Session.set "verticalSections", story.verticalSections
+	    	Session.set "horizontalSections", story.horizontalSections
+
 
 # Router.configure
 # 	layoutTemplate: "layout"

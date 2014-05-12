@@ -22,6 +22,8 @@ Meteor.startup ->
 
   $(document).scroll(throttledUpdate)
 
+
+
 # verticalSections = [
 #   {
 #     title: "On March 16th, the people of Crimea overwhelmingly voted to join Russia, and Russian President Vladimir Putin formally claimed Crimea on March 18th."

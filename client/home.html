@@ -9,9 +9,11 @@
 		<i class="fa fa-bars fa-2x"></i>	
 	</div>
 	<section class="banner">
-		<div class="title">
-			<img src="/fold-title.png">
-		</div>
+		<a href="/">
+			<div class="title">
+				<img src="/fold-title.png">
+			</div>
+		</a>
 		<div class="options">
 			<div id="create-story">
 				<a href="/create">
@@ -31,7 +33,8 @@
 		<div class="horizontal-line">
 		</div>
 		<div class="story-container">
-	    	<div class="story">
+			{{> user_stories}}
+	    	<!-- <div class="story">
 	    		<div class="headline">
 	    			Kanye says: "I love Rhoto V, and so does Kim"
 	    			<div class="byline">
@@ -62,11 +65,42 @@
 	    				By Alexis Hope
 	    			</div>
 	    		</div>
+<<<<<<< Updated upstream
 	    	<iframe width="265px" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/44355007&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true"></iframe>
 	    	</div>
+=======
+	    	</div> -->
 	    </div>
 	</section>
 </template>
+
+<template name="user_stories">
+	{{#if currentUser}}
+	    {{#each userStories}}
+	        <div class="story" data-story-id="{{_id}}">
+	        	<div class="headline">
+	        		{{title}}
+	        	</div>
+	        	<div class="byline">
+   	    			By Kevin Hu
+   	    		</div>
+   	    		Last Edit: {{lastEditDate}}
+   	    		<div class="edit-delete button-options">
+   	    			<a href="{{url}}">
+   	    				<div id="edit" class="button">
+   	    					Edit
+   	    				</div>
+   	    			</a>
+   	    			<div id="delete" class="button">
+   	    				Delete
+   	    			</div>
+   	    		</div>
+	        </div>
+	    {{/each}}
+	{{/if}}
+</template>
+
+
 
 <template name="story_browser">
 	<div class="story-browser">
