@@ -1,3 +1,12 @@
+@color-light-grey: #F3F4F4;
+@color-medium-grey: #CCCCCB;
+@color-dark-grey: #A8A8A8;
+@color-light-green: #8CC63E;
+@color-medium-green: #009344;
+@color-fold-black: #1C1C1C;
+@color-inactive-grey: #E0E2E1;
+
+
 .editable {
 	outline: none;
 }
@@ -9,19 +18,28 @@ div.create-options {
 	z-index: 10;
 
 	div {
+		box-shadow: 3px 3px @color-medium-grey;
+		background-color: @color-light-grey;
 		cursor: pointer;
 		text-transform: uppercase;
-		font-weight: bold;
 		padding: 5px;
+		text-align: center;
+		font-size: 16px;
+		line-height: 35px;
+
+		width: 120px;
+		transition: color 0.25s ease, background-color 0.25s ease;
+
+		&:hover {
+			background-color: @color-medium-green;
+			color: @color-medium-grey;
+		}
 	}
 
 	div#save {
-		background-color: green;
-		border-radius: 3px 3px 0 0;
 	}
 	div#publish {
-		background-color: red;
-		border-radius: 0 0 3px 3px;
+		margin-top: 10px;
 	}
 }
 
@@ -36,15 +54,22 @@ header.header {
 }
 
 div.vertical-narrative {
-    section.new-section {
+    section.narrative-section.new-section {
     	height: 100px;
-    	font-size: 50px;
+    	font-size: 75px;
     	line-height: 100px;
     	text-align: center;
     	color: black;
+    	transition: color 0.25s ease;
     
     	&:hover {
     		color: white;
+    	}
+
+    	&:first-child {
+    		height: 270px;
+    		font-size: 75px;
+    		line-height: 270px;
     	}
     }
 }
@@ -52,11 +77,20 @@ div.vertical-narrative {
 div.horizontal-context {
 	section.new-section {
 		height: 270px;
+		font-size: 75px;
+		line-height: 270px;
+		text-align: center;
+		width: 100px;
+		transition: color 0.25s ease;
+
+		&:hover {
+			color: green;
+		}
 	}
 }
 
-div.horizontal-context {
-	section.horizontal-narrative-section.new-section {
-		height: 100px;
-	}
-}
+// div.horizontal-context {
+// 	section.horizontal-narrative-section.new-section {
+// 		height: 100px;
+// 	}
+// }

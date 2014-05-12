@@ -63,9 +63,6 @@ section.banner {
 	}
 
 	div.options {
-		// position: absolute;
-		// left: 50%;
-		// bottom: 0;
 		position: relative;
 		top: 30px;
 		left: 50%;
@@ -81,8 +78,13 @@ section.banner {
 }
 
 div.story-browser {
+	position: fixed;
+	width: 100%;
+	z-index: 10;
+
 	i {
 		cursor: pointer;
+		transition: color 0.25s ease;
 	}
 
 	i.fa-chevron-circle-left {
@@ -143,6 +145,10 @@ section.stories {
 		padding-top: 10px;
 		padding-bottom: 15px;
 
+	}
+
+	div.story-container {
+		padding-top: 75px;
 	}
 
 	div.story {

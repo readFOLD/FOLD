@@ -1,3 +1,12 @@
+@color-light-grey: #F3F4F4;
+@color-medium-grey: #CCCCCB;
+@color-dark-grey: #A8A8A8;
+@color-light-green: #8CC63E;
+@color-medium-green: #009344;
+@color-fold-black: #272727;
+@color-inactive-grey: #E0E2E1;
+
+
 *, *:before, *:after {
 	-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
@@ -38,9 +47,6 @@ header {
 
 	}
 }
-
-
-
 div.connector {
 	width: 100%;
 	z-index: -1;
@@ -85,19 +91,20 @@ div.vertical-narrative {
 	section.narrative-section {
 		width: 100%;
 		height: 270px;
-		border-bottom: 2px solid #f2f2f2;
+		// border-bottom: 2px solid #f2f2f2;
+		margin-bottom: 16px;
+		box-shadow: 3px 3px @color-medium-grey;
 
-		div.content {}
+		// &:first-child {
+		// 	border-top: 2px solid #f2f2f2;
+		// }
+	}
+}
 
-		&:first-child {
-			border-top: 2px solid #f2f2f2;
-		}
-
-		// TODO Make this work!
-		&:last-child {
-			// border-bottom: none;
-			border: 4px solid red;
-		}
+div.horizontal-context {
+	section.narrative-section {
+		height: 270px;
+		box-shadow: 3px 3px #848484;
 	}
 }
 
@@ -109,7 +116,7 @@ div.horizontal-context {
 	margin-bottom: 500px;
 	height: 100%;
 	width: 100%;
-	left: 58.59375%;
+	left: 56.59375%;
 	position: fixed;
 }
 
@@ -139,14 +146,11 @@ section.narrative-section {
 	float: left;
 	display: inline-block;
 	padding: 0 15px;
-	background-color: #C7C4C1;
-
+	transition: background-color 0.25s ease;
+	background-color: @color-inactive-grey;
 
 	&.selected {
-		background-color: #f3f3f2;
-	}
-
-	div.title, div.content {
+		background-color: @color-light-grey;
 	}
 
 	div.title {
@@ -186,7 +190,7 @@ section.narrative-section {
 section.horizontal-narrative-section {
 	position: absolute;
 	width: 29.6875%;
-	background-color: #1C1D1D;
+	background-color: @color-fold-black;
 	color: #f3f3f2;
 	opacity: 0.5;
 	display: none;

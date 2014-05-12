@@ -1,27 +1,24 @@
+Handlebars.registerHelper "debugContext", ->
+  console.log this
 
+Meteor.startup ->
+  Session.setDefault("currentVertical", 0)
+  Session.setDefault("currentHorizontal", 1)
 
+  updateCurrentVertical = ->
+    connectorTopPosition = $("div.connector").offset().top
+    scrollTop = $(document).scrollTop()
+    currentVertical = Session.get("currentVertical")
+    currentScrollTop = 250 * currentVertical
 
-# Handlebars.registerHelper "debugContext", ->
-#   console.log this
+    if scrollTop > (currentScrollTop + 240)
+      Session.set("currentVertical", currentVertical + 1)
+    else if scrollTop < (currentScrollTop - 240)
+      Session.set("currentVertical", currentVertical - 1)
 
-# Meteor.startup ->
-#   Session.setDefault("currentVertical", 0)
-#   Session.setDefault("currentHorizontal", 1)
+  throttledUpdate = _.throttle(updateCurrentVertical, 200)
 
-#   updateCurrentVertical = ->
-#     connectorTopPosition = $("div.connector").offset().top
-#     scrollTop = $(document).scrollTop()
-#     currentVertical = Session.get("currentVertical")
-#     currentScrollTop = 250 * currentVertical
-
-#     if scrollTop > (currentScrollTop + 240)
-#       Session.set("currentVertical", currentVertical + 1)
-#     else if scrollTop < (currentScrollTop - 240)
-#       Session.set("currentVertical", currentVertical - 1)
-
-#   throttledUpdate = _.throttle(updateCurrentVertical, 200)
-
-#   $(document).scroll(throttledUpdate)
+  $(document).scroll(throttledUpdate)
 
 # verticalSections = [
 #   {
@@ -113,6 +110,8 @@
 #   for datum, j in section.data
 #     datum.index = j
 
+
+# TODO Redo this...it sucks!
 # Template.chevrons.events
 #   "click div.chevron-left": ->
 #     e = $("div.horizontal-context section").last()
@@ -136,9 +135,9 @@
 # Template.horizontal_section_block.helpers
 #   left: -> (@index  * (29.7 + 3.125))
 
-# Template.vertical_section_block.helpers
-#   verticalSelected: -> Session.equals("currentVertical", @index)
-#   evenOrOdd: -> if (@index % 2 is 0) then "even" else "odd"
+Template.vertical_section_block.helpers
+  verticalSelected: -> Session.equals("currentVertical", @index)
+  evenOrOdd: -> if (@index % 2 is 0) then "even" else "odd"
 
 # Template.vertical_section_block.events
 #   # "click section.narrative-section": (d) ->
