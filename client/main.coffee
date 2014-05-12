@@ -1,3 +1,5 @@
+@google_api_key="AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q"
+
 Handlebars.registerHelper "debugContext", ->
   console.log this
 

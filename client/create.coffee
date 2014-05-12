@@ -2,10 +2,10 @@
 Session.set('verticalSections', [])
 Session.set('horizontalSections', [])
 
-$(document).scrollsnap(
-    snaps: 'div.vertical-narrative section'
-    proximity: 50
-    )
+#$(document).scrollsnap(
+#    snaps: 'div.vertical-narrative section'
+#    proximity: 50
+#   )
 
 
 Template.create.helpers
