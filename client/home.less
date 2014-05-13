@@ -108,27 +108,28 @@ div.story-browser {
 	}
 }
 
-div.edit-delete {
+div.edit-or-read {
 	position: absolute;
-	bottom: 10px;
-	right: 10px;
+	bottom: 0px;
+	width: 100%;
+	background-color: @color-light-grey;
+
+	&:hover {
+		background-color: @color-medium-green;
+	}
 
 	a {
 		color: black;
 	}
 
-	div {
-		box-shadow: 3px 3px @color-medium-grey;
-	}
-
-	div#delete {
-		margin-top: 10px;
-
+	div#edit-this-story {
+		padding: 15px;
 		&:hover {
-			background-color: red;
+			color: white;
 		}
 	}
 }
+
 
 section.stories {
 	width: 100%;
@@ -159,6 +160,8 @@ section.stories {
 		padding-left: 15px;
 		padding-right: 15px;
 		padding-top: 15px;
+		padding-bottom: 15px;
+
 	}	
 
 	div.byline {
@@ -167,6 +170,8 @@ section.stories {
 		font-weight: 400;
 		padding-top: 10px;
 		padding-bottom: 15px;
+		padding-left: 15px;
+
 
 	}
 
