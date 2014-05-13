@@ -133,7 +133,7 @@ div.horizontal-context {
 		right: -20px;
 	}
 
-	div.back-save {
+	div.back-save, div.edit-delete {
 		position: absolute;
 		right: 15px;
 		bottom: 15px;
@@ -145,11 +145,21 @@ div.horizontal-context {
 			width: 80px;
 			box-shadow: 2px 2px @color-dark-grey;
 		}
-		div#back {
+
+		// TODO Create classes for these
+		div#back, div#edit {
 			float: left;
 		}
-		div#save {
+		div#save, div#delete {
 			float: right;
+		}
+
+		div#delete {
+			float: right;
+
+			&:hover {
+				background-color: red;
+			}
 		}
 	}
 }

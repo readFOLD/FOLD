@@ -24,11 +24,14 @@ Template.horizontal_context.helpers
     horizontalSections: -> Session.get('horizontalSections')
     horizontalShown: -> Session.equals("currentVertical", @index)
 
-renderTemplate = (d, templateName) ->
+renderTemplate = (d, templateName, context) ->
     srcE = if d.srcElement then d.srcElement else d.target
     parentSection = $(srcE).closest('section')
-    parentSection.empty()
-    UI.insert(UI.render(templateName), parentSection.get(0))
+    parentSection.find('div.content-icons').remove()
+    if context
+        UI.insert(UI.renderWithData(templateName, context), parentSection.get(0))
+    else
+        UI.insert(UI.render(templateName), parentSection.get(0))
 
 Template.horizontal_context.events
     'click img.text-button': (d) -> renderTemplate(d, Template.create_text_section)
@@ -78,7 +81,44 @@ Template.create_text_section.events
     "click div#save": (d) ->
         srcE = if d.srcElement then d.srcElement else d.target
         parentSection = $(srcE).closest('section')
-        console.log('Saving Text')
+        horizontalIndex = parentSection.data('index')
+        text = parentSection.find('input.text-input').val()
+
+        newDocument =
+            type: 'text'
+            content: text
+            index: horizontalIndex
+
+        horizontalSections = Session.get('horizontalSections')
+        horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument
+        Session.set('horizontalSections', horizontalSections)  
+
+        $(parentSection).find("div.create-section").remove()
+        parentSection.find('div.content').show()
+
+# TODO Don't put in so much duplicated code!!!
+
+Template.horizontal_section_block.events
+    "click div#delete": (d) -> 
+        srcE = if d.srcElement then d.srcElement else d.target
+        parentSection = $(srcE).closest('section')
+        horizontalIndex = parentSection.data('index')
+        horizontalSections = Session.get('horizontalSections')
+        horizontalSections[Session.get('currentVertical')].data.splice(horizontalIndex, 1)
+        Session.set('horizontalSections', horizontalSections)  
+
+    "click div#edit": (d) ->
+        srcE = if d.srcElement then d.srcElement else d.target
+        parentSection = $(srcE).closest('section')
+        horizontalIndex = parentSection.data('index')
+        horizontalSections = Session.get('horizontalSections')
+        type = horizontalSections[Session.get('currentVertical')].data[horizontalIndex].type
+
+        parentSection.find('div.content').hide()
+
+        context = horizontalSections[Session.get('currentVertical')].data[horizontalIndex]
+        switch type
+            when "text" then renderTemplate(d, Template.create_text_section, context)
 
 Template.create_options.events
     "click div#save": ->   

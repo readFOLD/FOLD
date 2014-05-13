@@ -118,12 +118,14 @@
 </template>
 
 <template name="create_text_section">
-	<div class="input-label">
-		ADD FREE TEXT:
-	</div>
-	<img class="text-button content-type-button" src="/text-icon.png" />
-	<input class="text-input">
-	{{> create_section_options}}
+	<div class="create-section">
+    	<div class="input-label">
+    		ADD FREE TEXT:
+    	</div>
+    	<img class="text-button content-type-button" src="/text-icon.png" />
+    	<input class="text-input" value="{{content}}">
+    	{{> create_section_options}}
+    </div>
 </template>
 
 <template name="create_image_section">
@@ -161,14 +163,16 @@
 </template>
 
 <template name="create_audio_section">
-	<div class="input-label">SOUNDCLOUD LINK:</div>
-	<input class="soundcloud-link-input">
-
-	<div class="input-label">DESCRIPTION:</div>
-	<input class="soundcloud-description-input">
-
-	<img class="map-button content-type-button" src="/audio-icon.png" />
-	{{> create_section_options}}
+	<div class="create-section">
+	    <div class="input-label">SOUNDCLOUD LINK:</div>
+	    <input class="soundcloud-link-input">
+    
+	    <div class="input-label">DESCRIPTION:</div>
+	    <input class="soundcloud-description-input">
+    
+	    <img class="map-button content-type-button" src="/audio-icon.png" />
+	    {{> create_section_options}}
+    </div>
 </template>
 
 <template name="create_gifgif_section">
@@ -181,11 +185,23 @@
 	{{> create_section_options}}
 </template>
 
-
 <template name="horizontal_section_block">
 	<section class="narrative-section horizontal-narrative-section" data-index={{index}}>
-		{{#unless type}}
+		{{debugContext}}
+		{{#if type}}
+		    <div class="content">
+    		    {{content}}
+	    	</div>
+		    <div class="button-options edit-delete">
+		    	<div id="edit" class="button">
+		    		Edit
+		    	</div>
+		    	<div id="delete" class="button">
+		    		Delete
+		    	</div>
+		    </div>
+		{{else}}
     		{{> horizontal_section_buttons}}
-    	{{/unless}}
+    	{{/if}}
 	</section>
 </template>
