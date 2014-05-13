@@ -108,6 +108,28 @@ div.story-browser {
 	}
 }
 
+div.edit-or-read {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	background-color: @color-light-grey;
+
+	&:hover {
+		background-color: @color-medium-green;
+	}
+
+	a {
+		color: black;
+	}
+
+	div#edit-this-story {
+		padding: 15px;
+		&:hover {
+			color: white;
+		}
+	}
+}
+
 section.stories {
 	width: 100%;
 	height: 100%;
@@ -137,6 +159,8 @@ section.stories {
 		padding-left: 15px;
 		padding-right: 15px;
 		padding-top: 15px;
+		padding-bottom: 15px;
+
 	}	
 
 	div.byline {
@@ -145,6 +169,8 @@ section.stories {
 		font-weight: 400;
 		padding-top: 10px;
 		padding-bottom: 15px;
+		padding-left: 15px;
+
 
 	}
 
