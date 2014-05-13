@@ -77,6 +77,11 @@ div.vertical-narrative {
 }
 
 div.horizontal-context {
+	section {
+		padding: 15px;
+		padding-top: 5px;
+	}
+
 	section.new-section {
 		height: 270px;
 		font-size: 75px;
@@ -90,8 +95,24 @@ div.horizontal-context {
 		}
 	}
 
+	div.input-label {
+		margin-top: 12px;
+		margin-bottom: 10px;
+	}
+
+	input {
+		width: 100%;
+
+		&.text-input {
+			height: 160px;
+		}
+	}
+
 	div.content-icons {
 		div.row-one {
+			margin-top: 38px;
+		}
+		div.row-two {
 			margin-top: 30px;
 		}
 		div {
@@ -101,6 +122,34 @@ div.horizontal-context {
 		    	height: auto;
 		    	margin-left: 40px;
 		    }	
+		}
+	}
+
+	img.content-type-button {
+		position: absolute;
+		width: 40px;
+		height: auto;
+		top: 14px;
+		right: -20px;
+	}
+
+	div.back-save {
+		position: absolute;
+		right: 15px;
+		bottom: 15px;
+		width: 170px;
+		color: black;
+		div {
+			line-height: 30px;
+			height: 35px;
+			width: 80px;
+			box-shadow: 2px 2px @color-dark-grey;
+		}
+		div#back {
+			float: left;
+		}
+		div#save {
+			float: right;
 		}
 	}
 }

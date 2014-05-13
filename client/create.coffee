@@ -6,7 +6,6 @@
 #    proximity: 50
 #   )
 
-
 Template.create.helpers
     storyTitle: ->
         Session.get('storyTitle')
@@ -25,15 +24,19 @@ Template.horizontal_context.helpers
     horizontalSections: -> Session.get('horizontalSections')
     horizontalShown: -> Session.equals("currentVertical", @index)
 
+renderTemplate = (d, templateName) ->
+    srcE = if d.srcElement then d.srcElement else d.target
+    parentSection = $(srcE).closest('section')
+    parentSection.empty()
+    UI.insert(UI.render(templateName), parentSection.get(0))
+
 Template.horizontal_context.events
-    'keydown': (d) ->
-        # Two-way data binding
-        srcE = if d.srcElement then d.srcElement else d.target
-        text = $(srcE).text()
-        horizontalIndex = $(srcE).closest('section').data('index')
-        horizontalSections = Session.get('horizontalSections')
-        horizontalSections[Session.get('currentVertical')].data[horizontalIndex].content = text
-        Session.set('horizontalSections', horizontalSections)
+    'click img.text-button': (d) -> renderTemplate(d, Template.create_text_section)
+    'click img.photo-button': (d) -> renderTemplate(d, Template.create_image_section)
+    'click img.map-button': (d) -> renderTemplate(d, Template.create_map_section)
+    'click img.youtube-button': (d) -> renderTemplate(d, Template.create_youtube_section)
+    'click img.gifgif-button': (d) -> renderTemplate(d, Template.create_gifgif_section)
+    'click img.audio-button': (d) -> renderTemplate(d, Template.create_audio_section)
 
 Template.add_vertical.events
     "click section": ->
@@ -64,6 +67,19 @@ Template.add_horizontal.events
         horizontalSections[Session.get('currentVertical')].data.push(newHorizontalSection)
         Session.set('horizontalSections', horizontalSections)   
 
+Template.create_section_options.events
+    "click div#back": (d) ->
+        srcE = if d.srcElement then d.srcElement else d.target
+        parentSection = $(srcE).closest('section')
+        parentSection.empty()
+        UI.insert(UI.render(Template.horizontal_section_buttons), parentSection.get(0)) 
+
+Template.create_text_section.events
+    "click div#save": (d) ->
+        srcE = if d.srcElement then d.srcElement else d.target
+        parentSection = $(srcE).closest('section')
+        console.log('Saving Text')
+
 Template.create_options.events
     "click div#save": ->   
         # Get all necessary fields
@@ -75,8 +91,6 @@ Template.create_options.events
             title = $.trim($(this).find('div.title').text())
             content = $.trim($(this).find('div.content').text())
             verticalSections.push(
-                title: title
-                content: content
                 index: i
                 )
             )
