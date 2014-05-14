@@ -5,6 +5,12 @@ Router.map ->
 	    data: ->
 	    	Session.set "page", @template
 
+	@route "profile",
+	    path: "profile"
+	    template: "profile"
+	    data: ->
+	    	Session.set "page", @template
+
    	@route "create",
 	    path: "create"
 	    template: "create"

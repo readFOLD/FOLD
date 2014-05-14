@@ -1,11 +1,10 @@
 <head>
   <title>FOLD</title>
   <link href='http://fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans+SC' rel='stylesheet' type='text/css'>
 </head>
 
 
-<template name="home">
+<template name="profile">
 	<div class="navbar">
 		<i class="fa fa-bars fa-2x"></i>	
 	</div>
@@ -34,6 +33,7 @@
 		<div class="horizontal-line">
 		</div>
 		<div class="story-container">
+			{{> user_profile}}
 			{{> user_stories}}
 	    	<!-- <div class="story">
 	    		<div class="headline">
@@ -79,6 +79,27 @@
 	</section>
 </template>
 
+<template name="user_profile">
+	<section class="profile-info">
+		<div class="user-name">
+			Alexis Hope
+		</div>
+		<div class="affiliation">
+			<a href="www.newyorktimes.com">New York Times</a>
+		</div>
+		<div class="user-twitter">
+			<a href="www.twitter.com/alexishope">@alexishope</a>
+		</div>
+		<div class="about-me">
+			This is the story of my life.
+		</div>
+		<div class="profile-picture">
+		</div>
+	</section>
+<!--user profile info-->	
+</template>
+
+
 <template name="user_stories">
 	{{#if currentUser}}
 	    {{#each userStories}}
@@ -94,7 +115,6 @@
    	    			<a href="{{url}}">
    	    				<div id="edit-this-story">
    	    					Edit this story >
-   	    					<!-- needs switch to 'unfold this story' for main page -->
    	    				</div>
    	    			</a>
    	    		</div>

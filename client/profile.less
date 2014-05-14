@@ -10,8 +10,17 @@
 a {
 	text-decoration: none !important;
 	&:hover {
+		color: @color-medium-green;
+	}
+
+	&:visited {
 		color: black;
 	}
+
+	&:hover {
+		color: @color-medium-green;
+	}
+
 }
 	
 div.navbar {
@@ -115,7 +124,9 @@ div.edit-or-read {
 	background-color: @color-light-grey;
 
 	&:hover {
-		background-color: @color-medium-green;
+		//background-color: @color-medium-green;
+		//background-color: red;
+
 	}
 
 	a {
@@ -128,6 +139,63 @@ div.edit-or-read {
 			color: white;
 		}
 	}
+}
+
+section.profile-info {
+	width: 380px;
+	height: 100%;
+	background-color: @color-light-grey;
+	box-shadow: 3px 3px @color-medium-grey;
+	position: absolute;
+	margin-top: -55px;
+	z-index: 10;
+
+	div.user-name {
+		position: relative;
+		width: 150px;
+		height: 20px;
+		margin-left: 30px;
+		margin-top: 30px;
+		margin-bottom: 20px;
+		font-size: 22px;
+		font-weight: 600;
+	}
+
+	div.user-twitter {
+		position: relative;
+		width: 100px;
+		height: 20px;
+		margin-left: 30px;
+		margin-top: 15px;
+
+	}
+
+	div.affiliation {
+		position: relative;
+		width: 150px;
+		height: 20px;
+		margin-left: 30px;
+		margin-top: 15px;
+		font-style: italic;
+	}
+
+	div.profile-picture {
+		background-color: black;
+		width: 100px;
+		height: 100px;
+		position: absolute;
+		right: 30px;
+		top: 30px;
+	}
+
+	div.about-me {
+		//background-color: blue;
+		width: 320px;
+		height: 500px;
+		margin-left: 30px;
+		margin-top: 35px;
+	}
+
 }
 
 section.stories {
@@ -143,7 +211,7 @@ section.stories {
 		width: 100%;
 		height: 5px;
 		background-color: @color-light-grey;
-		margin-top: 250px;
+		margin-top: 270px;
 		position: absolute;
 		z-index: 0;
 	}
@@ -170,12 +238,10 @@ section.stories {
 		padding-top: 10px;
 		padding-bottom: 15px;
 		padding-left: 15px;
-
-
 	}
 
 	div.story-container {
-		padding-top: 75px;
+		padding-top: 130px;
 	}
 
 	div.story {
