@@ -85,7 +85,7 @@ div.vertical-narrative {
 	z-index: 10;
 	left: 17.96875%;  // 230 / 1280
 	float: left;
-	width: 37.5%;
+	width: 32%;
 
 	div.spacer {
 		height: 350px;
@@ -93,6 +93,7 @@ div.vertical-narrative {
 	}
 
 	section.narrative-section {
+		overflow-y: scroll;
 		width: 100%;
 		height: 270px;
 		// border-bottom: 2px solid #f2f2f2;
@@ -120,7 +121,7 @@ div.horizontal-context {
 	margin-bottom: 500px;
 	height: 100%;
 	width: 100%;
-	left: 56.59375%;
+	left: 51%;
 	position: fixed;
 }
 
@@ -191,13 +192,17 @@ section.narrative-section {
 	}
 }
 
+section.horizontal-new-section {
+	background-color: @color-fold-black;
+}
+
 section.horizontal-narrative-section {
 	position: absolute;
-	width: 29.6875%;
+	width: 32%;
 	background-color: @color-fold-black;
 	color: #f3f3f2;
-	opacity: 0.5;
 	display: none;
+	opacity: 0.5;
 
 	div.content {
 		margin-top: 0px;
@@ -210,7 +215,7 @@ section.horizontal-narrative-section {
 	}
 
 	// &:last-child {
-	// 	left: -73.6% !important;
+	// 	left: -40.6% !important;
 	// 	display: inline-block;
 	// }
 
@@ -221,7 +226,17 @@ section.horizontal-narrative-section {
 	}
 
 	&:nth-child(2) {
-		left: 30.625%;
+		left: 8%;
 		display: inline-block;
+		opacity: 1.0;
+	}
+
+	&:nth-child(3) {
+		left: 41%;
+		display: inline-block;
+	}
+
+	&.new-section {
+		opacity: 1.0;
 	}
 }

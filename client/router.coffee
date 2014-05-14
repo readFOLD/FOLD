@@ -15,6 +15,7 @@ Router.map ->
 	    path: "create"
 	    template: "create"
 	    data: ->
+	    	Session.set "newStory", true
 	    	Session.set "page", @template	
 
 	    	Session.set 'storyTitle', 'Story Title'
@@ -26,6 +27,7 @@ Router.map ->
 	    template: "create"
 	    waitOn: -> Meteor.subscribe('storiesPub')
 	    data: ->
+	    	Session.set "newStory", false
 	    	Session.set "page", @template
 	    	Session.set "storyId", @.params.storyId
 

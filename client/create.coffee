@@ -1,20 +1,16 @@
-# Initiate session variables in route
-
-
-#$(document).scrollsnap(
-#    snaps: 'div.vertical-narrative section'
-#    proximity: 50
-#   )
+Session.set('lastUpdate', new Date())
 
 Template.create.helpers
-    storyTitle: ->
-        Session.get('storyTitle')
-    username: -> 
-        if (Meteor.user())
-            Meteor.user().emails[0].address
+    storyTitle: -> Session.get('storyTitle')
+    storyLoaded: -> 
+        if Session.get("newStory") 
+            true
+        else
+            Stories.findOne(_id: Session.get('storyId'))
+    username: -> if Meteor.user() then Meteor.user().emails[0].address
     horizontalExists: ->
         currentVertical = Session.get('currentVertical')        
-        Session.get('horizontalSections')[currentVertical]?.data.length
+        Session.get('horizontalSections')[currentVertical]?.data.length > 1
 
 Template.vertical_narrative.helpers
     verticalSections: -> Session.get('verticalSections')
@@ -24,23 +20,43 @@ Template.horizontal_context.helpers
     horizontalSections: -> Session.get('horizontalSections')
     horizontalShown: -> Session.equals("currentVertical", @index)
 
-renderTemplate = (d, templateName, context) ->
-    srcE = if d.srcElement then d.srcElement else d.target
-    parentSection = $(srcE).closest('section')
-    parentSection.find('div.content-icons').remove()
-    if context
-        UI.insert(UI.renderWithData(templateName, context), parentSection.get(0))
-    else
-        UI.insert(UI.render(templateName), parentSection.get(0))
+Template.story_browser.events
+    "click i.left": (d) ->
+        horizontalSections = Session.get('horizontalSections')
+        newHorizontalSection = []
+        horizontalSection = horizontalSections[Session.get('currentVertical')].data
+        for section, i in horizontalSection[1..horizontalSection.length]
+            section.index = i
+            newHorizontalSection.push(section)
 
-Template.horizontal_context.events
-    'click img.text-button': (d) -> renderTemplate(d, Template.create_text_section)
-    'click img.photo-button': (d) -> renderTemplate(d, Template.create_image_section)
-    'click img.map-button': (d) -> renderTemplate(d, Template.create_map_section)
-    'click img.youtube-button': (d) -> renderTemplate(d, Template.create_youtube_section)
-    'click img.gifgif-button': (d) -> renderTemplate(d, Template.create_gifgif_section)
-    'click img.audio-button': (d) -> renderTemplate(d, Template.create_audio_section)
+        # Previous first element, new last element
+        newLastSection = horizontalSection[0]
+        newLastSection.index = horizontalSection.length - 1
+        newHorizontalSection.push(newLastSection)
 
+        horizontalSections[Session.get('currentVertical')].data = newHorizontalSection
+        Session.set('horizontalSections', horizontalSections)
+
+    "click i.right": (d) ->
+        horizontalSections = Session.get('horizontalSections')
+        newHorizontalSection = []
+        horizontalSection = horizontalSections[Session.get('currentVertical')].data
+
+        newLastSection = horizontalSection[horizontalSection.length-1]
+        newLastSection.index = 0
+        newHorizontalSection.push(newLastSection)
+
+        # First to second-to-last
+        for section, i in horizontalSection[0..horizontalSection.length-2]
+            section.index = i + 1
+            newHorizontalSection.push(section)
+
+        horizontalSections[Session.get('currentVertical')].data = newHorizontalSection
+        Session.set('horizontalSections', horizontalSections)
+
+#######################
+# Adding Sections
+#######################
 Template.add_vertical.events
     "click section": ->
         # Append Vertical Section
@@ -65,10 +81,31 @@ Template.add_horizontal.events
         # Append Horizontal Section to Current Horizontal Context
         horizontalSections = Session.get('horizontalSections')
         newHorizontalSection = 
-            content: "Test"
             index: horizontalSections[Session.get('currentVertical')].data.length
         horizontalSections[Session.get('currentVertical')].data.push(newHorizontalSection)
         Session.set('horizontalSections', horizontalSections)   
+
+renderTemplate = (d, templateName, context) ->
+    srcE = if d.srcElement then d.srcElement else d.target
+    parentSection = $(srcE).closest('section')
+    parentSection.empty()
+    if context
+        UI.insert(UI.renderWithData(templateName, context), parentSection.get(0))
+    else
+        UI.insert(UI.render(templateName), parentSection.get(0))
+
+Template.horizontal_context.helpers
+    lastUpdate: ->
+        Session.get('lastUpdate')
+        return
+
+Template.horizontal_context.events
+    'click img.text-button': (d) -> renderTemplate(d, Template.create_text_section)
+    'click img.photo-button': (d) -> renderTemplate(d, Template.create_image_section)
+    'click img.map-button': (d) -> renderTemplate(d, Template.create_map_section)
+    'click img.youtube-button': (d) -> renderTemplate(d, Template.create_youtube_section)
+    'click img.gifgif-button': (d) -> renderTemplate(d, Template.create_gifgif_section)
+    'click img.audio-button': (d) -> renderTemplate(d, Template.create_audio_section)
 
 Template.create_section_options.events
     "click div#back": (d) ->
@@ -82,22 +119,54 @@ Template.create_text_section.events
         srcE = if d.srcElement then d.srcElement else d.target
         parentSection = $(srcE).closest('section')
         horizontalIndex = parentSection.data('index')
-        text = parentSection.find('input.text-input').val()
+        text = parentSection.find('textarea.text-input').val()
 
         newDocument =
             type: 'text'
             content: text
             index: horizontalIndex
 
+        # Bind data
         horizontalSections = Session.get('horizontalSections')
         horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument
-        Session.set('horizontalSections', horizontalSections)  
+        Session.set('horizontalSections', horizontalSections) 
 
-        $(parentSection).find("div.create-section").remove()
-        parentSection.find('div.content').show()
+        # Render display section
+        context = newDocument 
+        renderTemplate(d, Template.display_text_section, context)
+
+Template.create_image_section.events
+    "click div#save": (d) ->
+        srcE = if d.srcElement then d.srcElement else d.target
+        parentSection = $(srcE).closest('section')
+        horizontalIndex = parentSection.data('index')
+        url = parentSection.find('input.image-url-input').val()
+        description = parentSection.find('input.image-description-input').val()
+
+        newDocument =
+            type: 'image'
+            url: url
+            description: description
+            index: horizontalIndex
+
+        # Bind data
+        horizontalSections = Session.get('horizontalSections')
+        horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument
+        Session.set('horizontalSections', horizontalSections) 
+
+        # Render display section
+        context = newDocument 
+        renderTemplate(d, Template.display_image_section, context)
+
+Template.horizontal_section_block.helpers
+    lastUpdate: -> 
+        Session.get('lastUpdate')
+        return
+    text: -> (@type is "text")
+    image: -> (@type is "image")
+    map: -> (@type is "map")
 
 # TODO Don't put in so much duplicated code!!!
-
 Template.horizontal_section_block.events
     "click div#delete": (d) -> 
         srcE = if d.srcElement then d.srcElement else d.target
@@ -112,16 +181,20 @@ Template.horizontal_section_block.events
         parentSection = $(srcE).closest('section')
         horizontalIndex = parentSection.data('index')
         horizontalSections = Session.get('horizontalSections')
-        type = horizontalSections[Session.get('currentVertical')].data[horizontalIndex].type
-
-        parentSection.find('div.content').hide()
-
-        context = horizontalSections[Session.get('currentVertical')].data[horizontalIndex]
+        section = horizontalSections[Session.get('currentVertical')].data[horizontalIndex]
+        data = section
+        type = section.type
         switch type
-            when "text" then renderTemplate(d, Template.create_text_section, context)
+            when "text" then renderTemplate(d, Template.create_text_section, section)
+            when "image" then renderTemplate(d, Template.create_image_section, section)
+            when "map" then renderTemplate(d, Template.create_map_section, section)
 
+
+#######################
+# Save and Publish
+#######################
 Template.create_options.events
-    "click div#save": ->   
+    "click div#save": ->
         # Get all necessary fields
         storyTitle = $.trim($('div.story-title').text())
         date = new Date()
@@ -132,6 +205,8 @@ Template.create_options.events
             content = $.trim($(this).find('div.content').text())
             verticalSections.push(
                 index: i
+                title: title
+                content: content
                 )
             )
         horizontalSections = Session.get('horizontalSections')
@@ -144,11 +219,19 @@ Template.create_options.events
             lastSaved: date
             published: false
 
+        console.log storyDocument
+
         storyId = Session.get('storyId')
         if storyId
             Stories.update({_id: storyId}, {$set: storyDocument})
         else
             Stories.insert(storyDocument)
+
+    "click div#delete": ->
+        storyId = Session.get('storyId')
+        if storyId
+            Stories.remove({_id: storyId})
+        Router.go('home')
 
     "click div#publish": ->   
         console.log('Publish')

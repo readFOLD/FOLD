@@ -12,20 +12,24 @@
 			</a>
 		</div>
 	</header>
-	<article class="content">
-		<div class="vertical-narrative">
-			{{> vertical_narrative}}
-			<div class="spacer">
-			</div>
-		</div>
-		<div class="horizontal-context">
-			{{> horizontal_context}}
-		</div>
-		{{> create_options}}
-	</article>
-	{{> connector}}
-	{{#if horizontalExists}}
-    	{{> story_browser}}
+	{{#if storyLoaded}}
+	    <article class="content">
+	    	<div class="vertical-narrative">
+	    		{{> vertical_narrative}}
+	    		<div class="spacer">
+	    		</div>
+	    	</div>
+	    	<div class="horizontal-context">
+	    		{{> horizontal_context}}
+	    	</div>
+	    	{{> create_options}}
+	    </article>
+	    {{> connector}}
+	    {{#if horizontalExists}}
+	        <div class="browser-offset">
+	        	{{> story_browser}}
+	        </div>
+        {{/if}}
     {{/if}}
 </template>
 
@@ -33,6 +37,9 @@
 	<div class="button-options save-publish">
 		<div id="save" class="button">
 			Save
+		</div>
+		<div id="delete" class="button">
+			Delete
 		</div>
 		<div id="publish" class="button">
 			Publish
@@ -54,12 +61,15 @@
 </template>
 
 <template name="add_horizontal">
-	<section class="horizontal-narrative-section narrative-section new-section">
+	<section class="narrative-section new-section horizontal-new-section">
 		<i class="fa fa-plus-circle"></i>
 	</section>
 </template>
 
 <template name="horizontal_context">
+	{{#if verticalExists}}
+    	{{> add_horizontal}}
+    {{/if}}
 	{{#each horizontalSections}}
 	    {{#if horizontalShown}}
 	        {{#each data}}
@@ -67,9 +77,6 @@
     	    {{/each}}
 	    {{/if}}
 	{{/each}}
-	{{#if verticalExists}}
-    	{{> add_horizontal}}
-    {{/if}}
 </template>
 
 <template name="connector">
@@ -93,15 +100,17 @@
 
 <template name="horizontal_section_buttons">
 	<div class="content-icons">
-		<div class="row-one">
-			<img class="text-button" src="/text-icon.png"/>
-			<img class="photo-button" src="/photo-icon.png" />
-			<img class="map-button" src="/map-icon.png" />
+		<div class="row row-one">
+			<div class="box"><img class="text-button" src="/text-icon.png" /></div>
+			<div class="box"><img class="photo-button" src="/photo-icon.png" /></div>
+			<div class="box"><img class="map-button" src="/map-icon.png" /></div>
+			<span class="stretch"></span>
 		</div>
-		<div class="row-two">
-			<img class="youtube-button" src="/youtube-icon.png" />
-			<img class="gifgif-button" src="/gifgif-icon.png" />
-			<img class="audio-button" src="/audio-icon.png" />
+		<div class="row row-two">
+			<div class="box"><img class="youtube-button" src="/youtube-icon.png" /></div>
+			<div class="box"><img class="gifgif-button" src="/gifgif-icon.png" /></div>
+			<div class="box"><img class="audio-button" src="/audio-icon.png" /></div>
+			<span class="stretch"></span>
 		</div>
 	</div>
 </template>
@@ -117,38 +126,43 @@
 	</div>
 </template>
 
+<!-- Create Templates -->
+
 <template name="create_text_section">
 	<div class="create-section">
     	<div class="input-label">
     		ADD FREE TEXT:
     	</div>
-    	<img class="text-button content-type-button" src="/text-icon.png" />
-    	<input class="text-input" value="{{content}}">
+    	<textarea class="text-input">{{content}}</textarea>
     	{{> create_section_options}}
     </div>
+    <img class="text-button content-type-button" src="/text-icon.png" />
 </template>
 
 <template name="create_image_section">
-	<div class="input-label">IMAGE URL:</div>
-	<input class="image-url-input">
-	<div class="input-label">DESCRIPTION:</div>
-	<input class="image-description-input">
-	<img class="photo-button content-type-button" src="/photo-icon.png" />
-	{{> create_section_options}}
+	<div class="create-section">
+	    <div class="input-label">IMAGE URL:</div>
+	    <input class="image-url-input" value="{{url}}">
+	    <div class="input-label">DESCRIPTION:</div>
+	    <input class="image-description-input" value="{{description}}">
+    	{{> create_section_options}}
+    </div>
+    <img class="photo-button content-type-button" src="/photo-icon.png" />
 </template>
 
 <template name="create_map_section">
-	<div class="input-label">LOCATION:</div>
-	<input class="location-input">
-
-	<div class="input-label">MAP TYPE:</div>
-	<input class="map-type-input">
-
-	<div class="input-label">DESCRIPTION:</div>
-	<input class="map-description-input">
-
+	<div class="create-section">
+	    <div class="input-label">LOCATION:</div>
+	    <input class="location-input">
+    
+	    <div class="input-label">MAP TYPE:</div>
+	    <input class="map-type-input">
+    
+	    <div class="input-label">DESCRIPTION:</div>
+	    <input class="map-description-input">
+	    {{> create_section_options}}
+	</div>
 	<img class="map-button content-type-button" src="/map-icon.png" />
-	{{> create_section_options}}
 </template>
 
 <template name="create_youtube_section">
@@ -169,10 +183,10 @@
     
 	    <div class="input-label">DESCRIPTION:</div>
 	    <input class="soundcloud-description-input">
-    
-	    <img class="map-button content-type-button" src="/audio-icon.png" />
 	    {{> create_section_options}}
+
     </div>
+    <img class="map-button content-type-button" src="/audio-icon.png" />
 </template>
 
 <template name="create_gifgif_section">
@@ -185,21 +199,41 @@
 	{{> create_section_options}}
 </template>
 
+<!-- Display Templates -->
+<template name="display_text_section">
+	<div class="text-section">
+    	{{content}}
+    </div>
+	{{> horizontal_section_edit_delete}}
+</template>
+
+<template name="display_image_section">
+	<div class="image-section">
+		<img src="{{url}}" />
+		<div class="description-overlay">
+    		{{description}}
+    	</div>
+	</div>
+	{{> horizontal_section_edit_delete}}
+</template>
+
+<template name="horizontal_section_edit_delete">
+	<div class="button-options edit-delete">
+		<div id="edit" class="button">
+			Edit
+		</div>
+		<div id="delete" class="button">
+			Delete
+		</div>
+	</div>
+</template>
+
 <template name="horizontal_section_block">
 	<section class="narrative-section horizontal-narrative-section" data-index={{index}}>
-		{{debugContext}}
 		{{#if type}}
-		    <div class="content">
-    		    {{content}}
-	    	</div>
-		    <div class="button-options edit-delete">
-		    	<div id="edit" class="button">
-		    		Edit
-		    	</div>
-		    	<div id="delete" class="button">
-		    		Delete
-		    	</div>
-		    </div>
+		    {{#if text}}{{> display_text_section}}{{/if}}
+		    {{#if image}}{{> display_image_section}}{{/if}}
+		    {{#if map}}{{> display_map_section}}{{/if}}
 		{{else}}
     		{{> horizontal_section_buttons}}
     	{{/if}}

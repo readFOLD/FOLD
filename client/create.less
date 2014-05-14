@@ -40,8 +40,14 @@ div.button-options {
 
 	div#save {
 	}
-	div#publish {
+	div#publish, div#delete {
 		margin-top: 10px;
+	}
+
+	div#delete {
+		&:hover {
+			background-color: red;
+		}
 	}
 }
 
@@ -53,6 +59,10 @@ header.header {
 		text-align: right;
 		top: 25px;
 	}
+}
+
+div.browser-offset {
+	padding-top: 100px;
 }
 
 div.vertical-narrative {
@@ -76,10 +86,29 @@ div.vertical-narrative {
     }
 }
 
+textarea {
+    border: none;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    font-size: 14px;
+    font-family: 'Avenir Next', sans-serif;
+}
+
+input {
+	width: 100%;
+	outline: none;
+	font-size: 14px;
+    font-family: 'Avenir Next', sans-serif;
+}
+
 div.horizontal-context {
 	section {
-		padding: 15px;
-		padding-top: 5px;
+		padding: 0;
 	}
 
 	section.new-section {
@@ -100,7 +129,7 @@ div.horizontal-context {
 		margin-bottom: 10px;
 	}
 
-	input {
+	textarea {
 		width: 100%;
 
 		&.text-input {
@@ -109,6 +138,13 @@ div.horizontal-context {
 	}
 
 	div.content-icons {
+		div.row {
+			text-align: justify;
+			-ms-text-justify: distribute-all-lines;
+			text-justify: distribute-all-lines;
+			margin-left: 10%;
+			margin-right: 10%;
+		}
 		div.row-one {
 			margin-top: 38px;	
 			img.text-button {
@@ -181,13 +217,23 @@ div.horizontal-context {
 				}
 			}
 		}
-		div {
-		    img {
-		    	display: inline;
-		    	width: 75px;
-		    	height: auto;
-		    	margin-left: 40px;
+		div.box {
+			width: 75px;
+			height: 75px;
+			vertical-align: top;
+			display: inline-block;
+			zoom: 1;
+			img {
+		    	width: 100%;
+		    	height: 100%;
 		    }	
+
+		}
+		span.stretch {
+			width: 100%;
+			display: inline-block;
+			font-size: 0;
+			line-height: 0;
 		}
 	}
 
@@ -218,6 +264,7 @@ div.horizontal-context {
 		}
 		div#save, div#delete {
 			float: right;
+			margin: 0;
 		}
 
 		div#delete {
@@ -227,6 +274,27 @@ div.horizontal-context {
 				background-color: red;
 			}
 		}
+	}
+}
+
+div.create-section {
+	margin: 10px;
+}
+
+div.image-section {
+	div.description-overlay {
+		position: absolute;
+		top: 0;
+		width: 100%;
+		padding: 8px;
+		background-color: rgba(0, 0, 0, 0.6);
+		color: white;
+	}
+	img {
+		position: absolute;
+		top: 0;
+		width: 100%;
+		height: 100%;
 	}
 }
 
