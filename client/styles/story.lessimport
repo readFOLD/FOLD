@@ -1,0 +1,28 @@
+header {
+	background-color: #1C1D1D;
+	color: #F2F2F0;
+	padding: 25px;
+	font-size: 24px;
+	position: fixed;
+	min-width: 1024px;
+	width: 100%;
+	height: 80px;
+	z-index: 10000;
+
+	-webkit-box-shadow: 0 0 15px 15px #ababac !important;
+	-moz-box-shadow: 0 0 15px 15px #ababac !important;
+	box-shadow: 0 0 15px 15px #ababac !important;
+
+	div.title {
+		max-width: 1250px;
+	}
+
+	div.logo {
+		width: 93px;
+		height: 52px;
+		position: relative;
+		float: right;
+		top: -42px;
+
+	}
+}

@@ -1,0 +1,78 @@
+<!--
+	Templates used in reading, creating, and editing
+-->
+
+<template name="connector">
+	<div class="connector">
+	</div>
+</template>
+
+<template name="vertical_section_block">
+	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{evenOrOdd}}" data-vertical-index="{{index}}">
+		<div class="size-icons">
+		</div>
+		<div class="title editable" contenteditable="true">{{title}}</div>
+		<div class="content editable" contenteditable="true">
+			<p>{{content}}</p>
+			<img src="{{image}}" />
+		</div>
+	</section>
+</template>
+
+<template name="vertical_narrative">
+	{{#each verticalSections}}
+    	{{> vertical_section_block}}
+	{{/each}}	
+	{{#unless read}}
+    	{{> add_vertical}}
+	{{/unless}}
+</template>
+
+<template name="horizontal_context">
+	{{#unless read}}
+    	{{#if verticalExists}}
+        	{{> add_horizontal}}
+        {{/if}}
+    {{/unless}}
+	{{#each horizontalSections}}
+	    {{#if horizontalShown}}
+	        {{#each data}}
+        	    {{> horizontal_section_block}}
+    	    {{/each}}
+	    {{/if}}
+	{{/each}}
+</template>
+
+<template name="horizontal_section_block">
+	<section class="narrative-section horizontal-narrative-section" data-index={{index}}>
+		{{#if type}}
+		    {{#if text}}{{> display_text_section}}{{/if}}
+		    {{#if image}}{{> display_image_section}}{{/if}}
+		    {{#if map}}{{> display_map_section}}{{/if}}
+		{{else}}
+    		{{> horizontal_section_buttons}}
+    	{{/if}}
+	</section>
+</template>
+
+<!-- Display Templates -->
+<template name="display_text_section">
+	<div class="text-section">
+    	{{content}}
+    </div>
+    {{#unless read}}
+    	{{> horizontal_section_edit_delete}}
+    {{/unless}}
+</template>
+
+<template name="display_image_section">
+	<div class="image-section">
+		<img src="{{url}}" />
+		<div class="description-overlay">
+    		{{description}}
+    	</div>
+	</div>
+	{{#unless read}}
+    	{{> horizontal_section_edit_delete}}
+    {{/unless}}
+</template>

@@ -1,0 +1,34 @@
+<template name="read">
+	<header class="header">
+		<div class="story-title editable" contenteditable="true">
+			{{storyTitle}}
+		</div>
+		<div class="username">
+			{{username}}
+		</div>
+		<div class="logo">
+			<a href="/">
+				<img src="/logo.png">
+			</a>
+		</div>
+	</header>
+	{{> connector}}
+	{{#if storyLoaded}}
+	    <article class="content">
+	    	<div class="vertical-narrative">
+	    		{{> vertical_narrative}}
+	    		<div class="spacer">
+	    		</div>
+	    	</div>
+	    	<div class="horizontal-context">
+	    		{{> horizontal_context}}
+	    	</div>
+	    </article>
+	    
+	    {{#if horizontalExists}}
+	        <div class="browser-offset">
+	        	{{> story_browser}}
+	        </div>
+        {{/if}}
+    {{/if}}
+</template>

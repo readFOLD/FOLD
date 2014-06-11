@@ -7,7 +7,13 @@ Template.create.helpers
             true
         else
             Stories.findOne(_id: Session.get('storyId'))
-    username: -> if Meteor.user() then Meteor.user().emails[0].address
+    username: -> 
+        if Meteor.user()
+            if Meteor.user().emails
+                Meteor.user().emails[0].address
+            else
+                Meteor.user().profile.name
+    
     horizontalExists: ->
         currentVertical = Session.get('currentVertical')        
         Session.get('horizontalSections')[currentVertical]?.data.length > 1
@@ -219,8 +225,6 @@ Template.create_options.events
             lastSaved: date
             published: false
 
-        console.log storyDocument
-
         storyId = Session.get('storyId')
         if storyId
             Stories.update({_id: storyId}, {$set: storyDocument})
@@ -234,4 +238,6 @@ Template.create_options.events
         Router.go('home')
 
     "click div#publish": ->   
-        console.log('Publish')
+        storyId = Session.get('storyId')
+        if storyId and Stories.findOne(_id: storyId)
+            Stories.update({_id: storyId}, {$set: {published: true, publishDate: new Date()}})

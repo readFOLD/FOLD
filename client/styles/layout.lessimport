@@ -6,12 +6,65 @@
 @color-fold-black: #272727;
 @color-inactive-grey: #E0E2E1;
 
+.transition(@property, @duration, @timing-function) {
+	-webkit-transition: @property @duration @timing-function;
+	-moz-transition: @property @duration @timing-function;
+	-o-transition: @property @duration @timing-function;
+	transition: @property @duration @timing-function;
+}
+
+.height-transition{
+	.transition(height, 0.2s, ease-in);
+}
+
+.text-shadow-transition{
+	.transition(text-shadow, 0.2s, ease-in);
+}
+
+.background-transition{
+	.transition(background-color, 0.2s, ease-in);
+}
+
+.border-transition {
+	.transition(border, 0.2s, ease-in);
+}
+
+.color-transition {
+	.transition(color, 0.2s, ease-in);
+}
+
+.opacity-transition {
+	.transition(opacity, 0.2s, ease-in);
+}
+
+.shadow-transition {
+	.transition(box-shadow, 0.35s, ease-in);
+}
+
+.fill-transition {
+	.transition(fill, 0.2s, ease-in);
+}
+
+.stroke-transition {
+	.transition(stroke, 0.2s, ease-in);
+}
+
+// Universal Link Styling
+a {
+	text-decoration: none !important;
+	&:hover {
+		color: black;
+	}
+}
 
 *, *:before, *:after {
 	-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
 
-html, body { height: 100%; }
+html, body { 
+	height: 100%; 
+	min-width: 1024px;
+}
 
 body {
 	//still like san-serif for headlines and bylines
@@ -24,33 +77,6 @@ body {
 	background-color: #ababac;
 }
 
-header {
-	background-color: #1C1D1D;
-	color: #F2F2F0;
-	padding: 25px;
-	font-size: 24px;
-	position: fixed;
-	width: 100%;
-	height: 80px;
-	z-index: 10000;
-
-	-webkit-box-shadow: 0 0 15px 15px #ababac !important;
-	-moz-box-shadow: 0 0 15px 15px #ababac !important;
-	box-shadow: 0 0 15px 15px #ababac !important;
-
-	div.title {
-		max-width: 1250px;
-	}
-
-	div.logo {
-		width: 93px;
-		height: 52px;
-		position: relative;
-		float: right;
-		top: -42px;
-
-	}
-}
 div.connector {
 	width: 100%;
 	z-index: -1;
@@ -61,70 +87,7 @@ div.connector {
 	border-color: @color-light-grey;
 }
 
-// article.content {
-// 	padding-top: 80px;
-// 	margin: 0 auto;
-// 	margin-bottom: 15px;
-
-// 	p {
-// 		margin-top: 15px;
-// 	}
-
-// 	img {
-// 		margin-top: 15px;
-// 		margin-bottom: 15px;
-// 		width: 100%;
-// 		display: block;
-// 	}
-// }
-
-div.vertical-narrative {
-	position: absolute;
-	top: 40%;
-	margin-top: -125px;
-	z-index: 10;
-	left: 17.96875%;  // 230 / 1280
-	float: left;
-	width: 32%;
-
-	div.spacer {
-		height: 350px;
-		clear: both;
-	}
-
-	section.narrative-section {
-		overflow-y: scroll;
-		width: 100%;
-		height: 270px;
-		// border-bottom: 2px solid #f2f2f2;
-		margin-bottom: 16px;
-		box-shadow: 3px 3px @color-medium-grey;
-
-		// &:first-child {
-		// 	border-top: 2px solid #f2f2f2;
-		// }
-	}
-}
-
-div.horizontal-context {
-	section.narrative-section {
-		height: 270px;
-		box-shadow: 3px 3px #848484;
-	}
-}
-
-div.horizontal-context {
-	float: right;
-	z-index: 10;
-	top: 40%;
-	margin-top: -125px;
-	margin-bottom: 500px;
-	height: 100%;
-	width: 100%;
-	left: 51%;
-	position: fixed;
-}
-
+// Chevrons
 div.chevron {
 	z-index: 10;
 	position: fixed;
@@ -188,8 +151,42 @@ section.narrative-section {
 			&.hidden {
 				display: none;
 			}
-		}
+		};
 	}
+}
+
+div.vertical-narrative {
+	position: absolute;
+	top: 40%;
+	margin-top: -125px;
+	z-index: 10;
+	float: left;
+	width: 400px;
+	min-width: 400px;
+
+	div.spacer {
+		height: 350px;
+		clear: both;
+	}
+
+	section.narrative-section {
+		overflow-y: scroll;
+		width: 100%;
+		height: 300px;
+		margin-bottom: 16px;
+		box-shadow: 3px 3px @color-medium-grey;
+	}
+}
+
+div.horizontal-context {
+	position: fixed;
+	float: right;
+	z-index: 10;
+	top: 40%;
+	margin-top: -125px;
+	margin-bottom: 500px;
+	height: 100%;
+	width: 100%;
 }
 
 section.horizontal-new-section {
@@ -198,6 +195,10 @@ section.horizontal-new-section {
 
 section.horizontal-narrative-section {
 	position: absolute;
+	height: 300px;
+	box-shadow: 3px 3px #848484;
+
+	min-width: 400px;
 	width: 32%;
 	background-color: @color-fold-black;
 	color: #f3f3f2;
@@ -213,11 +214,6 @@ section.horizontal-narrative-section {
 		margin-top: 15px;
 		margin-bottom: 15px;
 	}
-
-	// &:last-child {
-	// 	left: -40.6% !important;
-	// 	display: inline-block;
-	// }
 
 	&:first-child {
 		left: 0%;

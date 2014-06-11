@@ -1,12 +1,3 @@
-@color-light-grey: #F3F4F4;
-@color-medium-grey: #CCCCCB;
-@color-dark-grey: #A8A8A8;
-@color-light-green: #8CC63E;
-@color-medium-green: #009344;
-@color-fold-black: #1C1C1C;
-@color-inactive-grey: #E0E2E1;
-
-
 .editable {
 	outline: none;
 }
@@ -79,9 +70,9 @@ div.vertical-narrative {
     	}
 
     	&:first-child {
-    		height: 270px;
+    		height: 300px;
     		font-size: 75px;
-    		line-height: 270px;
+    		line-height: 300px;
     	}
     }
 }
@@ -112,9 +103,9 @@ div.horizontal-context {
 	}
 
 	section.new-section {
-		height: 270px;
+		height: 300px;
 		font-size: 75px;
-		line-height: 270px;
+		line-height: 300px;
 		text-align: center;
 		width: 100px;
 		transition: color 0.25s ease;
@@ -279,6 +270,10 @@ div.horizontal-context {
 
 div.create-section {
 	margin: 10px;
+}
+
+div.text-section {
+	margin: 12px;
 }
 
 div.image-section {

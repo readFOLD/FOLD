@@ -47,13 +47,6 @@
 	</div>
 </template>
 
-<template name="vertical_narrative">
-	{{#each verticalSections}}
-    	{{> vertical_section_block}}
-	{{/each}}	
-	{{> add_vertical}}
-</template>
-
 <template name="add_vertical">
 	<section class="narrative-section new-section">
 		<i class="fa fa-plus-circle"></i>
@@ -63,38 +56,6 @@
 <template name="add_horizontal">
 	<section class="narrative-section new-section horizontal-new-section">
 		<i class="fa fa-plus-circle"></i>
-	</section>
-</template>
-
-<template name="horizontal_context">
-	{{#if verticalExists}}
-    	{{> add_horizontal}}
-    {{/if}}
-	{{#each horizontalSections}}
-	    {{#if horizontalShown}}
-	        {{#each data}}
-        	    {{> horizontal_section_block}}
-    	    {{/each}}
-	    {{/if}}
-	{{/each}}
-</template>
-
-<template name="connector">
-	<div class="connector">
-	</div>
-</template>
-
-<template name="vertical_section_block">
-	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{evenOrOdd}}" data-vertical-index="{{index}}">
-		<div class="size-icons">
-			<div class="size-icon plus hidden">+</div>
-			<div class="size-icon minus">&mdash;</div>
-		</div>
-		<div class="title editable" contenteditable="true">{{title}}</div>
-		<div class="content editable" contenteditable="true">
-			<p>{{content}}</p>
-			<img src="{{image}}" />
-		</div>
 	</section>
 </template>
 
@@ -199,24 +160,6 @@
 	{{> create_section_options}}
 </template>
 
-<!-- Display Templates -->
-<template name="display_text_section">
-	<div class="text-section">
-    	{{content}}
-    </div>
-	{{> horizontal_section_edit_delete}}
-</template>
-
-<template name="display_image_section">
-	<div class="image-section">
-		<img src="{{url}}" />
-		<div class="description-overlay">
-    		{{description}}
-    	</div>
-	</div>
-	{{> horizontal_section_edit_delete}}
-</template>
-
 <template name="horizontal_section_edit_delete">
 	<div class="button-options edit-delete">
 		<div id="edit" class="button">
@@ -226,16 +169,4 @@
 			Delete
 		</div>
 	</div>
-</template>
-
-<template name="horizontal_section_block">
-	<section class="narrative-section horizontal-narrative-section" data-index={{index}}>
-		{{#if type}}
-		    {{#if text}}{{> display_text_section}}{{/if}}
-		    {{#if image}}{{> display_image_section}}{{/if}}
-		    {{#if map}}{{> display_map_section}}{{/if}}
-		{{else}}
-    		{{> horizontal_section_buttons}}
-    	{{/if}}
-	</section>
 </template>

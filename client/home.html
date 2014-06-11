@@ -2,20 +2,23 @@
   <title>FOLD</title>
   <link href='http://fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans+SC' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/FOLD-apple-touch-icon.png">
+  <link rel="shortcut icon" href="/favicon.ico" />
 </head>
 
 
 <template name="home">
-	<div class="navbar">
-		<i class="fa fa-bars fa-2x"></i>	
-	</div>
+
 	<section class="banner">
+		<div class="navbar top">
+			<!-- 		<i class="fa fa-bars fa-2x"></i>	 -->
+		</div>
 		<a href="/">
 			<div class="title">
 				<img src="/fold-title.png">
 			</div>
 		</a>
-		<div class="options">
+<!-- 		<div class="options">
 			<div id="create-story">
 				<a href="/create">
 					Create Story
@@ -23,84 +26,62 @@
 			</div>
 			{{> loginButtons}}
 		</div>
-		<div class="logo">
-			<img src="/logo.png">
+ -->		<div class="logo">
+			{{#with user}}
+			<a href="/profile/{{userId}}">
+    			<img class="logo" src="/logo.png">
+    		</a>
+			{{/with}}
+<!-- 			{{#if currentUser}}
+			{{#if profileImageExists}}
+			<img class="profile-picture" src="{{profileImage}}"/>
+			{{/if}}
+			{{/if}} -->
 		</div>
 	</section>
-
+	<div class="navbar filter">
+		Now Reading: Technology
+	</div>
 
 	<section class="stories">
-		{{> story_browser}}
-		<div class="horizontal-line">
-		</div>
 		<div class="story-container">
-			{{> user_stories}}
-	    	<!-- <div class="story">
-	    		<div class="headline">
-	    			Kanye says: "I love Rhoto V, and so does Kim"
-	    			<div class="byline">
-	    				By Kevin Hu
-	    			</div>
-	    		</div>
-	    		<iframe
-  					width="425"
- 		 			height="300"
-  					frameborder="0" style="border:0"
-  					src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q
-    				&q=Space+Needle,Seattle+WA&maptype=satellite">
-				</iframe>
-	    	</div>
-	    	<div class="story">
-	    		<div class="headline">
-	    			Spongebob is the best thing ever
-	    			<div class="byline">
-	    				By Travis Rich
-	    			</div>
-	    		</div>
-	    	<iframe width="425" height="239" src="//www.youtube.com/embed/qNrnumRaE3c?rel=0" frameborder="0" allowfullscreen></iframe>
-	    	</div>
-	    	<div class="story">
-	    		<div class="headline">
-	    			What I learned from Disney's Magical World for 3DS
-	    			<div class="byline">
-	    				By Alexis Hope
-	    			</div>
-	    		</div>
-<<<<<<< Updated upstream
-	    	<iframe width="265px" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/44355007&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true"></iframe>
-
-	    	<blockquote class="twitter-tweet" lang="en"><p>foggy toronto day matches my brains <a href="http://t.co/NppIrL8UEh">pic.twitter.com/NppIrL8UEh</a></p>&mdash; alexis hope (@alexishope) <a href="https://twitter.com/alexishope/statuses/461705115011805184">May 1, 2014</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-	    	</div>
-=======
-	    	</div> -->
+			{{> all_stories}}
 	    </div>
 	</section>
 </template>
 
-<template name="user_stories">
-	{{#if currentUser}}
-	    {{#each userStories}}
+<template name="all_stories">
+	    {{#each stories}}
 	        <div class="story" data-story-id="{{_id}}">
+	        	{{#if profileImageExists}}
+	        	<img class="profile-picture" src="{{profileImage}}"/>
+	        	{{/if}}
 	        	<div class="headline">
 	        		{{title}}
+	        		<div class="byline">
+	        			By {{displayName}}
+	        		</div>
 	        	</div>
-	        	<div class="byline">
-   	    			By Kevin Hu
+
+   	    		<div class="content">
+   	    			{{previewContent}}
    	    		</div>
-   	    		Last Edit: {{lastEditDate}}
+
+   	    		<div class="dates">
+   	    			<p>
+   	    			    Published On: {{lastPublishDate}}
+     	    		</p>
+   	    		</div>
+
    	    	   <div class="edit-or-read">
    	    			<a href="{{url}}">
    	    				<div id="edit-this-story">
-   	    					Edit this story >
-   	    					<!-- needs switch to 'unfold this story' for main page -->
+   	    					Unfold This Story >
    	    				</div>
    	    			</a>
    	    		</div>
    	    	</div>
 	    {{/each}}
-	{{/if}}
 </template>
 
 <template name="story_browser">

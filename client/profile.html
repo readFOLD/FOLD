@@ -33,7 +33,6 @@
 		<div class="horizontal-line">
 		</div>
 		<div class="story-container">
-			{{> user_profile}}
 			{{> user_stories}}
 	    	<!-- <div class="story">
 	    		<div class="headline">
@@ -101,33 +100,43 @@
 
 
 <template name="user_stories">
-	{{#if currentUser}}
+{{#if currentUser}}
 	    {{#each userStories}}
 	        <div class="story" data-story-id="{{_id}}">
+	        	{{#if profileImageExists}}
+	        	<img class="profile-picture" src="{{profileImage}}"/>
+	        	{{/if}}
 	        	<div class="headline">
 	        		{{title}}
+	        		<div class="byline">
+	        			By {{displayName}}
+	        		</div>
 	        	</div>
-	        	<div class="byline">
-   	    			By Kevin Hu
+
+   	    		<div class="content">
+   	    			{{previewContent}}
    	    		</div>
-   	    		Last Edit: {{lastEditDate}}
+
+   	    		<div class="dates">
+   	    			<p>Last Edited: {{lastEditDate}}</p>
+   	    			<p>
+   	    			{{#if published}}
+   	    			    Published On: {{lastPublishDate}}
+   	    			    {{else}}
+   	    			    Unpublished
+   	    			{{/if}}
+     	    		</p>
+   	    		</div>
+
    	    	   <div class="edit-or-read">
    	    			<a href="{{url}}">
    	    				<div id="edit-this-story">
    	    					Edit this story >
+   	    					<!-- needs switch to 'unfold this story' for main page -->
    	    				</div>
    	    			</a>
    	    		</div>
    	    	</div>
 	    {{/each}}
 	{{/if}}
-</template>
-
-
-
-<template name="story_browser">
-	<div class="story-browser">
-		<i class="fa fa-chevron-circle-left fa-3x"></i>
-		<i class="fa fa-chevron-circle-right fa-3x"></i>
-	</div>
 </template>

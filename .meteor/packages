@@ -10,3 +10,6 @@ font-awesome
 accounts-ui
 accounts-password
 iron-router
+accounts-twitter
+accounts-facebook
+accounts-google

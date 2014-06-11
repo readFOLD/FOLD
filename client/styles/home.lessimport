@@ -1,49 +1,34 @@
-@color-light-grey: #F3F4F4;
-@color-medium-grey: #CCCCCB;
-@color-dark-grey: #A8A8A8;
-@color-light-green: #8CC63E;
-@color-medium-green: #009344;
-@color-fold-black: #1C1C1C;
-@color-inactive-grey: #E0E2E1;
-
-// Universal Link Styling
-a {
-	text-decoration: none !important;
-	&:hover {
-		color: black;
-	}
-}
-	
-div.navbar {
-	position: fixed;
-	width: 100%;
-	height: 38px;
-	background-color: black;
-	padding-top: 0;
-
-	i.fa-bars {
-		color: white;
-		&:hover {
-			color: @color-light-green;
-		}
-		margin-left: 6px;
-		margin-top: 3px;
-	}
-}
-
 section.banner {
 	background-color: @color-light-grey;
 	height: 230px;
+
+	div.navbar {
+		width: 100%;
+		min-width: 1024px;
+		height: 30px;
+		background-color: black;
+		padding-top: 0;
+		
+		i.fa-bars {
+			color: white;
+			&:hover {
+				color: @color-light-green;
+			}
+			margin-left: 6px;
+			margin-top: 3px;
+		}
+	}
 
 	div.title {
 		text-align: center;
 		font-size: 60px;
 		font-weight: 500;
-		padding-top: 88px;
+		padding-top: 50px;
 	}
 
 	div.logo {
 		background-color: black;
+		z-index: 10;
 
 		@circle-diameter: 80px;
 		height: @circle-diameter;
@@ -52,7 +37,7 @@ section.banner {
 
 		position: relative;
 		left: 50%;
-		top: 30px;
+		top: 52px;
 		margin-left: -(@circle-diameter / 2);
 		margin-top: -40px;
 
@@ -60,6 +45,21 @@ section.banner {
 			width: @circle-diameter - 20px;
 			height: auto;
 			margin: 24px 0 0 9px;
+		}
+
+		img.logo {
+			// &:hover {
+			// 	opacity: 0.0;
+			// }
+		}
+
+		img.profile-picture {
+			opacity: 1.0;
+			position: relative;
+			top: -88px;
+			left: -10px;
+			width: 80px;
+			border-radius: 40px;
 		}
 	}
 
@@ -78,14 +78,35 @@ section.banner {
 	}
 }
 
+div.filter {
+	.background-transition;
+	position: absolute;
+	width: 100%;
+	background-color: black;
+	margin-top: -2px;
+	color: white;
+	text-transform: uppercase;
+	margin-top: -32px;
+	padding-left: 10px;
+	line-height: 32px;
+	font-size: 14px;
+	font-weight: light;
+	cursor: pointer;
+	z-index: 5;
+
+	&:hover {
+		background-color: @color-medium-green;
+	}
+}
+
 div.story-browser {
 	position: fixed;
 	width: 100%;
 	z-index: 10;
 
 	i {
+		.color-transition;
 		cursor: pointer;
-		transition: color 0.25s ease;
 	}
 
 	i.fa-chevron-circle-left {
@@ -109,6 +130,7 @@ div.story-browser {
 }
 
 div.edit-or-read {
+	.background-transition;
 	position: absolute;
 	bottom: 0px;
 	width: 100%;
@@ -123,8 +145,9 @@ div.edit-or-read {
 	}
 
 	div#edit-this-story {
+		.background-transition;
+		.color-transition;
 		padding: 15px;
-		transition: color 0.25s ease, background-color 0.25s ease;;
 		&:hover {
 			color: white;
 		}
@@ -166,13 +189,27 @@ section.stories {
 
 	div.byline {
 		font-size: 15px;
-		font-variant: small-caps;
-		font-weight: 400;
-		padding-top: 10px;
-		padding-bottom: 15px;
-		padding-left: 15px;
+		padding: 0;
+		margin-top: 5px;
+	}
 
+	div.dates {
+		font-size: 14px;
+		font-style: italic;
 
+		padding: 0 15px;
+		p {
+			margin: 0;
+		}
+	}
+
+	div.content {
+		margin-top: 10px;
+		padding: 0 15px;
+		max-height: 130px;
+		height: 130px;
+		max-height: 200px;
+		overflow-y: scroll;
 	}
 
 	div.story-container {
@@ -182,13 +219,30 @@ section.stories {
 	div.story {
 		background-color: @color-inactive-grey;
 		box-shadow: 3px 3px @color-medium-grey;
-		height: 325px;
+		height: 300px;
 		/*height depends on length of story abstract*/
-		width: 425px;
-		margin-left: 40px;
-		float: left;
+		width: 700px;
+		margin: 0 auto;
 		z-index: 2;
 		position: relative;
+		margin-top: 20px;
+
+		&:first-child {
+			margin-top: 0px;
+		}
+
+		img.profile-picture {
+			@picture-radius: 30px;
+			position: absolute;
+			top: 10px;
+			right: 10px;
+
+			z-index: 10;
+
+			border-radius: @picture-radius;
+			width: @picture-radius * 2;
+			height: auto;				
+		}
 	}
 
 }
