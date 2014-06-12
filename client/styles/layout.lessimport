@@ -70,7 +70,7 @@ body {
 	//still like san-serif for headlines and bylines
 	font-family: 'Avenir Next', sans-serif;
 	//potential option for card text
-	//font-family: 'Alegreya Sans SC', sans-serif;
+	// font-family: 'Alegreya Sans' , sans-serif;
 	//font-family: ;
 	margin: 0;
 	overflow-x: hidden;
@@ -202,8 +202,12 @@ section.horizontal-narrative-section {
 	width: 32%;
 	background-color: @color-fold-black;
 	color: #f3f3f2;
-	display: none;
-	opacity: 0.5;
+	// display: none;
+	opacity: 0.25;
+
+	&.first {
+		opacity: 1.0;
+	}
 
 	div.content {
 		margin-top: 0px;
@@ -213,23 +217,6 @@ section.horizontal-narrative-section {
 		font-size: 12px;
 		margin-top: 15px;
 		margin-bottom: 15px;
-	}
-
-	&:first-child {
-		left: 0%;
-		opacity: 1.0;
-		display: inline-block;
-	}
-
-	&:nth-child(2) {
-		left: 8%;
-		display: inline-block;
-		opacity: 1.0;
-	}
-
-	&:nth-child(3) {
-		left: 41%;
-		display: inline-block;
 	}
 
 	&.new-section {

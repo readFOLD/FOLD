@@ -18,3 +18,34 @@ Template.read.helpers
     horizontalExists: ->
         currentVertical = Session.get('currentVertical')        
         Session.get('horizontalSections')[currentVertical]?.data.length > 1
+
+    verticalLeft: -> 
+        width = Session.get "width"
+        if width <= 1304
+            88 + 16
+        else
+            (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
+
+
+Template.horizontal_section_block.helpers
+    first: -> (@index is 0)
+    left: ->
+        width = Session.get "width"
+        if width < 1024 then width = 1024
+        halfWidth = width / 2
+        cardWidth = Session.get "cardWidth"
+
+        # Last card
+        lastIndex = Session.get("horizontalSections")[Session.get("currentVertical")].data.length - 1
+        if (lastIndex >= 2) and (@index is lastIndex)
+            if width <= 1304
+                return (-cardWidth + 88)
+            else
+            return (-Session.get("cardWidth") + (width - (Session.get("separation") * 3) - (Session.get("cardWidth") * 2))/2)
+        # Between first and last card
+        else if @index
+            (@index * cardWidth) + halfWidth + (3 * (Session.get "separation") / 2)   
+        # First
+        else
+            halfWidth + (Session.get "separation") / 2
+

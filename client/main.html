@@ -44,7 +44,7 @@
 </template>
 
 <template name="horizontal_section_block">
-	<section class="narrative-section horizontal-narrative-section" data-index={{index}}>
+	<section class="narrative-section horizontal-narrative-section {{#if first}}first{{/if}}" data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px">
 		{{#if type}}
 		    {{#if text}}{{> display_text_section}}{{/if}}
 		    {{#if image}}{{> display_image_section}}{{/if}}
