@@ -37,7 +37,14 @@
 	{{#each horizontalSections}}
 	    {{#if horizontalShown}}
 	        {{#each data}}
-        	    {{> horizontal_section_block}}
+	            <!-- Don't display incomplete blocks -->
+	            {{#if read}}
+    	            {{#if type}}
+        	            {{> horizontal_section_block}}
+    	            {{/if}}
+    	        {{else}}
+        	        {{> horizontal_section_block}}
+    	        {{/if}}
     	    {{/each}}
 	    {{/if}}
 	{{/each}}
@@ -68,9 +75,11 @@
 <template name="display_image_section">
 	<div class="image-section">
 		<img src="{{url}}" />
-		<div class="description-overlay">
-    		{{description}}
-    	</div>
+		{{#if description}}
+    		<div class="description-overlay">
+    			{{description}}
+    		</div>
+    	{{/if}}
 	</div>
 	{{#unless read}}
     	{{> horizontal_section_edit_delete}}

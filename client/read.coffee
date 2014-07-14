@@ -26,7 +26,7 @@ Template.read.helpers
         else
             (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
 
-
+# Reading page (no "add" block)
 Template.horizontal_section_block.helpers
     first: -> (@index is 0)
     left: ->
@@ -35,17 +35,24 @@ Template.horizontal_section_block.helpers
         halfWidth = width / 2
         cardWidth = Session.get "cardWidth"
 
+        # Offset for "add" block
+        read = Session.get("read")
+        if read
+            offset = 0
+        else
+            offset = 100 + Session.get("separation")
+
         # Last card
         lastIndex = Session.get("horizontalSections")[Session.get("currentVertical")].data.length - 1
         if (lastIndex >= 2) and (@index is lastIndex)
             if width <= 1304
-                return (-cardWidth + 88)
+                return (-cardWidth + 88) + offset
             else
             return (-Session.get("cardWidth") + (width - (Session.get("separation") * 3) - (Session.get("cardWidth") * 2))/2)
         # Between first and last card
         else if @index
-            (@index * cardWidth) + halfWidth + (3 * (Session.get "separation") / 2)   
+            (@index * cardWidth) + halfWidth + (3 * (Session.get "separation") / 2) + offset
         # First
         else
-            halfWidth + (Session.get "separation") / 2
+            halfWidth + ((Session.get "separation") / 2) + offset
 

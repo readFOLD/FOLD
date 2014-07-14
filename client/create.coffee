@@ -1,5 +1,3 @@
-Session.set('lastUpdate', new Date())
-
 Template.create.helpers
     storyTitle: -> Session.get('storyTitle')
     storyLoaded: -> 
@@ -17,6 +15,13 @@ Template.create.helpers
     horizontalExists: ->
         currentVertical = Session.get('currentVertical')        
         Session.get('horizontalSections')[currentVertical]?.data.length > 1
+
+    verticalLeft: -> 
+        width = Session.get "width"
+        if width <= 1304
+            88 + 16
+        else
+            (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
 
 Template.vertical_narrative.helpers
     verticalSections: -> Session.get('verticalSections')
@@ -81,6 +86,14 @@ Template.add_vertical.events
             index: horizontalSections.length
         horizontalSections.push(newHorizontalSection)
         Session.set('horizontalSections', horizontalSections)   
+
+Template.add_horizontal.helpers
+    left: ->
+        width = Session.get "width"
+        if width < 1024 then width = 1024
+        halfWidth = width / 2
+        cardWidth = Session.get "cardWidth"
+        halfWidth + (Session.get "separation") / 2
 
 Template.add_horizontal.events
     "click section": ->

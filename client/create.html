@@ -6,6 +6,12 @@
 		<div class="username">
 			{{username}}
 		</div>
+		<div class="category">
+			Technology
+		</div>
+		<div class="analytics">
+			Analytics
+		</div>
 		<div class="logo">
 			<a href="/">
 				<img src="/logo.png">
@@ -14,7 +20,7 @@
 	</header>
 	{{#if storyLoaded}}
 	    <article class="content">
-	    	<div class="vertical-narrative">
+	    	<div class="vertical-narrative" style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
 	    		{{> vertical_narrative}}
 	    		<div class="spacer">
 	    		</div>
@@ -54,7 +60,7 @@
 </template>
 
 <template name="add_horizontal">
-	<section class="narrative-section new-section horizontal-new-section">
+	<section class="narrative-section new-section horizontal-new-section" style="left: {{left}}px">
 		<i class="fa fa-plus-circle"></i>
 	</section>
 </template>

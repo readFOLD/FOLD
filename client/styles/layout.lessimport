@@ -190,6 +190,7 @@ div.horizontal-context {
 }
 
 section.horizontal-new-section {
+	position: absolute;
 	background-color: @color-fold-black;
 }
 

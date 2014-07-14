@@ -15,6 +15,7 @@ header {
 
 	div.title {
 		max-width: 1250px;
+		float: left;
 	}
 
 	div.logo {
@@ -22,7 +23,7 @@ header {
 		height: 52px;
 		position: relative;
 		float: right;
-		top: -42px;
+		top: -10px;
 
 	}
 }
