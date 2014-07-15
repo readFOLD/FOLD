@@ -10,6 +10,9 @@ Handlebars.registerHelper "read", ->
 Handlebars.registerHelper "cardWidth", ->
   Session.get "cardWidth"
 
+Handlebars.registerHelper "setTitle", (title) ->
+  document.title = title
+  return
 
 getCardWidth = (windowWidth) ->
   if windowWidth <= 1024 
@@ -42,11 +45,11 @@ Meteor.startup ->
     # connectorTopPosition = $("div.connector").offset().top
     scrollTop = $(document).scrollTop()
     currentVertical = Session.get("currentVertical")
-    currentScrollTop = 250 * currentVertical
+    currentScrollTop = 300 * currentVertical
 
-    if scrollTop > (currentScrollTop + 240)
+    if scrollTop > (currentScrollTop + 280)
       Session.set("currentVertical", currentVertical + 1)
-    else if scrollTop < (currentScrollTop - 240)
+    else if scrollTop < (currentScrollTop - 280)
       Session.set("currentVertical", currentVertical - 1)
 
   throttledUpdate = _.throttle(updateCurrentVertical, 200)

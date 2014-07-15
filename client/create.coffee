@@ -70,6 +70,7 @@ Template.story_browser.events
 #######################
 Template.add_vertical.events
     "click section": ->
+        console.log("clicking add vertical")
         # Append Vertical Section
         verticalSections = Session.get('verticalSections')
         newVerticalSection =
@@ -188,6 +189,7 @@ Template.horizontal_section_block.helpers
 # TODO Don't put in so much duplicated code!!!
 Template.horizontal_section_block.events
     "click div#delete": (d) -> 
+        console.log("delete")
         srcE = if d.srcElement then d.srcElement else d.target
         parentSection = $(srcE).closest('section')
         horizontalIndex = parentSection.data('index')

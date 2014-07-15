@@ -70,7 +70,7 @@ div.browser-offset {
 }
 
 div.vertical-narrative {
-    section.narrative-section.new-section {
+    section.new-section {
     	height: 100px;
     	font-size: 75px;
     	line-height: 100px;
@@ -79,14 +79,9 @@ div.vertical-narrative {
     	transition: color 0.25s ease;
     
     	&:hover {
-    		color: white;
-    	}
-
-    	&:first-child {
-    		height: 300px;
-    		font-size: 75px;
-    		line-height: 300px;
-    	}
+    		cursor: pointer;
+			color: green;
+		}
     }
 }
 
@@ -122,6 +117,7 @@ div.horizontal-context {
 		text-align: center;
 		width: 100px;
 		transition: color 0.25s ease;
+		box-shadow: 3px 3px #848484;
 
 		&:hover {
 			color: green;
@@ -295,7 +291,7 @@ div.image-section {
 		top: 0;
 		width: 100%;
 		padding: 8px;
-		background-color: rgba(0, 0, 0, 0.6);
+		background-color: rgba(0, 0, 0, 0.8);
 		color: white;
 	}
 	img {

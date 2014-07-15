@@ -2,6 +2,7 @@
 	<header class="header">
 		<div class="story-title editable" contenteditable="true">
 			{{storyTitle}}
+			{{setTitle storyTitle}}
 		</div>
 		<div class="username">
 			{{username}}
@@ -80,6 +81,7 @@
 			<span class="stretch"></span>
 		</div>
 	</div>
+	{{> horizontal_section_edit_delete}}
 </template>
 
 <template name="create_section_options">

@@ -4,7 +4,22 @@
 @color-light-green: #8CC63E;
 @color-medium-green: #009344;
 @color-fold-black: #272727;
+@color-dark-black: #1C1D1D;
 @color-inactive-grey: #E0E2E1;
+
+
+// http://asimpleframe.com/
+@font-face {
+    font-family: 'Alright Sans'; 
+    src: url("/alright_sans_bold.woff");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Alright Sans'; 
+    src: url("/alright_sans.woff");
+    font-weight: normal;
+}
 
 .transition(@property, @duration, @timing-function) {
 	-webkit-transition: @property @duration @timing-function;
@@ -68,7 +83,10 @@ html, body {
 
 body {
 	//still like san-serif for headlines and bylines
-	font-family: 'Avenir Next', sans-serif;
+	font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 	//potential option for card text
 	// font-family: 'Alegreya Sans' , sans-serif;
 	//font-family: ;
@@ -191,7 +209,7 @@ div.horizontal-context {
 
 section.horizontal-new-section {
 	position: absolute;
-	background-color: @color-fold-black;
+	background-color: @color-dark-black;
 }
 
 section.horizontal-narrative-section {
@@ -201,7 +219,7 @@ section.horizontal-narrative-section {
 
 	min-width: 400px;
 	width: 32%;
-	background-color: @color-fold-black;
+	background-color: @color-dark-black;
 	color: #f3f3f2;
 	// display: none;
 	opacity: 0.25;

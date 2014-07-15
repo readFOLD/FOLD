@@ -1,5 +1,20 @@
 Session.set('lastUpdate', new Date())
 
+Template.vertical_narrative.rendered = ->
+
+    # verticalBlockHeight = $('section.vertical-narrative-section').first().height()
+    # connectorOffset = $('.connector').offset().top
+    # connectorHeight = 14
+    # $(document).scrollsnap(
+    #     snaps: 'section.vertical-narrative-section'
+    #     offset: connectorOffset - (connectorHeight / 2) - (verticalBlockHeight / 2)  # Find out where this weird offset is coming from
+    #     latency: 50
+    #     duration: 150
+    #     proximity: verticalBlockHeight / 2
+    #     onSnap: -> console.log("snap")
+    #     )
+
+
 # TODO Remove this redunancy
 Template.read.helpers
     storyTitle: -> Session.get('storyTitle')
@@ -42,6 +57,7 @@ Template.horizontal_section_block.helpers
         else
             offset = 100 + Session.get("separation")
 
+        console.log(this)
         # Last card
         lastIndex = Session.get("horizontalSections")[Session.get("currentVertical")].data.length - 1
         if (lastIndex >= 2) and (@index is lastIndex)
@@ -51,8 +67,10 @@ Template.horizontal_section_block.helpers
             return (-Session.get("cardWidth") + (width - (Session.get("separation") * 3) - (Session.get("cardWidth") * 2))/2)
         # Between first and last card
         else if @index
+            console.log("else if")
             (@index * cardWidth) + halfWidth + (3 * (Session.get "separation") / 2) + offset
         # First
         else
+            console.log("else")
             halfWidth + ((Session.get "separation") / 2) + offset
 
