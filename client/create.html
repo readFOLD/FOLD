@@ -29,6 +29,7 @@
 	    	<div class="horizontal-context">
 	    		{{> horizontal_context}}
 	    	</div>
+
 	    	{{> create_options}}
 	    </article>
 	    {{> connector}}
@@ -37,7 +38,20 @@
 	        	{{> story_browser}}
 	        </div>
         {{/if}}
+    {{/if}}    
+    {{#if showFormatting}}
+        {{> formatting}}
     {{/if}}
+    {{> layout_options}}
+</template>
+
+<template name="formatting">
+	<div id="formatting" style="top: {{top}}px; left: {{left}}px;">
+	</div>
+</template>
+
+<template name="layout_options">
+	<i class="fa fa-expand fa-3x" id="expand"></i>
 </template>
 
 <template name="create_options">

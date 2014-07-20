@@ -11,9 +11,9 @@
 	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{evenOrOdd}}" data-vertical-index="{{index}}">
 		<div class="size-icons">
 		</div>
-		<div class="title editable" contenteditable="true">{{title}}</div>
-		<div class="content editable" contenteditable="true">
-			<p>{{content}}</p>
+		<div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
+		<div class="content {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">
+			<p contenteditable="true">{{content}}</p>
 			<img src="{{image}}" />
 		</div>
 	</section>

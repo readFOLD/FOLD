@@ -1,12 +1,12 @@
 section.banner {
 	background-color: @color-light-grey;
-	height: 230px;
+	height: 200px;
 
 	div.navbar {
 		width: 100%;
 		min-width: 1024px;
 		height: 30px;
-		background-color: black;
+		background-color: @color-dark-black;
 		padding-top: 0;
 		
 		i.fa-bars {
@@ -27,7 +27,7 @@ section.banner {
 	}
 
 	div.logo {
-		background-color: black;
+		background-color: @color-dark-black;
 		z-index: 10;
 
 		@circle-diameter: 80px;
@@ -82,7 +82,7 @@ div.filter {
 	.background-transition;
 	position: absolute;
 	width: 100%;
-	background-color: black;
+	background-color: @color-dark-black;
 	margin-top: -2px;
 	color: white;
 	text-transform: uppercase;
@@ -96,6 +96,11 @@ div.filter {
 
 	&:hover {
 		background-color: @color-medium-green;
+	}
+
+	div.expand-filter {
+		float: left;
+		margin-right: 10px;
 	}
 }
 
@@ -134,14 +139,14 @@ div.edit-or-read {
 	position: absolute;
 	bottom: 0px;
 	width: 100%;
-	background-color: @color-light-grey;
+	background-color: @color-dark-black;
 
 	&:hover {
 		background-color: @color-medium-green;
 	}
 
 	a {
-		color: black;
+		color: white;
 	}
 
 	div#edit-this-story {
@@ -172,8 +177,16 @@ section.stories {
 		z-index: 0;
 	}
 
+	div.overlay-image {
+		height: 120px;
+		overflow: hidden;
+		img {
+			max-width: 100%;
+		}
+	}
+
 	div.headline {
-		background-color: @color-light-grey;
+		background-color: @color-inactive-grey;
 		height: auto;
 		/*height depends on length of story headline*/
 		width: 100%;			
@@ -204,10 +217,10 @@ section.stories {
 	}
 
 	div.content {
+		text-align: justify;
 		margin-top: 10px;
 		padding: 0 15px;
-		max-height: 130px;
-		height: 130px;
+		height: 100px;
 		max-height: 200px;
 		overflow-y: scroll;
 	}
@@ -218,8 +231,11 @@ section.stories {
 
 	div.story {
 		background-color: @color-inactive-grey;
-		box-shadow: 3px 3px @color-medium-grey;
-		height: 300px;
+		// box-shadow: 3px 3px @color-medium-grey;
+
+		// 540 960+
+		// 415 960-
+		height: 400px;
 		/*height depends on length of story abstract*/
 		width: 700px;
 		margin: 0 auto;

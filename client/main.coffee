@@ -37,6 +37,7 @@ $(window).resize throttledResize
 
 
 Meteor.startup ->
+  Session.setDefault("filterOpen", false)
   Session.setDefault("currentVertical", 0)
   Session.setDefault("currentHorizontal", 1)
 

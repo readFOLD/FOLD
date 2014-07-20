@@ -10,9 +10,9 @@
 <template name="home">
 
 	<section class="banner">
-		<div class="navbar top">
-			<!-- 		<i class="fa fa-bars fa-2x"></i>	 -->
-		</div>
+<!-- 		<div class="navbar top">
+			<i class="fa fa-bars fa-2x"></i>	
+		</div> -->
 		<a href="/">
 			<div class="title">
 				<img src="/fold-title.png">
@@ -39,7 +39,14 @@
 			{{/if}} -->
 		</div>
 	</section>
-	<div class="navbar filter">
+	<div class="navbar filter" id="filter">
+		<div class="expand-filter" id="expand-filter">
+			{{#if filterOpen}}
+        		<i class="fa fa-minus left"></i>
+    		{{else}}
+        		<i class="fa fa-plus left"></i>
+    		{{/if}}
+		</div>
 		Now Reading: Technology
 	</div>
 
@@ -53,6 +60,9 @@
 <template name="all_stories">
 	    {{#each stories}}
 	        <div class="story" data-story-id="{{_id}}">
+	        	<div class="overlay-image">
+	        		<img src="/banksy.jpg" />
+	        	</div>
 	        	{{#if profileImageExists}}
 	        	<img class="profile-picture" src="{{profileImage}}"/>
 	        	{{/if}}
@@ -76,7 +86,7 @@
    	    	   <div class="edit-or-read">
    	    			<a href="{{url}}">
    	    				<div id="edit-this-story">
-   	    					Unfold This Story >
+   	    					Unfold This Story
    	    				</div>
    	    			</a>
    	    		</div>

@@ -24,6 +24,5 @@ header {
 		position: relative;
 		float: right;
 		top: -10px;
-
 	}
 }

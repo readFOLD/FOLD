@@ -11,14 +11,14 @@ Template.home.helpers
         Meteor.user().profile.profile_picture
     user: -> Meteor.user()
     userId: -> Meteor.user()._id
+    filterOpen: -> Session.get("filterOpen")
 
 Template.home.events
-    "mouseenter div.filter": (d) ->
-        srcE = if d.srcElement then d.srcElement else d.target
-        $(srcE).animate({height: "+=100"}, 250)
-    "mouseleave div.filter": (d) ->
-        srcE = if d.srcElement then d.srcElement else d.target
-        $(srcE).animate({height: "-=100"}, 250)    
+    "click div#expand-filter": (d) ->
+        filterOpen = Session.get("filterOpen")
+        heightChange = if filterOpen then "-=100" else "+=100"
+        $("div#filter").animate({height: heightChange}, 250)
+        Session.set("filterOpen", !filterOpen)
 
 Template.all_stories.helpers
     stories: -> 
