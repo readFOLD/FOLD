@@ -21,18 +21,19 @@
 	</header>
 	{{#if storyLoaded}}
 	    <article class="content">
-	    	<div class="vertical-narrative" style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
+	    	<div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}" style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
 	    		{{> vertical_narrative}}
 	    		<div class="spacer">
 	    		</div>
 	    	</div>
-	    	<div class="horizontal-context">
-	    		{{> horizontal_context}}
-	    	</div>
+	    	{{#unless narrativeView}}
+    	    	<div class="horizontal-context">
+	        		{{> horizontal_context}}
+	        	</div>
+	        {{/unless}}
 
 	    	{{> create_options}}
 	    </article>
-	    {{> connector}}
 	    {{#if horizontalExists}}
 	        <div class="browser-offset">
 	        	{{> story_browser}}
@@ -47,6 +48,15 @@
 
 <template name="formatting">
 	<div id="formatting" style="top: {{top}}px; left: {{left}}px;">
+		<div class="formatting-option">
+			<i class="fa fa-bold"></i>
+		</div>
+		<div class="formatting-option">
+			<i class="fa fa-italic"></i>
+		</div>
+		<div class="formatting-option">
+			<i class="fa fa-link"></i>
+		</div>
 	</div>
 </template>
 
@@ -110,7 +120,6 @@
 </template>
 
 <!-- Create Templates -->
-
 <template name="create_text_section">
 	<div class="create-section">
     	<div class="input-label">

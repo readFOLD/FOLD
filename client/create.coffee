@@ -37,7 +37,6 @@ getSelectionCoords = ->
             
             # Glue any broken text nodes back together
             spanParent.normalize()
-
     res = 
         x: x
         y: y
@@ -45,7 +44,8 @@ getSelectionCoords = ->
 
 Template.layout_options.events
     "click i#expand": ->
-        Session.set("narrativeLayout", true)
+        narrativeView = Session.get("narrativeView")
+        Session.set("narrativeView", !narrativeView)
 
 Template.create.helpers
     storyTitle: -> Session.get('storyTitle')
@@ -53,7 +53,7 @@ Template.create.helpers
         if Session.get("newStory") 
             true
         else
-            Stories.findOne(_id: Session.get('storyId'))
+            Stories.findOne(storyDashTitle: Session.get('storyDashTitle'))
     username: -> 
         if Meteor.user()
             if Meteor.user().emails
@@ -63,15 +63,18 @@ Template.create.helpers
     
     horizontalExists: ->
         currentVertical = Session.get('currentVertical')        
-        Session.get('horizontalSections')[currentVertical]?.data.length > 1
+        Session.get('horizontalSections')[currentVertical].data.length > 1
 
     verticalLeft: -> 
         width = Session.get "width"
+        if Session.get("narrativeView")
+            return (width - 800) / 2
         if width <= 1304
             88 + 16
         else
             (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
     showFormatting: -> Session.get("formatting")
+    narrativeView: -> Session.get("narrativeView")
 
 Template.create.events
     "mousedown": ->
@@ -94,47 +97,8 @@ Template.formatting.helpers
     top: -> Session.get("formattingTop") - 60
     left: -> Session.get("formattingLeft")
 
-Template.vertical_narrative.helpers
-    verticalSections: -> Session.get('verticalSections')
-
-Template.horizontal_context.helpers
-    verticalExists: -> (Session.get('verticalSections').length > 0)
-    horizontalSections: -> Session.get('horizontalSections')
-    horizontalShown: -> Session.equals("currentVertical", @index)
-
-Template.story_browser.events
-    "click i.left": (d) ->
-        horizontalSections = Session.get('horizontalSections')
-        newHorizontalSection = []
-        horizontalSection = horizontalSections[Session.get('currentVertical')].data
-        for section, i in horizontalSection[1..horizontalSection.length]
-            section.index = i
-            newHorizontalSection.push(section)
-
-        # Previous first element, new last element
-        newLastSection = horizontalSection[0]
-        newLastSection.index = horizontalSection.length - 1
-        newHorizontalSection.push(newLastSection)
-
-        horizontalSections[Session.get('currentVertical')].data = newHorizontalSection
-        Session.set('horizontalSections', horizontalSections)
-
-    "click i.right": (d) ->
-        horizontalSections = Session.get('horizontalSections')
-        newHorizontalSection = []
-        horizontalSection = horizontalSections[Session.get('currentVertical')].data
-
-        newLastSection = horizontalSection[horizontalSection.length-1]
-        newLastSection.index = 0
-        newHorizontalSection.push(newLastSection)
-
-        # First to second-to-last
-        for section, i in horizontalSection[0..horizontalSection.length-2]
-            section.index = i + 1
-            newHorizontalSection.push(section)
-
-        horizontalSections[Session.get('currentVertical')].data = newHorizontalSection
-        Session.set('horizontalSections', horizontalSections)
+# Template.vertical_narrative.helpers
+#     verticalSections: -> Session.get('verticalSections')
 
 #######################
 # Adding Sections
@@ -168,13 +132,22 @@ Template.add_horizontal.helpers
         halfWidth + (Session.get "separation") / 2
 
 Template.add_horizontal.events
-    "click section": ->
+    "click section": (d) ->
+        unless Session.get("editingContext")
+            # TODO Make this based on a session variable
+            $("section.horizontal-new-section").animate({height: "100%", width: "540px"}, 250)
+
+            # Shift all horizontal sections right
+            $("div.horizontal-context section:not(:first)").animate({left: "+=440px"}, 250)
+
+            Session.set("editingContext", true)
+
         # Append Horizontal Section to Current Horizontal Context
-        horizontalSections = Session.get('horizontalSections')
-        newHorizontalSection = 
-            index: horizontalSections[Session.get('currentVertical')].data.length
-        horizontalSections[Session.get('currentVertical')].data.push(newHorizontalSection)
-        Session.set('horizontalSections', horizontalSections)   
+        # horizontalSections = Session.get('horizontalSections')
+        # newHorizontalSection = 
+        #     index: horizontalSections[Session.get('currentVertical')].data.length
+        # horizontalSections[Session.get('currentVertical')].data.push(newHorizontalSection)
+        # Session.set('horizontalSections', horizontalSections)   
 
 renderTemplate = (d, templateName, context) ->
     srcE = if d.srcElement then d.srcElement else d.target
@@ -289,6 +262,7 @@ Template.create_options.events
     "click div#save": ->
         # Get all necessary fields
         storyTitle = $.trim($('div.story-title').text())
+        storyDashTitle = storyTitle.toLowerCase().split(' ').join('-')
         date = new Date()
         user = Meteor.user()._id
         verticalSections = []
@@ -305,11 +279,11 @@ Template.create_options.events
 
         storyDocument =
             title: storyTitle
+            storyDashTitle: storyDashTitle
             verticalSections: verticalSections
             horizontalSections: horizontalSections
             userId: user
             lastSaved: date
-            published: false
 
         storyId = Session.get('storyId')
         if storyId

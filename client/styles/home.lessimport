@@ -39,7 +39,7 @@ section.banner {
 		left: 50%;
 		top: 52px;
 		margin-left: -(@circle-diameter / 2);
-		margin-top: -40px;
+		margin-top: -13px;
 
 		img {
 			width: @circle-diameter - 20px;
@@ -111,26 +111,21 @@ div.story-browser {
 
 	i {
 		.color-transition;
+		color: white;
 		cursor: pointer;
-	}
-
-	i.fa-chevron-circle-left {
-		color: white;
+		margin-top: 220px;	
 		&:hover {
 			color: @color-fold-black;
 		}
-		margin-left: 40px;
-		margin-top: 15px;	
 	}
 
-	i.fa-chevron-circle-right {
-		color: white;
-		&:hover {
-			color: @color-fold-black;
-		}
-		margin-right: 50px;
-		margin-top: 15px;
-		float: right;	
+	i.fa-chevron-left {
+		margin-left: 15px;
+	}
+
+	i.fa-chevron-right {
+		margin-right: 15px;
+		float: right;
 	}
 }
 
@@ -227,6 +222,7 @@ section.stories {
 
 	div.story-container {
 		padding-top: 75px;
+		padding-bottom: 75px;
 	}
 
 	div.story {

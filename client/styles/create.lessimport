@@ -10,12 +10,57 @@ div.save-publish {
 	z-index: 10;
 }
 
+i#expand {
+	z-index: 30;
+	cursor: pointer;
+	&:hover {
+		color: @color-medium-green;
+	}
+}
+
 div#formatting {
 	position: absolute;
 	background-color: @color-dark-black;
 	height: 40px;
 	width: 200px;
 	z-index: 30;
+	border-radius: 3px;
+
+	div.formatting-option {
+		float: left;
+		width: 35px;
+		i {
+			color: white;
+			margin-left: 10px;
+			font-size: 22px;
+			line-height: 40px;
+		}
+		border-right: 1px solid white;
+	}
+
+	&:after, &:before {
+		top: 100%;
+		left: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+
+	&:after {
+		border-color: rgba(0, 0, 0, 0);
+		border-top-color: @color-dark-black;
+		border-width: 8px;
+		margin-left: -8px;
+	}
+	&:before {
+		border-color: rgba(245, 245, 245, 0);
+		border-top-color: @color-dark-black;
+		border-width: 14px;
+		margin-left: -14px;
+	}
 }
 
 i#expand {
@@ -26,7 +71,7 @@ i#expand {
 
 div.button-options {
 	div {
-		box-shadow: 3px 3px @color-medium-grey;
+		// box-shadow: 3px 3px @color-medium-grey;
 		background-color: @color-light-grey;
 		cursor: pointer;
 		text-transform: uppercase;
@@ -84,10 +129,17 @@ div.browser-offset {
 	padding-top: 100px;
 }
 
+div.narrativeView {
+	section {
+		margin-bottom: 0 !important;
+	}
+}
+
 div.vertical-narrative {
 	z-index: 20;
+
     section.new-section {
-    	height: 100px;
+    	height: 75px;
     	font-size: 75px;
     	line-height: 100px;
     	text-align: center;
@@ -131,9 +183,9 @@ div.horizontal-context {
 		font-size: 75px;
 		line-height: 300px;
 		text-align: center;
-		width: 100px;
+		width: 75px;
 		transition: color 0.25s ease;
-		box-shadow: 3px 3px #848484;
+		// box-shadow: 3px 3px #848484;
 
 		&:hover {
 			color: green;

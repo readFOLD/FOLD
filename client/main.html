@@ -2,15 +2,8 @@
 	Templates used in reading, creating, and editing
 -->
 
-<template name="connector">
-	<div class="connector">
-	</div>
-</template>
-
 <template name="vertical_section_block">
 	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{evenOrOdd}}" data-vertical-index="{{index}}">
-		<div class="size-icons">
-		</div>
 		<div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
 		<div class="content {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">
 			<p contenteditable="true">{{content}}</p>
@@ -36,17 +29,16 @@
     {{/unless}}
 	{{#each horizontalSections}}
 	    {{#if horizontalShown}}
-	        {{#each data}}
-	            <!-- Don't display incomplete blocks -->
-	            {{#if read}}
-    	            {{#if type}}
-        	            {{> horizontal_section_block}}
-    	            {{/if}}
-    	        {{else}}
-        	        {{> horizontal_section_block}}
-    	        {{/if}}
-    	    {{/each}}
-	    {{/if}}
+        {{#each data}}
+            {{#if read}}
+   	            {{#if type}}
+       	            {{> horizontal_section_block}}
+   	            {{/if}}
+   	        {{else}}
+       	        {{> horizontal_section_block}}
+   	        {{/if}}
+   	    {{/each}}
+   	    {{/if}}
 	{{/each}}
 </template>
 
@@ -84,4 +76,12 @@
 	{{#unless read}}
     	{{> horizontal_section_edit_delete}}
     {{/unless}}
+</template>
+
+
+<template name="story_browser">
+	<div class="story-browser">
+		<i class="fa fa-chevron-left fa-2x left"></i>
+		<i class="fa fa-chevron-right fa-2x right"></i>
+	</div>
 </template>

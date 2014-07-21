@@ -9,9 +9,9 @@ header {
 	height: 80px;
 	z-index: 10000;
 
-	-webkit-box-shadow: 0 0 15px 15px #ababac !important;
-	-moz-box-shadow: 0 0 15px 15px #ababac !important;
-	box-shadow: 0 0 15px 15px #ababac !important;
+	-webkit-box-shadow: 0 0 15px 15px @color-dark-grey !important;
+	-moz-box-shadow: 0 0 15px 15px @color-dark-grey !important;
+	box-shadow: 0 0 15px 15px @color-dark-grey !important;
 
 	div.title {
 		max-width: 1250px;

@@ -6,37 +6,19 @@
   <link rel="shortcut icon" href="/favicon.ico" />
 </head>
 
-
 <template name="home">
-
 	<section class="banner">
-<!-- 		<div class="navbar top">
-			<i class="fa fa-bars fa-2x"></i>	
-		</div> -->
 		<a href="/">
 			<div class="title">
 				<img src="/fold-title.png">
 			</div>
 		</a>
-<!-- 		<div class="options">
-			<div id="create-story">
-				<a href="/create">
-					Create Story
-				</a>
-			</div>
-			{{> loginButtons}}
-		</div>
- -->		<div class="logo">
+		<div class="logo">
 			{{#with user}}
 			<a href="/profile/{{userId}}">
     			<img class="logo" src="/logo.png">
     		</a>
 			{{/with}}
-<!-- 			{{#if currentUser}}
-			{{#if profileImageExists}}
-			<img class="profile-picture" src="{{profileImage}}"/>
-			{{/if}}
-			{{/if}} -->
 		</div>
 	</section>
 	<div class="navbar filter" id="filter">
@@ -55,48 +37,42 @@
 			{{> all_stories}}
 	    </div>
 	</section>
+
 </template>
 
 <template name="all_stories">
-	    {{#each stories}}
-	        <div class="story" data-story-id="{{_id}}">
-	        	<div class="overlay-image">
-	        		<img src="/banksy.jpg" />
-	        	</div>
-	        	{{#if profileImageExists}}
-	        	<img class="profile-picture" src="{{profileImage}}"/>
-	        	{{/if}}
-	        	<div class="headline">
-	        		{{title}}
-	        		<div class="byline">
-	        			By {{displayName}}
-	        		</div>
-	        	</div>
+	{{#each stories}}
+	<div class="story" data-story-id="{{_id}}">
+		<div class="overlay-image">
+			<img src="/banksy.jpg" />
+		</div>
+		{{#if profileImageExists}}
+		    <img class="profile-picture" src="{{profileImage}}"/>
+		{{/if}}
+		<div class="headline">
+			{{title}}
+			<div class="byline">
+				By {{displayName}}
+			</div>
+		</div>
 
-   	    		<div class="content">
-   	    			{{previewContent}}
-   	    		</div>
+		<div class="content">
+			{{previewContent}}
+		</div>
 
-   	    		<div class="dates">
-   	    			<p>
-   	    			    Published On: {{lastPublishDate}}
-     	    		</p>
-   	    		</div>
+		<div class="dates">
+			<p>
+				Published On: {{lastPublishDate}}
+			</p>
+		</div>
 
-   	    	   <div class="edit-or-read">
-   	    			<a href="{{url}}">
-   	    				<div id="edit-this-story">
-   	    					Unfold This Story
-   	    				</div>
-   	    			</a>
-   	    		</div>
-   	    	</div>
-	    {{/each}}
-</template>
-
-<template name="story_browser">
-	<div class="story-browser">
-		<i class="fa fa-chevron-circle-left fa-3x left"></i>
-		<i class="fa fa-chevron-circle-right fa-3x right"></i>
+		<div class="edit-or-read">
+			<a href="{{url}}">
+				<div id="edit-this-story">
+					Unfold This Story
+				</div>
+			</a>
+		</div>
 	</div>
+	{{/each}}
 </template>

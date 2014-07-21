@@ -22,7 +22,6 @@ Template.home.events
 
 Template.all_stories.helpers
     stories: -> 
-        console.log(Stories.find(published: true).fetch())
         Stories.find(published: true)
     lastPublishDate: -> formatDate(@publishDate)
     displayName: -> 
@@ -36,12 +35,11 @@ Template.all_stories.helpers
 
     # Remove this duplication
     profileImageExists: ->
-        console.log(Meteor.user())
         Meteor.user().profile.profile_picture
     profileImage: ->
         Meteor.user().profile.profile_picture
 
-    url: -> "/read/" + @_id
+    url: -> "/read/" + @storyDashTitle
 
 Template.user_stories.events
     "click div#delete": (d) ->
