@@ -1,3 +1,15 @@
+Template.read.rendered = ->
+    Deps.autorun ->
+        Session.get("resize")
+        $(document).scrollsnap(
+            snaps: 'section.vertical-narrative-section'
+            proximity: 140
+            latency: 100
+            easy: 'easeInExpo'
+            onSnap: (d) -> 
+                Session.set("currentVertical", $(d).index())
+            offset: -$('div.horizontal-context').offset().top
+            )
 
 # Reduce redundancy with the create page
 Template.read.helpers

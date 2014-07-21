@@ -1,8 +1,9 @@
 <template name="create">
+	{{debugContext}}
 	<header class="header">
 		<div class="story-title editable" contenteditable="true">
-			{{storyTitle}}
-			{{setTitle storyTitle}}
+			{{title}}
+			{{setTitle title}}
 		</div>
 		<div class="username">
 			{{username}}
@@ -19,27 +20,27 @@
 			</a>
 		</div>
 	</header>
-	{{#if storyLoaded}}
-	    <article class="content">
-	    	<div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}" style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
-	    		{{> vertical_narrative}}
-	    		<div class="spacer">
-	    		</div>
-	    	</div>
-	    	{{#unless narrativeView}}
-    	    	<div class="horizontal-context">
-	        		{{> horizontal_context}}
-	        	</div>
-	        {{/unless}}
+	<article class="content">
+		<div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}" style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
+			{{> vertical_narrative}}
+			<div class="spacer">
+			</div>
+		</div>
+		{{#unless narrativeView}}
+		<div class="horizontal-context">
+			{{> horizontal_context}}
+		</div>
+		{{/unless}}
 
-	    	{{> create_options}}
-	    </article>
-	    {{#if horizontalExists}}
-	        <div class="browser-offset">
-	        	{{> story_browser}}
-	        </div>
-        {{/if}}
-    {{/if}}    
+		{{> create_options}}
+	</article>
+
+	{{#if horizontalExists}}
+	<div class="browser-offset">
+		{{> story_browser}}
+	</div>
+	{{/if}}
+
     {{#if showFormatting}}
         {{> formatting}}
     {{/if}}

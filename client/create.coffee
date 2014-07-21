@@ -48,13 +48,8 @@ Template.layout_options.events
         Session.set("narrativeView", !narrativeView)
 
 Template.create.helpers
-    storyTitle: -> Session.get('storyTitle')
-    storyLoaded: -> 
-        if Session.get("newStory") 
-            true
-        else
-            Stories.findOne(storyDashTitle: Session.get('storyDashTitle'))
     username: -> 
+        # Put this into waitOn handler
         if Meteor.user()
             if Meteor.user().emails
                 Meteor.user().emails[0].address
@@ -62,8 +57,16 @@ Template.create.helpers
                 Meteor.user().profile.name
     
     horizontalExists: ->
-        currentVertical = Session.get('currentVertical')        
-        Session.get('horizontalSections')[currentVertical].data.length > 1
+        currentVertical = Session.get('currentVertical') 
+        # TODO Fix issue when there are incomplete context blocks
+        @horizontalSections[currentVertical].data.length > 1
+
+    verticalLeft: -> 
+        width = Session.get "width"
+        if width <= 1304
+            88 + 16
+        else
+            (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
 
     verticalLeft: -> 
         width = Session.get "width"

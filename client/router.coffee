@@ -2,10 +2,10 @@ Router.map ->
 	@route "home",
 	    path: "/"
 	    template: "home"
-	    waitOn: -> Meteor.subscribe('exploreStoriesPub', '', '', '')
 	    onRun: -> $('html, body').scrollTop(0)
+	    onBeforeAction: -> @subscribe('exploreStoriesPub', '', '', '').wait()
+	    action: -> if @ready() then @render()
 	    data: ->
-	    	console.log(this)
 	    	Session.set "page", "explore"
 
 	@route "profile",
@@ -26,41 +26,32 @@ Router.map ->
 	    	Session.set "newStory", false
 	    	Session.set "read", true
 	    	Session.set "page", "read"
-
 	    	return Stories.findOne()
-
-	    	# story = Stories.findOne(storyDashTitle: @.params.storyDashTitle)
-	    	# console.log(story)
-	    	# Session.set "storyTitle", story.title
-	    	# Session.set "verticalSections", story.verticalSections
-	    	# Session.set "horizontalSections", story.horizontalSections
-
 
    	@route "create",
 	    path: "create"
 	    template: "create"
 	    onRun: -> $('html, body').scrollTop(0)
-	    waitOn: -> Meteor.subscribe('createStoryPub', @.params.storyDashTitle)
 	    data: ->
 	    	Session.set "newStory", true
 	    	Session.set "read", false
 	    	Session.set "page", "create"
 
+	    	# Proper way to initiate blank template?
 	    	Session.set 'storyTitle', 'Story Title'
 	    	Session.set 'verticalSections', []
 	    	Session.set 'horizontalSections', []
+	    	return Stories.findOne()
 
    	@route "edit",
 	    path: "create/:storyDashTitle"
 	    template: "create"
-	    waitOn: -> Meteor.subscribe('storiesPub')
+	    onRun: -> $('html, body').scrollTop(0)
+	    onBeforeAction: -> @subscribe('createStoryPub', @.params.storyDashTitle).wait()
+	    action: -> if @ready() then @render()
 	    data: ->
 	    	Session.set "newStory", false
 	    	Session.set "read", false
 	    	Session.set "page", "create"
 	    	Session.set "storyDashTitle", @.params.storyDashTitle
-
-	    	story = Stories.findOne(storyDashTitle: @.params.storyDashTitle)
-	    	Session.set "storyTitle", story.title
-	    	Session.set "verticalSections", story.verticalSections
-	    	Session.set "horizontalSections", story.horizontalSections
+	    	return Stories.findOne()

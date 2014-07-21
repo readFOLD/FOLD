@@ -3,7 +3,7 @@
 -->
 
 <template name="vertical_section_block">
-	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{evenOrOdd}}" data-vertical-index="{{index}}">
+	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}}" data-vertical-index="{{index}}">
 		<div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
 		<div class="content {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">
 			<p contenteditable="true">{{content}}</p>

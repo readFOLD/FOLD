@@ -46,13 +46,13 @@ Meteor.startup ->
 
   updateCurrentVertical = ->
     scrollTop = $(document).scrollTop()
-    currentVertical = Session.get("currentVertical")
-    currentScrollTop = 300 * currentVertical
+  #   currentVertical = Session.get("currentVertical")
+  #   currentScrollTop = 300 * currentVertical
 
-    if scrollTop > (currentScrollTop + 280)
-      Session.set("currentVertical", currentVertical + 1)
-    else if scrollTop < (currentScrollTop - 280)
-      Session.set("currentVertical", currentVertical - 1)
+  #   if scrollTop > (currentScrollTop + 280)
+  #     Session.set("currentVertical", currentVertical + 1)
+  #   else if scrollTop < (currentScrollTop - 280)
+  #     Session.set("currentVertical", currentVertical - 1)
 
   # Scroll listener
   throttledUpdate = _.throttle(updateCurrentVertical, 200)
@@ -60,7 +60,6 @@ Meteor.startup ->
 
 Template.vertical_section_block.helpers
   verticalSelected: -> Session.equals("currentVertical", @index)
-  evenOrOdd: -> if (@index % 2 is 0) then "even" else "odd"
 
 Template.horizontal_context.helpers
     verticalExists: -> @verticalSections.length
@@ -82,7 +81,9 @@ Template.horizontal_section_block.helpers
             offset = 75 + Session.get("separation")
 
         # Last card
-        lastIndex = @horizontalSections?[Session.get("currentVertical")].data.length - 1
+
+        # TODO How do you get the last element?
+        lastIndex = horizontalSections?[Session.get("currentVertical")].data.length - 1
         if (lastIndex >= 2) and (@index is lastIndex)
             if width <= 1304
                 return (-cardWidth + 88) + offset
@@ -101,6 +102,8 @@ Template.story_browser.events
         console.log("Left click:", @horizontalSections)
         newHorizontalSection = []
         horizontalSection = @horizontalSections[Session.get('currentVertical')].data
+
+        # Reindex
         for section, i in horizontalSection[1..horizontalSection.length]
             section.index = i
             newHorizontalSection.push(section)
@@ -109,7 +112,9 @@ Template.story_browser.events
         newLastSection = horizontalSection[0]
         newLastSection.index = horizontalSection.length - 1
         newHorizontalSection.push(newLastSection)
+        console.log(newHorizontalSection)
 
+        # Is this the proper way to rotate?
         @horizontalSections[Session.get('currentVertical')].data = newHorizontalSection
 
     "click i.right": (d) ->

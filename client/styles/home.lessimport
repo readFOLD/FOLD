@@ -94,13 +94,22 @@ div.filter {
 	cursor: pointer;
 	z-index: 5;
 
-	&:hover {
-		background-color: @color-medium-green;
-	}
-
 	div.expand-filter {
 		float: left;
 		margin-right: 10px;
+		width: 20px;
+		padding-left: 4px;
+		height: 20px;
+		margin-top: 6px;
+		border-radius: 10px;
+
+		i {
+			position: relative;
+			top: -5px;
+		}
+		&:hover {
+			background-color: @color-medium-green;
+		}
 	}
 }
 

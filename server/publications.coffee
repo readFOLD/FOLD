@@ -2,12 +2,12 @@
 Stories._ensureIndex(storyDashTitle: 1)
 
 Meteor.publish "exploreStoriesPub", (storyDashTitle, filter, category, skip) ->
-	Stories.find()
+	Stories.find({published: true})
 
 Meteor.publish "readStoryPub", (storyDashTitle) ->
 	Stories.find({storyDashTitle: storyDashTitle, published: true}, {fields: {verticalSections: 1, horizontalSections: 1, title: 1, userId: 1}})
 
-Meteor.publish "createStoryPub", ->
+Meteor.publish "createStoryPub", (storyDashTitle) ->
 	Stories.find({storyDashTitle: storyDashTitle})
 
 Meteor.publish "usersPub", ->

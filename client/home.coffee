@@ -21,8 +21,7 @@ Template.home.events
         Session.set("filterOpen", !filterOpen)
 
 Template.all_stories.helpers
-    stories: -> 
-        Stories.find(published: true)
+    stories: -> Stories.find()
     lastPublishDate: -> formatDate(@publishDate)
     displayName: -> 
         if Meteor.user()
@@ -34,8 +33,6 @@ Template.all_stories.helpers
         @verticalSections[0]?.content
 
     # Remove this duplication
-    profileImageExists: ->
-        Meteor.user().profile.profile_picture
     profileImage: ->
         Meteor.user().profile.profile_picture
 
