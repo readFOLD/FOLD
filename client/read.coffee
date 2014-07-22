@@ -20,6 +20,8 @@ Template.read.helpers
                 Meteor.user().emails[0].address
             else
                 Meteor.user().profile.name
+
+    category: -> 'World'
     
     horizontalExists: ->
         currentVertical = Session.get('currentVertical') 

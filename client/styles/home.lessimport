@@ -85,7 +85,7 @@ div.filter {
 	background-color: @color-dark-black;
 	margin-top: -2px;
 	color: white;
-	text-transform: uppercase;
+	// text-transform: uppercase;
 	margin-top: -32px;
 	padding-left: 10px;
 	line-height: 32px;
@@ -93,6 +93,16 @@ div.filter {
 	font-weight: light;
 	cursor: pointer;
 	z-index: 5;
+
+	&.sticky {
+		position: fixed;
+		top: 32px;
+		left: 0px;
+	}
+
+	span {
+		text-transform: uppercase;
+	}
 
 	div.expand-filter {
 		float: left;

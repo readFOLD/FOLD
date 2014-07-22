@@ -145,6 +145,7 @@ section.narrative-section {
 	}
 
 	div.title {
+		cursor: text;
 		line-height: 23px;
 		text-align: left;
 		font-size: 15px;
@@ -155,6 +156,7 @@ section.narrative-section {
 	}
 
 	div.content {
+		cursor: text;
 		line-height: 23px;
 		text-align: left;
 		font-size: 15px;

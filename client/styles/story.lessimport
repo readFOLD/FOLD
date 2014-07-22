@@ -3,6 +3,7 @@ header {
 	color: #F2F2F0;
 	padding: 25px;
 	font-size: 24px;
+	line-height: 28px;
 	position: fixed;
 	min-width: 1024px;
 	width: 100%;

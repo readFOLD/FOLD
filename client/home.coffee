@@ -12,6 +12,9 @@ Template.home.helpers
     user: -> Meteor.user()
     userId: -> Meteor.user()._id
     filterOpen: -> Session.get("filterOpen")
+    sticky: -> Session.get("sticky")
+    filter: -> Session.get("filter")
+    category: -> Session.get("category")
 
 Template.home.events
     "click div#expand-filter": (d) ->

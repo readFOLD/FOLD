@@ -1,3 +1,5 @@
+@categories = ['technology', 'world', 'sports', 'local']
+
 # TODO Don't hardcode this
 @google_api_key = "AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q"
 
@@ -41,11 +43,19 @@ $(window).resize throttledResize
 
 Meteor.startup ->
   Session.setDefault("filterOpen", false)
+  Session.setDefault("filter", "top")
+  Session.setDefault("category", "all")
   Session.setDefault("currentVertical", 0)
   Session.setDefault("currentHorizontal", 1)
 
   updateCurrentVertical = ->
     scrollTop = $(document).scrollTop()
+
+    # Sticky header (TODO Only listen to this on home page)
+    if scrollTop >= (200 - 32)
+      Session.set("sticky", true)
+    else
+      Session.set("sticky", false)
   #   currentVertical = Session.get("currentVertical")
   #   currentScrollTop = 300 * currentVertical
 
@@ -55,8 +65,8 @@ Meteor.startup ->
   #     Session.set("currentVertical", currentVertical - 1)
 
   # Scroll listener
-  throttledUpdate = _.throttle(updateCurrentVertical, 200)
-  $(document).scroll(throttledUpdate)
+  # throttledUpdate = _.throttle(updateCurrentVertical, 5)
+  $(document).scroll(updateCurrentVertical)
 
 Template.vertical_section_block.helpers
   verticalSelected: -> Session.equals("currentVertical", @index)
