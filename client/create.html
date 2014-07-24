@@ -1,15 +1,12 @@
 <template name="create">
 	{{debugContext}}
 	<header class="header">
-		<div class="story-title editable" contenteditable="true">
-			{{title}}
-			{{setTitle title}}
-		</div>
-		<div class="username">
-			{{username}}
-		</div>
+		{{setTitle title}}
+<!-- 		<div class="story-title editable" contenteditable="true">
+			
+		</div> -->
 		<div class="category">
-			Technology
+			{{category}}
 		</div>
 		<div class="analytics">
 			Analytics
@@ -20,6 +17,12 @@
 			</a>
 		</div>
 	</header>
+	<div class="title-overlay {{#unless read}}write{{/unless}}">
+		<div class="overlay">
+			<div class="title">{{title}}</div>
+			<div class="author">By {{username}}</div>
+		</div>
+	</div>
 	<article class="content">
 		<div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}" style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
 			{{> vertical_narrative}}
@@ -45,6 +48,12 @@
         {{> formatting}}
     {{/if}}
     {{> layout_options}}
+</template>
+
+<template name="minimized_add_vertical">
+	<section class="narrative-section new-section minimized">
+		<i class="fa fa-plus-circle"></i>
+	</section>
 </template>
 
 <template name="formatting">

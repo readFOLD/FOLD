@@ -1,5 +1,3 @@
-@categories = ['technology', 'world', 'sports', 'local']
-
 # TODO Don't hardcode this
 @google_api_key = "AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q"
 
@@ -43,7 +41,7 @@ $(window).resize throttledResize
 
 Meteor.startup ->
   Session.setDefault("filterOpen", false)
-  Session.setDefault("filter", "top")
+  Session.setDefault("filter", "curated")
   Session.setDefault("category", "all")
   Session.setDefault("currentVertical", 0)
   Session.setDefault("currentHorizontal", 1)

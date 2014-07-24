@@ -15,12 +15,13 @@
 		</a>
 		<div class="logo">
 			{{#with user}}
-			<a href="/profile/{{userId}}">
+			<a href="/profile/{{_id}}">
     			<img class="logo" src="/logo.png">
     		</a>
 			{{/with}}
 		</div>
 	</section>
+	{{#if filter}}
 	<div class="navbar filter {{#if sticky}}sticky{{/if}}" id="filter">
 		<div class="expand-filter" id="expand-filter">
 			{{#if filterOpen}}
@@ -29,15 +30,53 @@
         		<i class="fa fa-plus left"></i>
     		{{/if}}
 		</div>
-		Now Reading: <span class="filter">{{filter}}</span> of <span class="category">{{category}}</span>
+		{{#if filterOpen}}
+		    
+		    {{> filters}}
+		    {{> categories}}
+		    
+		    {{else}}
+		    Now Reading: <span class="filter">{{filter}}</span> in <span class="category">{{category}}</span>
+		{{/if}}
 	</div>
+	{{/if}}
 
 	<section class="stories">
 		<div class="story-container">
 			{{> all_stories}}
+			{{> all_stories}}
 	    </div>
 	</section>
+</template>
 
+<template name="filters">
+	<div class="filters">
+		<div class="title">
+			Filters
+		</div>
+		<ul>
+			{{#each filters}}
+			<li class="filter {{#if selected}}selected{{/if}}" data-filter="{{this}}">
+				{{this}}
+			</li>
+			{{/each}}
+		</ul>
+	</div>
+</template>
+
+<template name="categories">
+	<div class="categories">
+		<div class="title">
+			Categories
+		</div>
+		<ul>
+			{{#each categories}}
+			<li class="category {{#if selected}}selected{{/if}}" data-category="{{this}}">
+				{{this}}
+			</li>
+			{{/each}}
+		</ul>
+	</div>
 </template>
 
 <template name="all_stories">
@@ -51,21 +90,21 @@
 		{{/if}}
 		<div class="headline">
 			{{title}}
-			<div class="byline">
-				By {{displayName}}
-			</div>
+		</div>
+		<div class="byline">
+			By {{displayName}}
 		</div>
 
 		<div class="content">
 			{{previewContent}}
 		</div>
 
-		<div class="dates">
+<!-- 		<div class="dates">
 			<p>
 				Published On: {{lastPublishDate}}
 			</p>
 		</div>
-
+ -->
 		<div class="edit-or-read">
 			<a href="{{url}}">
 				<div id="edit-this-story">

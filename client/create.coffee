@@ -1,3 +1,17 @@
+Template.create.rendered = ->
+    Deps.autorun ->
+        Session.get("resize")
+        $(document).scrollsnap(
+            snaps: 'section.vertical-narrative-section'
+            proximity: 140
+            latency: 100
+            easy: 'easeInExpo'
+            onSnap: (d) -> 
+                # Need to adjust for "add stuff" blocks
+                Session.set("currentVertical", $(d).index())
+            offset: -$('div.horizontal-context').offset().top
+            )
+
 getSelectionCoords = ->
     sel = document.selection
     range = undefined
@@ -78,6 +92,7 @@ Template.create.helpers
             (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
     showFormatting: -> Session.get("formatting")
     narrativeView: -> Session.get("narrativeView")
+    category: -> Session.get("storyCategory")
 
 Template.create.events
     "mousedown": ->

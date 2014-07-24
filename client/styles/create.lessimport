@@ -18,6 +18,40 @@ i#expand {
 	}
 }
 
+div.title-overlay {
+	height: 350px;
+	padding-top: 80px;
+	background-color: @color-medium-green;
+	color: @color-light-grey;
+
+	background-position: center center;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+    -webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+
+	&.read:hover {
+		border-bottom: 1px dashed grey;
+	}
+
+	div.overlay {
+		margin-left: 60px;
+		margin-top: 100px;
+		div.title {
+			text-transform: uppercase;
+			font-weight: bold;
+			font-size: 30px;
+			margin-bottom: 15px;
+		}
+		div.author {
+			font-size: 25px;
+			font-style: italic;
+		}
+	}
+}
+
 div#formatting {
 	position: absolute;
 	background-color: @color-dark-black;
@@ -52,7 +86,7 @@ div#formatting {
 	&:after {
 		border-color: rgba(0, 0, 0, 0);
 		border-top-color: @color-dark-black;
-		border-width: 8px;
+	border-width: 8px;
 		margin-left: -8px;
 	}
 	&:before {

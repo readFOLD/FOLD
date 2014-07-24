@@ -10,9 +10,11 @@ header {
 	height: 80px;
 	z-index: 10000;
 
-	-webkit-box-shadow: 0 0 15px 15px @color-dark-grey !important;
-	-moz-box-shadow: 0 0 15px 15px @color-dark-grey !important;
-	box-shadow: 0 0 15px 15px @color-dark-grey !important;
+	&.shadow {
+		-webkit-box-shadow: 0 0 15px 15px @color-dark-grey !important;
+		-moz-box-shadow: 0 0 15px 15px @color-dark-grey !important;
+		box-shadow: 0 0 15px 15px @color-dark-grey !important;	
+	}
 
 	div.title {
 		max-width: 1250px;
@@ -20,10 +22,17 @@ header {
 	}
 
 	div.logo {
-		width: 93px;
-		height: 52px;
+		width: 60px;
+		height: 60px;
+		border-radius: 30px;
 		position: relative;
 		float: right;
-		top: -10px;
+		top: -16px;
+		background-color: white;
+		img {
+			width: 52px;
+			margin-top: 15px;
+			margin-left: 4px;
+		}
 	}
 }

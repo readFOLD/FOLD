@@ -1,6 +1,7 @@
 section.banner {
 	background-color: @color-light-grey;
 	height: 200px;
+	border-bottom: 32px solid @color-dark-black;
 
 	div.navbar {
 		width: 100%;
@@ -82,6 +83,8 @@ div.filter {
 	.background-transition;
 	position: absolute;
 	width: 100%;
+	cursor: default;
+	min-width: 1024px;
 	background-color: @color-dark-black;
 	margin-top: -2px;
 	color: white;
@@ -91,7 +94,6 @@ div.filter {
 	line-height: 32px;
 	font-size: 14px;
 	font-weight: light;
-	cursor: pointer;
 	z-index: 5;
 
 	&.sticky {
@@ -105,20 +107,71 @@ div.filter {
 	}
 
 	div.expand-filter {
+		.background-transition;
 		float: left;
+		cursor: pointer;
 		margin-right: 10px;
-		width: 20px;
+		width: 17px;
 		padding-left: 4px;
-		height: 20px;
-		margin-top: 6px;
+		height: 17px;
+		margin-top: 7px;
 		border-radius: 10px;
+		background-color: @color-dark-grey;
 
 		i {
+			cursor: pointer;
 			position: relative;
-			top: -5px;
+			top: -7px;
+			font-size: 11px;
 		}
+
 		&:hover {
 			background-color: @color-medium-green;
+		}
+	}
+
+	div.title {
+		border-bottom: 1px solid @color-light-grey;
+		line-height: 24px;
+	}
+
+	ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		padding-top: 5px;
+		li {
+			list-style-type: none;
+			text-transform: uppercase;
+			float: left;
+			cursor: pointer;
+			margin-right: 30px;
+
+			&:hover, &.selected {
+				color: @color-medium-green;
+			}
+		}
+	}
+
+	div.filters {
+		width: 200px;
+		margin-top: 20px;
+		margin-left: 30px;
+		float: left;
+
+		li {
+			width: 70px;
+		}
+	}
+
+	div.categories {
+		float: left;
+		width: 675px;
+		margin-top: 20px;
+		margin-left: 40px;
+
+		li {
+			width: 105px;
 		}
 	}
 }
@@ -166,7 +219,8 @@ div.edit-or-read {
 	div#edit-this-story {
 		.background-transition;
 		.color-transition;
-		padding: 15px;
+		padding: 12px;
+		padding-left: 30px;
 		&:hover {
 			color: white;
 		}
@@ -192,7 +246,7 @@ section.stories {
 	}
 
 	div.overlay-image {
-		height: 120px;
+		height: 110px;
 		overflow: hidden;
 		img {
 			max-width: 100%;
@@ -205,19 +259,15 @@ section.stories {
 		/*height depends on length of story headline*/
 		width: 100%;			
 		position: relative;
-		font-size: 19px;
-		font-weight: 500;
-		padding-left: 15px;
-		padding-right: 15px;
-		padding-top: 15px;
-		padding-bottom: 15px;
-
+		font-size: 21px;
+		font-weight: bold;
+		padding: 25px 30px 0px 30px;
 	}	
 
 	div.byline {
 		font-size: 15px;
 		padding: 0;
-		margin-top: 5px;
+		margin: 21px 20px 23px 90px;
 	}
 
 	div.dates {
@@ -231,9 +281,8 @@ section.stories {
 	}
 
 	div.content {
-		text-align: justify;
 		margin-top: 10px;
-		padding: 0 15px;
+		padding: 0 30px;
 		height: 100px;
 		max-height: 200px;
 		overflow-y: scroll;
@@ -242,31 +291,41 @@ section.stories {
 	div.story-container {
 		padding-top: 75px;
 		padding-bottom: 75px;
+		width: 1200px;
+		margin: 0 auto;
 	}
 
 	div.story {
 		background-color: @color-inactive-grey;
 		// box-shadow: 3px 3px @color-medium-grey;
 
-		// 540 960+
-		// 415 960-
+		// 540 980+
+		// 415 980-
 		height: 400px;
 		/*height depends on length of story abstract*/
-		width: 700px;
-		margin: 0 auto;
+		width: 540px;
 		z-index: 2;
+		display: inline-block;
 		position: relative;
 		margin-top: 20px;
 
 		&:first-child {
-			margin-top: 0px;
+			// margin-top: 0px;
+		}
+
+		&:nth-child(odd) {
+			float: left;
+		}
+
+		&:nth-child(even) {
+			float: right;
 		}
 
 		img.profile-picture {
-			@picture-radius: 30px;
+			@picture-radius: 22px;
 			position: absolute;
-			top: 10px;
-			right: 10px;
+			top: 168px;
+			left: 30px;
 
 			z-index: 10;
 
