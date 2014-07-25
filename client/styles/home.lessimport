@@ -185,7 +185,7 @@ div.story-browser {
 		.color-transition;
 		color: white;
 		cursor: pointer;
-		margin-top: 220px;	
+		margin-top: 275px;	
 		&:hover {
 			color: @color-fold-black;
 		}

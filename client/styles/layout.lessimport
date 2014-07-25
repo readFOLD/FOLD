@@ -107,6 +107,10 @@ body {
 	// background: url(/banksy.jpg) no-repeat center center fixed; 
 }
 
+article.content {
+	opacity: 0.5;
+}
+
 div#overlay {
 	background: transparent url("/overlay.png");
 	opacity: 0.5;
@@ -178,12 +182,15 @@ section.narrative-section {
 
 div.vertical-narrative {
 	position: absolute;
-	top: 500px;
-	margin-top: -125px;
+	top: 427px;
+	margin-top: -65px;
 	z-index: 10;
 	float: left;
 	width: 400px;
 	min-width: 400px;
+
+	&.fixed {
+	}
 
 	div.spacer {
 		height: 400px;
@@ -217,21 +224,25 @@ div.vertical-narrative {
 			height: 99px;
 
 			i {
-				display: block;
+				display: inline-block;
 			}
 		}
 	}
 }
 
 div.horizontal-context {
-	position: fixed;
 	float: right;
 	z-index: 10;
-	top: 500px;
-	margin-top: -125px;
+	top: 350px;
+	margin-top: 12px;
 	margin-bottom: 500px;
 	height: 100%;
 	width: 100%;
+
+	&.fixed {
+		position: fixed;
+		top: 230px;
+	}
 }
 
 section.horizontal-new-section {

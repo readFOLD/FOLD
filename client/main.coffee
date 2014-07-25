@@ -54,24 +54,82 @@ Meteor.startup ->
       Session.set("sticky", true)
     else
       Session.set("sticky", false)
-  #   currentVertical = Session.get("currentVertical")
-  #   currentScrollTop = 300 * currentVertical
 
-  #   if scrollTop > (currentScrollTop + 280)
-  #     Session.set("currentVertical", currentVertical + 1)
-  #   else if scrollTop < (currentScrollTop - 280)
-  #     Session.set("currentVertical", currentVertical - 1)
+    stickyBody = 90
+    stickyTitle = 120
+    maxScroll = 250
+
+    $("div#banner-overlay").css(opacity: Math.min(1.0, scrollTop/maxScroll))
+    $("article.content").css(opacity: 0.5 + Math.min(1.0, scrollTop/maxScroll) / 2)
+    if scrollTop >= stickyTitle
+      $("div.title-author").addClass("fixed")
+    else
+      $("div.title-author").removeClass("fixed")
+
+    if scrollTop >= stickyBody
+      vertTop = 427 + scrollTop - stickyTitle
+      $("div.horizontal-context").addClass("fixed")
+      $("div.vertical-narrative").css(top: vertTop)
+      if scrollTop >= maxScroll
+        $("div.vertical-narrative").css(top: 557)
+    else
+      $("div.vertical-narrative").css(top: 427)
+      $("div.horizontal-context").removeClass("fixed")
+
+    if scrollTop >= maxScroll
+      Session.set("pastHeader", true)
+      $("div.title-overlay, div#banner-overlay").addClass("fixed")
+      $("div.logo").addClass("visible")
+      $("div.description").hide()
+    else
+      Session.set("pastHeader", false)
+      $("div.title-overlay, div#banner-overlay").removeClass("fixed")
+      $("div.logo").removeClass("visible")
+      $("div.description").show()
 
   # Scroll listener
   # throttledUpdate = _.throttle(updateCurrentVertical, 5)
   $(document).scroll(updateCurrentVertical)
 
+Template.story_header.helpers
+    username: -> 
+        # Put this into waitOn handler
+        if Meteor.user()
+            if Meteor.user().emails
+                Meteor.user().emails[0].address
+            else
+                Meteor.user().profile.name
+    
+Template.story.helpers
+    horizontalExists: ->
+        currentVertical = Session.get('currentVertical') 
+        # TODO Fix issue when there are incomplete context blocks
+        @horizontalSections[currentVertical].data.length > 1
+
+    pastHeader: -> Session.get("pastHeader")
+
+    verticalLeft: -> 
+        width = Session.get "width"
+        if width <= 1304
+            88 + 16
+        else
+            (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
+
+    verticalLeft: -> 
+        width = Session.get "width"
+        if Session.get("narrativeView")
+            return (width - 800) / 2
+        if width <= 1304
+            88 + 16
+        else
+            (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
+
 Template.vertical_section_block.helpers
   verticalSelected: -> Session.equals("currentVertical", @index)
 
 Template.horizontal_context.helpers
-    verticalExists: -> @verticalSections.length
-    horizontalShown: -> Session.equals("currentVertical", @index)
+  verticalExists: -> @verticalSections.length
+  horizontalShown: -> Session.equals("currentVertical", @index)
 
 Template.horizontal_section_block.helpers
     first: -> (@index is 0)
@@ -86,7 +144,7 @@ Template.horizontal_section_block.helpers
         if read
             offset = 0
         else
-            offset = 75 + Session.get("separation")
+            offset = 0 # 75 + Session.get("separation")
 
         # Last card
 

@@ -2,6 +2,48 @@
 	Templates used in reading, creating, and editing
 -->
 
+<template name="story_header">
+	{{setTitle title}}
+	<div class="title-overlay {{#unless read}}write{{/unless}}">
+		<div id="banner-overlay">						
+		</div>
+		<div class="title-author">
+			<div class="title" contenteditable="true">{{title}}</div>
+			<div class="author" contenteditable="true">By {{username}}</div>
+		</div>
+		<div class="logo">
+			<a href="/">
+				<img src="/logo.png">
+			</a>
+		</div>
+	</div>
+</template>
+
+<template name="story">
+	<!-- Mesh Background Overlay -->
+	<!-- <div id="overlay"></div> -->
+	<article class="content">
+		<div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}" style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
+			{{> vertical_narrative}}
+			<div class="spacer">
+			</div>
+		</div>
+		{{#unless narrativeView}}
+		<div class="horizontal-context">
+			{{> horizontal_context}}
+		</div>
+		{{/unless}}
+	</article>
+
+	{{#if pastHeader}}
+	    {{#if horizontalExists}}
+	    <div class="browser-offset">
+	    	{{> story_browser}}
+	    </div>
+	    {{/if}}
+	{{/if}}
+</template>
+
 <template name="vertical_section_block">
 	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}">
 		<div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
@@ -20,19 +62,22 @@
     	{{/unless}}
 	{{/each}}	
 	{{#unless read}}
-    	{{> add_vertical}}
+    	{{! > add_vertical}}
 	{{/unless}}
 </template>
 
 <template name="horizontal_context">
 	{{#unless read}}
     	{{#if verticalExists}}
-        	{{> add_horizontal}}
+        	{{! > add_horizontal}}
         {{/if}}
     {{/unless}}
 	{{#each horizontalSections}}
 	    {{#if horizontalShown}}
         {{#each data}}
+            {{#unless read}}
+                {{! > minimized_add_horizontal}}
+        	{{/unless}}
             {{#if read}}
    	            {{#if type}}
        	            {{> horizontal_section_block}}
@@ -41,6 +86,9 @@
        	        {{> horizontal_section_block}}
    	        {{/if}}
    	    {{/each}}
+   	    {{#unless read}}
+        	{{! > minimized_add_horizontal}}
+    	{{/unless}}
    	    {{/if}}
 	{{/each}}
 </template>
@@ -80,7 +128,6 @@
     	{{> horizontal_section_edit_delete}}
     {{/unless}}
 </template>
-
 
 <template name="story_browser">
 	<div class="story-browser">

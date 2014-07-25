@@ -1,16 +1,18 @@
-Template.create.rendered = ->
-    Deps.autorun ->
-        Session.get("resize")
-        $(document).scrollsnap(
-            snaps: 'section.vertical-narrative-section'
-            proximity: 140
-            latency: 100
-            easy: 'easeInExpo'
-            onSnap: (d) -> 
-                # Need to adjust for "add stuff" blocks
-                Session.set("currentVertical", $(d).index())
-            offset: -$('div.horizontal-context').offset().top
-            )
+# Template.create.rendered = ->
+#     Deps.autorun ->
+#         if Session.get("pastHeader")
+#             Session.get("resize")
+#             $(document).scrollsnap(
+#                 snaps: 'section.vertical-narrative-section'
+#                 proximity: 140
+#                 latency: 100
+#                 easy: 'easeInExpo'
+#                 onSnap: (d) -> 
+#                     # Need to adjust for "add stuff" blocks
+#                     console.log(($(d).index()/2) + 1)
+#                     Session.set("currentVertical", ($(d).index()/2) + 1)
+#                 offset: -$('div.horizontal-context').offset().top
+#                 )
 
 getSelectionCoords = ->
     sel = document.selection
@@ -62,35 +64,6 @@ Template.layout_options.events
         Session.set("narrativeView", !narrativeView)
 
 Template.create.helpers
-    username: -> 
-        # Put this into waitOn handler
-        if Meteor.user()
-            if Meteor.user().emails
-                Meteor.user().emails[0].address
-            else
-                Meteor.user().profile.name
-    
-    horizontalExists: ->
-        currentVertical = Session.get('currentVertical') 
-        # TODO Fix issue when there are incomplete context blocks
-        @horizontalSections[currentVertical].data.length > 1
-
-    verticalLeft: -> 
-        width = Session.get "width"
-        if width <= 1304
-            88 + 16
-        else
-            (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
-
-    verticalLeft: -> 
-        width = Session.get "width"
-        if Session.get("narrativeView")
-            return (width - 800) / 2
-        if width <= 1304
-            88 + 16
-        else
-            (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
-    showFormatting: -> Session.get("formatting")
     narrativeView: -> Session.get("narrativeView")
     category: -> Session.get("storyCategory")
 
