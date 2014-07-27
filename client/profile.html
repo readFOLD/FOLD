@@ -21,7 +21,6 @@
 		</div>
 	</section>
 
-
 	<section class="stories">
 		{{> story_browser}}
 		<div class="horizontal-line">
@@ -52,7 +51,7 @@
 </template>
 
 <template name="user_stories">
-{{#if currentUser}}
+    {{#if currentUser}}
 	    {{#each userStories}}
 	        <div class="story" data-story-id="{{_id}}">
 	        	{{#if profileImageExists}}

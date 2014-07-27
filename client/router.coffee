@@ -23,10 +23,14 @@ Router.map ->
 	    action: -> if @ready() then @render()
 	    data: ->
 	    	# Get rid of these
+	    	story = Stories.findOne()
 	    	Session.set "newStory", false
 	    	Session.set "read", true
 	    	Session.set "page", "read"
-	    	return Stories.findOne()
+	    	if story
+	    		Session.set "verticalSections", story.verticalSections
+	    		Session.set "horizontalSections", story.horizontalSections
+	    	return story
 
    	@route "create",
 	    path: "create"
@@ -38,7 +42,7 @@ Router.map ->
 	    	Session.set "page", "create"
 
 	    	# Proper way to initiate blank template?
-	    	Session.set 'storyTitle', 'Story Title'
+	    	Session.set 'storyTitle', 'New Story'
 	    	Session.set 'verticalSections', []
 	    	Session.set 'horizontalSections', []
 	    	return Stories.findOne()
@@ -50,8 +54,12 @@ Router.map ->
 	    onBeforeAction: -> @subscribe('createStoryPub', @.params.storyDashTitle).wait()
 	    action: -> if @ready() then @render()
 	    data: ->
+	    	story = Stories.findOne()
 	    	Session.set "newStory", false
 	    	Session.set "read", false
 	    	Session.set "page", "create"
 	    	Session.set "storyDashTitle", @.params.storyDashTitle
-	    	return Stories.findOne()
+	    	if story
+	    		Session.set "verticalSections", story.verticalSections
+	    		Session.set "horizontalSections", story.horizontalSections
+	    	return story

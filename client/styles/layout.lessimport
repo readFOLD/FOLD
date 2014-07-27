@@ -3,10 +3,13 @@
 @color-light-green: #8CC63E;
 @color-medium-green: #00A451;
 @color-fold-black: #272727;
-@color-dark-black: #222222;
-@color-inactive-grey: #E0E2E1;
+// @color-dark-black: #222222;
 
-@color-dark-grey: #494A49;
+@color-dark-black: #0C090A;
+@color-dark-black: #0A0500;
+@color-inactive-grey: #E0E2E1;
+// @color-dark-grey: #494A49;
+@color-dark-grey: #333333;
 
 
 // http://asimpleframe.com/
@@ -67,6 +70,16 @@
 
 .stroke-transition {
 	.transition(stroke, 0.2s, ease-in);
+}
+
+.no-select {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: default;
 }
 
 // Universal Link Styling
@@ -135,7 +148,8 @@ section.narrative-section {
 	background-color: @color-inactive-grey;
 
 	&.selected {
-		background-color: @color-light-grey;
+		// background-color: @color-light-grey;
+		background-color: white;
 	}
 
 	div.title {
@@ -221,7 +235,8 @@ div.vertical-narrative {
 			border-top: 12px solid @color-dark-grey;
 			border-bottom: 12px solid @color-dark-grey;
 			background-color: @color-light-grey;
-			height: 99px;
+			height: 95px;
+			overflow-y: hidden;
 
 			i {
 				display: inline-block;

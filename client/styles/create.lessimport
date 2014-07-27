@@ -24,6 +24,7 @@ div.title-overlay {
 	// background-color: @color-medium-green;
 	color: @color-light-grey;
 
+	background-color: @color-medium-green;
 	background-image: url("/ukraine-bg.png");
 	background-position: center center;
 	background-attachment: fixed;
@@ -68,8 +69,7 @@ div.title-overlay {
 	div#banner-overlay {
 		width: 100%;
 		height: 350px;
-		background-color: black;
-		// background-color: @color-dark-black;		
+		background-color: @color-dark-black;		
 		opacity: 0.0;
 		position: absolute;
 
@@ -216,6 +216,7 @@ header.header {
 }
 
 div.browser-offset {
+	.no-select;
 	padding-top: 100px;
 }
 
@@ -238,7 +239,6 @@ div.vertical-narrative {
     
     	&:hover {
     		cursor: pointer;
-			color: green;
 		}
     }
 }

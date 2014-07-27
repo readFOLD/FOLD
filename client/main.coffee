@@ -92,6 +92,9 @@ Meteor.startup ->
   $(document).scroll(updateCurrentVertical)
 
 Template.story_header.helpers
+    title: ->
+        if @title then title
+        else Session.get("storyTitle")
     username: -> 
         # Put this into waitOn handler
         if Meteor.user()
@@ -104,7 +107,9 @@ Template.story.helpers
     horizontalExists: ->
         currentVertical = Session.get('currentVertical') 
         # TODO Fix issue when there are incomplete context blocks
-        @horizontalSections[currentVertical].data.length > 1
+
+        sections = @horizontalSections[currentVertical].data
+        _.filter(sections, (e) -> e.type).length > 1
 
     pastHeader: -> Session.get("pastHeader")
 
@@ -128,8 +133,26 @@ Template.vertical_section_block.helpers
   verticalSelected: -> Session.equals("currentVertical", @index)
 
 Template.horizontal_context.helpers
-  verticalExists: -> @verticalSections.length
-  horizontalShown: -> Session.equals("currentVertical", @index)
+    verticalExists: -> Session.get("verticalSections").length
+    horizontalSections: -> Session.get("horizontalSections")
+    moreThanOneSection: -> Session.get("horizontalSections").length > 1
+    last: -> 
+      lastIndex = Session.get("horizontalSections")[Session.get("currentVertical")].data.length - 1
+      (@index is lastIndex)
+    horizontalShown: -> Session.equals("currentVertical", @index)
+
+Template.last_horizontal_section_block.helpers
+    left: ->
+        width = Session.get "width"
+        if width < 1024 then width = 1024
+        halfWidth = width / 2
+        cardWidth = Session.get "cardWidth"
+        offset = 0
+
+        if width <= 1304
+            return (-cardWidth + 88) + offset
+        else
+            return (-Session.get("cardWidth") + (width - (Session.get("separation") * 3) - (Session.get("cardWidth") * 2))/2)
 
 Template.horizontal_section_block.helpers
     first: -> (@index is 0)
@@ -149,12 +172,14 @@ Template.horizontal_section_block.helpers
         # Last card
 
         # TODO How do you get the last element?
-        lastIndex = horizontalSections?[Session.get("currentVertical")].data.length - 1
+        horizontalSections = Session.get("horizontalSections")
+        lastIndex = horizontalSections[Session.get("currentVertical")].data.length - 1
         if (lastIndex >= 2) and (@index is lastIndex)
+            console.log("LAST SECTION")
             if width <= 1304
                 return (-cardWidth + 88) + offset
             else
-            return (-Session.get("cardWidth") + (width - (Session.get("separation") * 3) - (Session.get("cardWidth") * 2))/2)
+                return (-Session.get("cardWidth") + (width - (Session.get("separation") * 3) - (Session.get("cardWidth") * 2))/2)
         # Between first and last card
         else if @index
             (@index * cardWidth) + halfWidth + (3 * (Session.get "separation") / 2) + offset
@@ -165,9 +190,9 @@ Template.horizontal_section_block.helpers
 # Horzizontal scrolling
 Template.story_browser.events
     "click i.left": (d) ->
-        console.log("Left click:", @horizontalSections)
+        horizontalSections = Session.get("horizontalSections")
         newHorizontalSection = []
-        horizontalSection = @horizontalSections[Session.get('currentVertical')].data
+        horizontalSection = horizontalSections[Session.get('currentVertical')].data
 
         # Reindex
         for section, i in horizontalSection[1..horizontalSection.length]
@@ -178,15 +203,15 @@ Template.story_browser.events
         newLastSection = horizontalSection[0]
         newLastSection.index = horizontalSection.length - 1
         newHorizontalSection.push(newLastSection)
-        console.log(newHorizontalSection)
 
         # Is this the proper way to rotate?
-        @horizontalSections[Session.get('currentVertical')].data = newHorizontalSection
+        horizontalSections[Session.get('currentVertical')].data = newHorizontalSection
+        Session.set("horizontalSections", horizontalSections)
 
     "click i.right": (d) ->
-        console.log("Right click:", @horizontalSections)
+        horizontalSections = Session.get("horizontalSections")
         newHorizontalSection = []
-        horizontalSection = @horizontalSections[Session.get('currentVertical')].data
+        horizontalSection = horizontalSections[Session.get('currentVertical')].data
 
         newLastSection = horizontalSection[horizontalSection.length-1]
         newLastSection.index = 0
@@ -197,4 +222,5 @@ Template.story_browser.events
             section.index = i + 1
             newHorizontalSection.push(section)
 
-        @horizontalSections[Session.get('currentVertical')].data = newHorizontalSection
+        horizontalSections[Session.get('currentVertical')].data = newHorizontalSection
+        Session.set("horizontalSections", horizontalSections)

@@ -8,7 +8,7 @@ Template.read.rendered = ->
             easy: 'easeInExpo'
             onSnap: (d) -> 
                 Session.set("currentVertical", $(d).index())
-            offset: -$('div.horizontal-context').offset().top
+            offset: -$('div.horizontal-context').offset().top + 120  # Where is this offset coming from?
             )
 
 # Reduce redundancy with the create page
