@@ -38,7 +38,6 @@ throttledResize = _.throttle(->
 , 5)
 $(window).resize throttledResize
 
-
 Meteor.startup ->
   Session.setDefault("filterOpen", false)
   Session.setDefault("filter", "curated")
@@ -58,6 +57,15 @@ Meteor.startup ->
     stickyBody = 90
     stickyTitle = 120
     maxScroll = 250
+
+    # # Enable scrolling to change current vertical on create
+    # unless Session.get("read")
+    #   currentVertical = Session.get("currentVertical")
+    #   currentScrollTop = 300 * currentVertical
+    #   if scrollTop > (currentScrollTop + 280)
+    #     Session.set("currentVertical", currentVertical + 1)
+    #   else if scrollTop < (currentScrollTop - 280)
+    #     Session.set("currentVertical", currentVertical - 1)
 
     $("div#banner-overlay").css(opacity: Math.min(1.0, scrollTop/maxScroll))
     $("article.content").css(opacity: 0.5 + Math.min(1.0, scrollTop/maxScroll) / 2)
@@ -93,8 +101,12 @@ Meteor.startup ->
 
 Template.story_header.helpers
     title: ->
-        if @title then title
+        if @title then @title
         else Session.get("storyTitle")
+    backgroundImage: ->
+        console.log(this)
+        if @backgroundImage then @backgroundImage
+        else Session.get("backgroundImage")
     username: -> 
         # Put this into waitOn handler
         if Meteor.user()
@@ -108,7 +120,7 @@ Template.story.helpers
         currentVertical = Session.get('currentVertical') 
         # TODO Fix issue when there are incomplete context blocks
 
-        sections = @horizontalSections[currentVertical].data
+        sections = Session.get("horizontalSections")?[currentVertical]?.data
         _.filter(sections, (e) -> e.type).length > 1
 
     pastHeader: -> Session.get("pastHeader")
@@ -129,8 +141,12 @@ Template.story.helpers
         else
             (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
 
+Template.vertical_narrative.helpers
+  verticalSections: -> Session.get("verticalSections")
+
 Template.vertical_section_block.helpers
   verticalSelected: -> Session.equals("currentVertical", @index)
+  validTitle: -> (@title is not "title")
 
 Template.horizontal_context.helpers
     verticalExists: -> Session.get("verticalSections").length
@@ -138,7 +154,7 @@ Template.horizontal_context.helpers
     moreThanOneSection: -> Session.get("horizontalSections").length > 1
     last: -> 
       lastIndex = Session.get("horizontalSections")[Session.get("currentVertical")].data.length - 1
-      (@index is lastIndex)
+      (@index is lastIndex) and (lastIndex > 0)
     horizontalShown: -> Session.equals("currentVertical", @index)
 
 Template.last_horizontal_section_block.helpers
@@ -167,13 +183,14 @@ Template.horizontal_section_block.helpers
         if read
             offset = 0
         else
-            offset = 0 # 75 + Session.get("separation")
+            offset = 75 + Session.get("separation")
 
         # Last card
 
         # TODO How do you get the last element?
         horizontalSections = Session.get("horizontalSections")
-        lastIndex = horizontalSections[Session.get("currentVertical")].data.length - 1
+
+        lastIndex = horizontalSections[Session.get("currentVertical")]?.data.length - 1
         if (lastIndex >= 2) and (@index is lastIndex)
             console.log("LAST SECTION")
             if width <= 1304

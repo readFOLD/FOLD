@@ -1,18 +1,26 @@
-# Template.create.rendered = ->
-#     Deps.autorun ->
-#         if Session.get("pastHeader")
-#             Session.get("resize")
-#             $(document).scrollsnap(
-#                 snaps: 'section.vertical-narrative-section'
-#                 proximity: 140
-#                 latency: 100
-#                 easy: 'easeInExpo'
-#                 onSnap: (d) -> 
-#                     # Need to adjust for "add stuff" blocks
-#                     console.log(($(d).index()/2) + 1)
-#                     Session.set("currentVertical", ($(d).index()/2) + 1)
-#                 offset: -$('div.horizontal-context').offset().top
-#                 )
+Template.create.rendered = ->
+    Deps.autorun ->
+        if Session.get("pastHeader")
+            Session.get("verticalSections")
+            Session.get("resize")
+            $(document).scrollsnap(
+                snaps: 'section.vertical-narrative-section'
+                proximity: 50
+                latency: 250
+                onSnap: (d) -> 
+                    # Need to adjust for "add stuff" blocks
+                    Session.set("currentVertical", ($(d).index()-1)/2)
+                offset: -$('div.horizontal-context').offset().top + 250
+                )
+
+Template.background_image.helpers 
+    backgroundImage: ->
+        if @backgroundImage then @backgroundImage
+        else Session.get("backgroundImage")
+
+Template.background_image.events
+    "click div.save-background-image": ->
+        Session.set("backgroundImage", $('input.background-image-input').val())
 
 getSelectionCoords = ->
     sel = document.selection
@@ -69,10 +77,8 @@ Template.create.helpers
 
 Template.create.events
     "mousedown": ->
-        console.log("mousedown")
         Session.set("formatting", false)
     "mouseup": ->
-        console.log("mouseup")
         if window.getSelection
             text = window.getSelection().toString()
         else if (typeof document.selection and document.selection.type is "Text")
@@ -94,9 +100,27 @@ Template.formatting.helpers
 #######################
 # Adding Sections
 #######################
+Template.minimized_add_vertical.events
+    "click section": ->
+        # Append Vertical Section
+        verticalSections = Session.get('verticalSections')
+        newVerticalSection =
+            title: 'Title'
+            content: 'Content'
+            index: verticalSections.length
+        verticalSections.push(newVerticalSection)
+        Session.set('verticalSections', verticalSections)
+
+        # Initialize Horizontal Section
+        horizontalSections = Session.get('horizontalSections')
+        newHorizontalSection =
+            data: []
+            index: horizontalSections.length
+        horizontalSections.push(newHorizontalSection)
+        Session.set('horizontalSections', horizontalSections)   
+
 Template.add_vertical.events
     "click section": ->
-        console.log("clicking add vertical")
         # Append Vertical Section
         verticalSections = Session.get('verticalSections')
         newVerticalSection =
@@ -124,21 +148,22 @@ Template.add_horizontal.helpers
 
 Template.add_horizontal.events
     "click section": (d) ->
-        unless Session.get("editingContext")
-            # TODO Make this based on a session variable
-            $("section.horizontal-new-section").animate({height: "100%", width: "540px"}, 250)
+        # unless Session.get("editingContext")
+        #     # TODO Make this based on a session variable
+        #     $("section.horizontal-new-section").animate({height: "100%", width: "540px"}, 250)
 
-            # Shift all horizontal sections right
-            $("div.horizontal-context section:not(:first)").animate({left: "+=440px"}, 250)
+        #     # Shift all horizontal sections right
+        #     $("div.horizontal-context section:not(:first)").animate({left: "+=440px"}, 250)
 
-            Session.set("editingContext", true)
+        #     Session.set("editingContext", true)
 
         # Append Horizontal Section to Current Horizontal Context
-        # horizontalSections = Session.get('horizontalSections')
-        # newHorizontalSection = 
-        #     index: horizontalSections[Session.get('currentVertical')].data.length
-        # horizontalSections[Session.get('currentVertical')].data.push(newHorizontalSection)
-        # Session.set('horizontalSections', horizontalSections)   
+        horizontalSections = Session.get('horizontalSections')
+        console.log("horizontalSections", horizontalSections, Session.get('currentVertical'))
+        newHorizontalSection = 
+            index: Session.get("horizontalSections")[Session.get('currentVertical')].data.length
+        horizontalSections[Session.get('currentVertical')].data.push(newHorizontalSection)
+        Session.set('horizontalSections', horizontalSections)   
 
 renderTemplate = (d, templateName, context) ->
     srcE = if d.srcElement then d.srcElement else d.target
@@ -158,7 +183,7 @@ Template.horizontal_context.events
     'click img.text-button': (d) -> renderTemplate(d, Template.create_text_section)
     'click img.photo-button': (d) -> renderTemplate(d, Template.create_image_section)
     'click img.map-button': (d) -> renderTemplate(d, Template.create_map_section)
-    'click img.youtube-button': (d) -> renderTemplate(d, Template.create_youtube_section)
+    'click img.youtube-button': (d) -> renderTemplate(d, Template.create_video_section)
     'click img.gifgif-button': (d) -> renderTemplate(d, Template.create_gifgif_section)
     'click img.audio-button': (d) -> renderTemplate(d, Template.create_audio_section)
 
@@ -190,6 +215,48 @@ Template.create_text_section.events
         context = newDocument 
         renderTemplate(d, Template.display_text_section, context)
 
+Template.create_video_section.events
+    "click div#save": (d) ->
+        srcE = if d.srcElement then d.srcElement else d.target
+        parentSection = $(srcE).closest('section')
+        horizontalIndex = parentSection.data('index')
+        url = parentSection.find('input.youtube-link-input').val()
+        description = parentSection.find('input.youtube-description-input').val()
+        newDocument =
+            type: 'video'
+            url: url
+            description: description
+            index: horizontalIndex
+
+        # Bind data
+        horizontalSections = Session.get('horizontalSections')
+        horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument
+        Session.set('horizontalSections', horizontalSections) 
+
+        # Render display section
+        context = newDocument 
+        renderTemplate(d, Template.display_video_section, context)
+
+Template.create_map_section.events
+    "click div#save": (d) ->
+        srcE = if d.srcElement then d.srcElement else d.target
+        parentSection = $(srcE).closest('section')
+        horizontalIndex = parentSection.data('index')
+        url = parentSection.find('input.map-url-input').val()
+        newDocument =
+            type: 'map'
+            url: url
+            index: horizontalIndex
+
+        # Bind data
+        horizontalSections = Session.get('horizontalSections')
+        horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument
+        Session.set('horizontalSections', horizontalSections) 
+
+        # Render display section
+        context = newDocument 
+        renderTemplate(d, Template.display_map_section, context)
+
 Template.create_image_section.events
     "click div#save": (d) ->
         srcE = if d.srcElement then d.srcElement else d.target
@@ -220,6 +287,7 @@ Template.last_horizontal_section_block.helpers
     text: -> (@type is "text")
     image: -> (@type is "image")
     map: -> (@type is "map")
+    video: -> (@type is "video")
 
 Template.horizontal_section_block.helpers
     lastUpdate: -> 
@@ -228,6 +296,7 @@ Template.horizontal_section_block.helpers
     text: -> (@type is "text")
     image: -> (@type is "image")
     map: -> (@type is "map")
+    video: -> (@type is "video")
 
 # TODO Don't put in so much duplicated code!!!
 Template.horizontal_section_block.events
@@ -259,9 +328,12 @@ Template.horizontal_section_block.events
 #######################
 Template.create_options.events
     "click div#save": ->
+        console.log("SAVE")
         # Get all necessary fields
-        storyTitle = $.trim($('div.story-title').text())
+        storyTitle = $.trim($('div.title-author div.title').text())
         storyDashTitle = storyTitle.toLowerCase().split(' ').join('-')
+
+        backgroundImage = Session.get("backgroundImage")
         date = new Date()
         user = Meteor.user()._id
         verticalSections = []
@@ -275,21 +347,28 @@ Template.create_options.events
                 )
             )
         horizontalSections = Session.get('horizontalSections')
-        console.log(horizontalSections)
 
         storyDocument =
             title: storyTitle
+            backgroundImage: backgroundImage
             storyDashTitle: storyDashTitle
             verticalSections: verticalSections
             horizontalSections: horizontalSections
             userId: user
             lastSaved: date
 
-        storyId = Session.get('storyId')
+        console.log(storyDocument)
+
+        Session.set("storyDashTitle", storyDashTitle)
+        storyId = Stories.findOne(storyDashTitle: storyDashTitle)?._id
+        unless storyId
+            storyId = Session.get("storyId")
+        console.log("ID", storyId)
         if storyId
             Stories.update({_id: storyId}, {$set: storyDocument})
         else
-            Stories.insert(storyDocument)
+            storyId = Stories.insert(storyDocument)
+            Session.set("storyId", storyId)
 
     "click div#delete": ->
         storyId = Session.get('storyId')
@@ -298,6 +377,10 @@ Template.create_options.events
         Router.go('home')
 
     "click div#publish": ->   
-        storyId = Session.get('storyId')
-        if storyId and Stories.findOne(_id: storyId)
+        console.log("PUBLISH")
+        storyDashTitle = Session.get("storyDashTitle")
+        storyId = Stories.findOne(storyDashTitle: storyDashTitle)?._id
+        unless storyId
+            storyId = Session.get("storyId")
+        if storyId
             Stories.update({_id: storyId}, {$set: {published: true, publishDate: new Date()}})

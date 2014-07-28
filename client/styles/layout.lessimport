@@ -164,11 +164,12 @@ section.narrative-section {
 	}
 
 	div.content {
+		min-height: 100px;
 		cursor: text;
 		line-height: 23px;
 		text-align: left;
 		font-size: 15px;
-		margin-top: 10px;
+		margin-top: 20px;
 		margin-left:10px;
 		margin-right:15px;
 		&.minimized {
@@ -216,6 +217,7 @@ div.vertical-narrative {
 		.height-transition;
 		overflow-y: scroll;
 		width: 100%;
+		min-height: 300px;
 		// height: 300px;
 		&.read {
 			margin-bottom: 12px;			
@@ -223,10 +225,16 @@ div.vertical-narrative {
 		// box-shadow: 3px 3px @color-medium-grey;
 	}
 
+	section.new-section {
+		min-height: 75px;
+		overflow: hidden;
+	}
+
 	section.new-section.minimized {
 		.height-transition;
 		background-color: @color-dark-grey;
 		height: 12px;
+		min-height: 0px;
 		i {
 			display: none;
 		}
@@ -263,6 +271,7 @@ div.horizontal-context {
 section.horizontal-new-section {
 	position: absolute;
 	background-color: @color-dark-black;
+	color: @color-inactive-grey;
 }
 
 section.horizontal-narrative-section {

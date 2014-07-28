@@ -22,5 +22,3 @@
 #                 dataSub = Meteor.subscribe "createStoryPub", storyDashTitle, onDataReady
 #             else
 #                 return
-
-# Meteor.subscribe "storiesPub"

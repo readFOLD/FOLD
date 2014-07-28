@@ -20,6 +20,11 @@
     		</a>
 			{{/with}}
 		</div>
+		<a href="/create">
+			<div class="create-story">
+				Create Story
+			</div>
+		</a>
 	</section>
 	{{#if filter}}
 	<div class="navbar filter {{#if sticky}}sticky{{/if}}" id="filter">
@@ -43,8 +48,6 @@
 
 	<section class="stories">
 		<div class="story-container">
-			{{> all_stories}}
-			{{> all_stories}}
 			{{> all_stories}}
 	    </div>
 	</section>
@@ -84,15 +87,15 @@
 	{{#each stories}}
 	<div class="story" data-story-id="{{_id}}">
 		<div class="overlay-image">
-			<img src="/banksy.jpg" />
+			<img src="{{backgroundImage}}" />
 		</div>
-		{{#if profileImage}}
-		    <img class="profile-picture" src="{{profileImage}}"/>
-		{{/if}}
 		<div class="headline">
 			{{title}}
 		</div>
 		<div class="byline">
+			{{#if profileImage}}
+    			<img class="profile-picture" src="{{profileImage}}"/>
+		    {{/if}}
 			By {{displayName}}
 		</div>
 

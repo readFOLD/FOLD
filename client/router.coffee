@@ -28,8 +28,10 @@ Router.map ->
 	    	Session.set "read", true
 	    	Session.set "page", "read"
 	    	if story
+	    		console.log(story)
 	    		Session.set "verticalSections", story.verticalSections
 	    		Session.set "horizontalSections", story.horizontalSections
+	    		Session.set "backgroundImage", story.backgroundImage
 	    	return story
 
    	@route "create",
@@ -62,4 +64,6 @@ Router.map ->
 	    	if story
 	    		Session.set "verticalSections", story.verticalSections
 	    		Session.set "horizontalSections", story.horizontalSections
+	    		Session.set "backgroundImage", story.backgroundImage
+	    		Session.set "storyId", story._id
 	    	return story

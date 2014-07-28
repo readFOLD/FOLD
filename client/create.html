@@ -6,8 +6,16 @@
     {{#if showFormatting}}
         {{ > formatting}}
     {{/if}}
+    {{#unless read}}
+        {{ > background_image}}
+    {{/unless}}
     {{ > layout_options}}
     {{ > create_options}}
+</template>
+
+<template name="background_image">
+	<input class="background-image-input" value="{{backgroundImage}}">
+	<div class="save-background-image">Save</div>
 </template>
 
 <template name="minimized_add_vertical">
@@ -87,10 +95,10 @@
 <template name="create_section_options">
 	<div class="button-options back-save">
 		<div id="back" class="button">
-			Back
+			<i class="fa fa-mail-reply"></i>
 		</div>
 		<div id="save" class="button">
-			Save
+			<i class="fa fa-save"></i>
 		</div>
 	</div>
 </template>
@@ -99,7 +107,7 @@
 <template name="create_text_section">
 	<div class="create-section">
     	<div class="input-label">
-    		ADD FREE TEXT:
+    		Text:
     	</div>
     	<textarea class="text-input">{{content}}</textarea>
     	{{> create_section_options}}
@@ -109,9 +117,9 @@
 
 <template name="create_image_section">
 	<div class="create-section">
-	    <div class="input-label">IMAGE URL:</div>
+	    <div class="input-label">Image Url:</div>
 	    <input class="image-url-input" value="{{url}}">
-	    <div class="input-label">DESCRIPTION:</div>
+	    <div class="input-label">Description:</div>
 	    <input class="image-description-input" value="{{description}}">
     	{{> create_section_options}}
     </div>
@@ -120,28 +128,23 @@
 
 <template name="create_map_section">
 	<div class="create-section">
-	    <div class="input-label">LOCATION:</div>
-	    <input class="location-input">
-    
-	    <div class="input-label">MAP TYPE:</div>
-	    <input class="map-type-input">
-    
-	    <div class="input-label">DESCRIPTION:</div>
-	    <input class="map-description-input">
+	    <div class="input-label">Google Embed URL:</div>
+	    <input class="map-url-input">
 	    {{> create_section_options}}
 	</div>
 	<img class="map-button content-type-button" src="/map-icon.png" />
 </template>
 
-<template name="create_youtube_section">
-	<div class="input-label">YOUTUBE LINK:</div>
-	<input class="youtube-link-input">
+<template name="create_video_section">
+	<div class="create-section">
+		<div class="input-label">Youtube Link:</div>
+		<input class="youtube-link-input">
 
-	<div class="input-label">DESCRIPTION:</div>
-	<input class="youtube-description-input">
-
+		<div class="input-label">Description:</div>
+		<input class="youtube-description-input" value="{{description}}">
+		{{> create_section_options}}
+	</div>
 	<img class="map-button content-type-button" src="/youtube-icon.png" />
-	{{> create_section_options}}
 </template>
 
 <template name="create_audio_section">
@@ -169,10 +172,10 @@
 <template name="horizontal_section_edit_delete">
 	<div class="button-options edit-delete">
 		<div id="edit" class="button">
-			Edit
+			<i class="fa fa-pencil"></i>
 		</div>
 		<div id="delete" class="button">
-			Delete
+			<i class="fa fa-times"></i>
 		</div>
 	</div>
 </template>

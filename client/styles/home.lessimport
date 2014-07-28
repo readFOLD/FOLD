@@ -3,6 +3,23 @@ section.banner {
 	height: 200px;
 	border-bottom: 32px solid @color-dark-black;
 
+	div.create-story {
+		.background-transition;
+		.no-select;
+		cursor: pointer;
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		border-radius: 6px;
+		padding: 5px 8px;
+		background-color: @color-dark-black;
+		color: @color-light-grey;
+
+		&:hover {
+			background-color: @color-medium-green;
+		}
+	}
+
 	div.navbar {
 		width: 100%;
 		min-width: 1024px;
@@ -55,10 +72,10 @@ section.banner {
 		}
 
 		img.profile-picture {
-			opacity: 1.0;
-			position: relative;
-			top: -88px;
-			left: -10px;
+			// opacity: 1.0;
+			// position: relative;
+			// top: -88px;
+			// left: -10px;
 			width: 80px;
 			border-radius: 40px;
 		}
@@ -179,6 +196,7 @@ div.filter {
 div.story-browser {
 	position: fixed;
 	width: 100%;
+	height: 0px;
 	z-index: 10;
 
 	i {
@@ -265,9 +283,10 @@ section.stories {
 	}	
 
 	div.byline {
+		line-height: 45px;
 		font-size: 15px;
 		padding: 0;
-		margin: 21px 20px 23px 90px;
+		margin: 10px 20px 10px 30px;
 	}
 
 	div.dates {
@@ -289,9 +308,9 @@ section.stories {
 	}
 
 	div.story-container {
-		padding-top: 75px;
+		padding-top: 50px;
 		padding-bottom: 75px;
-		width: 1200px;
+		width: 1150px;
 		margin: 0 auto;
 	}
 
@@ -308,6 +327,7 @@ section.stories {
 		display: inline-block;
 		position: relative;
 		margin-top: 20px;
+		margin-bottom: 40px;
 
 		&:first-child {
 			// margin-top: 0px;
@@ -323,10 +343,12 @@ section.stories {
 
 		img.profile-picture {
 			@picture-radius: 22px;
-			position: absolute;
-			top: 168px;
-			left: 30px;
+			// position: absolute;
+			// top: 168px;
+			// left: 30px;
 
+			float: left;
+			margin-right: 10px;
 			z-index: 10;
 
 			border-radius: @picture-radius;
