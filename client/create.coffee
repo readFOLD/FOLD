@@ -1,7 +1,7 @@
 Template.create.rendered = ->
     Deps.autorun ->
         if Session.get("pastHeader")
-            Session.get("verticalSections")
+            # Session.get("verticalSections")
             Session.get("resize")
             $(document).scrollsnap(
                 snaps: 'section.vertical-narrative-section'
@@ -10,7 +10,7 @@ Template.create.rendered = ->
                 onSnap: (d) -> 
                     # Need to adjust for "add stuff" blocks
                     Session.set("currentVertical", ($(d).index()-1)/2)
-                offset: -$('div.horizontal-context').offset().top + 250
+                offset: -$('div.horizontal-context').offset().top + 180
                 )
 
 Template.background_image.helpers 

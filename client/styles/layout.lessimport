@@ -94,6 +94,10 @@ a {
 	-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
 
+:focus {
+	outline: none;
+}
+
 html, body { 
 	// height: 100%; 
 	min-width: 1024px;

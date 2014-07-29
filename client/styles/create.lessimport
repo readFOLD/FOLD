@@ -313,12 +313,16 @@ div.horizontal-context {
 	}
 
 	div.content-icons {
+		padding-top: 12px;
 		div.row {
 			text-align: justify;
 			-ms-text-justify: distribute-all-lines;
 			text-justify: distribute-all-lines;
 			margin-left: 10%;
 			margin-right: 10%;
+		}
+		img {
+			.background-transition;
 		}
 		div.row-one {
 			margin-top: 38px;	
