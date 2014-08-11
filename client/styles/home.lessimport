@@ -1,3 +1,9 @@
+div#login-buttons {
+	position: absolute;
+	top: 15px;
+	left: 15px;
+}
+
 section.banner {
 	background-color: @color-light-grey;
 	height: 200px;

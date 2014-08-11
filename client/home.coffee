@@ -70,7 +70,7 @@ Template.all_stories.helpers
 
     # Remove this duplication
     profileImage: ->
-        Meteor.user().profile.profile_picture
+        Meteor.user()?.profile.profile_picture
 
     url: -> "/read/" + @storyDashTitle
 
