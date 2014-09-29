@@ -6,12 +6,14 @@
 standard-app-packages
 less
 coffeescript
-font-awesome
+natestrauser:font-awesome@4.0.3
 accounts-ui
 accounts-password
-iron-router
 accounts-twitter
 accounts-facebook
 accounts-google
 underscore
 insecure
+iron:router
+tmeasday:html5-history-api
+

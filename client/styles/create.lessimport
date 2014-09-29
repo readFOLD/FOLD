@@ -88,7 +88,7 @@ div.title-overlay {
 	div#banner-overlay {
 		width: 100%;
 		height: 350px;
-		background-color: @color-dark-black;		
+		background-color: @color-dark-black;
 		opacity: 0.0;
 		position: absolute;
 
@@ -112,7 +112,7 @@ div.title-overlay {
 		padding-top: 135px;
 		&.fixed {
 			position: fixed;
-			padding-top: 18px;
+			padding-top: 16px;
 		}
 		div.title {
 			text-transform: uppercase;
@@ -255,7 +255,7 @@ div.vertical-narrative {
     	text-align: center;
     	color: black;
     	transition: color 0.25s ease;
-    
+
     	&:hover {
     		cursor: pointer;
 		}
@@ -325,7 +325,7 @@ div.horizontal-context {
 			.background-transition;
 		}
 		div.row-one {
-			margin-top: 38px;	
+			margin-top: 38px;
 			img.text-button {
 				padding: 1.5px;
 				@circle-diameter: 75px;
@@ -405,7 +405,7 @@ div.horizontal-context {
 			img {
 		    	width: 100%;
 		    	height: 100%;
-		    }	
+		    }
 
 		}
 		span.stretch {
@@ -427,7 +427,7 @@ div.horizontal-context {
 		right: 10px;
 	}
 
-	
+
 
 	div.back-save, div.edit-delete {
 		position: absolute;
@@ -470,7 +470,12 @@ div.create-section {
 }
 
 div.text-section {
-	margin: 20px 25px;
+	line-height: 26px;
+	text-align: left;
+	font-size: 17px;
+	margin-top: 25px;
+	margin-left: 30px;
+	margin-right: 30px;
 }
 
 div.image-section {

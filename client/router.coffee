@@ -15,10 +15,9 @@ Router.map ->
 	    	Session.set "page", "profile"
 	    	Session.set "userId", @.params.userId
 
-   	@route "read",
+	@route "read",
 	    path: "read/:storyDashTitle"
 	    template: "read"
-	    onRun: -> $('html, body').scrollTop(0)
 	    onBeforeAction: -> @subscribe('readStoryPub', @.params.storyDashTitle).wait()
 	    action: -> if @ready() then @render()
 	    data: ->
@@ -27,8 +26,35 @@ Router.map ->
 	    	Session.set "newStory", false
 	    	Session.set "read", true
 	    	Session.set "page", "read"
+
+	    	Session.set("currentY", 0)
+	    	Session.set("currentX", 0)
+
 	    	if story
-	    		console.log(story)
+	    		Session.set "verticalSections", story.verticalSections
+	    		Session.set "horizontalSections", story.horizontalSections
+	    		Session.set "backgroundImage", story.backgroundImage
+	    	return story
+
+	@route "read",
+	    path: "read/:storyDashTitle/:currentY/:currentX"
+	    template: "read"
+	    onBeforeAction: -> @subscribe('readStoryPub', @.params.storyDashTitle).wait()
+	    action: -> if @ready() then @render()
+	    onRun: -> 
+	    	# Scroll to current section
+	    	x = Session.get("currentX")
+	    	y = Session.get("currentY")
+	    data: ->
+	    	# Get rid of these
+	    	story = Stories.findOne()
+	    	Session.set "newStory", false
+	    	Session.set "read", true
+	    	Session.set "page", "read"
+
+	    	Session.set("currentY", parseInt(@.params.currentY))
+	    	Session.set("currentX", parseInt(@.params.currentX))
+	    	if story
 	    		Session.set "verticalSections", story.verticalSections
 	    		Session.set "horizontalSections", story.horizontalSections
 	    		Session.set "backgroundImage", story.backgroundImage

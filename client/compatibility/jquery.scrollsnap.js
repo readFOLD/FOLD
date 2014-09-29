@@ -36,45 +36,49 @@
             'direction': 'y',
             'snaps' : '*',
             'proximity' : 12,
+            'minimum': 8,
             'offset' : 0,
             'duration' : 200,
             'latency' : 250,
             'easing' : 'swing',
             'onSnapEvent' : 'scrollsnap', // triggered on the snapped DOM element
             'onSnap' : function ($snappedElement) { }, // callback when an element was snapped
-            'onSnapWait' : 50 // wait for redundant snaps before firing event / calling callback
+            'onSnapWait' : 100 // wait for redundant snaps before firing event / calling callback
         }, options);
 
-        var leftOrTop = settings.direction === 'x' ? 'Left' : 'Top';
+        var leftOrTop = settings.direction === 'x' ? 'Left' : 'Top',
+            offsetLT = 'offset' + leftOrTop,
+            scrollLT = 'scroll' + leftOrTop;
 
         return this.each(function() {
 
             var scrollingEl = this,
-                $scrollingEl = $(scrollingEl);
+                $scrollingEl = $(this);
 
-            if (scrollingEl['scroll'+leftOrTop] !== undefined) {
-                // scrollingEl is DOM element (not document)
+            if (scrollingEl.nodeType == 1) {
+                // scrollingEl is DOM element
+
                 $scrollingEl.css('position', 'relative');
 
-                $scrollingEl.bind('scrollstop', {latency: settings.latency}, function(e) {
+                var handler = function(e) {
 
                     var matchingEl = null, matchingDy = settings.proximity + 1;
 
                     $scrollingEl.find(settings.snaps).each(function() {
                         var snappingEl = this,
-                            dy = Math.abs(snappingEl['offset'+leftOrTop] + settings.offset - scrollingEl['scroll'+leftOrTop]);
+                            dy = Math.abs(snappingEl[offsetLT] + settings.offset - scrollingEl[scrollLT]);
 
-                        if (dy <= settings.proximity && dy < matchingDy) {
+                        if (dy < matchingDy) {
                             matchingEl = snappingEl;
                             matchingDy = dy;
                         }
                     });
 
                     if (matchingEl) {
-                        var endScroll = matchingEl['offset'+leftOrTop] + settings.offset,
+                        var endScroll = matchingEl[offsetLT] + settings.offset,
                             animateProp = {};
-                        animateProp['scroll'+leftOrTop] = endScroll;
-                        if ($scrollingEl['scroll'+leftOrTop]() != endScroll) {
+                        animateProp[scrollLT] = endScroll;
+                        if ($scrollingEl[scrollLT]() != endScroll) {
                             $scrollingEl.animate(animateProp, settings.duration, settings.easing, debounce(function () {
                                 var $matchingEl = $(matchingEl);
 
@@ -88,20 +92,25 @@
                         }
                     }
 
-                });
+                };
 
-            } else if (scrollingEl.defaultView) {
+                $scrollingEl.bind('scrollstop', {latency: settings.latency}, handler);
+
+            } else if (scrollingEl.nodeType == 9) {
                 // scrollingEl is DOM document
+
+                var win = (scrollingEl.defaultView || scrollingEl.parentWindow);
+
                 var handler = function(e) {
 
                     var matchingEl = null, matchingDy = settings.proximity + 1;
 
-                    $scrollingEl.find(settings.snaps).each(function() {
+                    $(scrollingEl).find(settings.snaps).each(function() {
+                        var tempOffset = (typeof win['scrollX'] != "undefined") ? 'scroll'+settings.direction.toUpperCase() : 'page' + settings.direction.toUpperCase() + 'Offset';
                         var snappingEl = this,
-                            $snappingEl = $(snappingEl),
-                            dy = Math.abs(($snappingEl.offset()[leftOrTop.toLowerCase()] + settings.offset) - scrollingEl.defaultView['scroll'+settings.direction.toUpperCase()]);
+                            dy = Math.abs(($(snappingEl).offset()[leftOrTop.toLowerCase()] + settings.offset) - win[tempOffset]);
 
-                        if (dy <= settings.proximity && dy < matchingDy) {
+                        if (dy < matchingDy) {
                             matchingEl = snappingEl;
                             matchingDy = dy;
                         }
@@ -111,8 +120,8 @@
                         var $matchingEl = $(matchingEl),
                             endScroll = $matchingEl.offset()[leftOrTop.toLowerCase()] + settings.offset,
                             animateProp = {};
-                        animateProp['scroll'+leftOrTop] = endScroll;
-                        if ($scrollingEl['scroll'+leftOrTop]() != endScroll) {
+                        animateProp[scrollLT] = endScroll;
+                        if ($scrollingEl[scrollLT]() != endScroll && Math.abs($scrollingEl[scrollLT]() - endScroll) > settings.minimum) {
                             $('html, body').animate(animateProp, settings.duration, settings.easing, debounce(function () {
                                 if (settings.onSnap) {
                                     settings.onSnap($matchingEl);
@@ -123,8 +132,9 @@
                         }
                     }
                 };
+
                 $scrollingEl.bind('scrollstop', {latency: settings.latency}, handler);
-                $(window).bind('resize', {latency: settings.latency}, handler);
+                $(win).bind('resize', handler);
             }
         });
     };

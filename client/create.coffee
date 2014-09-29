@@ -280,15 +280,6 @@ Template.create_image_section.events
         context = newDocument 
         renderTemplate(d, Template.display_image_section, context)
 
-Template.last_horizontal_section_block.helpers
-    lastUpdate: -> 
-        Session.get('lastUpdate')
-        return
-    text: -> (@type is "text")
-    image: -> (@type is "image")
-    map: -> (@type is "map")
-    video: -> (@type is "video")
-
 Template.horizontal_section_block.helpers
     lastUpdate: -> 
         Session.get('lastUpdate')

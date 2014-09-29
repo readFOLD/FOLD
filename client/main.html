@@ -25,7 +25,7 @@
 	<article class="content">
 		<div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}" style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
 			{{> vertical_narrative}}
-			<div class="spacer">
+			<div class="spacer" style="height: {{spacerHeight}}px">
 			</div>
 		</div>
 		{{#unless narrativeView}}
@@ -46,7 +46,6 @@
 
 <template name="vertical_section_block">
 	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}">
-		{{debugContext}}
 		{{#if validTitle}}
      		<div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
 		{{/if}}
@@ -85,18 +84,10 @@
 	{{#each horizontalSections}}
 	    {{#if horizontalShown}}
             {{#each data}}
-                {{debugContext}}
-                {{#if type}}
-                    {{#if last}}
-                        {{ > last_horizontal_section_block}}
-   	                {{/if}}
-   	            {{/if}}
    	            {{#if read}}
    	                {{#if type}}
      	                {{> horizontal_section_block}}
    	                {{/if}}
-                {{else}}
-   	                {{> horizontal_section_block}}
    	            {{/if}}
    	        {{/each}}
    	        {{#unless read}}
@@ -106,22 +97,11 @@
 	{{/each}}
 </template>
 
-<template name="last_horizontal_section_block">
-	<section class="narrative-section horizontal-narrative-section last_section" style="width: {{cardWidth}}px; left: {{left}}px">
-		{{#if type}}
-		    {{#if text}}{{> display_text_section}}{{/if}}
-		    {{#if image}}{{> display_image_section}}{{/if}}
-		    {{#if map}}{{> display_map_section}}{{/if}}
-		    {{#if video}}{{> display_video_section}}{{/if}}
-		{{else}}
-    		{{> horizontal_section_buttons}}
-    	{{/if}}
-	</section>
-</template>
-
 <template name="horizontal_section_block">
-	<section class="narrative-section horizontal-narrative-section {{#if first}}first{{/if}}" data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px">
-		{{debugContext}}
+	<section class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}}" data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px">		
+		<div id="index">
+			{{index}}
+		</div>
 		{{#if type}}
 		    {{#if text}}{{> display_text_section}}{{/if}}
 		    {{#if image}}{{> display_image_section}}{{/if}}
@@ -182,7 +162,7 @@
 
 <template name="story_browser">
 	<div class="story-browser">
-		<i class="fa fa-chevron-left fa-2x left"></i>
-		<i class="fa fa-chevron-right fa-2x right"></i>
+		<i id="left" class="fa fa-chevron-left fa-2x"></i>
+		<i id="right" class="fa fa-chevron-right fa-2x"></i>
 	</div>
 </template>
