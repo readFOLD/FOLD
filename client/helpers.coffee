@@ -1,6 +1,7 @@
 # Global handlebars helpers
 
 Handlebars.registerHelper "debugContext", -> console.log this
+Handlebars.registerHelper "pastHeader", -> Session.get "pastHeader"
 Handlebars.registerHelper "read", -> Session.get "read"
 
 Handlebars.registerHelper "cardWidth", ->

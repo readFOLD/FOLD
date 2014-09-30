@@ -36,7 +36,7 @@
             'direction': 'y',
             'snaps' : '*',
             'proximity' : 12,
-            'minimum': 8,
+            'minimum': 3,
             'offset' : 0,
             'duration' : 200,
             'latency' : 250,

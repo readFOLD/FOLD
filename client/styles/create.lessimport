@@ -38,6 +38,8 @@ div.save-background-image {
 }
 
 div.title-overlay {
+	cursor: pointer;
+	min-width: 1024px;
 	height: 350px;
 	z-index: 30;
 	// background-color: @color-medium-green;
@@ -52,6 +54,25 @@ div.title-overlay {
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
+
+	div.arrow-container {
+		width: 100%;
+		img {
+			.background-transition;
+			position: relative;
+			top: 275px;
+			left: 50%;
+			margin-left: -30px;
+			width: 60px;
+			border-radius: 30px;
+			background-color: white;
+			cursor: pointer;
+
+			&:hover {
+				background-color: @color-medium-green;
+			}
+		}
+	}
 
 	div.logo {
 		.opacity-transition;
@@ -106,13 +127,33 @@ div.title-overlay {
 		margin-top: 100px;
 	}
 
+
+	div.attribution {
+		position: absolute;
+		top: 305px;
+		right: 15px;
+		background-color: @color-dark-black;
+		padding: 5px 10px;
+		opacity: 0.0;
+
+		&.shown {
+			opacity: 1.0;
+		}
+	}
+
+	div.aj {
+		top: 15px;
+	}
+
 	div.title-author {
 		position: absolute;
-		margin-left: 60px;
-		padding-top: 135px;
+		margin-left: 20px;
+	    margin-top: 125px;
+		padding: 11px;
+		background-color: @color-dark-black;
 		&.fixed {
 			position: fixed;
-			padding-top: 16px;
+			padding-top: 20px;
 		}
 		div.title {
 			text-transform: uppercase;

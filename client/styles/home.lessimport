@@ -199,31 +199,7 @@ div.filter {
 	}
 }
 
-div.story-browser {
-	position: fixed;
-	width: 100%;
-	height: 0px;
-	z-index: 10;
 
-	i {
-		.color-transition;
-		color: white;
-		cursor: pointer;
-		margin-top: 275px;	
-		&:hover {
-			color: @color-fold-black;
-		}
-	}
-
-	i.fa-chevron-left {
-		margin-left: 15px;
-	}
-
-	i.fa-chevron-right {
-		margin-right: 15px;
-		float: right;
-	}
-}
 
 div.edit-or-read {
 	.background-transition;

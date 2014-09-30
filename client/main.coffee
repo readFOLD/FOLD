@@ -9,12 +9,13 @@ getCardWidth = (windowWidth) ->
   else
     cardWidth = 520
 
+Session.set "windowHeight", $(window).height()
 Session.set "separation", 10
 Session.set "width", window.outerWidth
 Session.set "cardWidth", getCardWidth(Session.get("width"))
 # Set session variable if window resized (throttled rate) and window outerwidth greater than 1024px
 throttledResize = _.throttle(->
-  Session.set "windowHeight", $(window).height()
+  
   if window.outerWidth > 1024
     Session.set "resize", new Date()
     Session.set "width", window.outerWidth
@@ -45,6 +46,7 @@ scrollSnap = ->
 updatecurrentY = ->
   scrollTop = $(document).scrollTop()
   Session.set("scrollTop", scrollTop)
+
   #######################
   # Banner scrolling
   # TODO: Make sure every pixel behaves as expected
@@ -69,8 +71,10 @@ updatecurrentY = ->
 
   # First breakpoint: sticky title and author
   if scrollTop >= stickyTitle
+    $("div.title-author").css("margin-top": "0px")
     $("div.title-author").addClass("fixed")
   else
+    $("div.title-author").css("margin-top": "125px")
     $("div.title-author").removeClass("fixed")
 
   if scrollTop >= stickyBody
@@ -94,7 +98,7 @@ updatecurrentY = ->
   if scrollTop >= readMode
     Session.set("pastHeader", true)
   else
-    $(document).scrollTop(readMode)
+    Session.set("pastHeader", false)
 
 Meteor.startup ->
   Session.setDefault("filterOpen", false)
@@ -102,30 +106,65 @@ Meteor.startup ->
   Session.setDefault("category", "all")
   Session.setDefault("pastY", [])
   Session.setDefault("pastX", [])
-  Session.setDefault("currentY", 0)
-  Session.setDefault("currentX", 0)
+  Session.setDefault("currentY", undefined)
+  Session.setDefault("currentX", undefined)
 
   # Scroll listener
   throttledUpdate = _.throttle(updatecurrentY, 5)
   $(document).scroll(throttledUpdate)
 
-  # scrollThrottle = _.throttle(scrollSnap, 500)
-  # $(document).scroll(scrollThrottle)
-
 Template.story_header.helpers
-    title: ->-
+    title: ->
         if @title then @title
         else Session.get("storyTitle")
+    headerImageAttribution: ->
+      console.log(this)
+      @headerImageAttribution
     backgroundImage: ->
         if @backgroundImage then @backgroundImage
         else Session.get("backgroundImage")
     username: ->
-        # Put this into waitOn handler
-        if Meteor.user()
-            if Meteor.user().emails
-                Meteor.user().emails[0].address
-            else
-                Meteor.user().profile.name
+      "Alexis Hope and Kevin Hu"
+        # # Put this into waitOn handler
+        # if Meteor.user()
+        #     if Meteor.user().emails
+        #         Meteor.user().emails[0].address
+        #     else
+        #         Meteor.user().profile.name
+Template.story_header.events = 
+  "click #banner-overlay": ->
+    console.log("clicking overlay")
+    if Session.get("pastHeader")
+      $("html, body").animate(scrollTop: 0, -> $('#to-story, .attribution').fadeIn())
+      path = window.location.pathname.split("/")
+      path.pop()
+      path.pop()
+      window.history.pushState({}, '', path.join("/"))
+
+    else
+      $('#to-story, .attribution').fadeOut()
+      goToX(0)
+      goToY(0)
+
+  "click #to-header": ->
+    Session.set("pastHeader", false)
+    $('#to-story, .attribution').fadeIn()
+Template.story.events = 
+  "click .link": (d) ->
+    srcE = if d.srcElement then d.srcElement else d.target
+    x = $(srcE).data("x")
+    y = $(srcE).data("y")
+    goToXY(x, y)
+
+  "keydown": (d) ->
+    if d.keyCode is 38  # up
+      goToY(Session.get("currentY") - 1)
+    else if d.keyCode is 40  # down
+      goToY(Session.get("currentY") + 1)
+    else if d.keyCode is 39 # right
+      return
+    else if d.keyCode is 37 # right
+      return
 
 Template.story.helpers
     horizontalExists: ->
@@ -158,16 +197,31 @@ Template.vertical_narrative.helpers
   verticalSections: -> Session.get("verticalSections")
 
 Template.vertical_section_block.helpers
-  verticalSelected: -> Session.equals("currentY", @index)
+  notFirst: -> (!Session.equals("currentY", 0))
+  verticalSelected: -> (Session.equals("currentY", @index) and Session.get("pastHeader"))
   validTitle: -> (@title is not "title")
 
 Template.vertical_narrative.events 
+  "click #card-down": ->
+    currentY = Session.get("currentY")
+    newY = currentY + 1
+    goToXY(0, newY)
+  "click #card-up": ->
+    currentY = Session.get("currentY")
+    newY = currentY - 1
+    goToXY(0, newY)
   "click section": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target
     i = $(srcE).data('vertical-index')
     unless i?
       i = $(srcE).closest('section').data('vertical-index')
-    goToY(i)
+    unless i is Session.get("currentY")
+      goToXY(0, i)
+
+Template.minimap.helpers
+  horizontalSections: -> Session.get("horizontalSections")
+  selectedX: -> Session.equals("currentX", @index)
+  selectedY: -> Session.equals("currentY", @index)
 
 Template.horizontal_context.helpers
     verticalExists: -> Session.get("verticalSections").length
@@ -220,28 +274,30 @@ Template.horizontal_section_block.helpers
 
       return left
 
+    lastUpdate: -> 
+        Session.get('lastUpdate')
+        return
+    text: -> (@type is "text")
+    image: -> (@type is "image")
+    map: -> (@type is "map")
+    video: -> (@type is "video")
+    oec: -> (@type is "oec")
+
 Template.story_browser.events
   "click #left": (d) ->
-    newX = Session.get("currentX") - 1
-    goToX(newX)
-
     horizontalSection = Session.get("horizontalSections")[Session.get("currentY")].data
     currentX = Session.get("currentX")
 
     newX = if (currentX is (horizontalSection.length - 1)) then 0 else currentX + 1
+    goToX(newX)
     Session.set("currentX", newX)
     path = window.location.pathname.split("/")
     path[4] = Session.get("currentX")
     window.history.pushState({}, '', path.join("/"))
 
   "click #right": (d) ->
-    newX = Session.get("currentX") + 1
-    goToX(newX)
-
     horizontalSection = Session.get("horizontalSections")[Session.get("currentY")].data
     currentX = Session.get("currentX")
-
-    # Session.set("pastX", Session.get("pastX").push(currentX))
 
     newX = if currentX then (currentX - 1) else (horizontalSection.length - 1)
     Session.set("currentX", newX)

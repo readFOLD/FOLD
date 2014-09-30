@@ -10,6 +10,7 @@
 @color-inactive-grey: #E0E2E1;
 // @color-dark-grey: #494A49;
 @color-dark-grey: #333333;
+@color-link-grey: #d7dbd8;
 
 
 // http://asimpleframe.com/
@@ -117,7 +118,7 @@ body {
 	// font-family: 'Alegreya Sans' , sans-serif;
 	//font-family: ;
 	margin: 0;
-	overflow-x: hidden;
+	overflow: hidden;
 	background-color: @color-dark-grey;
 
 	// Where should this be ??
@@ -126,6 +127,34 @@ body {
 	font-size: 15px;
 
 	// background: url(/banksy.jpg) no-repeat center center fixed; 
+}
+
+div.story-browser {
+	position: fixed;
+	width: 100%;
+	height: 0px;
+	z-index: 10;
+
+	img {
+		.background-transition;
+		color: white;
+		cursor: pointer;
+		margin-top: 275px;	
+		border-radius: 30px;
+		&:hover {
+			background-color: @color-medium-green;
+			border-radius: 30px;
+		}
+	}
+
+	img#left {
+		margin-left: 20px;
+	}
+
+	img#right {
+		margin-right: 20px;
+		float: right;
+	}
 }
 
 article.content {
@@ -155,15 +184,40 @@ section.narrative-section {
 	transition: background-color 0.25s ease;
 	background-color: @color-inactive-grey;
 
+	span.link {
+		.background-transition;
+		background-color: @color-link-grey;
+		cursor: pointer;
+		padding: 0 4px;
+		&:hover {
+			background-color: @color-light-green;
+		}
+	}
 
+	div.vertical-nav-container {
+		position: absolute;
+		top: 24px;
+		right: 15px;
+
+		img.arrow {
+			.background-transition;
+			margin-right: 5px;
+			display: inline;
+			border-radius: 17.5px;
+			cursor: pointer;
+			&:hover {
+				background-color: @color-medium-green;
+			}
+		}
+	}
 
 	div.title {
 		cursor: text;
 		line-height: 23px;
 		text-align: left;
-		font-size: 15px;
-		margin-top: 20px;
-		margin-left:10px;
+		font-size: 20px;
+		margin-top: 30px;
+		margin-left:15px;
 		margin-right:15px;
 		font-weight: 600;
 	}
@@ -180,6 +234,10 @@ section.narrative-section {
 		&.minimized {
 			height: 0;
 			display: none;
+		}
+
+		p {
+			margin-bottom: 30px;
 		}
 	}
 
@@ -217,12 +275,16 @@ div.vertical-narrative {
 	}
 
 	section.narrative-section {
+		position: relative;
+		cursor: pointer;
+		p {
+			cursor: pointer;
+		}
 		.width-transition;
 		.height-transition;
 		overflow-y: scroll;
 		width: 100%;
 		min-height: 300px;
-		// height: 300px;
 		opacity: 0.25;
 		&.read {
 			margin-bottom: 12px;			
@@ -230,9 +292,12 @@ div.vertical-narrative {
 		// box-shadow: 3px 3px @color-medium-grey;
 
 		&.selected {
+			cursor: default;
 			opacity: 1.0;
 			background-color: white;
-     		// background-color: @color-medium-green;
+     		p {
+     			cursor: text;
+     		}
      	}
 	}
 
@@ -262,6 +327,10 @@ div.vertical-narrative {
 			}
 		}
 	}
+}
+
+div.oec-section {
+	background-color: white;
 }
 
 div.horizontal-context {
@@ -321,5 +390,46 @@ section.horizontal-narrative-section {
 
 	&.new-section {
 		opacity: 1.0;
+	}
+}
+
+div.minimap {
+	padding: 10px;
+	padding-bottom: 6px;
+	background-color: white;
+	position: fixed;
+	bottom: 12px;
+	right: 12px;
+
+	div.vertical.block {
+		height: 20px;
+		width: 26px;
+	}
+
+	div.section {
+		height: 20px;
+		margin-bottom: 4px;
+
+		&.selected-section {
+			div.selected-block {
+				background-color: @color-medium-green;							
+			}
+		}
+	}
+
+	div.horizontal.block {
+		margin-bottom: 3px;
+	}
+
+	div.block {
+		.background-transition;
+		height: 15px;
+		width: 20px;
+		background-color: black;
+		display: inline-block;
+
+		&.selected {
+
+		}
 	}
 }

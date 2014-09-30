@@ -27,8 +27,8 @@ Router.map ->
 	    	Session.set "read", true
 	    	Session.set "page", "read"
 
-	    	Session.set("currentY", 0)
-	    	Session.set("currentX", 0)
+	    	# Session.set("currentY", 0)
+	    	# Session.set("currentX", 0)
 
 	    	if story
 	    		Session.set "verticalSections", story.verticalSections
@@ -37,7 +37,7 @@ Router.map ->
 	    	return story
 
 	@route "read",
-	    path: "read/:storyDashTitle/:currentY/:currentX"
+	    path: "read/:storyDashTitle/:currentX/:currentY"
 	    template: "read"
 	    onBeforeAction: -> @subscribe('readStoryPub', @.params.storyDashTitle).wait()
 	    action: -> if @ready() then @render()
@@ -45,6 +45,7 @@ Router.map ->
 	    	# Scroll to current section
 	    	x = Session.get("currentX")
 	    	y = Session.get("currentY")
+
 	    data: ->
 	    	# Get rid of these
 	    	story = Stories.findOne()
@@ -52,8 +53,13 @@ Router.map ->
 	    	Session.set "read", true
 	    	Session.set "page", "read"
 
-	    	Session.set("currentY", parseInt(@.params.currentY))
-	    	Session.set("currentX", parseInt(@.params.currentX))
+	    	x = parseInt(@.params.currentY)
+	    	y = parseInt(@.params.currentX)
+	    	if x and y
+	    		Session.set("pastHeader", true)
+
+	    	Session.set("currentY", y)
+	    	Session.set("currentX", x)
 	    	if story
 	    		Session.set "verticalSections", story.verticalSections
 	    		Session.set "horizontalSections", story.horizontalSections

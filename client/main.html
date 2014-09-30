@@ -8,14 +8,24 @@
 		<div id="banner-overlay">						
 		</div>
 		<div class="title-author">
-			<div class="title" contenteditable="true">{{title}}</div>
-			<div class="author" contenteditable="true">By {{username}}</div>
+			<div class="title" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
+			<div class="author">By {{username}}</div>
 		</div>
 		<div class="logo">
-			<a href="/">
+			<!-- <a href="/"> -->
 				<img src="/logo.png">
-			</a>
+			<!-- </a> -->
 		</div>
+		
+		<div class="attribution aj {{#unless pastHeader}}shown{{/unless}}">
+			Developed for Al Jazeera Innovation Challenge
+		</div>
+		<div class="attribution {{#unless pastHeader}}shown{{/unless}}">
+			Header Image Source: {{headerImageAttribution}}
+		</div>
+<!-- 		<div class="arrow-container">
+			<img id="to-story" src="/arrow_down.svg" />
+		</div> -->
 	</div>
 </template>
 
@@ -36,6 +46,7 @@
 	</article>
 
 	{{#if pastHeader}}
+	    {{> minimap}}
 	    {{#if horizontalExists}}
 	    <div class="browser-offset">
 	    	{{> story_browser}}
@@ -46,13 +57,21 @@
 
 <template name="vertical_section_block">
 	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}">
-		{{#if validTitle}}
-     		<div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
-		{{/if}}
+		<div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
 		<div class="content {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">
-			<p contenteditable="true">{{content}}</p>
-			<img src="{{image}}" />
+<!-- 			<span class="link" data-y="0" data-x="1">test</span> -->
+			<p contenteditable="{{#unless read}}true{{/unless}}">{{{content}}}</p>
 		</div>
+		<div class="button">
+		</div>
+		{{#if verticalSelected}}
+		<div class="vertical-nav-container">
+			{{#if notFirst}}
+    		<img id="card-up" class="arrow" src='/arrow_up.svg' />
+    		{{/if}}
+	    	<img id="card-down" class="arrow" src='/arrow_down.svg' />
+	    </div>
+		{{/if}}
 	</section>
 </template>
 
@@ -99,14 +118,15 @@
 
 <template name="horizontal_section_block">
 	<section class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}}" data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px">		
-		<div id="index">
+<!-- 		<div id="index">
 			{{index}}
-		</div>
+		</div> -->
 		{{#if type}}
 		    {{#if text}}{{> display_text_section}}{{/if}}
 		    {{#if image}}{{> display_image_section}}{{/if}}
 		    {{#if map}}{{> display_map_section}}{{/if}}
 		    {{#if video}}{{> display_video_section}}{{/if}}
+		    {{#if oec}}{{> display_oec_section}}{{/if}}
 		{{else}}
     		{{> horizontal_section_buttons}}
     	{{/if}}
@@ -125,7 +145,7 @@
 
 <template name="display_image_section">
 	<div class="image-section">
-		<img src="{{url}}" />
+		<img src="/{{url}}" />
 		{{#if description}}
     		<div class="description-overlay">
     			{{description}}
@@ -140,6 +160,15 @@
 <template name="display_map_section">
 	<div class="map-section">
 		<iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
+	</div>
+	{{#unless read}}
+    	{{> horizontal_section_edit_delete}}
+    {{/unless}}
+</template>
+
+<template name="display_oec_section">
+	<div class="oec-section">
+		<iframe width="100%" height="360" frameborder="0" style="border:0" src="{{url}}"></iframe>
 	</div>
 	{{#unless read}}
     	{{> horizontal_section_edit_delete}}
@@ -162,7 +191,26 @@
 
 <template name="story_browser">
 	<div class="story-browser">
-		<i id="left" class="fa fa-chevron-left fa-2x"></i>
-		<i id="right" class="fa fa-chevron-right fa-2x"></i>
+		<img id="left" src="/arrow_left.svg" />
+		<img id="right" src="/arrow_right.svg" />
+	</div>
+</template>
+
+<template name="minimap">
+	<div class="minimap">
+		{{#each horizontalSections}}
+		<div class="section {{#if selectedY}}selected-section{{/if}}">
+			<div class="vertical block {{#if selectedY}}selected-block{{/if}}">
+			</div>
+			{{#each data}}
+   	            {{#if read}}
+   	                {{#if type}}
+   	                <div class="horizontal block {{#if selectedX}}selected-block{{/if}}">
+   	                </div>
+   	                {{/if}}
+   	            {{/if}}
+   	        {{/each}}
+		</div>
+		{{/each}}
 	</div>
 </template>
