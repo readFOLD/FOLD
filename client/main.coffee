@@ -133,14 +133,12 @@ Template.story_header.helpers
         #         Meteor.user().profile.name
 Template.story_header.events = 
   "click #banner-overlay": ->
-    console.log("clicking overlay")
     if Session.get("pastHeader")
       $("html, body").animate(scrollTop: 0, -> $('#to-story, .attribution').fadeIn())
       path = window.location.pathname.split("/")
       path.pop()
       path.pop()
       window.history.pushState({}, '', path.join("/"))
-
     else
       $('#to-story, .attribution').fadeOut()
       goToX(0)

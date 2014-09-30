@@ -157,6 +157,20 @@ div.story-browser {
 	}
 }
 
+img#back {
+	.background-transition;
+	cursor: pointer;
+	position: fixed;
+	border-radius: 30px;
+	right: 150px;
+	bottom: 10px;
+
+	&:hover {
+			background-color: @color-medium-green;
+			border-radius: 30px;
+		}
+}
+
 article.content {
 	opacity: 0.5;
 }
