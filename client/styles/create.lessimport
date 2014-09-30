@@ -58,18 +58,22 @@ div.title-overlay {
 	div.arrow-container {
 		width: 100%;
 		img {
-			.background-transition;
 			position: relative;
 			top: 275px;
 			left: 50%;
 			margin-left: -30px;
 			width: 60px;
+			background-color: @color-dark-black;
 			border-radius: 30px;
-			background-color: white;
-			cursor: pointer;
+		}
 
-			&:hover {
-				background-color: @color-medium-green;
+		#to-header {
+			.opacity-transition;
+			position: fixed;
+			opacity: 0.0;
+			top: 38px;
+			&.shown {
+				opacity: 1.0				
 			}
 		}
 	}

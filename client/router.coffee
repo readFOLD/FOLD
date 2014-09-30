@@ -1,12 +1,12 @@
 Router.map ->
-	# @route "home",
-	#     path: "/"
-	#     template: "home"
-	#     onRun: -> $('html, body').scrollTop(0)
-	#     onBeforeAction: -> @subscribe('exploreStoriesPub', '', '', '').wait()
-	#     action: -> if @ready() then @render()
-	#     data: ->
-	#     	Session.set "page", "explore"
+	@route "home",
+	    path: "/"
+	    template: "home"
+	    onRun: -> $('html, body').scrollTop(0)
+	    onBeforeAction: -> @subscribe('exploreStoriesPub', '', '', '').wait()
+	    action: -> if @ready() then @render()
+	    data: ->
+	    	Session.set "page", "explore"
 
 	# @route "profile",
 	#     path: "profile/:userId"

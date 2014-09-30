@@ -1,6 +1,6 @@
 Template.read.rendered = ->
     unless (Session.equals("currentY", undefined) and Session.equals("currentX", undefined))
-        $('.attribution').fadeOut(1)
+        $('.attribution, #to-story').fadeOut(1)
         goToY(Session.get("currentY"))
         goToX(Session.get("currentX"))
 #     Deps.autorun ->

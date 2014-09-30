@@ -132,8 +132,20 @@ Template.story_header.helpers
         #     else
         #         Meteor.user().profile.name
 Template.story_header.events = 
+  "mouseover #banner-overlay, mouseover #to-header": ->
+    if Session.get('pastHeader')
+      $("#to-header").addClass('shown')
+  "mouseout #banner-overlay": ->
+    if Session.get('pastHeader')
+      $("#to-header").removeClass('shown')
+
+  "click #to-story": ->
+    $('#to-story, .attribution').fadeOut()
+    goToX(0)
+    goToY(0)
   "click #banner-overlay": ->
     if Session.get("pastHeader")
+      $("#to-header").removeCLass("shown")
       $("html, body").animate(scrollTop: 0, -> $('#to-story, .attribution').fadeIn())
       path = window.location.pathname.split("/")
       path.pop()
@@ -145,8 +157,12 @@ Template.story_header.events =
       goToY(0)
 
   "click #to-header": ->
-    Session.set("pastHeader", false)
-    $('#to-story, .attribution').fadeIn()
+    $("#to-header").removeClass("shown")
+    $("html, body").animate(scrollTop: 0, -> $('#to-story, .attribution').fadeIn())
+    path = window.location.pathname.split("/")
+    path.pop()
+    path.pop()
+    window.history.pushState({}, '', path.join("/"))
 Template.story.events = 
   "click .link": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target
@@ -198,7 +214,6 @@ Template.vertical_section_block.helpers
   notFirst: -> (!Session.equals("currentY", 0))
   verticalSelected: -> (Session.equals("currentY", @index) and Session.get("pastHeader"))
   validTitle: -> (@title is not "title")
-
 Template.vertical_narrative.events 
   "click #card-down": ->
     currentY = Session.get("currentY")
