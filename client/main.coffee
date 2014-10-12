@@ -117,9 +117,7 @@ Template.story_header.helpers
     title: ->
         if @title then @title
         else Session.get("storyTitle")
-    headerImageAttribution: ->
-      console.log(this)
-      @headerImageAttribution
+    headerImageAttribution: -> @headerImageAttribution
     backgroundImage: ->
         if @backgroundImage then @backgroundImage
         else Session.get("backgroundImage")
@@ -138,15 +136,16 @@ Template.story_header.events =
   "mouseout #banner-overlay": ->
     if Session.get('pastHeader')
       $("#to-header").removeClass('shown')
-
   "click #to-story": ->
     $('#to-story, .attribution').fadeOut()
     goToX(0)
     goToY(0)
   "click #banner-overlay": ->
     if Session.get("pastHeader")
-      $("#to-header").removeCLass("shown")
+      $("#to-header").removeClass("shown")
       $("html, body").animate(scrollTop: 0, -> $('#to-story, .attribution').fadeIn())
+      Session.set("currentX", undefined)
+      Session.set("currentY", undefined)
       path = window.location.pathname.split("/")
       path.pop()
       path.pop()
@@ -159,6 +158,8 @@ Template.story_header.events =
   "click #to-header": ->
     $("#to-header").removeClass("shown")
     $("html, body").animate(scrollTop: 0, -> $('#to-story, .attribution').fadeIn())
+    Session.set("currentX", undefined)
+    Session.set("currentY", undefined)
     path = window.location.pathname.split("/")
     path.pop()
     path.pop()
@@ -246,7 +247,8 @@ Template.horizontal_context.helpers
     horizontalShown: -> Session.equals("currentY", @index)
 
 Template.horizontal_section_block.helpers
-    selected: -> Session.equals("currentX", @index)
+    selected: -> 
+      Session.equals("currentX", @index)
     # Initial left positioning of horizontal block
     left: ->
       # Get width of page and declare helper variables      

@@ -1,17 +1,8 @@
 Template.create.rendered = ->
-    Deps.autorun ->
-        if Session.get("pastHeader")
-            # Session.get("verticalSections")
-            Session.get("resize")
-            $(document).scrollsnap(
-                snaps: 'section.vertical-narrative-section'
-                proximity: 50
-                latency: 250
-                onSnap: (d) -> 
-                    # Need to adjust for "add stuff" blocks
-                    Session.set("currentVertical", ($(d).index()-1)/2)
-                offset: -$('div.horizontal-context').offset().top + 180
-                )
+    unless (Session.equals("currentY", undefined) and Session.equals("currentX", undefined))
+        $('.attribution, #to-story').fadeOut(1)
+        goToY(Session.get("currentY"))
+        goToX(Session.get("currentX"))
 
 Template.background_image.helpers 
     backgroundImage: ->
@@ -146,24 +137,28 @@ Template.add_horizontal.helpers
         cardWidth = Session.get "cardWidth"
         halfWidth + (Session.get "separation") / 2
 
-Template.add_horizontal.events
-    "click section": (d) ->
-        # unless Session.get("editingContext")
-        #     # TODO Make this based on a session variable
-        #     $("section.horizontal-new-section").animate({height: "100%", width: "540px"}, 250)
+# Template.add_horizontal.events
+#     "click section": (d) ->
+#         # unless Session.get("editingContext")
+#         #     # TODO Make this based on a session variable
+#         #     $("section.horizontal-new-section").animate({height: "100%", width: "540px"}, 250)
 
-        #     # Shift all horizontal sections right
-        #     $("div.horizontal-context section:not(:first)").animate({left: "+=440px"}, 250)
+#         #     # Shift all horizontal sections right
+#         #     $("div.horizontal-context section:not(:first)").animate({left: "+=440px"}, 250)
 
-        #     Session.set("editingContext", true)
+#         #     Session.set("editingContext", true)
 
-        # Append Horizontal Section to Current Horizontal Context
-        horizontalSections = Session.get('horizontalSections')
-        console.log("horizontalSections", horizontalSections, Session.get('currentVertical'))
-        newHorizontalSection = 
-            index: Session.get("horizontalSections")[Session.get('currentVertical')].data.length
-        horizontalSections[Session.get('currentVertical')].data.push(newHorizontalSection)
-        Session.set('horizontalSections', horizontalSections)   
+#         # Append Horizontal Section to Current Horizontal Context
+#         horizontalSections = Session.get('horizontalSections')
+#         console.log("horizontalSections", horizontalSections, Session.get('currentVertical'))
+#         newHorizontalSection = 
+#             if Session.get("horizontalSections")[Session.get('currentVertical')]?.data?.length
+#                 x = Session.get("horizontalSections")[Session.get('currentVertical')].data.length
+#             else 
+#                 x = 0
+#             index: x
+#         horizontalSections[Session.get('currentVertical')].data.push(newHorizontalSection)
+#         Session.set('horizontalSections', horizontalSections)   
 
 renderTemplate = (d, templateName, context) ->
     srcE = if d.srcElement then d.srcElement else d.target
