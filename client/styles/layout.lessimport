@@ -240,18 +240,16 @@ section.narrative-section {
 		min-height: 100px;
 		cursor: text;
 		line-height: 26px;
+		overflow-y: scroll;
 		text-align: left;
 		font-size: 17px;
 		margin-top: 25px;
 		margin-left: 15px;
 		margin-right: 18px;
+		margin-bottom: 30px;
 		&.minimized {
 			height: 0;
 			display: none;
-		}
-
-		p {
-			margin-bottom: 30px;
 		}
 	}
 
@@ -270,6 +268,10 @@ section.narrative-section {
 			}
 		};
 	}
+}
+
+div.description-overlay {
+	font-size: 17px;
 }
 
 div.vertical-narrative {
@@ -410,19 +412,19 @@ section.horizontal-narrative-section {
 div.minimap {
 	padding: 10px;
 	padding-bottom: 6px;
-	background-color: white;
+	background-color: black;
 	position: fixed;
 	bottom: 12px;
 	right: 12px;
 
 	div.vertical.block {
-		height: 20px;
-		width: 26px;
+		height: 18px;
+		width: 28px;
 	}
 
 	div.section {
 		height: 20px;
-		margin-bottom: 4px;
+		margin-bottom: 3px;
 
 		&.selected-section {
 			div.selected-block {
@@ -433,13 +435,26 @@ div.minimap {
 
 	div.horizontal.block {
 		margin-bottom: 3px;
+		height: 14px;
+		width: 22px;
+		margin-left: 1px;
+
+		&::before {
+			position: relative;
+			padding-right: 5px;
+			left: -5px;
+			top: 7px;
+			border-top: 2px solid white;
+			width: 10px;
+			content: ""
+		}
 	}
 
 	div.block {
 		.background-transition;
 		height: 15px;
 		width: 20px;
-		background-color: black;
+		background-color: white;
 		display: inline-block;
 
 		&.selected {

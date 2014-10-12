@@ -121,14 +121,8 @@ Template.story_header.helpers
     backgroundImage: ->
         if @backgroundImage then @backgroundImage
         else Session.get("backgroundImage")
-    username: ->
-      "Alexis Hope and Kevin Hu"
-        # # Put this into waitOn handler
-        # if Meteor.user()
-        #     if Meteor.user().emails
-        #         Meteor.user().emails[0].address
-        #     else
-        #         Meteor.user().profile.name
+    username: -> "Alexis Hope and Kevin Hu"
+
 Template.story_header.events = 
   "mouseover #banner-overlay, mouseover #to-header": ->
     if Session.get('pastHeader')
@@ -215,6 +209,9 @@ Template.vertical_section_block.helpers
   notFirst: -> (!Session.equals("currentY", 0))
   verticalSelected: -> (Session.equals("currentY", @index) and Session.get("pastHeader"))
   validTitle: -> (@title is not "title")
+  maxHeight: ->
+    400
+
 Template.vertical_narrative.events 
   "click #card-down": ->
     currentY = Session.get("currentY")
