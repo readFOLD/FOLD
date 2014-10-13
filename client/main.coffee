@@ -222,12 +222,16 @@ Template.vertical_narrative.events
     newY = currentY - 1
     goToXY(0, newY)
   "click section": (d) ->
+    $('#to-story, .attribution').fadeOut()
     srcE = if d.srcElement then d.srcElement else d.target
     i = $(srcE).data('vertical-index')
     unless i?
       i = $(srcE).closest('section').data('vertical-index')
+    # Don't do anything if click on current card
     unless i is Session.get("currentY")
-      goToXY(0, i)
+      goToX(0)
+      goToY(i)
+
 
 Template.minimap.helpers
   horizontalSections: -> Session.get("horizontalSections")

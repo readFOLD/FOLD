@@ -18,7 +18,7 @@ window.goToY = (y) ->
   )
 
   # Offset, cumulative sum
-  $('body').animate(
+  $('body,html').animate(
     scrollTop: verticalHeights[y]
   , 500, 'easeInExpo', -> 
     Session.set("currentY", y)
