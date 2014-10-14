@@ -243,7 +243,7 @@ Template.horizontal_context.helpers
     horizontalSections: -> Session.get("horizontalSections")
     moreThanOneSection: -> Session.get("horizontalSections").length > 1
     last: ->
-      lastIndex = Session.get("horizontalSections")[Session.get("currentY")].data.length - 1
+      lastIndex = Session.get("horizontalSections")[Session.get("currentY")]?.data.length - 1
       (@index is lastIndex) and (lastIndex > 0)
     horizontalShown: -> Session.equals("currentY", @index)
 
@@ -265,7 +265,7 @@ Template.horizontal_section_block.helpers
       else offset = 75 + Session.get("separation")
 
       # Current X
-      horizontalLength = Session.get("horizontalSections")[Session.get("currentY")].data.length
+      horizontalLength = Session.get("horizontalSections")[Session.get("currentY")]?.data.length
       lastIndex = horizontalLength - 1
 
       # Adjusting for currentX

@@ -26,8 +26,12 @@ window.goToY = (y) ->
     )
 
   path = window.location.pathname.split("/")
-  path[3] = y
-  path[4] = Session.get("currentX")
+  if path.length <= 4
+    path.push(y)
+    path.push(Session.get("currentX"))
+  else
+    path[path.length - 2] = y
+    path[path.length - 1] = Session.get("currentX")
   
   window.history.pushState({}, '', path.join("/"))
   return 
