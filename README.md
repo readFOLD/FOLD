@@ -1,4 +1,6 @@
-story-unfolds
+FOLD
 =============
 
-The Story Unfolds - project for The Future of News and Participatory Media Spring 2014.
+FOLD is a context creation platform for journalists and storytellers, allowing them to structure and craft complex stories.
+
+
