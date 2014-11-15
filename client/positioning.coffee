@@ -38,7 +38,8 @@ window.goToY = (y) ->
 
 window.goToX = (x) ->
   Session.set("currentX", x)
-  return 
+  return
+
 window.goDownOneCard = ->
   currentY = Session.get("currentY")
   newY = currentY + 1
