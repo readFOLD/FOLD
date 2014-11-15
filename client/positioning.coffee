@@ -39,3 +39,18 @@ window.goToY = (y) ->
 window.goToX = (x) ->
   Session.set("currentX", x)
   return 
+window.goDownOneCard = ->
+  currentY = Session.get("currentY")
+  newY = currentY + 1
+  goToXY(0, newY)
+
+window.goUpOneCard = ->
+  currentY = Session.get("currentY")
+  newY = currentY - 1
+  goToXY(0, newY)
+
+window.moveOneCard = (d) ->
+  if d < 0
+    goDownOneCard()
+  else if d > 0
+    goUpOneCard()
