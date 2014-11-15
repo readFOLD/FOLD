@@ -212,11 +212,11 @@ Template.vertical_section_block.helpers
   maxHeight: ->
     400
 
-moveOneCardThrottled = _.throttle moveOneCard, 1000, trailing: false
+moveOneCardThrottled = _.throttle moveOneCard, 700, trailing: false
 
 verticalNarrativeScrollHandler = (e) ->
   wheelDeltaY = e.originalEvent.wheelDeltaY
-  if Math.abs(wheelDeltaY) > 30
+  if Math.abs(wheelDeltaY) > 100
     moveOneCardThrottled wheelDeltaY
   e.preventDefault()
 
