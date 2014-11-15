@@ -223,8 +223,8 @@ verticalNarrativeScrollHandler = (e) ->
 Template.vertical_narrative.events
   'mousewheel': verticalNarrativeScrollHandler
   "click #card-down": ->
+    goDownOneCard()
   "click #card-up": ->
-    newY = currentY - 1
     goUpOneCard()
   "click section": (d) ->
     $('#to-story, .attribution').fadeOut()
