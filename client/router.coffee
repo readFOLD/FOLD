@@ -5,9 +5,8 @@ Router.map ->
 	    onRun: -> 
 	    	$('html, body').scrollTop(0)
 	    	@next()
-	    onBeforeAction: -> 
+	    waitOn: -> 
 	    	@subscribe('exploreStoriesPub', '', '', '').wait()
-	    	@next()
 	    action: -> if @ready() then @render()
 	    data: ->
 	    	Session.set "page", "explore"
@@ -22,9 +21,8 @@ Router.map ->
 	@route "read",
 	    path: "read/:storyDashTitle"
 	    template: "read"
-	    onBeforeAction: -> 
-	    	@subscribe('readStoryPub', @.params.storyDashTitle).wait()
-	    	@next()
+	    waitOn: -> 
+	    	Meteor.subscribe('readStoryPub', @.params.storyDashTitle)
 	    action: -> if @ready() then @render()
 	    data: ->
 	    	# Get rid of these
@@ -32,9 +30,6 @@ Router.map ->
 	    	Session.set "newStory", false
 	    	Session.set "read", true
 	    	Session.set "page", "read"
-
-	    	# Session.set("currentY", 0)
-	    	# Session.set("currentX", 0)
 
 	    	if story
 	    		Session.set "verticalSections", story.verticalSections
@@ -45,9 +40,8 @@ Router.map ->
 	@route "readWithCoordinates",
 	    path: "read/:storyDashTitle/:currentX/:currentY"
 	    template: "read"
-	    onBeforeAction: ->
+	    waitOn: ->
 	    	@subscribe('readStoryPub', @.params.storyDashTitle).wait()
-	    	@next()
 	    action: -> if @ready() then @render()
 	    onRun: ->
 	    	# Scroll to current section
@@ -96,9 +90,8 @@ Router.map ->
 	    onRun: -> 
 	    	$('html, body').scrollTop(0)
 	    	@next()
-	    onBeforeAction: -> 
+	    waitOn: -> 
 	    	@subscribe('createStoryPub', @.params.storyDashTitle).wait()
-	    	@next()
 	    action: -> if @ready() then @render()
 	    data: ->
 	    	story = Stories.findOne()
