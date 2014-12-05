@@ -3,7 +3,9 @@ Router.map ->
 	    path: "/"
 	    template: "home"
 	    onRun: -> $('html, body').scrollTop(0)
-	    onBeforeAction: -> @subscribe('exploreStoriesPub', '', '', '').wait()
+	    onBeforeAction: -> 
+	    	@subscribe('exploreStoriesPub', '', '', '').wait()
+	    	@next()
 	    action: -> if @ready() then @render()
 	    data: ->
 	    	Session.set "page", "explore"
@@ -18,7 +20,9 @@ Router.map ->
 	@route "read",
 	    path: "read/:storyDashTitle"
 	    template: "read"
-	    onBeforeAction: -> @subscribe('readStoryPub', @.params.storyDashTitle).wait()
+	    onBeforeAction: -> 
+	    	@subscribe('readStoryPub', @.params.storyDashTitle).wait()
+	    	@next()
 	    action: -> if @ready() then @render()
 	    data: ->
 	    	# Get rid of these
@@ -36,11 +40,12 @@ Router.map ->
 	    		Session.set "backgroundImage", story.backgroundImage
 	    	return story
 
-	@route "read",
+	@route "readWithCoordinates",
 	    path: "read/:storyDashTitle/:currentX/:currentY"
 	    template: "read"
 	    onBeforeAction: ->
 	    	@subscribe('readStoryPub', @.params.storyDashTitle).wait()
+	    	@next()
 	    action: -> if @ready() then @render()
 	    onRun: ->
 	    	# Scroll to current section
@@ -85,7 +90,9 @@ Router.map ->
 	    path: "create/:storyDashTitle"
 	    template: "create"
 	    onRun: -> $('html, body').scrollTop(0)
-	    onBeforeAction: -> @subscribe('createStoryPub', @.params.storyDashTitle).wait()
+	    onBeforeAction: -> 
+	    	@subscribe('createStoryPub', @.params.storyDashTitle).wait()
+	    	@next()
 	    action: -> if @ready() then @render()
 	    data: ->
 	    	story = Stories.findOne()
