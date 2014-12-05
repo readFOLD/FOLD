@@ -15,7 +15,7 @@ Session.set "width", window.outerWidth
 Session.set "cardWidth", getCardWidth(Session.get("width"))
 # Set session variable if window resized (throttled rate) and window outerwidth greater than 1024px
 throttledResize = _.throttle(->
-  
+
   if window.outerWidth > 1024
     Session.set "resize", new Date()
     Session.set "width", window.outerWidth
@@ -33,9 +33,9 @@ scrollSnap = ->
 
   verticalHeights = [constants.readModeOffset]
   sum = constants.readModeOffset
-  $('section.vertical-narrative-section').each( -> 
+  $('section.vertical-narrative-section').each( ->
     sum += $(this).height()
-    verticalHeights.push(sum) 
+    verticalHeights.push(sum)
   )
   tolerance = 20
   for height, i in verticalHeights
@@ -123,7 +123,7 @@ Template.story_header.helpers
         else Session.get("backgroundImage")
     username: -> "Alexis Hope and Kevin Hu"
 
-Template.story_header.events = 
+Template.story_header.events =
   "mouseover #banner-overlay, mouseover #to-header": ->
     if Session.get('pastHeader')
       $("#to-header").addClass('shown')
@@ -158,7 +158,7 @@ Template.story_header.events =
     path.pop()
     path.pop()
     window.history.pushState({}, '', path.join("/"))
-Template.story.events = 
+Template.story.events =
   "click .link": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target
     x = $(srcE).data("x")
@@ -253,11 +253,11 @@ Template.horizontal_context.helpers
     horizontalShown: -> Session.equals("currentY", @index)
 
 Template.horizontal_section_block.helpers
-    selected: -> 
+    selected: ->
       Session.equals("currentX", @index)
     # Initial left positioning of horizontal block
     left: ->
-      # Get width of page and declare helper variables      
+      # Get width of page and declare helper variables
       width = Session.get "width"
       if width < 1024 then width = 1024
       halfWidth = width / 2
@@ -295,7 +295,7 @@ Template.horizontal_section_block.helpers
 
       return left
 
-    lastUpdate: -> 
+    lastUpdate: ->
         Session.get('lastUpdate')
         return
     text: -> (@type is "text")

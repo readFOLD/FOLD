@@ -4,7 +4,7 @@ Template.create.rendered = ->
         goToY(Session.get("currentY"))
         goToX(Session.get("currentX"))
 
-Template.background_image.helpers 
+Template.background_image.helpers
     backgroundImage: ->
         if @backgroundImage then @backgroundImage
         else Session.get("backgroundImage")
@@ -34,12 +34,12 @@ getSelectionCoords = ->
           rect = range.getClientRects()[0]
           x = rect.left
           y = rect.top
-        
+
         # Fall back to inserting a temporary element
         if x is 0 and y is 0
           span = document.createElement("span")
           if span.getClientRects
-            
+
             # Ensure span has dimensions and position by
             # adding a zero-width space character
             span.appendChild document.createTextNode("​")
@@ -49,10 +49,10 @@ getSelectionCoords = ->
             y = rect.top
             spanParent = span.parentNode
             spanParent.removeChild span
-            
+
             # Glue any broken text nodes back together
             spanParent.normalize()
-    res = 
+    res =
         x: x
         y: y
 
@@ -108,7 +108,7 @@ Template.minimized_add_vertical.events
             data: []
             index: horizontalSections.length
         horizontalSections.push(newHorizontalSection)
-        Session.set('horizontalSections', horizontalSections)   
+        Session.set('horizontalSections', horizontalSections)
 
 Template.add_vertical.events
     "click section": ->
@@ -127,7 +127,7 @@ Template.add_vertical.events
             data: []
             index: horizontalSections.length
         horizontalSections.push(newHorizontalSection)
-        Session.set('horizontalSections', horizontalSections)   
+        Session.set('horizontalSections', horizontalSections)
 
 Template.add_horizontal.helpers
     left: ->
@@ -151,14 +151,14 @@ Template.add_horizontal.helpers
 #         # Append Horizontal Section to Current Horizontal Context
 #         horizontalSections = Session.get('horizontalSections')
 #         console.log("horizontalSections", horizontalSections, Session.get('currentVertical'))
-#         newHorizontalSection = 
+#         newHorizontalSection =
 #             if Session.get("horizontalSections")[Session.get('currentVertical')]?.data?.length
 #                 x = Session.get("horizontalSections")[Session.get('currentVertical')].data.length
-#             else 
+#             else
 #                 x = 0
 #             index: x
 #         horizontalSections[Session.get('currentVertical')].data.push(newHorizontalSection)
-#         Session.set('horizontalSections', horizontalSections)   
+#         Session.set('horizontalSections', horizontalSections)
 
 renderTemplate = (d, templateName, context) ->
     srcE = if d.srcElement then d.srcElement else d.target
@@ -187,7 +187,7 @@ Template.create_section_options.events
         srcE = if d.srcElement then d.srcElement else d.target
         parentSection = $(srcE).closest('section')
         parentSection.empty()
-        UI.insert(UI.render(Template.horizontal_section_buttons), parentSection.get(0)) 
+        UI.insert(UI.render(Template.horizontal_section_buttons), parentSection.get(0))
 
 Template.create_text_section.events
     "click div#save": (d) ->
@@ -204,10 +204,10 @@ Template.create_text_section.events
         # Bind data
         horizontalSections = Session.get('horizontalSections')
         horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument
-        Session.set('horizontalSections', horizontalSections) 
+        Session.set('horizontalSections', horizontalSections)
 
         # Render display section
-        context = newDocument 
+        context = newDocument
         renderTemplate(d, Template.display_text_section, context)
 
 Template.create_video_section.events
@@ -226,10 +226,10 @@ Template.create_video_section.events
         # Bind data
         horizontalSections = Session.get('horizontalSections')
         horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument
-        Session.set('horizontalSections', horizontalSections) 
+        Session.set('horizontalSections', horizontalSections)
 
         # Render display section
-        context = newDocument 
+        context = newDocument
         renderTemplate(d, Template.display_video_section, context)
 
 Template.create_map_section.events
@@ -246,10 +246,10 @@ Template.create_map_section.events
         # Bind data
         horizontalSections = Session.get('horizontalSections')
         horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument
-        Session.set('horizontalSections', horizontalSections) 
+        Session.set('horizontalSections', horizontalSections)
 
         # Render display section
-        context = newDocument 
+        context = newDocument
         renderTemplate(d, Template.display_map_section, context)
 
 Template.create_image_section.events
@@ -269,23 +269,23 @@ Template.create_image_section.events
         # Bind data
         horizontalSections = Session.get('horizontalSections')
         horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument
-        Session.set('horizontalSections', horizontalSections) 
+        Session.set('horizontalSections', horizontalSections)
 
         # Render display section
-        context = newDocument 
+        context = newDocument
         renderTemplate(d, Template.display_image_section, context)
 
 
 # TODO Don't put in so much duplicated code!!!
 Template.horizontal_section_block.events
-    "click div#delete": (d) -> 
+    "click div#delete": (d) ->
         console.log("delete")
         srcE = if d.srcElement then d.srcElement else d.target
         parentSection = $(srcE).closest('section')
         horizontalIndex = parentSection.data('index')
         horizontalSections = Session.get('horizontalSections')
         horizontalSections[Session.get('currentVertical')].data.splice(horizontalIndex, 1)
-        Session.set('horizontalSections', horizontalSections)  
+        Session.set('horizontalSections', horizontalSections)
 
     "click div#edit": (d) ->
         srcE = if d.srcElement then d.srcElement else d.target
@@ -354,7 +354,7 @@ Template.create_options.events
             Stories.remove({_id: storyId})
         Router.go('home')
 
-    "click div#publish": ->   
+    "click div#publish": ->
         console.log("PUBLISH")
         storyDashTitle = Session.get("storyDashTitle")
         storyId = Stories.findOne(storyDashTitle: storyDashTitle)?._id

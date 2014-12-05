@@ -1,4 +1,4 @@
-window.constants = 
+window.constants =
   verticalSpacing: 12
   readModeOffset: 250
 
@@ -12,15 +12,15 @@ window.goToY = (y) ->
   verticalHeights = [constants.readModeOffset]
   # Get all heights
   sum = constants.readModeOffset
-  $('section.vertical-narrative-section').each( -> 
+  $('section.vertical-narrative-section').each( ->
     sum += $(this).height() + 12  # TODO Don't hardcode this!
-    verticalHeights.push(sum) 
+    verticalHeights.push(sum)
   )
 
   # Offset, cumulative sum
   $('body,html').animate(
     scrollTop: verticalHeights[y]
-  , 500, 'easeInExpo', -> 
+  , 500, 'easeInExpo', ->
     Session.set("currentY", y)
     $('.horizontal-context').fadeIn()
     )
@@ -32,9 +32,9 @@ window.goToY = (y) ->
   else
     path[path.length - 2] = y
     path[path.length - 1] = Session.get("currentX")
-  
+
   window.history.pushState({}, '', path.join("/"))
-  return 
+  return
 
 window.goToX = (x) ->
   Session.set("currentX", x)

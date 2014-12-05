@@ -39,7 +39,7 @@ Template.home.events
 
 Template.categories.helpers
     categories: -> ['all', 'news', 'history', 'art', 'technology', 'politics', 'e-sports', 'music', 'gaming', 'sponsored']
-    selected: -> 
+    selected: ->
         Session.equals("category", this.toString())
 
 Template.categories.events
@@ -59,13 +59,13 @@ Template.filters.events
 Template.all_stories.helpers
     stories: -> Stories.find()
     lastPublishDate: -> formatDate(@publishDate)
-    displayName: -> 
+    displayName: ->
         if Meteor.user()
             if Meteor.user().emails
                 Meteor.user().emails[0].address
             else
                 Meteor.user().profile.name
-    previewContent: -> 
+    previewContent: ->
         @verticalSections[0]?.content
 
     # Remove this duplication

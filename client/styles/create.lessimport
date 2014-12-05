@@ -73,7 +73,7 @@ div.title-overlay {
 			opacity: 0.0;
 			top: 38px;
 			&.shown {
-				opacity: 1.0				
+				opacity: 1.0
 			}
 		}
 	}

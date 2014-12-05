@@ -39,10 +39,10 @@ Router.map ->
 	@route "read",
 	    path: "read/:storyDashTitle/:currentX/:currentY"
 	    template: "read"
-	    onBeforeAction: -> 
+	    onBeforeAction: ->
 	    	@subscribe('readStoryPub', @.params.storyDashTitle).wait()
 	    action: -> if @ready() then @render()
-	    onRun: -> 
+	    onRun: ->
 	    	# Scroll to current section
 	    	x = Session.get("currentX")
 	    	y = Session.get("currentY")

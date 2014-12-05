@@ -26,7 +26,7 @@ Template.read.rendered = ->
 #                     Session.set("currentY", $(d).index())
 #                     Session.set("currentX", 0)
 
-#                     $('.horizontal-context').fadeIn()                    
+#                     $('.horizontal-context').fadeIn()
 
 #                     path = window.location.pathname.split("/")
 #                     path[3] = Session.get("currentY")

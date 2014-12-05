@@ -8,13 +8,13 @@ Template.user_stories.helpers
     userStories: -> Stories.find(userId: Session.get("userId"))
     lastEditDate: -> formatDate(@lastSaved)
     lastPublishDate: -> formatDate(@publishDate)
-    displayName: -> 
+    displayName: ->
         if Meteor.user()
             if Meteor.user().emails
                 Meteor.user().emails[0].address
             else
                 Meteor.user().profile.name
-    previewContent: -> 
+    previewContent: ->
         @verticalSections[0]?.content
 
     # Remove this duplication

@@ -13,7 +13,7 @@ header {
 	&.shadow {
 		-webkit-box-shadow: 0 0 15px 15px @color-dark-grey !important;
 		-moz-box-shadow: 0 0 15px 15px @color-dark-grey !important;
-		box-shadow: 0 0 15px 15px @color-dark-grey !important;	
+		box-shadow: 0 0 15px 15px @color-dark-grey !important;
 	}
 
 	div.title {

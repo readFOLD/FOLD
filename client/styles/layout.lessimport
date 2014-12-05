@@ -15,13 +15,13 @@
 
 // http://asimpleframe.com/
 @font-face {
-    font-family: 'Alright Sans'; 
+    font-family: 'Alright Sans';
     src: url("/alright_sans_bold.woff");
     font-weight: bold;
 }
 
 @font-face {
-    font-family: 'Alright Sans'; 
+    font-family: 'Alright Sans';
     src: url("/alright_sans.woff");
     font-weight: normal;
 }
@@ -103,8 +103,8 @@ a {
 	outline: none;
 }
 
-html, body { 
-	// height: 100%; 
+html, body {
+	// height: 100%;
 	min-width: 1024px;
 }
 
@@ -126,7 +126,7 @@ body {
 	text-align: left;
 	font-size: 15px;
 
-	// background: url(/banksy.jpg) no-repeat center center fixed; 
+	// background: url(/banksy.jpg) no-repeat center center fixed;
 }
 
 div.story-browser {
@@ -139,7 +139,7 @@ div.story-browser {
 		.background-transition;
 		color: white;
 		cursor: pointer;
-		margin-top: 275px;	
+		margin-top: 275px;
 		border-radius: 30px;
 		&:hover {
 			background-color: @color-medium-green;
@@ -303,7 +303,7 @@ div.vertical-narrative {
 		min-height: 300px;
 		opacity: 0.25;
 		&.read {
-			margin-bottom: 12px;			
+			margin-bottom: 12px;
 		}
 		// box-shadow: 3px 3px @color-medium-grey;
 
@@ -428,7 +428,7 @@ div.minimap {
 
 		&.selected-section {
 			div.selected-block {
-				background-color: @color-medium-green;							
+				background-color: @color-medium-green;
 			}
 		}
 	}

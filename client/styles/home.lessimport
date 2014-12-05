@@ -32,7 +32,7 @@ section.banner {
 		height: 30px;
 		background-color: @color-dark-black;
 		padding-top: 0;
-		
+
 		i.fa-bars {
 			color: white;
 			&:hover {
@@ -93,7 +93,7 @@ section.banner {
 		left: 50%;
 		margin-left: -165px;
 		div {
-			display: inline;			
+			display: inline;
 		}
 
 		div#login-buttons {
@@ -257,12 +257,12 @@ section.stories {
 		background-color: @color-inactive-grey;
 		height: auto;
 		/*height depends on length of story headline*/
-		width: 100%;			
+		width: 100%;
 		position: relative;
 		font-size: 21px;
 		font-weight: bold;
 		padding: 25px 30px 0px 30px;
-	}	
+	}
 
 	div.byline {
 		line-height: 45px;
@@ -335,7 +335,7 @@ section.stories {
 
 			border-radius: @picture-radius;
 			width: @picture-radius * 2;
-			height: auto;				
+			height: auto;
 		}
 	}
 

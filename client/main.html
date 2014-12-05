@@ -5,7 +5,7 @@
 <template name="story_header">
 	{{setTitle title}}
 	<div class="title-overlay {{#unless read}}write{{/unless}}" style='{{#if backgroundImage}}background-image: url("/{{backgroundImage}}"){{/if}}'>
-		<div id="banner-overlay">						
+		<div id="banner-overlay">
 		</div>
 		<div class="title-author">
 			<div class="title" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
@@ -16,7 +16,7 @@
 				<img src="/logo.png">
 			<!-- </a> -->
 		</div>
-		
+
 		<div class="attribution aj {{#unless pastHeader}}shown{{/unless}}">
 			Developed for Al Jazeera Innovation Challenge
 		</div>
@@ -87,7 +87,7 @@
     	{{#unless read}}
         	{{> minimized_add_vertical}}
     	{{/unless}}
-	{{/each}}	
+	{{/each}}
 	{{#unless read}}
     	{{! > add_vertical}}
 	{{/unless}}
@@ -117,7 +117,7 @@
 </template>
 
 <template name="horizontal_section_block">
-	<section class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}}" data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px">		
+	<section class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}}" data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px">
 <!-- 		<div id="index">
 			{{index}}
 		</div> -->
