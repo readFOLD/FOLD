@@ -2,7 +2,9 @@ Router.map ->
 	@route "home",
 	    path: "/"
 	    template: "home"
-	    onRun: -> $('html, body').scrollTop(0)
+	    onRun: -> 
+	    	$('html, body').scrollTop(0)
+	    	@next()
 	    onBeforeAction: -> 
 	    	@subscribe('exploreStoriesPub', '', '', '').wait()
 	    	@next()
@@ -51,7 +53,7 @@ Router.map ->
 	    	# Scroll to current section
 	    	x = Session.get("currentX")
 	    	y = Session.get("currentY")
-
+	    	@next()
 	    data: ->
 	    	Session.set("pastHeader", true)
 	    	# Get rid of these
@@ -74,7 +76,9 @@ Router.map ->
    	@route "create",
 	    path: "create"
 	    template: "create"
-	    onRun: -> $('html, body').scrollTop(0)
+	    onRun: -> 
+	    	$('html, body').scrollTop(0)
+	    	@next()
 	    data: ->
 	    	Session.set "newStory", true
 	    	Session.set "read", false
@@ -89,7 +93,9 @@ Router.map ->
    	@route "edit",
 	    path: "create/:storyDashTitle"
 	    template: "create"
-	    onRun: -> $('html, body').scrollTop(0)
+	    onRun: -> 
+	    	$('html, body').scrollTop(0)
+	    	@next()
 	    onBeforeAction: -> 
 	    	@subscribe('createStoryPub', @.params.storyDashTitle).wait()
 	    	@next()
