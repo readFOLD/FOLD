@@ -212,15 +212,20 @@ Template.vertical_section_block.helpers
   maxHeight: ->
     400
 
-Template.vertical_narrative.events 
+moveOneCardThrottled = _.throttle moveOneCard, 700, trailing: false
+
+verticalNarrativeScrollHandler = (e) ->
+  wheelDeltaY = e.originalEvent.wheelDeltaY
+  if Math.abs(wheelDeltaY) > 100
+    moveOneCardThrottled wheelDeltaY
+  e.preventDefault()
+
+Template.vertical_narrative.events
+  'mousewheel': verticalNarrativeScrollHandler
   "click #card-down": ->
-    currentY = Session.get("currentY")
-    newY = currentY + 1
-    goToXY(0, newY)
+    goDownOneCard()
   "click #card-up": ->
-    currentY = Session.get("currentY")
-    newY = currentY - 1
-    goToXY(0, newY)
+    goUpOneCard()
   "click section": (d) ->
     $('#to-story, .attribution').fadeOut()
     srcE = if d.srcElement then d.srcElement else d.target
