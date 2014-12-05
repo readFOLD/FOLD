@@ -209,8 +209,6 @@ Template.vertical_section_block.helpers
   notFirst: -> (!Session.equals("currentY", 0))
   verticalSelected: -> (Session.equals("currentY", @index) and Session.get("pastHeader"))
   validTitle: -> (@title is not "title")
-  maxHeight: ->
-    400
 
 moveOneCardThrottled = _.throttle moveOneCard, 700, trailing: false
 
