@@ -210,16 +210,7 @@ Template.vertical_section_block.helpers
   verticalSelected: -> (Session.equals("currentY", @index) and Session.get("pastHeader"))
   validTitle: -> (@title is not "title")
 
-moveOneCardThrottled = _.throttle moveOneCard, 700, trailing: false
-
-verticalNarrativeScrollHandler = (e) ->
-  wheelDeltaY = e.originalEvent.wheelDeltaY
-  if Math.abs(wheelDeltaY) > 100
-    moveOneCardThrottled wheelDeltaY
-  e.preventDefault()
-
 Template.vertical_narrative.events
-  'mousewheel': verticalNarrativeScrollHandler
   "click #card-down": ->
     goDownOneCard()
   "click #card-up": ->

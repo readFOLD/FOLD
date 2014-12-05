@@ -118,7 +118,6 @@ body {
 	// font-family: 'Alegreya Sans' , sans-serif;
 	//font-family: ;
 	margin: 0;
-	overflow: hidden;
 	background-color: @color-dark-grey;
 
 	// Where should this be ??
