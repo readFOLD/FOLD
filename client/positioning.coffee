@@ -2,6 +2,16 @@ window.constants =
   verticalSpacing: 12
   readModeOffset: 250
 
+window.getVerticalHeights = ->
+  verticalHeights = [constants.readModeOffset]
+  sum = constants.readModeOffset
+  # Get all heights
+  $('section.vertical-narrative-section').each( ->
+    sum += $(this).height() + 12  # TODO Don't hardcode this!
+    verticalHeights.push(sum)
+  )
+  return verticalHeights
+
 window.goToXY = (x, y) ->
   unless y is Session.get("currentY")
     goToY(y)
@@ -9,28 +19,24 @@ window.goToXY = (x, y) ->
 
 window.goToY = (y) ->
   $('.horizontal-context').fadeOut(100)
-  verticalHeights = [constants.readModeOffset]
-  # Get all heights
-  sum = constants.readModeOffset
-  $('section.vertical-narrative-section').each( ->
-    sum += $(this).height() + 12  # TODO Don't hardcode this!
-    verticalHeights.push(sum)
-  )
-
+  verticalHeights = window.getVerticalHeights()
   # Offset, cumulative sum
   $('body,html').animate(
     scrollTop: verticalHeights[y]
   , 500, 'easeInExpo', ->
     Session.set("currentY", y)
     $('.horizontal-context').fadeIn()
+    setUrlForCurrentXY()
     )
+  return
 
+window.setUrlForCurrentXY = () ->
   path = window.location.pathname.split("/")
   if path.length <= 4
-    path.push(y)
+    path.push(Session.get("currentY"))
     path.push(Session.get("currentX"))
   else
-    path[path.length - 2] = y
+    path[path.length - 2] = Session.get("currentY")
     path[path.length - 1] = Session.get("currentX")
 
   window.history.pushState({}, '', path.join("/"))

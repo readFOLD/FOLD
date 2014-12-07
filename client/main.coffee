@@ -31,12 +31,7 @@ scrollSnap = ->
   # Scroll snapping
   #######################
 
-  verticalHeights = [constants.readModeOffset]
-  sum = constants.readModeOffset
-  $('section.vertical-narrative-section').each( ->
-    sum += $(this).height()
-    verticalHeights.push(sum)
-  )
+  verticalHeights = window.getVerticalHeights()
   tolerance = 20
   for height, i in verticalHeights
     if ((height - tolerance) < scrollTop) and (scrollTop < (height + tolerance))
@@ -89,6 +84,7 @@ updatecurrentY = ->
     $("div.horizontal-context").removeClass("fixed")
 
   if scrollTop >= maxScroll
+    # transitioning into read-mode and also read-mode
     $("div.title-overlay, div#banner-overlay").addClass("fixed")
     $("div.logo").addClass("visible")
   else
@@ -96,7 +92,13 @@ updatecurrentY = ->
     $("div.logo").removeClass("visible")
 
   if scrollTop >= readMode
+    # full on read-mode
     Session.set("pastHeader", true)
+    for h, i in window.getVerticalHeights()
+      if scrollTop < h
+        break
+    Session.set("currentY", i - 1)
+    window.setUrlForCurrentXY()
   else
     Session.set("pastHeader", false)
 
