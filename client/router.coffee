@@ -2,8 +2,11 @@ Router.map ->
 	@route "home",
 	    path: "/"
 	    template: "home"
-	    onRun: -> $('html, body').scrollTop(0)
-	    onBeforeAction: -> @subscribe('exploreStoriesPub', '', '', '').wait()
+	    onRun: ->
+	    	$('html, body').scrollTop(0)
+	    	@next()
+	    waitOn: ->
+	    	@subscribe('exploreStoriesPub', '', '', '').wait()
 	    action: -> if @ready() then @render()
 	    data: ->
 	    	Session.set "page", "explore"
@@ -18,7 +21,8 @@ Router.map ->
 	@route "read",
 	    path: "read/:storyDashTitle"
 	    template: "read"
-	    onBeforeAction: -> @subscribe('readStoryPub', @.params.storyDashTitle).wait()
+	    waitOn: ->
+	    	Meteor.subscribe('readStoryPub', @.params.storyDashTitle)
 	    action: -> if @ready() then @render()
 	    data: ->
 	    	# Get rid of these
@@ -29,23 +33,24 @@ Router.map ->
 
 	    	Session.set("currentY", 0)
 	    	Session.set("currentX", 0)
+
 	    	if story
 	    		Session.set "verticalSections", story.verticalSections
 	    		Session.set "horizontalSections", story.horizontalSections
 	    		Session.set "backgroundImage", story.backgroundImage
 	    	return story
 
-	@route "read",
+	@route "readWithCoordinates",
 	    path: "read/:storyDashTitle/:currentX/:currentY"
 	    template: "read"
-	    onBeforeAction: ->
+	    waitOn: ->
 	    	@subscribe('readStoryPub', @.params.storyDashTitle).wait()
 	    action: -> if @ready() then @render()
 	    onRun: ->
 	    	# Scroll to current section
 	    	x = Session.get("currentX")
 	    	y = Session.get("currentY")
-
+	    	@next()
 	    data: ->
 	    	Session.set("pastHeader", true)
 	    	# Get rid of these
@@ -68,7 +73,9 @@ Router.map ->
    	@route "create",
 	    path: "create"
 	    template: "create"
-	    onRun: -> $('html, body').scrollTop(0)
+	    onRun: ->
+	    	$('html, body').scrollTop(0)
+	    	@next()
 	    data: ->
 	    	Session.set "newStory", true
 	    	Session.set "read", false
@@ -83,8 +90,11 @@ Router.map ->
    	@route "edit",
 	    path: "create/:storyDashTitle"
 	    template: "create"
-	    onRun: -> $('html, body').scrollTop(0)
-	    onBeforeAction: -> @subscribe('createStoryPub', @.params.storyDashTitle).wait()
+	    onRun: ->
+	    	$('html, body').scrollTop(0)
+	    	@next()
+	    waitOn: ->
+	    	@subscribe('createStoryPub', @.params.storyDashTitle).wait()
 	    action: -> if @ready() then @render()
 	    data: ->
 	    	story = Stories.findOne()
