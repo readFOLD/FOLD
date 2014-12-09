@@ -97,7 +97,10 @@ updatecurrentY = ->
     for h, i in window.getVerticalHeights()
       if scrollTop < h
         break
-    Session.set("currentY", i - 1)
+    actualY = i - 1
+    if Session.get('currentY') isnt actualY
+      Session.set("currentX", 0) # always start at base context card for now. later remember what context card the user was one for each Y
+      Session.set("currentY", actualY)
     window.setUrlForCurrentXY()
   else
     Session.set("pastHeader", false)
