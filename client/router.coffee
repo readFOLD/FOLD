@@ -27,9 +27,8 @@ Router.map ->
 	    	Session.set "read", true
 	    	Session.set "page", "read"
 
-	    	# Session.set("currentY", 0)
-	    	# Session.set("currentX", 0)
-
+	    	Session.set("currentY", 0)
+	    	Session.set("currentX", 0)
 	    	if story
 	    		Session.set "verticalSections", story.verticalSections
 	    		Session.set "horizontalSections", story.horizontalSections
