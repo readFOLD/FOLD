@@ -1,113 +1,117 @@
-Router.map ->
-    @route "home",
-        path: "/"
-        template: "home"
-        onRun: ->
-            $('html, body').scrollTop(0)
-            @next()
-        waitOn: ->
-            @subscribe('exploreStoriesPub', '', '', '').wait()
-        action: -> if @ready() then @render()
-        data: ->
-            Session.set "page", "explore"
 
-    # @route "profile",
-    #     path: "profile/:userId"
-    #     template: "profile"
-    #     data: ->
-    #       Session.set "page", "profile"
-    #       Session.set "userId", @.params.userId
+ReadController = RouteController.extend
+    template: "read"
+    waitOn: ->
+        [Meteor.subscribe('readStoryPub', @.params.storyDashTitle), Meteor.subscribe('narrativeBlocksPub')]
+    action: -> if @ready() then @render()
+    data: ->
 
-    @route "read",
-        path: "read/:storyDashTitle"
-        template: "read"
-        waitOn: ->
-            [Meteor.subscribe('readStoryPub', @.params.storyDashTitle), Meteor.subscribe('narrativeBlocksPub')]
-        action: -> if @ready() then @render()
-        data: ->
-            # Get rid of these
-            story = Stories.findOne()
-            Session.set "newStory", false
-            Session.set "read", true
-            Session.set "page", "read"
+        # Get rid of these
+        story = Stories.findOne()
+        Session.set "newStory", false
+        Session.set "read", true
+        Session.set "page", "read"
 
-            Session.set("currentY", 0)
-            Session.set("currentX", 0)
 
-            if story
-                verticalSections = NarrativeBlocks.find _id: $in: story.verticalSections
+        if (x = parseInt(@.params.currentX)) and y = parseInt(@.params.currentY)
+            Session.set("currentY", y)
+            Session.set("currentX", x)
 
-            if verticalSections
-                Session.set "verticalSections", verticalSections
-                Session.set "horizontalSections", story.horizontalSections
-                Session.set "backgroundImage", story.backgroundImage
-                _.extend story, verticalSections: verticalSections
+        if story
+            verticalSections = NarrativeBlocks.find _id: $in: story.verticalSections
 
-    # @route "readWithCoordinates",
-    #     path: "read/:storyDashTitle/:currentX/:currentY"
-    #     template: "read"
-    #     waitOn: ->
-    #         @subscribe('readStoryPub', @.params.storyDashTitle).wait()
-    #     action: -> if @ready() then @render()
-    #     onRun: ->
-    #         # Scroll to current section
-    #         x = Session.get("currentX")
-    #         y = Session.get("currentY")
-    #         @next()
-    #     data: ->
-    #         Session.set("pastHeader", true)
-    #         # Get rid of these
-    #         story = Stories.findOne()
-    #         Session.set "newStory", false
-    #         Session.set "read", true
-    #         Session.set "page", "read"
+        if verticalSections
+            Session.set "verticalSections", verticalSections
+            Session.set "horizontalSections", story.horizontalSections
+            Session.set "backgroundImage", story.backgroundImage
+            _.extend story, verticalSections: verticalSections
 
-    #         x = parseInt(@.params.currentY)
-    #         y = parseInt(@.params.currentX)
+Router.route "home",
+    path: "/"
+    template: "home"
+    onRun: ->
+        $('html, body').scrollTop(0)
+        @next()
+    waitOn: ->
+        @subscribe('exploreStoriesPub', '', '', '').wait()
+    action: -> if @ready() then @render()
+    data: ->
+        Session.set "page", "explore"
 
-    #         Session.set("currentY", y)
-    #         Session.set("currentX", x)
-    #         if story
-    #             Session.set "verticalSections", story.verticalSections
-    #             Session.set "horizontalSections", story.horizontalSections
-    #             Session.set "backgroundImage", story.backgroundImage
-    #         return story
+# Router.route "profile",
+#     path: "profile/:userId"
+#     template: "profile"
+#     data: ->
+#       Session.set "page", "profile"
+#       Session.set "userId", @.params.userId
 
-    @route "create",
-        path: "create"
-        template: "create"
-        onRun: ->
-            $('html, body').scrollTop(0)
-            @next()
-        data: ->
-            Session.set "newStory", true
-            Session.set "read", false
-            Session.set "page", "create"
 
-            # Proper way to initiate blank template?
-            Session.set 'storyTitle', 'New Story'
-            Session.set 'verticalSections', []
-            Session.set 'horizontalSections', []
-            return Stories.findOne()
+Router.route "read",
+    path: "read/:storyDashTitle"
+    controller: ReadController
 
-    @route "edit",
-        path: "create/:storyDashTitle"
-        template: "create"
-        onRun: ->
-            $('html, body').scrollTop(0)
-            @next()
-        waitOn: ->
-            @subscribe('createStoryPub', @.params.storyDashTitle).wait()
-        action: -> if @ready() then @render()
-        data: ->
-            story = Stories.findOne()
-            Session.set "newStory", false
-            Session.set "read", false
-            Session.set "page", "create"
-            Session.set "storyDashTitle", @.params.storyDashTitle
-            if story
-                Session.set "verticalSections", story.verticalSections
-                Session.set "horizontalSections", story.horizontalSections
-                Session.set "backgroundImage", story.backgroundImage
-                Session.set "storyId", story._id
-            return story
+Router.route "readWithCoordinates",
+    path: "read/:storyDashTitle/:currentY/:currentX"
+    controller: ReadController
+    onBeforeAction: ->
+        Session.set("pastHeader", true)
+        Session.set("currentY", @.params.currentY)
+        Session.set("currentX", @.params.currentX)
+        @next()
+    # data: ->
+    #     Session.set("pastHeader", true)
+    #     # Get rid of these
+    #     story = Stories.findOne()
+    #     Session.set "newStory", false
+    #     Session.set "read", true
+    #     Session.set "page", "read"
+
+    #     x = parseInt(@.params.currentY)
+    #     y = parseInt(@.params.currentX)
+
+    #     Session.set("currentY", y)
+    #     Session.set("currentX", x)
+    #     if story
+    #         Session.set "verticalSections", story.verticalSections
+    #         Session.set "horizontalSections", story.horizontalSections
+    #         Session.set "backgroundImage", story.backgroundImage
+    #     return story
+
+Router.route "create",
+    path: "create"
+    template: "create"
+    onRun: ->
+        $('html, body').scrollTop(0)
+        @next()
+    data: ->
+        Session.set "newStory", true
+        Session.set "read", false
+        Session.set "page", "create"
+
+        # Proper way to initiate blank template?
+        Session.set 'storyTitle', 'New Story'
+        Session.set 'verticalSections', []
+        Session.set 'horizontalSections', []
+        return Stories.findOne()
+
+Router.route "edit",
+    path: "create/:storyDashTitle"
+    template: "create"
+    onRun: ->
+        $('html, body').scrollTop(0)
+        @next()
+    waitOn: ->
+        @subscribe('createStoryPub', @.params.storyDashTitle).wait()
+    action: -> if @ready() then @render()
+    data: ->
+        story = Stories.findOne()
+        Session.set "newStory", false
+        Session.set "read", false
+        Session.set "page", "create"
+        Session.set "storyDashTitle", @.params.storyDashTitle
+        if story
+            Session.set "verticalSections", story.verticalSections
+            Session.set "horizontalSections", story.horizontalSections
+            Session.set "backgroundImage", story.backgroundImage
+            Session.set "storyId", story._id
+        return story
