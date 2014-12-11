@@ -207,8 +207,6 @@ Template.story.helpers
 
     spacerHeight: -> Session.get("windowHeight") - 230 - 300
 
-Template.vertical_narrative.helpers
-  verticalSections: -> Session.get("verticalSections")
 
 Template.vertical_section_block.helpers
   notFirst: -> (!Session.equals("currentY", 0))

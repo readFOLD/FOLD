@@ -1,6 +1,7 @@
 # Indexes
 Stories._ensureIndex(storyDashTitle: 1)
 
+
 Meteor.publish "exploreStoriesPub", (storyDashTitle, filter, category, skip) ->
 	Stories.find({published: true})
 
@@ -15,6 +16,9 @@ Meteor.publish "storiesPub", ->
 
 Meteor.publish "usersPub", ->
     Meteor.users.find()
+
+Meteor.publish "narrativeBlocksPub", ->
+	NarrativeBlocks.find()
 
 # getProfilePicture = (options, user) ->
 #     if options.profile
