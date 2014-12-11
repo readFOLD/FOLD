@@ -20,6 +20,8 @@ ReadController = RouteController.extend
         if story
             verticalSections = NarrativeBlocks.find _id: $in: story.verticalSections
 
+        # TODO - get horizonal sections from verticalSections
+
         if verticalSections
             Session.set "verticalSections", verticalSections
             Session.set "horizontalSections", story.horizontalSections
@@ -58,24 +60,6 @@ Router.route "readWithCoordinates",
         Session.set("currentY", @.params.currentY)
         Session.set("currentX", @.params.currentX)
         @next()
-    # data: ->
-    #     Session.set("pastHeader", true)
-    #     # Get rid of these
-    #     story = Stories.findOne()
-    #     Session.set "newStory", false
-    #     Session.set "read", true
-    #     Session.set "page", "read"
-
-    #     x = parseInt(@.params.currentY)
-    #     y = parseInt(@.params.currentX)
-
-    #     Session.set("currentY", y)
-    #     Session.set("currentX", x)
-    #     if story
-    #         Session.set "verticalSections", story.verticalSections
-    #         Session.set "horizontalSections", story.horizontalSections
-    #         Session.set "backgroundImage", story.backgroundImage
-    #     return story
 
 Router.route "create",
     path: "create"
