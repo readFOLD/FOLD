@@ -1,32 +1,6 @@
 
 ReadController = RouteController.extend
-    template: "read"
-    waitOn: ->
-        [Meteor.subscribe('readStoryPub', @.params.storyDashTitle), Meteor.subscribe('narrativeBlocksPub')]
-    action: -> if @ready() then @render()
-    data: ->
 
-        # Get rid of these
-        story = Stories.findOne()
-        Session.set "newStory", false
-        Session.set "read", true
-        Session.set "page", "read"
-
-
-        if (x = parseInt(@.params.currentX)) and y = parseInt(@.params.currentY)
-            Session.set("currentY", y)
-            Session.set("currentX", x)
-
-        if story
-            verticalSections = NarrativeBlocks.find _id: $in: story.verticalSections
-
-        # TODO - get horizonal sections from verticalSections
-
-        if verticalSections
-            Session.set "verticalSections", verticalSections
-            Session.set "horizontalSections", story.horizontalSections
-            Session.set "backgroundImage", story.backgroundImage
-            _.extend story, verticalSections: verticalSections
 
 Router.route "home",
     path: "/"
@@ -50,16 +24,27 @@ Router.route "home",
 
 Router.route "read",
     path: "read/:storyDashTitle"
-    controller: ReadController
+    template: "read"
+    waitOn: ->
+        [Meteor.subscribe('readStoryPub', @.params.storyDashTitle), Meteor.subscribe('narrativeBlocksPub')]
+    action: -> if @ready() then @render()
+    data: ->
+        # Get rid of these
+        story = Stories.findOne()
+        Session.set "newStory", false
+        Session.set "read", true
+        Session.set "page", "read"
 
-Router.route "readWithCoordinates",
-    path: "read/:storyDashTitle/:currentY/:currentX"
-    controller: ReadController
-    onBeforeAction: ->
-        Session.set("pastHeader", true)
-        Session.set("currentY", @.params.currentY)
-        Session.set("currentX", @.params.currentX)
-        @next()
+        if story
+            verticalSections = NarrativeBlocks.find _id: $in: story.verticalSections
+
+        # TODO - get horizonal sections from verticalSections
+
+        if verticalSections
+            Session.set "verticalSections", verticalSections
+            Session.set "horizontalSections", story.horizontalSections
+            Session.set "backgroundImage", story.backgroundImage
+            _.extend story, verticalSections: verticalSections
 
 Router.route "create",
     path: "create"

@@ -101,7 +101,7 @@ updatecurrentY = ->
     if Session.get('currentY') isnt actualY
       Session.set("currentX", 0) # always start at base context card for now. later remember what context card the user was one for each Y
       Session.set("currentY", actualY)
-    window.setUrlForCurrentXY()
+    # window.setUrlForCurrentXY()
   else
     Session.set("pastHeader", false)
 
@@ -148,7 +148,7 @@ Template.story_header.events =
       path = window.location.pathname.split("/")
       path.pop()
       path.pop()
-      window.history.pushState({}, '', path.join("/"))
+      # window.history.pushState({}, '', path.join("/"))
     else
       $('#to-story, .attribution').fadeOut()
       goToX(0)
@@ -162,7 +162,7 @@ Template.story_header.events =
     path = window.location.pathname.split("/")
     path.pop()
     path.pop()
-    window.history.pushState({}, '', path.join("/"))
+    # window.history.pushState({}, '', path.join("/"))
 Template.story.events =
   "click .link": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target
@@ -306,7 +306,7 @@ Template.story_browser.events
     Session.set("currentX", newX)
     path = window.location.pathname.split("/")
     path[4] = Session.get("currentX")
-    window.history.pushState({}, '', path.join("/"))
+    # window.history.pushState({}, '', path.join("/"))
 
   "click #left": (d) ->
     horizontalSection = Session.get("horizontalSections")[Session.get("currentY")].data
@@ -316,4 +316,4 @@ Template.story_browser.events
     Session.set("currentX", newX)
     path = window.location.pathname.split("/")
     path[4] = Session.get("currentX")
-    window.history.pushState({}, '', path.join("/"))
+    # window.history.pushState({}, '', path.join("/"))

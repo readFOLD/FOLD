@@ -1,8 +1,8 @@
-Template.read.rendered = ->
-    unless (Session.equals("currentY", undefined) and Session.equals("currentX", undefined))
-        $('.attribution, #to-story').fadeOut(1)
-        goToY(Session.get("currentY"))
-        goToX(Session.get("currentX"))
+# Template.read.rendered = ->
+#     unless (Session.equals("currentY", undefined) and Session.equals("currentX", undefined))
+#         $('.attribution, #to-story').fadeOut(1)
+#         goToY(Session.get("currentY"))
+#         goToX(Session.get("currentX"))
 
 # Reduce redundancy with the create page
 Template.read.helpers
