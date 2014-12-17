@@ -20,6 +20,9 @@ Meteor.publish "usersPub", ->
 Meteor.publish "narrativeBlocksPub", ->
 	NarrativeBlocks.find()
 
+Meteor.publish "contextBlocksPub", ->
+	ContextBlocks.find()
+
 # getProfilePicture = (options, user) ->
 #     if options.profile
 #         if user.services.google

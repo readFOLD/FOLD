@@ -26,7 +26,11 @@ Router.route "read",
     path: "read/:storyDashTitle"
     template: "read"
     waitOn: ->
-        [Meteor.subscribe('readStoryPub', @.params.storyDashTitle), Meteor.subscribe('narrativeBlocksPub')]
+        [
+            Meteor.subscribe 'readStoryPub', @.params.storyDashTitle
+            Meteor.subscribe 'narrativeBlocksPub'
+            Meteor.subscribe 'contextBlocksPub'
+        ]
     action: -> if @ready() then @render()
     data: ->
         # Get rid of these
@@ -38,13 +42,18 @@ Router.route "read",
         if story
             verticalSections = NarrativeBlocks.find _id: $in: story.verticalSections
 
-        # TODO - get horizonal sections from verticalSections
+            if verticalSections
+                horizontalSections = verticalSections.map (verticalSection, i) ->
+                    data: ContextBlocks.find(_id: $in: verticalSection.context)
+                    index: i
 
-        if verticalSections
-            Session.set "verticalSections", verticalSections
-            Session.set "horizontalSections", story.horizontalSections
-            Session.set "backgroundImage", story.backgroundImage
-            _.extend story, verticalSections: verticalSections
+                if horizontalSections
+                    # Session.set "verticalSections", verticalSections
+                    Session.set "horizontalSections", horizontalSections
+                    Session.set "backgroundImage", story.backgroundImage
+                    _.extend story,
+                        verticalSections: verticalSections
+                        horizontalSections: horizontalSections
 
 Router.route "create",
     path: "create"
