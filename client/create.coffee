@@ -1,4 +1,6 @@
 Template.create.rendered = ->
+    editor = new MediumEditor(".content.editable")
+
     unless (Session.equals("currentY", undefined) and Session.equals("currentX", undefined))
         $('.attribution, #to-story').fadeOut(1)
         goToY(Session.get("currentY"))
@@ -66,20 +68,20 @@ Template.create.helpers
     narrativeView: -> Session.get("narrativeView")
     category: -> Session.get("storyCategory")
 
-Template.create.events
-    "mousedown": ->
-        Session.set("formatting", false)
-    "mouseup": ->
-        if window.getSelection
-            text = window.getSelection().toString()
-        else if (typeof document.selection and document.selection.type is "Text")
-            text = document.selection.createRange().text
-        if text
-            Session.set("formatting", true)
-            console.log "TEXT:", text
-            coords = getSelectionCoords()
-            Session.set("formattingTop", coords.y)
-            Session.set("formattingLeft", coords.x)
+# Template.create.events
+#     "mousedown": ->
+#         Session.set("formatting", false)
+#     "mouseup": ->
+#         if window.getSelection
+#             text = window.getSelection().toString()
+#         else if (typeof document.selection and document.selection.type is "Text")
+#             text = document.selection.createRange().text
+#         if text
+#             Session.set("formatting", true)
+#             console.log "TEXT:", text
+#             coords = getSelectionCoords()
+#             Session.set("formattingTop", coords.y)
+#             Session.set("formattingLeft", coords.x)
 
 Template.formatting.helpers
     top: -> Session.get("formattingTop") - 60
