@@ -210,8 +210,6 @@ Template.vertical_section_block.helpers
   notFirst: -> (!Session.equals("currentY", 0))
   verticalSelected: -> (Session.equals("currentY", @index) and Session.get("pastHeader"))
   validTitle: -> (@title is not "title")
-  narrative: ->
-    NarrativeBlocks.findOne _id: @narrativeBlock
 
 Template.vertical_narrative.helpers
   verticalSectionsWithIndex: ->

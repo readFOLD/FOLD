@@ -17,9 +17,6 @@ Meteor.publish "storiesPub", ->
 Meteor.publish "usersPub", ->
     Meteor.users.find()
 
-Meteor.publish "narrativeBlocksPub", ->
-	NarrativeBlocks.find()
-
 Meteor.publish "contextBlocksPub", ->
 	ContextBlocks.find()
 

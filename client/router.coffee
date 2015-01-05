@@ -41,7 +41,6 @@ Router.route "read",
     waitOn: ->
         [
             Meteor.subscribe 'readStoryPub', @.params.storyDashTitle
-            Meteor.subscribe 'narrativeBlocksPub'
             Meteor.subscribe 'contextBlocksPub'
         ]
     action: -> if @ready() then @render()
@@ -78,7 +77,6 @@ Router.route "edit",
     waitOn: ->
         [
             Meteor.subscribe 'createStoryPub', @.params.storyDashTitle
-            Meteor.subscribe 'narrativeBlocksPub'
             Meteor.subscribe 'contextBlocksPub'
         ]
     action: -> if @ready() then @render()
