@@ -5,6 +5,7 @@ ExistingStoryController = RouteController.extend
         story = Stories.findOne()
 
         if story
+            Session.set "story", story
             Session.set "backgroundImage", story.backgroundImage
             Session.set "horizontalSectionsMap", _.map _.pluck(story.verticalSections, "contextBlocks"), (cBlocks, i) ->
                 verticalIndex: i

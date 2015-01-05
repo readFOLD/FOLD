@@ -313,27 +313,30 @@ Template.create_options.events
         storyDashTitle = storyTitle.toLowerCase().split(' ').join('-')
 
         backgroundImage = Session.get("backgroundImage")
+        # TODO need a better way to get context cards
+        oldStory = Session.get "story"
+        contextBlocks = _.pluck oldStory.verticalSections, 'contextBlocks'
+
+
         date = new Date()
-        user = Meteor.user()._id
+        # user = Meteor.user()._id
         verticalSections = []
         $('section.vertical-narrative-section').each((i) ->
             title = $.trim($(this).find('div.title').text())
             content = $.trim($(this).find('div.content').text())
             verticalSections.push(
-                index: i
                 title: title
                 content: content
+                contextBlocks: contextBlocks[i]
                 )
             )
-        horizontalSections = Session.get('horizontalSections')
 
         storyDocument =
             title: storyTitle
             backgroundImage: backgroundImage
             storyDashTitle: storyDashTitle
             verticalSections: verticalSections
-            horizontalSections: horizontalSections
-            userId: user
+            # userId: user #TODO add this back in
             lastSaved: date
 
         console.log(storyDocument)
@@ -343,6 +346,7 @@ Template.create_options.events
         unless storyId
             storyId = Session.get("storyId")
         console.log("ID", storyId)
+        console.log storyDocument
         if storyId
             Stories.update({_id: storyId}, {$set: storyDocument})
         else
