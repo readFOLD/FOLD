@@ -1,5 +1,22 @@
 Template.create.rendered = ->
-    editor = new MediumEditor(".content.editable")
+    ContextLinkExtension = ->
+        this.button = document.createElement('button');
+        this.button.className = 'medium-editor-action';
+        this.button.innerText = 'X';
+        this.button.onclick = this.onClick.bind(this)
+        return
+
+    ContextLinkExtension::getButton = ->
+        return this.button;
+
+    ContextLinkExtension::onClick = (e) ->
+        editor = this.base
+        editor.triggerAnchorAction(e)
+
+    editor = new MediumEditor ".content.editable",
+        buttons: ['contextLink', 'bold', 'italic', 'underline'],
+        extensions:
+            contextLink: new ContextLinkExtension()
 
     unless (Session.equals("currentY", undefined) and Session.equals("currentX", undefined))
         $('.attribution, #to-story').fadeOut(1)
