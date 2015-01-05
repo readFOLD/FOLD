@@ -170,6 +170,10 @@ Template.story.events =
     y = $(srcE).data("y")
     goToXY(x, y)
 
+  "click a": (e) -> # TODO remove
+    e.preventDefault()
+    goToX(2)
+
   "keydown": (d) ->
     if d.keyCode is 38  # up
       goToY(Session.get("currentY") - 1)
