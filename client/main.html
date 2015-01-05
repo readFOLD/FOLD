@@ -34,10 +34,10 @@
 		<div class="attribution {{#unless pastHeader}}shown{{/unless}}">
 			Header Image Source: {{headerImageAttribution}}
 		</div>
-		<div class="arrow-container">
+<!-- 		<div class="arrow-container">
 			<img id="to-story" class="{{#unless pastHeader}}shown{{/unless}}" src="/pulse_down_white.svg" />
 			<img id="to-header" src="/pulse_up_white.svg" />
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -60,9 +60,9 @@
 	{{#if pastHeader}}
 	    {{> minimap}}
 	    {{#if horizontalExists}}
-	    <div class="browser-offset">
-	    	{{> story_browser}}
-	    </div>
+		    <div class="browser-offset">
+		    	{{> story_browser}}
+		    </div>
 	    {{/if}}
 	{{/if}}
 </template>

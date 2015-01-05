@@ -183,7 +183,7 @@ Template.story.events =
 Template.story.helpers
     horizontalExists: ->
         currentY = Session.get('currentY')
-        return Session.get('horizontalSectionsMap')[currentY].length > 1
+        return Session.get('horizontalSectionsMap')[currentY]?.horizontal.length > 1
 
     pastHeader: -> Session.get("pastHeader")
 
@@ -310,7 +310,7 @@ Template.horizontal_section_block.helpers
 
 Template.story_browser.events
   "click #right": (d) ->
-    horizontalSection = Session.get("horizontalSections")[Session.get("currentY")].data
+    horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal
     currentX = Session.get("currentX")
 
     newX = if (currentX is (horizontalSection.length - 1)) then 0 else currentX + 1
@@ -321,7 +321,7 @@ Template.story_browser.events
     # window.history.pushState({}, '', path.join("/"))
 
   "click #left": (d) ->
-    horizontalSection = Session.get("horizontalSections")[Session.get("currentY")].data
+    horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal
     currentX = Session.get("currentX")
 
     newX = if currentX then (currentX - 1) else (horizontalSection.length - 1)
