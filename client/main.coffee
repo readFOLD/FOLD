@@ -242,7 +242,7 @@ Template.minimap.helpers
 
 
 Template.horizontal_context.helpers
-    verticalExists: -> Session.get("verticalSections").length
+    verticalExists: -> Session.get("horizontalSectionsMap").length
     horizontalSections: ->
       @verticalSections.map (verticalSection, verticalIndex) ->
         index: verticalIndex
