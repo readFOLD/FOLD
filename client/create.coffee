@@ -282,6 +282,7 @@ Template.horizontal_section_block.events
         console.log("delete")
         srcE = if d.srcElement then d.srcElement else d.target
         parentSection = $(srcE).closest('section')
+        console.log parentSection.data()
         horizontalIndex = parentSection.data('index')
         horizontalSections = Session.get('horizontalSections')
         horizontalSections[Session.get('currentVertical')].data.splice(horizontalIndex, 1)

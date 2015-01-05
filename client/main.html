@@ -114,11 +114,9 @@
 	{{#each horizontalSections}}
 	    {{#if horizontalShown}}
             {{#each data}}
-   	            {{#if read}}
-   	                {{#if type}}
-     	                {{> horizontal_section_block}}
-   	                {{/if}}
-   	            {{/if}}
+                {{#if type}}
+ 	                {{> horizontal_section_block}}
+                {{/if}}
    	        {{/each}}
    	        {{#unless read}}
             	{{add_horizontal}}
