@@ -56,11 +56,29 @@
 	{{/if}}
 </template>
 
+<template name="vertical_narrative">
+	{{#unless verticalSections}}
+	    {{> add_vertical}}
+	{{/unless}}
+	{{#unless read}}
+    	{{> minimized_add_vertical}}
+	{{/unless}}
+	{{#each verticalSectionsWithIndex}}
+    	{{> vertical_section_block}}
+    	{{#unless read}}
+        	{{> minimized_add_vertical}}
+    	{{/unless}}
+	{{/each}}
+	{{#unless read}}
+    	{{! > add_vertical}}
+	{{/unless}}
+</template>
+
 <template name="vertical_section_block">
 	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}">
-		<div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
+		<div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{narrative.title}}</div>
 		<div class="content {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">
-			<p contenteditable="{{#unless read}}true{{/unless}}">{{{content}}}</p>
+			<p contenteditable="{{#unless read}}true{{/unless}}">{{{narrative.content}}}</p>
 		</div>
 		<div class="button">
 		</div>
@@ -75,23 +93,6 @@
 	</section>
 </template>
 
-<template name="vertical_narrative">
-	{{#unless verticalSections}}
-	    {{> add_vertical}}
-	{{/unless}}
-	{{#unless read}}
-    	{{> minimized_add_vertical}}
-	{{/unless}}
-	{{#each verticalSections}}
-    	{{> vertical_section_block}}
-    	{{#unless read}}
-        	{{> minimized_add_vertical}}
-    	{{/unless}}
-	{{/each}}
-	{{#unless read}}
-    	{{! > add_vertical}}
-	{{/unless}}
-</template>
 
 <template name="horizontal_context">
 	{{#unless read}}
@@ -99,7 +100,6 @@
         	{{ > add_horizontal}}
         {{/if}}
     {{/unless}}
-
 	{{#each horizontalSections}}
 	    {{#if horizontalShown}}
             {{#each data}}
@@ -198,16 +198,14 @@
 
 <template name="minimap">
 	<div class="minimap">
-		{{#each horizontalSections}}
+		{{#each horizontalSectionsMap}}
 		<div class="section {{#if selectedY}}selected-section{{/if}}">
 			<div class="vertical block {{#if selectedY}}selected-block{{/if}}">
 			</div>
-			{{#each data}}
+			{{#each horizontal}}
    	            {{#if read}}
-   	                {{#if type}}
-   	                <div class="horizontal block {{#if selectedX}}selected-block{{/if}}">
-   	                </div>
-   	                {{/if}}
+	                <div class="horizontal block {{#if selectedX}}selected-block{{/if}}">
+	                </div>
    	            {{/if}}
    	        {{/each}}
 		</div>

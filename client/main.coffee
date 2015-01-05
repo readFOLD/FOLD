@@ -183,9 +183,7 @@ Template.story.events =
 Template.story.helpers
     horizontalExists: ->
         currentY = Session.get('currentY')
-
-        sections = Session.get("horizontalSections")?[currentY]?.data
-        _.filter(sections, (e) -> e.type).length > 1
+        return Session.get('horizontalSectionsMap')[currentY].length > 1
 
     pastHeader: -> Session.get("pastHeader")
 
@@ -212,6 +210,13 @@ Template.vertical_section_block.helpers
   notFirst: -> (!Session.equals("currentY", 0))
   verticalSelected: -> (Session.equals("currentY", @index) and Session.get("pastHeader"))
   validTitle: -> (@title is not "title")
+  narrative: ->
+    NarrativeBlocks.findOne _id: @narrativeBlock
+
+Template.vertical_narrative.helpers
+  verticalSectionsWithIndex: ->
+    @verticalSections.map (v, i) ->
+      _.extend v, index: i
 
 Template.vertical_narrative.events
   "click #card-down": ->
@@ -231,18 +236,24 @@ Template.vertical_narrative.events
 
 
 Template.minimap.helpers
-  horizontalSections: -> Session.get("horizontalSections")
-  selectedX: -> Session.equals("currentX", @index)
-  selectedY: -> Session.equals("currentY", @index)
+  horizontalSectionsMap: -> Session.get("horizontalSectionsMap")
+  selectedX: -> Session.equals("currentX", @horizontalIndex)
+  selectedY: -> Session.equals("currentY", @verticalIndex)
+
 
 Template.horizontal_context.helpers
     verticalExists: -> Session.get("verticalSections").length
-    horizontalSections: -> Session.get("horizontalSections")
-    moreThanOneSection: -> Session.get("horizontalSections").length > 1
+    horizontalSections: ->
+      @verticalSections.map (verticalSection, verticalIndex) ->
+        index: verticalIndex
+        data: ContextBlocks.find(_id: $in: verticalSection.contextBlocks).map (data, horizontalIndex) ->
+          return _.extend data,
+            index: horizontalIndex # TODO, this shouldn't get saved if edit-mode
     last: ->
-      lastIndex = Session.get("horizontalSections")[Session.get("currentY")]?.data.length - 1
+      lastIndex = Session.get("horizontalSectionsMap")[Session.get("currentY")]?.horizontal.length - 1
       (@index is lastIndex) and (lastIndex > 0)
-    horizontalShown: -> Session.equals("currentY", @index)
+    horizontalShown: ->
+      Session.equals("currentY", @index)
 
 Template.horizontal_section_block.helpers
     selected: ->
@@ -262,7 +273,8 @@ Template.horizontal_section_block.helpers
       else offset = 75 + Session.get("separation")
 
       # Current X
-      horizontalLength = Session.get("horizontalSections")[Session.get("currentY")]?.data.length
+
+      horizontalLength = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal.length # TO-DO getting currentY is hacky
       lastIndex = horizontalLength - 1
 
       # Adjusting for currentX

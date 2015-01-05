@@ -40,20 +40,13 @@ Router.route "read",
         Session.set "page", "read"
 
         if story
-            verticalSections = NarrativeBlocks.find _id: $in: story.verticalSections
+            Session.set "backgroundImage", story.backgroundImage
+            Session.set "horizontalSectionsMap", _.map _.pluck(story.verticalSections, "contextBlocks"), (cBlocks, i) ->
+                verticalIndex: i
+                horizontal: _.map cBlocks, (block, i) ->
+                    horizontalIndex: i
 
-            if verticalSections
-                horizontalSections = verticalSections.map (verticalSection, i) ->
-                    data: ContextBlocks.find(_id: $in: verticalSection.context)
-                    index: i
-
-                if horizontalSections
-                    # Session.set "verticalSections", verticalSections
-                    Session.set "horizontalSections", horizontalSections
-                    Session.set "backgroundImage", story.backgroundImage
-                    _.extend story,
-                        verticalSections: verticalSections
-                        horizontalSections: horizontalSections
+            return story
 
 Router.route "create",
     path: "create"
