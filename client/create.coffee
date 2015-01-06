@@ -15,8 +15,6 @@ Template.create.rendered = ->
         editor = this.base
         editor.triggerAnchorAction(e)
 
-        # editor.__proto__.anchorPreviewClickHandler(e)
-
     editor = new MediumEditor ".medium-editable",
         buttons: ['contextLink', 'bold', 'italic', 'underline'],
         extensions:
@@ -305,7 +303,6 @@ Template.horizontal_section_block.events
         console.log("delete")
         srcE = if d.srcElement then d.srcElement else d.target
         parentSection = $(srcE).closest('section')
-        console.log parentSection.data()
         horizontalIndex = parentSection.data('index')
         horizontalSections = Session.get('horizontalSections')
         horizontalSections[Session.get('currentVertical')].data.splice(horizontalIndex, 1)
@@ -362,14 +359,11 @@ Template.create_options.events
             # userId: user #TODO add this back in
             lastSaved: date
 
-        console.log(storyDocument)
-
         Session.set("storyDashTitle", storyDashTitle)
         storyId = Stories.findOne(storyDashTitle: storyDashTitle)?._id
         unless storyId
             storyId = Session.get("storyId")
         console.log("ID", storyId)
-        console.log storyDocument
         if storyId
             Stories.update({_id: storyId}, {$set: storyDocument})
         else
