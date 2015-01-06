@@ -223,10 +223,10 @@ Template.vertical_narrative.helpers
       _.extend v, index: i
 
 Template.vertical_narrative.events
-  "click #card-down": ->
-    goDownOneCard()
-  "click #card-up": ->
-    goUpOneCard()
+  # "click #card-down": ->
+  #   goDownOneCard()
+  # "click #card-up": ->
+  #   goUpOneCard()
   "click section": (d) ->
     $('#to-story, .attribution').fadeOut()
     srcE = if d.srcElement then d.srcElement else d.target
