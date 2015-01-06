@@ -1,19 +1,23 @@
 Template.create.rendered = ->
     ContextLinkExtension = ->
-        this.button = document.createElement('button');
-        this.button.className = 'medium-editor-action';
-        this.button.innerText = 'X';
+        this.parent = true;
+
+        this.button = document.createElement('button')
+        this.button.className = 'medium-editor-action'
+        this.button.innerText = 'X'
         this.button.onclick = this.onClick.bind(this)
         return
 
     ContextLinkExtension::getButton = ->
-        return this.button;
+        return this.button
 
     ContextLinkExtension::onClick = (e) ->
         editor = this.base
         editor.triggerAnchorAction(e)
 
-    editor = new MediumEditor ".content.editable",
+        # editor.__proto__.anchorPreviewClickHandler(e)
+
+    editor = new MediumEditor ".medium-editable",
         buttons: ['contextLink', 'bold', 'italic', 'underline'],
         extensions:
             contextLink: new ContextLinkExtension()
@@ -342,7 +346,7 @@ Template.create_options.events
         verticalSections = []
         $('section.vertical-narrative-section').each((i) ->
             title = $.trim($(this).find('div.title').text())
-            content = $.trim($(this).find('div.content').text())
+            content = $.trim($(this).find('div.content').html())
             verticalSections.push(
                 title: title
                 content: content

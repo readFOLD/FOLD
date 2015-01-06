@@ -88,9 +88,15 @@
 <template name="vertical_section_block">
 	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}">
 		<div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
-		<div class="content {{#unless read}}editable{{/unless}}">
-			{{{content}}}
-		</div>
+		{{#if read}}
+			<div class="content">
+				{{{content}}}
+			</div>
+		{{else}}
+			<div class="medium-editable">
+				{{{editableContentDiv}}}
+			</div>
+		{{/if}}
 		<div class="button">
 		</div>
 		{{#if verticalSelected}}
