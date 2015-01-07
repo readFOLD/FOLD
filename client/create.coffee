@@ -45,48 +45,50 @@ Template.create.rendered = ->
     ContextLinkExtension::showContextAnchorForm = (link_value) ->
         @base.toolbarActions.style.display = 'none'; # TO-DO Keep the toolbar
         @base.saveSelection();
-        $(".context-anchor-menu").show()
-        $(".context-anchor-menu").insertAfter(@base.toolbarActions)
+        contextAnchorForm = $(".context-anchor-menu")
+        contextAnchorForm.show()
+        contextAnchorForm.insertAfter(@base.toolbarActions)
+
         # @base.contextAnchorForm.style.display = 'block';
         @base.setToolbarPosition();
         @base.keepToolbarAlive = true;
         # @base.anchorInput.focus();
         # @base.anchorInput.value = link_value || '';
 
-    toolbarFormContextAnchor = ->
-        anchor = document.createElement("div")
-        input = document.createElement("input")
-        target_label = document.createElement("label")
-        target = document.createElement("input")
-        button_label = document.createElement("label")
-        button = document.createElement("input")
-        close = document.createElement("a")
-        save = document.createElement("a")
-        close.setAttribute "href", "#"
-        close.className = "medium-editor-toobar-anchor-close"
-        close.innerHTML = "&times;"
-        save.setAttribute "href", "#"
-        save.className = "medium-editor-toobar-anchor-save"
-        save.innerHTML = "&#10003;"
-        input.setAttribute "type", "text"
-        input.className = "medium-editor-toolbar-anchor-input"
-        # input.setAttribute "placeholder", @options.anchorInputPlaceholder
-        target.setAttribute "type", "checkbox"
-        target.className = "medium-editor-toolbar-anchor-target"
-        target_label.innerHTML = "Open in New Window?"
-        target_label.insertBefore target, target_label.firstChild
-        button.setAttribute "type", "checkbox"
-        button.className = "medium-editor-toolbar-anchor-button"
-        button_label.innerHTML = "Button"
-        button_label.insertBefore button, button_label.firstChild
-        anchor.className = "medium-editor-toolbar-form-context-anchor"
-        anchor.id = "medium-editor-toolbar-form-context-anchor"
-        anchor.appendChild input
-        anchor.appendChild save
-        anchor.appendChild close
-        # anchor.appendChild target_label  if @options.anchorTarget
-        # anchor.appendChild button_label  if @options.anchorButton
-        anchor
+    # toolbarFormContextAnchor = ->
+    #     anchor = document.createElement("div")
+    #     input = document.createElement("input")
+    #     target_label = document.createElement("label")
+    #     target = document.createElement("input")
+    #     button_label = document.createElement("label")
+    #     button = document.createElement("input")
+    #     close = document.createElement("a")
+    #     save = document.createElement("a")
+    #     close.setAttribute "href", "#"
+    #     close.className = "medium-editor-toobar-anchor-close"
+    #     close.innerHTML = "&times;"
+    #     save.setAttribute "href", "#"
+    #     save.className = "medium-editor-toobar-anchor-save"
+    #     save.innerHTML = "&#10003;"
+    #     input.setAttribute "type", "text"
+    #     input.className = "medium-editor-toolbar-anchor-input"
+    #     # input.setAttribute "placeholder", @options.anchorInputPlaceholder
+    #     target.setAttribute "type", "checkbox"
+    #     target.className = "medium-editor-toolbar-anchor-target"
+    #     target_label.innerHTML = "Open in New Window?"
+    #     target_label.insertBefore target, target_label.firstChild
+    #     button.setAttribute "type", "checkbox"
+    #     button.className = "medium-editor-toolbar-anchor-button"
+    #     button_label.innerHTML = "Button"
+    #     button_label.insertBefore button, button_label.firstChild
+    #     anchor.className = "medium-editor-toolbar-form-context-anchor"
+    #     anchor.id = "medium-editor-toolbar-form-context-anchor"
+    #     anchor.appendChild input
+    #     anchor.appendChild save
+    #     anchor.appendChild close
+    #     # anchor.appendChild target_label  if @options.anchorTarget
+    #     # anchor.appendChild button_label  if @options.anchorButton
+    #     anchor
     #####
     #
     # End stuff from Medium-editor.js
@@ -99,22 +101,25 @@ Template.create.rendered = ->
 
 
     editor = new MediumEditor ".medium-editable",
-        buttons: ['contextLink', 'bold', 'italic', 'underline'],
+        buttons: ['contextLink', 'bold', 'italic', 'underline', 'anchor'],
         extensions:
             contextLink: new ContextLinkExtension()
 
     console.log editor.toolbar
-    editor.toolbar.appendChild(toolbarFormContextAnchor());
+    # editor.toolbar.appendChild(toolbarFormContextAnchor());
 
-    editor.contextAnchorForm = editor.toolbar.querySelector('.medium-editor-toolbar-form-context-anchor');
-    editor.contextAnchorForm.style.display = 'none';
+    # editor.contextAnchorForm = editor.toolbar.querySelector('.medium-editor-toolbar-form-context-anchor');
+    # editor.contextAnchorForm.style.display = 'none';
+
+
+    # console.log editor.contextAnchorForm
 
     # Monkey Patches !!!
     editor.showToolbarActions = ->
         self = this
         timer = undefined
         @anchorForm.style.display = "none"
-        @contextAnchorForm.style.display = "none" # This is the monkey patch
+        # @contextAnchorForm.style.display = "none" # This is the monkey patch
         @toolbarActions.style.display = "block"
         @keepToolbarAlive = false
         clearTimeout timer
@@ -124,12 +129,16 @@ Template.create.rendered = ->
         , 100)
         return
 
-    editor.clickingIntoArchorForm = (e) ->
-        self = this
-        if e.type and e.type.toLowerCase() is "blur" and e.relatedTarget and e.relatedTarget in [self.anchorInput, self.contextAnchorForm]
-            return true
-        else
-            return false
+    # editor.clickingIntoArchorForm = (e) ->
+    #     self = this
+    #     console.log e
+    #     # console.log e.type
+
+    #     # console.log $(self.contextAnchorForm).has(e.target)
+    #     if e.type and e.type.toLowerCase() is "blur" and e.relatedTarget and e.relatedTarget in [self.anchorInput, self.contextAnchorForm]
+    #         return true
+    #     else
+    #         return false
 
     # End of monkey patches
 
@@ -333,12 +342,16 @@ Template.horizontal_context.events
     'click img.gifgif-button': (d) -> renderTemplate(d, Template.create_gifgif_section)
     'click img.audio-button': (d) -> renderTemplate(d, Template.create_audio_section)
 
-Template.context_anchor_menu.events
-    'mousedown .context-anchor-option': (d) ->
-        contextId =  $(d.currentTarget).data('contextId')
+Template.context_anchor_menu.rendered = ->
+    @$('.context-anchor-option').on 'mousedown', (e) ->
+        e.preventDefault()
+        console.log 'cleeek'
+        # @keepToolbarAlive = true;
+        contextId =  $(e.currentTarget).data('contextId')
         document.execCommand('createLink', false, contextId);
-        d.preventDefault()
+        # contextAnchorForm.hide()
         return false
+
 
 Template.create_section_options.events
     "click div#back": (d) ->
