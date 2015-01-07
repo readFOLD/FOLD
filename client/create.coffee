@@ -161,6 +161,7 @@ Template.vertical_section_block.rendered = ->
         # TODO STRONG VS BOLD (and em vs i) cross-browser and such. htmlClean makes b - > strong. but insertHtml inserts either b or strong depending on browser :-p
         # This is also needed for correct highlighting of toolbar
         # TODO, ENSURE LINKS ARE APPROPRIATE RELATIVE LINKS!
+        # TODO IE 11 PASTEHTML
         document.execCommand 'insertHTML', false, cleanHtml
 
 Template.background_image.helpers
@@ -348,7 +349,8 @@ Template.context_anchor_menu.rendered = ->
         console.log 'cleeek'
         # @keepToolbarAlive = true;
         contextId =  $(e.currentTarget).data('contextId')
-        document.execCommand('createLink', false, contextId);
+        link = '#' + contextId
+        document.execCommand 'createLink', false, link
         # contextAnchorForm.hide()
         return false
 

@@ -170,9 +170,16 @@ Template.story.events =
     y = $(srcE).data("y")
     goToXY(x, y)
 
-  "click a": (e) -> # TODO remove
+  "click a": (e) ->
     e.preventDefault()
-    goToX(2)
+    contextId = $(e.target).attr('href')[1..] # get id
+    story = Session.get('story')
+    currentY = Session.get('currentY')
+    currentVertical = story.verticalSections[currentY]
+    contextIndex = _.indexOf currentVertical.contextBlocks, contextId
+    if contextIndex >= 0
+      goToX(contextIndex)
+
 
   "keydown": (d) ->
     if d.keyCode is 38  # up
