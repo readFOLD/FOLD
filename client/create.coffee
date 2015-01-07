@@ -1,4 +1,5 @@
 Template.create.rendered = ->
+    console.log 'CREATE IS RENDERED'
     ContextLinkExtension = ->
         this.parent = true;
 
@@ -11,19 +12,147 @@ Template.create.rendered = ->
     ContextLinkExtension::getButton = ->
         return this.button
 
-    ContextLinkExtension::onClick = (e) ->
-        editor = this.base
-        editor.triggerAnchorAction(e)
+    ContextLinkExtension::onClick = ->
+        @triggerContextAnchorAction.apply(this, arguments)
+
+
+    ####
+    #    FROM MEDIUM-EDITOR.JS and the modified
+    #
+    ####
+
+    ####
+    #    FROM MEDIUM-EDITOR.JS and the modified
+    #
+    ####
+
+    ContextLinkExtension::triggerContextAnchorAction = ->
+        selectedParentElement = @base.getSelectedParentElement()
+        if selectedParentElement.tagName and selectedParentElement.tagName.toLowerCase() is "a"
+            @base.options.ownerDocument.execCommand "unlink", false, null # remove link
+        else
+            if @base.anchorForm.style.display is "block"
+                # probably to hide anchorForm if clicked twice
+                @base.showToolbarActions()
+            else
+                # @base.options.ownerDocument.execCommand('createLink', false, 'sandwiches');
+                # OR
+                # window.document.execCommand('createLink', false, 'sandwiches');
+
+                @showContextAnchorForm()
+        return this
+
+    ContextLinkExtension::showContextAnchorForm = (link_value) ->
+        @base.toolbarActions.style.display = 'none'; # TO-DO Keep the toolbar
+        @base.saveSelection();
+        $(".context-anchor-menu").show()
+        $(".context-anchor-menu").insertAfter(@base.toolbarActions)
+        # @base.contextAnchorForm.style.display = 'block';
+        @base.setToolbarPosition();
+        @base.keepToolbarAlive = true;
+        # @base.anchorInput.focus();
+        # @base.anchorInput.value = link_value || '';
+
+    toolbarFormContextAnchor = ->
+        anchor = document.createElement("div")
+        input = document.createElement("input")
+        target_label = document.createElement("label")
+        target = document.createElement("input")
+        button_label = document.createElement("label")
+        button = document.createElement("input")
+        close = document.createElement("a")
+        save = document.createElement("a")
+        close.setAttribute "href", "#"
+        close.className = "medium-editor-toobar-anchor-close"
+        close.innerHTML = "&times;"
+        save.setAttribute "href", "#"
+        save.className = "medium-editor-toobar-anchor-save"
+        save.innerHTML = "&#10003;"
+        input.setAttribute "type", "text"
+        input.className = "medium-editor-toolbar-anchor-input"
+        # input.setAttribute "placeholder", @options.anchorInputPlaceholder
+        target.setAttribute "type", "checkbox"
+        target.className = "medium-editor-toolbar-anchor-target"
+        target_label.innerHTML = "Open in New Window?"
+        target_label.insertBefore target, target_label.firstChild
+        button.setAttribute "type", "checkbox"
+        button.className = "medium-editor-toolbar-anchor-button"
+        button_label.innerHTML = "Button"
+        button_label.insertBefore button, button_label.firstChild
+        anchor.className = "medium-editor-toolbar-form-context-anchor"
+        anchor.id = "medium-editor-toolbar-form-context-anchor"
+        anchor.appendChild input
+        anchor.appendChild save
+        anchor.appendChild close
+        # anchor.appendChild target_label  if @options.anchorTarget
+        # anchor.appendChild button_label  if @options.anchorButton
+        anchor
+    #####
+    #
+    # End stuff from Medium-editor.js
+    #
+    # ###
+
+    ##
+    #
+    # End stuff from Mediu
+
 
     editor = new MediumEditor ".medium-editable",
         buttons: ['contextLink', 'bold', 'italic', 'underline'],
         extensions:
             contextLink: new ContextLinkExtension()
 
+    console.log editor.toolbar
+    editor.toolbar.appendChild(toolbarFormContextAnchor());
+
+    editor.contextAnchorForm = editor.toolbar.querySelector('.medium-editor-toolbar-form-context-anchor');
+    editor.contextAnchorForm.style.display = 'none';
+
+    # Monkey Patches !!!
+    editor.showToolbarActions = ->
+        self = this
+        timer = undefined
+        @anchorForm.style.display = "none"
+        @contextAnchorForm.style.display = "none" # This is the monkey patch
+        @toolbarActions.style.display = "block"
+        @keepToolbarAlive = false
+        clearTimeout timer
+        timer = setTimeout(->
+            self.toolbar.classList.add "medium-editor-toolbar-active"  if self.toolbar and not self.toolbar.classList.contains("medium-editor-toolbar-active")
+            return
+        , 100)
+        return
+
+    editor.clickingIntoArchorForm = (e) ->
+        self = this
+        if e.type and e.type.toLowerCase() is "blur" and e.relatedTarget and e.relatedTarget in [self.anchorInput, self.contextAnchorForm]
+            return true
+        else
+            return false
+
+    # End of monkey patches
+
     unless (Session.equals("currentY", undefined) and Session.equals("currentX", undefined))
         $('.attribution, #to-story').fadeOut(1)
         goToY(Session.get("currentY"))
         goToX(Session.get("currentX"))
+
+Template.vertical_section_block.rendered = ->
+    console.log 'Vertical Section Rendered'
+    @$(".medium-editable").on 'paste', (e) ->
+        e.preventDefault()
+        html = (e.originalEvent || e).clipboardData?.getData('text/html')
+        cleanHtml = $.htmlClean html,
+            allowedTags: ['strong', 'em', 'a']
+            format: false
+            removeAttrs: ['class', 'id'] # probably more
+            # allowedAttrs:
+
+        # TODO STRONG VS BOLD (and em vs i) cross-browser and such. htmlClean makes b - > strong. but insertHtml inserts either b or strong depending on browser :-p
+        # This is also needed for correct highlighting of toolbar
+        # TODO, ENSURE LINKS ARE APPROPRIATE RELATIVE LINKS!
+        document.execCommand 'insertHTML', false, cleanHtml
 
 Template.background_image.helpers
     backgroundImage: ->
@@ -195,6 +324,7 @@ Template.horizontal_context.helpers
         Session.get('lastUpdate')
         return
 
+
 Template.horizontal_context.events
     'click img.text-button': (d) -> renderTemplate(d, Template.create_text_section)
     'click img.photo-button': (d) -> renderTemplate(d, Template.create_image_section)
@@ -202,6 +332,13 @@ Template.horizontal_context.events
     'click img.youtube-button': (d) -> renderTemplate(d, Template.create_video_section)
     'click img.gifgif-button': (d) -> renderTemplate(d, Template.create_gifgif_section)
     'click img.audio-button': (d) -> renderTemplate(d, Template.create_audio_section)
+
+Template.context_anchor_menu.events
+    'mousedown .context-anchor-option': (d) ->
+        contextId =  $(d.currentTarget).data('contextId')
+        document.execCommand('createLink', false, contextId);
+        d.preventDefault()
+        return false
 
 Template.create_section_options.events
     "click div#back": (d) ->
@@ -325,8 +462,11 @@ Template.horizontal_section_block.events
 #######################
 # Save and Publish
 #######################
+
+
 Template.create_options.events
     "click div#save": ->
+        # TODO this breaks undo behavior due to reactivity
         console.log("SAVE")
         # Get all necessary fields
         storyTitle = $.trim($('div.title-author div.title').text())
@@ -336,8 +476,6 @@ Template.create_options.events
         # TODO need a better way to get context cards
         oldStory = Session.get "story"
         contextBlocks = _.pluck oldStory.verticalSections, 'contextBlocks'
-
-
         date = new Date()
         # user = Meteor.user()._id
         verticalSections = []
@@ -364,6 +502,7 @@ Template.create_options.events
         unless storyId
             storyId = Session.get("storyId")
         console.log("ID", storyId)
+        # TODO sanitize server-side
         if storyId
             Stories.update({_id: storyId}, {$set: storyDocument})
         else

@@ -214,8 +214,12 @@ Template.vertical_section_block.helpers
   notFirst: -> (!Session.equals("currentY", 0))
   verticalSelected: -> (Session.equals("currentY", @index) and Session.get("pastHeader"))
   validTitle: -> (@title is not "title")
-  editableContentDiv: ->
-    return '<div class="content editable">' + this.content + '</div>'
+  contentDiv: ->
+    # TODO Sanitize
+    if @read
+      return '<div class="content">' + this.content + '</div>'
+    else
+      return '<div class="content editable medium-editable">' + this.content + '</div>'
 
 Template.vertical_narrative.helpers
   verticalSectionsWithIndex: ->

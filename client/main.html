@@ -88,15 +88,7 @@
 <template name="vertical_section_block">
 	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}">
 		<div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
-		{{#if read}}
-			<div class="content">
-				{{{content}}}
-			</div>
-		{{else}}
-			<div class="medium-editable">
-				{{{editableContentDiv}}}
-			</div>
-		{{/if}}
+		{{{contentDiv}}}
 		<div class="button">
 		</div>
 <!-- 		{{#if verticalSelected}}
@@ -115,6 +107,11 @@
 	{{#unless read}}
     	{{#if verticalExists}}
         	{{ > add_horizontal}}
+	    		{{#each horizontalSections}}
+	    		    {{#if horizontalShown}}
+			        	{{ > context_anchor_menu}}
+	    	   	    {{/if}}
+	    		{{/each}}
         {{/if}}
     {{/unless}}
 	{{#each horizontalSections}}
@@ -129,6 +126,21 @@
     	    {{/unless}}
    	    {{/if}}
 	{{/each}}
+</template>
+
+<template name="context_anchor_menu">
+	<div class="context-anchor-menu">
+            {{#each data}}
+                {{#if type}}
+                	<div class="context-anchor-option" data-context-id={{_id}}>
+	 	                <h1>{{description}}</h1>
+	 	            </div>
+                {{/if}}
+   	        {{/each}}
+   	       	<div>
+   	       		To add new card click on plus
+   	       	</div>
+    </div>
 </template>
 
 <template name="horizontal_section_block">

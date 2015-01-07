@@ -1,5 +1,5 @@
 .editable {
-	outline: 1px dotted gray;
+	outline: 1px dashed @color-medium-green;
 	cursor: text;
 }
 
@@ -24,6 +24,7 @@ input.background-image-input {
 	right: 150px;
 	top: 50px;
 }
+
 
 div.save-background-image {
 	.background-transition;
@@ -545,3 +546,7 @@ div.image-section {
 // 		height: 100px;
 // 	}
 // }
+
+div.context-anchor-menu {
+	display: none;
+}
