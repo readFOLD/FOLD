@@ -6,17 +6,23 @@
 	update: -> true
 	remove: -> true
 
+ContextBlock = (doc) ->
+	_.extend this, doc
+	return
 
-@NarrativeBlocks = new Meteor.Collection "narrative_blocks"
+_.extend ContextBlock::,
+	url: ->
+		if @service is 'youtube'
+			'//www.youtube.com/embed/' + @videoId
+		else if @service is 'vimeo'
+			'//player.vimeo.com/video/' + @videoId
+	previewUrl: ->
+		if @service is 'youtube'
+			'//img.youtube.com/vi/' + @videoId + '/0.jpg'
 
-# Add user confirmation / security here
-@NarrativeBlocks.allow
-	insert: -> true
-	update: -> true
-	remove: -> true
-
-
-@ContextBlocks = new Meteor.Collection "context_blocks"
+@ContextBlocks = new Meteor.Collection "context_blocks",
+	transform: (doc) ->
+		new ContextBlock(doc)
 
 # Add user confirmation / security here
 @ContextBlocks.allow

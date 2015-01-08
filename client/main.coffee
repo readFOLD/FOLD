@@ -330,15 +330,6 @@ Template.horizontal_section_block.helpers
 
 Template.display_oec_section.helpers horizontalBlockHelpers
 Template.display_video_section.helpers horizontalBlockHelpers
-Template.display_video_section.helpers
-  url: ->
-    if @service is 'youtube'
-      '//www.youtube.com/embed/' + @videoId
-    else if @service is 'vimeo'
-      '//player.vimeo.com/video/' + @videoId
-  previewUrl: ->
-    if @service is 'youtube'
-      '//img.youtube.com/vi/' + @videoId + '/0.jpg'
 
 Template.story_browser.events
   "click #right": (d) ->
