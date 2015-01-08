@@ -270,9 +270,13 @@ Template.horizontal_context.helpers
     horizontalShown: ->
       Session.equals("currentY", @index)
 
+horizontalBlockHelpers =
+  selected: ->
+    Session.equals("currentX", @index)
+
+Template.horizontal_section_block.helpers horizontalBlockHelpers
+
 Template.horizontal_section_block.helpers
-    selected: ->
-      Session.equals("currentX", @index)
     # Initial left positioning of horizontal block
     left: ->
       # Get width of page and declare helper variables
@@ -323,6 +327,19 @@ Template.horizontal_section_block.helpers
     video: -> (@type is "video")
     oec: -> (@type is "oec")
 
+
+Template.display_oec_section.helpers horizontalBlockHelpers
+Template.display_video_section.helpers horizontalBlockHelpers
+Template.display_video_section.helpers
+  url: ->
+    if @service is 'youtube'
+      '//www.youtube.com/embed/' + @videoId
+    else if @service is 'vimeo'
+      '//player.vimeo.com/video/' + @videoId
+  previewUrl: ->
+    if @service is 'youtube'
+      '//img.youtube.com/vi/' + @videoId + '/0.jpg'
+
 Template.story_browser.events
   "click #right": (d) ->
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal
@@ -344,3 +361,4 @@ Template.story_browser.events
     path = window.location.pathname.split("/")
     path[4] = Session.get("currentX")
     # window.history.pushState({}, '', path.join("/"))
+

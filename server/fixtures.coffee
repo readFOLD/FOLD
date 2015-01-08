@@ -75,7 +75,8 @@ if (ContextBlocks.find().count() is 0)
     }
     {
       type: "video"
-      url: "//www.youtube.com/embed/aM3vhZrNa7E"
+      service: 'youtube'
+      videoId: 'aM3vhZrNa7E'
       description: "How did ebola evolve to affect humans?"
       _id: '4'
     }
@@ -104,25 +105,29 @@ if (ContextBlocks.find().count() is 0)
     }
     {
       type: "video"
-      url: "//www.youtube.com/embed/PlmHZeukdh0"
+      service: 'youtube'
+      videoId: 'PlmHZeukdh0'
       description: "Sierra Leone Lockdown"
       _id: '9'
     }
     {
       type: "video"
-      url: "//www.youtube.com/embed/KEmSpyYLXr0"
+      service: 'youtube'
+      videoId: 'KEmSpyYLXr0'
       description: "WHO response"
       _id: '10'
     }
     {
       type: "video"
-      url: "//www.youtube.com/embed/uAVk2IJDEsM"
+      service: 'youtube'
+      videoId: 'uAVk2IJDEsM'
       description: "Obama response"
       _id: '11'
     }
     {
       type: "video"
-      url: "//www.youtube.com/embed/oouvsHBeF_Q"
+      service: 'youtube'
+      videoId: 'oouvsHBeF_Q'
       description: "Global community"
       _id: '12'
     }
@@ -175,7 +180,8 @@ if (ContextBlocks.find().count() is 0)
     }
     {
       type: "video"
-      url: "//www.youtube.com/embed/T3v64ZchRkM"
+      service: 'youtube'
+      videoId: 'T3v64ZchRkM'
       description: "Economic Cost"
       _id: '21'
     }
@@ -187,13 +193,15 @@ if (ContextBlocks.find().count() is 0)
     }
     {
       type: "video"
-      url: "//player.vimeo.com/video/106298449"
+      service: 'vimeo'
+      videoId: '106298449'
       description: "Dying of Ebola at the Hospital Door"
       _id: '23'
     }
     {
       type: "video"
-      url: "//player.vimeo.com/video/103567250 "
+      service: 'vimeo'
+      videoId: '103567250'
       description: "Economic Cost"
       _id: '24'
     }
