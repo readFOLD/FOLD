@@ -197,10 +197,10 @@ section.narrative-section {
 	transition: background-color 0.25s ease;
 	background-color: @color-inactive-grey;
 
-	span.link {
+	a {
 		.background-transition;
 		background-color: @color-link-grey;
-		cursor: pointer;
+		color: inherit;
 		padding: 0 4px;
 		&:hover {
 			background-color: @color-light-green;
