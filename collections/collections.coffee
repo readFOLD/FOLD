@@ -6,11 +6,11 @@
 	update: -> true
 	remove: -> true
 
-ContextBlock = (doc) ->
-	_.extend this, doc
-	return
+class ContextBlock
+	constructor : (doc) ->
+		_.extend this, doc
 
-_.extend ContextBlock::,
+class VideoBlock extends ContextBlock
 	url: ->
 		if @service is 'youtube'
 			'//www.youtube.com/embed/' + @videoId
@@ -22,7 +22,10 @@ _.extend ContextBlock::,
 
 @ContextBlocks = new Meteor.Collection "context_blocks",
 	transform: (doc) ->
-		new ContextBlock(doc)
+		if doc.type is 'video'
+			new VideoBlock doc
+		else
+			new ContextBlock doc
 
 # Add user confirmation / security here
 @ContextBlocks.allow
