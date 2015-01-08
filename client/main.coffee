@@ -272,7 +272,13 @@ Template.horizontal_context.helpers
 
 horizontalBlockHelpers =
   selected: ->
-    Session.equals("currentX", @index)
+    Session.equals("currentX", @index) and not Session.get("addingContext")
+  text: -> (@type is "text")
+  image: -> (@type is "image")
+  map: -> (@type is "map")
+  video: -> (@type is "video")
+  oec: -> (@type is "oec")
+
 
 Template.horizontal_section_block.helpers horizontalBlockHelpers
 
@@ -290,6 +296,9 @@ Template.horizontal_section_block.helpers
       read = Session.get("read")
       if read then offset = 0
       else offset = 75 + Session.get("separation")
+
+      if Session.get("addingContext")
+        offset += cardWidth + Session.get("separation")
 
       # Current X
 
@@ -321,11 +330,6 @@ Template.horizontal_section_block.helpers
     lastUpdate: ->
         Session.get('lastUpdate')
         return
-    text: -> (@type is "text")
-    image: -> (@type is "image")
-    map: -> (@type is "map")
-    video: -> (@type is "video")
-    oec: -> (@type is "oec")
 
 
 Template.display_oec_section.helpers horizontalBlockHelpers

@@ -91,6 +91,20 @@
 	{{> horizontal_section_edit_delete}}
 </template>
 
+<template name="create_horizontal_section_block">
+	<section class="narrative-section horizontal-narrative-section selected" style="width: {{cardWidth}}px; left: {{left}}px">
+		{{#if type}}
+			{{#if text}}{{> create_text_section}}{{/if}}
+			{{#if image}}{{> create_image_section}}{{/if}}
+			{{#if map}}{{> create_map_section}}{{/if}}
+			{{#if video}}{{> create_video_section}}{{/if}}
+			{{#if oec}}{{> create_oec_section}}{{/if}}
+		{{else}}
+			{{> horizontal_section_buttons}}
+		{{/if}}
+	</section>
+</template>
+
 <template name="create_section_options">
 	<div class="button-options back-save">
 		<div id="back" class="button">

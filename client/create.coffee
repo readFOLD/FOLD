@@ -297,28 +297,61 @@ Template.add_horizontal.helpers
         cardWidth = Session.get "cardWidth"
         halfWidth + (Session.get "separation") / 2
 
-# Template.add_horizontal.events
-#     "click section": (d) ->
-#         # unless Session.get("editingContext")
-#         #     # TODO Make this based on a session variable
-#         #     $("section.horizontal-new-section").animate({height: "100%", width: "540px"}, 250)
 
-#         #     # Shift all horizontal sections right
-#         #     $("div.horizontal-context section:not(:first)").animate({left: "+=440px"}, 250)
+Template.add_horizontal.events
+    "click section": (d) ->
+        Session.set "addingContext", not Session.get "addingContext"
+        # unless Session.get("editingContext")
+        #     # TODO Make this based on a session variable
+        #     $("section.horizontal-new-section").animate({height: "100%", width: "540px"}, 250)
 
-#         #     Session.set("editingContext", true)
+        #     # Shift all horizontal sections right
+        #     $("div.horizontal-context section:not(:first)").animate({left: "+=440px"}, 250)
 
-#         # Append Horizontal Section to Current Horizontal Context
-#         horizontalSections = Session.get('horizontalSections')
-#         console.log("horizontalSections", horizontalSections, Session.get('currentVertical'))
-#         newHorizontalSection =
-#             if Session.get("horizontalSections")[Session.get('currentVertical')]?.data?.length
-#                 x = Session.get("horizontalSections")[Session.get('currentVertical')].data.length
-#             else
-#                 x = 0
-#             index: x
-#         horizontalSections[Session.get('currentVertical')].data.push(newHorizontalSection)
-#         Session.set('horizontalSections', horizontalSections)
+        #     Session.set("editingContext", true)
+
+        # Append Horizontal Section to Current Horizontal Context
+        # console.log @
+        # horizontalSections = Session.get('horizontalSections')
+        # console.log("horizontalSections", horizontalSections, Session.get('currentVertical'))
+        # newHorizontalSection =
+        #     if Session.get("horizontalSections")[Session.get('currentVertical')]?.data?.length
+        #         x = Session.get("horizontalSections")[Session.get('currentVertical')].data.length
+        #     else
+        #         x = 0
+        #     index: x
+        # horizontalSections[Session.get('currentVertical')].data.push(newHorizontalSection)
+        # Session.set('horizontalSections', horizontalSections)
+
+
+Template.create_horizontal_section_block.created = ->
+    @type = new ReactiveVar()
+
+# TODO DRY
+Template.create_horizontal_section_block.helpers
+    type: -> Template.instance().type.get()
+    text: -> (Template.instance().type.get() is "text")
+    image: -> (Template.instance().type.get() is "image")
+    map: -> (Template.instance().type.get() is "map")
+    video: -> (Template.instance().type.get() is "video")
+    oec: -> (Template.instance().type.get() is "oec")
+
+Template.create_horizontal_section_block.helpers
+    left: ->
+        width = Session.get "width"
+        if width < 1024 then width = 1024
+        halfWidth = width / 2
+        cardWidth = Session.get "cardWidth"
+        75 + halfWidth + (Session.get "separation") * 1.5
+
+Template.create_horizontal_section_block.events
+    'click img.text-button': (d, t) -> t.type.set 'text'
+    'click img.photo-button': (d, t) -> t.type.set 'image'
+    'click img.map-button': (d, t) -> t.type.set 'map'
+    'click img.youtube-button': (d, t) -> t.type.set 'video'
+    "click div#back": (d, t) -> t.type.set null
+    # 'click img.gifgif-button': (d, t) -> t.type.set 'gifgif'
+    # 'click img.audio-button': (d, t) -> t.type.set 'audio'
 
 renderTemplate = (d, templateName, context) ->
     srcE = if d.srcElement then d.srcElement else d.target
@@ -335,13 +368,7 @@ Template.horizontal_context.helpers
         return
 
 
-Template.horizontal_context.events
-    'click img.text-button': (d) -> renderTemplate(d, Template.create_text_section)
-    'click img.photo-button': (d) -> renderTemplate(d, Template.create_image_section)
-    'click img.map-button': (d) -> renderTemplate(d, Template.create_map_section)
-    'click img.youtube-button': (d) -> renderTemplate(d, Template.create_video_section)
-    'click img.gifgif-button': (d) -> renderTemplate(d, Template.create_gifgif_section)
-    'click img.audio-button': (d) -> renderTemplate(d, Template.create_audio_section)
+
 
 Template.context_anchor_menu.rendered = ->
     @$('.context-anchor-option').on 'mousedown', (e) ->
@@ -355,12 +382,12 @@ Template.context_anchor_menu.rendered = ->
         return false
 
 
-Template.create_section_options.events
-    "click div#back": (d) ->
-        srcE = if d.srcElement then d.srcElement else d.target
-        parentSection = $(srcE).closest('section')
-        parentSection.empty()
-        UI.insert(UI.render(Template.horizontal_section_buttons), parentSection.get(0))
+# Template.create_section_options.events
+#     "click div#back": (d) ->
+#         srcE = if d.srcElement then d.srcElement else d.target
+#         parentSection = $(srcE).closest('section')
+#         parentSection.empty()
+#         UI.insert(UI.render(Template.horizontal_section_buttons), parentSection.get(0))
 
 Template.create_text_section.events
     "click div#save": (d) ->
@@ -389,21 +416,18 @@ Template.create_video_section.events
         parentSection = $(srcE).closest('section')
         horizontalIndex = parentSection.data('index')
         url = parentSection.find('input.youtube-link-input').val()
-        description = parentSection.find('input.youtube-description-input').val()
-        newDocument =
+        id = url.match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/)?[1]
+        console.log id
+        description = parentSection.find('input.youtube-description-input').val() # TODO Get from video??
+
+        newContextBlock =
             type: 'video'
-            url: url
+            service: 'youtube'
+            id: id
             description: description
-            index: horizontalIndex
 
-        # Bind data
-        horizontalSections = Session.get('horizontalSections')
-        horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument
-        Session.set('horizontalSections', horizontalSections)
+        console.log newContextBlock
 
-        # Render display section
-        context = newDocument
-        renderTemplate(d, Template.display_video_section, context)
 
 Template.create_map_section.events
     "click div#save": (d) ->

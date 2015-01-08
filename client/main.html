@@ -107,11 +107,14 @@
 	{{#unless read}}
     	{{#if verticalExists}}
         	{{ > add_horizontal}}
-	    		{{#each horizontalSections}}
-	    		    {{#if horizontalShown}}
-			        	{{ > context_anchor_menu}}
-	    	   	    {{/if}}
-	    		{{/each}}
+    		{{#each horizontalSections}}
+    		    {{#if horizontalShown}}
+		        	{{ > context_anchor_menu}}
+    	   	    {{/if}}
+    		{{/each}}
+	    	{{#if addingContext}}
+	    		{{ > create_horizontal_section_block}}
+	    	{{/if}}
         {{/if}}
     {{/unless}}
 	{{#each horizontalSections}}
@@ -142,6 +145,8 @@
    	       	</div>
     </div>
 </template>
+
+
 
 <template name="horizontal_section_block">
 	<section class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}}" data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px">

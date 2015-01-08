@@ -5,8 +5,9 @@
 @color-fold-black: #272727;
 // @color-dark-black: #222222;
 
-@color-dark-black: #0C090A;
+// @color-dark-black: #0C090A;
 @color-dark-black: #0A0500;
+@color-medium-black: #323232;
 @color-inactive-grey: #E0E2E1;
 // @color-dark-grey: #494A49;
 @color-dark-grey: #333333;

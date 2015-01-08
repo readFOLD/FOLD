@@ -20,6 +20,7 @@ class VideoBlock extends ContextBlock
 		if @service is 'youtube'
 			'//img.youtube.com/vi/' + @videoId + '/0.jpg'
 
+
 @ContextBlocks = new Meteor.Collection "context_blocks",
 	transform: (doc) ->
 		if doc.type is 'video'
