@@ -300,7 +300,15 @@ Template.add_horizontal.helpers
 
 Template.add_horizontal.events
     "click section": (d) ->
-        Session.set "addingContext", not Session.get "addingContext"
+        horizontalContextDiv = $(".horizontal-context")
+
+        if Session.get "addingContext"
+            Session.set "addingContext", false
+            horizontalContextDiv.animate({ top: "inherit" })
+        else
+            horizontalContextDiv.animate({ top: "90px" })
+            Session.set "addingContext", true
+
         # unless Session.get("editingContext")
         #     # TODO Make this based on a session variable
         #     $("section.horizontal-new-section").animate({height: "100%", width: "540px"}, 250)
@@ -416,17 +424,32 @@ Template.create_video_section.events
         parentSection = $(srcE).closest('section')
         horizontalIndex = parentSection.data('index')
         url = parentSection.find('input.youtube-link-input').val()
-        id = url.match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/)?[1]
-        console.log id
-        description = parentSection.find('input.youtube-description-input').val() # TODO Get from video??
+        videoId = url.match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/)?[1]
+        console.log videoId
+        description = parentSection.find('input.youtube-description-input').val() # TODO Get from video
 
         newContextBlock =
             type: 'video'
             service: 'youtube'
-            id: id
+            videoId: videoId
             description: description
 
-        console.log newContextBlock
+        # TODO Move to server method
+
+        contextBlockId = ContextBlocks.insert newContextBlock
+        storyId = Session.get("storyId")
+        verticalSectionIndex = Session.get("currentY")
+
+        pushSelectorString = 'verticalSections.' + verticalSectionIndex + '.contextBlocks'
+        pushObject = {}
+        pushObject[pushSelectorString] = contextBlockId
+        Stories.update {_id: storyId}, { $push: pushObject }, (err, numDocs) ->
+            if err
+                return alert err
+            if numDocs
+                Session.set "addingContext", false
+            else
+                return alert 'No docs updated'
 
 
 Template.create_map_section.events
