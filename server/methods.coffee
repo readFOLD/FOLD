@@ -2,6 +2,7 @@
 GOOGLE_API_KEY = Meteor.settings.GOOGLE_API_KEY
 
 if not GOOGLE_API_KEY
+  console.error 'Settings must be loaded for apis to work'
   throw new Meteor.Error 'Settings must be loaded for apis to work'
 
 # YoutubeApi.authenticate
@@ -18,7 +19,6 @@ Meteor.methods
       part: 'snippet'
       id: videoId
       key: GOOGLE_API_KEY
-    console.log requestParams
     res = HTTP.get 'https://www.googleapis.com/youtube/v3/videos', params: requestParams
     return res.data.items?[0]?.snippet
       # YoutubeApi.videos.list

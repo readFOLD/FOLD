@@ -378,13 +378,11 @@ Template.horizontal_context.helpers
 
 
 
-Template.context_anchor_menu.rendered = ->
-    # TODO - this does not get added to new options!
-    @$('.context-anchor-option').on 'mousedown', (e) ->
+Template.context_anchor_option.events =
+    "mousedown": (e) ->
         e.preventDefault()
-        console.log 'cleeek'
         # @keepToolbarAlive = true;
-        contextId =  $(e.currentTarget).data('contextId')
+        contextId = @_id
         link = '#' + contextId
         document.execCommand 'createLink', false, link
         # contextAnchorForm.hide()

@@ -135,15 +135,19 @@
 	<div class="context-anchor-menu">
             {{#each data}}
                 {{#if type}}
-                	<div class="context-anchor-option" data-context-id={{_id}}>
-	 	                <h1>{{description}}</h1>
-	 	            </div>
+                  {{> context_anchor_option}}
                 {{/if}}
    	        {{/each}}
    	       	<div>
    	       		To add new card click on plus
    	       	</div>
     </div>
+</template>
+
+<template name="context_anchor_option">
+  <div class="context-anchor-option" data-context-id={{_id}}>
+    <h1>{{description}}</h1>
+  </div>
 </template>
 
 
