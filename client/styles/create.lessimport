@@ -549,4 +549,8 @@ div.image-section {
 
 div.context-anchor-menu {
 	display: none;
+	li{
+		list-style: decimal;
+		float: none;
+	}
 }

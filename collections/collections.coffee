@@ -20,13 +20,23 @@ class VideoBlock extends ContextBlock
 		if @service is 'youtube'
 			'//img.youtube.com/vi/' + @videoId + '/0.jpg'
 
+class TextBlock extends ContextBlock
+	description: ->
+		maxLength = 40
+		if @content.length <= maxLength
+			@content
+		else
+			@content[...maxLength] + '...'
 
 @ContextBlocks = new Meteor.Collection "context_blocks",
 	transform: (doc) ->
-		if doc.type is 'video'
-			new VideoBlock doc
-		else
-			new ContextBlock doc
+		switch doc.type
+			when 'video'
+				new VideoBlock doc
+			when 'text'
+				new TextBlock doc
+			else
+				new ContextBlock doc
 
 # Add user confirmation / security here
 @ContextBlocks.allow

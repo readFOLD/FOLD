@@ -58,7 +58,9 @@
 	</article>
 
 	{{#if pastHeader}}
+    {{#if read}}
 	    {{> minimap}}
+    {{/if}}
 	    {{#if horizontalExists}}
 		    <div class="browser-offset">
 		    	{{> story_browser}}
@@ -131,24 +133,6 @@
 	{{/each}}
 </template>
 
-<template name="context_anchor_menu">
-	<div class="context-anchor-menu">
-            {{#each data}}
-                {{#if type}}
-                  {{> context_anchor_option}}
-                {{/if}}
-   	        {{/each}}
-   	       	<div>
-   	       		To add new card click on plus
-   	       	</div>
-    </div>
-</template>
-
-<template name="context_anchor_option">
-  <div class="context-anchor-option" data-context-id={{_id}}>
-    <h1>{{description}}</h1>
-  </div>
-</template>
 
 
 
@@ -241,11 +225,9 @@
 			<div class="vertical block {{#if selectedY}}selected-block{{/if}}">
 			</div>
 			{{#each horizontal}}
-   	            {{#if read}}
-	                <div class="horizontal block {{#if selectedX}}selected-block{{/if}}">
-	                </div>
-   	            {{/if}}
-   	        {{/each}}
+          <div class="horizontal block {{#if selectedX}}selected-block{{/if}}">
+          </div>
+      {{/each}}
 		</div>
 		{{/each}}
 	</div>

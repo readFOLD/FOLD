@@ -191,3 +191,23 @@
 		</div>
 	</div>
 </template>
+
+
+<template name="context_anchor_menu">
+  <div class="context-anchor-menu">
+  	<ol>
+      {{#each data}}
+        {{#if type}}
+          {{> context_anchor_option}}
+        {{/if}}
+      {{/each}}
+  	</ol>
+   	<div>
+   		To add new card click on plus
+   	</div>
+  </div>
+</template>
+
+<template name="context_anchor_option">
+  <li><button type="button">{{description}}</button></li>
+</template>
