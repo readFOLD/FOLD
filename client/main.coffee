@@ -1,5 +1,4 @@
-# TODO Don't hardcode this
-@google_api_key = "AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q"
+
 
 getCardWidth = (windowWidth) ->
   if windowWidth <= 1024

@@ -150,11 +150,10 @@
 
 <template name="create_video_section">
 	<div class="create-section">
-		<div class="input-label">Youtube Link:</div>
-		<input class="youtube-link-input">
-
-		<div class="input-label">Description:</div>
-		<input class="youtube-description-input" value="{{description}}">
+		<form class="youtube-link">
+			<div class="input-label">Youtube Link:</div>
+			<input class="youtube-link-input">
+		</form>
 		{{> create_section_options}}
 	</div>
 	<img class="map-button content-type-button" src="/youtube-icon.png" />

@@ -379,6 +379,7 @@ Template.horizontal_context.helpers
 
 
 Template.context_anchor_menu.rendered = ->
+    # TODO - this does not get added to new options!
     @$('.context-anchor-option').on 'mousedown', (e) ->
         e.preventDefault()
         console.log 'cleeek'
@@ -419,6 +420,9 @@ Template.create_text_section.events
         renderTemplate(d, Template.display_text_section, context)
 
 Template.create_video_section.events
+    "submit": (d) ->
+        d.preventDefault()
+        console.log 'submit!!'
     "click div#save": (d) ->
         srcE = if d.srcElement then d.srcElement else d.target
         parentSection = $(srcE).closest('section')
@@ -426,30 +430,43 @@ Template.create_video_section.events
         url = parentSection.find('input.youtube-link-input').val()
         videoId = url.match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/)?[1]
         console.log videoId
-        description = parentSection.find('input.youtube-description-input').val() # TODO Get from video
 
-        newContextBlock =
-            type: 'video'
-            service: 'youtube'
-            videoId: videoId
-            description: description
 
-        # TODO Move to server method
 
-        contextBlockId = ContextBlocks.insert newContextBlock
-        storyId = Session.get("storyId")
-        verticalSectionIndex = Session.get("currentY")
-
-        pushSelectorString = 'verticalSections.' + verticalSectionIndex + '.contextBlocks'
-        pushObject = {}
-        pushObject[pushSelectorString] = contextBlockId
-        Stories.update {_id: storyId}, { $push: pushObject }, (err, numDocs) ->
+        Meteor.call 'youtubeVideoInfo', videoId, (err, info) ->
             if err
-                return alert err
-            if numDocs
-                Session.set "addingContext", false
-            else
-                return alert 'No docs updated'
+                console.log err # TODO handle errors
+                return
+
+            if not info
+                console.log 'video not found'
+                return
+
+            console.log info
+
+
+            newContextBlock =
+                type: 'video'
+                service: 'youtube'
+                videoId: videoId
+                description: info.title
+
+            # TODO Move to server method
+
+            contextBlockId = ContextBlocks.insert newContextBlock
+            storyId = Session.get("storyId")
+            verticalSectionIndex = Session.get("currentY")
+
+            pushSelectorString = 'verticalSections.' + verticalSectionIndex + '.contextBlocks'
+            pushObject = {}
+            pushObject[pushSelectorString] = contextBlockId
+            Stories.update {_id: storyId}, { $push: pushObject }, (err, numDocs) ->
+                if err
+                    return alert err
+                if numDocs
+                    Session.set "addingContext", false
+                else
+                    return alert 'No docs updated'
 
 
 Template.create_map_section.events
