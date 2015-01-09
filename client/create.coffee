@@ -105,7 +105,6 @@ Template.create.rendered = ->
         extensions:
             contextLink: new ContextLinkExtension()
 
-    console.log editor.toolbar
     # editor.toolbar.appendChild(toolbarFormContextAnchor());
 
     # editor.contextAnchorForm = editor.toolbar.querySelector('.medium-editor-toolbar-form-context-anchor');
@@ -428,8 +427,6 @@ Template.create_video_section.events
         horizontalIndex = parentSection.data('index')
         url = parentSection.find('input.youtube-link-input').val()
         videoId = url.match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/)?[1]
-        console.log videoId
-
 
 
         Meteor.call 'youtubeVideoInfo', videoId, (err, info) ->
@@ -440,8 +437,6 @@ Template.create_video_section.events
             if not info
                 console.log 'video not found'
                 return
-
-            console.log info
 
 
             newContextBlock =
