@@ -172,12 +172,7 @@ Template.story.events =
   "click a": (e) ->
     e.preventDefault()
     contextId = $(e.target).attr('href')[1..] # get id
-    story = Session.get('story')
-    currentY = Session.get('currentY')
-    currentVertical = story.verticalSections[currentY]
-    contextIndex = _.indexOf currentVertical.contextBlocks, contextId
-    if contextIndex >= 0
-      goToX(contextIndex)
+    goToContext contextId
 
 
   "keydown": (d) ->

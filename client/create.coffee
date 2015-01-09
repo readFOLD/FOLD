@@ -385,6 +385,7 @@ Template.context_anchor_option.events =
         contextId = @_id
         link = '#' + contextId
         document.execCommand 'createLink', false, link
+        goToContext contextId
         # contextAnchorForm.hide()
         return false
 
@@ -451,18 +452,19 @@ Template.create_video_section.events
 
             # TODO Move to server method
 
-            contextBlockId = ContextBlocks.insert newContextBlock
+            contextId = ContextBlocks.insert newContextBlock
             storyId = Session.get("storyId")
             verticalSectionIndex = Session.get("currentY")
 
             pushSelectorString = 'verticalSections.' + verticalSectionIndex + '.contextBlocks'
             pushObject = {}
-            pushObject[pushSelectorString] = contextBlockId
+            pushObject[pushSelectorString] = contextId
             Stories.update {_id: storyId}, { $push: pushObject }, (err, numDocs) ->
                 if err
                     return alert err
                 if numDocs
                     Session.set "addingContext", false
+                    goToContext contextId
                 else
                     return alert 'No docs updated'
 

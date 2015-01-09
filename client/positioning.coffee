@@ -46,6 +46,15 @@ window.goToX = (x) ->
   Session.set("currentX", x)
   return
 
+window.goToContext = (id) ->
+  if id
+    story = Session.get('story')
+    currentY = Session.get('currentY')
+    currentVertical = story.verticalSections[currentY]
+    contextIndex = _.indexOf currentVertical.contextBlocks, id
+    if contextIndex >= 0
+      goToX(contextIndex)
+
 window.goDownOneCard = ->
   currentY = Session.get("currentY")
   newY = currentY + 1
