@@ -393,7 +393,6 @@ Template.context_anchor_option.events =
 #     srcE = if d.srcElement then d.srcElement else d.target
 #     parentSection = $(srcE).closest('section')
 #     parentSection.empty()
-#     UI.insert(UI.render(Template.horizontal_section_buttons), parentSection.get(0))
 
 Template.create_text_section.events
   "click div#save": (d) ->

@@ -384,8 +384,12 @@ div.horizontal-context {
         fill: @accent-color;
       }
     }
+    .active{
+      svg{
+        fill: @accent-color;
+      }
+    }
     .unimplemented {
-      display: inline-block;
       svg {
         fill: @inactive-color;
       }

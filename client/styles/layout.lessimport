@@ -9,7 +9,7 @@
 @medium-color: #CCCCCC;
 @light-color: white;
 @accent-color: #00A451;
-@inactive-color: grey;
+@inactive-color: #DDDDDD;
 
 
 // http://asimpleframe.com/
@@ -460,6 +460,10 @@ div.minimap {
 
     }
   }
+}
+
+div.inline-block {
+  display: inline-block;
 }
 
 div.hide {

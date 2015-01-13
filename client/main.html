@@ -142,14 +142,12 @@
       {{index}}
     </div> -->
     {{#if type}}
-        {{#if text}}{{> display_text_section}}{{/if}}
-        {{#if image}}{{> display_image_section}}{{/if}}
-        {{#if map}}{{> display_map_section}}{{/if}}
-        {{#if video}}{{> display_video_section}}{{/if}}
-        {{#if oec}}{{> display_oec_section}}{{/if}}
-    {{else}}
-        {{> horizontal_section_buttons}}
-      {{/if}}
+      {{#if text}}{{> display_text_section}}{{/if}}
+      {{#if image}}{{> display_image_section}}{{/if}}
+      {{#if map}}{{> display_map_section}}{{/if}}
+      {{#if video}}{{> display_video_section}}{{/if}}
+      {{#if oec}}{{> display_oec_section}}{{/if}}
+    {{/if}}
   </section>
 </template>
 
