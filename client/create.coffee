@@ -352,12 +352,12 @@ Template.create_horizontal_section_block.helpers
     75 + halfWidth + (Session.get "separation") * 1.5
 
 Template.create_horizontal_section_block.events
-  'click img.text-button': (d, t) -> t.type.set 'text'
-  'click img.photo-button': (d, t) -> t.type.set 'image'
-  'click img.map-button': (d, t) -> t.type.set 'map'
-  'click img.youtube-button': (d, t) -> t.type.set 'video'
+  'click svg.text-icon': (d, t) -> t.type.set 'text'
+  # 'click svg.image-icon': (d, t) -> t.type.set 'image'
+  'click svg.map-icon': (d, t) -> t.type.set 'map'
+  'click svg.video-icon': (d, t) -> t.type.set 'video'
   "click div#back": (d, t) -> t.type.set null
-  # 'click img.gifgif-button': (d, t) -> t.type.set 'gifgif'
+  # 'click img.gif-button': (d, t) -> t.type.set 'gif'
   # 'click img.audio-button': (d, t) -> t.type.set 'audio'
 
 renderTemplate = (d, templateName, context) ->

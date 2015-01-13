@@ -462,3 +462,7 @@ div.minimap {
     }
   }
 }
+
+div.hide {
+  display: none;
+}

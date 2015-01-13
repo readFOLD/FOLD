@@ -75,17 +75,18 @@
 
 <template name="horizontal_section_buttons">
   <div class="content-icons">
-    <div class="row row-one">
-      <div class="box"><img class="text-button" src="/text-icon.png" /></div>
-      <div class="box"><img class="photo-button" src="/photo-icon.png" /></div>
-      <div class="box"><img class="map-button" src="/map-icon.png" /></div>
-      <span class="stretch"></span>
+    <div class='unimplemented'>
+      {{ > twitter_icon }}
     </div>
-    <div class="row row-two">
-      <div class="box"><img class="youtube-button" src="/youtube-icon.png" /></div>
-      <div class="box"><img class="gifgif-button" src="/gifgif-icon.png" /></div>
-      <div class="box"><img class="audio-button" src="/audio-icon.png" /></div>
-      <span class="stretch"></span>
+    {{ > video_icon }}
+    <div class='unimplemented'>
+      {{ > map_icon }}
+      {{ > image_icon }}
+      {{ > viz_icon }}
+      {{ > gif_icon }}
+      {{ > audio_icon }}
+      {{ > text_icon }}
+      {{ > participation_icon }}
     </div>
   </div>
   {{> horizontal_section_edit_delete}}
@@ -156,7 +157,7 @@
     </form>
     {{> create_section_options}}
   </div>
-  <img class="map-button content-type-button" src="/youtube-icon.png" />
+  <img class="video-button content-type-button" src="/youtube-icon.png" />
 </template>
 
 <template name="create_audio_section">
