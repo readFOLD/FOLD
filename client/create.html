@@ -1,210 +1,210 @@
 <template name="create">
-	{{ > story_header }}
-	{{ > story }}
+  {{ > story_header }}
+  {{ > story }}
 
-    {{#if showFormatting}}
-        {{ > formatting}}
-    {{/if}}
-    {{#unless read}}
-        {{! > background_image}}
-    {{/unless}}
-    {{ > layout_options}}
-    {{ > create_options}}
+  {{#if showFormatting}}
+      {{ > formatting}}
+  {{/if}}
+  {{#unless read}}
+      {{! > background_image}}
+  {{/unless}}
+  {{ > layout_options}}
+  {{ > create_options}}
 </template>
 
 <template name="background_image">
-	<input class="background-image-input" value="{{backgroundImage}}">
-	<div class="save-background-image">Save</div>
+  <input class="background-image-input" value="{{backgroundImage}}">
+  <div class="save-background-image">Save</div>
 </template>
 
 <template name="minimized_add_vertical">
-	<section class="narrative-section new-section minimized">
-		<i class="fa fa-plus-circle"></i>
-	</section>
+  <section class="narrative-section new-section minimized">
+    <i class="fa fa-plus-circle"></i>
+  </section>
 </template>
 
 <template name="minimized_add_horizontal">
-	<section class="narrative-section new-section minimized">
-		<i class="fa fa-plus-circle"></i>
-	</section>
+  <section class="narrative-section new-section minimized">
+    <i class="fa fa-plus-circle"></i>
+  </section>
 </template>
 
 <template name="formatting">
-	<div id="formatting" style="top: {{top}}px; left: {{left}}px;">
-		<div class="formatting-option">
-			<i class="fa fa-bold"></i>
-		</div>
-		<div class="formatting-option">
-			<i class="fa fa-italic"></i>
-		</div>
-		<div class="formatting-option">
-			<i class="fa fa-link"></i>
-		</div>
-	</div>
+  <div id="formatting" style="top: {{top}}px; left: {{left}}px;">
+    <div class="formatting-option">
+      <i class="fa fa-bold"></i>
+    </div>
+    <div class="formatting-option">
+      <i class="fa fa-italic"></i>
+    </div>
+    <div class="formatting-option">
+      <i class="fa fa-link"></i>
+    </div>
+  </div>
 </template>
 
 <template name="layout_options">
-	<i class="fa fa-expand fa-3x" id="expand"></i>
+  <i class="fa fa-expand fa-3x" id="expand"></i>
 </template>
 
 <template name="create_options">
-	<div class="button-options save-publish">
-		<div id="save" class="button">
-			Save
-		</div>
-		<div id="delete" class="button">
-			Delete
-		</div>
-		<div id="publish" class="button">
-			Publish
-		</div>
-	</div>
+  <div class="button-options save-publish">
+    <div id="save" class="button">
+      Save
+    </div>
+    <div id="delete" class="button">
+      Delete
+    </div>
+    <div id="publish" class="button">
+      Publish
+    </div>
+  </div>
 </template>
 
 <template name="add_vertical">
-	<section class="narrative-section new-section">
-		<i class="fa fa-plus-circle"></i>
-	</section>
+  <section class="narrative-section new-section">
+    <i class="fa fa-plus-circle"></i>
+  </section>
 </template>
 
 <template name="add_horizontal">
-	<section class="narrative-section new-section horizontal-new-section" style="left: {{left}}px">
-		<i class="fa fa-plus-circle"></i>
-	</section>
+  <section class="narrative-section new-section horizontal-new-section" style="left: {{left}}px">
+    <i class="fa fa-plus-circle"></i>
+  </section>
 </template>
 
 <template name="horizontal_section_buttons">
-	<div class="content-icons">
-		<div class="row row-one">
-			<div class="box"><img class="text-button" src="/text-icon.png" /></div>
-			<div class="box"><img class="photo-button" src="/photo-icon.png" /></div>
-			<div class="box"><img class="map-button" src="/map-icon.png" /></div>
-			<span class="stretch"></span>
-		</div>
-		<div class="row row-two">
-			<div class="box"><img class="youtube-button" src="/youtube-icon.png" /></div>
-			<div class="box"><img class="gifgif-button" src="/gifgif-icon.png" /></div>
-			<div class="box"><img class="audio-button" src="/audio-icon.png" /></div>
-			<span class="stretch"></span>
-		</div>
-	</div>
-	{{> horizontal_section_edit_delete}}
+  <div class="content-icons">
+    <div class="row row-one">
+      <div class="box"><img class="text-button" src="/text-icon.png" /></div>
+      <div class="box"><img class="photo-button" src="/photo-icon.png" /></div>
+      <div class="box"><img class="map-button" src="/map-icon.png" /></div>
+      <span class="stretch"></span>
+    </div>
+    <div class="row row-two">
+      <div class="box"><img class="youtube-button" src="/youtube-icon.png" /></div>
+      <div class="box"><img class="gifgif-button" src="/gifgif-icon.png" /></div>
+      <div class="box"><img class="audio-button" src="/audio-icon.png" /></div>
+      <span class="stretch"></span>
+    </div>
+  </div>
+  {{> horizontal_section_edit_delete}}
 </template>
 
 <template name="create_horizontal_section_block">
-	<section class="narrative-section horizontal-narrative-section selected" style="width: {{cardWidth}}px; left: {{left}}px">
-		{{#if type}}
-			{{#if text}}{{> create_text_section}}{{/if}}
-			{{#if image}}{{> create_image_section}}{{/if}}
-			{{#if map}}{{> create_map_section}}{{/if}}
-			{{#if video}}{{> create_video_section}}{{/if}}
-			{{#if oec}}{{> create_oec_section}}{{/if}}
-		{{else}}
-			{{> horizontal_section_buttons}}
-		{{/if}}
-	</section>
+  <section class="narrative-section horizontal-narrative-section selected" style="width: {{cardWidth}}px; left: {{left}}px">
+    {{#if type}}
+      {{#if text}}{{> create_text_section}}{{/if}}
+      {{#if image}}{{> create_image_section}}{{/if}}
+      {{#if map}}{{> create_map_section}}{{/if}}
+      {{#if video}}{{> create_video_section}}{{/if}}
+      {{#if oec}}{{> create_oec_section}}{{/if}}
+    {{else}}
+      {{> horizontal_section_buttons}}
+    {{/if}}
+  </section>
 </template>
 
 <template name="create_section_options">
-	<div class="button-options back-save">
-		<div id="back" class="button">
-			<i class="fa fa-mail-reply"></i>
-		</div>
-		<div id="save" class="button">
-			<i class="fa fa-save"></i>
-		</div>
-	</div>
+  <div class="button-options back-save">
+    <div id="back" class="button">
+      <i class="fa fa-mail-reply"></i>
+    </div>
+    <div id="save" class="button">
+      <i class="fa fa-save"></i>
+    </div>
+  </div>
 </template>
 
 <!-- Create Templates -->
 <template name="create_text_section">
-	<div class="create-section">
-    	<div class="input-label">
-    		Text:
-    	</div>
-    	<textarea class="text-input">{{content}}</textarea>
-    	{{> create_section_options}}
+  <div class="create-section">
+    <div class="input-label">
+      Text:
     </div>
-    <img class="text-button content-type-button" src="/text-icon.png" />
+    <textarea class="text-input">{{content}}</textarea>
+    {{> create_section_options}}
+  </div>
+  <img class="text-button content-type-button" src="/text-icon.png" />
 </template>
 
 <template name="create_image_section">
-	<div class="create-section">
-	    <div class="input-label">Image Url:</div>
-	    <input class="image-url-input" value="{{url}}">
-	    <div class="input-label">Description:</div>
-	    <input class="image-description-input" value="{{description}}">
-    	{{> create_section_options}}
-    </div>
-    <img class="photo-button content-type-button" src="/photo-icon.png" />
+  <div class="create-section">
+    <div class="input-label">Image Url:</div>
+    <input class="image-url-input" value="{{url}}">
+    <div class="input-label">Description:</div>
+    <input class="image-description-input" value="{{description}}">
+    {{> create_section_options}}
+  </div>
+  <img class="photo-button content-type-button" src="/photo-icon.png" />
 </template>
 
 <template name="create_map_section">
-	<div class="create-section">
-	    <div class="input-label">Google Embed URL:</div>
-	    <input class="map-url-input">
-	    {{> create_section_options}}
-	</div>
-	<img class="map-button content-type-button" src="/map-icon.png" />
+  <div class="create-section">
+    <div class="input-label">Google Embed URL:</div>
+    <input class="map-url-input">
+    {{> create_section_options}}
+  </div>
+  <img class="map-button content-type-button" src="/map-icon.png" />
 </template>
 
 <template name="create_video_section">
-	<div class="create-section">
-		<form class="youtube-link">
-			<div class="input-label">Youtube Link:</div>
-			<input class="youtube-link-input">
-		</form>
-		{{> create_section_options}}
-	</div>
-	<img class="map-button content-type-button" src="/youtube-icon.png" />
+  <div class="create-section">
+    <form class="youtube-link">
+      <div class="input-label">Youtube Link:</div>
+      <input class="youtube-link-input">
+    </form>
+    {{> create_section_options}}
+  </div>
+  <img class="map-button content-type-button" src="/youtube-icon.png" />
 </template>
 
 <template name="create_audio_section">
-	<div class="create-section">
-	    <div class="input-label">SOUNDCLOUD LINK:</div>
-	    <input class="soundcloud-link-input">
+  <div class="create-section">
+    <div class="input-label">SOUNDCLOUD LINK:</div>
+    <input class="soundcloud-link-input">
 
-	    <div class="input-label">DESCRIPTION:</div>
-	    <input class="soundcloud-description-input">
-	    {{> create_section_options}}
-    </div>
-    <img class="map-button content-type-button" src="/audio-icon.png" />
+    <div class="input-label">DESCRIPTION:</div>
+    <input class="soundcloud-description-input">
+    {{> create_section_options}}
+  </div>
+  <img class="map-button content-type-button" src="/audio-icon.png" />
 </template>
 
 <template name="create_gifgif_section">
-	<div class="input-label">CHOOSE AN EMOTION:</div>
+  <div class="input-label">CHOOSE AN EMOTION:</div>
 
-	<div class="input-label">DESCRIPTION:</div>
-	<input class="gifgif-description-input">
+  <div class="input-label">DESCRIPTION:</div>
+  <input class="gifgif-description-input">
 
-	<img class="map-button content-type-button" src="/gifgif-icon.png" />
-	{{> create_section_options}}
+  <img class="map-button content-type-button" src="/gifgif-icon.png" />
+  {{> create_section_options}}
 </template>
 
 <template name="horizontal_section_edit_delete">
-	<div class="button-options edit-delete">
-		<div id="edit" class="button">
-			<i class="fa fa-pencil"></i>
-		</div>
-		<div id="delete" class="button">
-			<i class="fa fa-times"></i>
-		</div>
-	</div>
+  <div class="button-options edit-delete">
+    <div id="edit" class="button">
+      <i class="fa fa-pencil"></i>
+    </div>
+    <div id="delete" class="button">
+      <i class="fa fa-times"></i>
+    </div>
+  </div>
 </template>
 
 
 <template name="context_anchor_menu">
   <div class="context-anchor-menu">
-  	<ol>
+    <ol>
       {{#each data}}
         {{#if type}}
           {{> context_anchor_option}}
         {{/if}}
       {{/each}}
-  	</ol>
-   	<div>
-   		To add new card click on plus
-   	</div>
+    </ol>
+    <div>
+      To add new card click on plus
+    </div>
   </div>
 </template>
 

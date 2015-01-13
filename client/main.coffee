@@ -1,5 +1,3 @@
-
-
 getCardWidth = (windowWidth) ->
   if windowWidth <= 1024
     cardWidth = 400
@@ -186,29 +184,29 @@ Template.story.events =
       return
 
 Template.story.helpers
-    horizontalExists: ->
-        currentY = Session.get('currentY')
-        return Session.get('horizontalSectionsMap')[currentY]?.horizontal.length > 1
+  horizontalExists: ->
+    currentY = Session.get('currentY')
+    return Session.get('horizontalSectionsMap')[currentY]?.horizontal.length > 1
 
-    pastHeader: -> Session.get("pastHeader")
+  pastHeader: -> Session.get("pastHeader")
 
-    verticalLeft: ->
-        width = Session.get "width"
-        if width <= 1304
-            88 + 16
-        else
-            (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
+  verticalLeft: ->
+    width = Session.get "width"
+    if width <= 1304
+      88 + 16
+    else
+      (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
 
-    verticalLeft: ->
-        width = Session.get "width"
-        if Session.get("narrativeView")
-            return (width - 800) / 2
-        if width <= 1304
-            88 + 16
-        else
-            (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
+  verticalLeft: ->
+    width = Session.get "width"
+    if Session.get("narrativeView")
+      return (width - 800) / 2
+    if width <= 1304
+      88 + 16
+    else
+      (width / 2) - (Session.get("separation")/2) - Session.get("cardWidth")
 
-    spacerHeight: -> Session.get("windowHeight") - 230 - 300
+  spacerHeight: -> Session.get("windowHeight") - 230 - 300
 
 
 Template.vertical_section_block.helpers
@@ -251,18 +249,18 @@ Template.minimap.helpers
 
 
 Template.horizontal_context.helpers
-    verticalExists: -> Session.get("horizontalSectionsMap").length
-    horizontalSections: ->
-      @verticalSections.map (verticalSection, verticalIndex) ->
-        index: verticalIndex
-        data: ContextBlocks.find(_id: $in: verticalSection.contextBlocks).map (data, horizontalIndex) ->
-          return _.extend data,
-            index: horizontalIndex # TODO, this shouldn't get saved if edit-mode
-    last: ->
-      lastIndex = Session.get("horizontalSectionsMap")[Session.get("currentY")]?.horizontal.length - 1
-      (@index is lastIndex) and (lastIndex > 0)
-    horizontalShown: ->
-      Session.equals("currentY", @index)
+  verticalExists: -> Session.get("horizontalSectionsMap").length
+  horizontalSections: ->
+    @verticalSections.map (verticalSection, verticalIndex) ->
+      index: verticalIndex
+      data: ContextBlocks.find(_id: $in: verticalSection.contextBlocks).map (data, horizontalIndex) ->
+        return _.extend data,
+          index: horizontalIndex # TODO, this shouldn't get saved if edit-mode
+  last: ->
+    lastIndex = Session.get("horizontalSectionsMap")[Session.get("currentY")]?.horizontal.length - 1
+    (@index is lastIndex) and (lastIndex > 0)
+  horizontalShown: ->
+    Session.equals("currentY", @index)
 
 horizontalBlockHelpers =
   selected: ->
@@ -277,53 +275,53 @@ horizontalBlockHelpers =
 Template.horizontal_section_block.helpers horizontalBlockHelpers
 
 Template.horizontal_section_block.helpers
-    # Initial left positioning of horizontal block
-    left: ->
-      # Get width of page and declare helper variables
-      width = Session.get "width"
-      if width < 1024 then width = 1024
-      halfWidth = width / 2
-      cardWidth = Session.get "cardWidth"
+  # Initial left positioning of horizontal block
+  left: ->
+    # Get width of page and declare helper variables
+    width = Session.get "width"
+    if width < 1024 then width = 1024
+    halfWidth = width / 2
+    cardWidth = Session.get "cardWidth"
 
-      # WRITING
-      # Offset for "add" block
-      read = Session.get("read")
-      if read then offset = 0
-      else offset = 75 + Session.get("separation")
+    # WRITING
+    # Offset for "add" block
+    read = Session.get("read")
+    if read then offset = 0
+    else offset = 75 + Session.get("separation")
 
-      if Session.get("addingContext")
-        offset += cardWidth + Session.get("separation")
+    if Session.get("addingContext")
+      offset += cardWidth + Session.get("separation")
 
-      # Current X
+    # Current X
 
-      horizontalLength = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal.length # TO-DO getting currentY is hacky
-      lastIndex = horizontalLength - 1
+    horizontalLength = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal.length # TO-DO getting currentY is hacky
+    lastIndex = horizontalLength - 1
 
-      # Adjusting for currentX
-      currentX = Session.get("currentX")
-      adjustedIndex = @index - currentX
-      if adjustedIndex < 0
-        adjustedIndex = horizontalLength + adjustedIndex
+    # Adjusting for currentX
+    currentX = Session.get("currentX")
+    adjustedIndex = @index - currentX
+    if adjustedIndex < 0
+      adjustedIndex = horizontalLength + adjustedIndex
 
-      # TODO Make number of cards on right dynamic
-      # LAST Card
-      if (lastIndex >= 2) and (adjustedIndex is lastIndex)
-        if width <= 1304
-          left = (-cardWidth + 88) + offset
-        else
-          left = (-Session.get("cardWidth") + (width - (Session.get("separation") * 3) - (Session.get("cardWidth") * 2))/2)
-      # BETWEEN First and Last card
-      else if adjustedIndex
-        left = (adjustedIndex * cardWidth) + halfWidth + (3 * (Session.get "separation") / 2) + offset
-      # FIRST Card
+    # TODO Make number of cards on right dynamic
+    # LAST Card
+    if (lastIndex >= 2) and (adjustedIndex is lastIndex)
+      if width <= 1304
+        left = (-cardWidth + 88) + offset
       else
-        left = halfWidth + ((Session.get "separation") / 2) + offset
+        left = (-Session.get("cardWidth") + (width - (Session.get("separation") * 3) - (Session.get("cardWidth") * 2))/2)
+    # BETWEEN First and Last card
+    else if adjustedIndex
+      left = (adjustedIndex * cardWidth) + halfWidth + (3 * (Session.get "separation") / 2) + offset
+    # FIRST Card
+    else
+      left = halfWidth + ((Session.get "separation") / 2) + offset
 
-      return left
+    return left
 
-    lastUpdate: ->
-        Session.get('lastUpdate')
-        return
+  lastUpdate: ->
+    Session.get('lastUpdate')
+    return
 
 
 Template.display_oec_section.helpers horizontalBlockHelpers
@@ -350,4 +348,3 @@ Template.story_browser.events
     path = window.location.pathname.split("/")
     path[4] = Session.get("currentX")
     # window.history.pushState({}, '', path.join("/"))
-

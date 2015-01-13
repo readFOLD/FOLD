@@ -1,93 +1,93 @@
 <template name="profile">
-	<div class="navbar">
-		<i class="fa fa-bars fa-2x"></i>
-	</div>
-	<section class="banner">
-		<a href="/">
-			<div class="title">
-				<img src="/fold-title.png">
-			</div>
-		</a>
-		<div class="options">
-			<div id="create-story">
-				<a href="/create">
-					Create Story
-				</a>
-			</div>
-			{{> loginButtons}}
-		</div>
-		<div class="logo">
-			<img src="/logo.png">
-		</div>
-	</section>
+  <div class="navbar">
+    <i class="fa fa-bars fa-2x"></i>
+  </div>
+  <section class="banner">
+    <a href="/">
+      <div class="title">
+        <img src="/fold-title.png">
+      </div>
+    </a>
+    <div class="options">
+      <div id="create-story">
+        <a href="/create">
+          Create Story
+        </a>
+      </div>
+      {{> loginButtons}}
+    </div>
+    <div class="logo">
+      <img src="/logo.png">
+    </div>
+  </section>
 
-	<section class="stories">
-		{{> story_browser}}
-		<div class="horizontal-line">
-		</div>
-		<div class="story-container">
-			{{> user_stories}}
-	    </div>
-	</section>
+  <section class="stories">
+    {{> story_browser}}
+    <div class="horizontal-line">
+    </div>
+    <div class="story-container">
+      {{> user_stories}}
+    </div>
+  </section>
 </template>
 
 <template name="user_profile">
-	<section class="profile-info">
-		<div class="user-name">
-			Alexis Hope
-		</div>
-		<div class="affiliation">
-			<a href="www.newyorktimes.com">New York Times</a>
-		</div>
-		<div class="user-twitter">
-			<a href="www.twitter.com/alexishope">@alexishope</a>
-		</div>
-		<div class="about-me">
-			This is the story of my life.
-		</div>
-		<div class="profile-picture">
-		</div>
-	</section>
+  <section class="profile-info">
+    <div class="user-name">
+      Alexis Hope
+    </div>
+    <div class="affiliation">
+      <a href="www.newyorktimes.com">New York Times</a>
+    </div>
+    <div class="user-twitter">
+      <a href="www.twitter.com/alexishope">@alexishope</a>
+    </div>
+    <div class="about-me">
+      This is the story of my life.
+    </div>
+    <div class="profile-picture">
+    </div>
+  </section>
 </template>
 
 <template name="user_stories">
-    {{#if currentUser}}
-	    {{#each userStories}}
-	        <div class="story" data-story-id="{{_id}}">
-	        	{{#if profileImageExists}}
-	        	<img class="profile-picture" src="{{profileImage}}"/>
-	        	{{/if}}
-	        	<div class="headline">
-	        		{{title}}
-	        		<div class="byline">
-	        			By {{displayName}}
-	        		</div>
-	        	</div>
+  {{#if currentUser}}
+    {{#each userStories}}
+      <div class="story" data-story-id="{{_id}}">
+        {{#if profileImageExists}}
+          <img class="profile-picture" src="{{profileImage}}"/>
+        {{/if}}
+        <div class="headline">
+          {{title}}
+          <div class="byline">
+            By {{displayName}}
+          </div>
+        </div>
 
-   	    		<div class="content">
-   	    			{{previewContent}}
-   	    		</div>
+        <div class="content">
+          {{previewContent}}
+        </div>
 
-   	    		<div class="dates">
-   	    			<p>Last Edited: {{lastEditDate}}</p>
-   	    			<p>
-   	    			{{#if published}}
-   	    			    Published On: {{lastPublishDate}}
-   	    			    {{else}}
-   	    			    Unpublished
-   	    			{{/if}}
-     	    		</p>
-   	    		</div>
+        <div class="dates">
+          <p>Last Edited: {{lastEditDate}}</p>
+          <p>
+            {{#if published}}
+              Published On: {{lastPublishDate}}
+              {{else}}
+              Unpublished
+            {{/if}}
+          </p>
+        </div>
 
-   	    	   <div class="edit-or-read">
-   	    			<a href="{{url}}">
-   	    				<div id="edit-this-story">
-   	    					Edit this story >
-   	    					<!-- needs switch to 'unfold this story' for main page -->
-   	    				</div>
-   	    			</a>
-   	    		</div>
-   	    	</div>
-	    {{/each}}
-	{{/if}}
+         <div class="edit-or-read">
+          <a href="{{url}}">
+            <div id="edit-this-story">
+              Edit this story >
+              <!-- needs switch to 'unfold this story' for main page -->
+            </div>
+          </a>
+        </div>
+      </div>
+    {{/each}}
+  {{/if}}
 </template>

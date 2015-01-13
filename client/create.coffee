@@ -56,39 +56,39 @@ Template.create.rendered = ->
     # @base.anchorInput.value = link_value || '';
 
   # toolbarFormContextAnchor = ->
-  #     anchor = document.createElement("div")
-  #     input = document.createElement("input")
-  #     target_label = document.createElement("label")
-  #     target = document.createElement("input")
-  #     button_label = document.createElement("label")
-  #     button = document.createElement("input")
-  #     close = document.createElement("a")
-  #     save = document.createElement("a")
-  #     close.setAttribute "href", "#"
-  #     close.className = "medium-editor-toobar-anchor-close"
-  #     close.innerHTML = "&times;"
-  #     save.setAttribute "href", "#"
-  #     save.className = "medium-editor-toobar-anchor-save"
-  #     save.innerHTML = "&#10003;"
-  #     input.setAttribute "type", "text"
-  #     input.className = "medium-editor-toolbar-anchor-input"
-  #     # input.setAttribute "placeholder", @options.anchorInputPlaceholder
-  #     target.setAttribute "type", "checkbox"
-  #     target.className = "medium-editor-toolbar-anchor-target"
-  #     target_label.innerHTML = "Open in New Window?"
-  #     target_label.insertBefore target, target_label.firstChild
-  #     button.setAttribute "type", "checkbox"
-  #     button.className = "medium-editor-toolbar-anchor-button"
-  #     button_label.innerHTML = "Button"
-  #     button_label.insertBefore button, button_label.firstChild
-  #     anchor.className = "medium-editor-toolbar-form-context-anchor"
-  #     anchor.id = "medium-editor-toolbar-form-context-anchor"
-  #     anchor.appendChild input
-  #     anchor.appendChild save
-  #     anchor.appendChild close
-  #     # anchor.appendChild target_label  if @options.anchorTarget
-  #     # anchor.appendChild button_label  if @options.anchorButton
-  #     anchor
+  #   anchor = document.createElement("div")
+  #   input = document.createElement("input")
+  #   target_label = document.createElement("label")
+  #   target = document.createElement("input")
+  #   button_label = document.createElement("label")
+  #   button = document.createElement("input")
+  #   close = document.createElement("a")
+  #   save = document.createElement("a")
+  #   close.setAttribute "href", "#"
+  #   close.className = "medium-editor-toobar-anchor-close"
+  #   close.innerHTML = "&times;"
+  #   save.setAttribute "href", "#"
+  #   save.className = "medium-editor-toobar-anchor-save"
+  #   save.innerHTML = "&#10003;"
+  #   input.setAttribute "type", "text"
+  #   input.className = "medium-editor-toolbar-anchor-input"
+  #   # input.setAttribute "placeholder", @options.anchorInputPlaceholder
+  #   target.setAttribute "type", "checkbox"
+  #   target.className = "medium-editor-toolbar-anchor-target"
+  #   target_label.innerHTML = "Open in New Window?"
+  #   target_label.insertBefore target, target_label.firstChild
+  #   button.setAttribute "type", "checkbox"
+  #   button.className = "medium-editor-toolbar-anchor-button"
+  #   button_label.innerHTML = "Button"
+  #   button_label.insertBefore button, button_label.firstChild
+  #   anchor.className = "medium-editor-toolbar-form-context-anchor"
+  #   anchor.id = "medium-editor-toolbar-form-context-anchor"
+  #   anchor.appendChild input
+  #   anchor.appendChild save
+  #   anchor.appendChild close
+  #   # anchor.appendChild target_label  if @options.anchorTarget
+  #   # anchor.appendChild button_label  if @options.anchorButton
+  #   anchor
   #####
   #
   # End stuff from Medium-editor.js

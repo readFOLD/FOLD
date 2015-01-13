@@ -1,234 +1,234 @@
 <!--
-	Templates used in reading, creating, and editing
+  Templates used in reading, creating, and editing
 -->
 
 <template name="story_header">
-	{{setTitle title}}
-	<div class="title-overlay {{#unless read}}write{{/unless}}" style='{{#if backgroundImage}}background-image: url("/{{backgroundImage}}"){{/if}}'>
-		<div id="banner-overlay">
-		</div>
-		<div class="title-author">
-			<div class="title" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
-			<div class="author">By {{username}}
-				{{#if read}}
-					{{#linkTo route="edit" data=this}}
-					    EDIT
-					{{/linkTo}}
-				{{else}}
-					{{#linkTo route="read" data=this}}
-					    READ
-					{{/linkTo}}
-				{{/if}}
-			</div>
+  {{setTitle title}}
+  <div class="title-overlay {{#unless read}}write{{/unless}}" style='{{#if backgroundImage}}background-image: url("/{{backgroundImage}}"){{/if}}'>
+    <div id="banner-overlay">
+    </div>
+    <div class="title-author">
+      <div class="title" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
+      <div class="author">By {{username}}
+        {{#if read}}
+          {{#linkTo route="edit" data=this}}
+            EDIT
+          {{/linkTo}}
+        {{else}}
+          {{#linkTo route="read" data=this}}
+            READ
+          {{/linkTo}}
+        {{/if}}
+      </div>
 
-		</div>
-		<div class="logo">
-			<!-- <a href="/"> -->
-				<img src="/logo.png">
-			<!-- </a> -->
-		</div>
+    </div>
+    <div class="logo">
+      <!-- <a href="/"> -->
+        <img src="/logo.png">
+      <!-- </a> -->
+    </div>
 
-		<div class="attribution aj {{#unless pastHeader}}shown{{/unless}}">
-			Developed for Al Jazeera Innovation Challenge
-		</div>
-		<div class="attribution {{#unless pastHeader}}shown{{/unless}}">
-			Header Image Source: {{headerImageAttribution}}
-		</div>
-<!-- 		<div class="arrow-container">
-			<img id="to-story" class="{{#unless pastHeader}}shown{{/unless}}" src="/pulse_down_white.svg" />
-			<img id="to-header" src="/pulse_up_white.svg" />
-		</div> -->
-	</div>
+    <div class="attribution aj {{#unless pastHeader}}shown{{/unless}}">
+      Developed for Al Jazeera Innovation Challenge
+    </div>
+    <div class="attribution {{#unless pastHeader}}shown{{/unless}}">
+      Header Image Source: {{headerImageAttribution}}
+    </div>
+<!--    <div class="arrow-container">
+      <img id="to-story" class="{{#unless pastHeader}}shown{{/unless}}" src="/pulse_down_white.svg" />
+      <img id="to-header" src="/pulse_up_white.svg" />
+    </div> -->
+  </div>
 </template>
 
 <template name="story">
-	<!-- Mesh Background Overlay -->
-	<!-- <div id="overlay"></div> -->
-	<article class="content">
-		<div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}" style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
-			{{> vertical_narrative}}
-			<div class="spacer" style="height: {{spacerHeight}}px">
-			</div>
-		</div>
-		{{#unless narrativeView}}
-		<div class="horizontal-context" style="{{#unless read}}margin-top: 23px{{/unless}}">
-			{{> horizontal_context}}
-		</div>
-		{{/unless}}
-	</article>
+  <!-- Mesh Background Overlay -->
+  <!-- <div id="overlay"></div> -->
+  <article class="content">
+    <div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}" style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
+      {{> vertical_narrative}}
+      <div class="spacer" style="height: {{spacerHeight}}px">
+      </div>
+    </div>
+    {{#unless narrativeView}}
+    <div class="horizontal-context" style="{{#unless read}}margin-top: 23px{{/unless}}">
+      {{> horizontal_context}}
+    </div>
+    {{/unless}}
+  </article>
 
-	{{#if pastHeader}}
+  {{#if pastHeader}}
     {{#if read}}
-	    {{> minimap}}
+      {{> minimap}}
     {{/if}}
-	    {{#if horizontalExists}}
-		    <div class="browser-offset">
-		    	{{> story_browser}}
-		    </div>
-	    {{/if}}
-	{{/if}}
+      {{#if horizontalExists}}
+        <div class="browser-offset">
+          {{> story_browser}}
+        </div>
+      {{/if}}
+  {{/if}}
 </template>
 
 <template name="vertical_narrative">
-	{{#unless verticalSections}}
-	    {{> add_vertical}}
-	{{/unless}}
-	{{#unless read}}
-    	{{> minimized_add_vertical}}
-	{{/unless}}
-	{{#each verticalSectionsWithIndex}}
-    	{{> vertical_section_block}}
-    	{{#unless read}}
-        	{{> minimized_add_vertical}}
-    	{{/unless}}
-	{{/each}}
-	{{#unless read}}
-    	{{! > add_vertical}}
-	{{/unless}}
+  {{#unless verticalSections}}
+    {{> add_vertical}}
+  {{/unless}}
+  {{#unless read}}
+    {{> minimized_add_vertical}}
+  {{/unless}}
+  {{#each verticalSectionsWithIndex}}
+    {{> vertical_section_block}}
+    {{#unless read}}
+      {{> minimized_add_vertical}}
+    {{/unless}}
+  {{/each}}
+  {{#unless read}}
+    {{! > add_vertical}}
+  {{/unless}}
 </template>
 
 <template name="vertical_section_block">
-	<section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}">
-		<div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
-		{{{contentDiv}}}
-		<div class="button">
-		</div>
-<!-- 		{{#if verticalSelected}}
-		<div class="vertical-nav-container">
-			{{#if notFirst}}
-    		<img id="card-up" class="arrow" src='/arrow_up.svg' />
-    		{{/if}}
-	    	<img id="card-down" class="arrow" src='/arrow_down.svg' />
-	    </div>
-		{{/if}} -->
-	</section>
+  <section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}">
+    <div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
+    {{{contentDiv}}}
+    <div class="button">
+    </div>
+<!--    {{#if verticalSelected}}
+    <div class="vertical-nav-container">
+      {{#if notFirst}}
+        <img id="card-up" class="arrow" src='/arrow_up.svg' />
+        {{/if}}
+        <img id="card-down" class="arrow" src='/arrow_down.svg' />
+      </div>
+    {{/if}} -->
+  </section>
 </template>
 
 
 <template name="horizontal_context">
-	{{#unless read}}
-    	{{#if verticalExists}}
-        	{{ > add_horizontal}}
-    		{{#each horizontalSections}}
-    		    {{#if horizontalShown}}
-		        	{{ > context_anchor_menu}}
-    	   	    {{/if}}
-    		{{/each}}
-	    	{{#if addingContext}}
-	    		{{ > create_horizontal_section_block}}
-	    	{{/if}}
+  {{#unless read}}
+    {{#if verticalExists}}
+      {{ > add_horizontal}}
+      {{#each horizontalSections}}
+          {{#if horizontalShown}}
+            {{ > context_anchor_menu}}
+            {{/if}}
+      {{/each}}
+      {{#if addingContext}}
+        {{ > create_horizontal_section_block}}
+      {{/if}}
+    {{/if}}
+  {{/unless}}
+  {{#each horizontalSections}}
+    {{#if horizontalShown}}
+      {{#each data}}
+        {{#if type}}
+          {{> horizontal_section_block}}
         {{/if}}
-    {{/unless}}
-	{{#each horizontalSections}}
-	    {{#if horizontalShown}}
-            {{#each data}}
-                {{#if type}}
- 	                {{> horizontal_section_block}}
-                {{/if}}
-   	        {{/each}}
-   	        {{#unless read}}
-            	{{add_horizontal}}
-    	    {{/unless}}
-   	    {{/if}}
-	{{/each}}
+      {{/each}}
+      {{#unless read}}
+        {{add_horizontal}}
+      {{/unless}}
+    {{/if}}
+  {{/each}}
 </template>
 
 
 
 
 <template name="horizontal_section_block">
-	<section class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}}" data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px">
-<!-- 		<div id="index">
-			{{index}}
-		</div> -->
-		{{#if type}}
-		    {{#if text}}{{> display_text_section}}{{/if}}
-		    {{#if image}}{{> display_image_section}}{{/if}}
-		    {{#if map}}{{> display_map_section}}{{/if}}
-		    {{#if video}}{{> display_video_section}}{{/if}}
-		    {{#if oec}}{{> display_oec_section}}{{/if}}
-		{{else}}
-    		{{> horizontal_section_buttons}}
-    	{{/if}}
-	</section>
+  <section class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}}" data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px">
+<!--    <div id="index">
+      {{index}}
+    </div> -->
+    {{#if type}}
+        {{#if text}}{{> display_text_section}}{{/if}}
+        {{#if image}}{{> display_image_section}}{{/if}}
+        {{#if map}}{{> display_map_section}}{{/if}}
+        {{#if video}}{{> display_video_section}}{{/if}}
+        {{#if oec}}{{> display_oec_section}}{{/if}}
+    {{else}}
+        {{> horizontal_section_buttons}}
+      {{/if}}
+  </section>
 </template>
 
 <!-- Display Templates -->
 <template name="display_text_section">
-	<div class="text-section">
-    	{{content}}
+  <div class="text-section">
+      {{content}}
     </div>
     {{#unless read}}
-    	{{> horizontal_section_edit_delete}}
+      {{> horizontal_section_edit_delete}}
     {{/unless}}
 </template>
 
 <template name="display_image_section">
-	<div class="image-section">
-		<img src="/{{url}}" />
-		{{#if description}}
-    		<div class="description-overlay">
-    			{{description}}
-    		</div>
-    	{{/if}}
-	</div>
-	{{#unless read}}
-    	{{> horizontal_section_edit_delete}}
+  <div class="image-section">
+    <img src="/{{url}}" />
+    {{#if description}}
+        <div class="description-overlay">
+          {{description}}
+        </div>
+      {{/if}}
+  </div>
+  {{#unless read}}
+      {{> horizontal_section_edit_delete}}
     {{/unless}}
 </template>
 
 <template name="display_map_section">
-	<div class="map-section">
-		<iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
-	</div>
-	{{#unless read}}
-    	{{> horizontal_section_edit_delete}}
+  <div class="map-section">
+    <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
+  </div>
+  {{#unless read}}
+      {{> horizontal_section_edit_delete}}
     {{/unless}}
 </template>
 
 <template name="display_oec_section">
-	<div class="oec-section">
-		{{#if selected}}
-			<iframe width="100%" height="360" frameborder="0" style="border:0;" src="{{url}}"></iframe>
-		{{/if}}
-	</div>
-	{{#unless read}}
-    	{{> horizontal_section_edit_delete}}
+  <div class="oec-section">
+    {{#if selected}}
+      <iframe width="100%" height="360" frameborder="0" style="border:0;" src="{{url}}"></iframe>
+    {{/if}}
+  </div>
+  {{#unless read}}
+      {{> horizontal_section_edit_delete}}
     {{/unless}}
 </template>
 
 <template name="display_video_section">
-	<div class="video-section">
-		<iframe width="100%" height="300" frameborder="0" style="border:0" src="{{#if selected}}{{url}}{{else}}{{previewUrl}}{{/if}}" allowfullscreen></iframe>
-		{{#if description}}
-    		<div class="description-overlay">
-    			{{! description}}
-    		</div>
-    	{{/if}}
-	</div>
-	{{#unless read}}
-    	{{> horizontal_section_edit_delete}}
+  <div class="video-section">
+    <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{#if selected}}{{url}}{{else}}{{previewUrl}}{{/if}}" allowfullscreen></iframe>
+    {{#if description}}
+        <div class="description-overlay">
+          {{! description}}
+        </div>
+      {{/if}}
+  </div>
+  {{#unless read}}
+      {{> horizontal_section_edit_delete}}
     {{/unless}}
 </template>
 
 <template name="story_browser">
-	<div class="story-browser">
-		<img id="left" src="/arrow_left.svg" />
-		<img id="right" src="/arrow_right.svg" />
-	</div>
+  <div class="story-browser">
+    <img id="left" src="/arrow_left.svg" />
+    <img id="right" src="/arrow_right.svg" />
+  </div>
 </template>
 
 <template name="minimap">
-	<div class="minimap">
-		{{#each horizontalSectionsMap}}
-		<div class="section {{#if selectedY}}selected-section{{/if}}">
-			<div class="vertical block {{#if selectedY}}selected-block{{/if}}">
-			</div>
-			{{#each horizontal}}
+  <div class="minimap">
+    {{#each horizontalSectionsMap}}
+    <div class="section {{#if selectedY}}selected-section{{/if}}">
+      <div class="vertical block {{#if selectedY}}selected-block{{/if}}">
+      </div>
+      {{#each horizontal}}
           <div class="horizontal block {{#if selectedX}}selected-block{{/if}}">
           </div>
       {{/each}}
-		</div>
-		{{/each}}
-	</div>
+    </div>
+    {{/each}}
+  </div>
 </template>
