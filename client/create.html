@@ -17,17 +17,7 @@
   <div class="save-background-image">Save</div>
 </template>
 
-<template name="minimized_add_vertical">
-  <section class="narrative-section new-section minimized">
-    <i class="fa fa-plus-circle"></i>
-  </section>
-</template>
 
-<template name="minimized_add_horizontal">
-  <section class="narrative-section new-section minimized">
-    <i class="fa fa-plus-circle"></i>
-  </section>
-</template>
 
 <template name="formatting">
   <div id="formatting" style="top: {{top}}px; left: {{left}}px;">
@@ -61,15 +51,27 @@
   </div>
 </template>
 
+<template name="minimized_add_vertical">
+  <section class="narrative-section new-section minimized">
+    {{ > add_card_icon}}
+  </section>
+</template>
+
+<template name="minimized_add_horizontal">
+  <section class="narrative-section new-section minimized">
+    {{ > add_card_icon}}
+  </section>
+</template>
+
 <template name="add_vertical">
   <section class="narrative-section new-section">
-    <i class="fa fa-plus-circle"></i>
+    {{ > add_card_icon}}
   </section>
 </template>
 
 <template name="add_horizontal">
   <section class="narrative-section new-section horizontal-new-section" style="left: {{left}}px">
-    <i class="fa fa-plus-circle"></i>
+    {{ > add_card_icon}}
   </section>
 </template>
 
@@ -94,23 +96,19 @@
 
 <template name="create_horizontal_section_block">
   <section class="narrative-section horizontal-narrative-section selected" style="width: {{cardWidth}}px; left: {{left}}px">
+    {{> horizontal_section_buttons}}
     {{#if type}}
       {{#if text}}{{> create_text_section}}{{/if}}
       {{#if image}}{{> create_image_section}}{{/if}}
       {{#if map}}{{> create_map_section}}{{/if}}
       {{#if video}}{{> create_video_section}}{{/if}}
       {{#if oec}}{{> create_oec_section}}{{/if}}
-    {{else}}
-      {{> horizontal_section_buttons}}
     {{/if}}
   </section>
 </template>
 
 <template name="create_section_options">
   <div class="button-options back-save">
-    <div id="back" class="button">
-      <i class="fa fa-mail-reply"></i>
-    </div>
     <div id="save" class="button">
       <i class="fa fa-save"></i>
     </div>

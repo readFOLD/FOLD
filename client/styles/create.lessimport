@@ -1,5 +1,5 @@
 .editable {
-  outline: 1px dashed @color-medium-green;
+  outline: 1px dashed @accent-color;
   cursor: text;
 }
 
@@ -14,7 +14,7 @@ i#expand {
   z-index: 30;
   cursor: pointer;
   &:hover {
-    color: @color-medium-green;
+    color: @accent-color;
   }
 }
 
@@ -43,10 +43,10 @@ div.title-overlay {
   min-width: 1024px;
   height: 350px;
   z-index: 30;
-  // background-color: @color-medium-green;
+  // background-color: @accent-color;
   color: @color-light-grey;
 
-  background-color: @color-medium-green;
+  background-color: @accent-color;
   // background-image: url("/ukraine-bg.png");
   background-position: center center;
   background-attachment: fixed;
@@ -64,7 +64,7 @@ div.title-overlay {
       left: 50%;
       margin-left: -30px;
       width: 60px;
-      background-color: @color-dark-black;
+      background-color: @dark-color;
       border-radius: 30px;
     }
 
@@ -114,7 +114,7 @@ div.title-overlay {
   div#banner-overlay {
     width: 100%;
     height: 350px;
-    background-color: @color-dark-black;
+    background-color: @dark-color;
     opacity: 0.0;
     position: absolute;
 
@@ -137,7 +137,7 @@ div.title-overlay {
     position: absolute;
     top: 305px;
     right: 15px;
-    background-color: @color-dark-black;
+    background-color: @dark-color;
     padding: 5px 10px;
     opacity: 0.0;
 
@@ -155,7 +155,7 @@ div.title-overlay {
     margin-left: 20px;
       margin-top: 125px;
     padding: 11px;
-    background-color: @color-dark-black;
+    background-color: @dark-color;
     &.fixed {
       position: fixed;
       padding-top: 20px;
@@ -175,7 +175,7 @@ div.title-overlay {
 
 div#formatting {
   position: absolute;
-  background-color: @color-dark-black;
+  background-color: @dark-color;
   height: 40px;
   width: 200px;
   z-index: 30;
@@ -206,13 +206,13 @@ div#formatting {
 
   &:after {
     border-color: rgba(0, 0, 0, 0);
-    border-top-color: @color-dark-black;
+    border-top-color: @dark-color;
   border-width: 8px;
     margin-left: -8px;
   }
   &:before {
     border-color: rgba(245, 245, 245, 0);
-    border-top-color: @color-dark-black;
+    border-top-color: @dark-color;
     border-width: 14px;
     margin-left: -14px;
   }
@@ -236,10 +236,9 @@ div.button-options {
     line-height: 35px;
 
     width: 120px;
-    transition: color 0.25s ease, background-color 0.25s ease;
 
     &:hover {
-      background-color: @color-medium-green;
+      background-color: @accent-color;
       color: @color-medium-grey;
     }
   }
@@ -300,7 +299,6 @@ div.vertical-narrative {
       line-height: 75px;
       text-align: center;
       color: black;
-      transition: color 0.25s ease;
 
       &:hover {
         cursor: pointer;
@@ -326,6 +324,10 @@ input {
   font-size: 14px;
 }
 
+svg{
+    transition: fill 0.25s ease;
+}
+
 div.horizontal-context {
   section {
     padding: 0;
@@ -337,11 +339,11 @@ div.horizontal-context {
     line-height: 300px;
     text-align: center;
     width: 75px;
-    transition: color 0.25s ease;
+    z-index: 30;
     // box-shadow: 3px 3px #848484;
 
     &:hover {
-      color: green;
+      fill: @accent-color;
     }
   }
 
@@ -377,15 +379,15 @@ div.horizontal-context {
       width: @circle-diameter;
       vertical-align: top;
       display: inline-block;
-      fill: blue;
+      fill: @dark-color;
       &:hover {
-        fill: @color-medium-green;
+        fill: @accent-color;
       }
     }
     .unimplemented {
       display: inline-block;
       svg {
-        fill: grey;
+        fill: @inactive-color;
       }
     }
     span.stretch {

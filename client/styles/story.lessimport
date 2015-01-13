@@ -11,9 +11,9 @@ header {
   z-index: 10000;
 
   &.shadow {
-    -webkit-box-shadow: 0 0 15px 15px @color-dark-grey !important;
-    -moz-box-shadow: 0 0 15px 15px @color-dark-grey !important;
-    box-shadow: 0 0 15px 15px @color-dark-grey !important;
+    -webkit-box-shadow: 0 0 15px 15px @medium-color !important;
+    -moz-box-shadow: 0 0 15px 15px @medium-color !important;
+    box-shadow: 0 0 15px 15px @medium-color !important;
   }
 
   div.title {

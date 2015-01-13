@@ -332,7 +332,7 @@ Template.add_horizontal.events
 
 
 Template.create_horizontal_section_block.created = ->
-  @type = new ReactiveVar()
+  @type = new ReactiveVar('video')
 
 # TODO DRY
 Template.create_horizontal_section_block.helpers
@@ -356,7 +356,6 @@ Template.create_horizontal_section_block.events
   # 'click svg.image-icon': (d, t) -> t.type.set 'image'
   'click svg.map-icon': (d, t) -> t.type.set 'map'
   'click svg.video-icon': (d, t) -> t.type.set 'video'
-  "click div#back": (d, t) -> t.type.set null
   # 'click img.gif-button': (d, t) -> t.type.set 'gif'
   # 'click img.audio-button': (d, t) -> t.type.set 'audio'
 

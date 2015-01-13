@@ -7,7 +7,7 @@ div#login-buttons {
 section.banner {
   background-color: @color-light-grey;
   height: 200px;
-  border-bottom: 32px solid @color-dark-black;
+  border-bottom: 32px solid @dark-color;
 
   div.create-story {
     .background-transition;
@@ -18,11 +18,11 @@ section.banner {
     right: 10px;
     border-radius: 6px;
     padding: 5px 8px;
-    background-color: @color-dark-black;
+    background-color: @dark-color;
     color: @color-light-grey;
 
     &:hover {
-      background-color: @color-medium-green;
+      background-color: @accent-color;
     }
   }
 
@@ -30,7 +30,7 @@ section.banner {
     width: 100%;
     min-width: 1024px;
     height: 30px;
-    background-color: @color-dark-black;
+    background-color: @dark-color;
     padding-top: 0;
 
     i.fa-bars {
@@ -51,7 +51,7 @@ section.banner {
   }
 
   div.logo {
-    background-color: @color-dark-black;
+    background-color: @dark-color;
     z-index: 10;
 
     @circle-diameter: 80px;
@@ -108,7 +108,7 @@ div.filter {
   width: 100%;
   cursor: default;
   min-width: 1024px;
-  background-color: @color-dark-black;
+  background-color: @dark-color;
   margin-top: -2px;
   color: white;
   // text-transform: uppercase;
@@ -139,7 +139,7 @@ div.filter {
     height: 17px;
     margin-top: 7px;
     border-radius: 10px;
-    background-color: @color-dark-grey;
+    background-color: @medium-color;
 
     i {
       cursor: pointer;
@@ -149,7 +149,7 @@ div.filter {
     }
 
     &:hover {
-      background-color: @color-medium-green;
+      background-color: @accent-color;
     }
   }
 
@@ -171,7 +171,7 @@ div.filter {
       margin-right: 30px;
 
       &:hover, &.selected {
-        color: @color-medium-green;
+        color: @accent-color;
       }
     }
   }
@@ -206,10 +206,10 @@ div.edit-or-read {
   position: absolute;
   bottom: 0px;
   width: 100%;
-  background-color: @color-dark-black;
+  background-color: @dark-color;
 
   &:hover {
-    background-color: @color-medium-green;
+    background-color: @accent-color;
   }
 
   a {
@@ -230,7 +230,7 @@ div.edit-or-read {
 section.stories {
   width: 100%;
   height: 100%;
-  background-color: @color-dark-grey;
+  background-color: @medium-color;
 
   div.story-browser {
     height: 80px;
@@ -254,7 +254,7 @@ section.stories {
   }
 
   div.headline {
-    background-color: @color-inactive-grey;
+    background-color: @light-color;
     height: auto;
     /*height depends on length of story headline*/
     width: 100%;
@@ -297,7 +297,7 @@ section.stories {
   }
 
   div.story {
-    background-color: @color-inactive-grey;
+    background-color: @light-color;
     // box-shadow: 3px 3px @color-medium-grey;
 
     // 540 980+

@@ -1,17 +1,15 @@
 @color-light-grey: #F6F7F8;
 @color-medium-grey: #CCCCCB;
 @color-light-green: #8CC63E;
-@color-medium-green: #00A451;
 @color-fold-black: #272727;
-// @color-dark-black: #222222;
-
-// @color-dark-black: #0C090A;
-@color-dark-black: #0A0500;
-@color-medium-black: #323232;
-@color-inactive-grey: #E0E2E1;
-// @color-dark-grey: #494A49;
-@color-dark-grey: #333333;
 @color-link-grey: #d7dbd8;
+@color-medium-black: #323232;
+
+@dark-color: #333333;
+@medium-color: #CCCCCC;
+@light-color: white;
+@accent-color: #00A451;
+@inactive-color: grey;
 
 
 // http://asimpleframe.com/
@@ -119,7 +117,9 @@ body {
   // font-family: 'Alegreya Sans' , sans-serif;
   //font-family: ;
   margin: 0;
-  background-color: @color-dark-grey;
+  background-color: @medium-color;
+  transition: color 0.25s ease;
+  transition: background-color 0.25s ease;
 
   // Where should this be ??
   line-height: 23px;
@@ -142,7 +142,7 @@ div.story-browser {
     margin-top: 275px;
     border-radius: 30px;
     &:hover {
-      background-color: @color-medium-green;
+      background-color: @accent-color;
       border-radius: 30px;
     }
   }
@@ -166,7 +166,7 @@ img#back {
   bottom: 10px;
 
   &:hover {
-      background-color: @color-medium-green;
+      background-color: @accent-color;
       border-radius: 30px;
     }
 }
@@ -195,8 +195,7 @@ section.narrative-section {
   float: left;
   display: inline-block;
   padding: 0 15px;
-  transition: background-color 0.25s ease;
-  background-color: @color-inactive-grey;
+  background-color: @light-color;
 
   a {
     .background-transition;
@@ -220,7 +219,7 @@ section.narrative-section {
       border-radius: 17.5px;
       cursor: pointer;
       &:hover {
-        background-color: @color-medium-green;
+        background-color: @accent-color;
       }
     }
   }
@@ -324,7 +323,7 @@ div.vertical-narrative {
 
   section.new-section.minimized {
     .height-transition;
-    background-color: @color-dark-grey;
+    background-color: @medium-color;
     height: 12px;
     min-height: 0px;
     i {
@@ -332,8 +331,8 @@ div.vertical-narrative {
     }
 
     &:hover {
-      border-top: 12px solid @color-dark-grey;
-      border-bottom: 12px solid @color-dark-grey;
+      border-top: 12px solid @medium-color;
+      border-bottom: 12px solid @medium-color;
       background-color: @color-light-grey;
       height: 95px;
       overflow-y: hidden;
@@ -366,8 +365,8 @@ div.horizontal-context {
 
 section.horizontal-new-section {
   position: absolute;
-  background-color: @color-dark-black;
-  color: @color-inactive-grey;
+  background-color: @light-color;
+  color: @dark-color;
 }
 
 section.horizontal-narrative-section {
@@ -379,7 +378,7 @@ section.horizontal-narrative-section {
 
   min-width: 400px;
   width: 32%;
-  background-color: @color-dark-black;
+  background-color: @light-color;
   color: #f3f3f2;
   // display: none;
   opacity: 0.25;
@@ -428,7 +427,7 @@ div.minimap {
 
     &.selected-section {
       div.selected-block {
-        background-color: @color-medium-green;
+        background-color: @accent-color;
       }
     }
   }
@@ -466,3 +465,4 @@ div.minimap {
 div.hide {
   display: none;
 }
+
