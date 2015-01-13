@@ -3,22 +3,22 @@ Stories._ensureIndex(storyDashTitle: 1)
 
 
 Meteor.publish "exploreStoriesPub", (storyDashTitle, filter, category, skip) ->
-	Stories.find({published: true})
+  Stories.find({published: true})
 
 Meteor.publish "readStoryPub", (storyDashTitle) ->
-	Stories.find({storyDashTitle: storyDashTitle, published: true}, {fields: {headerImageAttribution: 1, verticalSections: 1, horizontalSections: 1, title: 1, userId: 1, backgroundImage: 1, storyDashTitle: 1}})
+  Stories.find({storyDashTitle: storyDashTitle, published: true}, {fields: {headerImageAttribution: 1, verticalSections: 1, horizontalSections: 1, title: 1, userId: 1, backgroundImage: 1, storyDashTitle: 1}})
 
 Meteor.publish "createStoryPub", (storyDashTitle) ->
-	Stories.find({storyDashTitle: storyDashTitle})
+  Stories.find({storyDashTitle: storyDashTitle})
 
 Meteor.publish "storiesPub", ->
-	Stories.find()
+  Stories.find()
 
 Meteor.publish "usersPub", ->
     Meteor.users.find()
 
 Meteor.publish "contextBlocksPub", ->
-	ContextBlocks.find()
+  ContextBlocks.find()
 
 # getProfilePicture = (options, user) ->
 #     if options.profile
