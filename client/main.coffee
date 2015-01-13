@@ -116,14 +116,14 @@ Meteor.startup ->
   $(document).scroll(throttledUpdate)
 
 Template.story_header.helpers
-    title: ->
-        if @title then @title
-        else Session.get("storyTitle")
-    headerImageAttribution: -> @headerImageAttribution
-    backgroundImage: ->
-        if @backgroundImage then @backgroundImage
-        else Session.get("backgroundImage")
-    username: -> "Alexis Hope and Kevin Hu"
+  title: ->
+      if @title then @title
+      else Session.get("storyTitle")
+  headerImageAttribution: -> @headerImageAttribution
+  backgroundImage: ->
+      if @backgroundImage then @backgroundImage
+      else Session.get("backgroundImage")
+  username: -> "Alexis Hope and Kevin Hu"
 
 Template.story_header.events =
   "mouseover #banner-overlay, mouseover #to-header": ->
@@ -262,14 +262,18 @@ Template.horizontal_context.helpers
   horizontalShown: ->
     Session.equals("currentY", @index)
 
-horizontalBlockHelpers =
-  selected: ->
-    Session.equals("currentX", @index) and not Session.get("addingContext")
+
+typeHelpers =
   text: -> (@type is "text")
   image: -> (@type is "image")
   map: -> (@type is "map")
   video: -> (@type is "video")
   oec: -> (@type is "oec")
+
+horizontalBlockHelpers = _.extend {}, typeHelpers,
+  selected: ->
+    Session.equals("currentX", @index) and not Session.get("addingContext")
+
 
 
 Template.horizontal_section_block.helpers horizontalBlockHelpers
@@ -348,3 +352,5 @@ Template.story_browser.events
     path = window.location.pathname.split("/")
     path[4] = Session.get("currentX")
     # window.history.pushState({}, '', path.join("/"))
+
+Template.type_specific_icon.helpers typeHelpers
