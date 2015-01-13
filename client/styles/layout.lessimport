@@ -379,7 +379,7 @@ section.horizontal-narrative-section {
   min-width: 400px;
   width: 32%;
   background-color: @light-color;
-  color: #f3f3f2;
+  color: @dark-color;
   // display: none;
   opacity: 0.25;
 
