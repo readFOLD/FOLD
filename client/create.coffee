@@ -129,15 +129,15 @@ Template.create.rendered = ->
     return
 
   # editor.clickingIntoArchorForm = (e) ->
-  #     self = this
-  #     console.log e
-  #     # console.log e.type
+  #   self = this
+  #   console.log e
+  #   # console.log e.type
 
-  #     # console.log $(self.contextAnchorForm).has(e.target)
-  #     if e.type and e.type.toLowerCase() is "blur" and e.relatedTarget and e.relatedTarget in [self.anchorInput, self.contextAnchorForm]
-  #         return true
-  #     else
-  #         return false
+  #   # console.log $(self.contextAnchorForm).has(e.target)
+  #   if e.type and e.type.toLowerCase() is "blur" and e.relatedTarget and e.relatedTarget in [self.anchorInput, self.contextAnchorForm]
+  #     return true
+  #   else
+  #     return false
 
   # End of monkey patches
 
@@ -226,26 +226,26 @@ Template.create.helpers
   category: -> Session.get("storyCategory")
 
 # Template.create.events
-#     "mousedown": ->
-#         Session.set("formatting", false)
-#     "mouseup": ->
-#         if window.getSelection
-#             text = window.getSelection().toString()
-#         else if (typeof document.selection and document.selection.type is "Text")
-#             text = document.selection.createRange().text
-#         if text
-#             Session.set("formatting", true)
-#             console.log "TEXT:", text
-#             coords = getSelectionCoords()
-#             Session.set("formattingTop", coords.y)
-#             Session.set("formattingLeft", coords.x)
+#   "mousedown": ->
+#     Session.set("formatting", false)
+#   "mouseup": ->
+#     if window.getSelection
+#       text = window.getSelection().toString()
+#     else if (typeof document.selection and document.selection.type is "Text")
+#       text = document.selection.createRange().text
+#     if text
+#       Session.set("formatting", true)
+#       console.log "TEXT:", text
+#       coords = getSelectionCoords()
+#       Session.set("formattingTop", coords.y)
+#       Session.set("formattingLeft", coords.x)
 
 Template.formatting.helpers
   top: -> Session.get("formattingTop") - 60
   left: -> Session.get("formattingLeft")
 
 # Template.vertical_narrative.helpers
-#     verticalSections: -> Session.get('verticalSections')
+#   verticalSections: -> Session.get('verticalSections')
 
 #######################
 # Adding Sections
@@ -309,24 +309,24 @@ Template.add_horizontal.events
       Session.set "addingContext", true
 
     # unless Session.get("editingContext")
-    #     # TODO Make this based on a session variable
-    #     $("section.horizontal-new-section").animate({height: "100%", width: "540px"}, 250)
+    #   # TODO Make this based on a session variable
+    #   $("section.horizontal-new-section").animate({height: "100%", width: "540px"}, 250)
 
-    #     # Shift all horizontal sections right
-    #     $("div.horizontal-context section:not(:first)").animate({left: "+=440px"}, 250)
+    #   # Shift all horizontal sections right
+    #   $("div.horizontal-context section:not(:first)").animate({left: "+=440px"}, 250)
 
-    #     Session.set("editingContext", true)
+    #   Session.set("editingContext", true)
 
     # Append Horizontal Section to Current Horizontal Context
     # console.log @
     # horizontalSections = Session.get('horizontalSections')
     # console.log("horizontalSections", horizontalSections, Session.get('currentVertical'))
     # newHorizontalSection =
-    #     if Session.get("horizontalSections")[Session.get('currentVertical')]?.data?.length
-    #         x = Session.get("horizontalSections")[Session.get('currentVertical')].data.length
-    #     else
-    #         x = 0
-    #     index: x
+    #   if Session.get("horizontalSections")[Session.get('currentVertical')]?.data?.length
+    #     x = Session.get("horizontalSections")[Session.get('currentVertical')].data.length
+    #   else
+    #     x = 0
+    #   index: x
     # horizontalSections[Session.get('currentVertical')].data.push(newHorizontalSection)
     # Session.set('horizontalSections', horizontalSections)
 
@@ -390,11 +390,11 @@ Template.context_anchor_option.events =
 
 
 # Template.create_section_options.events
-#     "click div#back": (d) ->
-#         srcE = if d.srcElement then d.srcElement else d.target
-#         parentSection = $(srcE).closest('section')
-#         parentSection.empty()
-#         UI.insert(UI.render(Template.horizontal_section_buttons), parentSection.get(0))
+#   "click div#back": (d) ->
+#     srcE = if d.srcElement then d.srcElement else d.target
+#     parentSection = $(srcE).closest('section')
+#     parentSection.empty()
+#     UI.insert(UI.render(Template.horizontal_section_buttons), parentSection.get(0))
 
 Template.create_text_section.events
   "click div#save": (d) ->
