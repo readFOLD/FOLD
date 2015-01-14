@@ -2,9 +2,6 @@
   {{ > story_header }}
   {{ > story }}
 
-  {{#if showFormatting}}
-      {{ > formatting}}
-  {{/if}}
   {{#unless read}}
       {{! > background_image}}
   {{/unless}}
@@ -17,21 +14,6 @@
   <div class="save-background-image">Save</div>
 </template>
 
-
-
-<template name="formatting">
-  <div id="formatting" style="top: {{top}}px; left: {{left}}px;">
-    <div class="formatting-option">
-      <i class="fa fa-bold"></i>
-    </div>
-    <div class="formatting-option">
-      <i class="fa fa-italic"></i>
-    </div>
-    <div class="formatting-option">
-      <i class="fa fa-link"></i>
-    </div>
-  </div>
-</template>
 
 <template name="layout_options">
   <i class="fa fa-expand fa-3x" id="expand"></i>

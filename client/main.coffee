@@ -215,7 +215,7 @@ Template.vertical_section_block.helpers
   validTitle: -> (@title is not "title")
   contentDiv: ->
     # TODO Sanitize
-    if @read
+    if Session.get 'read'
       return '<div class="content">' + this.content + '</div>'
     else
       return '<div class="content editable medium-editable">' + this.content + '</div>'

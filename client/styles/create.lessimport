@@ -47,37 +47,13 @@ div.title-overlay {
   color: @color-light-grey;
 
   background-color: @accent-color;
-  // background-image: url("/ukraine-bg.png");
   background-position: center center;
   background-attachment: fixed;
   background-repeat: no-repeat;
-    -webkit-background-size: cover;
+  -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-
-  div.arrow-container {
-    width: 100%;
-    img {
-      position: relative;
-      top: 275px;
-      left: 50%;
-      margin-left: -30px;
-      width: 60px;
-      background-color: @dark-color;
-      border-radius: 30px;
-    }
-
-    #to-header {
-      .opacity-transition;
-      position: fixed;
-      opacity: 0.0;
-      top: 38px;
-      &.shown {
-        opacity: 1.0
-      }
-    }
-  }
 
   div.logo {
     .opacity-transition;
@@ -170,51 +146,6 @@ div.title-overlay {
       font-size: 25px;
       font-style: italic;
     }
-  }
-}
-
-div#formatting {
-  position: absolute;
-  background-color: @dark-color;
-  height: 40px;
-  width: 200px;
-  z-index: 30;
-  border-radius: 3px;
-
-  div.formatting-option {
-    float: left;
-    width: 35px;
-    i {
-      color: white;
-      margin-left: 10px;
-      font-size: 22px;
-      line-height: 40px;
-    }
-    border-right: 1px solid white;
-  }
-
-  &:after, &:before {
-    top: 100%;
-    left: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-  }
-
-  &:after {
-    border-color: rgba(0, 0, 0, 0);
-    border-top-color: @dark-color;
-  border-width: 8px;
-    margin-left: -8px;
-  }
-  &:before {
-    border-color: rgba(245, 245, 245, 0);
-    border-top-color: @dark-color;
-    border-width: 14px;
-    margin-left: -14px;
   }
 }
 

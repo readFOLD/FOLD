@@ -98,6 +98,10 @@ img {
   .background-transition;
 }
 
+i {
+  .color-transition;
+}
+
 *, *:before, *:after {
   -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
@@ -153,18 +157,6 @@ div.story-browser {
   }
 }
 
-img#back {
-  cursor: pointer;
-  position: fixed;
-  border-radius: 30px;
-  right: 150px;
-  bottom: 10px;
-
-  &:hover {
-      background-color: @accent-color;
-      border-radius: 30px;
-    }
-}
 
 article.content {
   opacity: 0.5;
@@ -186,7 +178,6 @@ div#overlay {
 }
 
 section.narrative-section {
-  cursor: pointer;
   float: left;
   display: inline-block;
   padding: 0 15px;
@@ -194,6 +185,7 @@ section.narrative-section {
 
   a {
     .background-transition;
+    cursor: pointer;
     background-color: @color-link-grey;
     color: inherit;
     padding: 0 4px;
@@ -219,7 +211,6 @@ section.narrative-section {
   }
 
   div.title {
-    cursor: text;
     line-height: 23px;
     text-align: left;
     font-size: 20px;
@@ -231,7 +222,6 @@ section.narrative-section {
 
   div.content {
     min-height: 100px;
-    cursor: text;
     line-height: 26px;
     overflow-y: scroll;
     text-align: left;
@@ -244,22 +234,6 @@ section.narrative-section {
       height: 0;
       display: none;
     }
-  }
-
-  div.size-icons {
-    margin-top: 15px;
-    height: 0;
-    position: relative;
-
-    div.size-icon {
-      float: right;
-      margin-top: -10px;
-      margin-right: -5px;
-      cursor: pointer;
-      &.hidden {
-        display: none;
-      }
-    };
   }
 }
 
@@ -285,10 +259,6 @@ div.vertical-narrative {
 
   section.narrative-section {
     position: relative;
-    cursor: pointer;
-    p {
-      cursor: pointer;
-    }
     .width-transition;
     .height-transition;
     overflow-y: scroll;

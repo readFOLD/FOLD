@@ -311,10 +311,6 @@ section.stories {
     margin-top: 20px;
     margin-bottom: 40px;
 
-    &:first-child {
-      // margin-top: 0px;
-    }
-
     &:nth-child(odd) {
       float: left;
     }

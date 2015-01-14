@@ -225,24 +225,6 @@ Template.create.helpers
   narrativeView: -> Session.get("narrativeView")
   category: -> Session.get("storyCategory")
 
-# Template.create.events
-#   "mousedown": ->
-#     Session.set("formatting", false)
-#   "mouseup": ->
-#     if window.getSelection
-#       text = window.getSelection().toString()
-#     else if (typeof document.selection and document.selection.type is "Text")
-#       text = document.selection.createRange().text
-#     if text
-#       Session.set("formatting", true)
-#       console.log "TEXT:", text
-#       coords = getSelectionCoords()
-#       Session.set("formattingTop", coords.y)
-#       Session.set("formattingLeft", coords.x)
-
-Template.formatting.helpers
-  top: -> Session.get("formattingTop") - 60
-  left: -> Session.get("formattingLeft")
 
 # Template.vertical_narrative.helpers
 #   verticalSections: -> Session.get('verticalSections')
@@ -388,11 +370,6 @@ Template.context_anchor_option.events =
     return false
 
 
-# Template.create_section_options.events
-#   "click div#back": (d) ->
-#     srcE = if d.srcElement then d.srcElement else d.target
-#     parentSection = $(srcE).closest('section')
-#     parentSection.empty()
 
 Template.create_text_section.events
   "click div.save": (d) ->
