@@ -1,6 +1,33 @@
-@Stories = new Meteor.Collection "stories"
+class Story
+  constructor: (doc) ->
+    _.extend this, doc
 
-# Add user confirmation / security here
+    # defaults
+    @verticalSections ?= []
+    @published ?= false
+
+    if @verticalSections.length is 0
+      @addVerticalSection()
+  addVerticalSection: ->
+    @verticalSections.push
+      _id: Random.id()
+      contextBlocks: []
+      title: "Set title"
+      content: "Type some text here."
+  updateAuthor: (user) ->
+    user ?= Meteor.user() # default to current user
+    @userId = user.userId
+    @username = user.profile.name
+    @title = "New Story"
+
+
+if Meteor.isClient
+  window.Story = Story
+
+@Stories = new Meteor.Collection "stories",
+  transform: (doc) ->
+    new Story doc
+
 
 checkOwner = (userId, doc) ->
   userId and userId is doc.userId
@@ -16,7 +43,7 @@ checkOwner = (userId, doc) ->
     checkOwner userId, doc
 
 class ContextBlock
-  constructor : (doc) ->
+  constructor: (doc) ->
     _.extend this, doc
 
 class VideoBlock extends ContextBlock
@@ -47,7 +74,6 @@ class TextBlock extends ContextBlock
       else
         new ContextBlock doc
 
-# Add user confirmation / security here
 @ContextBlocks.allow
   insert: (userId, doc) ->
     checkOwner userId, doc

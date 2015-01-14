@@ -58,15 +58,19 @@ Router.route "create",
     $('html, body').scrollTop(0)
     @next()
   data: ->
+    story = new Story
+    story.updateAuthor()
+
+    Session.set "story", story
+    # Session.set "storyId", story._id
+    # Session.set "backgroundImage", story.backgroundImage
+    Session.set "horizontalSectionsMap", []
+
     Session.set "newStory", true
     Session.set "read", false
     Session.set "page", "create"
 
-    # Proper way to initiate blank template?
-    Session.set 'storyTitle', 'New Story'
-    Session.set 'verticalSections', []
-    Session.set 'horizontalSections', []
-    return Stories.findOne()
+    return story
 
 Router.route "edit",
   path: "create/:storyDashTitle"
