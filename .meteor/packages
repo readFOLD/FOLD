@@ -10,8 +10,6 @@ natestrauser:font-awesome@4.0.3
 accounts-ui
 accounts-password
 accounts-twitter
-accounts-facebook
-accounts-google
 underscore
 insecure
 iron:router
