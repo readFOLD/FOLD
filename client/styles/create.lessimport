@@ -13,6 +13,10 @@ div.save-publish {
 i#expand {
   z-index: 30;
   cursor: pointer;
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+
   &:hover {
     color: @accent-color;
   }
@@ -147,12 +151,6 @@ div.title-overlay {
       font-style: italic;
     }
   }
-}
-
-i#expand {
-  position: fixed;
-  left: 20px;
-  bottom: 20px;
 }
 
 div.button-options {
@@ -400,12 +398,6 @@ div.image-section {
     height: 100%;
   }
 }
-
-// div.horizontal-context {
-//  section.horizontal-narrative-section.new-section {
-//    height: 100px;
-//  }
-// }
 
 div.context-anchor-menu {
   display: none;

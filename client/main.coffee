@@ -214,7 +214,7 @@ Template.vertical_section_block.helpers
   verticalSelected: -> (Session.equals("currentY", @index) and Session.get("pastHeader"))
   validTitle: -> (@title is not "title")
   contentDiv: ->
-    # TODO Sanitize
+    # TODO Sanitize but leave in links and formatting
     if Session.get 'read'
       return '<div class="content">' + this.content + '</div>'
     else
@@ -226,10 +226,6 @@ Template.vertical_narrative.helpers
       _.extend v, index: i
 
 Template.vertical_narrative.events
-  # "click #card-down": ->
-  #   goDownOneCard()
-  # "click #card-up": ->
-  #   goUpOneCard()
   "click section": (d) ->
     $('#to-story, .attribution').fadeOut()
     srcE = if d.srcElement then d.srcElement else d.target
