@@ -59,18 +59,9 @@ Template.filters.events
 Template.all_stories.helpers
   stories: -> Stories.find()
   lastPublishDate: -> formatDate(@publishDate)
-  displayName: ->
-    if Meteor.user()
-      if Meteor.user().emails
-        Meteor.user().emails[0].address
-      else
-        Meteor.user().profile.name
   previewContent: ->
-    @verticalSections[0]?.content
-
-  # Remove this duplication
-  profileImage: ->
-    Meteor.user()?.profile.profile_picture
+    if content = @verticalSections[0]?.content
+      content.replace(/(<([^>]+)>)/ig,"") # remove html tags
 
   url: -> "/read/" + @storyDashTitle
 

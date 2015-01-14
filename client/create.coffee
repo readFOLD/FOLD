@@ -413,12 +413,12 @@ Template.create_video_section.events
         console.log 'video not found'
         return
 
-
       newContextBlock =
         type: 'video'
         service: 'youtube'
         videoId: videoId
         description: info.title
+        userId: Meteor.user()._id
 
       # TODO Move to server method
 

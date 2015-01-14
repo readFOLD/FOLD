@@ -1,7 +1,11 @@
+userProfile =
+  name: 'Cynthia Fold'
+
 if Meteor.users.find().count() is 0
   userId = Accounts.createUser
     email: 'test@example.com'
     password: 'password'
+    profile: userProfile
 
 
 if (Stories.find().count() is 0)
@@ -15,6 +19,7 @@ if (Stories.find().count() is 0)
     storyDashTitle: "unfolding-the-2014-ebola-outbreak"
     title: "Unfolding the 2014 Ebola Outbreak"
     userId: userId
+    username: userProfile.name # TODO update in user save methods
     verticalSections: [
       {
         _id: '93'
@@ -67,23 +72,27 @@ if (ContextBlocks.find().count() is 0)
       type: "map"
       url: "https://www.google.com/maps/embed/v1/place?q=West+Africa&key=AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q"
       description: "West Africa region: Nigeria, Liberia, Sierra Leone, Guinea"
+      userId: userId
       _id: '0'
     }
     {
       type: "text"
       content: "From the Centers for Disease Control and Prevention: “On July 25, 2014, the Nigerian Ministry of Health confirmed that a man in Lagos, Nigeria, died from Ebola. The man had been in a Lagos hospital since arriving at the Lagos airport from Liberia. Currently, a small number of Ebola cases linked to this patient have been reported in Lagos and Port Harcourt. The Nigerian government has taken actions to contain further spread, but it is not yet known if these actions will be successful."
+      userId: userId
       _id: '1'
     }
     {
       type: "image"
       url: "2014_Ebola_virus_epidemic_in_West_Africa.png"
       description: "Situation map of the outbreak. Source: Wikipedia."
+      userId: userId
       _id: '2'
     }
     {
       type: "image"
       url: "Ebola_Virus.jpg"
       description: "Electron Micrograph image of Virus"
+      userId: userId
       _id: '3'
     }
     {
@@ -91,29 +100,34 @@ if (ContextBlocks.find().count() is 0)
       service: 'youtube'
       videoId: 'aM3vhZrNa7E'
       description: "How did ebola evolve to affect humans?"
+      userId: userId
       _id: '4'
     }
     {
       type: "text"
       content: "Symptoms can progress to include vomiting, diarrhea, and external bleeding, which facilitate the spread of the disease. This can become especially problematic at funerals, as infected bodies can be a vector for disease."
+      userId: userId
       _id: '5'
     }
     {
       type: "image"
       url: "Ebola_Betten_Isolation.jpg"
       description: "Isolation Chamber"
+      userId: userId
       _id: '6'
     }
     {
       type: "image"
       url: "EbolaCycle.png"
       description: "Ebola Cycle"
+      userId: userId
       _id: '7'
     }
     {
       type: "image"
       url: "batsmonkeys.jpg"
       description: "Red Cross communications materials teach people how Ebola is transmitted. Tommy Trenchard / Al Jazeera"
+      userId: userId
       _id: '8'
     }
     {
@@ -121,6 +135,7 @@ if (ContextBlocks.find().count() is 0)
       service: 'youtube'
       videoId: 'PlmHZeukdh0'
       description: "Sierra Leone Lockdown"
+      userId: userId
       _id: '9'
     }
     {
@@ -128,6 +143,7 @@ if (ContextBlocks.find().count() is 0)
       service: 'youtube'
       videoId: 'KEmSpyYLXr0'
       description: "WHO response"
+      userId: userId
       _id: '10'
     }
     {
@@ -135,6 +151,7 @@ if (ContextBlocks.find().count() is 0)
       service: 'youtube'
       videoId: 'uAVk2IJDEsM'
       description: "Obama response"
+      userId: userId
       _id: '11'
     }
     {
@@ -142,53 +159,62 @@ if (ContextBlocks.find().count() is 0)
       service: 'youtube'
       videoId: 'oouvsHBeF_Q'
       description: "Global community"
+      userId: userId
       _id: '12'
     }
     {
       type: "text"
       content: "In July, two Americans who worked for an aid organization were infected with Ebola in Liberia. They were given an experimental treatment, known as ZMapp, and recovered. A Spanish missionary priest was also infected and treated similarly. ZMapp is an experimental drug that is not in production nor has it been tested in humans. Many bioethicists expressed outrage that Westerners were given the treatment and not Africans."
+      userId: userId
       _id: '13'
     }
     {
       type: "map"
       url: "https://www.google.com/maps/embed/v1/place?q=Central+Africa&key=AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q"
       description: "Central Africa"
+      userId: userId
       _id: '14'
     }
     {
       type: "image"
       url: "cdc_doctor_discards.jpg"
       description: "A doctor wearing protective equipment discards blood specimens during the 1976 Ebola outbreak in Zaire, 1976. Source: CDC"
+      userId: userId
       _id: '15'
     }
     {
       type: "image"
       url: "ebola_isolation_chamber.jpg"
       description: "Ebola isolation chamber from the 1970s."
+      userId: userId
       _id: '16'
     }
     {
       type: "image"
       url: "nurses_1976.jpg"
       description: "Nurses treat patient in 1976 Ebola outbreak."
+      userId: userId
       _id: '17'
     }
     {
       type: "oec"
       url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/gin/all/show/2012/?controls=false&lang=en"
       description: "Products exported by Guinea (2012)"
+      userId: userId
       _id: '18'
     }
     {
       type: "oec"
       url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/lbr/all/show/2012/?controls=false&lang=en"
       description: "Products exported by Liberia (2012)"
+      userId: userId
       _id: '19'
     }
     {
       type: "oec"
       url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/sle/all/show/2012/?controls=false&lang=en"
       description: "Products exported by Sierra Leone (2012)"
+      userId: userId
       _id: '20'
     }
     {
@@ -196,12 +222,14 @@ if (ContextBlocks.find().count() is 0)
       service: 'youtube'
       videoId: 'T3v64ZchRkM'
       description: "Economic Cost"
+      userId: userId
       _id: '21'
     }
     {
       type: "image"
       url: "Deceased_per_day_Ebola_2014.png"
       description: "Deaths/cases over time"
+      userId: userId
       _id: '22'
     }
     {
@@ -209,6 +237,7 @@ if (ContextBlocks.find().count() is 0)
       service: 'vimeo'
       videoId: '106298449'
       description: "Dying of Ebola at the Hospital Door"
+      userId: userId
       _id: '23'
     }
     {
@@ -216,6 +245,7 @@ if (ContextBlocks.find().count() is 0)
       service: 'vimeo'
       videoId: '103567250'
       description: "Economic Cost"
+      userId: userId
       _id: '24'
     }
   ].forEach (block) ->

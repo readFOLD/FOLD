@@ -14,8 +14,9 @@
     <div class="logo">
       {{#with user}}
         <a href="/profile/{{_id}}">
-          <img class="logo" src="/logo.png">
         </a>
+      {{else}}
+        <img class="logo" src="/logo.png">
       {{/with}}
     </div>
     {{> loginButtons }}
@@ -95,7 +96,7 @@
         {{#if profileImage}}
             <img class="profile-picture" src="{{profileImage}}"/>
           {{/if}}
-        By {{displayName}}
+        By {{username}}
       </div>
 
       <div class="content">

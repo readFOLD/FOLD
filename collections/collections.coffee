@@ -1,10 +1,19 @@
 @Stories = new Meteor.Collection "stories"
 
 # Add user confirmation / security here
+
+checkOwner = (userId, doc) ->
+  userId and userId is doc.userId
+
 @Stories.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
+  insert: (userId, doc) ->
+    checkOwner userId, doc
+  update: (userId, doc, fieldNames) ->
+    if _.contains fieldNames, 'userId'
+      return false
+    checkOwner userId, doc
+  remove: (userId, doc) ->
+    checkOwner userId, doc
 
 class ContextBlock
   constructor : (doc) ->
@@ -40,6 +49,11 @@ class TextBlock extends ContextBlock
 
 # Add user confirmation / security here
 @ContextBlocks.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
+  insert: (userId, doc) ->
+    checkOwner userId, doc
+  update: (userId, doc) ->
+    if _.contains fieldNames, 'userId'
+      return false
+    checkOwner userId, doc
+  remove: (userId, doc) ->
+    checkOwner userId, doc

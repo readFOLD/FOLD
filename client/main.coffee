@@ -123,7 +123,6 @@ Template.story_header.helpers
   backgroundImage: ->
       if @backgroundImage then @backgroundImage
       else Session.get("backgroundImage")
-  username: -> "Alexis Hope and Kevin Hu"
 
 Template.story_header.events =
   "mouseover #banner-overlay, mouseover #to-header": ->
