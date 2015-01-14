@@ -332,7 +332,7 @@ Template.display_oec_section.helpers horizontalBlockHelpers
 Template.display_video_section.helpers horizontalBlockHelpers
 
 Template.story_browser.events
-  "click #right": (d) ->
+  "click .right": (d) ->
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal
     currentX = Session.get("currentX")
 
@@ -343,7 +343,7 @@ Template.story_browser.events
     path[4] = Session.get("currentX")
     # window.history.pushState({}, '', path.join("/"))
 
-  "click #left": (d) ->
+  "click .left": (d) ->
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal
     currentX = Session.get("currentX")
 

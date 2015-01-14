@@ -94,6 +94,10 @@ a {
   }
 }
 
+img {
+  .background-transition;
+}
+
 *, *:before, *:after {
   -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
@@ -103,7 +107,6 @@ a {
 }
 
 html, body {
-  // height: 100%;
   min-width: 1024px;
 }
 
@@ -115,18 +118,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
   //potential option for card text
   // font-family: 'Alegreya Sans' , sans-serif;
-  //font-family: ;
   margin: 0;
   background-color: @medium-color;
   transition: color 0.25s ease;
   transition: background-color 0.25s ease;
 
-  // Where should this be ??
   line-height: 23px;
   text-align: left;
   font-size: 15px;
-
-  // background: url(/banksy.jpg) no-repeat center center fixed;
 }
 
 div.story-browser {
@@ -136,29 +135,25 @@ div.story-browser {
   z-index: 10;
 
   img {
-    .background-transition;
     color: white;
     cursor: pointer;
     margin-top: 275px;
     border-radius: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
+
     &:hover {
       background-color: @accent-color;
       border-radius: 30px;
     }
   }
 
-  img#left {
-    margin-left: 20px;
-  }
-
-  img#right {
-    margin-right: 20px;
+  img.right {
     float: right;
   }
 }
 
 img#back {
-  .background-transition;
   cursor: pointer;
   position: fixed;
   border-radius: 30px;
@@ -213,7 +208,6 @@ section.narrative-section {
     right: 15px;
 
     img.arrow {
-      .background-transition;
       margin-right: 5px;
       display: inline;
       border-radius: 17.5px;

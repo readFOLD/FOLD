@@ -234,6 +234,9 @@ div.button-options {
     text-align: center;
     font-size: 16px;
     line-height: 35px;
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
 
     width: 120px;
 
@@ -243,13 +246,7 @@ div.button-options {
     }
   }
 
-  div#save {
-  }
-  div#publish, div#delete {
-    margin-top: 10px;
-  }
-
-  div#delete {
+  div.delete-button {
     &:hover {
       background-color: red;
     }
@@ -307,15 +304,18 @@ div.vertical-narrative {
 }
 
 textarea {
-    border: none;
-    overflow: auto;
-    outline: none;
+  border: none;
+  overflow: auto;
+  outline: none;
 
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-
-    font-size: 14px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  font-size: 14px;
+  width: 100%;
+  &.text-input {
+    height: 160px;
+  }
 }
 
 input {
@@ -352,14 +352,6 @@ div.horizontal-context {
     margin-bottom: 10px;
   }
 
-  textarea {
-    width: 100%;
-
-    &.text-input {
-      height: 160px;
-    }
-  }
-
   div.content-icons {
     padding-top: 12px;
     div.row {
@@ -368,9 +360,6 @@ div.horizontal-context {
       text-justify: distribute-all-lines;
       margin-left: 10%;
       margin-right: 10%;
-    }
-    img {
-      .background-transition;
     }
     svg {
       padding: 1.5px;
@@ -429,15 +418,15 @@ div.horizontal-context {
     }
 
     // TODO Create classes for these
-    div#back, div#edit {
+    div.edit {
       float: left;
     }
-    div#save, div#delete {
+    div.save, div.delete {
       float: right;
       margin: 0;
     }
 
-    div#delete {
+    div.delete {
       float: right;
 
       &:hover {

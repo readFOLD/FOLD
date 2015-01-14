@@ -395,7 +395,7 @@ Template.context_anchor_option.events =
 #     parentSection.empty()
 
 Template.create_text_section.events
-  "click div#save": (d) ->
+  "click div.save": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target
     parentSection = $(srcE).closest('section')
     horizontalIndex = parentSection.data('index')
@@ -419,7 +419,7 @@ Template.create_video_section.events
   "submit": (d) ->
     d.preventDefault()
     console.log 'submit!!'
-  "click div#save": (d) ->
+  "click div.save": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target
     parentSection = $(srcE).closest('section')
     horizontalIndex = parentSection.data('index')
@@ -463,7 +463,7 @@ Template.create_video_section.events
 
 
 Template.create_map_section.events
-  "click div#save": (d) ->
+  "click div.save": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target
     parentSection = $(srcE).closest('section')
     horizontalIndex = parentSection.data('index')
@@ -483,7 +483,7 @@ Template.create_map_section.events
     renderTemplate(d, Template.display_map_section, context)
 
 Template.create_image_section.events
-  "click div#save": (d) ->
+  "click div.save": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target
     parentSection = $(srcE).closest('section')
     horizontalIndex = parentSection.data('index')
@@ -508,7 +508,7 @@ Template.create_image_section.events
 
 # TODO Don't put in so much duplicated code!!!
 Template.horizontal_section_block.events
-  "click div#delete": (d) ->
+  "click div.delete": (d) ->
     console.log("delete")
     srcE = if d.srcElement then d.srcElement else d.target
     parentSection = $(srcE).closest('section')
@@ -517,7 +517,7 @@ Template.horizontal_section_block.events
     horizontalSections[Session.get('currentVertical')].data.splice(horizontalIndex, 1)
     Session.set('horizontalSections', horizontalSections)
 
-  "click div#edit": (d) ->
+  "click div.edit": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target
     parentSection = $(srcE).closest('section')
     horizontalIndex = parentSection.data('index')
@@ -537,7 +537,7 @@ Template.horizontal_section_block.events
 
 
 Template.create_options.events
-  "click div#save": ->
+  "click div.save-story": ->
     # TODO this breaks undo behavior due to reactivity
     console.log("SAVE")
     # Get all necessary fields
@@ -581,13 +581,13 @@ Template.create_options.events
       storyId = Stories.insert(storyDocument)
       Session.set("storyId", storyId)
 
-  "click div#delete": ->
+  "click div.delete-story": ->
     storyId = Session.get('storyId')
     if storyId
       Stories.remove({_id: storyId})
     Router.go('home')
 
-  "click div#publish": ->
+  "click div.publish-story": ->
     console.log("PUBLISH")
     storyDashTitle = Session.get("storyDashTitle")
     storyId = Stories.findOne(storyDashTitle: storyDashTitle)?._id
