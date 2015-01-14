@@ -1,3 +1,9 @@
+if Meteor.users.find().count() is 0
+  userId = Accounts.createUser
+    email: 'test@example.com'
+    password: 'password'
+
+
 if (Stories.find().count() is 0)
   Stories.insert
     _id: '548781e397a6427c31384b73'
@@ -8,7 +14,7 @@ if (Stories.find().count() is 0)
     published: true
     storyDashTitle: "unfolding-the-2014-ebola-outbreak"
     title: "Unfolding the 2014 Ebola Outbreak"
-    userId: "vbi8MJe9DNg4JBLGg"
+    userId: userId
     verticalSections: [
       {
         _id: '93'
