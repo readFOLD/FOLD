@@ -27,9 +27,11 @@
     <div class="delete-story button">
       Delete
     </div>
-    <div class="publish-story button">
-      Publish
-    </div>
+    {{#if lastSaved}}
+      <div class="publish-story button">
+        Publish
+      </div>
+    {{/if}}
   </div>
 </template>
 

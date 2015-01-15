@@ -525,38 +525,30 @@ Template.create_options.events
     # TODO need a better way to get context cards
     oldStory = Session.get "story"
     contextBlocks = _.pluck oldStory.verticalSections, 'contextBlocks'
-    date = new Date()
-    # user = Meteor.user()._id
+
     verticalSections = []
-    $('section.vertical-narrative-section').each((i) ->
+    $('section.vertical-narrative-section').each (i) ->
       title = $.trim($(this).find('div.title').text())
       content = $.trim($(this).find('div.content').html())
-      verticalSections.push(
+      verticalSections.push
         title: title
         content: content
         contextBlocks: contextBlocks[i]
-        )
-      )
 
-    storyDocument =
-      title: storyTitle
-      backgroundImage: backgroundImage
-      storyDashTitle: storyDashTitle
-      verticalSections: verticalSections
-      # userId: user #TODO add this back in
-      lastSaved: date
+    @title = storyTitle
+    @backgroundImage = backgroundImage
+    @verticalSections = verticalSections
 
-    Session.set("storyDashTitle", storyDashTitle)
-    storyId = Stories.findOne(storyDashTitle: storyDashTitle)?._id
-    unless storyId
-      storyId = Session.get("storyId")
-    console.log("ID", storyId)
-    # TODO sanitize server-side
-    if storyId
-      Stories.update({_id: storyId}, {$set: storyDocument})
+    if @_id
+      @save()
     else
-      storyId = Stories.insert(storyDocument)
-      Session.set("storyId", storyId)
+      @storyDashTitle = @generateDasherizedTitle()
+      @lastSaved = new Date
+      Stories.insert this, (err, storyId) =>
+        if err
+          alert err
+        else
+          Router.go "edit", storyDashTitle: @storyDashTitle
 
   "click div.delete-story": ->
     storyId = Session.get('storyId')
@@ -566,9 +558,4 @@ Template.create_options.events
 
   "click div.publish-story": ->
     console.log("PUBLISH")
-    storyDashTitle = Session.get("storyDashTitle")
-    storyId = Stories.findOne(storyDashTitle: storyDashTitle)?._id
-    unless storyId
-      storyId = Session.get("storyId")
-    if storyId
-      Stories.update({_id: storyId}, {$set: {published: true, publishDate: new Date()}})
+    @publish()

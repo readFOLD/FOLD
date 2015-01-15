@@ -10,15 +10,44 @@ class Story
       @addVerticalSection()
   addVerticalSection: ->
     @verticalSections.push
-      _id: Random.id()
+      _id: Random.id 8 # just need to avoid collisions within a story so this is a bit overkill
       contextBlocks: []
       title: "Set title"
       content: "Type some text here."
   updateAuthor: (user) ->
     user ?= Meteor.user() # default to current user
-    @userId = user.userId
+    @userId = user._id
     @username = user.profile.name
     @title = "New Story"
+  generateDasherizedTitle: ->
+    _s.slugify @title.toLowerCase()
+  save: ->
+    if not @_id
+      throw new Meteor.Error 'not-yet-created'
+    updateDoc =
+      lastSaved: new Date
+      verticalSections: @verticalSections
+      title: @title
+      backgroundImage: @backgroundImage
+
+    unless @published
+      updateDoc.storyDashTitle = @generateDasherizedTitle()
+
+    Stories.update {_id: @_id}, $set: updateDoc
+
+  publish: ->
+    if not @lastSaved
+      throw new Meteor.Error 'not-yet-saved'
+    if @published
+      throw new Meteor.Error 'already-published'
+    dasherizedTitle = _s.slugify @title.toLowerCase()
+    if confirm 'Your story will have the url path: /' + dasherizedTitle
+      Stories.update {_id: @_id},
+        $set:
+          published: true
+          publishedDate: new Date
+          lastSaved: new Date
+          storyDashTitle: dasherizedTitle # Note: if allow unpublish and republish, need to make sure this doesn't change
 
 
 if Meteor.isClient

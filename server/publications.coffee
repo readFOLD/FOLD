@@ -1,6 +1,5 @@
 # Indexes
-Stories._ensureIndex
-  storyDashTitle: 1
+Stories._ensureIndex 'storyDashTitle', unique: 1
 
 
 Meteor.publish "exploreStoriesPub", (storyDashTitle, filter, category, skip) ->

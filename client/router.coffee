@@ -57,9 +57,15 @@ Router.route "create",
   onRun: ->
     $('html, body').scrollTop(0)
     @next()
+  onBeforeAction: ->
+    if Meteor.user() or Meteor.loggingIn()
+      @next()
+    else
+      @redirect "home"
+      alert "You must be logged in to create a story"
   data: ->
+    # TO-DO this runs twice. Once with user and once without. Silly.
     story = new Story
-    story.updateAuthor()
 
     Session.set "story", story
     # Session.set "storyId", story._id
@@ -69,6 +75,9 @@ Router.route "create",
     Session.set "newStory", true
     Session.set "read", false
     Session.set "page", "create"
+
+    if user = Meteor.user()
+      story.updateAuthor user
 
     return story
 

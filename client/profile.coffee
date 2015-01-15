@@ -19,7 +19,6 @@ Template.user_stories.helpers
 
   # Remove this duplication
   profileImageExists: ->
-    console.log(Meteor.user())
     Meteor.user().profile.profile_picture
   profileImage: ->
     Meteor.user().profile.profile_picture
