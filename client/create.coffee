@@ -172,50 +172,6 @@ Template.background_image.events
   "click div.save-background-image": ->
     Session.set("backgroundImage", $('input.background-image-input').val())
 
-getSelectionCoords = ->
-  sel = document.selection
-  range = undefined
-  rect = undefined
-  x = 0
-  y = 0
-  if sel
-    unless sel.type is "Control"
-      range = sel.createRange()
-      range.collapse true
-      x = range.boundingLeft
-      y = range.boundingTop
-  else if window.getSelection
-    sel = window.getSelection()
-    if sel.rangeCount
-      range = sel.getRangeAt(0).cloneRange()
-      if range.getClientRects
-        range.collapse true
-        rect = range.getClientRects()[0]
-        x = rect.left
-        y = rect.top
-
-      # Fall back to inserting a temporary element
-      if x is 0 and y is 0
-        span = document.createElement("span")
-        if span.getClientRects
-
-          # Ensure span has dimensions and position by
-          # adding a zero-width space character
-          span.appendChild document.createTextNode("​")
-          range.insertNode span
-          rect = span.getClientRects()[0]
-          x = rect.left
-          y = rect.top
-          spanParent = span.parentNode
-          spanParent.removeChild span
-
-          # Glue any broken text nodes back together
-          spanParent.normalize()
-  res =
-    x: x
-    y: y
-
-
 Template.layout_options.events
   "click i#expand": ->
     narrativeView = Session.get("narrativeView")

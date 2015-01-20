@@ -38,7 +38,7 @@ class Story
   publish: ->
     if not @lastSaved
       throw new Meteor.Error 'not-yet-saved'
-    if @published
+    if @published # TODO make this replace published version with current version
       throw new Meteor.Error 'already-published'
     dasherizedTitle = _s.slugify @title.toLowerCase()
     if confirm 'Your story will have the url path: /' + dasherizedTitle
