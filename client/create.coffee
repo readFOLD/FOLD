@@ -188,43 +188,31 @@ Template.create.helpers
 #######################
 # Adding Sections
 #######################
-Template.minimized_add_vertical.events
-  "click section": ->
-    # Append Vertical Section
-    verticalSections = Session.get('verticalSections')
-    newVerticalSection =
-      title: 'Title'
-      content: 'Content'
-      index: verticalSections.length
-    verticalSections.push(newVerticalSection)
-    Session.set('verticalSections', verticalSections)
-
-    # Initialize Horizontal Section
-    horizontalSections = Session.get('horizontalSections')
-    newHorizontalSection =
-      data: []
-      index: horizontalSections.length
-    horizontalSections.push(newHorizontalSection)
-    Session.set('horizontalSections', horizontalSections)
 
 Template.add_vertical.events
   "click section": ->
-    # Append Vertical Section
-    verticalSections = Session.get('verticalSections')
-    newVerticalSection =
-      title: 'Title'
-      content: 'Content'
-      index: verticalSections.length
-    verticalSections.push(newVerticalSection)
-    Session.set('verticalSections', verticalSections)
+    storyId = Session.get('storyId')
 
-    # Initialize Horizontal Section
-    horizontalSections = Session.get('horizontalSections')
-    newHorizontalSection =
-      data: []
-      index: horizontalSections.length
-    horizontalSections.push(newHorizontalSection)
-    Session.set('horizontalSections', horizontalSections)
+    if @index? # everything section has an index except for the add a card at beginning
+      indexToInsert = @index + 1
+    else
+      indexToInsert = 0
+
+    # TO-DO when Mongo 2.6, use $push/$addToSet with $position operator
+    verticalSections = Session.get('story').verticalSections
+    verticalSections.splice indexToInsert, 0, # TODO DRY with new section from model
+      _id: Random.id 8 # just need to avoid collisions within a story so this is a bit overkill
+      contextBlocks: []
+      title: "Set title"
+      content: "Type some text here."
+
+    Stories.update {_id: storyId}, { $set: verticalSections: verticalSections }, (err, numDocs) ->
+      if err
+        return alert err
+      if numDocs
+        goToY indexToInsert
+      else
+        return alert 'No docs updated'
 
 Template.add_horizontal.helpers
   left: ->
@@ -385,7 +373,7 @@ Template.create_video_section.events
       pushSelectorString = 'verticalSections.' + verticalSectionIndex + '.contextBlocks'
       pushObject = {}
       pushObject[pushSelectorString] = contextId
-      Stories.update {_id: storyId}, { $push: pushObject }, (err, numDocs) ->
+      Stories.update {_id: storyId}, { $addToSet: pushObject }, (err, numDocs) ->
         if err
           return alert err
         if numDocs
