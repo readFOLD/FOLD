@@ -7,13 +7,11 @@ class Story
     @published ?= false
 
     if @verticalSections.length is 0
-      @addVerticalSection()
-  addVerticalSection: ->
-    @verticalSections.push
-      _id: Random.id 8 # just need to avoid collisions within a story so this is a bit overkill
-      contextBlocks: []
-      title: "Set title"
-      content: "Type some text here."
+      @verticalSections.push
+        _id: Random.id 8 # just need to avoid collisions within a story so this is a bit overkill
+        contextBlocks: []
+        title: "Set title"
+        content: "Type some text here."
   updateAuthor: (user) ->
     user ?= Meteor.user() # default to current user
     @userId = user._id
