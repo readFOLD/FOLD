@@ -21,7 +21,7 @@ if (Stories.find().count() is 0)
     published: true
     storyDashTitle: "unfolding-the-2014-ebola-outbreak"
     title: "Unfolding the 2014 Ebola Outbreak"
-    userId: userId
+    authorId: userId
     authorName: authorProfile.name # TODO update in user save methods
     favorited: [] # TODO this should probably be usernames or something intelligible
     verticalSections: [

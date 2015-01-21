@@ -14,6 +14,8 @@
           {{#linkTo route="edit" data=this}}
             EDIT
           {{/linkTo}}
+          {{> favorite_button}}
+          {{favorited.length}} Favorites
         {{else}}
           {{#linkTo route="read" data=this}}
             READ
@@ -241,6 +243,14 @@
   {{/if}}
   {{#if participation}}
     {{ > participation_icon }}
+  {{/if}}
+</template>
+
+<template name="favorite_button">
+  {{#if favorited}}
+    <button class='unfavorite'>Unfavorite</button>
+  {{else}}
+    <button class='favorite'>Favorite</button>
   {{/if}}
 </template>
 

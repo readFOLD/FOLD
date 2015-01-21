@@ -6,19 +6,20 @@ Meteor.publish "exploreStoriesPub", (storyDashTitle, filter, category, skip) ->
   Stories.find {published: true}
 
 Meteor.publish "ownStoriesPub", ->
-  Stories.find { userId: @userId }
+  Stories.find { authorId: @userId }
 
 Meteor.publish "readStoryPub", (storyDashTitle) ->
-  Stories.find {storyDashTitle: storyDashTitle, published: true},
-      fields:
-        headerImageAttribution: 1
-        verticalSections: 1
-        horizontalSections: 1
-        title: 1
-        userId: 1
-        backgroundImage: 1
-        storyDashTitle: 1
-        username: 1
+  Stories.find {storyDashTitle: storyDashTitle, published: true}
+    # TODO only include some fields here
+      # fields:
+      #   headerImageAttribution: 1
+      #   verticalSections: 1
+      #   horizontalSections: 1
+      #   title: 1
+      #   userId: 1
+      #   backgroundImage: 1
+      #   storyDashTitle: 1
+      #   username: 1
 
 Meteor.publish "createStoryPub", (storyDashTitle) ->
   Stories.find {storyDashTitle: storyDashTitle}

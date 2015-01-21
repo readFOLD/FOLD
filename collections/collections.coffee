@@ -14,8 +14,8 @@ class Story
         content: "Type some text here."
   updateAuthor: (user) ->
     user ?= Meteor.user() # default to current user
-    @userId = user._id
-    @username = user.profile.name
+    @authorId = user._id
+    @authorName = user.profile.name
     @title = "New Story"
   generateDasherizedTitle: ->
     _s.slugify @title.toLowerCase()
@@ -59,6 +59,7 @@ if Meteor.isClient
 checkOwner = (userId, doc) ->
   userId and userId is doc.userId
 
+# TODO Security
 @Stories.allow
   insert: (userId, doc) ->
     checkOwner userId, doc
@@ -135,6 +136,9 @@ Schema.UserProfile = new SimpleSchema
         type: "textarea"
         rows: 10
         class: "bio"
+  favorites:
+    type: [String]
+    optional: true
 
 Schema.User = new SimpleSchema
   username:
@@ -181,4 +185,4 @@ Schema.User = new SimpleSchema
   #   optional: true
   #   blackbox: true
 
-Meteor.users.attachSchema Schema.User
+# Meteor.users.attachSchema Schema.User

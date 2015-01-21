@@ -348,3 +348,16 @@ Template.story_browser.events
     # window.history.pushState({}, '', path.join("/"))
 
 Template.type_specific_icon.helpers typeHelpers
+
+Template.favorite_button.helpers
+  favorited: ->
+    Meteor.user() and Meteor.user()._id in @favorited
+Template.favorite_button.events
+  "click .favorite": ->
+    Meteor.call 'favoriteStory', @_id, (err) ->
+      if err
+        alert err
+  "click .unfavorite": ->
+    Meteor.call 'unfavoriteStory', @_id, (err) ->
+      if err
+        alert err
