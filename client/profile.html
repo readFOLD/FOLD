@@ -21,6 +21,8 @@
     </div>
   </section>
 
+  {{> user_profile}}
+
   <section class="stories">
     <!-- {{> story_browser}} -->
     <div class="horizontal-line">
@@ -33,20 +35,17 @@
 
 <template name="user_profile">
   <section class="profile-info">
-    <div class="user-name">
-      Alexis Hope
-    </div>
-    <div class="affiliation">
-      <a href="www.newyorktimes.com">New York Times</a>
-    </div>
-    <div class="user-twitter">
-      <a href="www.twitter.com/alexishope">@alexishope</a>
-    </div>
-    <div class="about-me">
-      This is the story of my life.
-    </div>
-    <div class="profile-picture">
-    </div>
+    {{#autoForm collection=UsersCollection doc=this id="updateProfileForm" type="update"}}
+      {{> afQuickField name="name" value=profile.name}}
+      <div class="user-twitter">
+        <a href="www.twitter.com/alexishope">@alexishope</a>
+      </div>
+      <div class="about-me">
+        This is the story of my life.
+      </div>
+      <div class="profile-picture">
+      </div>
+    {{/autoForm}}
   </section>
 </template>
 
