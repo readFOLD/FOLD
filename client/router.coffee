@@ -33,7 +33,12 @@ Router.route "profile",
     [
       Meteor.subscribe 'ownStoriesPub'
     ]
-
+  onBeforeAction: ->
+    if Meteor.user() or Meteor.loggingIn()
+      @next()
+    else
+      @redirect "home"
+      alert "You must be logged in view your profile"
 
 
 Router.route "read",

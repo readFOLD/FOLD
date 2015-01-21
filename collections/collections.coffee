@@ -140,6 +140,7 @@ Schema.User = new SimpleSchema
   username:
     type: String
     regEx: /^[a-z0-9A-Z_]{3,15}$/
+    optional: true # TODO, make required?
 
   emails:
     type: [Object]
@@ -162,7 +163,7 @@ Schema.User = new SimpleSchema
 
   profile:
     type: Schema.UserProfile
-    # optional: true
+    optional: true
 
   services:
     type: Object

@@ -97,7 +97,7 @@
         {{#if profileImage}}
             <img class="profile-picture" src="{{profileImage}}"/>
           {{/if}}
-        By {{username}}
+        By {{authorName}}
       </div>
 
       <div class="content">
@@ -114,6 +114,9 @@
         {{#linkTo route="read" data=this}}
           <div id="edit-this-story">
             Unfold This Story
+            <span class='pull-right'>
+              {{favorited.length}} Favorites
+            </span>
           </div>
         {{/linkTo}}
       </div>

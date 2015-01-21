@@ -426,6 +426,11 @@ div.minimap {
   }
 }
 
+.pull-right {
+  float: right;
+}
+
+
 div.inline-block {
   display: inline-block;
 }

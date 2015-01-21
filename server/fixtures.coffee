@@ -1,11 +1,14 @@
-userProfile =
+authorProfile =
   name: 'Cynthia Fold'
 
 if Meteor.users.find().count() is 0
   userId = Accounts.createUser
-    email: 'test@example.com'
+    email: 'author@example.com'
     password: 'password'
-    profile: userProfile
+    profile: authorProfile
+  Accounts.createUser
+     email: 'test@example.com'
+     password: 'password'
 
 
 if (Stories.find().count() is 0)
@@ -19,7 +22,8 @@ if (Stories.find().count() is 0)
     storyDashTitle: "unfolding-the-2014-ebola-outbreak"
     title: "Unfolding the 2014 Ebola Outbreak"
     userId: userId
-    username: userProfile.name # TODO update in user save methods
+    authorName: authorProfile.name # TODO update in user save methods
+    favorited: [] # TODO this should probably be usernames or something intelligible
     verticalSections: [
       {
         _id: '93'
