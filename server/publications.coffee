@@ -10,7 +10,13 @@ Meteor.publish "ownStoriesPub", ->
 
 Meteor.publish "readStoryPub", (storyDashTitle) ->
   Stories.find {storyDashTitle: storyDashTitle, published: true}
-    # TODO only include some fields here
+
+Meteor.publish "readStoriesPub", (ids) ->
+  Stories.find
+    _id:
+      $in: ids
+    published: true
+    # TODO only include some fields here and in other reads
       # fields:
       #   headerImageAttribution: 1
       #   verticalSections: 1

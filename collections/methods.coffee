@@ -9,9 +9,7 @@ changeFavorite = (storyId, toFavorite) -> # toFavorite is true of false
   userOperation = {}
   userOperation[operator] = 'profile.favorites' : storyId
   Stories.update {_id: storyId}, storyOperation
-  num = Meteor.users.update {_id: @userId}, userOperation
-  console.log num
-  # update user favorites
+  Meteor.users.update {_id: @userId}, userOperation
 
 Meteor.methods
   favoriteStory: (storyId) ->

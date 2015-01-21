@@ -34,7 +34,9 @@ Router.route "profile",
       Meteor.subscribe 'ownStoriesPub'
     ]
   onBeforeAction: ->
-    if Meteor.user() or Meteor.loggingIn()
+    if (user = Meteor.user()) or Meteor.loggingIn()
+      if user
+        @subscribe('readStoriesPub', user.profile.favorites)
       @next()
     else
       @redirect "home"

@@ -30,6 +30,9 @@
     <div class="story-container">
       {{> user_stories}}
     </div>
+    <div class="story-container">
+      {{> user_favorite_stories}}
+    </div>
   </section>
 </template>
 
@@ -47,43 +50,37 @@
 </template>
 
 <template name="user_stories">
-  {{#if currentUser}}
-    {{#each userStories}}
-      <div class="story" data-story-id="{{_id}}">
-        {{#if profileImageExists}}
-          <img class="profile-picture" src="{{profileImage}}"/>
-        {{/if}}
-        <div class="headline">
-          {{title}}
-          <div class="byline">
-            By {{displayName}}
-          </div>
-        </div>
-
-        <div class="content">
-          {{previewContent}}
-        </div>
-
-        <div class="dates">
-          <p>Last Edited: {{lastEditDate}}</p>
-          <p>
-            {{#if published}}
-              Published On: {{lastPublishDate}}
-              {{else}}
-              Unpublished
-            {{/if}}
-          </p>
-        </div>
-
-        <div class="edit-or-read">
-          {{#linkTo route="edit" data=this}}
-            <div id="edit-this-story">
-              Edit this story >
-              <!-- needs switch to 'unfold this story' for main page -->
-            </div>
-          {{/linkTo}}
-        </div>
+  <h3>User Stories</h3>
+  {{#each userStories}}
+    <div class="story" data-story-id="{{_id}}">
+      {{> _story_preview_content}}
+      <div class="dates">
+        <p>Last Edited: {{lastEditDate}}</p>
+        <p>
+          {{#if published}}
+            Published On: {{lastPublishDate}}
+            {{else}}
+            Unpublished
+          {{/if}}
+        </p>
       </div>
-    {{/each}}
-  {{/if}}
+
+      <div class="edit-or-read">
+        {{#linkTo route="edit" data=this}}
+          <div id="edit-this-story">
+            Edit this story >
+            <!-- needs switch to 'unfold this story' for main page -->
+          </div>
+        {{/linkTo}}
+      </div>
+    </div>
+  {{/each}}
+</template>
+
+
+<template name="user_favorite_stories">
+  <h3>Favorites</h3>
+  {{#each favoriteStories}}
+    {{> story_preview }}
+  {{/each}}
 </template>

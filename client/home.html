@@ -86,40 +86,48 @@
 
 <template name="all_stories">
   {{#each stories}}
-    <div class="story" data-story-id="{{_id}}">
-      <div class="overlay-image">
-        <img src="{{backgroundImage}}" />
-      </div>
-      <div class="headline">
-        {{title}}
-      </div>
-      <div class="byline">
-        {{#if profileImage}}
-            <img class="profile-picture" src="{{profileImage}}"/>
-          {{/if}}
-        By {{authorName}}
-      </div>
-
-      <div class="content">
-        {{previewContent}}
-      </div>
-
-  <!--    <div class="dates">
-        <p>
-          Published On: {{lastPublishDate}}
-        </p>
-      </div>
-   -->
-      <div class="edit-or-read">
-        {{#linkTo route="read" data=this}}
-          <div id="edit-this-story">
-            Unfold This Story
-            <span class='pull-right'>
-              {{favorited.length}} Favorites
-            </span>
-          </div>
-        {{/linkTo}}
-      </div>
-    </div>
+    {{> story_preview}}
   {{/each}}
+</template>
+
+<template name="story_preview">
+  <div class="story" data-story-id="{{_id}}">
+    {{> _story_preview_content}}
+
+<!--    <div class="dates">
+      <p>
+        Published On: {{lastPublishDate}}
+      </p>
+    </div>
+ -->
+    <div class="edit-or-read">
+      {{#linkTo route="read" data=this}}
+        <div id="edit-this-story">
+          Unfold This Story
+          <span class='pull-right'>
+            {{favorited.length}} Favorites
+          </span>
+        </div>
+      {{/linkTo}}
+    </div>
+  </div>
+</template>
+
+<template name="_story_preview_content">
+  <div class="overlay-image">
+    <img src="{{backgroundImage}}" />
+  </div>
+  <div class="headline">
+    {{title}}
+  </div>
+  <div class="byline">
+    {{#if profileImage}}
+        <img class="profile-picture" src="{{profileImage}}"/>
+      {{/if}}
+    By {{authorName}}
+  </div>
+
+  <div class="content">
+    {{contentPreview}}
+  </div>
 </template>

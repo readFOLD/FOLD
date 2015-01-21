@@ -12,6 +12,11 @@ class Story
         contextBlocks: []
         title: "Set title"
         content: "Type some text here."
+
+  contentPreview: ->
+    if content = @verticalSections[0]?.content
+      content.replace(/(<([^>]+)>)/ig,"") # remove html tags
+
   updateAuthor: (user) ->
     user ?= Meteor.user() # default to current user
     @authorId = user._id
@@ -185,4 +190,4 @@ Schema.User = new SimpleSchema
   #   optional: true
   #   blackbox: true
 
-# Meteor.users.attachSchema Schema.User
+Meteor.users.attachSchema Schema.User

@@ -59,9 +59,7 @@ Template.filters.events
 Template.all_stories.helpers
   stories: -> Stories.find()
   lastPublishDate: -> formatDate(@publishDate)
-  previewContent: ->
-    if content = @verticalSections[0]?.content
-      content.replace(/(<([^>]+)>)/ig,"") # remove html tags
+
 
 Template.user_stories.events
   "click div#delete": (d) ->

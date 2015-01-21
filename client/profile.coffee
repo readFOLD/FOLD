@@ -5,7 +5,7 @@ formatDate = (date) ->
   weekDays[date.getDay()] + " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms
 
 Template.user_stories.helpers
-  userStories: -> Stories.find(userId: Meteor.user()?._id)
+  userStories: -> Stories.find(authorId: Meteor.user()?._id)
   lastEditDate: -> formatDate(@lastSaved)
   lastPublishDate: -> formatDate(@publishDate)
   displayName: ->
@@ -28,3 +28,7 @@ Template.user_stories.events
     srcE = if d.srcElement then d.srcElement else d.target
     storyId = $(srcE).closest('div.story').data('story-id')
     Stories.remove(_id: storyId)
+
+Template.user_favorite_stories.helpers
+  favoriteStories: ->
+    Stories.find(_id: $in: Meteor.user()?.profile?.favorites)
