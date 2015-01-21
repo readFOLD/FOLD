@@ -35,16 +35,13 @@
 
 <template name="user_profile">
   <section class="profile-info">
-    {{#autoForm collection=UsersCollection doc=this id="updateProfileForm" type="update"}}
-      {{> afQuickField name="name" value=profile.name}}
-      <div class="user-twitter">
-        <a href="www.twitter.com/alexishope">@alexishope</a>
-      </div>
-      <div class="about-me">
-        This is the story of my life.
-      </div>
+
+    {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
+      {{> afQuickField name='profile'}}
+      {{> afQuickField name='emails.0.address'}}
       <div class="profile-picture">
       </div>
+      <button type="submit" class="btn btn-primary">Save</button>
     {{/autoForm}}
   </section>
 </template>
