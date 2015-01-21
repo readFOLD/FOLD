@@ -5,7 +5,7 @@ formatDate = (date) ->
   weekDays[date.getDay()] + " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms
 
 Template.user_stories.helpers
-  userStories: -> Stories.find(userId: Session.get("userId"))
+  userStories: -> Stories.find(userId: Meteor.user()?._id)
   lastEditDate: -> formatDate(@lastSaved)
   lastPublishDate: -> formatDate(@publishDate)
   displayName: ->
@@ -22,8 +22,6 @@ Template.user_stories.helpers
     Meteor.user().profile.profile_picture
   profileImage: ->
     Meteor.user().profile.profile_picture
-
-  url: -> "/create/" + @_id
 
 Template.user_stories.events
   "click div#delete": (d) ->

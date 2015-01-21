@@ -13,8 +13,9 @@
     </a>
     <div class="logo">
       {{#with user}}
-        <a href="/profile/{{_id}}">
-        </a>
+        {{#linkTo route="profile"}}
+          Profile
+        {{/linkTo}}
       {{else}}
         <img class="logo" src="/logo.png">
       {{/with}}

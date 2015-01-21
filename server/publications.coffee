@@ -5,6 +5,9 @@ Stories._ensureIndex 'storyDashTitle', unique: 1
 Meteor.publish "exploreStoriesPub", (storyDashTitle, filter, category, skip) ->
   Stories.find {published: true}
 
+Meteor.publish "ownStoriesPub", ->
+  Stories.find { userId: @userId }
+
 Meteor.publish "readStoryPub", (storyDashTitle) ->
   Stories.find {storyDashTitle: storyDashTitle, published: true},
       fields:

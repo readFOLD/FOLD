@@ -22,7 +22,7 @@
   </section>
 
   <section class="stories">
-    {{> story_browser}}
+    <!-- {{> story_browser}} -->
     <div class="horizontal-line">
     </div>
     <div class="story-container">
@@ -79,13 +79,13 @@
           </p>
         </div>
 
-         <div class="edit-or-read">
-          <a href="{{url}}">
+        <div class="edit-or-read">
+          {{#linkTo route="edit" data=this}}
             <div id="edit-this-story">
               Edit this story >
               <!-- needs switch to 'unfold this story' for main page -->
             </div>
-          </a>
+          {{/linkTo}}
         </div>
       </div>
     {{/each}}

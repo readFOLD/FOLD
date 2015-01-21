@@ -25,14 +25,15 @@ Router.route "home",
     @subscribe('exploreStoriesPub', '', '', '').wait()
   action: -> if @ready() then @render()
   data: ->
-    Session.set "page", "explore"
 
-# Router.route "profile",
-#   path: "profile/:userId"
-#   template: "profile"
-#   data: ->
-#     Session.set "page", "profile"
-#     Session.set "userId", @.params.userId
+Router.route "profile",
+  path: "profile"
+  template: "profile"
+  waitOn: ->
+    [
+      Meteor.subscribe 'ownStoriesPub'
+    ]
+
 
 
 Router.route "read",
@@ -48,7 +49,6 @@ Router.route "read",
   onBeforeAction: ->
     Session.set "newStory", false
     Session.set "read", true
-    Session.set "page", "read"
     this.next()
 
 Router.route "create",
@@ -74,7 +74,6 @@ Router.route "create",
 
     Session.set "newStory", true
     Session.set "read", false
-    Session.set "page", "create"
 
     if user = Meteor.user()
       story.updateAuthor user
@@ -97,6 +96,5 @@ Router.route "edit",
   onBeforeAction: ->
     Session.set "newStory", false
     Session.set "read", false
-    Session.set "page", "create"
     Session.set "storyDashTitle", @.params.storyDashTitle
     this.next()
