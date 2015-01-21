@@ -6,11 +6,11 @@
 
 <template name="home">
   <section class="banner">
-    <a href="/">
+    {{#linkTo route="home"}}
       <div class="title">
         <img src="/fold-title.png">
       </div>
-    </a>
+    {{/linkTo}}
     <div class="logo">
       {{#with user}}
         {{#linkTo route="profile"}}
@@ -21,11 +21,11 @@
       {{/with}}
     </div>
     {{> loginButtons }}
-    <a href="/create">
+    {{#linkTo route="create"}}
       <div class="create-story">
         Create Story
       </div>
-    </a>
+    {{/linkTo}}
   </section>
   {{#if filter}}
   <div class="navbar filter {{#if sticky}}sticky{{/if}}" id="filter">
@@ -111,11 +111,11 @@
       </div>
    -->
       <div class="edit-or-read">
-        <a href="{{url}}">
+        {{#linkTo route="read" data=this}}
           <div id="edit-this-story">
             Unfold This Story
           </div>
-        </a>
+        {{/linkTo}}
       </div>
     </div>
   {{/each}}

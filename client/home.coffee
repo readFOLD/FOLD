@@ -63,8 +63,6 @@ Template.all_stories.helpers
     if content = @verticalSections[0]?.content
       content.replace(/(<([^>]+)>)/ig,"") # remove html tags
 
-  url: -> "/read/" + @storyDashTitle
-
 Template.user_stories.events
   "click div#delete": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target

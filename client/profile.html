@@ -3,16 +3,16 @@
     <i class="fa fa-bars fa-2x"></i>
   </div>
   <section class="banner">
-    <a href="/">
+    {{#linkTo route="home"}}
       <div class="title">
         <img src="/fold-title.png">
       </div>
-    </a>
+    {{/linkTo}}
     <div class="options">
       <div id="create-story">
-        <a href="/create">
+        {{#linkTo route="create"}}
           Create Story
-        </a>
+        {{/linkTo}}
       </div>
       {{> loginButtons}}
     </div>
