@@ -360,7 +360,7 @@ Template.create_video_section.events
         service: 'youtube'
         videoId: videoId
         description: info.title
-        userId: Meteor.user()._id
+        authorId: Meteor.user()._id
 
       # TODO Move to server method
 

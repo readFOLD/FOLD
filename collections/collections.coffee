@@ -62,14 +62,14 @@ if Meteor.isClient
 
 
 checkOwner = (userId, doc) ->
-  userId and userId is doc.userId
+  userId and userId is doc.authorId
 
 # TODO Security
 @Stories.allow
   insert: (userId, doc) ->
     checkOwner userId, doc
   update: (userId, doc, fieldNames) ->
-    if _.contains fieldNames, 'userId'
+    if _.contains fieldNames, 'authorId'
       return false
     checkOwner userId, doc
   remove: (userId, doc) ->
@@ -111,7 +111,7 @@ class TextBlock extends ContextBlock
   insert: (userId, doc) ->
     checkOwner userId, doc
   update: (userId, doc) ->
-    if _.contains fieldNames, 'userId'
+    if _.contains fieldNames, 'authorId'
       return false
     checkOwner userId, doc
   remove: (userId, doc) ->
