@@ -5,6 +5,7 @@ ExistingStoryController = RouteController.extend
 
     if story
       Session.set "story", story
+      Session.set "currentY", null
       Session.set "storyId", story._id
       Session.set "backgroundImage", story.backgroundImage
       Session.set "horizontalSectionsMap", _.map _.pluck(story.verticalSections, "contextBlocks"), (cBlocks, i) ->
