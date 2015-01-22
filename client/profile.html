@@ -40,7 +40,8 @@
   <section class="profile-info">
 
     {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
-      {{> afQuickField name='profile'}}
+      {{> afQuickField name='profile.name'}}
+      {{> afQuickField name='profile.bio'}}
       {{> afQuickField name='emails.0.address'}}
       <div class="profile-picture">
       </div>

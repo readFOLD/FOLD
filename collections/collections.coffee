@@ -144,6 +144,7 @@ Schema.UserProfile = new SimpleSchema
   favorites:
     type: [String]
     optional: true
+    defaultValue: []
 
 Schema.User = new SimpleSchema
   username:
