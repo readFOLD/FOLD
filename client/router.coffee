@@ -40,7 +40,7 @@ Router.route "profile",
         @subscribe('readStoriesPub', user.profile.favorites)
       @next()
     else
-      @redirect "home"
+      @redirect "home", replaceState: true
       alert "You must be logged in view your profile"
 
 
@@ -69,7 +69,7 @@ Router.route "create",
     if Meteor.user() or Meteor.loggingIn()
       @next()
     else
-      @redirect "home"
+      @redirect "home", replaceState: true
       alert "You must be logged in to create a story"
   data: ->
     # TO-DO this runs twice. Once with user and once without. Silly.
@@ -105,4 +105,12 @@ Router.route "edit",
     Session.set "newStory", false
     Session.set "read", false
     Session.set "storyDashTitle", @.params.storyDashTitle
-    this.next()
+    if (user = Meteor.user()) or Meteor.loggingIn()
+      if user and user._id isnt @data().authorId
+        @redirect "read", @data(), replaceState: true
+        alert "Only the author may edit a story"
+      @next()
+    else
+      @redirect "read", @data(), replaceState: true
+      alert "You must be logged in to edit a story"
+      @next()
