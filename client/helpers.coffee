@@ -6,6 +6,8 @@ Handlebars.registerHelper "pastHeader", -> Session.get "pastHeader"
 Handlebars.registerHelper "read", -> Session.get "read"
 Handlebars.registerHelper "addingContext", -> Session.get "addingContext"
 Handlebars.registerHelper "UsersCollection", Meteor.users
+Handlebars.registerHelper "isAuthor", ->
+  Meteor.user() and Meteor.user()._id is @authorId
 
 Handlebars.registerHelper "cardWidth", ->
   # Be consistent about JS styling vs CSS styling

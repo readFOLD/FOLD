@@ -100,16 +100,7 @@
       </p>
     </div>
  -->
-    <div class="edit-or-read">
-      {{#linkTo route="read" data=this}}
-        <div id="edit-this-story">
-          Unfold This Story
-          <span class='pull-right'>
-            {{favorited.length}} Favorites
-          </span>
-        </div>
-      {{/linkTo}}
-    </div>
+  {{> edit_or_read_bar}}
   </div>
 </template>
 
@@ -129,5 +120,29 @@
 
   <div class="content">
     {{contentPreview}}
+  </div>
+</template>
+
+<template name="edit_or_read_bar">
+  <div class="edit-or-read">
+    {{#if isAuthor}}
+      {{#linkTo route="edit" data=this}}
+        <div id="edit-this-story">
+          Edit This Story
+          <span class='pull-right'>
+            {{favorited.length}} Favorites
+          </span>
+        </div>
+      {{/linkTo}}
+    {{else}}
+      {{#linkTo route="read" data=this}}
+        <div id="edit-this-story">
+          Unfold This Story
+          <span class='pull-right'>
+            {{favorited.length}} Favorites
+          </span>
+        </div>
+      {{/linkTo}}
+    {{/if}}
   </div>
 </template>

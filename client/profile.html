@@ -66,14 +66,7 @@
         </p>
       </div>
 
-      <div class="edit-or-read">
-        {{#linkTo route="edit" data=this}}
-          <div id="edit-this-story">
-            Edit this story >
-            <!-- needs switch to 'unfold this story' for main page -->
-          </div>
-        {{/linkTo}}
-      </div>
+      {{> edit_or_read_bar}}
     </div>
   {{/each}}
 </template>
