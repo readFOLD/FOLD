@@ -1,3 +1,5 @@
+Schema = {}
+
 class Story
   constructor: (doc) ->
     _.extend this, doc
@@ -89,6 +91,21 @@ class VideoBlock extends ContextBlock
     if @service is 'youtube'
       '//img.youtube.com/vi/' + @videoId + '/0.jpg'
 
+class MapBlock extends ContextBlock
+  escape: (value) ->
+    encodeURIComponent(value).replace(/%20/g, "+")
+  url: ->
+    if @service is 'google_maps'
+      'https://www.google.com/maps/embed/v1/place?key=AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q' +
+        '&q=' + @escape(@mapQuery) +
+        '&maptype=' + @escape(@mapType) # +'&zoom=' + @escape(@mapZoom)
+  previewUrl: ->
+    if @service is 'google_maps'
+      'https://maps.googleapis.com/maps/api/staticmap??key=AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q' +
+        '&center=' + @escape(@mapQuery) +
+        '&maptype=' + @escape(@mapType) + # +'&zoom=' + @mapZoom
+        '&size=' + '200x500' # TO-DO link this to dynamic map size somehow
+
 class TextBlock extends ContextBlock
   description: ->
     maxLength = 40
@@ -96,6 +113,12 @@ class TextBlock extends ContextBlock
       @content
     else
       @content[...maxLength] + '...'
+
+
+if Meteor.isClient
+  window.VideoBlock = VideoBlock
+  window.MapBlock = MapBlock
+  window.ContextBlock = ContextBlock
 
 @ContextBlocks = new Meteor.Collection "context_blocks",
   transform: (doc) ->
@@ -117,9 +140,31 @@ class TextBlock extends ContextBlock
   remove: (userId, doc) ->
     checkOwner userId, doc
 
+Schema.ContextBlocks = new SimpleSchema
+  type:
+    type: String
+  service:
+    type: String
+    optional: true
+
+  # video block
+  videoId:
+    type: String
+    optional: true
+
+  # map block
+  mapQuery:
+    type: String
+    optional: true
 
 
-Schema = {}
+  mapType:
+    type: String
+    allowedValues: ['roadmap', 'satellite']
+    optional: true
+
+@ContextBlocks.attachSchema Schema.ContextBlocks
+
 
 Schema.UserProfile = new SimpleSchema
   name:

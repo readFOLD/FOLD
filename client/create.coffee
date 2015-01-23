@@ -381,7 +381,23 @@ Template.create_video_section.events
           return alert 'No docs updated'
 
 
+Template.create_map_section.created = ->
+  @blockPreview = new ReactiveVar()
+
+Template.create_map_section.helpers
+  url: ->
+    Template.instance().blockPreview.get()?.url()
+  previewUrl: ->
+    Template.instance().blockPreview.get()?.previewUrl()
+
 Template.create_map_section.events
+
+  "click .search": (e, template) ->
+    block = AutoForm.getFormValues('createMapSectionForm').insertDoc
+    # console.log AutoForm.getFieldValue 'createMapSectionForm', 'mapQuery'
+    block = new MapBlock _.extend block, service: 'google_maps'
+    template.blockPreview.set block
+
   "click div.save": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target
     parentSection = $(srcE).closest('section')

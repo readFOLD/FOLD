@@ -114,9 +114,20 @@
 
 <template name="create_map_section">
   <div class="create-section">
-    <div class="input-label">Google Embed URL:</div>
-    <input class="map-url-input">
-    {{> create_section_options}}
+    <form>
+      <input class="map-query-input">
+      <input class="map-query-input">
+
+      {{> afQuickField name='mapQuery'}}
+      {{> afQuickField name='mapType' options="allowed"}}
+
+      <button class="btn btn-primary search">Search</button>
+      <button type="submit" class="btn btn-primary">ADD</button>
+    </form>
+    {{#if url}}
+      <iframe width="100%" height="200" frameborder="0" style="border:0" src="{{url}}"></iframe>
+    {{/if}}
+
   </div>
 </template>
 

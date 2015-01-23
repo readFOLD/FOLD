@@ -95,6 +95,7 @@ if (ContextBlocks.find().count() is 0)
   [
     {
       type: "map"
+      service: 'google_maps'
       url: "https://www.google.com/maps/embed/v1/place?q=West+Africa&key=AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q"
       description: "West Africa region: Nigeria, Liberia, Sierra Leone, Guinea"
       authorId: authorId
