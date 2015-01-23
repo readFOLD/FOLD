@@ -68,6 +68,27 @@ if (Stories.find().count() is 0)
         content: "With a <a href='#22'>growing number of lives claimed</a>, this disease has a tremendous impact on people’s lives. In many communities, the number of people infected by the disease <a href='#23'>far exceeds the capacity of hospitals to treat them</a>. In some places, people do not believe that Ebola is the real cause of the deaths they are seeing, and are distrustful of hospitals. <a href='#24'>Some citizen journalists also report</a> that families who experience ebola-related deaths face social stigma, which in turn causes them to avoid being tested at a hospital."
       }
     ]
+  Stories.insert
+    backgroundImage: "header-image.jpg"
+    headerImageAttribution: "HEALTHJASAREVIC / REUTERS"
+    lastSaved: new Date()
+    publishDate: new Date()
+    published: true
+    storyDashTitle: "test-story"
+    title: "Test building an existing sotry"
+    authorId: authorId
+    authorName: authorProfile.name # TODO update in user save methods
+    favorited: [] # TODO this should probably be usernames or something intelligible
+    verticalSections: [
+      {
+        _id: '931'
+        contextBlocks: []
+        title: "First block"
+        content: "Here is a great story."
+      }
+    ]
+
+
 
 
 if (ContextBlocks.find().count() is 0)
