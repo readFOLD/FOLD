@@ -334,6 +334,22 @@ Template.create_text_section.events
     context = newDocument
     renderTemplate(d, Template.display_text_section, context)
 
+# not a Meteor method because couldn't find context to go to it. presumably due to latency compensation magic
+addContextToStory = (storyId, contextId, verticalSectionIndex) ->
+  pushSelectorString = 'verticalSections.' + verticalSectionIndex + '.contextBlocks'
+  pushObject = {}
+  pushObject[pushSelectorString] = contextId
+  Stories.update {_id: storyId}, { $addToSet: pushObject }, (err, numDocs) ->
+    if err
+      return alert err
+    if numDocs
+      Session.set "addingContext", false
+      goToContext contextId
+    else
+      return alert 'No docs updated'
+
+
+
 Template.create_video_section.events
   "submit": (d) ->
     d.preventDefault()
@@ -345,7 +361,7 @@ Template.create_video_section.events
     url = parentSection.find('input.youtube-link-input').val()
     videoId = url.match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/)?[1]
 
-
+    # TO-DO this would be faster if done on server
     Meteor.call 'youtubeVideoInfo', videoId, (err, info) ->
       if err
         console.log err # TODO handle errors
@@ -362,23 +378,10 @@ Template.create_video_section.events
         description: info.title
         authorId: Meteor.user()._id
 
-      # TODO Move to server method
-
       contextId = ContextBlocks.insert newContextBlock
-      storyId = Session.get("storyId")
-      verticalSectionIndex = Session.get("currentY")
 
-      pushSelectorString = 'verticalSections.' + verticalSectionIndex + '.contextBlocks'
-      pushObject = {}
-      pushObject[pushSelectorString] = contextId
-      Stories.update {_id: storyId}, { $addToSet: pushObject }, (err, numDocs) ->
-        if err
-          return alert err
-        if numDocs
-          Session.set "addingContext", false
-          goToContext contextId
-        else
-          return alert 'No docs updated'
+      addContextToStory Session.get("storyId"), contextId, Session.get("currentY")
+
 
 
 Template.create_map_section.created = ->
@@ -389,6 +392,17 @@ Template.create_map_section.helpers
     Template.instance().blockPreview.get()?.url()
   previewUrl: ->
     Template.instance().blockPreview.get()?.previewUrl()
+
+AutoForm.hooks
+  createMapSectionForm:
+    before:
+      insert: (doc) ->
+        doc = new MapBlock doc
+        _.extend doc, authorId: Meteor.user()._id
+    onSuccess: (operation, contextId, template) ->
+      addContextToStory Session.get("storyId"), contextId, Session.get("currentY")
+    onError: (operation, err, template)->
+      alert err
 
 Template.create_map_section.events
 
