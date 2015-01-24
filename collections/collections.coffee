@@ -82,6 +82,10 @@ class ContextBlock
     _.extend this, doc
 
 class VideoBlock extends ContextBlock
+  constructor: (doc) ->
+    super doc
+    @type = 'video'
+    @service ?= 'youtube'
   url: ->
     if @service is 'youtube'
       '//www.youtube.com/embed/' + @videoId
@@ -92,6 +96,10 @@ class VideoBlock extends ContextBlock
       '//img.youtube.com/vi/' + @videoId + '/0.jpg'
 
 class MapBlock extends ContextBlock
+  constructor: (doc) ->
+    super doc
+    @type = 'map'
+    @service ?= 'google_maps'
   escape: (value) ->
     encodeURIComponent(value).replace(/%20/g, "+")
   url: ->
@@ -127,6 +135,8 @@ if Meteor.isClient
         new VideoBlock doc
       when 'text'
         new TextBlock doc
+      when 'map'
+        new MapBlock doc
       else
         new ContextBlock doc
 
@@ -141,9 +151,15 @@ if Meteor.isClient
     checkOwner userId, doc
 
 Schema.ContextBlocks = new SimpleSchema
+  authorId:
+    type: String
   type:
     type: String
   service:
+    type: String
+    optional: true
+
+  description:
     type: String
     optional: true
 
@@ -161,6 +177,19 @@ Schema.ContextBlocks = new SimpleSchema
   mapType:
     type: String
     allowedValues: ['roadmap', 'satellite']
+    optional: true
+
+  # text block
+  content:
+    type: String
+    optional: true
+
+  # image block # TODO UPDATE
+  url:
+    type: String
+    optional: true
+  description:
+    type: String
     optional: true
 
 @ContextBlocks.attachSchema Schema.ContextBlocks
