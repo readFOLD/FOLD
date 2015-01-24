@@ -159,6 +159,7 @@ Template.story_header.events =
     path.pop()
     path.pop()
     # window.history.pushState({}, '', path.join("/"))
+
 Template.story.events =
   "click .link": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target
@@ -173,14 +174,15 @@ Template.story.events =
 
 
   "keydown": (d) ->
-    if d.keyCode is 38  # up
-      goToY(Session.get("currentY") - 1)
-    else if d.keyCode is 40  # down
-      goToY(Session.get("currentY") + 1)
-    else if d.keyCode is 39 # right
-      return
-    else if d.keyCode is 37 # right
-      return
+    if Session.get("read")
+      if d.keyCode is 38  # up
+        goToY(Session.get("currentY") - 1)
+      else if d.keyCode is 40  # down
+        goToY(Session.get("currentY") + 1)
+      else if d.keyCode is 39 # right
+        return
+      else if d.keyCode is 37 # right
+        return
 
 Template.story.helpers
   horizontalExists: ->
@@ -361,3 +363,4 @@ Template.favorite_button.events
     Meteor.call 'unfavoriteStory', @_id, (err) ->
       if err
         alert err
+
