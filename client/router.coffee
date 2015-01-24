@@ -1,11 +1,14 @@
 ExistingStoryController = RouteController.extend
+  onRun: ->
+    console.log 'set currentY to null'
+    Session.set "currentY", null
+
   data: ->
     # Get rid of these
     story = Stories.findOne()
 
     if story
       Session.set "story", story
-      Session.set "currentY", null
       Session.set "storyId", story._id
       Session.set "backgroundImage", story.backgroundImage
       Session.set "horizontalSectionsMap", _.map _.pluck(story.verticalSections, "contextBlocks"), (cBlocks, i) ->
