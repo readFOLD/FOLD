@@ -2,6 +2,7 @@ ExistingStoryController = RouteController.extend
   onRun: ->
     console.log 'set currentY to null'
     Session.set "currentY", null
+    @next()
 
   data: ->
     # Get rid of these
