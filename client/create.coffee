@@ -231,6 +231,7 @@ Template.add_horizontal.events
     else
       horizontalContextDiv.animate({ top: "90px" })
       Session.set "addingContext", true
+      Session.set "editingContext", false
 
     # unless Session.get("editingContext")
     #   # TODO Make this based on a session variable
@@ -324,6 +325,7 @@ addContextToStory = (storyId, contextId, verticalSectionIndex) ->
       return alert err
     if numDocs
       Session.set "addingContext", false
+      Session.set "editingContext", null
       goToContext contextId
     else
       return alert 'No docs updated'
@@ -348,8 +350,20 @@ AutoForm.hooks
         doc = new TextBlock doc
         _.extend doc, authorId: Meteor.user()._id
 
+createBlockHelpers =
+  startingBlock: ->
+    if this instanceof ContextBlock
+      return this
+
+createBlockEvents =
+  "click .cancel": ->
+    Session.set 'addingContext', false
+    Session.set 'editingContext', null
 
 
+Template.create_video_section.helpers createBlockHelpers
+
+Template.create_video_section.events createBlockEvents
 Template.create_video_section.events
   "submit": (d) ->
     d.preventDefault()
@@ -393,15 +407,28 @@ Template.create_map_section.helpers
   previewUrl: ->
     Template.instance().blockPreview.get()?.previewUrl()
 
+Template.create_map_section.helpers createBlockHelpers
 
+Template.create_map_section.events createBlockEvents
 Template.create_map_section.events
   "click .search": (e, template) ->
     block = AutoForm.getFormValues('createMapSectionForm').insertDoc
     previewMapBlock = new MapBlock _.extend block, service: 'google_maps'
     template.blockPreview.set previewMapBlock
+  "click .cancel": ->
+    Session.set 'addingContext', false
+    Session.set 'editingContext', false
 
+Template.create_text_section.helpers
+  startingBlock: ->
+    if this instanceof ContextBlock
+      return this
+  previewUrl: ->
+    Template.instance().blockPreview.get()?.previewUrl()
 
+Template.create_text_section.helpers createBlockHelpers
 
+Template.create_text_section.events createBlockEvents
 
 Template.create_image_section.events
   "click div.save": (d) ->
@@ -427,29 +454,14 @@ Template.create_image_section.events
     renderTemplate(d, Template.display_image_section, context)
 
 
-# TODO Don't put in so much duplicated code!!!
 Template.horizontal_section_block.events
   "click div.delete": (d) ->
     console.log("delete")
-    srcE = if d.srcElement then d.srcElement else d.target
-    parentSection = $(srcE).closest('section')
-    horizontalIndex = parentSection.data('index')
-    horizontalSections = Session.get('horizontalSections')
-    horizontalSections[Session.get('currentVertical')].data.splice(horizontalIndex, 1)
-    Session.set('horizontalSections', horizontalSections)
 
-  "click div.edit": (d) ->
-    srcE = if d.srcElement then d.srcElement else d.target
-    parentSection = $(srcE).closest('section')
-    horizontalIndex = parentSection.data('index')
-    horizontalSections = Session.get('horizontalSections')
-    section = horizontalSections[Session.get('currentVertical')].data[horizontalIndex]
-    data = section
-    type = section.type
-    switch type
-      when "text" then renderTemplate(d, Template.create_text_section, section)
-      when "image" then renderTemplate(d, Template.create_image_section, section)
-      when "map" then renderTemplate(d, Template.create_map_section, section)
+
+  "click div.edit": (e, t) ->
+    Session.set 'editingContext', @_id
+    Session.set 'addingContext', false
 
 
 #######################

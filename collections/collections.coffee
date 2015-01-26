@@ -195,11 +195,11 @@ Schema.ContextBlocks = new SimpleSchema
   # text block
   content:
     type: String
+    label: "Text"
     optional: true
     autoform:
       afFieldInput:
         type: "textarea"
-        label: "Text"
         rows: 10
         class: "text-input"
 

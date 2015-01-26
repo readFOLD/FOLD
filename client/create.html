@@ -94,9 +94,10 @@
 <!-- Create Templates -->
 <template name="create_text_section">
   <div class="create-section">
-    {{#autoForm collection='ContextBlocks' id="createTextSectionForm" type="insert" validation="keyup"}}
+    {{#autoForm collection='ContextBlocks' id="createTextSectionForm" doc=startingBlock type="insert" validation="keyup"}}
       {{> afQuickField name='content'}}
       <button type="submit" class="btn btn-primary">ADD</button>
+      <button type="button" class="btn btn-primary cancel">Cancel</button>
     {{/autoForm}}
   </div>
 </template>
@@ -113,12 +114,13 @@
 
 <template name="create_map_section">
   <div class="create-section">
-    {{#autoForm collection='ContextBlocks' id="createMapSectionForm" type="insert" validation="keyup"}}
+    {{#autoForm collection='ContextBlocks' id="createMapSectionForm" doc=startingBlock type="insert" validation="keyup"}}
       {{> afQuickField name='mapQuery'}}
       {{> afQuickField name='mapType'}}
 
       <button type="button" class="btn btn-primary search">Search</button>
       <button type="submit" class="btn btn-primary">ADD</button>
+      <button type="button" class="btn btn-primary cancel">Cancel</button>
     {{/autoForm}}
     {{#if url}}
       <iframe width="100%" height="200" frameborder="0" style="border:0" src="{{url}}"></iframe>
