@@ -177,7 +177,16 @@ Schema.ContextBlocks = new SimpleSchema
   mapType:
     type: String
     allowedValues: ['roadmap', 'satellite']
+    defaultValue: 'satellite'
     optional: true
+    autoform:
+      afFieldInput:
+        firstOption: false # okay because there's a default value
+        options: 'allowed'
+        # options: [
+        #   { label: 'Roadmap', value: 'roadmap' }
+        #   { label: 'Satellite', value: 'satellite' }
+        # ]
 
   # text block
   content:
