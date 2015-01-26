@@ -115,6 +115,9 @@ class MapBlock extends ContextBlock
         '&size=' + '200x500' # TO-DO link this to dynamic map size somehow
 
 class TextBlock extends ContextBlock
+  constructor: (doc) ->
+    super doc
+    @type = 'text'
   description: ->
     maxLength = 40
     if @content.length <= maxLength
@@ -127,6 +130,7 @@ if Meteor.isClient
   window.VideoBlock = VideoBlock
   window.MapBlock = MapBlock
   window.ContextBlock = ContextBlock
+  window.TextBlock = TextBlock
 
 @ContextBlocks = new Meteor.Collection "context_blocks",
   transform: (doc) ->
@@ -192,6 +196,12 @@ Schema.ContextBlocks = new SimpleSchema
   content:
     type: String
     optional: true
+    autoform:
+      afFieldInput:
+        type: "textarea"
+        label: "Text"
+        rows: 10
+        class: "text-input"
 
   # image block # TODO UPDATE
   url:

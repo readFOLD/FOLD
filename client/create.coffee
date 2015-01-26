@@ -313,26 +313,6 @@ Template.context_anchor_option.events =
 
 
 
-Template.create_text_section.events
-  "click div.save": (d) ->
-    srcE = if d.srcElement then d.srcElement else d.target
-    parentSection = $(srcE).closest('section')
-    horizontalIndex = parentSection.data('index')
-    text = parentSection.find('textarea.text-input').val()
-
-    newDocument =
-      type: 'text'
-      content: text
-      index: horizontalIndex
-
-    # Bind data
-    horizontalSections = Session.get('horizontalSections')
-    horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument
-    Session.set('horizontalSections', horizontalSections)
-
-    # Render display section
-    context = newDocument
-    renderTemplate(d, Template.display_text_section, context)
 
 # not a Meteor method because couldn't find context to go to it. presumably due to latency compensation magic
 addContextToStory = (storyId, contextId, verticalSectionIndex) ->
@@ -347,6 +327,26 @@ addContextToStory = (storyId, contextId, verticalSectionIndex) ->
       goToContext contextId
     else
       return alert 'No docs updated'
+
+autoFormContextAddedHooks =
+  onSuccess: (operation, contextId, template) ->
+    addContextToStory Session.get("storyId"), contextId, Session.get("currentY")
+  onError: (operation, err, template)->
+    alert err
+
+
+AutoForm.hooks
+  createMapSectionForm: _.extend {}, autoFormContextAddedHooks,
+    before:
+      insert: (doc) ->
+        doc = new MapBlock doc
+        _.extend doc, authorId: Meteor.user()._id
+
+  createTextSectionForm: _.extend {}, autoFormContextAddedHooks,
+    before:
+      insert: (doc) ->
+        doc = new TextBlock doc
+        _.extend doc, authorId: Meteor.user()._id
 
 
 
@@ -393,43 +393,15 @@ Template.create_map_section.helpers
   previewUrl: ->
     Template.instance().blockPreview.get()?.previewUrl()
 
-AutoForm.hooks
-  createMapSectionForm:
-    before:
-      insert: (doc) ->
-        doc = new MapBlock doc
-        _.extend doc, authorId: Meteor.user()._id
-    onSuccess: (operation, contextId, template) ->
-      addContextToStory Session.get("storyId"), contextId, Session.get("currentY")
-    onError: (operation, err, template)->
-      alert err
 
 Template.create_map_section.events
-
   "click .search": (e, template) ->
     block = AutoForm.getFormValues('createMapSectionForm').insertDoc
-    # console.log AutoForm.getFieldValue 'createMapSectionForm', 'mapQuery'
-    block = new MapBlock _.extend block, service: 'google_maps'
-    template.blockPreview.set block
+    previewMapBlock = new MapBlock _.extend block, service: 'google_maps'
+    template.blockPreview.set previewMapBlock
 
-  "click div.save": (d) ->
-    srcE = if d.srcElement then d.srcElement else d.target
-    parentSection = $(srcE).closest('section')
-    horizontalIndex = parentSection.data('index')
-    url = parentSection.find('input.map-url-input').val()
-    newDocument =
-      type: 'map'
-      url: url
-      index: horizontalIndex
 
-    # Bind data
-    horizontalSections = Session.get('horizontalSections')
-    horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument
-    Session.set('horizontalSections', horizontalSections)
 
-    # Render display section
-    context = newDocument
-    renderTemplate(d, Template.display_map_section, context)
 
 Template.create_image_section.events
   "click div.save": (d) ->
