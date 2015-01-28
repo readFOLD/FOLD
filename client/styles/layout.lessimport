@@ -462,9 +462,9 @@ div.inline-block {
 }
 
 div.hide {
-  visibility: hidden; // could also use left: -9999px. better than display:none because it still has a non-zero size
+  visibility: hidden !important; // could also use left: -9999px. better than display:none because it still has a non-zero size
 }
 div.collapse {
-  display: none;
+  display: none !important;
 }
 
