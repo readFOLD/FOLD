@@ -224,16 +224,17 @@ Tracker.autorun ->
   horizontalContextDiv = $(".horizontal-context")
   horizontalContextDiv.removeClass 'editing'
 
-  if Session.get("addingContext") is Session.get("currentY") or Session.get("editingContext")
+  if Session.get("addingContextToCurrentY") or Session.get("editingContext")
     horizontalContextDiv.addClass 'editing'
   else
     horizontalContextDiv.removeClass 'editing'
 
-
+Tracker.autorun ->
+  Session.set "addingContextToCurrentY", Session.get("addingContext") is Session.get("currentY")
 
 Template.add_horizontal.events
   "click section": (d) ->
-    if Session.get("addingContext") is Session.get('currentY')
+    if Session.get "addingContextToCurrentY"
       Session.set "addingContext", null
     else
       Session.set "addingContext", Session.get('currentY')

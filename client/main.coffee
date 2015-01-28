@@ -273,7 +273,7 @@ typeHelpers =
 
 horizontalBlockHelpers = _.extend {}, typeHelpers,
   selected: ->
-    Session.equals("currentX", @index) and Session.get("addingContext") isnt Session.get("currentY")
+    Session.equals("currentX", @index) and not Session.get("addingContextToCurrentY")
 
 
 
@@ -294,7 +294,7 @@ Template.horizontal_section_block.helpers
     if read then offset = 0
     else offset = 75 + Session.get("separation")
 
-    if Session.get("addingContext") is Session.get("currentY")
+    if Session.get("addingContextToCurrentY")
       offset += cardWidth + Session.get("separation")
 
     # Current X

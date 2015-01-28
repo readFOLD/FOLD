@@ -5,7 +5,7 @@ Handlebars.registerHelper "log", (v) -> console.log v
 Handlebars.registerHelper "pastHeader", -> Session.get "pastHeader"
 Handlebars.registerHelper "read", -> Session.get "read"
 Handlebars.registerHelper "addingContext", -> Session.get "addingContext"
-Handlebars.registerHelper "addingContextToCurrentY", -> Session.get("addingContext") is Session.get 'currentY'
+Handlebars.registerHelper "addingContextToCurrentY", -> Session.get "addingContextToCurrentY"
 Handlebars.registerHelper "editingThisContext", -> Session.get("editingContext") is @_id
 Handlebars.registerHelper "UsersCollection", Meteor.users
 Handlebars.registerHelper "isAuthor", ->
