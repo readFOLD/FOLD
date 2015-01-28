@@ -221,23 +221,27 @@ Template.add_horizontal.helpers
     halfWidth + (Session.get "separation") / 2
 
 Tracker.autorun ->
+  Session.set 'currentYId', Session.get('story').verticalSections[Session.get('currentY')]._id
+
+Tracker.autorun ->
+  currentContextBlocks = Session.get("story").verticalSections[Session.get("currentY")].contextBlocks
   horizontalContextDiv = $(".horizontal-context")
   horizontalContextDiv.removeClass 'editing'
 
-  if Session.get("addingContextToCurrentY") or Session.get("editingContext")
+  if Session.get("addingContextToCurrentY") or Session.get("editingContext") in currentContextBlocks
     horizontalContextDiv.addClass 'editing'
   else
     horizontalContextDiv.removeClass 'editing'
 
 Tracker.autorun ->
-  Session.set "addingContextToCurrentY", Session.get("addingContext") is Session.get("currentY")
+  Session.set "addingContextToCurrentY", Session.get("addingContext") is Session.get 'currentYId'
 
 Template.add_horizontal.events
   "click section": (d) ->
     if Session.get "addingContextToCurrentY"
       Session.set "addingContext", null
     else
-      Session.set "addingContext", Session.get('currentY')
+      Session.set "addingContext", Session.get('currentYId')
       Session.set "editingContext", null
 
     # unless Session.get("editingContext")
