@@ -91,13 +91,14 @@
     {{#if verticalExists}}
       {{ > add_horizontal}}
       {{#each horizontalSections}}
-          {{#if horizontalShown}}
-            {{ > context_anchor_menu}}
-            {{/if}}
+        {{debugContext}}
+        {{#if horizontalShown}}
+          {{ > context_anchor_menu}}
+        {{/if}}
       {{/each}}
-      {{#if addingContext}}
+      <div style="display: {{#if addingContextToCurrentX}}inherit{{else}}none{{/if}}">
         {{ > create_horizontal_section_block}}
-      {{/if}}
+      </div>
     {{/if}}
   {{/unless}}
   {{#each horizontalSections}}

@@ -220,18 +220,24 @@ Template.add_horizontal.helpers
     cardWidth = Session.get "cardWidth"
     halfWidth + (Session.get "separation") / 2
 
+Tracker.autorun ->
+  horizontalContextDiv = $(".horizontal-context")
+  if Session.get("addingContext") or Session.get("editingContext")
+    console.log 'Up'
+    horizontalContextDiv.animate({ top: "90px" })
+  else
+    console.log 'down'
+
+    horizontalContextDiv.animate({ top: "inherit" })
+
 
 Template.add_horizontal.events
   "click section": (d) ->
-    horizontalContextDiv = $(".horizontal-context")
-
     if Session.get "addingContext"
       Session.set "addingContext", false
-      horizontalContextDiv.animate({ top: "inherit" })
     else
-      horizontalContextDiv.animate({ top: "90px" })
-      Session.set "addingContext", true
-      Session.set "editingContext", false
+      Session.set "addingContext", Session.get('currentY')
+      Session.set "editingContext", null
 
     # unless Session.get("editingContext")
     #   # TODO Make this based on a session variable
@@ -417,7 +423,7 @@ Template.create_map_section.events
     template.blockPreview.set previewMapBlock
   "click .cancel": ->
     Session.set 'addingContext', false
-    Session.set 'editingContext', false
+    Session.set 'editingContext', null
 
 Template.create_text_section.helpers
   startingBlock: ->
