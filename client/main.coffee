@@ -112,7 +112,7 @@ Meteor.startup ->
   Session.setDefault("currentX", undefined)
 
   # Scroll listener
-  throttledUpdate = _.throttle(updatecurrentY, 5)
+  throttledUpdate = _.throttle(updatecurrentY, 20)
   $(document).scroll(throttledUpdate)
 
 Template.story_header.helpers
