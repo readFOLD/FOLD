@@ -198,7 +198,9 @@ if (ContextBlocks.find().count() is 0)
     }
     {
       type: "map"
-      url: "https://www.google.com/maps/embed/v1/place?q=Central+Africa&key=AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q"
+      # url: "https://www.google.com/maps/embed/v1/place?q=Central+Africa&key=AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q"
+      mapQuery: 'Central Africa'
+      mapType: 'roadmap'
       description: "Central Africa"
       authorId: authorId
       _id: '14'

@@ -223,10 +223,8 @@ Template.add_horizontal.helpers
 Tracker.autorun ->
   horizontalContextDiv = $(".horizontal-context")
   if Session.get("addingContext") or Session.get("editingContext")
-    console.log 'Up'
     horizontalContextDiv.removeClass 'editing', 100
   else
-    console.log 'down'
     horizontalContextDiv.addClass 'editing', 100
 
 

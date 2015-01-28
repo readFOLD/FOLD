@@ -114,7 +114,7 @@ class MapBlock extends ContextBlock
       'key=' + GOOGLE_API_CLIENT_KEY +
         '&center=' + @escape(@mapQuery) +
         '&maptype=' + @escape(@mapType) + # +'&zoom=' + @mapZoom
-        '&size=' + '200x500' # TO-DO link this to dynamic map size somehow
+        '&size=' + '520x300' # TO-DO link this to dynamic map size somehow
 
 class TextBlock extends ContextBlock
   constructor: (doc) ->

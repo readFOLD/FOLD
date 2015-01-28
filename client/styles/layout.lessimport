@@ -90,6 +90,11 @@
   cursor: default;
 }
 
+.size-to-fit {
+  width: 100%;
+  height: 100%;
+}
+
 // Universal Link Styling
 a {
   text-decoration: none !important;
@@ -170,8 +175,7 @@ div#overlay {
   background: transparent url("/overlay.png");
   opacity: 0.5;
   z-index: 0;
-  width: 100%;
-  height: 100%;
+  .size-to-fit;
   position: absolute;
   z-index: 3;
   -webkit-user-select: none;
@@ -322,8 +326,7 @@ div.horizontal-context {
   top: 350px;
   margin-top: 12px;
   margin-bottom: 500px;
-  height: 100%;
-  width: 100%;
+  .size-to-fit;
 
   &.fixed {
     .top-transition;
@@ -332,6 +335,21 @@ div.horizontal-context {
     &.editing {
       top: 90px;
     }
+  }
+  div.preview {
+    position: absolute;
+    top: 0;
+    z-index: 10;
+    overflow: hidden;
+    .size-to-fit;
+  }
+  div.active-display {
+    z-index: 20;
+    position: absolute;
+    .size-to-fit;
+  }
+  div.button-options {
+    z-index: 30;
   }
 }
 
