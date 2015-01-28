@@ -222,16 +222,19 @@ Template.add_horizontal.helpers
 
 Tracker.autorun ->
   horizontalContextDiv = $(".horizontal-context")
-  if Session.get("addingContext") or Session.get("editingContext")
-    horizontalContextDiv.removeClass 'editing', 100
+  horizontalContextDiv.removeClass 'editing'
+
+  if Session.get("addingContext") is Session.get("currentY") or Session.get("editingContext")
+    horizontalContextDiv.addClass 'editing'
   else
-    horizontalContextDiv.addClass 'editing', 100
+    horizontalContextDiv.removeClass 'editing'
+
 
 
 Template.add_horizontal.events
   "click section": (d) ->
-    if Session.get "addingContext"
-      Session.set "addingContext", false
+    if Session.get("addingContext") is Session.get('currentY')
+      Session.set "addingContext", null
     else
       Session.set "addingContext", Session.get('currentY')
       Session.set "editingContext", null
@@ -327,7 +330,7 @@ addContextToStory = (storyId, contextId, verticalSectionIndex) ->
     if err
       return alert err
     if numDocs
-      Session.set "addingContext", false
+      Session.set "addingContext", null
       Session.set "editingContext", null
       goToContext contextId
     else
