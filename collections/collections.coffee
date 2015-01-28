@@ -104,12 +104,14 @@ class MapBlock extends ContextBlock
     encodeURIComponent(value).replace(/%20/g, "+")
   url: ->
     if @service is 'google_maps'
-      'https://www.google.com/maps/embed/v1/place?key=AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q' +
+      'https://www.google.com/maps/embed/v1/place?' +
+      'key=' + GOOGLE_API_CLIENT_KEY +
         '&q=' + @escape(@mapQuery) +
         '&maptype=' + @escape(@mapType) # +'&zoom=' + @escape(@mapZoom)
   previewUrl: ->
     if @service is 'google_maps'
-      'https://maps.googleapis.com/maps/api/staticmap??key=AIzaSyB2zbIKIoJR0fq5-dmM_h88hDce9TRDz9Q' +
+      'https://maps.googleapis.com/maps/api/staticmap?' +
+      'key=' + GOOGLE_API_CLIENT_KEY +
         '&center=' + @escape(@mapQuery) +
         '&maptype=' + @escape(@mapType) + # +'&zoom=' + @mapZoom
         '&size=' + '200x500' # TO-DO link this to dynamic map size somehow
