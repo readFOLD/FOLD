@@ -102,7 +102,7 @@
   {{/unless}}
   {{#each horizontalSections}}
     {{#if horizontalShown}}
-    {{!-- <div class="inline-block{{#unless horizontalShown}}hide{{/unless}}"> --}}
+    {{!-- <div class="inline-block {{#unless horizontalShown}}hide{{/unless}}"> --}}
       {{#each data}}
         {{#if type}}
           {{> horizontal_section_block}}
@@ -179,9 +179,13 @@
 
 <template name="display_map_section">
   <div class="map-section">
-    <div class="active-display {{#unless selected}}hide{{/unless}}">
-      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
-    </div>
+    {{#if selected}}
+      <div class="active-display">
+        {{!-- <div class="active-display {{#unless selected}}hide{{/unless}}"> --}}
+        <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
+        {{!-- </div> --}}
+      </div>
+    {{/if}}
     <div class="preview">
       <img src="{{previewUrl}}"/>
     </div>
@@ -204,9 +208,13 @@
 
 <template name="display_video_section">
   <div class="video-section">
-    <div class="active-display {{#unless selected}}hide{{/unless}}">
+    {{#if selected}}
+      <div class="active-display">
+      {{!-- <div class="active-display {{#unless selected}}hide{{/unless}}"> --}}
       <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
-    </div>
+      {{!-- </div> --}}
+      </div>
+    {{/if}}
     <div class="preview">
       <img src="{{previewUrl}}"/>
     </div>
