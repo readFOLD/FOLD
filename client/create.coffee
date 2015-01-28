@@ -224,11 +224,10 @@ Tracker.autorun ->
   horizontalContextDiv = $(".horizontal-context")
   if Session.get("addingContext") or Session.get("editingContext")
     console.log 'Up'
-    horizontalContextDiv.animate({ top: "90px" })
+    horizontalContextDiv.removeClass 'editing', 100
   else
     console.log 'down'
-
-    horizontalContextDiv.animate({ top: "inherit" })
+    horizontalContextDiv.addClass 'editing', 100
 
 
 Template.add_horizontal.events
