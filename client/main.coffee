@@ -248,10 +248,15 @@ Template.horizontal_context.helpers
   verticalExists: -> Session.get("horizontalSectionsMap").length
   horizontalSections: ->
     @verticalSections.map (verticalSection, verticalIndex) ->
+
+      unsortedContext = ContextBlocks.find(_id: $in: verticalSection.contextBlocks).map (datum) ->
+        horizontalIndex = verticalSection.contextBlocks.indexOf datum._id # TODO what if can't find a match...
+        return _.extend datum, index: horizontalIndex
+
+      sortedContext = _.sortBy unsortedContext, (datum) -> datum.horizontalIndex
+
       index: verticalIndex
-      data: ContextBlocks.find(_id: $in: verticalSection.contextBlocks).map (data, horizontalIndex) ->
-        return _.extend data,
-          index: horizontalIndex # TODO, this shouldn't get saved if edit-mode
+      data: sortedContext
   last: ->
     lastIndex = Session.get("horizontalSectionsMap")[Session.get("currentY")]?.horizontal.length - 1
     (@index is lastIndex) and (lastIndex > 0)
