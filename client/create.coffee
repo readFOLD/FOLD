@@ -227,9 +227,9 @@ Template.add_horizontal.events
 
     if Session.get "addingContext"
       Session.set "addingContext", false
-      horizontalContextDiv.animate({ top: "inherit" })
+      horizontalContextDiv.removeClass 'editing', 100
     else
-      horizontalContextDiv.animate({ top: "90px" })
+      horizontalContextDiv.addClass 'editing', 100
       Session.set "addingContext", true
       Session.set "editingContext", false
 

@@ -76,6 +76,10 @@
   .transition(stroke, 0.2s, ease-in);
 }
 
+.top-transition {
+  .transition(top, 0.2s, ease-in);
+}
+
 .no-select {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -322,8 +326,12 @@ div.horizontal-context {
   width: 100%;
 
   &.fixed {
+    .top-transition;
     position: fixed;
     top: 230px;
+    &.editing {
+      top: 90px;
+    }
   }
 }
 
