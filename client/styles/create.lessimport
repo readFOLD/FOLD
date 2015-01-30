@@ -10,18 +10,6 @@ div.save-publish {
   z-index: 10;
 }
 
-i#expand {
-  z-index: 30;
-  cursor: pointer;
-  position: fixed;
-  left: 20px;
-  bottom: 20px;
-
-  &:hover {
-    color: @accent-color;
-  }
-}
-
 input.background-image-input {
   width: 140px;
   position: absolute;

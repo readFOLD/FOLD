@@ -172,11 +172,6 @@ Template.background_image.events
   "click div.save-background-image": ->
     Session.set("backgroundImage", $('input.background-image-input').val())
 
-Template.layout_options.events
-  "click i#expand": ->
-    narrativeView = Session.get("narrativeView")
-    Session.set("narrativeView", !narrativeView)
-
 Template.create.helpers
   narrativeView: -> Session.get("narrativeView")
   category: -> Session.get("storyCategory")
