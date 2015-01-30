@@ -221,24 +221,30 @@ Template.add_horizontal.helpers
     halfWidth + (Session.get "separation") / 2
 
 Tracker.autorun ->
-  if (story = Session.get('story')) and (currentY = Session.get("currentY"))?
+  story = Session.get('story')
+  currentY = Session.get("currentY")
+  if story and currentY?
     Session.set 'currentYId', story.verticalSections[currentY]._id
 
 Tracker.autorun ->
-  if (story = Session.get('story')) and (currentY = Session.get("currentY"))?
-
+  story = Session.get('story')
+  currentY = Session.get("currentY")
+  if story and currentY?
     currentContextBlocks = story.verticalSections[currentY].contextBlocks
     horizontalContextDiv = $(".horizontal-context")
     horizontalContextDiv.removeClass 'editing'
 
 
-    if Session.get("addingContextToCurrentY") # or Session.get("editingContext") in currentContextBlocks
+    if Session.get("addingContextToCurrentY") or Session.get("editingContext") in currentContextBlocks
       horizontalContextDiv.addClass 'editing'
     else
       horizontalContextDiv.removeClass 'editing'
 
 Tracker.autorun ->
-  Session.set "addingContextToCurrentY", Session.get("addingContext") is Session.get('currentYId') and not Session.get('read')
+  currentYId = Session.get('currentYId')
+  Session.set "addingContextToCurrentY", currentYId? and
+    Session.get("addingContext") is Session.get('currentYId') and
+    not Session.get('read')
 
 Template.add_horizontal.events
   "click section": (d) ->
@@ -498,13 +504,15 @@ Template.create_options.events
     contextBlocks = _.pluck oldStory.verticalSections, 'contextBlocks'
 
     verticalSections = []
-    $('section.vertical-narrative-section').each (i) ->
+    $('section.vertical-narrative-section').each (verticalIndex) ->
+      verticalId = $(this).data('verticalId')
       title = $.trim($(this).find('div.title').text())
       content = $.trim($(this).find('div.content').html())
       verticalSections.push
         title: title
         content: content
-        contextBlocks: contextBlocks[i]
+        contextBlocks: contextBlocks[verticalIndex]
+        _id: verticalId
 
     @title = storyTitle
     @backgroundImage = backgroundImage
