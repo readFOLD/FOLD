@@ -396,6 +396,10 @@ section.horizontal-narrative-section {
   &.new-section {
     opacity: 1.0;
   }
+
+  &.editing {
+    height: 500px;
+  }
 }
 
 div.minimap {

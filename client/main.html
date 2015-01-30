@@ -121,7 +121,7 @@
 
 
 <template name="horizontal_section_block">
-  <section class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}}" data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px">
+  <section class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}" data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px">
 <!--    <div id="index">
       {{index}}
     </div> -->
