@@ -383,12 +383,10 @@ Template.create_video_section.events createBlockEvents
 Template.create_video_section.events
   "submit": (d) ->
     d.preventDefault()
-    console.log 'submit!!'
-  "click div.save": (d) ->
     srcE = if d.srcElement then d.srcElement else d.target
     parentSection = $(srcE).closest('section')
     horizontalIndex = parentSection.data('index')
-    url = parentSection.find('input.youtube-link-input').val()
+    url = $('input.youtube-link-input').val()
     videoId = url.match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/)?[1]
 
     # TO-DO this would be faster if done on server
