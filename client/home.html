@@ -12,15 +12,18 @@
       </div>
     {{/linkTo}}
     <div class="logo">
-      {{#with user}}
+      <img class="logo" src="/logo.png">
+    </div>
+
+    <div id='login-buttons-and-more'>
+      {{#if user}}
         {{#linkTo route="profile"}}
           Profile
         {{/linkTo}}
-      {{else}}
-        <img class="logo" src="/logo.png">
-      {{/with}}
+        |
+      {{/if}}
+      {{> loginButtons }}
     </div>
-    {{> loginButtons }}
     {{#linkTo route="create"}}
       <div class="create-story">
         Create Story

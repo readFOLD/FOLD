@@ -99,7 +99,10 @@
 a {
   text-decoration: none !important;
   &:hover {
-    color: black;
+    color: inherit;
+  }
+  &:visited {
+    color: inherit;
   }
 }
 

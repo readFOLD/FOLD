@@ -1,4 +1,4 @@
-div#login-buttons {
+div#login-buttons-and-more {
   position: absolute;
   top: 15px;
   left: 15px;
