@@ -65,15 +65,16 @@
 </template>
 
 <template name="vertical_narrative">
-  {{#unless read}}
-    {{> add_vertical}}
-  {{/unless}}
   {{#each verticalSectionsWithIndex}}
-    {{> vertical_section_block}}
     {{#unless read}}
-      {{> add_vertical}}
+      {{> add_vertical_minimized}}
     {{/unless}}
+    {{> vertical_section_block}}
   {{/each}}
+  {{#unless read}}
+    {{> add_vertical_unminimized}}
+  {{/unless}}
+
 </template>
 
 <template name="vertical_section_block">

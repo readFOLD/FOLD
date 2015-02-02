@@ -185,14 +185,15 @@ Template.create.helpers
 #######################
 
 Template.add_vertical.events
-  "click section": ->
+  "click": ->
     storyId = Session.get('storyId')
+    verticalSections = Session.get('story').verticalSections
 
     # everyt section has an index except for the add a card at beginning
-    indexToInsert = if @index? then @index + 1 else 0
+    indexToInsert = if @index? then @index else verticalSections.length
+    console.log indexToInsert
 
     # TO-DO when Mongo 2.6, use $push/$addToSet with $position operator
-    verticalSections = Session.get('story').verticalSections
     verticalSections.splice indexToInsert, 0, # TO-DO DRY with new section from model
       _id: Random.id 8 # just need to avoid collisions within a story so this is a bit overkill
       contextBlocks: []

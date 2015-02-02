@@ -30,10 +30,22 @@
   </div>
 </template>
 
-<template name="add_vertical">
+<template name="add_vertical_minimized">
   <section class="narrative-section new-section minimized">
-    {{ > add_card_icon}}
+    {{ > add_vertical}}
   </section>
+</template>
+
+<template name="add_vertical_unminimized">
+  <section class="narrative-section new-section unminimized">
+    {{ > add_vertical}}
+  </section>
+</template>
+
+<template name="add_vertical">
+    <div class="fit">
+      {{ > add_card_icon}}
+    </div>
 </template>
 
 

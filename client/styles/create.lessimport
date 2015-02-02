@@ -245,6 +245,12 @@ svg{
     transition: fill 0.25s ease;
 }
 
+section.new-section {
+  &:hover {
+    fill: @accent-color;
+  }
+}
+
 div.horizontal-context {
   section {
     padding: 0;
@@ -258,10 +264,6 @@ div.horizontal-context {
     width: 75px;
     z-index: 30;
     // box-shadow: 3px 3px #848484;
-
-    &:hover {
-      fill: @accent-color;
-    }
   }
 
   div.input-label {

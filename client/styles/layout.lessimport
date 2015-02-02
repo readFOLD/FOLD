@@ -296,25 +296,38 @@ div.vertical-narrative {
     overflow: hidden;
   }
 
+  .unminimized-new-section-bar {
+    border-top: 12px solid @medium-color;
+
+    border-bottom: 12px solid @medium-color;
+
+    background-color: @color-light-grey;
+    height: 95px;
+    overflow-y: hidden;
+    i {
+      display: inline-block;
+    }
+
+  }
+
+  section.new-section.unminimized {
+    .unminimized-new-section-bar;
+  }
+
   section.new-section.minimized {
     .height-transition;
     background-color: @medium-color;
     height: 12px;
+    border-top: 0px;
+    border-bottom: 0px;
+
     min-height: 0px;
     i {
       display: none;
     }
 
     &:hover {
-      border-top: 12px solid @medium-color;
-      border-bottom: 12px solid @medium-color;
-      background-color: @color-light-grey;
-      height: 95px;
-      overflow-y: hidden;
-
-      i {
-        display: inline-block;
-      }
+      .unminimized-new-section-bar;
     }
   }
 }
