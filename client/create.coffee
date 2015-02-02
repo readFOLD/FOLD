@@ -150,7 +150,11 @@ Template.vertical_section_block.rendered = ->
   console.log 'Vertical Section Rendered'
   @$(".medium-editable").on 'paste', (e) ->
     e.preventDefault()
-    html = (e.originalEvent || e).clipboardData?.getData('text/html')
+
+    clipboardData = (e.originalEvent || e).clipboardData
+
+    # TODO, get Safari to copy html in an `.on 'copy' event
+    html = clipboardData?.getData('text/html') or clipboardData?.getData('text/plain')
     cleanHtml = $.htmlClean html,
       allowedTags: ['strong', 'em', 'a']
       format: false
