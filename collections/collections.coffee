@@ -23,7 +23,7 @@ class Story
     user ?= Meteor.user() # default to current user
     @authorId = user._id
     @authorName = user.profile.name
-    @title = "New Story"
+    @title = ""
   generateDasherizedTitle: ->
     _s.slugify @title.toLowerCase()
   save: ->

@@ -115,6 +115,18 @@ Meteor.startup ->
   throttledUpdate = _.throttle(updatecurrentY, 20)
   $(document).scroll(throttledUpdate)
 
+Template.story_header.rendered = ->
+  # put cursor in the title if there is no title
+  unless @data.title
+    unless Session.get 'read'
+      titleDiv = $(this)[0].find('.title')
+      sel = window.getSelection()
+      sel.removeAllRanges() if sel.rangeCount > 0
+      range = document.createRange()
+      range.selectNodeContents titleDiv
+      range.collapse() # pass true to have carot be at beginning
+      sel.addRange(range)
+
 Template.story_header.helpers
   title: ->
       if @title then @title
