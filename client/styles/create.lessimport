@@ -392,6 +392,8 @@ div.image-section {
 div.context-anchor-menu {
   display: none;
   overflow: scroll;
+  max-height: 200px;
+  max-width: 300px;
   li{
     list-style: decimal;
     float: none;
