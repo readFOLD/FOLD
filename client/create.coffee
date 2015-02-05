@@ -101,7 +101,7 @@ Template.create.rendered = ->
 
 
   editor = new MediumEditor ".medium-editable",
-    buttons: ['contextLink', 'bold', 'italic', 'underline', 'anchor'],
+    buttons: ['contextLink', 'bold', 'italic', 'underline']
     extensions:
       contextLink: new ContextLinkExtension()
 
@@ -127,6 +127,9 @@ Template.create.rendered = ->
       return
     , 100)
     return
+
+  window.hideContextAnchorMenu = =>
+    $(".context-anchor-menu").hide();
 
   # editor.clickingIntoArchorForm = (e) ->
   #   self = this
@@ -246,13 +249,16 @@ Tracker.autorun ->
     Session.get("addingContext") is Session.get('currentYId') and
     not Session.get('read')
 
+newHorizontalUI = ->
+  if Session.get "addingContextToCurrentY"
+    Session.set "addingContext", null
+  else
+    Session.set "addingContext", Session.get('currentYId')
+    Session.set "editingContext", null
+
 Template.add_horizontal.events
   "click section": (d) ->
-    if Session.get "addingContextToCurrentY"
-      Session.set "addingContext", null
-    else
-      Session.set "addingContext", Session.get('currentYId')
-      Session.set "editingContext", null
+    newHorizontalUI()
 
     # unless Session.get("editingContext")
     #   # TODO Make this based on a session variable
@@ -322,15 +328,20 @@ Template.horizontal_context.helpers
 
 
 
+Template.context_anchor_new_card_option.events =
+  "mousedown .new-card": (e)->
+    e.preventDefault()
+    hideContextAnchorMenu()
+    newHorizontalUI()
+
 Template.context_anchor_option.events =
   "mousedown": (e) ->
     e.preventDefault()
-    # @keepToolbarAlive = true;
+    hideContextAnchorMenu()
     contextId = @_id
     link = '#' + contextId
     document.execCommand 'createLink', false, link
     goToContext contextId
-    # contextAnchorForm.hide()
     return false
 
 

@@ -167,12 +167,16 @@
         {{/if}}
       {{/each}}
     </ol>
-    <div>
-      To add new card click on plus
-    </div>
+    {{ > context_anchor_new_card_option }}
   </div>
 </template>
 
 <template name="context_anchor_option">
   <li><button type="button">{{ > type_specific_icon}}{{description}}</button></li>
+</template>
+
+<template name="context_anchor_new_card_option">
+  <div class="new-card">
+    Add new card
+  </div>
 </template>

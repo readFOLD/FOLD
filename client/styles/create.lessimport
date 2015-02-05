@@ -391,6 +391,7 @@ div.image-section {
 
 div.context-anchor-menu {
   display: none;
+  overflow: scroll;
   li{
     list-style: decimal;
     float: none;
