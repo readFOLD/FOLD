@@ -329,7 +329,7 @@ Template.horizontal_context.helpers
 
 
 Template.context_anchor_new_card_option.events =
-  "mousedown .new-card": (e)->
+  "mousedown": (e)->
     e.preventDefault()
     hideContextAnchorMenu()
     newHorizontalUI()
