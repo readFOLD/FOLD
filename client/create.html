@@ -1,11 +1,23 @@
 <template name="create">
   {{ > story_header }}
-  {{ > story }}
+  {{ > story}}
+  {{ > fold_editor }}
 
   {{#unless read}}
       {{! > background_image}}
   {{/unless}}
   {{ > create_options}}
+</template>
+
+<template name="fold_editor">
+  <div id="fold-editor">
+    <button class="bold-button">
+      B
+    </button>
+    <button class="italic-button">
+      I
+    </button>
+  </div>
 </template>
 
 <template name="background_image">

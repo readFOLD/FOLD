@@ -100,7 +100,7 @@ Template.create.rendered = ->
   # End stuff from Mediu
 
 
-  editor = new MediumEditor ".medium-editable",
+  editor = new MediumEditor "nothing",
     buttons: ['contextLink', 'bold', 'italic', 'underline']
     extensions:
       contextLink: new ContextLinkExtension()
@@ -149,9 +149,36 @@ Template.create.rendered = ->
     goToY(Session.get("currentY"))
     goToX(Session.get("currentX"))
 
+
+
+Template.fold_editor.events
+  'mouseup .bold-button': (e) ->
+    e.preventDefault()
+    window.document.execCommand('bold', false, null);
+  'mouseup .italic-button': (e) ->
+    e.preventDefault()
+    window.document.execCommand('italic', false, null);
+
+Template.vertical_section_block.events
+  'mouseup .fold-editable': (e) ->
+    selection = window.getSelection()
+    if window.getSelection().type is 'Range'
+      range = selection.getRangeAt(0)
+      boundary = range.getBoundingClientRect()
+      boundaryMiddle = (boundary.left + boundary.right) / 2
+      pageYOffset = $(event.target).offset().top
+#      halfOffsetWidth = this.toolbar.offsetWidth / 2
+      $('#fold-editor').show()
+      $('#fold-editor').css 'left', e.pageX - 100
+#      $('#fold-editor').css 'left', boundaryMiddle + 'px'
+      $('#fold-editor').css 'top', e.pageY - 150
+#      $('#fold-editor').css 'top', (boundary.bottom) + 'px'
+    else
+      $('#fold-editor').hide()
+
 Template.vertical_section_block.rendered = ->
   console.log 'Vertical Section Rendered'
-  @$(".medium-editable").on 'paste', (e) ->
+  @$(".fold-editable").on 'paste', (e) ->
     e.preventDefault()
 
     clipboardData = (e.originalEvent || e).clipboardData
