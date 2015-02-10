@@ -10,10 +10,11 @@ formatDate = function(date) {
 
 Template.user_stories.helpers({
   userStories: function() {
-    var _ref;
-    return Stories.find({
-      authorId: (_ref = Meteor.user()) != null ? _ref._id : void 0
-    });
+    if (Meteor.user()) {
+      return Stories.find({
+        authorId: Meteor.user()._id
+      });
+    }
   },
   lastEditDate: function() {
     return formatDate(this.lastSaved);
@@ -31,8 +32,7 @@ Template.user_stories.helpers({
     }
   },
   previewContent: function() {
-    var _ref;
-    return (_ref = this.verticalSections[0]) != null ? _ref.content : void 0;
+    return verticalSections[0].content
   },
   profileImageExists: function() {
     return Meteor.user().profile.profile_picture;
@@ -55,11 +55,12 @@ Template.user_stories.events({
 
 Template.user_favorite_stories.helpers({
   favoriteStories: function() {
-    var _ref, _ref1;
-    return Stories.find({
-      _id: {
-        $in: (_ref = Meteor.user()) != null ? (_ref1 = _ref.profile) != null ? _ref1.favorites : void 0 : void 0
-      }
-    });
+    if (Meteor.user()) {
+      return Stories.find({
+        _id: {
+          $in: Meteor.user().profile.favorites
+        }
+      });
+    }
   }
 });

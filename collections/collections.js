@@ -24,8 +24,8 @@ Story = (function() {
   }
 
   Story.prototype.contentPreview = function() {
-    var content, _ref;
-    if (content = (_ref = this.verticalSections[0]) != null ? _ref.content : void 0) {
+    var content;
+    if (content = this.verticalSections[0].content) {
       return content.replace(/(<([^>]+)>)/ig, "");
     }
   };

@@ -110,7 +110,8 @@ Template.vertical_section_block.rendered = function() {
     var cleanHtml, clipboardData, html;
     e.preventDefault();
     clipboardData = (e.originalEvent || e).clipboardData;
-    html = (clipboardData != null ? clipboardData.getData('text/html') : void 0) || (clipboardData != null ? clipboardData.getData('text/plain') : void 0);
+    if (!clipboardData){return}
+    html = clipboardData.getData('text/html') || clipboardData.getData('text/plain')
     cleanHtml = $.htmlClean(html, {
       allowedTags: ['strong', 'em', 'a'],
       format: false,

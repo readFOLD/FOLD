@@ -1,6 +1,4 @@
-var GOOGLE_API_SERVER_KEY;
-
-GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
+var GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
 
 if (!GOOGLE_API_SERVER_KEY) {
   console.error('Settings must be loaded for apis to work');
@@ -20,7 +18,7 @@ Meteor.methods({
     res = HTTP.get('https://www.googleapis.com/youtube/v3/videos', {
       params: requestParams
     });
-    return (_ref = res.data.items) != null ? (_ref1 = _ref[0]) != null ? _ref1.snippet : void 0 : void 0;
+    if (res.data && res.data.items && res.data.items.length)
+      return res.data.items[0].snippet
   }
 });
-
