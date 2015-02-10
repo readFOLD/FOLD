@@ -192,7 +192,7 @@
 <template name="context_anchor_menu">
   <div class="context-anchor-menu" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <ol>
-      <li class="back"><button type="button">back</button></li>
+      {{> context_anchor_go_back}}
       {{#each data}}
         {{#if type}}
           <li>
@@ -206,6 +206,10 @@
 
 <template name="context_anchor_option">
   <button type="button">{{ > type_specific_icon}}{{description}}</button>
+</template>
+
+<template name="context_anchor_go_back">
+  <li class="back"><button type="button">back</button></li>
 </template>
 
 <template name="context_anchor_new_card_option">

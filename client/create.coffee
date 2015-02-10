@@ -50,14 +50,8 @@ Template.fold_editor.events
     e.preventDefault()
     toggleAnchorMenu()
 
-Template.context_anchor_menu.events
+Template.context_anchor_go_back.events
   'mouseup': (e) ->
-    console.log 'lalaal'
-    e.preventDefault()
-    hideContextAnchorMenu()
-    showAnchorMenu()
-  'mouseup .back': (e) ->
-    console.log 'lalaal'
     e.preventDefault()
     hideContextAnchorMenu()
     showAnchorMenu()
