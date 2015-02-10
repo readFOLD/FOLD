@@ -1,148 +1,23 @@
 Template.create.rendered = ->
-  console.log 'CREATE IS RENDERED'
-  ContextLinkExtension = ->
-    this.parent = true;
-
-    this.button = document.createElement('button')
-    this.button.className = 'medium-editor-action'
-    this.button.innerText = 'X'
-    this.button.onclick = this.onClick.bind(this)
-    return
-
-  ContextLinkExtension::getButton = ->
-    return this.button
-
-  ContextLinkExtension::onClick = ->
-    @triggerContextAnchorAction.apply(this, arguments)
 
 
-  ####
-  #    FROM MEDIUM-EDITOR.JS and the modified
-  #
-  ####
-
-  ####
-  #    FROM MEDIUM-EDITOR.JS and the modified
-  #
-  ####
-
-  ContextLinkExtension::triggerContextAnchorAction = ->
-    selectedParentElement = @base.getSelectedParentElement()
-    if selectedParentElement.tagName and selectedParentElement.tagName.toLowerCase() is "a"
-      @base.options.ownerDocument.execCommand "unlink", false, null # remove link
-    else
-      if @base.anchorForm.style.display is "block"
-        # probably to hide anchorForm if clicked twice
-        @base.showToolbarActions()
-      else
-        # @base.options.ownerDocument.execCommand('createLink', false, 'sandwiches');
-        # OR
-        # window.document.execCommand('createLink', false, 'sandwiches');
-
-        @showContextAnchorForm()
-    return this
-
-  ContextLinkExtension::showContextAnchorForm = (link_value) ->
-    @base.toolbarActions.style.display = 'none'; # TO-DO Keep the toolbar
-    @base.saveSelection();
+  window.showAnchorMenu = =>
+    $(".anchor-menu").show();
+  window.hideAnchorMenu = =>
+    $(".anchor-menu").hide();
+  window.toggleAnchorMenu = =>
+    $(".anchor-menu").toggle();
+  window.showContextAnchorMenu = =>
     contextAnchorForm = $(".context-anchor-menu")
     contextAnchorForm.show()
-    contextAnchorForm.insertAfter(@base.toolbarActions)
-
-    # @base.contextAnchorForm.style.display = 'block';
-    @base.setToolbarPosition();
-    @base.keepToolbarAlive = true;
-    # @base.anchorInput.focus();
-    # @base.anchorInput.value = link_value || '';
-
-  # toolbarFormContextAnchor = ->
-  #   anchor = document.createElement("div")
-  #   input = document.createElement("input")
-  #   target_label = document.createElement("label")
-  #   target = document.createElement("input")
-  #   button_label = document.createElement("label")
-  #   button = document.createElement("input")
-  #   close = document.createElement("a")
-  #   save = document.createElement("a")
-  #   close.setAttribute "href", "#"
-  #   close.className = "medium-editor-toobar-anchor-close"
-  #   close.innerHTML = "&times;"
-  #   save.setAttribute "href", "#"
-  #   save.className = "medium-editor-toobar-anchor-save"
-  #   save.innerHTML = "&#10003;"
-  #   input.setAttribute "type", "text"
-  #   input.className = "medium-editor-toolbar-anchor-input"
-  #   # input.setAttribute "placeholder", @options.anchorInputPlaceholder
-  #   target.setAttribute "type", "checkbox"
-  #   target.className = "medium-editor-toolbar-anchor-target"
-  #   target_label.innerHTML = "Open in New Window?"
-  #   target_label.insertBefore target, target_label.firstChild
-  #   button.setAttribute "type", "checkbox"
-  #   button.className = "medium-editor-toolbar-anchor-button"
-  #   button_label.innerHTML = "Button"
-  #   button_label.insertBefore button, button_label.firstChild
-  #   anchor.className = "medium-editor-toolbar-form-context-anchor"
-  #   anchor.id = "medium-editor-toolbar-form-context-anchor"
-  #   anchor.appendChild input
-  #   anchor.appendChild save
-  #   anchor.appendChild close
-  #   # anchor.appendChild target_label  if @options.anchorTarget
-  #   # anchor.appendChild button_label  if @options.anchorButton
-  #   anchor
-  #####
-  #
-  # End stuff from Medium-editor.js
-  #
-  # ###
-
-  ##
-  #
-  # End stuff from Mediu
-
-
-  editor = new MediumEditor "nothing",
-    buttons: ['contextLink', 'bold', 'italic', 'underline']
-    extensions:
-      contextLink: new ContextLinkExtension()
-
-  # editor.toolbar.appendChild(toolbarFormContextAnchor());
-
-  # editor.contextAnchorForm = editor.toolbar.querySelector('.medium-editor-toolbar-form-context-anchor');
-  # editor.contextAnchorForm.style.display = 'none';
-
-
-  # console.log editor.contextAnchorForm
-
-  # Monkey Patches !!!
-  editor.showToolbarActions = ->
-    self = this
-    timer = undefined
-    @anchorForm.style.display = "none"
-    # @contextAnchorForm.style.display = "none" # This is the monkey patch
-    @toolbarActions.style.display = "block"
-    @keepToolbarAlive = false
-    clearTimeout timer
-    timer = setTimeout(->
-      self.toolbar.classList.add "medium-editor-toolbar-active"  if self.toolbar and not self.toolbar.classList.contains("medium-editor-toolbar-active")
-      return
-    , 100)
-    return
-
+    contextAnchorForm.insertAfter '#fold-editor-button-group'
   window.hideContextAnchorMenu = =>
     $(".context-anchor-menu").hide();
 
-  # editor.clickingIntoArchorForm = (e) ->
-  #   self = this
-  #   console.log e
-  #   # console.log e.type
-
-  #   # console.log $(self.contextAnchorForm).has(e.target)
-  #   if e.type and e.type.toLowerCase() is "blur" and e.relatedTarget and e.relatedTarget in [self.anchorInput, self.contextAnchorForm]
-  #     return true
-  #   else
-  #     return false
-
-  # End of monkey patches
+  window.hideFoldEditor = =>
+    $('#fold-editor').hide()
+    hideContextAnchorMenu()
+    hideAnchorMenu()
 
   unless (Session.equals("currentY", undefined) and Session.equals("currentX", undefined))
     $('.attribution, #to-story').fadeOut(1)
@@ -154,10 +29,25 @@ Template.create.rendered = ->
 Template.fold_editor.events
   'mouseup .bold-button': (e) ->
     e.preventDefault()
-    window.document.execCommand('bold', false, null);
+    window.document.execCommand 'bold', false, null
   'mouseup .italic-button': (e) ->
     e.preventDefault()
-    window.document.execCommand('italic', false, null);
+    window.document.execCommand 'italic', false, null
+  'mouseup .underline-button': (e) ->
+    e.preventDefault()
+    window.document.execCommand 'underline', false, null
+  'mouseup .anchor-button': (e) ->
+    e.preventDefault()
+    toggleAnchorMenu()
+
+Template.anchor_menu.events
+  'mouseup .link-to-card': (e) ->
+    e.preventDefault()
+    hideAnchorMenu()
+    showContextAnchorMenu()
+  'mouseup .link-out-of-story': (e) ->
+    e.preventDefault()
+
 
 Template.vertical_section_block.events
   'mouseup .fold-editable': (e) ->
@@ -174,7 +64,7 @@ Template.vertical_section_block.events
       $('#fold-editor').css 'top', e.pageY - 150
 #      $('#fold-editor').css 'top', (boundary.bottom) + 'px'
     else
-      $('#fold-editor').hide()
+      hideFoldEditor()
 
 Template.vertical_section_block.rendered = ->
   console.log 'Vertical Section Rendered'
@@ -276,7 +166,14 @@ Tracker.autorun ->
     Session.get("addingContext") is Session.get('currentYId') and
     not Session.get('read')
 
-newHorizontalUI = ->
+showNewHorizontalUI = ->
+  Session.set "addingContext", Session.get('currentYId')
+  Session.set "editingContext", null
+
+hideNewHorizontalUI = ->
+  Session.set "addingContext", null
+
+toggleHorizontalUI = ->
   if Session.get "addingContextToCurrentY"
     Session.set "addingContext", null
   else
@@ -285,7 +182,7 @@ newHorizontalUI = ->
 
 Template.add_horizontal.events
   "click section": (d) ->
-    newHorizontalUI()
+    toggleHorizontalUI()
 
     # unless Session.get("editingContext")
     #   # TODO Make this based on a session variable
@@ -358,13 +255,13 @@ Template.horizontal_context.helpers
 Template.context_anchor_new_card_option.events =
   "mousedown": (e)->
     e.preventDefault()
-    hideContextAnchorMenu()
-    newHorizontalUI()
+    hideFoldEditor()
+    showNewHorizontalUI()
 
 Template.context_anchor_option.events =
   "mousedown": (e) ->
     e.preventDefault()
-    hideContextAnchorMenu()
+    hideFoldEditor()
     contextId = @_id
     link = '#' + contextId
     document.execCommand 'createLink', false, link

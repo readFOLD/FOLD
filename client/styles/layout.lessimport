@@ -114,6 +114,18 @@ i {
   .color-transition;
 }
 
+ol{
+  padding: 0;
+}
+
+li{
+  list-style: none;
+  float: none;
+  padding: 1px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 *, *:before, *:after {
   -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
@@ -235,6 +247,7 @@ section.narrative-section {
     min-height: 100px;
     line-height: 26px;
     overflow-y: scroll;
+    overflow-x: hidden;
     text-align: left;
     font-size: 17px;
     margin-top: 25px;

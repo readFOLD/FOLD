@@ -100,6 +100,8 @@ class MapBlock extends ContextBlock
     super doc
     @type = 'map'
     @service ?= 'google_maps'
+  description: ->
+    @mapQuery
   escape: (value) ->
     encodeURIComponent(value).replace(/%20/g, "+")
   url: ->

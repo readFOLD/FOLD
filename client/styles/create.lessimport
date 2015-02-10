@@ -388,26 +388,45 @@ div.image-section {
     height: 100%;
   }
 }
-
+div.anchor-menu {
+  display: none;
+  overflow: scroll;
+}
 div.context-anchor-menu {
   display: none;
   overflow: scroll;
-  max-height: 200px;
-  max-width: 300px;
-  li{
-    list-style: decimal;
-    float: none;
+  max-height: 150px;
+  width: 100%;
+  button{
+    text-align: left;
+    &:hover{
+      fill: @accent-color;
+    }
   }
 }
 
 div#fold-editor{
   display: none;
-  height: 100px;
+  padding: 10px;
+  max-height: 200px;
   width: 200px;
   opacity: 1;
   background-color: green;
   z-index: 9999999;
   position: absolute;
+  li{
+    width: 100%;
+    height: 40px;
+    svg{
+      height: 100%
+    }
+    button{
+      .size-to-fit;
+      p{
+        margin: 20px;
+      }
+    }
+  }
   button{
     font-family: inherit;
     font-size: 100%;
@@ -416,5 +435,8 @@ div#fold-editor{
     text-decoration: none;
     border-radius: 2px;
     cursor: pointer;
+    &:hover{
+      color: white;
+    }
   }
 }

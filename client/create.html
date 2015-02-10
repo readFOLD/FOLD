@@ -11,12 +11,21 @@
 
 <template name="fold_editor">
   <div id="fold-editor">
-    <button class="bold-button">
-      B
-    </button>
-    <button class="italic-button">
-      I
-    </button>
+    <div id="fold-editor-button-group">
+        <button class="bold-button">
+          B
+        </button>
+        <button class="italic-button">
+          I
+        </button>
+        <button class="underline-button">
+          U
+        </button>
+        <button class="anchor-button">
+          X
+        </button>
+    </div>
+  {{> anchor_menu}}
   </div>
 </template>
 
@@ -170,25 +179,38 @@
 </template>
 
 
+<template name="anchor_menu">
+  <div class="anchor-menu">
+    <ol>
+      <li class="link-to-card"><button type="button">Link to card</button></li>
+      <li class="link-out-of-story"><button type="button">Link out of story</button></li>
+      {{ > context_anchor_new_card_option }}
+    </ol>
+  </div>
+</template>
+
 <template name="context_anchor_menu">
-  <div class="context-anchor-menu">
+  <div class="context-anchor-menu" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <ol>
       {{#each data}}
         {{#if type}}
-          {{> context_anchor_option}}
+          <li>
+            {{> context_anchor_option}}
+          </li>
         {{/if}}
       {{/each}}
     </ol>
-    {{ > context_anchor_new_card_option }}
   </div>
 </template>
 
 <template name="context_anchor_option">
-  <li><button type="button">{{ > type_specific_icon}}{{description}}</button></li>
+  <button type="button">{{ > type_specific_icon}}{{description}}</button>
 </template>
 
 <template name="context_anchor_new_card_option">
-  <div class="new-card">
-    Add new card
-  </div>
+  <li class="new-card">
+    <button type="button">
+      Add new card
+    </button>
+  </li>
 </template>
