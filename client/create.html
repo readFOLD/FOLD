@@ -12,16 +12,16 @@
 <template name="fold_editor">
   <div id="fold-editor">
     <div id="fold-editor-button-group">
-        <button class="bold-button">
+        <button type="button" class="bold-button">
           B
         </button>
-        <button class="italic-button">
+        <button type="button" class="italic-button">
           I
         </button>
-        <button class="underline-button">
+        <button type="button" class="underline-button">
           U
         </button>
-        <button class="anchor-button">
+        <button type="button" class="anchor-button">
           X
         </button>
     </div>
@@ -192,6 +192,7 @@
 <template name="context_anchor_menu">
   <div class="context-anchor-menu" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <ol>
+      <li class="back"><button type="button">back</button></li>
       {{#each data}}
         {{#if type}}
           <li>

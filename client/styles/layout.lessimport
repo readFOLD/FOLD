@@ -116,12 +116,12 @@ i {
 
 ol{
   padding: 0;
+  margin: 0;
 }
 
 li{
   list-style: none;
   float: none;
-  padding: 1px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

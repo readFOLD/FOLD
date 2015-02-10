@@ -2,11 +2,21 @@ Template.create.rendered = ->
 
 
   window.showAnchorMenu = =>
+
     $(".anchor-menu").show();
   window.hideAnchorMenu = =>
     $(".anchor-menu").hide();
   window.toggleAnchorMenu = =>
-    $(".anchor-menu").toggle();
+    anchorMenu = $(".anchor-menu")
+    contextAnchorMenu = $(".context-anchor-menu")
+    shiftAmt = 150
+    if anchorMenu.is(':visible') or contextAnchorMenu.is(':visible')
+      $('#fold-editor').css 'top', parseInt($('#fold-editor').css('top')) + shiftAmt
+      anchorMenu.hide()
+      contextAnchorMenu.hide()
+    else
+      $('#fold-editor').css 'top', parseInt($('#fold-editor').css('top')) - shiftAmt
+      anchorMenu.show()
   window.showContextAnchorMenu = =>
     contextAnchorForm = $(".context-anchor-menu")
     contextAnchorForm.show()
@@ -40,6 +50,18 @@ Template.fold_editor.events
     e.preventDefault()
     toggleAnchorMenu()
 
+Template.context_anchor_menu.events
+  'mouseup': (e) ->
+    console.log 'lalaal'
+    e.preventDefault()
+    hideContextAnchorMenu()
+    showAnchorMenu()
+  'mouseup .back': (e) ->
+    console.log 'lalaal'
+    e.preventDefault()
+    hideContextAnchorMenu()
+    showAnchorMenu()
+
 Template.anchor_menu.events
   'mouseup .link-to-card': (e) ->
     e.preventDefault()
@@ -52,19 +74,20 @@ Template.anchor_menu.events
 Template.vertical_section_block.events
   'mouseup .fold-editable': (e) ->
     selection = window.getSelection()
-    if window.getSelection().type is 'Range'
-      range = selection.getRangeAt(0)
-      boundary = range.getBoundingClientRect()
-      boundaryMiddle = (boundary.left + boundary.right) / 2
-      pageYOffset = $(event.target).offset().top
-#      halfOffsetWidth = this.toolbar.offsetWidth / 2
-      $('#fold-editor').show()
-      $('#fold-editor').css 'left', e.pageX - 100
-#      $('#fold-editor').css 'left', boundaryMiddle + 'px'
-      $('#fold-editor').css 'top', e.pageY - 150
-#      $('#fold-editor').css 'top', (boundary.bottom) + 'px'
-    else
-      hideFoldEditor()
+    setTimeout => # cleaner behavior
+      if window.getSelection().type is 'Range'
+        range = selection.getRangeAt(0)
+        boundary = range.getBoundingClientRect()
+        boundaryMiddle = (boundary.left + boundary.right) / 2
+        pageYOffset = $(e.target).offset().top
+  #      halfOffsetWidth = this.toolbar.offsetWidth / 2
+        $('#fold-editor').show()
+        $('#fold-editor').css 'left', e.pageX - 100
+  #      $('#fold-editor').css 'left', boundaryMiddle + 'px'
+        $('#fold-editor').css 'top', e.pageY - 70
+  #      $('#fold-editor').css 'top', (boundary.bottom) + 'px'
+      else
+        hideFoldEditor()
 
 Template.vertical_section_block.rendered = ->
   console.log 'Vertical Section Rendered'
