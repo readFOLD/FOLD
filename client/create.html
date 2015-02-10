@@ -182,8 +182,16 @@
 <template name="anchor_menu">
   <div class="anchor-menu">
     <ol>
-      <li class="link-to-card"><button type="button">Link to card</button></li>
-      <li class="link-out-of-story"><button type="button" disabled>Link out of story</button></li>
+      <li class="link-to-card">
+        <button type="button">
+          Link to card{{ > right_arrow}}
+        </button>
+      </li>
+      <li class="link-out-of-story">
+        <button type="button" disabled>
+          Link out of story{{ > right_arrow}}
+        </button>
+      </li>
       {{ > context_anchor_new_card_option }}
     </ol>
   </div>
@@ -209,13 +217,25 @@
 </template>
 
 <template name="context_anchor_go_back">
-  <li class="back"><button type="button">back</button></li>
+  <li class="back"><button type="button">{{> left_arrow}}back</button></li>
 </template>
 
 <template name="context_anchor_new_card_option">
   <li class="new-card">
     <button type="button">
-      Add new card
+      Add new card{{ > right_arrow}}
     </button>
   </li>
+</template>
+
+<template name="left_arrow">
+  <span class="pull-left left-arrow">
+    &lt;
+  </span>
+</template>
+
+<template name="right_arrow">
+  <span class="pull-right">
+    &gt;
+  </span>
 </template>
