@@ -1,4 +1,3 @@
-(function(){__coffeescriptShare = typeof __coffeescriptShare === 'object' ? __coffeescriptShare : {}; var share = __coffeescriptShare;
 var authorId, authorProfile;
 
 authorProfile = {
@@ -262,7 +261,3 @@ if (ContextBlocks.find().count() === 0) {
     return ContextBlocks.insert(block);
   });
 }
-
-})();
-
-//# sourceMappingURL=fixtures.coffee.js.map

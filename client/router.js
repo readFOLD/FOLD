@@ -1,4 +1,3 @@
-(function(){__coffeescriptShare = typeof __coffeescriptShare === 'object' ? __coffeescriptShare : {}; var share = __coffeescriptShare;
 var ExistingStoryController;
 
 ExistingStoryController = RouteController.extend({
@@ -158,5 +157,3 @@ Router.route("edit", {
     }
   }
 });
-
-})();

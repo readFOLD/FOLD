@@ -1,4 +1,3 @@
-(function(){__coffeescriptShare = typeof __coffeescriptShare === 'object' ? __coffeescriptShare : {}; var share = __coffeescriptShare;
 window.constants = {
   verticalSpacing: 12,
   readModeOffset: 250
@@ -72,5 +71,3 @@ window.moveOneCard = function(d) {
     return goUpOneCard();
   }
 };
-
-})();

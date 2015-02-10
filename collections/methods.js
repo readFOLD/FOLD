@@ -1,4 +1,3 @@
-(function(){__coffeescriptShare = typeof __coffeescriptShare === 'object' ? __coffeescriptShare : {}; var share = __coffeescriptShare;
 var changeFavorite;
 
 changeFavorite = function(storyId, toFavorite) {
@@ -50,7 +49,3 @@ Meteor.methods({
     return story;
   }
 });
-
-})();
-
-//# sourceMappingURL=methods.coffee.js.map

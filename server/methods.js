@@ -1,4 +1,3 @@
-(function(){__coffeescriptShare = typeof __coffeescriptShare === 'object' ? __coffeescriptShare : {}; var share = __coffeescriptShare;
 var GOOGLE_API_SERVER_KEY;
 
 GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
@@ -25,6 +24,3 @@ Meteor.methods({
   }
 });
 
-})();
-
-//# sourceMappingURL=methods.coffee.js.map

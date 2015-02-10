@@ -1,4 +1,3 @@
-(function(){__coffeescriptShare = typeof __coffeescriptShare === 'object' ? __coffeescriptShare : {}; var share = __coffeescriptShare;
 Stories._ensureIndex({
   userPathSegment: 1,
   storyPathSegment: 1
@@ -60,6 +59,3 @@ Meteor.publish("publicUserPub", function(id) {
   });
 });
 
-})();
-
-//# sourceMappingURL=publications.coffee.js.map

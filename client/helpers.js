@@ -1,4 +1,3 @@
-(function(){__coffeescriptShare = typeof __coffeescriptShare === 'object' ? __coffeescriptShare : {}; var share = __coffeescriptShare;
 Handlebars.registerHelper("debugContext", function() {
   return console.log(this);
 });
@@ -44,4 +43,3 @@ Handlebars.registerHelper("setTitle", function(title) {
   document.title = title;
 });
 
-})();
