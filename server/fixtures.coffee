@@ -4,11 +4,13 @@ authorProfile =
 if Meteor.users.find().count() is 0
   authorId = Accounts.createUser
     email: 'author@example.com'
+    username: 'author'
     password: 'password'
     profile: authorProfile
   Accounts.createUser
-     email: 'test@example.com'
-     password: 'password'
+    email: 'test@example.com'
+    username: 'test'
+    password: 'password'
 
 
 if (Stories.find().count() is 0)
@@ -19,11 +21,13 @@ if (Stories.find().count() is 0)
     lastSaved: new Date 1406524368561
     publishDate: new Date 1406524369993
     published: true
-    storyDashTitle: "unfolding-the-2014-ebola-outbreak"
+    userPathSegment: "author"
+    storyPathSegment: "unfolding-the-2014-ebola-outbreak"
     title: "Unfolding the 2014 Ebola Outbreak"
     authorId: authorId
     authorName: authorProfile.name # TODO update in user save methods
     favorited: [] # TODO this should probably be usernames or something intelligible
+    views: 0
     verticalSections: [
       {
         _id: '93'
@@ -74,11 +78,13 @@ if (Stories.find().count() is 0)
     lastSaved: new Date()
     publishDate: new Date()
     published: true
-    storyDashTitle: "test-story"
+    userPathSegment: "author"
+    storyPathSegment: "test-story"
     title: "Test building an existing sotry"
     authorId: authorId
     authorName: authorProfile.name # TODO update in user save methods
     favorited: [] # TODO this should probably be usernames or something intelligible
+    views: 0
     verticalSections: [
       {
         _id: '931'

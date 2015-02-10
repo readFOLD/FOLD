@@ -24,8 +24,6 @@ class Story
     @authorId = user._id
     @authorName = user.profile.name
     @title = ""
-  generateDasherizedTitle: ->
-    _s.slugify @title.toLowerCase()
   save: ->
     if not @_id
       throw new Meteor.Error 'not-yet-created'
@@ -35,9 +33,6 @@ class Story
       title: @title
       backgroundImage: @backgroundImage
 
-    unless @published
-      updateDoc.storyDashTitle = @generateDasherizedTitle()
-
     Stories.update {_id: @_id}, $set: updateDoc
 
   publish: ->
@@ -45,6 +40,7 @@ class Story
       throw new Meteor.Error 'not-yet-saved'
     if @published # TODO make this replace published version with current version
       throw new Meteor.Error 'already-published'
+    # TODO get this from user dialog
     dasherizedTitle = _s.slugify @title.toLowerCase()
     if confirm 'Your story will have the url path: /' + dasherizedTitle
       Stories.update {_id: @_id},
@@ -52,7 +48,7 @@ class Story
           published: true
           publishedDate: new Date
           lastSaved: new Date
-          storyDashTitle: dasherizedTitle # Note: if allow unpublish and republish, need to make sure this doesn't change
+          storyPathSegment: dasherizedTitle # Note: if allow unpublish and republish, need to make sure this doesn't change
 
 
 if Meteor.isClient
@@ -68,14 +64,69 @@ checkOwner = (userId, doc) ->
 
 # TODO Security
 @Stories.allow
-  insert: (userId, doc) ->
-    checkOwner userId, doc
   update: (userId, doc, fieldNames) ->
-    if _.contains fieldNames, 'authorId'
+    # TODO more security
+    disallowedFields = ['authorId', 'storyPathSegment', 'userPathSegment', 'favorited']
+    if _.intersection(fieldNames, disallowedFields).length
       return false
     checkOwner userId, doc
-  remove: (userId, doc) ->
-    checkOwner userId, doc
+@Stories.deny
+  insert: ->
+    true
+  remove: ->
+    true
+
+Schema.Stories = new SimpleSchema
+  backgroundImage:
+    type: String
+    optional: true
+  headerImageAttribution:
+    type: String
+    optional: true
+  lastSaved:
+    type: Date
+  publishDate:
+    type: Date
+    optional: true
+  published:
+    type: Boolean
+    defaultValue: false
+  userPathSegment:
+    type: String
+  storyPathSegment:
+    type: String
+  title:
+    type: String
+    defaultValue: ''
+  authorId:
+    type: String
+  authorName:
+    type: String
+  favorited:
+    type: [String]
+    defaultValue: []
+  views:
+    type: Number
+    defaultValue: 0
+
+  verticalSections:
+    type: [Object]
+    minCount: 1
+    maxCount: 1000
+
+  'verticalSections.$._id':
+    type: String
+  'verticalSections.$.title':
+    type: String
+  'verticalSections.$.content':
+    type: String
+  'verticalSections.$.contextBlocks':
+    type: [String]
+    defaultValue: []
+
+
+@Stories.attachSchema Schema.Stories
+
 
 class ContextBlock
   constructor: (doc) ->

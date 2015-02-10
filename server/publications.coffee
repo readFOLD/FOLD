@@ -1,15 +1,15 @@
 # Indexes
-Stories._ensureIndex 'storyDashTitle', unique: 1
+Stories._ensureIndex {userPathSegment: 1, storyPathSegment: 1}, unique: 1
 
 
-Meteor.publish "exploreStoriesPub", (storyDashTitle, filter, category, skip) ->
+Meteor.publish "exploreStoriesPub", (filter, category, skip) ->
   Stories.find {published: true}
 
 Meteor.publish "ownStoriesPub", ->
   Stories.find { authorId: @userId }
 
-Meteor.publish "readStoryPub", (storyDashTitle) ->
-  Stories.find {storyDashTitle: storyDashTitle, published: true}
+Meteor.publish "readStoryPub", (userPathSegment, storyPathSegment) ->
+  Stories.find {userPathSegment: userPathSegment, storyPathSegment: storyPathSegment, published: true}
 
 Meteor.publish "readStoriesPub", (ids) ->
   Stories.find
@@ -24,11 +24,11 @@ Meteor.publish "readStoriesPub", (ids) ->
       #   title: 1
       #   authorId: 1
       #   backgroundImage: 1
-      #   storyDashTitle: 1
+      #   storyPathSegment: 1
       #   username: 1
 
-Meteor.publish "createStoryPub", (storyDashTitle) ->
-  Stories.find {storyDashTitle: storyDashTitle}
+Meteor.publish "createStoryPub", (userPathSegment, storyPathSegment) ->
+  Stories.find {userPathSegment: userPathSegment, storyPathSegment: storyPathSegment}
 
 Meteor.publish "storiesPub", ->
   Stories.find()

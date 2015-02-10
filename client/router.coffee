@@ -49,12 +49,12 @@ Router.route "profile",
 
 
 Router.route "read",
-  path: "read/:storyDashTitle"
+  path: "read/:userPathSegment/:storyPathSegment"
   template: "read"
   controller: ExistingStoryController
   waitOn: ->
     [
-      Meteor.subscribe 'readStoryPub', @.params.storyDashTitle
+      Meteor.subscribe 'readStoryPub', @params.userPathSegment, @params.storyPathSegment
       Meteor.subscribe 'contextBlocksPub'
     ]
   action: -> if @ready() then @render()
@@ -93,7 +93,7 @@ Router.route "create",
     return story
 
 Router.route "edit",
-  path: "create/:storyDashTitle"
+  path: "create/:userPathSegment/:storyPathSegment"
   template: "create"
   controller: ExistingStoryController
   onRun: ->
@@ -101,14 +101,15 @@ Router.route "edit",
     @next()
   waitOn: ->
     [
-      Meteor.subscribe 'createStoryPub', @.params.storyDashTitle
+      Meteor.subscribe 'createStoryPub', @params.userPathSegment, @params.storyPathSegment
       Meteor.subscribe 'contextBlocksPub'
     ]
   action: -> if @ready() then @render()
   onBeforeAction: ->
     Session.set "newStory", false
     Session.set "read", false
-    Session.set "storyDashTitle", @.params.storyDashTitle
+    Session.set "userPathSegment", @params.userPathSegment
+    Session.set "storyPathSegment", @params.storyPathSegment
     if (user = Meteor.user()) or Meteor.loggingIn()
       if user and user._id isnt @data().authorId
         @redirect "read", @data(), replaceState: true

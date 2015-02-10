@@ -1,12 +1,12 @@
 Template.create.rendered = ->
 
 
-  window.showAnchorMenu = =>
+  window.showAnchorMenu = ->
 
     $(".anchor-menu").show();
-  window.hideAnchorMenu = =>
+  window.hideAnchorMenu = ->
     $(".anchor-menu").hide();
-  window.toggleAnchorMenu = =>
+  window.toggleAnchorMenu = ->
     anchorMenu = $(".anchor-menu")
     contextAnchorMenu = $(".context-anchor-menu")
     shiftAmt = 120
@@ -17,14 +17,14 @@ Template.create.rendered = ->
     else
       $('#fold-editor').css 'top', parseInt($('#fold-editor').css('top')) - shiftAmt
       anchorMenu.show()
-  window.showContextAnchorMenu = =>
+  window.showContextAnchorMenu = ->
     contextAnchorForm = $(".context-anchor-menu")
     contextAnchorForm.show()
     contextAnchorForm.insertAfter '#fold-editor-button-group'
-  window.hideContextAnchorMenu = =>
+  window.hideContextAnchorMenu = ->
     $(".context-anchor-menu").hide();
 
-  window.hideFoldEditor = =>
+  window.hideFoldEditor = ->
     $('#fold-editor').hide()
     hideContextAnchorMenu()
     hideAnchorMenu()
@@ -446,7 +446,6 @@ Template.create_options.events
     console.log("SAVE")
     # Get all necessary fields
     storyTitle = $.trim($('div.title-author div.title').text())
-    storyDashTitle = storyTitle.toLowerCase().split(' ').join('-')
 
     backgroundImage = Session.get("backgroundImage")
     # TODO need a better way to get context cards
@@ -468,16 +467,11 @@ Template.create_options.events
     @backgroundImage = backgroundImage
     @verticalSections = verticalSections
 
-    if @_id
+    if @_id # if already created
       @save()
-    else
-      @storyDashTitle = @generateDasherizedTitle()
-      @lastSaved = new Date
-      Stories.insert this, (err, storyId) =>
-        if err
-          alert err
-        else
-          Router.go "edit", storyDashTitle: @storyDashTitle
+    else # if creating for first time
+      Meteor.call 'saveNewStory', this, (err, story) ->
+        Router.go 'edit', userPathSegment: story.userPathSegment, storyPathSegment: story.storyPathSegment
 
   "click div.delete-story": ->
     storyId = Session.get('storyId')

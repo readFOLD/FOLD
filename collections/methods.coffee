@@ -16,3 +16,28 @@ Meteor.methods
     changeFavorite.call this, storyId, true
   unfavoriteStory: (storyId) ->
     changeFavorite.call this, storyId, false
+  saveNewStory: (story) ->
+    user = (Meteor.users.findOne _id: @userId)
+
+    storyPathSegment = (if story.title then (_s.slugify story.title.toLowerCase()) else 'unpublished-story') +
+        '-' + Random.id(3)
+
+    # remove properties that should not get set by user
+    story = _.omit story, [
+      'favorited',
+      'views',
+      'published'
+    ]
+
+    _.extend story,
+      lastSaved : new Date
+      userPathSegment : user.username
+      storyPathSegment : storyPathSegment
+      authorId : @userId
+      authorName : user.profile.name or 'Anonymous'
+
+
+
+    Stories.insert story
+
+    return story
