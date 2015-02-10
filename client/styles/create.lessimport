@@ -457,9 +457,24 @@ div#fold-editor{
     text-decoration: none;
     display: inline-block;
 //    border-radius: 2px;
-    cursor: pointer;
-    &:hover{
-      color: white;
+    &:not([DISABLED]){
+      cursor: pointer;
+      &:hover {
+        color: white;
+      }
     }
+  }
+  &:after{
+    @triangleSize: 8px;
+    content:'';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -@triangleSize;
+    width: 0;
+    height: 0;
+    border-top: solid @triangleSize black;
+    border-left: solid @triangleSize transparent;
+    border-right: solid @triangleSize transparent;
   }
 }

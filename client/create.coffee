@@ -9,7 +9,7 @@ Template.create.rendered = ->
   window.toggleAnchorMenu = =>
     anchorMenu = $(".anchor-menu")
     contextAnchorMenu = $(".context-anchor-menu")
-    shiftAmt = 150
+    shiftAmt = 120
     if anchorMenu.is(':visible') or contextAnchorMenu.is(':visible')
       $('#fold-editor').css 'top', parseInt($('#fold-editor').css('top')) + shiftAmt
       anchorMenu.hide()
