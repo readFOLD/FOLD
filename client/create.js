@@ -447,12 +447,16 @@ Template.create_map_section.created = function() {
 
 Template.create_map_section.helpers({
   url: function() {
-    var _ref;
-    return (_ref = Template.instance().blockPreview.get()) != null ? _ref.url() : void 0;
+    var preview = Template.instance().blockPreview.get();
+    if (preview) {
+      return preview.url()
+    }
   },
   previewUrl: function() {
-    var _ref;
-    return (_ref = Template.instance().blockPreview.get()) != null ? _ref.previewUrl() : void 0;
+    var preview = Template.instance().blockPreview.get();
+    if (preview) {
+      return preview.previewUrl()
+    }
   }
 });
 
@@ -480,10 +484,6 @@ Template.create_text_section.helpers({
     if (this instanceof ContextBlock) {
       return this;
     }
-  },
-  previewUrl: function() {
-    var _ref;
-    return (_ref = Template.instance().blockPreview.get()) != null ? _ref.previewUrl() : void 0;
   }
 });
 
