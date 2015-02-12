@@ -216,6 +216,17 @@ Tracker.autorun(function() {
   }
 });
 
+Tracker.autorun(function(){
+  if (Session.get("addingContext")){
+    currentSection = $('.vertical-narrative-section.selected')
+    if(currentSection.length){
+      $('body,html').animate({
+          scrollTop: currentSection.position().top + 350 + 29
+        }, 200, 'easeInExpo');
+    }
+  }
+});
+
 Tracker.autorun(function() {
   var currentYId;
   currentYId = Session.get('currentYId');
