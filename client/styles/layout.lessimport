@@ -11,6 +11,7 @@
 @action-color: #00A451;
 @inactive-color: #DDDDDD;
 @panel-color: #4B4F93;
+@remix-color: #D74155;
 
 
 
@@ -403,6 +404,22 @@ section.horizontal-narrative-section {
   color: @dark-color;
   // display: none;
   opacity: 0.25;
+
+  div.remix-bar{
+    top: 300px;
+    height: 40px;
+    width: 100%;
+    position: absolute;
+    background-color: @panel-color;
+    svg{
+      height:40px;
+      width:40px;
+    }
+    .remix-button{
+      float: right;
+      display: inline-block;
+    }
+  }
 
   div#index {
     position: absolute;

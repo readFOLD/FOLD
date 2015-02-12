@@ -1,6 +1,9 @@
 svg.icons {
   fill: @dark-color;
 }
-svg.participation-icon{
-  fill: #D74155;
+svg.remix-icon{
+  fill: @remix-color;
+}
+svg.remix-icon-square{
+  fill: @remix-color;
 }

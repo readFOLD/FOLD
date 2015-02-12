@@ -122,39 +122,51 @@
 </template>
 
 
-
-
 <template name="horizontal_section_block">
-  <section class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}" data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px">
-<!--    <div id="index">
+    <section
+            class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}"
+            data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px
+    ">
+    <!--    <div id="index">
       {{index}}
     </div> -->
     {{#if type}}
-      {{#if text}}
-        {{#if editingThisContext}}
-          {{> create_text_section}}
-        {{else}}
-          {{> display_text_section}}
+        {{#if text}}
+            {{#if editingThisContext}}
+                {{> create_text_section}}
+            {{else}}
+                {{> display_text_section}}
+            {{/if}}
         {{/if}}
-      {{/if}}
-      {{#if image}}{{> display_image_section}}{{/if}}
-      {{#if map}}
-        {{#if editingThisContext}}
-          {{> create_map_section}}
-        {{else}}
-          {{> display_map_section}}
+        {{#if image}}{{> display_image_section}}{{/if}}
+        {{#if map}}
+            {{#if editingThisContext}}
+                {{> create_map_section}}
+            {{else}}
+                {{> display_map_section}}
+            {{/if}}
         {{/if}}
-      {{/if}}
-      {{#if video}}
-        {{#if editingThisContext}}
-          {{> create_video_section}}
-        {{else}}
-          {{> display_video_section}}
+        {{#if video}}
+            {{#if editingThisContext}}
+                {{> create_video_section}}
+            {{else}}
+                {{> display_video_section}}
+            {{/if}}
         {{/if}}
-      {{/if}}
-      {{#if oec}}{{> display_oec_section}}{{/if}}
+        {{#if oec}}{{> display_oec_section}}{{/if}}
     {{/if}}
-  </section>
+    {{#if read}}
+        {{> remix_bar}}
+    {{/if}}
+    </section>
+</template>
+
+<template name="remix_bar">
+    <div class="remix-bar">
+        <span class="remix-button">
+            {{> remix_icon_square}}
+        </span>
+    </div>
 </template>
 
 <!-- Display Templates -->
@@ -281,8 +293,8 @@
   {{#if text}}
     {{ > text_icon }}
   {{/if}}
-  {{#if participation}}
-    {{ > participation_icon }}
+  {{#if remix}}
+    {{ > remix_icon }}
   {{/if}}
 </template>
 
