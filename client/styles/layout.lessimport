@@ -428,7 +428,7 @@ section.horizontal-narrative-section {
 
   &.editing {
     height: 500px;
-    padding: 18px;
+    padding: 17px;
   }
 }
 

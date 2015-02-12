@@ -283,7 +283,7 @@ div.horizontal-context {
     }
     svg {
       padding: 1.5px;
-      @circle-diameter: 50px;
+      @circle-diameter: 46px;
       height: @circle-diameter;
       width: @circle-diameter;
       vertical-align: top;
