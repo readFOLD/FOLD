@@ -154,11 +154,27 @@ Schema.Stories = new SimpleSchema({
   authorName: {
     type: String
   },
+  keywords:{
+    type: [String],
+    defaultValue: []
+  },
+  deleted: {
+    type: Boolean,
+    defaultValue: false
+  },
+  deletedDate: {
+    type: Date,
+    optional: true
+  },
   favorited: {
     type: [String],
     defaultValue: []
   },
   views: {
+    type: Number,
+    defaultValue: 0
+  },
+  shared: {
     type: Number,
     defaultValue: 0
   },
