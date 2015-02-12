@@ -1,0 +1,6 @@
+svg.icons {
+  fill: @dark-color;
+}
+svg.participation-icon{
+  fill: #D74155;
+}

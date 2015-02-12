@@ -8,8 +8,10 @@
 @dark-color: #333333;
 @medium-color: #CCCCCC;
 @light-color: white;
-@accent-color: #00A451;
+@action-color: #00A451;
 @inactive-color: #DDDDDD;
+@panel-color: #4B4F93;
+
 
 
 // http://asimpleframe.com/
@@ -171,7 +173,7 @@ div.story-browser {
     margin-right: 20px;
 
     &:hover {
-      background-color: @accent-color;
+      background-color: @action-color;
       border-radius: 30px;
     }
   }
@@ -228,7 +230,7 @@ section.narrative-section {
       border-radius: 17.5px;
       cursor: pointer;
       &:hover {
-        background-color: @accent-color;
+        background-color: @action-color;
       }
     }
   }
@@ -427,8 +429,8 @@ section.horizontal-narrative-section {
   }
 
   &.editing {
-    height: 500px;
-    padding: 17px;
+    height: 600px;
+    z-index: 100;
   }
 }
 
@@ -451,7 +453,7 @@ div.minimap {
 
     &.selected-section {
       div.selected-block {
-        background-color: @accent-color;
+        background-color: @action-color;
       }
     }
   }

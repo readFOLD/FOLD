@@ -1,5 +1,5 @@
 .editable {
-  outline: 1px dashed @accent-color;
+  outline: 1px dashed @action-color;
   cursor: text;
 }
 
@@ -35,10 +35,10 @@ div.title-overlay {
   min-width: 1024px;
   height: 350px;
   z-index: 30;
-  // background-color: @accent-color;
+  // background-color: @action-color;
   color: @color-light-grey;
 
-  background-color: @accent-color;
+  background-color: @action-color;
   background-position: center center;
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -158,7 +158,7 @@ div.button-options {
     width: 120px;
 
     &:hover {
-      background-color: @accent-color;
+      background-color: @action-color;
       color: @color-medium-grey;
     }
   }
@@ -247,9 +247,10 @@ svg{
 
 section.new-section {
   &:hover {
-    fill: @accent-color;
+    fill: @action-color;
   }
 }
+
 
 div.horizontal-context {
   section {
@@ -274,6 +275,11 @@ div.horizontal-context {
   div.content-icons {
     display:flex;
     justify-content:space-between;
+    padding-left: 17px;
+    padding-right: 17px;
+    padding-top: 19px;
+    padding-bottom: 16px;
+    background-color: @panel-color;
     div.row {
       text-align: justify;
       -ms-text-justify: distribute-all-lines;
@@ -283,25 +289,26 @@ div.horizontal-context {
     }
     svg {
       padding: 1.5px;
-      @circle-diameter: 46px;
+      @circle-diameter: 48px;
       height: @circle-diameter;
       width: @circle-diameter;
       vertical-align: top;
       display: inline-block;
-      fill: @dark-color;
       &:hover {
-        fill: @accent-color;
+        fill: @action-color;
       }
+
+
     }
     .active{
       svg{
-        fill: @accent-color;
+        fill: @action-color;
       }
     }
     .unimplemented {
-      svg {
-        fill: @inactive-color;
-      }
+//      svg {
+//        fill: @inactive-color;
+//      }
     }
     span.stretch {
       width: 100%;
@@ -313,7 +320,7 @@ div.horizontal-context {
 
 
   div.create-section {
-    padding: 4px;
+    padding: 23px;
   }
 
   img.content-type-button {
@@ -403,7 +410,7 @@ div.context-anchor-menu {
   button{
     text-align: left;
     &:hover{
-      fill: @accent-color;
+      fill: @action-color;
     }
   }
 }

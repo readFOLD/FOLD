@@ -22,7 +22,7 @@ section.banner {
     color: @color-light-grey;
 
     &:hover {
-      background-color: @accent-color;
+      background-color: @action-color;
     }
   }
 
@@ -149,7 +149,7 @@ div.filter {
     }
 
     &:hover {
-      background-color: @accent-color;
+      background-color: @action-color;
     }
   }
 
@@ -171,7 +171,7 @@ div.filter {
       margin-right: 30px;
 
       &:hover, &.selected {
-        color: @accent-color;
+        color: @action-color;
       }
     }
   }
@@ -209,7 +209,7 @@ div.edit-or-read {
   background-color: @dark-color;
 
   &:hover {
-    background-color: @accent-color;
+    background-color: @action-color;
   }
 
   a {
