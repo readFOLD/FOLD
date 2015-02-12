@@ -272,7 +272,8 @@ div.horizontal-context {
   }
 
   div.content-icons {
-    padding-top: 12px;
+    display:flex;
+    justify-content:space-between;
     div.row {
       text-align: justify;
       -ms-text-justify: distribute-all-lines;
@@ -282,7 +283,7 @@ div.horizontal-context {
     }
     svg {
       padding: 1.5px;
-      @circle-diameter: 45px;
+      @circle-diameter: 50px;
       height: @circle-diameter;
       width: @circle-diameter;
       vertical-align: top;
@@ -308,6 +309,11 @@ div.horizontal-context {
       font-size: 0;
       line-height: 0;
     }
+  }
+
+
+  div.create-section {
+    padding: 4px;
   }
 
   img.content-type-button {
@@ -359,9 +365,6 @@ div.horizontal-context {
   }
 }
 
-div.create-section {
-  margin: 10px;
-}
 
 div.text-section {
   line-height: 26px;

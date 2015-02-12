@@ -37,31 +37,34 @@
 </template>
 
 <template name="story">
-  <!-- Mesh Background Overlay -->
-  <!-- <div id="overlay"></div> -->
-  <article class="content">
-    <div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}" style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
-      {{> vertical_narrative}}
-      <div class="spacer" style="height: {{spacerHeight}}px">
-      </div>
-    </div>
-    {{#unless narrativeView}}
-    <div class="horizontal-context" style="{{#unless read}}margin-top: 23px{{/unless}}">
-      {{> horizontal_context}}
-    </div>
-    {{/unless}}
-  </article>
-
-  {{#if pastHeader}}
-    {{#if read}}
-      {{> minimap}}
-    {{/if}}
-      {{#if horizontalExists}}
-        <div class="browser-offset">
-          {{> story_browser}}
+    <!-- Mesh Background Overlay -->
+    <!-- <div id="overlay"></div> -->
+    <article class="content">
+        <div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}"
+             style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
+            {{> vertical_narrative}}
+            <div class="spacer" style="height: {{spacerHeight}}px">
+            </div>
         </div>
-      {{/if}}
-  {{/if}}
+        {{#unless narrativeView}}
+            <div class="horizontal-context" style="{{#unless read}}margin-top: 23px{{/unless}}">
+                {{> horizontal_context}}
+            </div>
+        {{/unless}}
+    </article>
+
+    {{#if pastHeader}}
+        {{#if read}}
+            {{> minimap}}
+        {{/if}}
+        {{#if horizontalExists}}
+            {{#unless addingContextToCurrentY}}
+                <div class="browser-offset">
+                    {{> story_browser}}
+                </div>
+            {{/unless}}}
+        {{/if}}
+    {{/if}}
 </template>
 
 <template name="vertical_narrative">
