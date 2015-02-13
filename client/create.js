@@ -218,12 +218,16 @@ Tracker.autorun(function() {
 
 Tracker.autorun(function(){
   if (Session.get("addingContext")){
-    currentSection = $('.vertical-narrative-section.selected')
+    var currentSection = $('.vertical-narrative-section.selected')
     if(currentSection.length){
       $('body,html').animate({
           scrollTop: currentSection.position().top + 350 + 29
         }, 200, 'easeInExpo');
     }
+    var windowHeight = $(window).height()
+    var bannerHeight = 100 //$('#banner-overlay').height()
+    // TODO bind this to window size. Also run when arrive on page
+    $('.horizontal-narrative-section.editing').height(windowHeight - bannerHeight - 25)
   }
 });
 
