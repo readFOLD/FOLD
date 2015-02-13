@@ -22,6 +22,11 @@ Meteor.publish("readStoryPub", function(userPathSegment, storyPathSegment) {
     userPathSegment: userPathSegment,
     storyPathSegment: storyPathSegment,
     published: true
+  },{
+    fields : {
+      draft: 0,
+      history: 0
+    }
   });
 });
 

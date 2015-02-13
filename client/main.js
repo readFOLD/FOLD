@@ -354,24 +354,35 @@ Template.horizontal_context.helpers({
   horizontalSections: function() {
     return this.verticalSections.map(function(verticalSection, verticalIndex) {
       var sortedContext, unsortedContext;
-      unsortedContext = ContextBlocks.find({
-        _id: {
-          $in: verticalSection.contextBlocks
+      if (Session.get('read')){
+        var data = verticalSection.contextBlocks.map(function(datum, index){
+          return _.extend({}, datum, {index: index});
+        }).map(window.newTypeSpecificContextBlock);
+        return {
+          data: data,
+          index: verticalIndex
         }
-      }).map(function(datum) {
-        var horizontalIndex;
-        horizontalIndex = verticalSection.contextBlocks.indexOf(datum._id);
-        return _.extend(datum, {
-          index: horizontalIndex
+      } else {
+        unsortedContext = ContextBlocks.find({
+          _id: {
+            $in: verticalSection.contextBlocks
+          }
+        }).map(function(datum) {
+          var horizontalIndex;
+          horizontalIndex = verticalSection.contextBlocks.indexOf(datum._id);
+          return _.extend(datum, {
+            index: horizontalIndex
+          });
         });
-      });
-      sortedContext = _.sortBy(unsortedContext, function(datum) {
-        return datum.horizontalIndex;
-      });
-      return {
-        index: verticalIndex,
-        data: sortedContext
-      };
+        sortedContext = _.sortBy(unsortedContext, function(datum) {
+          console.log(datum)
+          return datum.horizontalIndex;
+        });
+        return {
+          index: verticalIndex,
+          data: sortedContext
+        };
+      }
     });
   },
   last: function() {

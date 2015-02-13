@@ -5,26 +5,6 @@ ExistingStoryController = RouteController.extend({
     console.log('set currentY to null');
     Session.set("currentY", null);
     return this.next();
-  },
-  data: function() {
-    var story;
-    story = Stories.findOne();
-    if (story) {
-      Session.set("story", story);
-      Session.set("storyId", story._id);
-      Session.set("backgroundImage", story.backgroundImage);
-      Session.set("horizontalSectionsMap", _.map(_.pluck(story.verticalSections, "contextBlocks"), function(cBlocks, i) {
-        return {
-          verticalIndex: i,
-          horizontal: _.map(cBlocks, function(block, i) {
-            return {
-              horizontalIndex: i
-            };
-          })
-        };
-      }));
-      return story;
-    }
   }
 });
 
@@ -80,6 +60,26 @@ Router.route("read", {
       return this.render();
     }
   },
+  data: function() {
+    var story;
+    story = Stories.findOne();
+    if (story) {
+      Session.set("story", story);
+      Session.set("storyId", story._id);
+      Session.set("backgroundImage", story.backgroundImage);
+      Session.set("horizontalSectionsMap", _.map(_.pluck(story.verticalSections, "contextBlocks"), function(cBlocks, i) {
+        return {
+          verticalIndex: i,
+          horizontal: _.map(cBlocks, function(block, i) {
+            return {
+              horizontalIndex: i
+            };
+          })
+        };
+      }));
+      return story;
+    }
+  },
   onBeforeAction: function() {
     Session.set("newStory", false);
     Session.set("read", true);
@@ -128,6 +128,27 @@ Router.route("edit", {
   },
   waitOn: function() {
     return [Meteor.subscribe('createStoryPub', this.params.userPathSegment, this.params.storyPathSegment), Meteor.subscribe('contextBlocksPub')];
+  },
+  data: function() {
+    var story;
+    story = Stories.findOne();
+    if (story) {
+
+      Session.set("story", story);
+      Session.set("storyId", story._id);
+      Session.set("backgroundImage", story.backgroundImage);
+      Session.set("horizontalSectionsMap", _.map(_.pluck(story.verticalSections, "contextBlocks"), function(cBlocks, i) {
+        return {
+          verticalIndex: i,
+          horizontal: _.map(cBlocks, function(block, i) {
+            return {
+              horizontalIndex: i
+            };
+          })
+        };
+      }));
+      return story;
+    }
   },
   action: function() {
     if (this.ready()) {

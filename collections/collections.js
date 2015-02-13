@@ -119,6 +119,11 @@ this.Stories.deny({
 });
 
 Schema.Stories = new SimpleSchema({
+  publishedStory: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
   backgroundImage: {
     type: String,
     optional: true
@@ -295,26 +300,31 @@ TextBlock = (function(_super) {
 
 })(ContextBlock);
 
+
+var newTypeSpecificContextBlock =  function(doc) {
+  switch (doc.type) {
+    case 'video':
+      return new VideoBlock(doc);
+    case 'text':
+      return new TextBlock(doc);
+    case 'map':
+      return new MapBlock(doc);
+    default:
+      return new ContextBlock(doc);
+  }
+};
+
 if (Meteor.isClient) {
   window.VideoBlock = VideoBlock;
   window.MapBlock = MapBlock;
   window.ContextBlock = ContextBlock;
   window.TextBlock = TextBlock;
+  window.newTypeSpecificContextBlock = newTypeSpecificContextBlock
 }
 
+
 this.ContextBlocks = new Meteor.Collection("context_blocks", {
-  transform: function(doc) {
-    switch (doc.type) {
-      case 'video':
-        return new VideoBlock(doc);
-      case 'text':
-        return new TextBlock(doc);
-      case 'map':
-        return new MapBlock(doc);
-      default:
-        return new ContextBlock(doc);
-    }
-  }
+  transform: newTypeSpecificContextBlock
 });
 
 this.ContextBlocks.allow({
