@@ -7,3 +7,20 @@ svg.remix-icon{
 svg.remix-icon-square{
   fill: @remix-color;
 }
+.favorite-button{
+  background-color: transparent;
+  border: none;
+  &.favorite{
+    svg{
+      fill: @color-light-grey;
+      &:hover{
+        fill: @favorite-color;
+      }
+    }
+  }
+  &.unfavorite{
+    svg{
+      fill: @favorite-color;
+    }
+  }
+}

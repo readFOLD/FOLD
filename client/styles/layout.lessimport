@@ -12,6 +12,7 @@
 @inactive-color: #DDDDDD;
 @panel-color: #4B4F93;
 @remix-color: #D74155;
+@favorite-color: #FBB040;
 
 
 
