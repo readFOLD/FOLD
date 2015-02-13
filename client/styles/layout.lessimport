@@ -406,11 +406,15 @@ section.horizontal-narrative-section {
   opacity: 0.25;
 
   div.remix-bar{
+    padding-left: 15px;
+    @barHeight: 40px;
     top: 300px;
-    height: 40px;
+    height: @barHeight;
     width: 100%;
     position: absolute;
     background-color: @panel-color;
+    line-height: @barHeight;
+    color: white;
     svg{
       height:40px;
       width:40px;
