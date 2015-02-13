@@ -299,12 +299,13 @@
 </template>
 
 <template name="favorite_button">
-  {{#if userFavorited}}
-    <button class='unfavorite favorite-button'>{{> favorite_icon }}</button>
-  {{else}}
-    <button class='favorite favorite-button'>{{> favorite_icon }}</button>
-  {{/if}}
-  {{favorited.length}}
-
+    <div class="favorite-button">
+        {{#if userFavorited}}
+            <button type='button' class='unfavorite'>{{> favorite_icon }}</button>
+        {{else}}
+            <button type='button' class='favorite'>{{> favorite_icon }}</button>
+        {{/if}}
+        {{favorited.length}}
+    </div>
 </template>
 

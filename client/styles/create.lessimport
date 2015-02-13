@@ -31,7 +31,6 @@ div.save-background-image {
 }
 
 div.title-overlay {
-  cursor: pointer;
   min-width: 1024px;
   height: 350px;
   z-index: 30;

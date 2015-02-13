@@ -1,26 +1,44 @@
-svg.icons {
+svg.icon {
   fill: @dark-color;
+  .size-to-fit;
 }
-svg.remix-icon{
+svg.add-card-icon{
+  height:44px;
+  width:44px;
+}svg.remix-icon{
   fill: @remix-color;
 }
 svg.remix-icon-square{
   fill: @remix-color;
 }
 .favorite-button{
-  background-color: transparent;
-  border: none;
-  &.favorite{
+  @height: 25px;
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 18px;
+  height: @height;
+  line-height: @height;
+  button{
+    height: @height;
+    width: @height;
+    padding: 0;
+    background-color: transparent;
+    border: none;
     svg{
-      fill: @color-light-grey;
-      &:hover{
+    }
+    &.favorite{
+      svg{
+        fill: @color-light-grey;
+        &:hover{
+          fill: @color-medium-grey;
+        }
+      }
+    }
+    &.unfavorite{
+      svg{
         fill: @favorite-color;
       }
     }
   }
-  &.unfavorite{
-    svg{
-      fill: @favorite-color;
-    }
-  }
+
 }
