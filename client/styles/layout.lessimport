@@ -13,6 +13,7 @@
 @panel-color: #4B4F93;
 @remix-color: #D74155;
 @favorite-color: #FBB040;
+@dark-favorite-color: #f2a641;
 
 
 

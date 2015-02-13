@@ -37,6 +37,9 @@ svg.remix-icon-square{
     &.unfavorite{
       svg{
         fill: @favorite-color;
+        &:hover{
+          fill: @dark-favorite-color;
+        }
       }
     }
   }
