@@ -304,7 +304,29 @@ if (Stories.find().count() === 0) {
         title: "First block",
         content: "Here is a great story."
       }
-    ]
+    ],
+    publishedStory: {
+      backgroundImage: "header-image.jpg",
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      lastSaved: new Date(),
+      publishDate: new Date(),
+      published: true,
+      userPathSegment: "author",
+      storyPathSegment: "test-story",
+      title: "Test building an existing sotry",
+      authorId: authorId,
+      authorName: authorProfile.name,
+      favorited: [],
+      views: 0,
+      verticalSections: [
+        {
+          _id: '931',
+          contextBlocks: [],
+          title: "First block",
+          content: "Here is a great story."
+        }
+      ]
+    }
   });
 }
 
