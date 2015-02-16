@@ -9,7 +9,7 @@ Meteor.methods({
   youtubeVideoInfo: function(videoId) {
     var requestParams, res, _ref, _ref1;
     check(videoId, String);
-    this.unblock();
+    this.unblock(); 
     requestParams = {
       part: 'snippet',
       id: videoId,
@@ -20,5 +20,25 @@ Meteor.methods({
     });
     if (res.data && res.data.items && res.data.items.length)
       return res.data.items[0].snippet
+  },
+
+  youtubeVideoSearchList: function(query) {
+    var res;
+    check(query, String);
+    this.unblock();
+    requestParams = {
+      part: 'snippet',
+      q: query,
+      maxResults: 3,
+      key: GOOGLE_API_SERVER_KEY,
+    };
+    res = HTTP.get('https://www.googleapis.com/youtube/v3/search', {
+      params: requestParams
+    });
+    
+    return _.map(res.data.items, function(element) {
+      element.snippet.videoId = element.id.videoId; //or playlistId
+      return element.snippet;
+    });
   }
 });

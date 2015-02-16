@@ -161,8 +161,33 @@
     <form class="youtube-link">
       <div class="input-label">Youtube Link:</div>
       <input name='youtube' class="youtube-link-input">
-      <button type="submit">Save</button>
+      <button type="submit">Link</button>
+      <div class="input-label">Youtube Search:</div>
+      <input name='youtube' class="youtube-search-input">
+      <button type="button" class="search">Search</button>
     </form>
+    {{#if url}}
+      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
+    {{else}}
+      <div class="video-results">
+        <table class="video-table">
+        {{#each results}}
+          <tr>
+            <td><iframe frameborder="0" style="border:0" width="100%" height="300" src="{{thumbnailUrl}}"></iframe></td>
+            <td>
+              <div>{{title}}</div>
+              <div>{{description}}</div>
+              <div>{{videoUsername}}</div>
+            </td>
+            <td></td>
+            <td>
+              <div>{{creationDate}}</div>
+            </td>
+          </tr>
+        {{/each}}
+        </table>
+      </div>
+    {{/if}}
   </div>
 </template>
 

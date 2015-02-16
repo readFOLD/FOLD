@@ -405,7 +405,14 @@ createBlockEvents = {
   }
 };
 
+
 Template.create_video_section.helpers(createBlockHelpers);
+
+Template.create_video_section.helpers({ 
+  results: function(){
+    return VideoSearchResults.find();
+  }
+});
 
 Template.create_video_section.events(createBlockEvents);
 
@@ -438,8 +445,46 @@ Template.create_video_section.events({
       contextId = ContextBlocks.insert(newContextBlock);
       return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
     });
+  },
+
+  "click .search": function(d, template) {
+    var horizontalIndex, parentSection, srcE, videoSearch, _ref;
+    d.preventDefault();
+    srcE = d.srcElement ? d.srcElement : d.target;
+    parentSection = $(srcE).closest('section');
+    horizontalIndex = parentSection.data('index');
+
+    videoSearch = $('input.youtube-search-input').val();
+    console.log("video search input = " + videoSearch);
+    return Meteor.call('youtubeVideoSearchList', videoSearch, function(err, results) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (!results) {
+        console.log('video not found');
+        return;
+      }
+      results = _.map(results, function(element) {
+        element.type = 'video';
+        element.service = 'youtube';
+        element.videoUsername = element.channelTitle;
+        element.videoUsernameId = element.channelId;
+        element.creationDate = element.publishedAt;        
+        delete element.channelTitle;
+        delete element.channelId;
+        delete element.publishedAt;
+        return element;
+      });
+      _.each(results, function(result) {
+        VideoSearchResults.insert(result);
+      });
+      VideoSearchResults.remove({});
+      return;
+    });
   }
 });
+
 
 Template.create_map_section.created = function() {
   return this.blockPreview = new ReactiveVar();
@@ -478,6 +523,7 @@ Template.create_map_section.events({
     return Session.set('editingContext', null);
   }
 });
+
 
 Template.create_text_section.helpers({
   startingBlock: function() {

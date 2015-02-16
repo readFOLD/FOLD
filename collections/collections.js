@@ -218,6 +218,12 @@ VideoBlock = (function(_super) {
     }
   };
 
+  VideoBlock.prototype.thumbnailUrl = function() {
+    if (this.service === 'youtube') {
+      return '//i.ytimg.com/vi/' + this.videoId + '/default.jpg';
+    }
+  };
+
   return VideoBlock;
 
 })(ContextBlock);
@@ -368,6 +374,18 @@ Schema.ContextBlocks = new SimpleSchema({
     optional: true
   },
   description: {
+    type: String,
+    optional: true
+  },
+  creationDate: {
+    type: String,
+    optional: true
+  },
+  videoUsername: {
+    type: String,
+    optional: true
+  },
+  videoUsernameId: {
     type: String,
     optional: true
   }
