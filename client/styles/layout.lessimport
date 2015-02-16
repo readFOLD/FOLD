@@ -30,60 +30,71 @@
     font-weight: normal;
 }
 
-.transition(@property, @duration, @timing-function) {
-  -webkit-transition: @property @duration @timing-function;
-  -moz-transition: @property @duration @timing-function;
-  -o-transition: @property @duration @timing-function;
-  transition: @property @duration @timing-function;
+.transform(@string){
+  -webkit-transform: @string;
+  -moz-transform: @string;
+  -ms-transform: @string;
+  -o-transform: @string;
+  transform: @string;
+}
+
+.transition (@value1,@value2:X,...)
+{
+  @value: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
+  -webkit-transition: @value;
+  -moz-transition: @value;
+  -o-transition: @value;
+  transition: @value;
 }
 
 .left-transition{
-  .transition(left, 0.2s, ease-in);
+  .transition(left 0.2s ease-in);
 }
 
 .width-transition{
-  .transition(width, 0.2s, ease-in);
+  .transition(width 0.2s ease-in);
 }
 
 .height-transition{
-  .transition(height, 0.2s, ease-in);
+  .transition(height 0.2s ease-in);
 }
 
 .text-shadow-transition{
-  .transition(text-shadow, 0.2s, ease-in);
+  .transition(text-shadow 0.2s ease-in);
 }
 
 .background-transition{
-  .transition(background-color, 0.2s, ease-in);
+  .transition(background-color 0.2s ease-in);
 }
 
 .border-transition {
-  .transition(border, 0.2s, ease-in);
+  .transition(border 0.2s ease-in);
 }
 
 .color-transition {
-  .transition(color, 0.2s, ease-in);
+  .transition(color 0.2s ease-in);
 }
 
 .opacity-transition {
-  .transition(opacity, 0.2s, ease-in);
+  .transition(opacity 0.2s ease-in);
 }
 
 .shadow-transition {
-  .transition(box-shadow, 0.35s, ease-in);
+  .transition(box-shadow 0.35s ease-in);
 }
 
 .fill-transition {
-  .transition(fill, 0.2s, ease-in);
+  .transition(fill 0.2s ease-in);
 }
 
 .stroke-transition {
-  .transition(stroke, 0.2s, ease-in);
+  .transition(stroke 0.2s ease-in);
 }
 
 .top-transition {
-  .transition(top, 0.2s, ease-in);
+  .transition(top 0.2s ease-in);
 }
+
 
 .no-select {
   -webkit-touch-callout: none;
@@ -391,11 +402,7 @@ div.horizontal-context {
   }
 }
 
-section.horizontal-new-section {
-  position: absolute;
-  background-color: @light-color;
-  color: @dark-color;
-}
+
 
 section.horizontal-narrative-section {
   .left-transition;

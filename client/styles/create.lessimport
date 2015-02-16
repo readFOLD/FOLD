@@ -316,6 +316,18 @@ div.horizontal-context {
     }
   }
 
+  section.horizontal-new-section {
+    position: absolute;
+    background-color: @light-color;
+    svg{
+      .transition(transform 0.2s ease, fill 0.25s ease);
+    }
+    &.editing{
+      svg{
+        .transform(rotate(-45deg));
+      }
+    }
+  }
 
   div.create-section {
     padding: 23px;
