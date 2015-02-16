@@ -76,7 +76,11 @@
 }
 
 .opacity-transition {
-  .transition(opacity 0.2s ease-in);
+  .transition(opacity 0.3s ease-in);
+}
+
+.opacity-background-transition {
+  .transition(opacity 0.3s ease-in, background-color 0.3s ease-in);
 }
 
 .shadow-transition {
@@ -283,6 +287,31 @@ section.narrative-section {
 
 div.description-overlay {
   font-size: 17px;
+}
+
+div.image-section {
+
+  &:hover{
+    div.description-overlay{
+      background-color: rgba(0, 0, 0, 0.8);
+      opacity: 0.8;
+    }
+  }
+  div.description-overlay {
+    .opacity-background-transition;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 8px;
+    opacity: 0.0;
+    color: white;
+  }
+  img {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 div.vertical-narrative {
