@@ -17,6 +17,9 @@
 @dark-favorite-color: #f2a641;
 
 
+@remixBarHeight: 40px;
+@horizontalContentHeight: 300px;
+
 
 // http://asimpleframe.com/
 @font-face {
@@ -343,7 +346,7 @@ div.vertical-narrative {
     .height-transition;
     overflow-y: scroll;
     width: 100%;
-    min-height: 300px;
+    min-height: @horizontalContentHeight + @remixBarHeight;
     opacity: 0.25;
     &.read {
       margin-bottom: 12px;
@@ -443,7 +446,7 @@ div.horizontal-context {
 section.horizontal-narrative-section {
   .left-transition;
   position: absolute;
-  height: 300px;
+  height: @horizontalContentHeight;
   // box-shadow: 3px 3px #848484;
   pointer-events: none;
 
@@ -456,13 +459,12 @@ section.horizontal-narrative-section {
 
   div.remix-bar{
     padding-left: 15px;
-    @barHeight: 40px;
-    top: 300px;
-    height: @barHeight;
+    top: @horizontalContentHeight;
+    height: @remixBarHeight;
     width: 100%;
     position: absolute;
     background-color: @panel-color;
-    line-height: @barHeight;
+    line-height: @remixBarHeight;
     color: white;
     svg{
       height:40px;
