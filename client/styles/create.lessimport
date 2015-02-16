@@ -270,13 +270,15 @@ div.horizontal-context {
     margin-bottom: 10px;
   }
 
+  @contentIconBannerHeight: 83px;
+
   div.content-icons {
     display:flex;
     justify-content:space-between;
+    height: @contentIconBannerHeight;
     padding-left: 17px;
     padding-right: 17px;
     padding-top: 19px;
-    padding-bottom: 16px;
     background-color: @panel-color;
     div.row {
       text-align: justify;
