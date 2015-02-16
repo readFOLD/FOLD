@@ -484,7 +484,7 @@ Template.story_browser.events({
 Template.type_specific_icon.helpers(typeHelpers);
 
 Template.favorite_button.helpers({
-  favorited: function() {
+  userFavorited: function() {
     var _ref;
     return Meteor.user() && (_ref = Meteor.user()._id, __indexOf.call(this.favorited, _ref) >= 0);
   }

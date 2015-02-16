@@ -216,6 +216,33 @@ Tracker.autorun(function() {
   }
 });
 
+Tracker.autorun(function(){
+  var currentSection = $('.vertical-narrative-section.selected')
+
+  var scrollToRelativePosition = function(offset) {
+    if(currentSection.length) {
+      $('body,html').animate({
+        scrollTop: currentSection.position().top + offset
+      }, 200, 'easeInCubic');
+    }
+  };
+
+  if (Session.get("addingContext")){
+    if(currentSection.length){
+      scrollToRelativePosition(350 + 29)
+    }
+    var windowHeight = $(window).height()
+    var bannerHeight = 100 //$('#banner-overlay').height()
+    // TODO bind this to window size. Also run when arrive on page
+    $('.horizontal-narrative-section.editing').height(windowHeight - bannerHeight - 25)
+  }
+  else {
+    if (currentSection.length) {
+      scrollToRelativePosition(350 + 29 - 140)
+    }
+  }
+});
+
 Tracker.autorun(function() {
   var currentYId;
   currentYId = Session.get('currentYId');
@@ -476,10 +503,10 @@ Template.create_video_section.events({
         delete element.publishedAt;
         return element;
       });
+      VideoSearchResults.remove({});
       _.each(results, function(result) {
         VideoSearchResults.insert(result);
       });
-      VideoSearchResults.remove({});
       return;
     });
   }

@@ -8,8 +8,13 @@
 @dark-color: #333333;
 @medium-color: #CCCCCC;
 @light-color: white;
-@accent-color: #00A451;
+@action-color: #00A451;
 @inactive-color: #DDDDDD;
+@panel-color: #4B4F93;
+@remix-color: #D74155;
+@favorite-color: #FBB040;
+@dark-favorite-color: #f2a641;
+
 
 
 // http://asimpleframe.com/
@@ -25,60 +30,75 @@
     font-weight: normal;
 }
 
-.transition(@property, @duration, @timing-function) {
-  -webkit-transition: @property @duration @timing-function;
-  -moz-transition: @property @duration @timing-function;
-  -o-transition: @property @duration @timing-function;
-  transition: @property @duration @timing-function;
+.transform(@string){
+  -webkit-transform: @string;
+  -moz-transform: @string;
+  -ms-transform: @string;
+  -o-transform: @string;
+  transform: @string;
+}
+
+.transition (@value1,@value2:X,...)
+{
+  @value: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
+  -webkit-transition: @value;
+  -moz-transition: @value;
+  -o-transition: @value;
+  transition: @value;
 }
 
 .left-transition{
-  .transition(left, 0.2s, ease-in);
+  .transition(left 0.2s ease-in);
 }
 
 .width-transition{
-  .transition(width, 0.2s, ease-in);
+  .transition(width 0.2s ease-in);
 }
 
 .height-transition{
-  .transition(height, 0.2s, ease-in);
+  .transition(height 0.2s ease-in);
 }
 
 .text-shadow-transition{
-  .transition(text-shadow, 0.2s, ease-in);
+  .transition(text-shadow 0.2s ease-in);
 }
 
 .background-transition{
-  .transition(background-color, 0.2s, ease-in);
+  .transition(background-color 0.2s ease-in);
 }
 
 .border-transition {
-  .transition(border, 0.2s, ease-in);
+  .transition(border 0.2s ease-in);
 }
 
 .color-transition {
-  .transition(color, 0.2s, ease-in);
+  .transition(color 0.2s ease-in);
 }
 
 .opacity-transition {
-  .transition(opacity, 0.2s, ease-in);
+  .transition(opacity 0.3s ease-in);
+}
+
+.opacity-background-transition {
+  .transition(opacity 0.3s ease-in, background-color 0.3s ease-in);
 }
 
 .shadow-transition {
-  .transition(box-shadow, 0.35s, ease-in);
+  .transition(box-shadow 0.35s ease-in);
 }
 
 .fill-transition {
-  .transition(fill, 0.2s, ease-in);
+  .transition(fill 0.2s ease-in);
 }
 
 .stroke-transition {
-  .transition(stroke, 0.2s, ease-in);
+  .transition(stroke 0.2s ease-in);
 }
 
 .top-transition {
-  .transition(top, 0.2s, ease-in);
+  .transition(top 0.2s ease-in);
 }
+
 
 .no-select {
   -webkit-touch-callout: none;
@@ -126,6 +146,10 @@ li{
   white-space: nowrap;
 }
 
+button{
+  cursor: pointer;
+}
+
 *, *:before, *:after {
   -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
@@ -171,7 +195,7 @@ div.story-browser {
     margin-right: 20px;
 
     &:hover {
-      background-color: @accent-color;
+      background-color: @action-color;
       border-radius: 30px;
     }
   }
@@ -228,7 +252,7 @@ section.narrative-section {
       border-radius: 17.5px;
       cursor: pointer;
       &:hover {
-        background-color: @accent-color;
+        background-color: @action-color;
       }
     }
   }
@@ -263,6 +287,31 @@ section.narrative-section {
 
 div.description-overlay {
   font-size: 17px;
+}
+
+div.image-section {
+
+  &:hover{
+    div.description-overlay{
+      background-color: rgba(0, 0, 0, 0.8);
+      opacity: 0.8;
+    }
+  }
+  div.description-overlay {
+    .opacity-background-transition;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 8px;
+    opacity: 0.0;
+    color: white;
+  }
+  img {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 div.vertical-narrative {
@@ -382,11 +431,7 @@ div.horizontal-context {
   }
 }
 
-section.horizontal-new-section {
-  position: absolute;
-  background-color: @light-color;
-  color: @dark-color;
-}
+
 
 section.horizontal-narrative-section {
   .left-transition;
@@ -401,6 +446,26 @@ section.horizontal-narrative-section {
   color: @dark-color;
   // display: none;
   opacity: 0.25;
+
+  div.remix-bar{
+    padding-left: 15px;
+    @barHeight: 40px;
+    top: 300px;
+    height: @barHeight;
+    width: 100%;
+    position: absolute;
+    background-color: @panel-color;
+    line-height: @barHeight;
+    color: white;
+    svg{
+      height:40px;
+      width:40px;
+    }
+    .remix-button{
+      float: right;
+      display: inline-block;
+    }
+  }
 
   div#index {
     position: absolute;
@@ -427,7 +492,8 @@ section.horizontal-narrative-section {
   }
 
   &.editing {
-    height: 500px;
+    height: 600px;
+    z-index: 100;
   }
 }
 
@@ -450,7 +516,7 @@ div.minimap {
 
     &.selected-section {
       div.selected-block {
-        background-color: @accent-color;
+        background-color: @action-color;
       }
     }
   }

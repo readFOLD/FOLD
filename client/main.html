@@ -15,7 +15,6 @@
             EDIT
           {{/linkTo}}
           {{> favorite_button}}
-          {{favorited.length}} Favorites
         {{else}}
           {{#linkTo route="read" data=this}}
             READ
@@ -37,31 +36,34 @@
 </template>
 
 <template name="story">
-  <!-- Mesh Background Overlay -->
-  <!-- <div id="overlay"></div> -->
-  <article class="content">
-    <div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}" style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
-      {{> vertical_narrative}}
-      <div class="spacer" style="height: {{spacerHeight}}px">
-      </div>
-    </div>
-    {{#unless narrativeView}}
-    <div class="horizontal-context" style="{{#unless read}}margin-top: 23px{{/unless}}">
-      {{> horizontal_context}}
-    </div>
-    {{/unless}}
-  </article>
-
-  {{#if pastHeader}}
-    {{#if read}}
-      {{> minimap}}
-    {{/if}}
-      {{#if horizontalExists}}
-        <div class="browser-offset">
-          {{> story_browser}}
+    <!-- Mesh Background Overlay -->
+    <!-- <div id="overlay"></div> -->
+    <article class="content">
+        <div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}"
+             style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
+            {{> vertical_narrative}}
+            <div class="spacer" style="height: {{spacerHeight}}px">
+            </div>
         </div>
-      {{/if}}
-  {{/if}}
+        {{#unless narrativeView}}
+            <div class="horizontal-context" style="{{#unless read}}margin-top: 23px{{/unless}}">
+                {{> horizontal_context}}
+            </div>
+        {{/unless}}
+    </article>
+
+    {{#if pastHeader}}
+        {{#if read}}
+            {{> minimap}}
+        {{/if}}
+        {{#if horizontalExists}}
+            {{#unless addingContextToCurrentY}}
+                <div class="browser-offset">
+                    {{> story_browser}}
+                </div>
+            {{/unless}}}
+        {{/if}}
+    {{/if}}
 </template>
 
 <template name="vertical_narrative">
@@ -119,39 +121,52 @@
 </template>
 
 
-
-
 <template name="horizontal_section_block">
-  <section class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}" data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px">
-<!--    <div id="index">
+    <section
+            class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}"
+            data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px
+    ">
+    <!--    <div id="index">
       {{index}}
     </div> -->
     {{#if type}}
-      {{#if text}}
-        {{#if editingThisContext}}
-          {{> create_text_section}}
-        {{else}}
-          {{> display_text_section}}
+        {{#if text}}
+            {{#if editingThisContext}}
+                {{> create_text_section}}
+            {{else}}
+                {{> display_text_section}}
+            {{/if}}
         {{/if}}
-      {{/if}}
-      {{#if image}}{{> display_image_section}}{{/if}}
-      {{#if map}}
-        {{#if editingThisContext}}
-          {{> create_map_section}}
-        {{else}}
-          {{> display_map_section}}
+        {{#if image}}{{> display_image_section}}{{/if}}
+        {{#if map}}
+            {{#if editingThisContext}}
+                {{> create_map_section}}
+            {{else}}
+                {{> display_map_section}}
+            {{/if}}
         {{/if}}
-      {{/if}}
-      {{#if video}}
-        {{#if editingThisContext}}
-          {{> create_video_section}}
-        {{else}}
-          {{> display_video_section}}
+        {{#if video}}
+            {{#if editingThisContext}}
+                {{> create_video_section}}
+            {{else}}
+                {{> display_video_section}}
+            {{/if}}
         {{/if}}
-      {{/if}}
-      {{#if oec}}{{> display_oec_section}}{{/if}}
+        {{#if oec}}{{> display_oec_section}}{{/if}}
     {{/if}}
-  </section>
+    {{#if read}}
+        {{> remix_bar}}
+    {{/if}}
+    </section>
+</template>
+
+<template name="remix_bar">
+    <div class="remix-bar">
+        This card has been shared 6 times
+        <span class="remix-button">
+            {{> remix_icon_square}}
+        </span>
+    </div>
 </template>
 
 <!-- Display Templates -->
@@ -278,16 +293,19 @@
   {{#if text}}
     {{ > text_icon }}
   {{/if}}
-  {{#if participation}}
-    {{ > participation_icon }}
+  {{#if remix}}
+    {{ > remix_icon }}
   {{/if}}
 </template>
 
 <template name="favorite_button">
-  {{#if favorited}}
-    <button class='unfavorite'>Unfavorite</button>
-  {{else}}
-    <button class='favorite'>Favorite</button>
-  {{/if}}
+    <div class="favorite-button">
+        {{#if userFavorited}}
+            <button type='button' class='unfavorite'>{{> favorite_icon }}</button>
+        {{else}}
+            <button type='button' class='favorite'>{{> favorite_icon }}</button>
+        {{/if}}
+        {{favorited.length}}
+    </div>
 </template>
 
