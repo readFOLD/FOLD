@@ -270,7 +270,7 @@ div.horizontal-context {
     margin-bottom: 10px;
   }
 
-  @contentIconBannerHeight: 83px;
+  @contentIconBannerHeight: 80px;
 
   div.content-icons {
     display:flex;
@@ -278,7 +278,7 @@ div.horizontal-context {
     height: @contentIconBannerHeight;
     padding-left: 17px;
     padding-right: 17px;
-    padding-top: 19px;
+    padding-top: 18px;
     background-color: @panel-color;
     div.row {
       text-align: justify;
@@ -289,7 +289,7 @@ div.horizontal-context {
     }
     svg {
       padding: 1.5px;
-      @circle-diameter: 48px;
+      @circle-diameter: 44px;
       height: @circle-diameter;
       width: @circle-diameter;
       vertical-align: top;

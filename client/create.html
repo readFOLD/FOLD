@@ -105,6 +105,9 @@
         {{ > text_icon }}
       </div>
       <div class='unimplemented inline-block'>
+        {{ > anchor_icon }}
+      </div>
+      <div class='unimplemented inline-block'>
         {{ > remix_icon }}
       </div>
     </div>
@@ -190,12 +193,7 @@
     <ol>
       <li class="link-to-card">
         <button type="button">
-          Link to card{{ > right_arrow}}
-        </button>
-      </li>
-      <li class="link-out-of-story">
-        <button type="button" disabled>
-          Link out of story{{ > right_arrow}}
+          Link to existing card{{ > right_arrow}}
         </button>
       </li>
       {{ > context_anchor_new_card_option }}
