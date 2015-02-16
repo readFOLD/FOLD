@@ -128,7 +128,6 @@ div.title-overlay {
       padding-top: 20px;
     }
     div.title {
-      text-transform: uppercase;
       font-weight: bold;
       font-size: 30px;
       margin-bottom: 15px;
