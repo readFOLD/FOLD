@@ -302,7 +302,7 @@ Template.vertical_section_block.helpers({
     if (Session.get('read')) {
       return '<div class="content">' + this.content + '</div>';
     } else {
-      return '<div class="content editable fold-editable" contenteditable="true">' + this.content + '</div>';
+      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true">' + this.content + '</div>';
     }
   }
 });

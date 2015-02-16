@@ -10,6 +10,7 @@
 @light-color: white;
 @action-color: #00A451;
 @inactive-color: #DDDDDD;
+@placeholder-color: #bababa;
 @panel-color: #4B4F93;
 @remix-color: #D74155;
 @favorite-color: #FBB040;
@@ -156,6 +157,12 @@ button{
 
 :focus {
   outline: none;
+}
+
+//[contenteditable][placeholder]:empty:not(:focus):before {
+[contenteditable][placeholder]:empty:before {
+  content: attr(placeholder);
+  color: @placeholder-color;
 }
 
 html, body {
