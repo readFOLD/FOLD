@@ -499,7 +499,7 @@ section.horizontal-narrative-section {
   }
 
   &.editing {
-    height: 600px;
+    height: ~"calc(100% - 125px)";
     z-index: 100;
   }
 }
