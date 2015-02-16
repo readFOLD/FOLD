@@ -217,17 +217,29 @@ Tracker.autorun(function() {
 });
 
 Tracker.autorun(function(){
-  if (Session.get("addingContext")){
-    var currentSection = $('.vertical-narrative-section.selected')
-    if(currentSection.length){
+  var currentSection = $('.vertical-narrative-section.selected')
+
+  var scrollToRelativePosition = function(offset) {
+    if(currentSection.length) {
       $('body,html').animate({
-          scrollTop: currentSection.position().top + 350 + 29
-        }, 200, 'easeInExpo');
+        scrollTop: currentSection.position().top + offset
+      }, 200, 'easeInCubic');
+    }
+  };
+
+  if (Session.get("addingContext")){
+    if(currentSection.length){
+      scrollToRelativePosition(350 + 29)
     }
     var windowHeight = $(window).height()
     var bannerHeight = 100 //$('#banner-overlay').height()
     // TODO bind this to window size. Also run when arrive on page
     $('.horizontal-narrative-section.editing').height(windowHeight - bannerHeight - 25)
+  }
+  else {
+    if (currentSection.length) {
+      scrollToRelativePosition(350 + 29 - 140)
+    }
   }
 });
 
