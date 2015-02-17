@@ -17,8 +17,8 @@ Story = (function() {
       this.verticalSections.push({
         _id: Random.id(8),
         contextBlocks: [],
-        title: "Set title",
-        content: "Type some text here."
+        title: "",
+        content: ""
       });
     }
   }

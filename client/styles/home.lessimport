@@ -139,7 +139,7 @@ div.filter {
     height: 17px;
     margin-top: 7px;
     border-radius: 10px;
-    background-color: @medium-color;
+    background-color: @background-color;
 
     i {
       cursor: pointer;
@@ -230,7 +230,7 @@ div.edit-or-read {
 section.stories {
   width: 100%;
   height: 100%;
-  background-color: @medium-color;
+  background-color: @background-color;
 
   div.story-browser {
     height: 80px;

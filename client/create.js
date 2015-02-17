@@ -231,10 +231,6 @@ Tracker.autorun(function(){
     if(currentSection.length){
       scrollToRelativePosition(350 + 29)
     }
-    var windowHeight = $(window).height()
-    var bannerHeight = 100 //$('#banner-overlay').height()
-    // TODO bind this to window size. Also run when arrive on page
-    $('.horizontal-narrative-section.editing').height(windowHeight - bannerHeight - 25)
   }
   else {
     if (currentSection.length) {

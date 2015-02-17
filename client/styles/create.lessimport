@@ -256,9 +256,9 @@ div.horizontal-context {
   }
 
   section.new-section {
-    height: 300px;
+    height: @horizontal-content-height;
     font-size: 55px;
-    line-height: 300px;
+    line-height: @horizontal-content-height;
     text-align: center;
     width: 75px;
     z-index: 30;
@@ -270,13 +270,15 @@ div.horizontal-context {
     margin-bottom: 10px;
   }
 
+  @contentIconBannerHeight: 80px;
+
   div.content-icons {
     display:flex;
     justify-content:space-between;
+    height: @contentIconBannerHeight;
     padding-left: 17px;
     padding-right: 17px;
-    padding-top: 19px;
-    padding-bottom: 16px;
+    padding-top: 18px;
     background-color: @panel-color;
     div.row {
       text-align: justify;
@@ -287,7 +289,7 @@ div.horizontal-context {
     }
     svg {
       padding: 1.5px;
-      @circle-diameter: 48px;
+      @circle-diameter: 44px;
       height: @circle-diameter;
       width: @circle-diameter;
       vertical-align: top;

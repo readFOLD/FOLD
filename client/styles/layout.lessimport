@@ -6,15 +6,24 @@
 @color-medium-black: #323232;
 
 @dark-color: #333333;
-@medium-color: #CCCCCC;
+@background-color: #F8F8F8;
 @light-color: white;
 @action-color: #00A451;
 @inactive-color: #DDDDDD;
+@placeholder-color: #bababa;
 @panel-color: #4B4F93;
 @remix-color: #D74155;
 @favorite-color: #FBB040;
 @dark-favorite-color: #f2a641;
 
+@unselected-text-color: #999999;
+@unselected-background-color: #eeeeee;
+
+@selected-background-color: white;
+
+
+@remix-bar-height: 40px;
+@horizontal-content-height: 300px;
 
 
 // http://asimpleframe.com/
@@ -158,6 +167,12 @@ button{
   outline: none;
 }
 
+//[contenteditable][placeholder]:empty:not(:focus):before {
+[contenteditable][placeholder]:empty:before {
+  content: attr(placeholder);
+  color: @placeholder-color;
+}
+
 html, body {
   min-width: 1024px;
 }
@@ -171,7 +186,7 @@ body {
   //potential option for card text
   // font-family: 'Alegreya Sans' , sans-serif;
   margin: 0;
-  background-color: @medium-color;
+  background-color: @background-color;
   transition: color 0.25s ease;
   transition: background-color 0.25s ease;
 
@@ -336,17 +351,20 @@ div.vertical-narrative {
     .height-transition;
     overflow-y: scroll;
     width: 100%;
-    min-height: 300px;
-    opacity: 0.25;
+    min-height: @horizontal-content-height + @remix-bar-height;
+//    opacity: 0.25;
+    color: @unselected-text-color;
+    background-color: @unselected-background-color;
     &.read {
       margin-bottom: 12px;
     }
     // box-shadow: 3px 3px @color-medium-grey;
 
     &.selected {
+      color: @dark-color;
       cursor: default;
       opacity: 1.0;
-      background-color: white;
+      background-color: @selected-background-color;
         p {
           cursor: text;
         }
@@ -359,9 +377,9 @@ div.vertical-narrative {
   }
 
   .unminimized-new-section-bar {
-    border-top: 12px solid @medium-color;
+    border-top: 12px solid @background-color;
 
-    border-bottom: 12px solid @medium-color;
+    border-bottom: 12px solid @background-color;
 
     background-color: @color-light-grey;
     height: 95px;
@@ -378,7 +396,7 @@ div.vertical-narrative {
 
   section.new-section.minimized {
     .height-transition;
-    background-color: @medium-color;
+    background-color: @background-color;
     height: 12px;
     border-top: 0px;
     border-bottom: 0px;
@@ -434,9 +452,10 @@ div.horizontal-context {
 
 
 section.horizontal-narrative-section {
+  @unselected-opacity: 0.25;
   .left-transition;
   position: absolute;
-  height: 300px;
+  height: @horizontal-content-height;
   // box-shadow: 3px 3px #848484;
   pointer-events: none;
 
@@ -445,17 +464,31 @@ section.horizontal-narrative-section {
   background-color: @light-color;
   color: @dark-color;
   // display: none;
-  opacity: 0.25;
+  opacity:  @unselected-opacity;
+  &.text {
+    opacity: 1;
+    background-color: @unselected-background-color;
+    color: @unselected-text-color;
+    .remix-bar{
+      opacity: @unselected-opacity;
+    }
+    &.selected{
+      .remix-bar{
+        opacity: 1;
+      }
+      background-color: @selected-background-color;
+      color: @dark-color;
+    }
+  }
 
   div.remix-bar{
     padding-left: 15px;
-    @barHeight: 40px;
-    top: 300px;
-    height: @barHeight;
+    top: @horizontal-content-height;
+    height: @remix-bar-height;
     width: 100%;
     position: absolute;
     background-color: @panel-color;
-    line-height: @barHeight;
+    line-height: @remix-bar-height;
     color: white;
     svg{
       height:40px;
@@ -492,7 +525,7 @@ section.horizontal-narrative-section {
   }
 
   &.editing {
-    height: 600px;
+    height: ~"calc(100% - 125px)";
     z-index: 100;
   }
 }
