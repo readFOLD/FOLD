@@ -242,7 +242,10 @@ div#overlay {
 section.narrative-section {
   float: left;
   display: inline-block;
-  padding: 0 15px;
+  padding: 30px;
+  &.new-section{
+    padding: 0 15px;
+  }
   background-color: @light-color;
 
   a {
@@ -276,9 +279,6 @@ section.narrative-section {
     line-height: 23px;
     text-align: left;
     font-size: 20px;
-    margin-top: 30px;
-    margin-left:15px;
-    margin-right:15px;
     font-weight: 600;
   }
 
@@ -290,9 +290,6 @@ section.narrative-section {
     text-align: left;
     font-size: 17px;
     margin-top: 25px;
-    margin-left: 15px;
-    margin-right: 18px;
-    margin-bottom: 30px;
     &.minimized {
       height: 0;
       display: none;
