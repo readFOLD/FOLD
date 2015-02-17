@@ -6,7 +6,7 @@
 @color-medium-black: #323232;
 
 @dark-color: #333333;
-@medium-color: #CCCCCC;
+@background-color: #F8F8F8;
 @light-color: white;
 @action-color: #00A451;
 @inactive-color: #DDDDDD;
@@ -15,6 +15,9 @@
 @remix-color: #D74155;
 @favorite-color: #FBB040;
 @dark-favorite-color: #f2a641;
+
+@unselected-text-color: #999999;
+@unselected-background-color: #eeeeee;
 
 
 @remixBarHeight: 40px;
@@ -181,7 +184,7 @@ body {
   //potential option for card text
   // font-family: 'Alegreya Sans' , sans-serif;
   margin: 0;
-  background-color: @medium-color;
+  background-color: @background-color;
   transition: color 0.25s ease;
   transition: background-color 0.25s ease;
 
@@ -347,13 +350,16 @@ div.vertical-narrative {
     overflow-y: scroll;
     width: 100%;
     min-height: @horizontalContentHeight + @remixBarHeight;
-    opacity: 0.25;
+//    opacity: 0.25;
+    color: @unselected-text-color;
+    background-color: @unselected-background-color;
     &.read {
       margin-bottom: 12px;
     }
     // box-shadow: 3px 3px @color-medium-grey;
 
     &.selected {
+      color: @dark-color;
       cursor: default;
       opacity: 1.0;
       background-color: white;
@@ -369,9 +375,9 @@ div.vertical-narrative {
   }
 
   .unminimized-new-section-bar {
-    border-top: 12px solid @medium-color;
+    border-top: 12px solid @background-color;
 
-    border-bottom: 12px solid @medium-color;
+    border-bottom: 12px solid @background-color;
 
     background-color: @color-light-grey;
     height: 95px;
@@ -388,7 +394,7 @@ div.vertical-narrative {
 
   section.new-section.minimized {
     .height-transition;
-    background-color: @medium-color;
+    background-color: @background-color;
     height: 12px;
     border-top: 0px;
     border-bottom: 0px;
