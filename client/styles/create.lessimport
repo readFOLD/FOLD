@@ -256,9 +256,9 @@ div.horizontal-context {
   }
 
   section.new-section {
-    height: @horizontalContentHeight;
+    height: @horizontal-content-height;
     font-size: 55px;
-    line-height: @horizontalContentHeight;
+    line-height: @horizontal-content-height;
     text-align: center;
     width: 75px;
     z-index: 30;

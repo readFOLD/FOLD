@@ -19,9 +19,11 @@
 @unselected-text-color: #999999;
 @unselected-background-color: #eeeeee;
 
+@selected-background-color: white;
 
-@remixBarHeight: 40px;
-@horizontalContentHeight: 300px;
+
+@remix-bar-height: 40px;
+@horizontal-content-height: 300px;
 
 
 // http://asimpleframe.com/
@@ -349,7 +351,7 @@ div.vertical-narrative {
     .height-transition;
     overflow-y: scroll;
     width: 100%;
-    min-height: @horizontalContentHeight + @remixBarHeight;
+    min-height: @horizontal-content-height + @remix-bar-height;
 //    opacity: 0.25;
     color: @unselected-text-color;
     background-color: @unselected-background-color;
@@ -362,7 +364,7 @@ div.vertical-narrative {
       color: @dark-color;
       cursor: default;
       opacity: 1.0;
-      background-color: white;
+      background-color: @selected-background-color;
         p {
           cursor: text;
         }
@@ -450,9 +452,10 @@ div.horizontal-context {
 
 
 section.horizontal-narrative-section {
+  @unselected-opacity: 0.25;
   .left-transition;
   position: absolute;
-  height: @horizontalContentHeight;
+  height: @horizontal-content-height;
   // box-shadow: 3px 3px #848484;
   pointer-events: none;
 
@@ -461,16 +464,31 @@ section.horizontal-narrative-section {
   background-color: @light-color;
   color: @dark-color;
   // display: none;
-  opacity: 0.25;
+  opacity:  @unselected-opacity;
+  &.text {
+    opacity: 1;
+    background-color: @unselected-background-color;
+    color: @unselected-text-color;
+    .remix-bar{
+      opacity: @unselected-opacity;
+    }
+    &.selected{
+      .remix-bar{
+        opacity: 1;
+      }
+      background-color: @selected-background-color;
+      color: @dark-color;
+    }
+  }
 
   div.remix-bar{
     padding-left: 15px;
-    top: @horizontalContentHeight;
-    height: @remixBarHeight;
+    top: @horizontal-content-height;
+    height: @remix-bar-height;
     width: 100%;
     position: absolute;
     background-color: @panel-color;
-    line-height: @remixBarHeight;
+    line-height: @remix-bar-height;
     color: white;
     svg{
       height:40px;
