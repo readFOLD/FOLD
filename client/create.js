@@ -415,6 +415,7 @@ AutoForm.hooks({
       }
     }
   })
+  //TODO createVideoSectionForm
 });
 
 createBlockHelpers = {
@@ -445,11 +446,9 @@ Template.create_video_section.events(createBlockEvents);
 
 Template.create_video_section.events({
   "submit": function(d) {
-    var horizontalIndex, parentSection, srcE, url, videoId, _ref;
+    var url, videoId, _ref;
     d.preventDefault();
-    srcE = d.srcElement ? d.srcElement : d.target;
-    parentSection = $(srcE).closest('section');
-    horizontalIndex = parentSection.data('index');
+
     url = $('input.youtube-link-input').val();
     videoId = (_ref = url.match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/)) != null ? _ref[1] : void 0;
     return Meteor.call('youtubeVideoInfo', videoId, function(err, info) {
@@ -475,11 +474,8 @@ Template.create_video_section.events({
   },
 
   "click .search": function(d, template) {
-    var horizontalIndex, parentSection, srcE, videoSearch, _ref;
+    var videoSearch, _ref;
     d.preventDefault();
-    srcE = d.srcElement ? d.srcElement : d.target;
-    parentSection = $(srcE).closest('section');
-    horizontalIndex = parentSection.data('index');
 
     videoSearch = $('input.youtube-search-input').val();
     console.log("video search input = " + videoSearch);
@@ -497,13 +493,13 @@ Template.create_video_section.events({
         element.service = 'youtube';
         element.videoUsername = element.channelTitle;
         element.videoUsernameId = element.channelId;
-        element.creationDate = element.publishedAt;        
+        element.videoCreationDate = element.publishedAt;        
         delete element.channelTitle;
         delete element.channelId;
         delete element.publishedAt;
         return element;
       });
-      VideoSearchResults.remove({});
+
       _.each(results, function(result) {
         VideoSearchResults.insert(result);
       });

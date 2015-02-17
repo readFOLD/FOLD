@@ -393,7 +393,7 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  creationDate: {
+  videoCreationDate: {
     type: String,
     optional: true
   },
