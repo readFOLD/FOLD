@@ -435,6 +435,13 @@ div.horizontal-context {
     z-index: 10;
     overflow: hidden;
     .size-to-fit;
+    img{
+      width: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
   }
   div.active-display {
     z-index: 20;
