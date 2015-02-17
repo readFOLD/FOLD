@@ -283,7 +283,7 @@ section.narrative-section {
   }
 
   div.content {
-    min-height: 100px;
+    min-height: 232px;
     line-height: 26px;
     overflow-y: scroll;
     overflow-x: hidden;
