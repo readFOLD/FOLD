@@ -3,18 +3,18 @@
 @color-light-green: #8CC63E;
 @color-fold-black: #272727;
 @color-link-grey: #d7dbd8;
-@color-medium-black: #323232;
+@color-medium-black: #1D1D1D;
 
-@dark-color: #333333;
+@dark-color: #323232;
 @background-color: #F8F8F8;
 @light-color: white;
-@action-color: #00A451;
+@action-color: #1DB259;
 @inactive-color: #DDDDDD;
 @placeholder-color: #bababa;
-@panel-color: #4B4F93;
-@remix-color: #D74155;
-@favorite-color: #FBB040;
-@dark-favorite-color: #f2a641;
+@panel-color: #585094;
+@remix-color: #EA1D75;
+@favorite-color: #FFD600;
+@dark-favorite-color: #EFC820;
 
 @unselected-text-color: #999999;
 @unselected-background-color: #eeeeee;
@@ -497,20 +497,20 @@ section.horizontal-narrative-section {
 
 div.minimap {
   padding: 10px;
-  padding-bottom: 6px;
-  background-color: black;
+  padding-bottom: 4px;
   position: fixed;
-  bottom: 12px;
-  right: 12px;
+  bottom: 6px;
+  right: 6px;
 
   div.vertical.block {
-    height: 18px;
-    width: 28px;
+    height: 17px;
+    width: 26px;
+    margin-right: 1px;
   }
 
   div.section {
     height: 20px;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
 
     &.selected-section {
       div.selected-block {
@@ -520,9 +520,9 @@ div.minimap {
   }
 
   div.horizontal.block {
-    margin-bottom: 3px;
-    height: 14px;
-    width: 22px;
+    margin-bottom: 1px
+    height: 13px;
+    width: 20px;
     margin-left: 1px;
 
     &::before {
@@ -530,7 +530,6 @@ div.minimap {
       padding-right: 5px;
       left: -5px;
       top: 7px;
-      border-top: 2px solid white;
       width: 10px;
       content: ""
     }
@@ -540,7 +539,7 @@ div.minimap {
     .background-transition;
     height: 15px;
     width: 20px;
-    background-color: white;
+    background-color: @color-medium-grey;
     display: inline-block;
 
     &.selected {
