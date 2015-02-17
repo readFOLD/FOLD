@@ -156,8 +156,8 @@ Template.add_vertical.events({
     verticalSections.splice(indexToInsert, 0, {
       _id: Random.id(8),
       contextBlocks: [],
-      title: "Set title",
-      content: "Type some text here."
+      title: "",
+      content: ""
     });
     return Stories.update({
       _id: storyId
