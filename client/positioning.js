@@ -8,7 +8,7 @@ window.getVerticalHeights = function() {
   verticalHeights = [constants.readModeOffset];
   sum = constants.readModeOffset;
   $('section.vertical-narrative-section').each(function() {
-    sum += $(this).height() + 12;
+    sum += $(this).outerHeight() + 12;
     return verticalHeights.push(sum);
   });
   return verticalHeights;

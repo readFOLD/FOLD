@@ -111,7 +111,6 @@ div.filter {
   background-color: @dark-color;
   margin-top: -2px;
   color: white;
-  // text-transform: uppercase;
   margin-top: -32px;
   padding-left: 10px;
   line-height: 32px;

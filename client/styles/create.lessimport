@@ -142,9 +142,9 @@ div.title-overlay {
 div.button-options {
   div {
     // box-shadow: 3px 3px @color-medium-grey;
-    background-color: @color-light-grey;
+    background-color: @dark-color;
+    color: @color-light-grey;
     cursor: pointer;
-    text-transform: uppercase;
     padding: 5px;
     text-align: center;
     font-size: 16px;
@@ -157,7 +157,7 @@ div.button-options {
 
     &:hover {
       background-color: @action-color;
-      color: @color-medium-grey;
+      color: @dark-color;
     }
   }
 
@@ -202,20 +202,50 @@ div.narrativeView {
   }
 }
 
+section.new-section {
+  fill: @dark-color;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 div.vertical-narrative {
   z-index: 20;
 
-    section.new-section {
-      height: 75px;
-      font-size: 55px;
-      line-height: 75px;
-      text-align: center;
-      color: black;
+  section.new-section {
+    min-height: 75px;
+    height: 75px;
+    overflow: hidden;
+    font-size: 55px;
+    line-height: 75px;
+    text-align: center;
+  }
 
-      &:hover {
-        cursor: pointer;
+
+  .unminimized-new-section-bar {
+    border-top: 12px solid @background-color;
+    border-bottom: 12px solid @background-color;
+    background-color: @selected-background-color;
+    height: 95px;
+  }
+
+  section.new-section.unminimized {
+    .unminimized-new-section-bar;
+  }
+
+  section.new-section.minimized {
+    .height-transition;
+    background-color: @background-color;
+    height: 12px;
+    border-top: 0px;
+    border-bottom: 0px;
+    min-height: 0px;
+
+    &:hover {
+      .unminimized-new-section-bar;
     }
-    }
+  }
 }
 
 textarea {
@@ -503,6 +533,7 @@ div#fold-editor{
     width: 100%;
     height: 37.5px;
     svg, .left-arrow{
+    fill: @dark-color;
       text-align: center;
       height: 21px;
       width: 21px;

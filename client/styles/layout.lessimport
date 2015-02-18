@@ -3,18 +3,18 @@
 @color-light-green: #8CC63E;
 @color-fold-black: #272727;
 @color-link-grey: #d7dbd8;
-@color-medium-black: #323232;
+@color-medium-black: #1D1D1D;
 
-@dark-color: #333333;
+@dark-color: #323232;
 @background-color: #F8F8F8;
 @light-color: white;
-@action-color: #00A451;
+@action-color: #1DB259;
 @inactive-color: #DDDDDD;
 @placeholder-color: #bababa;
-@panel-color: #4B4F93;
-@remix-color: #D74155;
-@favorite-color: #FBB040;
-@dark-favorite-color: #f2a641;
+@panel-color: #585094;
+@remix-color: #EA1D75;
+@favorite-color: #FFD600;
+@dark-favorite-color: #EFC820;
 
 @unselected-text-color: #999999;
 @unselected-background-color: #eeeeee;
@@ -242,7 +242,10 @@ div#overlay {
 section.narrative-section {
   float: left;
   display: inline-block;
-  padding: 0 15px;
+  padding: 30px;
+  &.new-section{
+    padding: 0 15px;
+  }
   background-color: @light-color;
 
   a {
@@ -276,23 +279,17 @@ section.narrative-section {
     line-height: 23px;
     text-align: left;
     font-size: 20px;
-    margin-top: 30px;
-    margin-left:15px;
-    margin-right:15px;
     font-weight: 600;
   }
 
   div.content {
-    min-height: 100px;
+    min-height: 232px;
     line-height: 26px;
     overflow-y: scroll;
     overflow-x: hidden;
     text-align: left;
     font-size: 17px;
     margin-top: 25px;
-    margin-left: 15px;
-    margin-right: 18px;
-    margin-bottom: 30px;
     &.minimized {
       height: 0;
       display: none;
@@ -371,45 +368,6 @@ div.vertical-narrative {
       }
   }
 
-  section.new-section {
-    min-height: 75px;
-    overflow: hidden;
-  }
-
-  .unminimized-new-section-bar {
-    border-top: 12px solid @background-color;
-
-    border-bottom: 12px solid @background-color;
-
-    background-color: @color-light-grey;
-    height: 95px;
-    overflow-y: hidden;
-    i {
-      display: inline-block;
-    }
-
-  }
-
-  section.new-section.unminimized {
-    .unminimized-new-section-bar;
-  }
-
-  section.new-section.minimized {
-    .height-transition;
-    background-color: @background-color;
-    height: 12px;
-    border-top: 0px;
-    border-bottom: 0px;
-
-    min-height: 0px;
-    i {
-      display: none;
-    }
-
-    &:hover {
-      .unminimized-new-section-bar;
-    }
-  }
 }
 
 div.oec-section {
@@ -438,6 +396,13 @@ div.horizontal-context {
     z-index: 10;
     overflow: hidden;
     .size-to-fit;
+    img{
+      width: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
   }
   div.active-display {
     z-index: 20;
@@ -532,20 +497,20 @@ section.horizontal-narrative-section {
 
 div.minimap {
   padding: 10px;
-  padding-bottom: 6px;
-  background-color: black;
+  padding-bottom: 4px;
   position: fixed;
-  bottom: 12px;
-  right: 12px;
+  bottom: 6px;
+  right: 6px;
 
   div.vertical.block {
-    height: 18px;
-    width: 28px;
+    height: 17px;
+    width: 26px;
+    margin-right: 1px;
   }
 
   div.section {
     height: 20px;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
 
     &.selected-section {
       div.selected-block {
@@ -555,9 +520,9 @@ div.minimap {
   }
 
   div.horizontal.block {
-    margin-bottom: 3px;
-    height: 14px;
-    width: 22px;
+    margin-bottom: 1px
+    height: 13px;
+    width: 20px;
     margin-left: 1px;
 
     &::before {
@@ -565,7 +530,6 @@ div.minimap {
       padding-right: 5px;
       left: -5px;
       top: 7px;
-      border-top: 2px solid white;
       width: 10px;
       content: ""
     }
@@ -575,7 +539,7 @@ div.minimap {
     .background-transition;
     height: 15px;
     width: 20px;
-    background-color: white;
+    background-color: @color-medium-grey;
     display: inline-block;
 
     &.selected {
