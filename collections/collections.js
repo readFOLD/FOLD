@@ -404,6 +404,10 @@ Schema.ContextBlocks = new SimpleSchema({
   videoUsernameId: {
     type: String,
     optional: true
+  },
+  searchQuery: {
+    type:String,
+    optional:true
   }
 });
 

@@ -29,7 +29,7 @@ Meteor.methods({
     requestParams = {
       part: 'snippet',
       q: query,
-      maxResults: 3,
+      maxResults: 10,
       key: GOOGLE_API_SERVER_KEY,
     };
     res = HTTP.get('https://www.googleapis.com/youtube/v3/search', {

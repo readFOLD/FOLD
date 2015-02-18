@@ -411,12 +411,59 @@ div.image-section {
   }
 }
 
-div.video-results {
+@videoSearchFormHeight: 400px; 
+div.video-search-form {
+  height: calc(100%);
+}
+
+ 
+div.video-search-results {
   background-color: #ffffff;
   width: 100%;
+  height: 500px;
   overflow: scroll;
   margin-top: 27px;
+
+  @videoHeight: 90px;
+  @videoWidth: 120px;
+
+  div.small-search-result {
+    border-top: 1px dashed @action-color;
+    max-height: 230px;
+  }
+
+  div.small-video-thumbnail{
+    margin-bottom: -50px;
+    padding-top: 15px;
+
+  }
+  div.video-info{
+    font-size: 85%;
+    position:relative;
+    top: calc(-35px ~"-" @videoHeight);
+    left: calc(15px ~"+" @videoWidth);
+    width: calc(100% ~"-" 30px ~"-" @videoWidth) ;
+    max-height: calc(2~'*'@videoHeight);
+
+    #vid-title {
+      font-weight: bold;
+      
+    }
+    #vid-descr, #vid-user, #vid-title {
+      margin-bottom: -10px;
+    }
+  }
+  #vid-date {
+    font-size: 85%;
+    padding: 10px;
+    text-align: right;
+    margin-top: -@videoHeight;
+    
+  }
 }
+
+
+
 
 div.anchor-menu {
   display: none;

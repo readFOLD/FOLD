@@ -487,21 +487,23 @@ Template.create_video_section.events({
       results = _.map(results, function(element) {
         element.type = 'video';
         element.service = 'youtube';
+        element.searchQuery = videoSearch;
         element.videoUsername = element.channelTitle;
         element.videoUsernameId = element.channelId;
-        element.videoCreationDate = element.publishedAt;        
+        element.videoCreationDate = element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1");        
         delete element.channelTitle;
         delete element.channelId;
         delete element.publishedAt;
         return element;
       });
-
+      VideoSearchResults.remove({});
       _.each(results, function(result) {
         VideoSearchResults.insert(result);
       });
+
       return;
-    });
-  }
+      });
+  },
 });
 
 

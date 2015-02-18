@@ -167,34 +167,33 @@
 
 <template name="create_video_section">
   <div class="create-section">
-    <form class="youtube-link">
-      <div class="input-label">Youtube Link:</div>
-      <input name='youtube' class="youtube-link-input">
-      <button type="submit">Link</button>
-      <div class="input-label">Youtube Search:</div>
-      <input name='youtube' class="youtube-search-input">
-      <button type="button" class="search">Search</button>
-    </form>
+    <div class="video-search-form">
+      <form class="youtube-link">
+        <div class="input-label">Youtube Link:</div>
+        <input name='youtube' class="youtube-link-input">
+        <button type="submit">Link</button>
+        <div class="input-label">Youtube Search:</div>
+        <input name='youtube' class="youtube-search-input">
+        <button type="button" class="search">Search</button>
+      </form>
+    </div>
     {{#if url}}
       <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
     {{else}}
-      <div class="video-results">
-        <table class="video-table">
+      <div class="video-search-results">
         {{#each results}}
-          <tr>
-            <td><iframe frameborder="0" style="border:0" width="100%" height="300" src="{{thumbnailUrl}}"></iframe></td>
-            <td>
-              <div>{{title}}</div>
-              <div>{{description}}</div>
-              <div>{{videoUsername}}</div>
-            </td>
-            <td></td>
-            <td>
-              <div>{{creationDate}}</div>
-            </td>
-          </tr>
+          <div class="small-search-result">
+            <div class="small-video-thumbnail">
+              <iframe frameborder="0" style="border:0" width="100%" src="{{thumbnailUrl}}"></iframe>
+            </div>
+            <div class="video-info">
+              <p id="vid-title">{{title}}</p>
+              <p id="vid-descr">{{description}}</p>
+              <p id="vid-user">{{videoUsername}}</p>
+            </div>
+          </div>
+          <p id="vid-date">{{videoCreationDate}}</p>
         {{/each}}
-        </table>
       </div>
     {{/if}}
   </div>
