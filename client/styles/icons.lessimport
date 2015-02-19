@@ -1,5 +1,6 @@
 svg.icon {
   .size-to-fit;
+  fill: @dark-color;
 }
 svg.add-card-icon{
   height:44px;
