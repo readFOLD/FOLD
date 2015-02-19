@@ -202,7 +202,7 @@ div.narrativeView {
   }
 }
 
-section.new-section {
+.new-section {
   fill: @dark-color;
 
   &:hover {
@@ -213,7 +213,7 @@ section.new-section {
 div.vertical-narrative {
   z-index: 20;
 
-  section.new-section {
+  .new-section {
     min-height: 75px;
     height: 75px;
     overflow: hidden;
@@ -230,11 +230,11 @@ div.vertical-narrative {
     height: 95px;
   }
 
-  section.new-section.unminimized {
+  .new-section.unminimized {
     .unminimized-new-section-bar;
   }
 
-  section.new-section.minimized {
+  .new-section.minimized {
     .height-transition;
     background-color: @background-color;
     height: 12px;
@@ -278,7 +278,7 @@ svg{
     transition: fill 0.25s ease;
 }
 
-section.new-section {
+.new-section {
   &:hover {
     fill: @action-color;
   }
@@ -290,7 +290,7 @@ div.horizontal-context {
     padding: 0;
   }
 
-  section.new-section {
+  .new-section {
     height: @horizontal-content-height;
     font-size: 55px;
     line-height: @horizontal-content-height;
@@ -353,7 +353,7 @@ div.horizontal-context {
     }
   }
 
-  section.horizontal-new-section {
+  .horizontal-new-section {
     position: absolute;
     background-color: @light-color;
     svg{

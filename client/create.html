@@ -52,15 +52,15 @@
 </template>
 
 <template name="add_vertical_minimized">
-  <section class="narrative-section new-section minimized">
+  <div class="narrative-section new-section minimized">
     {{ > add_vertical}}
-  </section>
+  </div>
 </template>
 
 <template name="add_vertical_unminimized">
-  <section class="narrative-section new-section unminimized">
+  <div class="narrative-section new-section unminimized">
     {{ > add_vertical}}
-  </section>
+  </div>
 </template>
 
 <template name="add_vertical">
@@ -71,14 +71,14 @@
 
 
 <template name="add_horizontal">
-  <section class="narrative-section new-section horizontal-new-section {{#if addingContextToCurrentY}}editing{{/if}}" style="left: {{left}}px">
+  <div class="narrative-section new-section horizontal-new-section {{#if addingContextToCurrentY}}editing{{/if}}" style="left: {{left}}px">
     {{ > add_card_icon}}
-  </section>
+  </div>
 </template>
 
 
 <template name="create_horizontal_section_block">
-  <section class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px">
+  <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px">
     <div class="content-icons">
       <div class='unimplemented inline-block'>
         {{ > twitter_icon }}
@@ -117,7 +117,7 @@
       {{#if map}}{{> create_map_section}}{{/if}}
       {{#if video}}{{> create_video_section}}{{/if}}
     {{/if}}
-  </section>
+  </div>
 </template>
 
 <template name="create_section_options">

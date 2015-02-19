@@ -159,6 +159,10 @@ button{
   cursor: pointer;
 }
 
+section{
+  .size-to-fit;
+}
+
 *, *:before, *:after {
   -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
@@ -239,10 +243,13 @@ div#overlay {
   user-select: none;
 }
 
-section.narrative-section {
+.vertical-narrative-section {
+    padding: 30px;
+}
+
+.narrative-section {
   float: left;
   display: inline-block;
-  padding: 30px;
   &.new-section{
     padding: 0 15px;
   }
@@ -342,7 +349,7 @@ div.vertical-narrative {
     clear: both;
   }
 
-  section.narrative-section {
+  .narrative-section {
     position: relative;
     .width-transition;
     .height-transition;
@@ -416,7 +423,7 @@ div.horizontal-context {
 
 
 
-section.horizontal-narrative-section {
+.horizontal-narrative-section {
   @unselected-opacity: 0.25;
   .left-transition;
   position: absolute;
