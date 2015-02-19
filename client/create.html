@@ -177,14 +177,18 @@
 
 
 <template name="horizontal_section_edit_delete">
-  <div class="button-options edit-delete">
-    <div class="edit button">
-      <i class="fa fa-pencil"></i>
-    </div>
-    <div class="delete button">
-      <i class="fa fa-times"></i>
-    </div>
-  </div>
+  {{#unless read}}
+    {{#if selected}}
+      <div class="button-options edit-delete">
+        <div class="edit button">
+          <i class="fa fa-pencil"></i>
+        </div>
+        <div class="delete button">
+          <i class="fa fa-times"></i>
+        </div>
+      </div>
+    {{/if}}
+  {{/unless}}
 </template>
 
 
