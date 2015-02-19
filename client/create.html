@@ -182,17 +182,19 @@
     {{else}}
       <div class="video-search-results">
         {{#each results}}
-          <div class="small-search-result">
-            <div class="small-video-thumbnail">
-              <iframe frameborder="0" style="border:0" width="100%" src="{{thumbnailUrl}}"></iframe>
+          <div class="search-result">
+            <div class="{{size}}-search-result">
+              <div class="{{size}}-video-thumbnail">
+                <iframe frameborder="0" style="border:0" width="100%" src="{{thumbnailUrl}}"></iframe>
+              </div>
+              <div class="video-info">
+                <p id="vid-title">{{title}}</p>
+                <p id="vid-descr">{{description}}</p>
+                <p id="vid-user">{{videoUsername}}</p>
+              </div>
             </div>
-            <div class="video-info">
-              <p id="vid-title">{{title}}</p>
-              <p id="vid-descr">{{description}}</p>
-              <p id="vid-user">{{videoUsername}}</p>
-            </div>
+            <p id="vid-date">{{videoCreationDate}}</p>
           </div>
-          <p id="vid-date">{{videoCreationDate}}</p>
         {{/each}}
       </div>
     {{/if}}

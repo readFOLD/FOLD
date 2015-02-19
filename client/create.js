@@ -434,7 +434,16 @@ Template.create_video_section.helpers(createBlockHelpers);
 
 Template.create_video_section.helpers({ 
   results: function(){
-    return VideoSearchResults.find();
+      var array =[]
+      VideoSearchResults.find({}).forEach(function(result) {
+        if (result.searchQuery == $('input.youtube-search-input').val()) {  
+          array[array.length] = result;
+        }
+      });
+      return array;
+  },
+  size: function(){
+    return 'small';
   }
 });
 
@@ -496,7 +505,6 @@ Template.create_video_section.events({
         delete element.publishedAt;
         return element;
       });
-      VideoSearchResults.remove({});
       _.each(results, function(result) {
         VideoSearchResults.insert(result);
       });
@@ -504,6 +512,11 @@ Template.create_video_section.events({
       return;
       });
   },
+
+  "dblclick .search-result": function(d) {
+    // console.log(d);
+    // console.log(d.currentTarget.children[0]);
+  }
 });
 
 
