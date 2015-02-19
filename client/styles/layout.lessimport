@@ -204,9 +204,10 @@ div.story-browser {
   width: 100%;
   height: 0px;
   z-index: 10;
-
-  img {
-    color: white;
+  div{
+    display: inline-block;
+  }
+  svg {
     cursor: pointer;
     margin-top: 275px;
     border-radius: 30px;
@@ -219,7 +220,7 @@ div.story-browser {
     }
   }
 
-  img.right {
+  .right {
     float: right;
   }
 }

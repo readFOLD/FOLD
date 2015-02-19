@@ -5,11 +5,16 @@ svg.icon {
 svg.add-card-icon{
   height:44px;
   width:44px;
-}svg.remix-icon{
+}
+svg.remix-icon{
   fill: @remix-color;
 }
 svg.remix-icon-square{
   fill: @remix-color;
+}
+svg.browse-arrow {
+  height: 60px;
+  width: 60px;
 }
 .favorite-button{
   @height: 25px;
