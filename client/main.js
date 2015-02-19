@@ -459,6 +459,9 @@ Template.display_video_section.helpers(horizontalBlockHelpers);
 
 Template.display_map_section.helpers(horizontalBlockHelpers);
 
+Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
+
+
 Template.story_browser.events({
   "click .right": function(d) {
     var currentX, horizontalSection, newX, path;

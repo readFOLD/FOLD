@@ -264,7 +264,7 @@ toggleHorizontalUI = function() {
 };
 
 Template.add_horizontal.events({
-  "click section": function(d) {
+  "click": function(d) {
     return toggleHorizontalUI();
   }
 });
@@ -612,7 +612,7 @@ Template.create_options.events({
     oldStory = Session.get("story");
     contextBlocks = _.pluck(oldStory.verticalSections, 'contextBlocks');
     verticalSections = [];
-    $('section.vertical-narrative-section').each(function(verticalIndex) {
+    $('.vertical-narrative-section').each(function(verticalIndex) {
       var content, title, verticalId;
       verticalId = $(this).data('verticalId');
       title = $.trim($(this).find('div.title').text());
