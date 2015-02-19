@@ -153,12 +153,16 @@ Template.add_vertical.events({
     verticalSections = Session.get('story').verticalSections;
     indexToInsert = this.index != null ? this.index : verticalSections.length;
     console.log(indexToInsert);
+    // TODO - Once Meteor upgrades to use Mongo 2.6
+    // This should use the $position operator and work directly there
+    // Also, can probably get rid of the blackbox: true on verticalSections in the schema!
     verticalSections.splice(indexToInsert, 0, {
       _id: Random.id(8),
       contextBlocks: [],
       title: "",
       content: ""
     });
+
     return Stories.update({
       _id: storyId
     }, {
