@@ -264,7 +264,7 @@ toggleHorizontalUI = function() {
 };
 
 Template.add_horizontal.events({
-  "click section": function(d) {
+  "click": function(d) {
     return toggleHorizontalUI();
   }
 });
