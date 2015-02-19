@@ -187,7 +187,8 @@ Schema.Stories = new SimpleSchema({
     type: String
   },
   'verticalSections.$.title': {
-    type: String
+    type: String,
+    optional: true
   },
   'verticalSections.$.content': {
     type: String
