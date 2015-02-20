@@ -2,10 +2,9 @@ var addContextToStory, autoFormContextAddedHooks, createBlockEvents, createBlock
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 window.updateUIBasedOnSelection = function(e){
-  var selection;
-  selection = window.getSelection();
+  var selection = window.getSelection();
 
-
+  // Based off of code from https://github.com/daviferreira/medium-editor
   return setTimeout((function(_this) {
     return function() {
       var boundary, boundaryMiddle, pageYOffset, range;
@@ -23,7 +22,7 @@ window.updateUIBasedOnSelection = function(e){
         var parentNode = selectedParentElement;
         var selectedTags = [];
 
-        while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') { // && this.parentElements.indexOf(parentNode.tagName.toLowerCase) === -1) {
+        while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') {
           selectedTags.push(parentNode.tagName.toLowerCase());
 
           parentNode = parentNode.parentNode;
