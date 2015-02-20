@@ -355,7 +355,8 @@ Template.horizontal_context.helpers({
   horizontalSections: function() {
     return this.verticalSections.map(function(verticalSection, verticalIndex) {
       var sortedContext, unsortedContext;
-      if (Session.get('read')){
+
+      if (Session.get('read')){ // In READ, these are denormalized right on the document
         var data = verticalSection.contextBlocks.map(function(datum, index){
           return _.extend({}, datum, {index: index});
         }).map(window.newTypeSpecificContextBlock);
@@ -363,7 +364,7 @@ Template.horizontal_context.helpers({
           data: data,
           index: verticalIndex
         }
-      } else {
+      } else { // In CREATE, these need to be looked up from the db
         unsortedContext = ContextBlocks.find({
           _id: {
             $in: verticalSection.contextBlocks
