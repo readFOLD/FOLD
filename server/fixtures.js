@@ -21,56 +21,68 @@ if (Meteor.users.find().count() === 0) {
 if (Stories.find().count() === 0) {
   Stories.insert({
     _id: '548781e397a6427c31384b73',
-    backgroundImage: "header-image.jpg",
-    headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     lastSaved: new Date(1406524368561),
     publishDate: new Date(1406524369993),
     published: true,
     userPathSegment: "author",
     storyPathSegment: "unfolding-the-2014-ebola-outbreak",
-    title: "Unfolding the 2014 Ebola Outbreak",
     authorId: authorId,
     authorName: authorProfile.name,
     favorited: [],
     views: 0,
-    verticalSections: [
-      {
-        _id: '93',
-        contextBlocks: [],
-        title: "Introduction",
-        content: "Earlier this year, a major outbreak of a hemorrhagic fever called Ebola began in Guinea. Ebola was first reported nearly 40 years ago in 1976, though the death toll of this outbreak numbers 3,000 — the largest in recorded history. Because of the medical complexities of the disease, there is currently no cure, and infection has spread to other neighboring countries. The outbreak is drawing the concern of governments and international health organizations alike, and responses have included both investment in health infrastructure as well as more drastic measures like border closures. In addition to the tragic loss of human life, the outbreak has severely crippled the economies of the affected countries."
-      }, {
-        _id: '24',
-        contextBlocks: ['0', '1', '2'],
-        title: "Geographic",
-        content: "The recent Ebola outbreak began in a remote area of Guinea, but has since spread to neighboring countries and is currently concentrated in Guinea, Liberia, and Sierra Leone. <a href='#1'>Cases of the virus have also been reported in Nigeria</a>, but the virus appears to be largely contained. This is the first time in recorded history that an outbreak of the virus has occurred in West Africa."
-      }, {
-        _id: '43',
-        contextBlocks: ['3', '4', '5', '6', '7', '8'],
-        title: "Scientific / Medical",
-        content: "There is currently no vaccine or cure for Ebola, a <a href='#3'>virus</a> that works by evading the human immune system and causing white blood cells to die off. The illness first causes flu-like symptoms, and can progress to <a href='#5'>symptoms that can promote even greater disease transmission</a>. Ebola is spread via contact with bodily fluids like blood, and not transmitted through aerosols in the air. Health care workers are at great risk for contracting the disease, especially in areas where it is difficult for them to obtain protective equipment and where people are more likely to present at clinics in the later stages of the disease. Some people who contract the disease are held in <a href='#6'>isolation chambers</a>, though these are prohibitively expensive for most clinics. It is likely that the disease was originally contracted from <a href='#7'>human contact with wild animals like bats</a>, and scientists have only recently begun to understand <a href='#4'>how the disease evolved to affect humans</a>. Medical professionals are working to <a href='#8'>educate communities</a> about how the virus is spread, what precautions can be taken, and what symptoms to look out for."
-      }, {
-        _id: '23',
-        contextBlocks: ['9', '10', '11', '12', '13'],
-        title: "Political",
-        content: "Governments of the affected countries, as well as international health organizations, have had different approaches to managing the outbreak. Some responses involve border closures and involuntary quarantine; in Sierra Leone, <a href='#9'>the government ordered residents to stay in their homes</a> for three days to prevent transmission of the disease. Larger organizations, like the African Union, <a href='#10'>are also discussing possible responses</a> to managing the outbreak, and figuring out ways to work together with organizations like Médecins sans Frontières (MSF) and the World Health Organization (WHO). MSF has come out against mandatory quarantine, stating that it will “end up driving people underground and [jeopardize] the trust between people and health providers.” U.S. President Barack Obama is pledging funds and <a href='#11'>ordering 3,000 U.S. troops to the region</a> to erect isolation facilities and strengthen communication protocols, though <a href='#12'>many have criticized the global community</a> for being slow to act, and only caring about the outbreak after <a href='#13'>several non-Africans became infected with the disease in late July.</a>"
-      }, {
-        _id: '39',
-        contextBlocks: ['14', '15', '16', '17'],
-        title: "Historical",
-        content: "<a href='#15'>In 1976</a>, Ebola first emerged in Sudan and Zaire, two countries in <a href='#15'>Central Africa</a>. This outbreak killed approximately 300 people, and although epidemiologists studied the area extensively, Ebola’s natural reservoir in the environment was never discovered. In 1989, Ebola was also discovered in the Philippines, after monkeys infected with the disease were exported from there to an animal testing laboratory in Reston, Virginia in the United States. "
-      }, {
-        _id: '92',
-        contextBlocks: ['18', '19', '20', '21'],
-        title: "Economic",
-        content: "The affected countries have diverse economic profiles that generally center on the export of raw materials like iron ore, petroleum, and food products [<a href='#18'>Guinea</a>, <a href='#19'>Liberia</a>, <a href='#20'>Sierra Leone</a>]. Many organizations, like the World Bank, are concerned about the <a href='#21'>economic cost</a> this outbreak will have for countries in West Africa. Some of the responses, like closing borders, shutting down transportation, and ordering mandatory quarantines can disrupt normal economic activity and keep people from their jobs, which could potentially lead to economic collapse."
-      }, {
-        _id: '98',
-        contextBlocks: ['22', '23', '24'],
-        title: "Human Impact",
-        content: "With a <a href='#22'>growing number of lives claimed</a>, this disease has a tremendous impact on people’s lives. In many communities, the number of people infected by the disease <a href='#23'>far exceeds the capacity of hospitals to treat them</a>. In some places, people do not believe that Ebola is the real cause of the deaths they are seeing, and are distrustful of hospitals. <a href='#24'>Some citizen journalists also report</a> that families who experience ebola-related deaths face social stigma, which in turn causes them to avoid being tested at a hospital."
-      }
-    ],
+    draftStory: {
+      _id: '548781e397a6427c31384b73', // could remove
+      backgroundImage: "header-image.jpg",
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      lastSaved: new Date(1406524368561),  // could remove
+      publishDate: new Date(1406524369993),  // could remove
+      published: true,  // could remove
+      userPathSegment: "author",  // could remove
+      storyPathSegment: "unfolding-the-2014-ebola-outbreak",  // could remove
+      title: "Unfolding the 2014 Ebola Outbreak",
+      authorId: authorId,  // could remove
+      authorName: authorProfile.name,  // could remove
+      favorited: [],
+      views: 0,
+      verticalSections: [
+        {
+          _id: '93',
+          contextBlocks: [],
+          title: "Introduction",
+          content: "Earlier this year, a major outbreak of a hemorrhagic fever called Ebola began in Guinea. Ebola was first reported nearly 40 years ago in 1976, though the death toll of this outbreak numbers 3,000 — the largest in recorded history. Because of the medical complexities of the disease, there is currently no cure, and infection has spread to other neighboring countries. The outbreak is drawing the concern of governments and international health organizations alike, and responses have included both investment in health infrastructure as well as more drastic measures like border closures. In addition to the tragic loss of human life, the outbreak has severely crippled the economies of the affected countries."
+        }, {
+          _id: '24',
+          contextBlocks: ['0', '1', '2'],
+          title: "Geographic",
+          content: "The recent Ebola outbreak began in a remote area of Guinea, but has since spread to neighboring countries and is currently concentrated in Guinea, Liberia, and Sierra Leone. <a href='#1'>Cases of the virus have also been reported in Nigeria</a>, but the virus appears to be largely contained. This is the first time in recorded history that an outbreak of the virus has occurred in West Africa."
+        }, {
+          _id: '43',
+          contextBlocks: ['3', '4', '5', '6', '7', '8'],
+          title: "Scientific / Medical",
+          content: "There is currently no vaccine or cure for Ebola, a <a href='#3'>virus</a> that works by evading the human immune system and causing white blood cells to die off. The illness first causes flu-like symptoms, and can progress to <a href='#5'>symptoms that can promote even greater disease transmission</a>. Ebola is spread via contact with bodily fluids like blood, and not transmitted through aerosols in the air. Health care workers are at great risk for contracting the disease, especially in areas where it is difficult for them to obtain protective equipment and where people are more likely to present at clinics in the later stages of the disease. Some people who contract the disease are held in <a href='#6'>isolation chambers</a>, though these are prohibitively expensive for most clinics. It is likely that the disease was originally contracted from <a href='#7'>human contact with wild animals like bats</a>, and scientists have only recently begun to understand <a href='#4'>how the disease evolved to affect humans</a>. Medical professionals are working to <a href='#8'>educate communities</a> about how the virus is spread, what precautions can be taken, and what symptoms to look out for."
+        }, {
+          _id: '23',
+          contextBlocks: ['9', '10', '11', '12', '13'],
+          title: "Political",
+          content: "Governments of the affected countries, as well as international health organizations, have had different approaches to managing the outbreak. Some responses involve border closures and involuntary quarantine; in Sierra Leone, <a href='#9'>the government ordered residents to stay in their homes</a> for three days to prevent transmission of the disease. Larger organizations, like the African Union, <a href='#10'>are also discussing possible responses</a> to managing the outbreak, and figuring out ways to work together with organizations like Médecins sans Frontières (MSF) and the World Health Organization (WHO). MSF has come out against mandatory quarantine, stating that it will “end up driving people underground and [jeopardize] the trust between people and health providers.” U.S. President Barack Obama is pledging funds and <a href='#11'>ordering 3,000 U.S. troops to the region</a> to erect isolation facilities and strengthen communication protocols, though <a href='#12'>many have criticized the global community</a> for being slow to act, and only caring about the outbreak after <a href='#13'>several non-Africans became infected with the disease in late July.</a>"
+        }, {
+          _id: '39',
+          contextBlocks: ['14', '15', '16', '17'],
+          title: "Historical",
+          content: "<a href='#15'>In 1976</a>, Ebola first emerged in Sudan and Zaire, two countries in <a href='#15'>Central Africa</a>. This outbreak killed approximately 300 people, and although epidemiologists studied the area extensively, Ebola’s natural reservoir in the environment was never discovered. In 1989, Ebola was also discovered in the Philippines, after monkeys infected with the disease were exported from there to an animal testing laboratory in Reston, Virginia in the United States. "
+        }, {
+          _id: '92',
+          contextBlocks: ['18', '19', '20', '21'],
+          title: "Economic",
+          content: "The affected countries have diverse economic profiles that generally center on the export of raw materials like iron ore, petroleum, and food products [<a href='#18'>Guinea</a>, <a href='#19'>Liberia</a>, <a href='#20'>Sierra Leone</a>]. Many organizations, like the World Bank, are concerned about the <a href='#21'>economic cost</a> this outbreak will have for countries in West Africa. Some of the responses, like closing borders, shutting down transportation, and ordering mandatory quarantines can disrupt normal economic activity and keep people from their jobs, which could potentially lead to economic collapse."
+        }, {
+          _id: '98',
+          contextBlocks: ['22', '23', '24'],
+          title: "Human Impact",
+          content: "With a <a href='#22'>growing number of lives claimed</a>, this disease has a tremendous impact on people’s lives. In many communities, the number of people infected by the disease <a href='#23'>far exceeds the capacity of hospitals to treat them</a>. In some places, people do not believe that Ebola is the real cause of the deaths they are seeing, and are distrustful of hospitals. <a href='#24'>Some citizen journalists also report</a> that families who experience ebola-related deaths face social stigma, which in turn causes them to avoid being tested at a hospital."
+        }
+      ]
+    },
     publishedStory: {
       backgroundImage: "header-image.jpg",
       headerImageAttribution: "HEALTHJASAREVIC / REUTERS",

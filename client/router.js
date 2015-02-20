@@ -134,10 +134,10 @@ Router.route("edit", {
     story = Stories.findOne();
     if (story) {
 
-      Session.set("story", story);
+      Session.set("story", story.draftStory);
       Session.set("storyId", story._id);
-      Session.set("backgroundImage", story.backgroundImage);
-      Session.set("horizontalSectionsMap", _.map(_.pluck(story.verticalSections, "contextBlocks"), function(cBlocks, i) {
+      Session.set("backgroundImage", story.draftStory.backgroundImage);
+      Session.set("horizontalSectionsMap", _.map(_.pluck(story.draftStory.verticalSections, "contextBlocks"), function(cBlocks, i) {
         return {
           verticalIndex: i,
           horizontal: _.map(cBlocks, function(block, i) {
@@ -147,7 +147,7 @@ Router.route("edit", {
           })
         };
       }));
-      return story;
+      return story.draftStory;
     }
   },
   action: function() {
