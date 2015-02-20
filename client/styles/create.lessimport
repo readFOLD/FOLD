@@ -440,6 +440,7 @@ div.text-section {
 
 
 div#fold-editor{
+  .inverted-icon-colors;
   display: none;
   max-height: @fold-editor-row-height * 5;
   width: 200px;
@@ -479,9 +480,21 @@ div#fold-editor{
   }
   li:nth-child(even) {background-color: @dark-color;}
   li:nth-child(odd) {background-color: @color-medium-black;}
+
+  svg.add-card-icon{
+    path {
+      @color-light-grey;
+    }
+    circle {
+      opacity: 0;
+    }
+
+  }
+
   #fold-editor-button-group {
     height: @fold-editor-row-height;
     background-color: @panel-color;
+    .standard-icon-colors;
     svg{
       @size: 40px;
       height: @size;
@@ -492,7 +505,6 @@ div#fold-editor{
       width: 25%;
       height: 100%;
       padding: 0;
-      text-align: center;
       vertical-align: middle;
       float: left;
       font-size: 20pt;
@@ -512,9 +524,9 @@ div#fold-editor{
     font-family: inherit;
     font-size: 10pt;
     padding: 0.5em 1em;
+    text-align: left;
     text-decoration: none;
     display: inline-block;
-//    border-radius: 2px;
     &:not([DISABLED]){
       cursor: pointer;
       &:hover {
@@ -554,12 +566,7 @@ div.context-anchor-menu {
   }
   display: none;
   width: 100%;
-  circle{
-    fill: @color-light-grey;
-  }
-  path{
-    fill: @dark-color;
-  }
+
   .back-arrow{
     path{
       fill: @color-light-grey;
@@ -575,12 +582,15 @@ div.context-anchor-menu {
     z-index: 8000;
     position:relative;
   }
-  .bottom-bar{
-    position:relative;
-    height: 5px;
-    width: 100%;
-    background-color: @panel-color;
+
+  div.bottom-bar{
     .box-shadow(0px -5px 10px 0px rgba(0,0,0,0.75));
-    z-index: 9000;
   }
+}
+div.bottom-bar{
+  position:relative;
+  height: 5px;
+  width: 100%;
+  background-color: @panel-color;
+  z-index: 9000;
 }

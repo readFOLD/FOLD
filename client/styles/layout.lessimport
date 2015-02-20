@@ -25,6 +25,36 @@
 @remix-bar-height: 40px;
 @horizontal-content-height: 300px;
 
+.standard-icon-colors {
+  circle{
+    fill: @dark-color;
+  }
+  path{
+    fill: @color-light-grey;
+  }
+
+  .back-arrow{
+    path{
+      fill: @dark-color;
+    }
+  }
+}
+
+.inverted-icon-colors {
+  circle{
+    fill:  @color-light-grey;
+  }
+  path{
+    fill: @dark-color;
+  }
+
+  .back-arrow{
+    path{
+      fill: @color-light-grey;
+    }
+  }
+}
+
 
 // http://asimpleframe.com/
 @font-face {

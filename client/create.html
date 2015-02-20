@@ -197,11 +197,12 @@
     <ol>
       <li class="link-to-card">
         <button type="button">
-          Link to existing card{{ > right_arrow}}
+          {{ > link_icon}} Link to existing card
         </button>
       </li>
       {{ > context_anchor_new_card_option }}
     </ol>
+    <div class="bottom-bar"></div>
   </div>
 </template>
 
@@ -235,7 +236,7 @@
 <template name="context_anchor_new_card_option">
   <li class="new-card">
     <button type="button">
-      Add new card{{ > right_arrow}}
+      {{> add_card_icon}}Add new card
     </button>
   </li>
 </template>
