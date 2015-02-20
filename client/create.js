@@ -1,7 +1,7 @@
 var addContextToStory, autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHorizontalUI, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-var updateUIBasedOnSelection = function(e){
+window.updateUIBasedOnSelection = function(e){
   var selection;
   selection = window.getSelection();
 
@@ -28,17 +28,17 @@ var updateUIBasedOnSelection = function(e){
 
           parentNode = parentNode.parentNode;
         }
-        console.log(selectedTags)
         Session.set('selectedTags', selectedTags);
 
-        // TODO actually get this from selectio
-        // Get location on page
-        //boundary = range.getBoundingClientRect();
-        //boundaryMiddle = (boundary.left + boundary.right) / 2;
-        //pageYOffset = $(e.target).offset().top;
-        //$('#fold-editor').show();
-        //$('#fold-editor').css('left', e.pageX - 100);
-        //return $('#fold-editor').css('top', e.pageY - 70);
+        // TODO actually get this from selection
+        if(e) {
+          boundary = range.getBoundingClientRect();
+          boundaryMiddle = (boundary.left + boundary.right) / 2;
+          pageYOffset = $(e.target).offset().top;
+          $('#fold-editor').show();
+          $('#fold-editor').css('left', e.pageX - 100);
+          return $('#fold-editor').css('top', e.pageY - 70);
+        }
       } else {
         return hideFoldEditor();
       }
@@ -48,9 +48,11 @@ var updateUIBasedOnSelection = function(e){
 
 Template.create.rendered = function() {
   window.showAnchorMenu = function() {
+    Session.set("anchorMenuOpen", true);
     return $(".anchor-menu").show();
   };
   window.hideAnchorMenu = function() {
+    Session.set("anchorMenuOpen", false);
     return $(".anchor-menu").hide();
   };
   window.toggleAnchorMenu = function() {
@@ -60,20 +62,22 @@ Template.create.rendered = function() {
     shiftAmt = 120;
     if (anchorMenu.is(':visible') || contextAnchorMenu.is(':visible')) {
       $('#fold-editor').css('top', parseInt($('#fold-editor').css('top')) + shiftAmt);
-      anchorMenu.hide();
-      return contextAnchorMenu.hide();
+      window.hideAnchorMenu();
+      return window.hideContextAnchorMenu();
     } else {
       $('#fold-editor').css('top', parseInt($('#fold-editor').css('top')) - shiftAmt);
-      return anchorMenu.show();
+      return window.showAnchorMenu();
     }
   };
   window.showContextAnchorMenu = function() {
     var contextAnchorForm;
     contextAnchorForm = $(".context-anchor-menu");
     contextAnchorForm.show();
+    Session.set("contextAnchorMenuOpen", true);
     return contextAnchorForm.insertAfter('#fold-editor-button-group');
   };
   window.hideContextAnchorMenu = function() {
+    Session.set("contextAnchorMenuOpen", false);
     return $(".context-anchor-menu").hide();
   };
   window.hideFoldEditor = function() {
@@ -99,14 +103,13 @@ Template.fold_editor.helpers({
     return _.intersection(['u'], Session.get('selectedTags')).length;
   },
   anchorActive: function() {
-    return _.intersection(['a'], Session.get('selectedTags')).length;
+    return _.intersection(['a'], Session.get('selectedTags')).length || Session.get('contextAnchorMenuOpen') || Session.get('anchorMenuOpen');
   }
 });
 
 Template.fold_editor.events({
   'mouseup': function () {
-    console.log('yayay')
-    updateUIBasedOnSelection()
+    window.updateUIBasedOnSelection()
   },
   'mouseup .bold-button': function(e) {
     e.preventDefault();
@@ -158,49 +161,7 @@ var rangeSelectsSingleNode = function (range) {
 
 
 Template.vertical_section_block.events({
-  'mouseup .fold-editable': function(e) { // TODO COMBINE THIS WILL UPDATEUIBASEDONSELECTION AT TOP!!
-    var selection;
-    selection = window.getSelection();
-
-    return setTimeout((function(_this) {
-      return function () {
-        var boundary, boundaryMiddle, pageYOffset, range;
-        if (window.getSelection().type === 'Range') {
-          range = selection.getRangeAt(0);
-
-          // Get containing tag
-          if (rangeSelectsSingleNode(range)) {
-            selectedParentElement = range.startContainer.childNodes[range.startOffset];
-          } else if (range.startContainer.nodeType === 3) {
-            selectedParentElement = range.startContainer.parentNode;
-          } else {
-            selectedParentElement = range.startContainer;
-          }
-          var parentNode = selectedParentElement;
-          var selectedTags = [];
-
-          while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') { // && this.parentElements.indexOf(parentNode.tagName.toLowerCase) === -1) {
-            selectedTags.push(parentNode.tagName.toLowerCase());
-
-            parentNode = parentNode.parentNode;
-          }
-          console.log(selectedTags)
-          Session.set('selectedTags', selectedTags);
-
-
-          // Get location on page
-          boundary = range.getBoundingClientRect();
-          boundaryMiddle = (boundary.left + boundary.right) / 2;
-          pageYOffset = $(e.target).offset().top;
-          $('#fold-editor').show();
-          $('#fold-editor').css('left', e.pageX - 100);
-          return $('#fold-editor').css('top', e.pageY - 70);
-        } else {
-          return hideFoldEditor();
-        }
-      };
-    })(this));
-  }
+  'mouseup .fold-editable': window.updateUIBasedOnSelection
 });
 
 
