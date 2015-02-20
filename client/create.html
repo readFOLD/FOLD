@@ -207,25 +207,29 @@
 
 <template name="context_anchor_menu">
   <div class="context-anchor-menu" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
-    <ol>
-      {{> context_anchor_go_back}}
-      {{#each data}}
-        {{#if type}}
-          <li>
-            {{> context_anchor_option}}
-          </li>
-        {{/if}}
-      {{/each}}
-    </ol>
+    <div class="context-anchor-list">
+      <ol>
+        {{> context_anchor_go_back}}
+        {{#each data}}
+          {{#if type}}
+            <li>
+              {{> context_anchor_option}}
+            </li>
+          {{/if}}
+        {{/each}}
+      </ol>
+
+    </div>
+    <div class="bottom-bar"></div>
   </div>
 </template>
 
 <template name="context_anchor_option">
-  <button type="button">{{ > type_specific_icon}}{{description}}</button>
+  <button type="button">{{ > type_specific_icon}}<span class="text">{{description}}</span></button>
 </template>
 
 <template name="context_anchor_go_back">
-  <li class="back"><button type="button">{{> left_arrow}}back</button></li>
+  <li class="back"><button type="button">{{> back_arrow}}back</button></li>
 </template>
 
 <template name="context_anchor_new_card_option">
@@ -234,12 +238,6 @@
       Add new card{{ > right_arrow}}
     </button>
   </li>
-</template>
-
-<template name="left_arrow">
-  <span class="pull-left left-arrow">
-    &lt;
-  </span>
 </template>
 
 <template name="right_arrow">

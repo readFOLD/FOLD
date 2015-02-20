@@ -55,6 +55,14 @@
   -o-transition: @value;
   transition: @value;
 }
+.box-shadow(@value1,@value2:X,...)
+{
+  @value: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
+  -webkit-box-shadow: @value;
+  -moz-box-shadow: @value;
+  -o-box-shadow: @value;
+  box-shadow: @value;
+}
 
 .left-transition{
   .transition(left 0.2s ease-in);
