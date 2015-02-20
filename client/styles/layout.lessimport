@@ -1,9 +1,7 @@
-@color-medium-grey: #CCCCCB;
-@color-fold-black: #272727;
-@color-link-grey: #d7dbd8;
-@color-medium-black: #1D1D1D;
 
+@black-color: #1D1D1D;
 @dark-color: #323232;
+@medium-color: #CCCCCB;
 @light-color: #F4F4F4;
 @white-color: white;
 
@@ -297,7 +295,7 @@ div#overlay {
   a {
     .background-transition;
     cursor: pointer;
-    background-color: @color-link-grey;
+    background-color: @medium-color;
     color: inherit;
     padding: 0 4px;
     &:hover {
@@ -401,7 +399,7 @@ div.vertical-narrative {
     &.read {
       margin-bottom: 12px;
     }
-    // box-shadow: 3px 3px @color-medium-grey;
+    // box-shadow: 3px 3px @medium-color;
 
     &.selected {
       color: @dark-color;
@@ -585,7 +583,7 @@ div.minimap {
     .background-transition;
     height: 15px;
     width: 20px;
-    background-color: @color-medium-grey;
+    background-color: @medium-color;
     display: inline-block;
 
     &.selected {

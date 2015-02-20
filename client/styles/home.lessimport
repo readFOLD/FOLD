@@ -297,7 +297,7 @@ section.stories {
 
   div.story {
     background-color: @white-color;
-    // box-shadow: 3px 3px @color-medium-grey;
+    // box-shadow: 3px 3px @medium-color;
 
     // 540 980+
     // 415 980-

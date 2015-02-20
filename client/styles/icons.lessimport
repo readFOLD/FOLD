@@ -43,7 +43,7 @@ svg.browse-arrow {
       svg{
         fill: @light-color;
         &:hover{
-          fill: @color-medium-grey;
+          fill: @medium-color;
         }
       }
     }
