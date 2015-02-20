@@ -310,6 +310,13 @@ Tracker.autorun(function() {
   return Session.set("addingContextToCurrentY", (currentYId != null) && Session.get("addingContext") === Session.get('currentYId') && !Session.get('read'));
 });
 
+// Hide add card menu when scroll
+// TO-DO probably remove all the currentY stuff, since we're not tracking that in any real way
+Tracker.autorun(function() {
+  Session.get('currentY'); // so reacts to changes in currentY
+  Session.set("addingContext", null);
+});
+
 showNewHorizontalUI = function() {
   Session.set("addingContext", Session.get('currentYId'));
   return Session.set("editingContext", null);
