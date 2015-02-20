@@ -1,5 +1,5 @@
 .editable {
-  outline: 1px dashed @action-color;
+  outline: 1px dashed #e0e1e2;
   cursor: text;
 }
 

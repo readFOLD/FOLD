@@ -10,7 +10,7 @@
 @light-color: white;
 @action-color: #1DB259;
 @inactive-color: #DDDDDD;
-@placeholder-color: #bababa;
+@placeholder-color: #acacac;
 @panel-color: #585094;
 @remix-color: #EA1D75;
 @favorite-color: #FFD600;
@@ -579,4 +579,3 @@ div.hide {
 div.collapse {
   display: none !important;
 }
-
