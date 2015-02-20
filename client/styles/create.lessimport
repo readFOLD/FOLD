@@ -1,5 +1,5 @@
 .editable {
-  outline: 1px dashed @action-color;
+  outline: 1px dashed #e0e1e2;
   cursor: text;
 }
 
@@ -31,12 +31,11 @@ div.save-background-image {
 }
 
 div.title-overlay {
-  cursor: pointer;
   min-width: 1024px;
   height: 350px;
   z-index: 30;
   // background-color: @action-color;
-  color: @color-light-grey;
+  color: @light-color;
 
   background-color: @action-color;
   background-position: center center;
@@ -129,7 +128,6 @@ div.title-overlay {
       padding-top: 20px;
     }
     div.title {
-      text-transform: uppercase;
       font-weight: bold;
       font-size: 30px;
       margin-bottom: 15px;
@@ -143,10 +141,10 @@ div.title-overlay {
 
 div.button-options {
   div {
-    // box-shadow: 3px 3px @color-medium-grey;
-    background-color: @color-light-grey;
+    // box-shadow: 3px 3px @medium-color;
+    background-color: @dark-color;
+    color: @light-color;
     cursor: pointer;
-    text-transform: uppercase;
     padding: 5px;
     text-align: center;
     font-size: 16px;
@@ -159,7 +157,7 @@ div.button-options {
 
     &:hover {
       background-color: @action-color;
-      color: @color-medium-grey;
+      color: @dark-color;
     }
   }
 
@@ -204,20 +202,55 @@ div.narrativeView {
   }
 }
 
+.new-section {
+  fill: @dark-color;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 div.vertical-narrative {
   z-index: 20;
 
-    section.new-section {
-      height: 75px;
-      font-size: 55px;
-      line-height: 75px;
-      text-align: center;
-      color: black;
+  .new-section {
+    min-height: 75px;
+    height: 75px;
+    overflow: hidden;
+    font-size: 55px;
+    line-height: 75px;
+    text-align: center;
+  }
 
-      &:hover {
-        cursor: pointer;
+
+  .unminimized-new-section-bar {
+    border-top: 12px solid @background-color;
+    border-bottom: 12px solid @background-color;
+    background-color: @selected-background-color;
+    height: 95px;
+  }
+
+  .new-section.unminimized {
+    .unminimized-new-section-bar;
+  }
+
+  .new-section.minimized {
+    .height-transition;
+    background-color: @background-color;
+    height: 12px;
+    border-top: 0px;
+    border-bottom: 0px;
+    min-height: 0px;
+    svg{
+      visibility: hidden;
     }
+    &:hover {
+      .unminimized-new-section-bar;
+      svg{
+        visibility: inherit;
+      }
     }
+  }
 }
 
 textarea {
@@ -245,9 +278,11 @@ svg{
     transition: fill 0.25s ease;
 }
 
-section.new-section {
+.new-section {
   &:hover {
-    fill: @action-color;
+    circle{
+      fill: @action-color;
+    }
   }
 }
 
@@ -257,10 +292,10 @@ div.horizontal-context {
     padding: 0;
   }
 
-  section.new-section {
-    height: 300px;
+  .new-section {
+    height: @horizontal-content-height;
     font-size: 55px;
-    line-height: 300px;
+    line-height: @horizontal-content-height;
     text-align: center;
     width: 75px;
     z-index: 30;
@@ -272,13 +307,15 @@ div.horizontal-context {
     margin-bottom: 10px;
   }
 
+  @contentIconBannerHeight: 80px;
+
   div.content-icons {
     display:flex;
     justify-content:space-between;
+    height: @contentIconBannerHeight;
     padding-left: 17px;
     padding-right: 17px;
-    padding-top: 19px;
-    padding-bottom: 16px;
+    padding-top: 18px;
     background-color: @panel-color;
     div.row {
       text-align: justify;
@@ -289,20 +326,24 @@ div.horizontal-context {
     }
     svg {
       padding: 1.5px;
-      @circle-diameter: 48px;
+      @circle-diameter: 44px;
       height: @circle-diameter;
       width: @circle-diameter;
       vertical-align: top;
       display: inline-block;
       &:hover {
-        fill: @action-color;
+        circle{
+          fill: @action-color;
+        }
       }
 
 
     }
     .active{
       svg{
-        fill: @action-color;
+        circle{
+          fill: @action-color;
+        }
       }
     }
     .unimplemented {
@@ -318,6 +359,18 @@ div.horizontal-context {
     }
   }
 
+  .horizontal-new-section {
+    position: absolute;
+    background-color: @white-color;
+    svg{
+      .transition(transform 0.2s ease, fill 0.25s ease);
+    }
+    &.editing{
+      svg{
+        .transform(rotate(-45deg));
+      }
+    }
+  }
 
   div.create-section {
     padding: 23px;
@@ -382,42 +435,14 @@ div.text-section {
   margin-right: 30px;
 }
 
-div.image-section {
-  div.description-overlay {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    padding: 8px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-  }
-  img {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
-}
-div.anchor-menu {
-  display: none;
-  overflow: scroll;
-}
-div.context-anchor-menu {
-  display: none;
-  overflow: scroll;
-  max-height: 150px;
-  width: 100%;
-  button{
-    text-align: left;
-    &:hover{
-      fill: @action-color;
-    }
-  }
-}
+@fold-editor-row-height: 55px;
+
+
 
 div#fold-editor{
+  .inverted-icon-colors;
   display: none;
-  max-height: 200px;
+  max-height: @fold-editor-row-height * 5;
   width: 200px;
   opacity: 1;
   background-color: green;
@@ -434,46 +459,85 @@ div#fold-editor{
   }
   li{
     width: 100%;
-    height: 37.5px;
-    svg, .left-arrow{
+    height: @fold-editor-row-height;
+    background-color: @dark-color;
+    svg{
+      @icon-size: 25px;
       text-align: center;
-      height: 21px;
-      width: 21px;
+      height: @icon-size;
+      width: @icon-size;
       float: left;
-      margin-right: 4px;
+      margin-right: 7px;
+    }
+    svg.back-arrow{
+      @arrow-size: 20px;
+      height: @arrow-size;
+      width: @arrow-size;
     }
     button{
       .size-to-fit;
     }
   }
+  li:nth-child(even) {background-color: @dark-color;}
+  li:nth-child(odd) {background-color: @black-color;}
+
+  svg.add-card-icon{
+    path {
+      fill: @light-color;
+    }
+    circle {
+      opacity: 0;
+    }
+
+  }
+
   #fold-editor-button-group {
-    height: 50px;
+    height: @fold-editor-row-height;
+    background-color: @panel-color;
+    .standard-icon-colors;
+    svg{
+      @size: 40px;
+      height: @size;
+      width: @size;
+      vertical-align: middle;
+    }
     button {
       width: 25%;
       height: 100%;
       padding: 0;
       text-align: center;
-      vertical-align: center;
+      vertical-align: middle;
       float: left;
       font-size: 20pt;
-      line-height: 50px;
+      line-height: @fold-editor-row-height;
+      &:hover {
+        circle{
+          fill: @action-color;
+        }
+        background-color: inherit;
+      }
     }
   }
   button{
-    font-family: inherit;
-    font-size: 100%;
-    border: solid #000;
-    border-width: 1px;
+    border:none;
+    color: @light-color;
+    background-color: inherit;
+    font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+    font-size: .9em;
     padding: 0.5em 1em;
+    text-align: left;
     text-decoration: none;
     display: inline-block;
-//    border-radius: 2px;
     &:not([DISABLED]){
       cursor: pointer;
       &:hover {
         color: white;
+        background-color: @action-color;
       }
     }
+  }
+  svg{
+    fill: @light-color;
   }
   &:after{
     @triangleSize: 8px;
@@ -484,8 +548,50 @@ div#fold-editor{
     margin-left: -@triangleSize;
     width: 0;
     height: 0;
-    border-top: solid @triangleSize black;
+    border-top: solid @triangleSize @panel-color;
     border-left: solid @triangleSize transparent;
     border-right: solid @triangleSize transparent;
   }
+}
+
+div.anchor-menu {
+  display: none;
+  overflow: scroll;
+}
+div.context-anchor-menu {
+  span{
+    overflow: hidden;
+    width: calc(~"100% - 30px");
+    display: inline-block;
+    text-overflow: ellipsis;
+  }
+  display: none;
+  width: 100%;
+
+  .back-arrow{
+    path{
+      fill: @light-color;
+    }
+  }
+  button{
+    text-align: left;
+
+  }
+  .context-anchor-list{
+    max-height: 3.9 * @fold-editor-row-height;
+    overflow: scroll;
+    z-index: 8000;
+    position:relative;
+  }
+
+  div.bottom-bar{
+    .box-shadow(0px -5px 10px 0px rgba(0,0,0,0.75));
+  }
+}
+div.bottom-bar{
+  position:relative;
+  height: 5px;
+  width: 100%;
+  background-color: @panel-color;
+  z-index: 9000;
 }

@@ -104,8 +104,9 @@ updatecurrentY = function() {
     $("div.logo").removeClass("visible");
   }
   if (scrollTop >= readMode) {
+    var selectOffset = - 40;
     Session.set("pastHeader", true);
-    _ref = window.getVerticalHeights();
+    _ref = _.map(window.getVerticalHeights(), function(height){ return height + selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
       if (scrollTop < h) {
@@ -302,7 +303,7 @@ Template.vertical_section_block.helpers({
     if (Session.get('read')) {
       return '<div class="content">' + this.content + '</div>';
     } else {
-      return '<div class="content editable fold-editable" contenteditable="true">' + this.content + '</div>';
+      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true">' + this.content + '</div>';
     }
   }
 });
@@ -470,6 +471,9 @@ Template.display_video_section.helpers(horizontalBlockHelpers);
 
 Template.display_map_section.helpers(horizontalBlockHelpers);
 
+Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
+
+
 Template.story_browser.events({
   "click .right": function(d) {
     var currentX, horizontalSection, newX, path;
@@ -495,7 +499,7 @@ Template.story_browser.events({
 Template.type_specific_icon.helpers(typeHelpers);
 
 Template.favorite_button.helpers({
-  favorited: function() {
+  userFavorited: function() {
     var _ref;
     return Meteor.user() && (_ref = Meteor.user()._id, __indexOf.call(this.favorited, _ref) >= 0);
   }

@@ -15,7 +15,6 @@
             EDIT
           {{/linkTo}}
           {{> favorite_button}}
-          {{favorited.length}} Favorites
         {{else}}
           {{#linkTo route="read" data=this}}
             READ
@@ -62,7 +61,7 @@
                 <div class="browser-offset">
                     {{> story_browser}}
                 </div>
-            {{/unless}}}
+            {{/unless}}
         {{/if}}
     {{/if}}
 </template>
@@ -81,12 +80,14 @@
 </template>
 
 <template name="vertical_section_block">
-  <section class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
-    <div class="title {{#unless read}}editable{{/unless}}" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
-    {{{contentDiv}}}
-    <div class="button">
-    </div>
-  </section>
+  <div class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
+    <section>
+      <div class="title {{#unless read}}editable{{/unless}}" placeholder="Title" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
+      {{{contentDiv}}}
+      <div class="button">
+      </div>
+    </section>
+  </div>
 </template>
 
 
@@ -123,10 +124,11 @@
 
 
 <template name="horizontal_section_block">
-    <section
-            class="narrative-section horizontal-narrative-section {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}"
+    <div
+            class="narrative-section horizontal-narrative-section {{#if type}}{{type}}{{/if}} {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}"
             data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px
     ">
+    <section>
     <!--    <div id="index">
       {{index}}
     </div> -->
@@ -159,6 +161,7 @@
         {{> remix_bar}}
     {{/if}}
     </section>
+    </div>
 </template>
 
 <template name="remix_bar">
@@ -215,7 +218,7 @@
 <template name="display_oec_section">
   <div class="oec-section">
     {{#if selected}}
-      <iframe width="100%" height="360" frameborder="0" style="border:0;" src="{{url}}"></iframe>
+      <iframe width="100%" height="300" frameborder="0" style="border:0;" src="{{url}}"></iframe>
     {{/if}}
   </div>
   {{#unless read}}
@@ -248,8 +251,12 @@
 
 <template name="story_browser">
   <div class="story-browser">
-    <img class="left" src="/arrow_left.svg" />
-    <img class="right" src="/arrow_right.svg" />
+    <div class="left">
+      {{ > browse_arrow_left}}
+    </div>
+    <div class="right">
+      {{ > browse_arrow_right}}
+    </div>
   </div>
 </template>
 
@@ -300,10 +307,13 @@
 </template>
 
 <template name="favorite_button">
-  {{#if favorited}}
-    <button class='unfavorite'>Unfavorite</button>
-  {{else}}
-    <button class='favorite'>Favorite</button>
-  {{/if}}
+    <div class="favorite-button">
+        {{#if userFavorited}}
+            <button type='button' class='unfavorite'>{{> favorite_icon }}</button>
+        {{else}}
+            <button type='button' class='favorite'>{{> favorite_icon }}</button>
+        {{/if}}
+        {{favorited.length}}
+    </div>
 </template>
 

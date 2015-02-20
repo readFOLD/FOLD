@@ -7,8 +7,8 @@ window.getVerticalHeights = function() {
   var sum, verticalHeights;
   verticalHeights = [constants.readModeOffset];
   sum = constants.readModeOffset;
-  $('section.vertical-narrative-section').each(function() {
-    sum += $(this).height() + 12;
+  $('.vertical-narrative-section').each(function() {
+    sum += $(this).outerHeight() + 12;
     return verticalHeights.push(sum);
   });
   return verticalHeights;
@@ -53,15 +53,22 @@ window.goToContext = function(id) {
 window.goDownOneCard = function() {
   var currentY, newY;
   currentY = Session.get("currentY");
+  if (typeof currentY !== 'number'){
+    return goToXY(0, 0);
+  }
+
   newY = currentY + 1;
-  return goToXY(0, newY);
+  if (newY < Session.get("story").verticalSections.length){
+    return goToXY(0, newY);
+  }
 };
 
 window.goUpOneCard = function() {
   var currentY, newY;
   currentY = Session.get("currentY");
   newY = currentY - 1;
-  return goToXY(0, newY);
+  if (newY >= 0)
+    return goToXY(0, newY);
 };
 
 window.moveOneCard = function(d) {
@@ -71,3 +78,24 @@ window.moveOneCard = function(d) {
     return goUpOneCard();
   }
 };
+
+$(document).keydown(function(e) {
+  if (Session.get('read')){
+    letter = String.fromCharCode(e.keyCode)
+    console.log(letter)
+    switch(letter){
+      case 'J':
+        goUpOneCard()
+        break;
+      case 'K':
+        goDownOneCard()
+        break;
+      case '&': // up arrow
+        goUpOneCard()
+        break;
+      case '(': // down arrow
+        goDownOneCard()
+        break;
+    }
+  }
+});

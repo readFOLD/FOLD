@@ -5,7 +5,7 @@ div#login-buttons-and-more {
 }
 
 section.banner {
-  background-color: @color-light-grey;
+  background-color: @light-color;
   height: 200px;
   border-bottom: 32px solid @dark-color;
 
@@ -19,7 +19,7 @@ section.banner {
     border-radius: 6px;
     padding: 5px 8px;
     background-color: @dark-color;
-    color: @color-light-grey;
+    color: @light-color;
 
     &:hover {
       background-color: @action-color;
@@ -36,7 +36,7 @@ section.banner {
     i.fa-bars {
       color: white;
       &:hover {
-        color: @color-light-green;
+        color: @action-color;
       }
       margin-left: 6px;
       margin-top: 3px;
@@ -111,7 +111,6 @@ div.filter {
   background-color: @dark-color;
   margin-top: -2px;
   color: white;
-  // text-transform: uppercase;
   margin-top: -32px;
   padding-left: 10px;
   line-height: 32px;
@@ -139,7 +138,7 @@ div.filter {
     height: 17px;
     margin-top: 7px;
     border-radius: 10px;
-    background-color: @medium-color;
+    background-color: @background-color;
 
     i {
       cursor: pointer;
@@ -154,7 +153,7 @@ div.filter {
   }
 
   div.title {
-    border-bottom: 1px solid @color-light-grey;
+    border-bottom: 1px solid @light-color;
     line-height: 24px;
   }
 
@@ -230,7 +229,7 @@ div.edit-or-read {
 section.stories {
   width: 100%;
   height: 100%;
-  background-color: @medium-color;
+  background-color: @background-color;
 
   div.story-browser {
     height: 80px;
@@ -239,7 +238,7 @@ section.stories {
   div.horizontal-line {
     width: 100%;
     height: 5px;
-    background-color: @color-light-grey;
+    background-color: @light-color;
     margin-top: 250px;
     position: absolute;
     z-index: 0;
@@ -254,7 +253,7 @@ section.stories {
   }
 
   div.headline {
-    background-color: @light-color;
+    background-color: @white-color;
     height: auto;
     /*height depends on length of story headline*/
     width: 100%;
@@ -297,8 +296,8 @@ section.stories {
   }
 
   div.story {
-    background-color: @light-color;
-    // box-shadow: 3px 3px @color-medium-grey;
+    background-color: @white-color;
+    // box-shadow: 3px 3px @medium-color;
 
     // 540 980+
     // 415 980-
