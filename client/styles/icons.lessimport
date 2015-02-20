@@ -41,7 +41,7 @@ svg.browse-arrow {
     }
     &.favorite{
       svg{
-        fill: @color-light-grey;
+        fill: @light-color;
         &:hover{
           fill: @color-medium-grey;
         }
