@@ -181,7 +181,8 @@ Schema.Stories = new SimpleSchema({
   verticalSections: {
     type: [Object],
     minCount: 1,
-    maxCount: 1000
+    maxCount: 1000,
+    blackbox: true // TODO remove this when stops causing errors! (after Mongo 2.6 and use position operators?)
   },
   'verticalSections.$._id': {
     type: String

@@ -1,15 +1,33 @@
+circle{
+  fill: @dark-color;
+}
+path{
+  fill: @color-light-grey;
+}
+
 svg.icon {
   .size-to-fit;
-  fill: @dark-color;
 }
 svg.add-card-icon{
   height:44px;
   width:44px;
-}svg.remix-icon{
-  fill: @remix-color;
+}
+svg.remix-icon{
+  circle{
+    fill: @remix-color;
+  }
 }
 svg.remix-icon-square{
-  fill: @remix-color;
+  rect{
+    fill: @remix-color;
+  }
+}
+svg.browse-arrow {
+  height: 60px;
+  width: 60px;
+  path{
+    fill: @dark-color;
+  }
 }
 .favorite-button{
   @height: 25px;

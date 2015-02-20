@@ -280,7 +280,9 @@ svg{
 
 .new-section {
   &:hover {
-    fill: @action-color;
+    circle{
+      fill: @action-color;
+    }
   }
 }
 
@@ -330,14 +332,18 @@ div.horizontal-context {
       vertical-align: top;
       display: inline-block;
       &:hover {
-        fill: @action-color;
+        circle{
+          fill: @action-color;
+        }
       }
 
 
     }
     .active{
       svg{
-        fill: @action-color;
+        circle{
+          fill: @action-color;
+        }
       }
     }
     .unimplemented {
@@ -430,127 +436,13 @@ div.text-section {
   margin-right: 30px;
 }
 
-div.image-section {
-  div.description-overlay {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    padding: 8px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-  }
-  img {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-@searchFormHeight: 150px; 
-
-div.video-search-form {
-  height: @searchFormHeight;
-}
-
-@addButtonHeight: 60px;  
-div.search-results-container {
-  background-color: #ffffff;
-  width: 100%;
-  height: calc(100% ~"-" @searchFormHeight ~"-" @addButtonHeight ~"-" 30px);
-  overflow-y: scroll;
-  overflow-x: hidden;
-  margin-top: 27px;
-
-  @searchResultHeight: 94px; 
-  @videoHeight: 90px;
-  @videoWidth: 120px;
-
-  div.search-result{
-  }
-  
-  div.focused-search-result {
-    border: 1px solid #e7e7e7;
-    height: calc(@searchResultHeight~"*"2);
-    background: #e0e2e0;
-  }
-
-  div.focused-thumbnail {
-    iframe{
-      padding-top: 9.5px;
-    }
-  }
-  
-  div.small-search-result {
-    border: 1px solid #e7e7e7;
-    height: @searchResultHeight;
-  }
-
-  div.small-thumbnail {
-    img{
-      width:98px;
-      padding-top: 9.5px;
-    }
-  }
+@fold-editor-row-height: 50px;
 
 
-  @textAreaHeight: 75px;
-  div.info{
-    position:relative;
-    top:  calc(-@searchResultHeight~"+"9.5px);
-    left: calc(10px ~"+" @videoWidth);
-    max-width: calc(100% ~"-" 30px ~"-" @videoWidth) ;
-    max-height: calc(@searchResultHeight ~"-" 10px);
-    
-
-    div.content-title {
-      font-weight: bold;  
-      overflow: hidden;
-      height: calc(@textAreaHeight~"*"0.25);
-    }
-    
-    .date, .user {
-      font-size: 75%;
-      height: calc(@textAreaHeight~"*"0.15);
-    }
-
-    .date {
-      text-align: right;
-      position: relative;
-      top: calc(-@textAreaHeight~"*"0.15);
-    }
-    
-    .descr {
-      overflow: hidden;
-      height: calc(@textAreaHeight~"*"0.62);
-      line-height: 16px;
-    }
-  }
-}
-
-
-
-
-div.anchor-menu {
-  display: none;
-  overflow: scroll;
-}
-div.context-anchor-menu {
-  display: none;
-  overflow: scroll;
-  max-height: 150px;
-  width: 100%;
-  button{
-    text-align: left;
-    &:hover{
-      fill: @action-color;
-    }
-  }
-}
 
 div#fold-editor{
   display: none;
-  max-height: 200px;
+  max-height: @fold-editor-row-height * 5;
   width: 200px;
   opacity: 1;
   background-color: green;
@@ -567,20 +459,30 @@ div#fold-editor{
   }
   li{
     width: 100%;
-    height: 37.5px;
-    svg, .left-arrow{
+    height: @fold-editor-row-height;
+    background-color: @dark-color;
+    svg{
+      @icon-size: 25px;
       text-align: center;
-      height: 21px;
-      width: 21px;
+      height: @icon-size;
+      width: @icon-size;
       float: left;
-      margin-right: 4px;
+      margin-right: 7px;
+    }
+    svg.back-arrow{
+      @arrow-size: 20px;
+      height: @arrow-size;
+      width: @arrow-size;
     }
     button{
       .size-to-fit;
     }
   }
+  li:nth-child(even) {background-color: @dark-color;}
+  li:nth-child(odd) {background-color: @color-medium-black;}
   #fold-editor-button-group {
-    height: 50px;
+    height: @fold-editor-row-height;
+    background-color: @panel-color;
     button {
       width: 25%;
       height: 100%;
@@ -589,14 +491,15 @@ div#fold-editor{
       vertical-align: center;
       float: left;
       font-size: 20pt;
-      line-height: 50px;
+      line-height: @fold-editor-row-height;
     }
   }
   button{
+    border:none;
+    color: @color-light-grey;
+    background-color: inherit;
     font-family: inherit;
-    font-size: 100%;
-    border: solid #000;
-    border-width: 1px;
+    font-size: 10pt;
     padding: 0.5em 1em;
     text-decoration: none;
     display: inline-block;
@@ -605,8 +508,12 @@ div#fold-editor{
       cursor: pointer;
       &:hover {
         color: white;
+        background-color: @action-color;
       }
     }
+  }
+  svg{
+    fill: @color-light-grey;
   }
   &:after{
     @triangleSize: 8px;
@@ -617,8 +524,52 @@ div#fold-editor{
     margin-left: -@triangleSize;
     width: 0;
     height: 0;
-    border-top: solid @triangleSize black;
+    border-top: solid @triangleSize @panel-color;
     border-left: solid @triangleSize transparent;
     border-right: solid @triangleSize transparent;
+  }
+}
+
+div.anchor-menu {
+  display: none;
+  overflow: scroll;
+}
+div.context-anchor-menu {
+  span{
+    overflow: hidden;
+    width: calc(~"100% - 30px");
+    display: inline-block;
+    text-overflow: ellipsis;
+  }
+  display: none;
+  width: 100%;
+  circle{
+    fill: @color-light-grey;
+  }
+  path{
+    fill: @dark-color;
+  }
+  .back-arrow{
+    path{
+      fill: @color-light-grey;
+    }
+  }
+  button{
+    text-align: left;
+
+  }
+  .context-anchor-list{
+    max-height: 3.9 * @fold-editor-row-height;
+    overflow: scroll;
+    z-index: 8000;
+    position:relative;
+  }
+  .bottom-bar{
+    position:relative;
+    height: 5px;
+    width: 100%;
+    background-color: @panel-color;
+    .box-shadow(0px -5px 10px 0px rgba(0,0,0,0.75));
+    z-index: 9000;
   }
 }

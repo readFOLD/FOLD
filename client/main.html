@@ -251,8 +251,12 @@
 
 <template name="story_browser">
   <div class="story-browser">
-    <img class="left" src="/arrow_left.svg" />
-    <img class="right" src="/arrow_right.svg" />
+    <div class="left">
+      {{ > browse_arrow_left}}
+    </div>
+    <div class="right">
+      {{ > browse_arrow_right}}
+    </div>
   </div>
 </template>
 

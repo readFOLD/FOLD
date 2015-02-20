@@ -1,4 +1,4 @@
-@color-light-grey: #F6F7F8;
+@color-light-grey: #F4F4F4;
 @color-medium-grey: #CCCCCB;
 @color-light-green: #8CC63E;
 @color-fold-black: #272727;
@@ -54,6 +54,14 @@
   -moz-transition: @value;
   -o-transition: @value;
   transition: @value;
+}
+.box-shadow(@value1,@value2:X,...)
+{
+  @value: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
+  -webkit-box-shadow: @value;
+  -moz-box-shadow: @value;
+  -o-box-shadow: @value;
+  box-shadow: @value;
 }
 
 .left-transition{
@@ -204,9 +212,10 @@ div.story-browser {
   width: 100%;
   height: 0px;
   z-index: 10;
-
-  img {
-    color: white;
+  div{
+    display: inline-block;
+  }
+  svg {
     cursor: pointer;
     margin-top: 275px;
     border-radius: 30px;
@@ -219,7 +228,7 @@ div.story-browser {
     }
   }
 
-  img.right {
+  .right {
     float: right;
   }
 }
