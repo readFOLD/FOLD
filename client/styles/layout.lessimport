@@ -178,6 +178,11 @@
   height: 100%;
 }
 
+.size(@s){
+  height:@s;
+  width: @s;
+}
+
 // Universal Link Styling
 a {
   text-decoration: none !important;
@@ -476,6 +481,11 @@ div.horizontal-context {
   }
 }
 
+.content-count {
+  svg{
+    .size(44px);
+  }
+}
 
 
 .horizontal-narrative-section {
