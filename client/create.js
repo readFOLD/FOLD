@@ -429,6 +429,19 @@ createBlockEvents = {
   }
 };
 
+Template.create_video_section.created = function() {
+  return this.focusResult = new ReactiveVar();
+};
+
+Template.create_video_section.helpers({
+  isFocused: function() {
+    var focusResult = Template.instance().focusResult.get();
+    if (this._id === focusResult._id) {
+      return true;
+    }
+  }
+});
+
 
 Template.create_video_section.helpers(createBlockHelpers);
 
@@ -441,9 +454,6 @@ Template.create_video_section.helpers({
         }
       });
       return array;
-  },
-  size: function(){
-    return 'small';
   }
 });
 
@@ -496,6 +506,7 @@ Template.create_video_section.events({
       results = _.map(results, function(element) {
         element.type = 'video';
         element.service = 'youtube';
+        element.authorId = Meteor.user()._id;
         element.searchQuery = videoSearch;
         element.videoUsername = element.channelTitle;
         element.videoUsernameId = element.channelId;
@@ -513,9 +524,13 @@ Template.create_video_section.events({
       });
   },
 
-  "dblclick .search-result": function(d) {
-    // console.log(d);
-    // console.log(d.currentTarget.children[0]);
+  "dblclick .search-result": function(d, template) {
+    template.focusResult.set(this);
+  },
+
+  "click #add-video-button": function(d, template) {
+    var contextId = ContextBlocks.insert(template.focusResult.get());
+    return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
   }
 });
 

@@ -368,6 +368,7 @@ div.horizontal-context {
 
   div.create-section {
     padding: 23px;
+    height: calc(100% ~"-" @contentIconBannerHeight);
   }
 
   img.content-type-button {
@@ -446,57 +447,84 @@ div.image-section {
   }
 }
 
-@videoSearchFormHeight: 400px; 
+@searchFormHeight: 150px; 
+
 div.video-search-form {
-  height: calc(100%);
+  height: @searchFormHeight;
 }
 
- 
-div.video-search-results {
+@addButtonHeight: 60px;  
+div.search-results-container {
   background-color: #ffffff;
   width: 100%;
-  height: 500px;
-  overflow: scroll;
+  height: calc(100% ~"-" @searchFormHeight ~"-" @addButtonHeight ~"-" 30px);
+  overflow-y: scroll;
+  overflow-x: hidden;
   margin-top: 27px;
 
+  @searchResultHeight: 94px; 
   @videoHeight: 90px;
   @videoWidth: 120px;
 
   div.search-result{
-    display: inline-block;
   }
+  
+  div.focused-search-result {
+    border: 1px solid #e7e7e7;
+    height: calc(@searchResultHeight~"*"2);
+    background: #e0e2e0;
+  }
+
+  div.focused-thumbnail {
+    iframe{
+      padding-top: 9.5px;
+    }
+  }
+  
   div.small-search-result {
-    border-top: 1px dashed @action-color;
-    max-height: 230px;
+    border: 1px solid #e7e7e7;
+    height: @searchResultHeight;
   }
 
-  div.small-video-thumbnail{
-    margin-bottom: -50px;
-    padding-top: 15px;
-
+  div.small-thumbnail {
+    img{
+      width:98px;
+      padding-top: 9.5px;
+    }
   }
-  div.video-info{
-    font-size: 85%;
+
+
+  @textAreaHeight: 75px;
+  div.info{
     position:relative;
-    top: calc(-35px ~"-" @videoHeight);
-    left: calc(15px ~"+" @videoWidth);
-    width: calc(100% ~"-" 30px ~"-" @videoWidth) ;
-    max-height: calc(2~'*'@videoHeight);
-
-    #vid-title {
-      font-weight: bold;
-      
-    }
-    #vid-descr, #vid-user, #vid-title {
-      margin-bottom: -10px;
-    }
-  }
-  #vid-date {
-    font-size: 85%;
-    padding: 10px;
-    text-align: right;
-    margin-top: -@videoHeight;
+    top:  calc(-@searchResultHeight~"+"9.5px);
+    left: calc(10px ~"+" @videoWidth);
+    max-width: calc(100% ~"-" 30px ~"-" @videoWidth) ;
+    max-height: calc(@searchResultHeight ~"-" 10px);
     
+
+    div.content-title {
+      font-weight: bold;  
+      overflow: hidden;
+      height: calc(@textAreaHeight~"*"0.25);
+    }
+    
+    .date, .user {
+      font-size: 75%;
+      height: calc(@textAreaHeight~"*"0.15);
+    }
+
+    .date {
+      text-align: right;
+      position: relative;
+      top: calc(-@textAreaHeight~"*"0.15);
+    }
+    
+    .descr {
+      overflow: hidden;
+      height: calc(@textAreaHeight~"*"0.62);
+      line-height: 16px;
+    }
   }
 }
 
