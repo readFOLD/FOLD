@@ -1,11 +1,9 @@
 <template name="read">
     {{#if read}}
-        {{#with publishedStory}}
-            {{> story_header}}
-            {{> story}}
-        {{/with}}
+      {{> story_header}}
+      {{> story}}
     {{else}}
-        {{> story_header}}
-        {{> story}}
+      {{> story_header}}
+      {{> story}}
     {{/if}}
 </template>
