@@ -280,7 +280,9 @@ svg{
 
 .new-section {
   &:hover {
-    fill: @action-color;
+    circle{
+      fill: @action-color;
+    }
   }
 }
 
@@ -330,14 +332,18 @@ div.horizontal-context {
       vertical-align: top;
       display: inline-block;
       &:hover {
-        fill: @action-color;
+        circle{
+          fill: @action-color;
+        }
       }
 
 
     }
     .active{
       svg{
-        fill: @action-color;
+        circle{
+          fill: @action-color;
+        }
       }
     }
     .unimplemented {
