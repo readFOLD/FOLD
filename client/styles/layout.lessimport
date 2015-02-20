@@ -30,6 +30,11 @@
   path{
     fill: @light-color;
   }
+  .active{
+    circle{
+      fill: @action-color;
+    }
+  }
 
   .back-arrow{
     path{
@@ -44,6 +49,12 @@
   }
   path{
     fill: @dark-color;
+  }
+
+  .active{
+    circle{
+      fill: @action-color;
+    }
   }
 
   .back-arrow{
@@ -607,3 +618,4 @@ div.hide {
 div.collapse {
   display: none !important;
 }
+

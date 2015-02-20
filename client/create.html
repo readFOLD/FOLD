@@ -12,16 +12,16 @@
 <template name="fold_editor">
   <div id="fold-editor">
     <div id="fold-editor-button-group">
-      <button type="button" class="bold-button">
+      <button type="button" class="bold-button {{#if boldActive}}active{{/if}}">
         {{ > bold_icon }}
       </button>
-      <button type="button" class="italic-button">
+      <button type="button" class="italic-button {{#if italicActive}}active{{/if}}">
         {{ > italic_icon }}
       </button>
-      <button type="button" class="underline-button">
+      <button type="button" class="underline-button {{#if underlineActive}}active{{/if}}">
         {{ > underline_icon }}
       </button>
-      <button type="button" class="anchor-button">
+      <button type="button" class="anchor-button {{#if anchorActive}}active{{/if}}">
         {{ > link_card_icon }}
       </button>
     </div>

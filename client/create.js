@@ -1,6 +1,51 @@
 var addContextToStory, autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHorizontalUI, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
+var updateUIBasedOnSelection = function(e){
+  var selection;
+  selection = window.getSelection();
+
+
+  return setTimeout((function(_this) {
+    return function() {
+      var boundary, boundaryMiddle, pageYOffset, range;
+      if (window.getSelection().type === 'Range') {
+        range = selection.getRangeAt(0);
+
+        // Get containing tag
+        if (rangeSelectsSingleNode(range)) {
+          selectedParentElement = range.startContainer.childNodes[range.startOffset];
+        } else if (range.startContainer.nodeType === 3) {
+          selectedParentElement = range.startContainer.parentNode;
+        } else {
+          selectedParentElement = range.startContainer;
+        }
+        var parentNode = selectedParentElement;
+        var selectedTags = [];
+
+        while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') { // && this.parentElements.indexOf(parentNode.tagName.toLowerCase) === -1) {
+          selectedTags.push(parentNode.tagName.toLowerCase());
+
+          parentNode = parentNode.parentNode;
+        }
+        console.log(selectedTags)
+        Session.set('selectedTags', selectedTags);
+
+        // TODO actually get this from selectio
+        // Get location on page
+        //boundary = range.getBoundingClientRect();
+        //boundaryMiddle = (boundary.left + boundary.right) / 2;
+        //pageYOffset = $(e.target).offset().top;
+        //$('#fold-editor').show();
+        //$('#fold-editor').css('left', e.pageX - 100);
+        //return $('#fold-editor').css('top', e.pageY - 70);
+      } else {
+        return hideFoldEditor();
+      }
+    };
+  })(this));
+};
+
 Template.create.rendered = function() {
   window.showAnchorMenu = function() {
     return $(".anchor-menu").show();
@@ -43,7 +88,26 @@ Template.create.rendered = function() {
   }
 };
 
+Template.fold_editor.helpers({
+  boldActive: function() {
+    return _.intersection(['b', 'strong'], Session.get('selectedTags')).length;
+  },
+  italicActive: function() {
+    return _.intersection(['i', 'em'], Session.get('selectedTags')).length;
+  },
+  underlineActive: function() {
+    return _.intersection(['u'], Session.get('selectedTags')).length;
+  },
+  anchorActive: function() {
+    return _.intersection(['a'], Session.get('selectedTags')).length;
+  }
+});
+
 Template.fold_editor.events({
+  'mouseup': function () {
+    console.log('yayay')
+    updateUIBasedOnSelection()
+  },
   'mouseup .bold-button': function(e) {
     e.preventDefault();
     return window.document.execCommand('bold', false, null);
@@ -81,15 +145,50 @@ Template.anchor_menu.events({
   }
 });
 
+
+
+// http://stackoverflow.com/questions/15867542/range-object-get-selection-parent-node-chrome-vs-firefox
+var rangeSelectsSingleNode = function (range) {
+  var startNode = range.startContainer;
+  return startNode === range.endContainer &&
+    startNode.hasChildNodes() &&
+    range.endOffset === range.startOffset + 1;
+};
+
+
+
 Template.vertical_section_block.events({
-  'mouseup .fold-editable': function(e) {
+  'mouseup .fold-editable': function(e) { // TODO COMBINE THIS WILL UPDATEUIBASEDONSELECTION AT TOP!!
     var selection;
     selection = window.getSelection();
+
     return setTimeout((function(_this) {
-      return function() {
+      return function () {
         var boundary, boundaryMiddle, pageYOffset, range;
         if (window.getSelection().type === 'Range') {
           range = selection.getRangeAt(0);
+
+          // Get containing tag
+          if (rangeSelectsSingleNode(range)) {
+            selectedParentElement = range.startContainer.childNodes[range.startOffset];
+          } else if (range.startContainer.nodeType === 3) {
+            selectedParentElement = range.startContainer.parentNode;
+          } else {
+            selectedParentElement = range.startContainer;
+          }
+          var parentNode = selectedParentElement;
+          var selectedTags = [];
+
+          while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') { // && this.parentElements.indexOf(parentNode.tagName.toLowerCase) === -1) {
+            selectedTags.push(parentNode.tagName.toLowerCase());
+
+            parentNode = parentNode.parentNode;
+          }
+          console.log(selectedTags)
+          Session.set('selectedTags', selectedTags);
+
+
+          // Get location on page
           boundary = range.getBoundingClientRect();
           boundaryMiddle = (boundary.left + boundary.right) / 2;
           pageYOffset = $(e.target).offset().top;
@@ -103,6 +202,8 @@ Template.vertical_section_block.events({
     })(this));
   }
 });
+
+
 
 Template.vertical_section_block.rendered = function() {
   console.log('Vertical Section Rendered');
