@@ -350,7 +350,7 @@ Template.context_anchor_new_card_option.events = {
 };
 
 Template.context_anchor_option.events = {
-  "mousedown": function(e) {
+  "mousedown": function (e) {
     var contextId, link;
     e.preventDefault();
     hideFoldEditor();
