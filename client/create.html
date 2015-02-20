@@ -13,16 +13,16 @@
   <div id="fold-editor">
     <div id="fold-editor-button-group">
       <button type="button" class="bold-button">
-        B
+        {{ > bold_icon }}
       </button>
       <button type="button" class="italic-button">
-        I
+        {{ > italic_icon }}
       </button>
       <button type="button" class="underline-button">
-        U
+        {{ > underline_icon }}
       </button>
       <button type="button" class="anchor-button">
-        X
+        {{ > link_card_icon }}
       </button>
     </div>
   {{> anchor_menu}}
@@ -105,7 +105,7 @@
         {{ > text_icon }}
       </div>
       <div class='unimplemented inline-block'>
-        {{ > anchor_icon }}
+        {{ > link_icon }}
       </div>
       <div class='unimplemented inline-block'>
         {{ > remix_icon }}

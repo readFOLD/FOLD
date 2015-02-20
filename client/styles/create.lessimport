@@ -435,7 +435,7 @@ div.text-section {
   margin-right: 30px;
 }
 
-@fold-editor-row-height: 50px;
+@fold-editor-row-height: 55px;
 
 
 
@@ -482,15 +482,27 @@ div#fold-editor{
   #fold-editor-button-group {
     height: @fold-editor-row-height;
     background-color: @panel-color;
+    svg{
+      @size: 40px;
+      height: @size;
+      width: @size;
+      vertical-align: middle;
+    }
     button {
       width: 25%;
       height: 100%;
       padding: 0;
       text-align: center;
-      vertical-align: center;
+      vertical-align: middle;
       float: left;
       font-size: 20pt;
       line-height: @fold-editor-row-height;
+      &:hover {
+        circle{
+          fill: @action-color;
+        }
+        background-color: inherit;
+      }
     }
   }
   button{
