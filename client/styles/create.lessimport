@@ -141,7 +141,6 @@ div.title-overlay {
 
 div.button-options {
   div {
-    // box-shadow: 3px 3px @medium-color;
     background-color: @dark-color;
     color: @light-color;
     cursor: pointer;
@@ -149,16 +148,17 @@ div.button-options {
     text-align: center;
     font-size: 16px;
     line-height: 35px;
+    float: left;
     &:not(:last-child) {
-      margin-bottom: 10px;
+      margin-right: 10px;
     }
 
-    width: 120px;
+    width: 110px;
 
     &:hover {
       background-color: @action-color;
       color: @dark-color;
-    }
+    } 
   }
 
   div.delete-button {
@@ -443,7 +443,7 @@ div#fold-editor{
   .inverted-icon-colors;
   display: none;
   max-height: @fold-editor-row-height * 5;
-  width: 200px;
+  width: 205px;
   opacity: 1;
   background-color: green;
   z-index: 9999999;
@@ -467,7 +467,7 @@ div#fold-editor{
       height: @icon-size;
       width: @icon-size;
       float: left;
-      margin-right: 7px;
+      margin-right: 8px;
     }
     svg.back-arrow{
       @arrow-size: 20px;
@@ -524,7 +524,7 @@ div#fold-editor{
     background-color: inherit;
     font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
     font-size: .9em;
-    padding: 0.5em 1em;
+    padding: 0.5em 1em 0 1em;
     text-align: left;
     text-decoration: none;
     display: inline-block;
@@ -585,7 +585,7 @@ div.context-anchor-menu {
   }
 
   div.bottom-bar{
-    .box-shadow(0px -5px 10px 0px rgba(0,0,0,0.75));
+    .box-shadow(0px -8px 12px 0px rgba(0,0,0,0.75));
   }
 }
 div.bottom-bar{
