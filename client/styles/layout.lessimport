@@ -78,6 +78,13 @@
     font-weight: normal;
 }
 
+@font-face {
+  font-family: 'Muli';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Muli'), url(http://fonts.gstatic.com/s/muli/v7/FrmKYbbiMrxVeJO6lA8KEvesZW2xOQ-xsNqO47m55DA.ttf) format('truetype');
+}
+
 .transform(@string){
   -webkit-transform: @string;
   -moz-transform: @string;
