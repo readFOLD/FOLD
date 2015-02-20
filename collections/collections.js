@@ -83,10 +83,7 @@ Story = (function() {
   var sum = function(a,b){ return a+b; };
 
   Story.prototype.contextCountOfType = function(type) {
-    console.log(this)
-    console.log(type)
-
-    return this.publishedStory.verticalSections.map(function(verticalSection){
+    return this.verticalSections.map(function(verticalSection){
       return verticalSection.contextBlocks.reduce(function(count, contextBlock){
         if(contextBlock.type === type){
           count++;
@@ -145,14 +142,14 @@ Schema.Stories = new SimpleSchema({
     optional: true,
     blackbox: true
   },
-  //backgroundImage: {
-  //  type: String,
-  //  optional: true
-  //},
-  //headerImageAttribution: {
-  //  type: String,
-  //  optional: true
-  //},
+  backgroundImage: {
+    type: String,
+    optional: true
+  },
+  headerImageAttribution: {
+    type: String,
+    optional: true
+  },
   lastSaved: {
     type: Date
   },
@@ -170,10 +167,10 @@ Schema.Stories = new SimpleSchema({
   storyPathSegment: {
     type: String
   },
-  //title: {
-  //  type: String,
-  //  defaultValue: ''
-  //},
+  title: {
+    type: String,
+    defaultValue: ''
+  },
   authorId: {
     type: String
   },
@@ -204,26 +201,26 @@ Schema.Stories = new SimpleSchema({
     type: Number,
     defaultValue: 0
   },
-  //verticalSections: {
-  //  type: [Object],
-  //  minCount: 1,
-  //  maxCount: 1000,
-  //  blackbox: true // TODO remove this when stops causing errors! (after Mongo 2.6 and use position operators?)
-  //},
-  //'verticalSections.$._id': {
-  //  type: String
-  //},
-  //'verticalSections.$.title': {
-  //  type: String,
-  //  optional: true
-  //},
-  //'verticalSections.$.content': {
-  //  type: String
-  //},
-  //'verticalSections.$.contextBlocks': {
-  //  type: [String],
-  //  defaultValue: []
-  //}
+  verticalSections: {
+    type: [Object],
+    minCount: 1,
+    maxCount: 1000,
+    blackbox: true // TODO remove this when stops causing errors! (after Mongo 2.6 and use position operators?)
+  },
+  'verticalSections.$._id': {
+    type: String
+  },
+  'verticalSections.$.title': {
+    type: String,
+    optional: true
+  },
+  'verticalSections.$.content': {
+    type: String
+  },
+  'verticalSections.$.contextBlocks': {
+    type: [String],
+    defaultValue: []
+  }
 });
 
 this.Stories.attachSchema(Schema.Stories);
