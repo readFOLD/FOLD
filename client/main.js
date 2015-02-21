@@ -104,8 +104,9 @@ updatecurrentY = function() {
     $("div.logo").removeClass("visible");
   }
   if (scrollTop >= readMode) {
+    var selectOffset = - 40;
     Session.set("pastHeader", true);
-    _ref = window.getVerticalHeights();
+    _ref = _.map(window.getVerticalHeights(), function(height){ return height + selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
       if (scrollTop < h) {

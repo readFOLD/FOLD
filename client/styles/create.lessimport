@@ -1,5 +1,5 @@
 .editable {
-  outline: 1px dashed @action-color;
+  outline: 1px dashed #e0e1e2;
   cursor: text;
 }
 
@@ -35,7 +35,7 @@ div.title-overlay {
   height: 350px;
   z-index: 30;
   // background-color: @action-color;
-  color: @color-light-grey;
+  color: @light-color;
 
   background-color: @action-color;
   background-position: center center;
@@ -141,24 +141,24 @@ div.title-overlay {
 
 div.button-options {
   div {
-    // box-shadow: 3px 3px @color-medium-grey;
-    background-color: @color-light-grey;
+    background-color: @dark-color;
+    color: @light-color;
     cursor: pointer;
-    text-transform: uppercase;
     padding: 5px;
     text-align: center;
     font-size: 16px;
     line-height: 35px;
+    float: left;
     &:not(:last-child) {
-      margin-bottom: 10px;
+      margin-right: 10px;
     }
 
-    width: 120px;
+    width: 110px;
 
     &:hover {
       background-color: @action-color;
-      color: @color-medium-grey;
-    }
+      color: @dark-color;
+    } 
   }
 
   div.delete-button {
@@ -361,7 +361,7 @@ div.horizontal-context {
 
   .horizontal-new-section {
     position: absolute;
-    background-color: @light-color;
+    background-color: @white-color;
     svg{
       .transition(transform 0.2s ease, fill 0.25s ease);
     }
@@ -518,6 +518,7 @@ div.text-section {
   margin-right: 30px;
 }
 
+<<<<<<< HEAD
 div.image-section {
   div.description-overlay {
     position: absolute;
@@ -536,13 +537,17 @@ div.image-section {
 }
 
 @fold-editor-row-height: 50px;
+=======
+@fold-editor-row-height: 55px;
+>>>>>>> master
 
 
 
 div#fold-editor{
+  .inverted-icon-colors;
   display: none;
   max-height: @fold-editor-row-height * 5;
-  width: 200px;
+  width: 205px;
   opacity: 1;
   background-color: green;
   z-index: 9999999;
@@ -566,7 +571,7 @@ div#fold-editor{
       height: @icon-size;
       width: @icon-size;
       float: left;
-      margin-right: 7px;
+      margin-right: 8px;
     }
     svg.back-arrow{
       @arrow-size: 20px;
@@ -578,31 +583,55 @@ div#fold-editor{
     }
   }
   li:nth-child(even) {background-color: @dark-color;}
-  li:nth-child(odd) {background-color: @color-medium-black;}
+  li:nth-child(odd) {background-color: @black-color;}
+
+  svg.add-card-icon{
+    path {
+      fill: @light-color;
+    }
+    circle {
+      opacity: 0;
+    }
+
+  }
+
   #fold-editor-button-group {
     height: @fold-editor-row-height;
     background-color: @panel-color;
+    .standard-icon-colors;
+    svg{
+      @size: 40px;
+      height: @size;
+      width: @size;
+      vertical-align: middle;
+    }
     button {
       width: 25%;
       height: 100%;
       padding: 0;
       text-align: center;
-      vertical-align: center;
+      vertical-align: middle;
       float: left;
       font-size: 20pt;
       line-height: @fold-editor-row-height;
+      &:hover {
+        circle{
+          fill: @action-color;
+        }
+        background-color: inherit;
+      }
     }
   }
   button{
     border:none;
-    color: @color-light-grey;
+    color: @light-color;
     background-color: inherit;
-    font-family: inherit;
-    font-size: 10pt;
-    padding: 0.5em 1em;
+    font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+    font-size: .9em;
+    padding: 0.5em 1em 0 1em;
+    text-align: left;
     text-decoration: none;
     display: inline-block;
-//    border-radius: 2px;
     &:not([DISABLED]){
       cursor: pointer;
       &:hover {
@@ -612,7 +641,7 @@ div#fold-editor{
     }
   }
   svg{
-    fill: @color-light-grey;
+    fill: @light-color;
   }
   &:after{
     @triangleSize: 8px;
@@ -642,15 +671,10 @@ div.context-anchor-menu {
   }
   display: none;
   width: 100%;
-  circle{
-    fill: @color-light-grey;
-  }
-  path{
-    fill: @dark-color;
-  }
+
   .back-arrow{
     path{
-      fill: @color-light-grey;
+      fill: @light-color;
     }
   }
   button{
@@ -663,12 +687,15 @@ div.context-anchor-menu {
     z-index: 8000;
     position:relative;
   }
-  .bottom-bar{
-    position:relative;
-    height: 5px;
-    width: 100%;
-    background-color: @panel-color;
-    .box-shadow(0px -5px 10px 0px rgba(0,0,0,0.75));
-    z-index: 9000;
+
+  div.bottom-bar{
+    .box-shadow(0px -8px 12px 0px rgba(0,0,0,0.75));
   }
+}
+div.bottom-bar{
+  position:relative;
+  height: 5px;
+  width: 100%;
+  background-color: @panel-color;
+  z-index: 9000;
 }

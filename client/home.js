@@ -100,11 +100,14 @@ Template.filters.events({
 Template.all_stories.helpers({
   stories: function() {
     return Stories.find();
-  },
+  }
+});
+
+Template._story_preview_content.helpers({
   lastPublishDate: function() {
     return formatDate(this.publishDate);
   }
-});
+})
 
 Template.user_stories.events({
   "click div#delete": function(d) {

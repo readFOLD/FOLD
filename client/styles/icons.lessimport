@@ -1,9 +1,4 @@
-circle{
-  fill: @dark-color;
-}
-path{
-  fill: @color-light-grey;
-}
+.standard-icon-colors;
 
 svg.icon {
   .size-to-fit;
@@ -46,9 +41,9 @@ svg.browse-arrow {
     }
     &.favorite{
       svg{
-        fill: @color-light-grey;
+        fill: @light-color;
         &:hover{
-          fill: @color-medium-grey;
+          fill: @medium-color;
         }
       }
     }

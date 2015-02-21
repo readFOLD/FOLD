@@ -12,17 +12,17 @@
 <template name="fold_editor">
   <div id="fold-editor">
     <div id="fold-editor-button-group">
-      <button type="button" class="bold-button">
-        B
+      <button type="button" class="bold-button {{#if boldActive}}active{{/if}}">
+        {{ > bold_icon }}
       </button>
-      <button type="button" class="italic-button">
-        I
+      <button type="button" class="italic-button {{#if italicActive}}active{{/if}}">
+        {{ > italic_icon }}
       </button>
-      <button type="button" class="underline-button">
-        U
+      <button type="button" class="underline-button {{#if underlineActive}}active{{/if}}">
+        {{ > underline_icon }}
       </button>
-      <button type="button" class="anchor-button">
-        X
+      <button type="button" class="anchor-button {{#if anchorActive}}active{{/if}}">
+        {{ > link_card_icon }}
       </button>
     </div>
   {{> anchor_menu}}
@@ -105,7 +105,7 @@
         {{ > text_icon }}
       </div>
       <div class='unimplemented inline-block'>
-        {{ > anchor_icon }}
+        {{ > link_icon }}
       </div>
       <div class='unimplemented inline-block'>
         {{ > remix_icon }}
@@ -254,11 +254,12 @@
     <ol>
       <li class="link-to-card">
         <button type="button">
-          Link to existing card{{ > right_arrow}}
+          {{ > link_icon}} Link to existing card
         </button>
       </li>
       {{ > context_anchor_new_card_option }}
     </ol>
+    <div class="bottom-bar"></div>
   </div>
 </template>
 
@@ -292,7 +293,7 @@
 <template name="context_anchor_new_card_option">
   <li class="new-card">
     <button type="button">
-      Add new card{{ > right_arrow}}
+      {{> add_card_icon}}Add new card
     </button>
   </li>
 </template>

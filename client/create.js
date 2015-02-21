@@ -1,11 +1,57 @@
 var addContextToStory, autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHorizontalUI, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
+window.updateUIBasedOnSelection = function(e){
+  var selection = window.getSelection();
+
+  // Based off of code from https://github.com/daviferreira/medium-editor
+  return setTimeout((function(_this) {
+    return function() {
+      var boundary, boundaryMiddle, pageYOffset, range;
+      if (window.getSelection().type === 'Range') {
+        range = selection.getRangeAt(0);
+
+        // Get containing tag
+        if (rangeSelectsSingleNode(range)) {
+          selectedParentElement = range.startContainer.childNodes[range.startOffset];
+        } else if (range.startContainer.nodeType === 3) {
+          selectedParentElement = range.startContainer.parentNode;
+        } else {
+          selectedParentElement = range.startContainer;
+        }
+        var parentNode = selectedParentElement;
+        var selectedTags = [];
+
+        while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') {
+          selectedTags.push(parentNode.tagName.toLowerCase());
+
+          parentNode = parentNode.parentNode;
+        }
+        Session.set('selectedTags', selectedTags);
+
+        // TODO actually get this from selection
+        if(e) {
+          boundary = range.getBoundingClientRect();
+          boundaryMiddle = (boundary.left + boundary.right) / 2;
+          pageYOffset = $(e.target).offset().top;
+          $('#fold-editor').show();
+          $('#fold-editor').css('left', e.pageX - 100);
+          return $('#fold-editor').css('top', e.pageY - 70);
+        }
+      } else {
+        return hideFoldEditor();
+      }
+    };
+  })(this));
+};
+
 Template.create.rendered = function() {
   window.showAnchorMenu = function() {
+    Session.set("anchorMenuOpen", true);
     return $(".anchor-menu").show();
   };
   window.hideAnchorMenu = function() {
+    Session.set("anchorMenuOpen", false);
     return $(".anchor-menu").hide();
   };
   window.toggleAnchorMenu = function() {
@@ -15,20 +61,22 @@ Template.create.rendered = function() {
     shiftAmt = 120;
     if (anchorMenu.is(':visible') || contextAnchorMenu.is(':visible')) {
       $('#fold-editor').css('top', parseInt($('#fold-editor').css('top')) + shiftAmt);
-      anchorMenu.hide();
-      return contextAnchorMenu.hide();
+      window.hideAnchorMenu();
+      return window.hideContextAnchorMenu();
     } else {
       $('#fold-editor').css('top', parseInt($('#fold-editor').css('top')) - shiftAmt);
-      return anchorMenu.show();
+      return window.showAnchorMenu();
     }
   };
   window.showContextAnchorMenu = function() {
     var contextAnchorForm;
     contextAnchorForm = $(".context-anchor-menu");
     contextAnchorForm.show();
+    Session.set("contextAnchorMenuOpen", true);
     return contextAnchorForm.insertAfter('#fold-editor-button-group');
   };
   window.hideContextAnchorMenu = function() {
+    Session.set("contextAnchorMenuOpen", false);
     return $(".context-anchor-menu").hide();
   };
   window.hideFoldEditor = function() {
@@ -43,7 +91,25 @@ Template.create.rendered = function() {
   }
 };
 
+Template.fold_editor.helpers({
+  boldActive: function() {
+    return _.intersection(['b', 'strong'], Session.get('selectedTags')).length;
+  },
+  italicActive: function() {
+    return _.intersection(['i', 'em'], Session.get('selectedTags')).length;
+  },
+  underlineActive: function() {
+    return _.intersection(['u'], Session.get('selectedTags')).length;
+  },
+  anchorActive: function() {
+    return _.intersection(['a'], Session.get('selectedTags')).length || Session.get('contextAnchorMenuOpen') || Session.get('anchorMenuOpen');
+  }
+});
+
 Template.fold_editor.events({
+  'mouseup': function () {
+    window.updateUIBasedOnSelection()
+  },
   'mouseup .bold-button': function(e) {
     e.preventDefault();
     return window.document.execCommand('bold', false, null);
@@ -81,28 +147,23 @@ Template.anchor_menu.events({
   }
 });
 
+
+
+// http://stackoverflow.com/questions/15867542/range-object-get-selection-parent-node-chrome-vs-firefox
+var rangeSelectsSingleNode = function (range) {
+  var startNode = range.startContainer;
+  return startNode === range.endContainer &&
+    startNode.hasChildNodes() &&
+    range.endOffset === range.startOffset + 1;
+};
+
+
+
 Template.vertical_section_block.events({
-  'mouseup .fold-editable': function(e) {
-    var selection;
-    selection = window.getSelection();
-    return setTimeout((function(_this) {
-      return function() {
-        var boundary, boundaryMiddle, pageYOffset, range;
-        if (window.getSelection().type === 'Range') {
-          range = selection.getRangeAt(0);
-          boundary = range.getBoundingClientRect();
-          boundaryMiddle = (boundary.left + boundary.right) / 2;
-          pageYOffset = $(e.target).offset().top;
-          $('#fold-editor').show();
-          $('#fold-editor').css('left', e.pageX - 100);
-          return $('#fold-editor').css('top', e.pageY - 70);
-        } else {
-          return hideFoldEditor();
-        }
-      };
-    })(this));
-  }
+  'mouseup .fold-editable': window.updateUIBasedOnSelection
 });
+
+
 
 Template.vertical_section_block.rendered = function() {
   console.log('Vertical Section Rendered');
@@ -249,6 +310,13 @@ Tracker.autorun(function() {
   return Session.set("addingContextToCurrentY", (currentYId != null) && Session.get("addingContext") === Session.get('currentYId') && !Session.get('read'));
 });
 
+// Hide add card menu when scroll
+// TO-DO probably remove all the currentY stuff, since we're not tracking that in any real way
+Tracker.autorun(function() {
+  Session.get('currentY'); // so reacts to changes in currentY
+  Session.set("addingContext", null);
+});
+
 showNewHorizontalUI = function() {
   Session.set("addingContext", Session.get('currentYId'));
   return Session.set("editingContext", null);
@@ -350,7 +418,7 @@ Template.context_anchor_new_card_option.events = {
 };
 
 Template.context_anchor_option.events = {
-  "mousedown": function(e) {
+  "mousedown": function (e) {
     var contextId, link;
     e.preventDefault();
     hideFoldEditor();

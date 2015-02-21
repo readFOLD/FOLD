@@ -1,16 +1,14 @@
-@color-light-grey: #F4F4F4;
-@color-medium-grey: #CCCCCB;
-@color-light-green: #8CC63E;
-@color-fold-black: #272727;
-@color-link-grey: #d7dbd8;
-@color-medium-black: #1D1D1D;
 
+@black-color: #1D1D1D;
 @dark-color: #323232;
+@medium-color: #CCCCCB;
+@light-color: #F4F4F4;
+@white-color: white;
+
 @background-color: #F8F8F8;
-@light-color: white;
 @action-color: #1DB259;
 @inactive-color: #DDDDDD;
-@placeholder-color: #bababa;
+@placeholder-color: #acacac;
 @panel-color: #585094;
 @remix-color: #EA1D75;
 @favorite-color: #FFD600;
@@ -25,6 +23,47 @@
 @remix-bar-height: 40px;
 @horizontal-content-height: 300px;
 
+.standard-icon-colors {
+  circle{
+    fill: @dark-color;
+  }
+  path{
+    fill: @light-color;
+  }
+  .active{
+    circle{
+      fill: @action-color;
+    }
+  }
+
+  .back-arrow{
+    path{
+      fill: @dark-color;
+    }
+  }
+}
+
+.inverted-icon-colors {
+  circle{
+    fill:  @light-color;
+  }
+  path{
+    fill: @dark-color;
+  }
+
+  .active{
+    circle{
+      fill: @action-color;
+    }
+  }
+
+  .back-arrow{
+    path{
+      fill: @light-color;
+    }
+  }
+}
+
 
 // http://asimpleframe.com/
 @font-face {
@@ -37,6 +76,13 @@
     font-family: 'Alright Sans';
     src: url("/alright_sans.woff");
     font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Muli';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Muli'), url(http://fonts.gstatic.com/s/muli/v7/FrmKYbbiMrxVeJO6lA8KEvesZW2xOQ-xsNqO47m55DA.ttf) format('truetype');
 }
 
 .transform(@string){
@@ -262,16 +308,16 @@ div#overlay {
   &.new-section{
     padding: 0 15px;
   }
-  background-color: @light-color;
+  background-color: @white-color;
 
   a {
     .background-transition;
     cursor: pointer;
-    background-color: @color-link-grey;
+    background-color: @medium-color;
     color: inherit;
     padding: 0 4px;
     &:hover {
-      background-color: @color-light-green;
+      background-color: @action-color;
     }
   }
 
@@ -371,7 +417,7 @@ div.vertical-narrative {
     &.read {
       margin-bottom: 12px;
     }
-    // box-shadow: 3px 3px @color-medium-grey;
+    // box-shadow: 3px 3px @medium-color;
 
     &.selected {
       color: @dark-color;
@@ -442,7 +488,7 @@ div.horizontal-context {
 
   min-width: 400px;
   width: 32%;
-  background-color: @light-color;
+  background-color: @white-color;
   color: @dark-color;
   // display: none;
   opacity:  @unselected-opacity;
@@ -555,7 +601,7 @@ div.minimap {
     .background-transition;
     height: 15px;
     width: 20px;
-    background-color: @color-medium-grey;
+    background-color: @medium-color;
     display: inline-block;
 
     &.selected {

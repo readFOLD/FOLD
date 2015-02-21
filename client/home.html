@@ -5,15 +5,42 @@
 </head>
 
 <template name="home">
-  <section class="banner">
-    {{#linkTo route="home"}}
-      <div class="title">
-        <img src="/fold-title.png">
+  <div class="home-top">
+    <div class="left">
+      <div class="logo-title">
+        <div class="logo">
+          <img class="logo" src="/FOLD_LOGO.svg">
+        </div>
+        {{#linkTo route="home"}}
+        <div class="title">
+          <img src="/FOLD_TITLE.svg">
+        </div>
+        {{/linkTo}}
       </div>
-    {{/linkTo}}
-    <div class="logo">
-      <img class="logo" src="/logo.png">
+      <div class="filter">
+        {{> filters}} in {{> categories}}
+      </div>
     </div>
+    <div class="right">
+      <div class="action-items">
+        {{#linkTo route="create"}}
+        <div class="create-story">
+          Make a Story
+        </div>
+        {{/linkTo}}
+        <div class="user-action">
+          {{> loginButtons }}
+        </div>
+        {{#linkTo route="about"}}
+        <div class="about-fold">
+          About FOLD
+        </div>
+        {{/linkTo}}
+      </div>
+    </div>
+  </div>
+<!--   <section class="banner">
+
 
     <div id='login-buttons-and-more'>
       {{#if user}}
@@ -24,11 +51,7 @@
       {{/if}}
       {{> loginButtons }}
     </div>
-    {{#linkTo route="create"}}
-      <div class="create-story">
-        Create Story
-      </div>
-    {{/linkTo}}
+
   </section>
   {{#if filter}}
   <div class="navbar filter {{#if sticky}}sticky{{/if}}" id="filter">
@@ -48,7 +71,7 @@
       Now Reading: <span class="filter">{{filter}}</span> in <span class="category">{{category}}</span>
     {{/if}}
   </div>
-  {{/if}}
+  {{/if}} -->
 
   <section class="stories">
     <div class="story-container">
@@ -58,33 +81,27 @@
 </template>
 
 <template name="filters">
-  <div class="filters">
-    <div class="title">
-      Filters
-    </div>
-    <ul>
+  <span class="filters">
+    <select>
       {{#each filters}}
-        <li class="filter {{#if selected}}selected{{/if}}" data-filter="{{this}}">
+        <option class="filter {{#if selected}}selected{{/if}}" data-filter="{{this}}">
           {{this}}
-        </li>
+        </option>
       {{/each}}
-    </ul>
-  </div>
+    </select>
+  </span>
 </template>
 
 <template name="categories">
-  <div class="categories">
-    <div class="title">
-      Categories
-    </div>
-    <ul>
+  <span class="categories">
+    <select>
       {{#each categories}}
-        <li class="category {{#if selected}}selected{{/if}}" data-category="{{this}}">
+        <option class="category {{#if selected}}selected{{/if}}" data-category="{{this}}">
           {{this}}
-        </li>
+        </option>
       {{/each}}
-    </ul>
-  </div>
+    </select>
+  </span>
 </template>
 
 <template name="all_stories">
@@ -96,14 +113,7 @@
 <template name="story_preview">
   <div class="story" data-story-id="{{_id}}">
     {{> _story_preview_content}}
-
-<!--    <div class="dates">
-      <p>
-        Published On: {{lastPublishDate}}
-      </p>
-    </div>
- -->
-  {{> edit_or_read_bar}}
+    {{> edit_or_read_bar}}
   </div>
 </template>
 
@@ -115,18 +125,23 @@
     {{title}}
   </div>
   <div class="byline">
-    {{#if profileImage}}
+    <div class="pull-left">
+      <div class="author-image">
+        {{#if profileImage}}
         <img class="profile-picture" src="{{profileImage}}"/>
-      {{/if}}
-    By {{authorName}}
+        {{/if}}
+      </div>
+
+      <div class="author-name-date">
+        <div class="author-name">By {{authorName}}</div>
+        <div class="publish-date">{{lastPublishDate}}</div>
+      </div>
+    </div>
     <div class="pull-right">
       {{ > favorite_button }}
     </div>
   </div>
 
-  <div class="content">
-    {{contentPreview}}
-  </div>
 </template>
 
 <template name="edit_or_read_bar">
