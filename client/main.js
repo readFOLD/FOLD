@@ -377,7 +377,6 @@ Template.horizontal_context.helpers({
           });
         });
         sortedContext = _.sortBy(unsortedContext, function(datum) {
-          console.log(datum)
           return datum.horizontalIndex;
         });
         return {
