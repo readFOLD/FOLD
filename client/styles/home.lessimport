@@ -4,229 +4,83 @@ div#login-buttons-and-more {
   left: 15px;
 }
 
-section.banner {
-  background-color: @light-color;
-  height: 200px;
-  border-bottom: 32px solid @dark-color;
-
-  div.create-story {
-    .background-transition;
-    .no-select;
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border-radius: 6px;
-    padding: 5px 8px;
-    background-color: @dark-color;
-    color: @light-color;
-
-    &:hover {
-      background-color: @action-color;
-    }
-  }
-
-  div.navbar {
-    width: 100%;
-    min-width: 1024px;
-    height: 30px;
-    background-color: @dark-color;
-    padding-top: 0;
-
-    i.fa-bars {
-      color: white;
-      &:hover {
-        color: @action-color;
-      }
-      margin-left: 6px;
-      margin-top: 3px;
-    }
-  }
-
-  div.title {
-    text-align: center;
-    font-size: 60px;
-    font-weight: 500;
-    padding-top: 50px;
-  }
-
-  div.logo {
-    background-color: @dark-color;
-    z-index: 10;
-
-    @circle-diameter: 80px;
-    height: @circle-diameter;
-    width: @circle-diameter;
-    border-radius: @circle-diameter / 2;
-
-    position: relative;
-    left: 50%;
-    top: 52px;
-    margin-left: -(@circle-diameter / 2);
-    margin-top: -13px;
-
-    img {
-      width: @circle-diameter - 20px;
-      height: auto;
-      margin: 24px 0 0 9px;
-    }
-
-    img.logo {
-      // &:hover {
-      //  opacity: 0.0;
-      // }
-    }
-
-    img.profile-picture {
-      // opacity: 1.0;
-      // position: relative;
-      // top: -88px;
-      // left: -10px;
-      width: 80px;
-      border-radius: 40px;
-    }
-  }
-
-  div.options {
-    position: relative;
-    top: 30px;
-    left: 50%;
-    margin-left: -165px;
-    div {
-      display: inline;
-    }
-
-    div#login-buttons {
-      margin-left: 142px;
-    }
-  }
-}
-
-div.filter {
-  .background-transition;
-  position: absolute;
+div.home-top {
+  border-top: 5px solid @action-color;
+  position: fixed;
+  background-color: white;
+  height: 145px;
   width: 100%;
-  cursor: default;
-  min-width: 1024px;
-  background-color: @dark-color;
-  margin-top: -2px;
-  color: white;
-  margin-top: -32px;
-  padding-left: 10px;
-  line-height: 32px;
-  font-size: 14px;
-  font-weight: light;
-  z-index: 5;
-
-  &.sticky {
-    position: fixed;
-    top: 32px;
-    left: 0px;
-  }
-
-  span {
-    text-transform: uppercase;
-  }
-
-  div.expand-filter {
-    .background-transition;
-    float: left;
-    cursor: pointer;
-    margin-right: 10px;
-    width: 17px;
-    padding-left: 4px;
-    height: 17px;
-    margin-top: 7px;
-    border-radius: 10px;
-    background-color: @background-color;
-
-    i {
-      cursor: pointer;
-      position: relative;
-      top: -7px;
-      font-size: 11px;
-    }
-
-    &:hover {
-      background-color: @action-color;
-    }
-  }
-
-  div.title {
-    border-bottom: 1px solid @light-color;
-    line-height: 24px;
-  }
-
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    padding-top: 5px;
-    li {
-      list-style-type: none;
-      text-transform: uppercase;
+  z-index: 10;
+  div.logo-title {
+    display: inline-block;
+    margin-left: 50px;
+    margin-top: 37px;
+    width: 260px;
+    div.logo {
       float: left;
-      cursor: pointer;
-      margin-right: 30px;
+      z-index: 10;
+    }
 
-      &:hover, &.selected {
-        color: @action-color;
+    div.title {
+      float: right;
+      margin-top: 5px;
+      width: 164px;
+    }
+  }
+
+  div.filter {
+    position: absolute;
+    font-size: 18px;
+    top: 55px;
+    left: 400px;
+    span {
+      display: inline-block;
+      text-transform: uppercase;
+      font-weight: bold;
+
+      ul {
+        margin: 0;
+        padding: 0;
       }
     }
-  }
 
-  div.filters {
-    width: 200px;
-    margin-top: 20px;
-    margin-left: 30px;
-    float: left;
-
-    li {
-      width: 70px;
+    span.filters {
+      margin-right: 10px;
+    }
+    span.categories {
+      margin-left: 10px;
     }
   }
 
-  div.categories {
-    float: left;
-    width: 675px;
-    margin-top: 20px;
-    margin-left: 40px;
+  div.action-items {
+    position: absolute;
+    top: -5px;
+    right: 60px;
 
-    li {
-      width: 105px;
+    & > div, & > a div {
+      display: inline-block;
+      color: @light-color;
+      font-weight: bold;
+      padding: 8px 20px;
+      margin-right: 12px;
     }
-  }
-}
 
+    div.create-story {
+      background-color: @action-color;
+    }
 
+    div.user-action {
+      background-color: @remix-color; 
+    }
 
-div.edit-or-read {
-  .background-transition;
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-  background-color: @dark-color;
-
-  &:hover {
-    background-color: @action-color;
-  }
-
-  a {
-    color: white;
-  }
-
-  div#edit-this-story {
-    .background-transition;
-    .color-transition;
-    padding: 12px;
-    padding-left: 30px;
-    &:hover {
-      color: white;
+    div.about-fold {
+      background-color: @panel-color;
     }
   }
 }
 
 section.stories {
+  padding-top: 150px;
   width: 100%;
   height: 100%;
   background-color: @background-color;
@@ -264,19 +118,28 @@ section.stories {
   }
 
   div.byline {
-    line-height: 45px;
-    font-size: 15px;
-    padding: 0;
-    margin: 10px 20px 10px 30px;
-  }
-
-  div.dates {
-    font-size: 14px;
-    font-style: italic;
-
-    padding: 0 15px;
-    p {
-      margin: 0;
+    padding: 10px 25px;
+    div.pull-left {
+      width: 420px;
+      div.author-image {
+        display: inline-block;
+        float: left;
+        background-color: @black-color;
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+      }
+      div.author-name-date {
+        display: inline-block;
+        margin-left: 20px;
+        & > div {
+          line-height: 14px;
+          font-size: 12px;
+        }
+        div.author-name {
+          margin-top: 12px;
+        }
+      }
     }
   }
 
@@ -297,11 +160,12 @@ section.stories {
 
   div.story {
     background-color: @white-color;
+    border: 1px solid @medium-color;
     // box-shadow: 3px 3px @medium-color;
 
     // 540 980+
     // 415 980-
-    height: 400px;
+    height: 290px;
     /*height depends on length of story abstract*/
     width: 540px;
     z-index: 2;
@@ -331,6 +195,32 @@ section.stories {
       border-radius: @picture-radius;
       width: @picture-radius * 2;
       height: auto;
+    }
+
+    div.edit-or-read {
+      .background-transition;
+      position: absolute;
+      bottom: 0px;
+      width: 100%;
+      background-color: @unselected-background-color;
+
+      &:hover {
+        background-color: @action-color;
+      }
+
+      a {
+        color: @black-color;
+      }
+
+      div#edit-this-story {
+        .background-transition;
+        .color-transition;
+        padding: 12px;
+        padding-left: 30px;
+        &:hover {
+          color: white;
+        }
+      }
     }
   }
 
