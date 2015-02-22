@@ -1,17 +1,23 @@
-var formatDate, weekDays;
+var formatDate, weekDays, formatDateNice, monthNames;
 
 weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
+// Friday 2/20/2015 20:29:22
 formatDate = function(date) {
   var hms;
   hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
   return weekDays[date.getDay()] + " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
 };
 
+// February 7th, 2015
+formatDateNice = function(date) {
+  var hms;
+  hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+  return monthNames[(date.getMonth() + 1)] + " " + date.getDate() + ", " + date.getFullYear();
+};
+
 Template.home.helpers({
-  profileImageExists: function() {
-    return Meteor.user().profile.profile_picture;
-  },
   profileImage: function() {
     return Meteor.user().profile.profile_picture;
   },
@@ -109,7 +115,7 @@ Template.all_stories.helpers({
 Template._story_preview_content.helpers({
   lastPublishDate: function() {
     console.log("Story data", this)
-    return formatDate(this.publishDate);
+    return formatDateNice(this.publishDate);
   }
 })
 

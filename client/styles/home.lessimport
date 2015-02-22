@@ -72,6 +72,16 @@ div.home-top {
       background-color: @panel-color;
     }
   }
+
+  div.user-image {
+    position: absolute;
+    top: 40px;
+    right: 60px;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: @dark-color;
+  }
 }
 
 section.stories {
@@ -169,12 +179,11 @@ section.stories {
     margin-top: 20px;
     margin-bottom: 40px;
 
-    &:nth-child(odd) {
-      float: left;
-    }
+    &:nth-child(odd) { float: left; }
+    &:nth-child(even) { float: right; }
 
-    &:nth-child(even) {
-      float: right;
+    &:hover {
+      box-shadow: 0 0 5px rgba(0,0,0,.2);
     }
 
     img.profile-picture {

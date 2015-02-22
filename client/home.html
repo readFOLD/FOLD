@@ -8,9 +8,11 @@
   <div class="home-top">
     <div class="left">
       <div class="logo-title">
+        {{#linkTo route="home"}}
         <div class="logo">
           <img class="logo" src="/FOLD_LOGO.svg">
         </div>
+        {{/linkTo}}
         {{#linkTo route="home"}}
         <div class="title">
           <img src="/FOLD_TITLE.svg">
@@ -36,6 +38,13 @@
           About FOLD
         </div>
         {{/linkTo}}
+      </div>
+      <div class="user-image">
+        <div class="author-image">
+          {{#if profileImage}}
+          <img class="profile-picture" src="{{profileImage}}"/>
+          {{/if}}
+        </div>
       </div>
     </div>
   </div>
@@ -98,7 +107,7 @@
     <div class="pull-left">
       <div class="author-image">
         {{#if profileImage}}
-        <img class="profile-picture" src="{{profileImage}}"/>
+         <img class="profile-picture" src="{{profileImage}}"/>
         {{/if}}
       </div>
 
