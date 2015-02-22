@@ -33,11 +33,14 @@ Template.home.helpers({
 });
 
 Template.home.rendered = function() {
-  return $('div.content').each(function(i, e) {
-    return $(e).dotdotdot({
-      ellipsis: '...'
-    });
-  });
+  $("select").selectOrDie({
+    
+  })
+  // return $('div.content').each(function(i, e) {
+  //   return $(e).dotdotdot({
+  //     ellipsis: '...'
+  //   });
+  // });
 };
 
 Template.home.events({

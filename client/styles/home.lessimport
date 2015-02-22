@@ -33,16 +33,6 @@ div.home-top {
     font-size: 18px;
     top: 55px;
     left: 400px;
-    span {
-      display: inline-block;
-      text-transform: uppercase;
-      font-weight: bold;
-
-      ul {
-        margin: 0;
-        padding: 0;
-      }
-    }
 
     span.filters {
       margin-right: 10px;
