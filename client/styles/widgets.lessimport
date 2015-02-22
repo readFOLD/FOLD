@@ -1,0 +1,180 @@
+
+.sod_select, .sod_select * {
+        -webkit-box-sizing: border-box;
+           -moz-box-sizing: border-box;
+                box-sizing: border-box;
+     -webkit-touch-callout: none;
+       -webkit-user-select: none;
+          -moz-user-select: none;
+           -ms-user-select: none;
+               user-select: none;
+}
+
+/* The SoD - Please keep this first three lines intact, otherwise all hell will break looooooose */
+.sod_select {
+    display: inline-block;
+    position: relative;
+    line-height: 1;
+
+    width: 200px;
+    padding: 15px 10px;
+    border: 1px solid @medium-color;
+    background: #ffffff;
+    color: #444444;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+    outline: 0;
+    outline-offset: -2px; /* Opera */
+    cursor: default;
+
+    // Up/down arrows
+    &:before, &:after {
+        content: "\25B2";
+        position: absolute;
+        right: 10px;
+        top: 12px;
+        font-size: 7px;      
+    }
+
+    // Down arrow
+    &:after {
+        content: "\25BC";
+        top: auto;
+        bottom: 12px;
+    }
+
+    // Change the border color on hover, focus and when open
+    &:hover, &.open, &.focus { 
+        border-color: #000000; 
+    }
+    &.open { color: #919191; }
+    &.focus { box-shadow: 0 0 5px rgba(0,0,0,.2); }
+
+    // When the entire SoD is disabled, go crazy!
+    &.disabled {
+        border-color: #828282;
+        color: #b2b2b2;
+        cursor: not-allowed;
+    }
+
+    // The "label", or whatever we should call it. Keep the first three lines for truncating.
+    .sod_label {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        padding-right: 15px;
+    }
+
+    // Options list wrapper
+    .sod_list_wrapper {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        display: none;
+        height: auto;
+        width: 200px;
+        margin: 0 0 0 -1px;
+        background: #ffffff;
+        border: 1px solid black;
+        border-top: none;
+        color: #444444;
+        font-weight: 300;
+        z-index: 1;
+    }
+
+    /* Shows the option list (don't edit) */
+    &.open .sod_list_wrapper { display: block;  }
+
+    /* Don't display the options when  */
+    &.disabled.open .sod_list_wrapper { display: none;  }
+
+    /* When the option list is displayed above the SoD */
+    &.above .sod_list_wrapper {
+        top: auto;
+        bottom: 100%;
+        border-top: 3px solid #000000;
+        border-bottom: none;
+    }
+
+    // Options list container
+    .sod_list {
+        display: block;
+        overflow-y: auto;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sod_option {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        position: relative;
+        padding: 10px 10px;
+        list-style-type: none;
+
+        &.optgroup, &.optgroup.disabled {
+            background: inherit;
+            color: #939393;
+            font-size: 10px;
+            font-style: italic;
+        }
+
+        &.groupchild { padding-left: 20px; }
+
+        &.is-placeholder { display: none; }
+
+        &.disabled {
+            background: inherit;
+            color: #cccccc
+        }
+
+        &.active {
+            background: #f7f7f7;
+            color: #333333; 
+        }
+
+        &.selected {
+            font-weight: 700;
+            padding-right: 25px;
+        }
+
+        &.selected:before {
+           content: "";
+           position: absolute;
+           right: 10px;
+           top: 50%;
+           -webkit-transform: translateY(-50%);
+           -ms-transform: translateY(-50%);
+           transform: translateY(-50%);
+           display: inline-block;
+           color: #808080;
+           height: 9px;
+           width: 10px;
+           background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMTAgOSIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTAgOSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8cGF0aCBmaWxsPSIjRDlEOUQ4IiBkPSJNNCw2LjdDMy42LDYuMywzLjUsNi4xLDMuMSw1LjdDMi42LDUuMiwyLDQuNiwxLjUsNC4xYy0wLjgtMC44LTIsMC40LTEuMiwxLjJjMC45LDAuOSwxLjksMS45LDIuOCwyLjgNCgkJYzAuNywwLjcsMS4zLDEsMiwwQzYuNyw2LDguMywzLjcsOS44LDEuNUMxMC41LDAuNSw5LTAuMyw4LjMsMC42bDAsMEM2LjcsMi45LDUuNyw0LjQsNCw2LjciLz4NCjwvZz4NCjwvc3ZnPg0K);           
+        }
+    }
+
+
+    // Hide native select
+    select { display: none !important; }
+
+    // The native select in touch mode. Keep this first line. Sorry, keep everything.
+    &.touch select {
+        -webkit-appearance: menulist-button;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block !important;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        z-index: 1;
+    }
+}

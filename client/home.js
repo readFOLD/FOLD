@@ -34,7 +34,7 @@ Template.home.helpers({
 
 Template.home.rendered = function() {
   $("select").selectOrDie({
-    
+
   })
   // return $('div.content').each(function(i, e) {
   //   return $(e).dotdotdot({
@@ -108,6 +108,7 @@ Template.all_stories.helpers({
 
 Template._story_preview_content.helpers({
   lastPublishDate: function() {
+    console.log("Story data", this)
     return formatDate(this.publishDate);
   }
 })
