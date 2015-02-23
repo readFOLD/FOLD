@@ -26,6 +26,21 @@ Router.route("home", {
   data: function() {}
 });
 
+Router.route("about", {
+  path: "about",
+  template: "about",
+  onRun: function() {
+    $('html, body').scrollTop(0);
+    return this.next();
+  },
+  action: function() {
+    if (this.ready()) {
+      return this.render();
+    }
+  },
+  data: function() {}
+});
+
 Router.route("profile", {
   path: "profile",
   template: "profile",

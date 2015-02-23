@@ -1,17 +1,23 @@
-var formatDate, weekDays;
+var formatDate, weekDays, formatDateNice, monthNames;
 
 weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
+// Friday 2/20/2015 20:29:22
 formatDate = function(date) {
   var hms;
   hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
   return weekDays[date.getDay()] + " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
 };
 
+// February 7th, 2015
+formatDateNice = function(date) {
+  var hms;
+  hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+  return monthNames[(date.getMonth() + 1)] + " " + date.getDate() + ", " + date.getFullYear();
+};
+
 Template.home.helpers({
-  profileImageExists: function() {
-    return Meteor.user().profile.profile_picture;
-  },
   profileImage: function() {
     return Meteor.user().profile.profile_picture;
   },
@@ -33,11 +39,14 @@ Template.home.helpers({
 });
 
 Template.home.rendered = function() {
-  return $('div.content').each(function(i, e) {
-    return $(e).dotdotdot({
-      ellipsis: '...'
-    });
-  });
+  $("select").selectOrDie({
+
+  })
+  // return $('div.content').each(function(i, e) {
+  //   return $(e).dotdotdot({
+  //     ellipsis: '...'
+  //   });
+  // });
 };
 
 Template.home.events({
@@ -100,11 +109,15 @@ Template.filters.events({
 Template.all_stories.helpers({
   stories: function() {
     return Stories.find();
-  },
-  lastPublishDate: function() {
-    return formatDate(this.publishDate);
   }
 });
+
+Template._story_preview_content.helpers({
+  lastPublishDate: function() {
+    console.log("Story data", this)
+    return formatDateNice(this.publishDate);
+  }
+})
 
 Template.user_stories.events({
   "click div#delete": function(d) {

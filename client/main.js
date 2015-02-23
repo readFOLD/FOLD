@@ -236,7 +236,7 @@ Template.story.events = {
   "click a": function(e) {
     var contextId;
     e.preventDefault();
-    contextId = $(e.target).attr('href').slice(1);
+    contextId = $(e.target).data('contextId');
     return goToContext(contextId);
   },
   "keydown": function(d) {
