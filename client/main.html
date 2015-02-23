@@ -8,7 +8,7 @@
     <div id="banner-overlay">
     </div>
     <div class="title-author">
-      <div class="title" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
+      {{ > story_title }}
       <div class="author">By {{authorName}}
         {{#if read}}
           {{#linkTo route="edit" data=this}}
@@ -33,6 +33,10 @@
       Header Image Source: {{headerImageAttribution}}
     </div>
   </div>
+</template>
+
+<template name="story_title">
+  <div class="title" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
 </template>
 
 <template name="story">

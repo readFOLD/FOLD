@@ -45,6 +45,12 @@ window.updateUIBasedOnSelection = function(e){
   })(this));
 };
 
+window.plainTextPaste = function(e) {
+  var clipboardData = (e.originalEvent || e).clipboardData;
+  e.preventDefault();
+  return document.execCommand('insertText', false, clipboardData.getData('text/plain'));
+};
+
 Template.create.rendered = function() {
   window.showAnchorMenu = function() {
     Session.set("anchorMenuOpen", true);
@@ -167,6 +173,9 @@ Template.vertical_section_block.events({
 
 Template.vertical_section_block.rendered = function() {
   console.log('Vertical Section Rendered');
+   // only allow plaintext in title
+  this.$(".title.editable").on('paste', window.plainTextPaste);
+
   return this.$(".fold-editable").on('paste', function(e) {
     var cleanHtml, clipboardData, html;
     e.preventDefault();
@@ -180,6 +189,11 @@ Template.vertical_section_block.rendered = function() {
     });
     return document.execCommand('insertHTML', false, cleanHtml);
   });
+};
+
+Template.story_title.rendered = function(){
+  // only allow plaintext in title
+  return this.$("[contenteditable]").on('paste', window.plainTextPaste);
 };
 
 Template.background_image.helpers({
