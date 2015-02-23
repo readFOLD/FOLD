@@ -31,18 +31,8 @@ div.home-top {
   div.filter {
     position: absolute;
     font-size: 18px;
-    top: 55px;
+    top: 45px;
     left: 400px;
-    span {
-      display: inline-block;
-      text-transform: uppercase;
-      font-weight: bold;
-
-      ul {
-        margin: 0;
-        padding: 0;
-      }
-    }
 
     span.filters {
       margin-right: 10px;
@@ -54,15 +44,20 @@ div.home-top {
 
   div.action-items {
     position: absolute;
-    top: -5px;
+    top: -6px;
     right: 60px;
 
     & > div, & > a div {
       display: inline-block;
       color: @light-color;
       font-weight: bold;
-      padding: 8px 20px;
+      padding: 9px 20px 8px 20px;
       margin-right: 12px;
+
+      position: relative;
+      &:hover {
+        top: 1px;
+      }
     }
 
     div.create-story {
@@ -76,6 +71,16 @@ div.home-top {
     div.about-fold {
       background-color: @panel-color;
     }
+  }
+
+  div.user-image {
+    position: absolute;
+    top: 40px;
+    right: 60px;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: @dark-color;
   }
 }
 
@@ -174,12 +179,11 @@ section.stories {
     margin-top: 20px;
     margin-bottom: 40px;
 
-    &:nth-child(odd) {
-      float: left;
-    }
+    &:nth-child(odd) { float: left; }
+    &:nth-child(even) { float: right; }
 
-    &:nth-child(even) {
-      float: right;
+    &:hover {
+      box-shadow: 0 0 5px rgba(0,0,0,.2);
     }
 
     img.profile-picture {
