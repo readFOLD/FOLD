@@ -177,16 +177,18 @@ Template.vertical_section_block.rendered = function() {
   this.$(".title.editable").on('paste', window.plainTextPaste);
 
   return this.$(".fold-editable").on('paste', function(e) {
-    var cleanHtml, clipboardData, html;
+    var clipboardData, html;
     e.preventDefault();
     clipboardData = (e.originalEvent || e).clipboardData;
     if (!clipboardData){return}
     html = clipboardData.getData('text/html') || clipboardData.getData('text/plain')
-    cleanHtml = $.htmlClean(html, {
+    var initialCleanHtml = $.htmlClean(html, {
       allowedTags: ['strong', 'em', 'a'],
       format: false,
       removeAttrs: ['class', 'id']
     });
+    var matchAnchors =  /<a.*?( data-context-id=["|'].*?["|'])?.*?>/gm;
+    var cleanHtml = initialCleanHtml.replace(matchAnchors, '<a href="javascript:void(0);"$1>');
     return document.execCommand('insertHTML', false, cleanHtml);
   });
 };
