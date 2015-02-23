@@ -39,24 +39,6 @@ Story = (function() {
     return this.title = "";
   };
 
-  Story.prototype.save = function() {
-    var updateDoc;
-    if (!this._id) {
-      throw new Meteor.Error('not-yet-created');
-    }
-    updateDoc = {
-      lastSaved: new Date,
-      verticalSections: this.verticalSections,
-      title: this.title,
-      backgroundImage: this.backgroundImage
-    };
-    return Stories.update({
-      _id: this._id
-    }, {
-      $set: updateDoc
-    });
-  };
-
   Story.prototype.publish = function() {
     var dasherizedTitle;
     if (!this.lastSaved) {
@@ -132,15 +114,9 @@ this.Stories.deny({
 });
 
 Schema.Stories = new SimpleSchema({
-  publishedStory: {
-    type: Object,
-    optional: true,
-    blackbox: true
-  },
   draftStory: {
     type: Object,
-    optional: true,
-    blackbox: true
+    optional: true
   },
   backgroundImage: {
     type: String,

@@ -253,9 +253,9 @@ Template.add_vertical.events({
       _id: storyId
     }, {
       $set: {
-        verticalSections: verticalSections
+        'draftStory.verticalSections': verticalSections
       }
-    }, function(err, numDocs) {
+    }, {removeEmptyStrings: false}, function(err, numDocs) {
       if (err) {
         return alert(err);
       }
@@ -457,7 +457,7 @@ Template.context_anchor_option.events = {
 
 addContextToStory = function(storyId, contextId, verticalSectionIndex) {
   var pushObject, pushSelectorString;
-  pushSelectorString = 'verticalSections.' + verticalSectionIndex + '.contextBlocks';
+  pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
   pushObject = {};
   pushObject[pushSelectorString] = contextId;
   return Stories.update({
