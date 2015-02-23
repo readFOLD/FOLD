@@ -6,22 +6,6 @@ if (!GOOGLE_API_SERVER_KEY) {
 }
 
 Meteor.methods({
-  youtubeVideoInfo: function(videoId) {
-    var requestParams, res, _ref, _ref1;
-    check(videoId, String);
-    this.unblock(); 
-    requestParams = {
-      part: 'snippet',
-      id: videoId,
-      key: GOOGLE_API_SERVER_KEY
-    };
-    res = HTTP.get('https://www.googleapis.com/youtube/v3/videos', {
-      params: requestParams
-    });
-    if (res.data && res.data.items && res.data.items.length)
-      return res.data.items[0].snippet
-  },
-
   youtubeVideoSearchList: function(query) {
     var res;
     check(query, String);

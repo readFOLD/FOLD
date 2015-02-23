@@ -425,63 +425,130 @@ div.horizontal-context {
     height: calc(100% ~"-" @contentIconBannerHeight);
   }
 
+
     
-  @searchFormHeight: 150px;     
+  @searchFormHeight: 75px;  
+  @searchInputHeight:40px;   
      
-  div.video-search-form {    
-    height: @searchFormHeight;   
-  }    
+  // div.search-form {  
+  //   height: @searchFormHeight; 
+  //   position: relative;
+  //   margin-top: 10px;
+
+  //   -webkit-transition: width 0.3s;
+  //   -moz-transition: width 0.3s;
+  //   transition: width 0.3s;
+
+  //   -webkit-backface-visibility: hidden;  
+
+  //   .search-input, .search-form-trigger, .search-button {
+  //     position: absolute;
+  //     top: 0;
+  //     background: #1D1D1D;
+  //     width: calc(100% ~"-"100px);
+  //     height: @searchInputHeight;
+  //     margin: 0;
+  //     z-index: 10;
+  //     padding: 20px 65px 20px 20px;
+  //     font-family: inherit;
+  //     font-size: 20px;
+  //     color: #2c3e50;
+  //   }
+
+  //   .search-input {
+  //     right: 0;
+  //     background: @dark-color;
+  //   }
+
+  //   .search-form-trigger {
+
+  //   }
+
+  //   .search-button {
+
+  //   }
+
+  //   input[type="search"].search-input {
+  //     -webkit-appearance: none;
+  //     -webkit-border-radius: 0px;
+  //   }
+
+  //   .search {
+
+  //   }
+
+  //   .search-button {
+  //     padding: 1.5px;
+  //     height: 44px;
+  //     width: 44px;
+  //     vertical-align: top;
+  //     display: inline;
+  //   }
+  // }    
      
-  @addButtonHeight: 60px;      
-  div.search-results-container {   
+  @innerElementPadding: 9.5px;      
+  dl.search-results-container {   
     background-color: #ffffff;   
     width: 100%;   
-    height: calc(100% ~"-" @searchFormHeight ~"-" @addButtonHeight ~"-" 30px);   
+    height: calc(100% ~"-" @searchFormHeight ~"-" 90px);   
     overflow-y: scroll;    
     overflow-x: hidden;    
-    margin-top: 27px;    
+    margin-top: 27px;  
+    list-style-type: none;  
      
     @searchResultHeight: 94px;     
-    @videoHeight: 90px;    
-    @videoWidth: 120px;    
+    @thumbnailHeight: 90px;    
+    @thumbnailWidth: 120px; 
+    
+    dt.search-result {
+      border-top: 1px solid #e7e7e7;  
+      border-right: none;
+      border-left: none; 
+    
+      &:hover {
+        background: #e7e7e7; 
+      }
+    }
+
      
-    div.search-result{   
-    }    
-       
-    div.focused-search-result {    
-      border: 1px solid #e7e7e7;   
-      height: calc(@searchResultHeight~"*"2);    
-      background: #e0e2e0;   
-    }    
-     
-    div.focused-thumbnail {    
-     iframe{    
-        padding-top: 9.5px;    
-      }    
-    }    
        
     div.small-search-result {    
-      border: 1px solid #e7e7e7;   
       height: @searchResultHeight;   
     }    
-       
+    
     div.small-thumbnail {    
       img{   
         width:98px;    
-        padding-top: 9.5px;    
+        padding-top: @innerElementPadding;
+        margin-left: @innerElementPadding;
       }    
     }    
      
-     
+    @focusedThumbnailHeight: 154px;
+    @focusedThumbnailWidth: 304px;
+    @focusedPadding: calc(@searchResultHeight ~"-" @focusedThumbnailHeight~"*" 0.5);
+    
+    div.focused-search-result { 
+      height: calc(@searchResultHeight~"*"2);    
+      background: #e7e7e7;   
+    }    
+    
+    div.focused-thumbnail {    
+      padding-top: @focusedPadding;
+      margin-left : 3.5px;
+     iframe{    
+        border-style: none;
+      }    
+    }    
+       
     @textAreaHeight: 75px;   
     div.info{    
       position:relative;   
-      top:  calc(-@searchResultHeight~"+"9.5px);   
-      left: calc(10px ~"+" @videoWidth);   
-      max-width: calc(100% ~"-" 30px ~"-" @videoWidth);   
+      top:  calc(-@searchResultHeight~"+"@innerElementPadding);  
+      left: calc(@thumbnailWidth);   
+      max-width: calc(100% ~"-" 30px ~"-" @thumbnailWidth);   
       max-height: calc(@searchResultHeight ~"-" 10px);   
-         
-     
+
       div.content-title {    
         font-weight: bold;     
         overflow: hidden;    
@@ -504,8 +571,30 @@ div.horizontal-context {
         height: calc(@textAreaHeight~"*"0.62);   
         line-height: 16px;   
       }    
-    }    
-  }    
+    }
+
+    @focusedSearchResultHeight: @searchResultHeight~"*" 2;
+    div.focused {
+      top: -164px;
+      left: calc(10px ~"+" @focusedThumbnailWidth);   
+      max-width: calc(100% ~"-" 15px ~"-" @focusedThumbnailWidth);
+      max-height: calc(@focusedSearchResultHeight ~"-" 10px);   
+      
+      .descr {
+        height: calc(@focusedThumbnailHeight~"*"0.70);
+      }
+      .date, .user {    
+        text-align: right;   
+        position: initial;    
+      }   
+     }  
+  }  
+    div.add-button {
+      position: relative;
+      left: @innerElementPadding;
+      background-color: @action-color;
+      width:90px;
+  }
 }
 
 
@@ -518,7 +607,6 @@ div.text-section {
   margin-right: 30px;
 }
 
-<<<<<<< HEAD
 div.image-section {
   div.description-overlay {
     position: absolute;
@@ -536,11 +624,8 @@ div.image-section {
   }
 }
 
-@fold-editor-row-height: 50px;
-=======
-@fold-editor-row-height: 55px;
->>>>>>> master
 
+@fold-editor-row-height: 55px;
 
 
 div#fold-editor{

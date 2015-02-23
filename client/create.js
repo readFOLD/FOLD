@@ -521,7 +521,7 @@ Template.create_video_section.helpers({
   results: function(){
       var array =[]
       VideoSearchResults.find({}).forEach(function(result) {
-        if (result.searchQuery == $('input.youtube-search-input').val()) {  
+        if (result.searchQuery == $('input.search-input').val()) {  
           array[array.length] = result;
         }
       });
@@ -532,40 +532,12 @@ Template.create_video_section.helpers({
 Template.create_video_section.events(createBlockEvents);
 
 Template.create_video_section.events({
-  "submit": function(d) {
-    var url, videoId, _ref;
-    d.preventDefault();
-
-    url = $('input.youtube-link-input').val();
-    videoId = (_ref = url.match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/)) != null ? _ref[1] : void 0;
-    return Meteor.call('youtubeVideoInfo', videoId, function(err, info) {
-      var contextId, newContextBlock;
-      if (err) {
-        console.log(err);
-        return;
-      }
-      if (!info) {
-        console.log('video not found');
-        return;
-      }
-      newContextBlock = {
-        type: 'video',
-        service: 'youtube',
-        videoId: videoId,
-        description: info.title,
-        authorId: Meteor.user()._id
-      };
-      contextId = ContextBlocks.insert(newContextBlock);
-      return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
-    });
-  },
-
-  "click .search": function(d, template) {
+  "click .search-button": function(d, template) {
+    console.log("click");
     var videoSearch, _ref;
     d.preventDefault();
 
-    videoSearch = $('input.youtube-search-input').val();
-    console.log("video search input = " + videoSearch);
+    videoSearch = $('input.search-input').val();
     return Meteor.call('youtubeVideoSearchList', videoSearch, function(err, results) {
       if (err) {
         console.log(err);
@@ -598,6 +570,7 @@ Template.create_video_section.events({
 
   "dblclick .search-result": function(d, template) {
     template.focusResult.set(this);
+    console.log('double clicked');
   },
 
   "click #add-video-button": function(d, template) {
