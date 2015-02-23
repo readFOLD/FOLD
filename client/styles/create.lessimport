@@ -120,17 +120,23 @@ div.title-overlay {
   div.title-author {
     position: absolute;
     margin-left: 20px;
-      margin-top: 125px;
+    margin-top: 125px;
+    max-width: 1100px;
     padding: 11px;
     background-color: @dark-color;
     &.fixed {
       position: fixed;
       padding-top: 20px;
     }
-    div.title {
+    div.story-title {
+      max-width: 100%;
       font-weight: bold;
       font-size: 30px;
       margin-bottom: 15px;
+      overflow-x: hidden;
+      overflow-y: visible;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     div.author {
       font-size: 25px;
