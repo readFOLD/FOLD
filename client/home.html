@@ -97,44 +97,35 @@
 </template>
 
 <template name="_story_preview_content">
+  <div class="content-count">
+    <!--{{ > twitter_icon }}-->
+    {{#if contextCountOfType 'video'}}
+      {{ > video_icon }}
+      <!--{{contextCountOfType 'video'}}-->
+    {{/if}}
+    {{#if contextCountOfType 'map'}}
+      {{ > map_icon }}
+      <!--{{contextCountOfType 'map'}}-->
+    {{/if}}
+    <!--{{ > image_icon }}-->
+    {{#if contextCountOfType 'viz'}}
+      {{ > viz_icon }}
+      <!--{{contextCountOfType 'viz'}}-->
+    {{/if}}
+    <!--{{ > gif_icon }}-->
+    <!--{{ > audio_icon }}-->
+    {{#if contextCountOfType 'text'}}
+      {{ > text_icon }}
+      <!--{{contextCountOfType 'text'}}-->
+    {{/if}}
+  </div>
   <div class="overlay-image">
     <img src="{{backgroundImage}}" />
   </div>
   <div class="headline">
     {{title}}
   </div>
-  <div class="content-count">
-    <div class='unimplemented inline-block'>
-      {{ > twitter_icon }}
-    </div>
-    <div class='{{#if video}}active{{/if}} inline-block'>
-      {{ > video_icon }}
-      {{contextCountOfType 'video'}}
-    </div>
-    <div class='{{#if map}}active{{/if}} inline-block'>
-      {{ > map_icon }}
-      {{contextCountOfType 'map'}}
-    </div>
-    <div class='unimplemented inline-block'>
-      {{ > image_icon }}
-    </div>
-    <div class='unimplemented inline-block'>
-      {{ > viz_icon }}
-    </div>
-    <div class='unimplemented inline-block'>
-      {{ > gif_icon }}
-    </div>
-    <div class='unimplemented inline-block'>
-      {{ > audio_icon }}
-    </div>
-    <div class='{{#if text}}active{{/if}} inline-block'>
-      {{ > text_icon }}
-      {{contextCountOfType 'text'}}
-    </div>
-    <div class='unimplemented inline-block'>
-      {{ > remix_icon }}
-    </div>
-  </div>
+
   <div class="byline">
     <div class="pull-left">
       <div class="author-image">
