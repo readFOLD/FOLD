@@ -342,7 +342,7 @@ div#overlay {
     }
   }
 
-  div.story-title {
+  div.title {
     line-height: 23px;
     text-align: left;
     font-size: 20px;

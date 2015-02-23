@@ -132,7 +132,7 @@ div.title-overlay {
       max-width: 100%;
       font-weight: bold;
       font-size: 30px;
-      margin-bottom: 15px;
+      padding-bottom: 15px;
       overflow-x: hidden;
       overflow-y: visible;
       text-overflow: ellipsis;
@@ -473,7 +473,8 @@ div#fold-editor{
       height: @icon-size;
       width: @icon-size;
       float: left;
-      margin-right: 8px;
+      margin-right: 10px;
+      margin-top: -3px;
     }
     svg.back-arrow{
       @arrow-size: 20px;
@@ -528,7 +529,7 @@ div#fold-editor{
     border:none;
     color: @light-color;
     background-color: inherit;
-    font-family: 'Open Sans';
+    font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;
     font-weight: 400;
     font-size: .9em;
     padding: 0.5em 1em 0 1em;
