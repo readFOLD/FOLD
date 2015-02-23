@@ -238,19 +238,6 @@ Template.story.events = {
     e.preventDefault();
     contextId = $(e.target).data('contextId');
     return goToContext(contextId);
-  },
-  "keydown": function(d) {
-    if (Session.get("read")) {
-      if (d.keyCode === 38) {
-        return goToY(Session.get("currentY") - 1);
-      } else if (d.keyCode === 40) {
-        return goToY(Session.get("currentY") + 1);
-      } else if (d.keyCode === 39) {
-
-      } else if (d.keyCode === 37) {
-
-      }
-    }
   }
 };
 
