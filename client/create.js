@@ -676,50 +676,6 @@ Template.horizontal_section_block.events({
 });
 
 Template.create_options.events({
-  "click div.save-story": function() {
-    var backgroundImage, contextBlocks, oldStory, storyTitle, verticalSections;
-    console.log("SAVE");
-    storyTitle = $.trim($('div.title-author div.title').text());
-    backgroundImage = Session.get("backgroundImage");
-    oldStory = Session.get("story");
-    contextBlocks = _.pluck(oldStory.verticalSections, 'contextBlocks');
-    verticalSections = [];
-    $('.vertical-narrative-section').each(function(verticalIndex) {
-      var content, title, verticalId;
-      verticalId = $(this).data('verticalId');
-      title = $.trim($(this).find('div.title').text());
-      content = $.trim($(this).find('div.content').html());
-      return verticalSections.push({
-        title: title,
-        content: content,
-        contextBlocks: contextBlocks[verticalIndex],
-        _id: verticalId
-      });
-    });
-    this.title = storyTitle;
-    this.backgroundImage = backgroundImage;
-    this.verticalSections = verticalSections;
-    if (this._id) {
-      return this.save();
-    } else {
-      return Meteor.call('saveNewStory', this, function(err, story) {
-        return Router.go('edit', {
-          userPathSegment: story.userPathSegment,
-          storyPathSegment: story.storyPathSegment
-        });
-      });
-    }
-  },
-  "click div.delete-story": function() {
-    var storyId;
-    storyId = Session.get('storyId');
-    if (storyId) {
-      Stories.remove({
-        _id: storyId
-      });
-    }
-    return Router.go('home');
-  },
   "click div.publish-story": function() {
     console.log("PUBLISH");
     return this.publish();
