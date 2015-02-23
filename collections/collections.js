@@ -116,7 +116,8 @@ this.Stories.deny({
 Schema.Stories = new SimpleSchema({
   draftStory: {
     type: Object,
-    optional: true
+    optional: true,
+    blackbox:true
   },
   backgroundImage: {
     type: String,

@@ -163,10 +163,42 @@ var rangeSelectsSingleNode = function (range) {
     range.endOffset === range.startOffset + 1;
 };
 
+var autoSaveVerticalSectionField = function(template, field, datatype){
+  storyId = Session.get('storyId');
 
+  if (datatype === 'html') {
+    value = $.trim(template.$('div.' + field).html());
+  } else {
+    value = $.trim(template.$('div.' + field).text());
+  }
+  index = template.data.index;
+
+  setField = 'draftStory.verticalSections.' + index + '.' + field
+  setObject = { $set:{} };
+  setObject['$set'][setField] = value;
+
+  return Stories.update({
+    _id: storyId
+  }, setObject, {removeEmptyStrings: false}, function(err, numDocs) {
+    if (err) {
+      return alert(err);
+    }
+    if (!numDocs) {
+      return alert('No docs updated');
+    }
+  });
+};
 
 Template.vertical_section_block.events({
-  'mouseup .fold-editable': window.updateUIBasedOnSelection
+  'mouseup .fold-editable': window.updateUIBasedOnSelection,
+  'blur .title' : function(e, template){
+    autoSaveVerticalSectionField(template, 'title');
+    return true;
+  },
+  'blur .content' : function(e, template){
+    autoSaveVerticalSectionField(template, 'content', 'html');
+    return true;
+  }
 });
 
 
