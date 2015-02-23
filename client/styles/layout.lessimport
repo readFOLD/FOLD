@@ -322,7 +322,7 @@ div#overlay {
     color: inherit;
     padding: 0 4px;
     &:hover {
-      background-color: @action-color;
+      background-color: @light-color;
     }
   }
 
