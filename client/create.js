@@ -182,12 +182,15 @@ Template.vertical_section_block.rendered = function() {
     clipboardData = (e.originalEvent || e).clipboardData;
     if (!clipboardData){return}
     html = clipboardData.getData('text/html') || clipboardData.getData('text/plain')
+    // strip away disallowed tags and styling attributes
+    // remove hrefs from anchors
     var initialCleanHtml = $.htmlClean(html, {
       allowedTags: ['strong', 'em', 'a'],
       format: false,
-      removeAttrs: ['class', 'id']
+      removeAttrs: ['class', 'id', 'href'],
+      allowedAttributes: [["data-context-id"]]
     });
-    var matchAnchors =  /<a.*?( data-context-id=["|'].*?["|'])?.*?>/gm;
+    var matchAnchors =  /<a( data-context-id=["|'].*?["|'])?.*?>/gm;
     var cleanHtml = initialCleanHtml.replace(matchAnchors, '<a href="javascript:void(0);"$1>');
     return document.execCommand('insertHTML', false, cleanHtml);
   });
