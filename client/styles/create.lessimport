@@ -477,6 +477,7 @@ div#fold-editor{
       margin-top: -3px;
     }
     svg.back-arrow{
+      margin-top: .05em;
       @arrow-size: 20px;
       height: @arrow-size;
       width: @arrow-size;

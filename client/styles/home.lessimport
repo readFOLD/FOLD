@@ -14,7 +14,10 @@ div.home-top {
   height: 145px;
   width: 100%;
   z-index: 10;
-  border-bottom: 1px solid @medium-color;
+  //border-bottom: 1px solid @medium-color;
+  -webkit-box-shadow: 0 2px 8px -6px @dark-color;
+  -moz-box-shadow: 0 2px 8px -6px @dark-color;
+  box-shadow: 0 2px 8px -6px @dark-color;
   div.logo-title {
     display: inline-block;
     margin-left: 50px;

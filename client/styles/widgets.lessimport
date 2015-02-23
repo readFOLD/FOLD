@@ -19,7 +19,8 @@
     width: 200px;
     height: 45px;
     padding: 15px 15px;
-    border: 1px solid @medium-color;
+    border: 1px solid rgba(120, 124, 120, 0.23);
+    letter-spacing: .02em;
     background: #ffffff;
     color: #444444;
     font-size: 13px;
@@ -48,10 +49,14 @@
 
     // Change the border color on hover, focus and when open
     &:hover, &.open, &.focus { 
-        border-color: #000000; 
+        border-color: @medium-color; 
     }
-    &.open { color: #919191; }
-    &.focus { box-shadow: 0 0 5px rgba(0,0,0,.2); }
+    &.open { color: @medium-color; }
+    &.focus { 
+        -webkit-box-shadow: 0 2px 5px -6px @dark-color;
+        -moz-box-shadow: 0 2px 5px -6px @dark-color;
+        box-shadow: 0 2px 5px -6px @dark-color;
+    }
 
     // When the entire SoD is disabled, go crazy!
     &.disabled {
@@ -80,7 +85,7 @@
         width: 200px;
         margin: 0 0 0 -1px;
         background: #ffffff;
-        border: 1px solid black;
+        border: 1px solid @medium-color;
         border-top: none;
         color: #444444;
         font-weight: 300;
