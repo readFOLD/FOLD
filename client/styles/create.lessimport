@@ -132,7 +132,7 @@ div.title-overlay {
       max-width: 100%;
       font-weight: bold;
       font-size: 30px;
-      margin-bottom: 15px;
+      padding-bottom: 15px;
       overflow-x: hidden;
       overflow-y: visible;
       text-overflow: ellipsis;
