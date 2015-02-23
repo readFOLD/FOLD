@@ -192,7 +192,10 @@ Template.vertical_section_block.rendered = function() {
     });
     var matchAnchors =  /<a( data-context-id=["|'].*?["|'])?.*?>/gm;
     var cleanHtml = initialCleanHtml.replace(matchAnchors, '<a href="javascript:void(0);"$1>');
-    return document.execCommand('insertHTML', false, cleanHtml);
+    // remove anchors without data-context-ids
+    var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm;
+    var finalHtml = cleanHtml.replace(matchBlankAnchors, '$1');
+    return document.execCommand('insertHTML', false, finalHtml);
   });
 };
 
