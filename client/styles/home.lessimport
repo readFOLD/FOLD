@@ -1,3 +1,6 @@
+@breakpoint-one: 900px;
+@breakpoint-two: 600px;
+
 div#login-buttons-and-more {
   position: absolute;
   top: 15px;
@@ -32,8 +35,8 @@ div.home-top {
   div.filter {
     position: absolute;
     font-size: 15px;
-    top: 45px;
-    left: 400px;
+    top: 72px;
+    right: 68px;
 
     span.filters {
       margin-right: 10px;
