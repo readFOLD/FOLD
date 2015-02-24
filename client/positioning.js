@@ -43,7 +43,7 @@ window.goToContext = function(id) {
     story = Session.get('story');
     currentY = Session.get('currentY');
 
-    contextIndex = _.indexOf(Session.get('horizontalSectionsMap')[currentY].horizontal, id.toString());
+    contextIndex = _.indexOf(_.pluck(Session.get('horizontalSectionsMap')[currentY].horizontal, '_id'), id.toString());
     if (contextIndex >= 0) {
       return goToX(contextIndex);
     }
