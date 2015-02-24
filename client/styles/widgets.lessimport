@@ -35,16 +35,16 @@
         content: "";
         border-left: @arrow-size solid transparent;
         border-right: @arrow-size solid transparent;
-        border-bottom: @arrow-size solid @action-color;
+        border-top: @arrow-size solid @action-color;
         position: absolute;
-        right: 10px;
+        right: 15px;
         top: 15px;
     }
 
     &.open {
         &:before, &:after {
-            border-top: @arrow-size solid @action-color;
-            border-bottom: none;
+            border-bottom: @arrow-size solid @action-color;
+            border-top: none;
         }
     }
 
