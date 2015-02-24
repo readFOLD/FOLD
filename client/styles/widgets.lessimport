@@ -17,10 +17,8 @@
     line-height: 1;
 
     width: 200px;
-    height: 45px;
-    padding: 15px 15px;
-    border: 1px solid rgba(120, 124, 120, 0.23);
-    letter-spacing: .02em;
+    padding: 12px 10px;
+    border: 1px solid @medium-color;
     background: #ffffff;
     color: #444444;
     font-size: 13px;
@@ -32,31 +30,38 @@
     cursor: default;
 
     // Up/down arrows
+    @arrow-size: 5px;
     &:before, &:after {
-        content: "\25B2";
+        content: "";
+        border-left: @arrow-size solid transparent;
+        border-right: @arrow-size solid transparent;
+        border-bottom: @arrow-size solid @action-color;
         position: absolute;
         right: 10px;
-        top: 12px;
-        font-size: 7px;      
+        top: 15px;
     }
 
-    // Down arrow
-    &:after {
-        content: "\25BC";
-        top: auto;
-        bottom: 12px;
+    &.open {
+        &:before, &:after {
+            border-top: @arrow-size solid @action-color;
+            border-bottom: none;
+        }
     }
+
+
+    // // Down arrow
+    // &:after {
+    //     content: "▾";
+    //     top: auto;
+    //     bottom: 12px;
+    // }
 
     // Change the border color on hover, focus and when open
     &:hover, &.open, &.focus { 
-        border-color: @medium-color; 
+        border-color: #000000; 
     }
-    &.open { color: @medium-color; }
-    &.focus { 
-        -webkit-box-shadow: 0 2px 5px -6px @dark-color;
-        -moz-box-shadow: 0 2px 5px -6px @dark-color;
-        box-shadow: 0 2px 5px -6px @dark-color;
-    }
+    &.open { color: #919191; }
+    &.focus { box-shadow: 0 0 5px rgba(0,0,0,.2); }
 
     // When the entire SoD is disabled, go crazy!
     &.disabled {
@@ -85,7 +90,7 @@
         width: 200px;
         margin: 0 0 0 -1px;
         background: #ffffff;
-        border: 1px solid @medium-color;
+        border: 1px solid black;
         border-top: none;
         color: #444444;
         font-weight: 300;

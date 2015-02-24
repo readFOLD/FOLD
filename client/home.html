@@ -52,7 +52,7 @@
 
 <template name="home">
   {{> top_banner}}
-  <section class="stories">
+  <section class="stories"> 
     <div class="story-container">
       {{> all_stories}}
     </div>
@@ -61,7 +61,7 @@
 
 <template name="filters">
   <span class="filters">
-    <select>
+    <select data-custom-id="custom" data-custom-class="custom">
       {{#each filters}}
         <option value="{{this}}">
           {{this}}
@@ -130,7 +130,7 @@
   <div class="byline">
     <div class="pull-left">
       <div class="author-image">
-        {{#if profileImage}}
+        {{#if profileImage}} 
          <img class="profile-picture" src="{{profileImage}}"/>
         {{/if}}
       </div>
