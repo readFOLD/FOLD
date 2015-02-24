@@ -85,11 +85,7 @@ Router.route("read", {
       Session.set("horizontalSectionsMap", _.map(_.pluck(story.verticalSections, "contextBlocks"), function(cBlocks, i) {
         return {
           verticalIndex: i,
-          horizontal: _.map(cBlocks, function(block, i) {
-            return {
-              horizontalIndex: i
-            };
-          })
+          horizontal: _.pluck(cBlocks, '_id')
         };
       }));
       return story;
@@ -155,11 +151,7 @@ Router.route("edit", {
       Session.set("horizontalSectionsMap", _.map(_.pluck(story.draftStory.verticalSections, "contextBlocks"), function(cBlocks, i) {
         return {
           verticalIndex: i,
-          horizontal: _.map(cBlocks, function(block, i) {
-            return {
-              horizontalIndex: i
-            };
-          })
+          horizontal: cBlocks
         };
       }));
       return story.draftStory;
