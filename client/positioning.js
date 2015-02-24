@@ -43,7 +43,7 @@ window.goToContext = function(id) {
     story = Session.get('story');
     currentY = Session.get('currentY');
     currentVertical = story.verticalSections[currentY];
-    contextIndex = _.indexOf(currentVertical.contextBlocks, id);
+    contextIndex = _.indexOf(currentVertical.contextBlocks, id.toString());
     if (contextIndex >= 0) {
       return goToX(contextIndex);
     }

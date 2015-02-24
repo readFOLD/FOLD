@@ -17,11 +17,11 @@
     line-height: 1;
 
     width: 200px;
-    padding: 15px 10px;
+    padding: 12px 10px;
     border: 1px solid @medium-color;
     background: #ffffff;
     color: #444444;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     text-align: left;
     text-transform: uppercase;
@@ -30,20 +30,31 @@
     cursor: default;
 
     // Up/down arrows
+    @arrow-size: 5px;
     &:before, &:after {
-        content: "\25B2";
+        content: "";
+        border-left: @arrow-size solid transparent;
+        border-right: @arrow-size solid transparent;
+        border-bottom: @arrow-size solid @action-color;
         position: absolute;
         right: 10px;
-        top: 12px;
-        font-size: 7px;      
+        top: 15px;
     }
 
-    // Down arrow
-    &:after {
-        content: "\25BC";
-        top: auto;
-        bottom: 12px;
+    &.open {
+        &:before, &:after {
+            border-top: @arrow-size solid @action-color;
+            border-bottom: none;
+        }
     }
+
+
+    // // Down arrow
+    // &:after {
+    //     content: "▾";
+    //     top: auto;
+    //     bottom: 12px;
+    // }
 
     // Change the border color on hover, focus and when open
     &:hover, &.open, &.focus { 

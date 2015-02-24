@@ -45,6 +45,12 @@ window.updateUIBasedOnSelection = function(e){
   })(this));
 };
 
+window.plainTextPaste = function(e) {
+  var clipboardData = (e.originalEvent || e).clipboardData;
+  e.preventDefault();
+  return document.execCommand('insertText', false, clipboardData.getData('text/plain'));
+};
+
 Template.create.rendered = function() {
   window.showAnchorMenu = function() {
     Session.set("anchorMenuOpen", true);
@@ -157,29 +163,80 @@ var rangeSelectsSingleNode = function (range) {
     range.endOffset === range.startOffset + 1;
 };
 
+var autoSaveVerticalSectionField = function(template, field, datatype){
+  storyId = Session.get('storyId');
 
+  if (datatype === 'html') {
+    value = $.trim(template.$('div.' + field).html());
+  } else {
+    value = $.trim(template.$('div.' + field).text());
+  }
+  index = template.data.index;
+
+  setField = 'draftStory.verticalSections.' + index + '.' + field
+  setObject = { $set:{} };
+  setObject['$set'][setField] = value;
+
+  return Stories.update({
+    _id: storyId
+  }, setObject, {removeEmptyStrings: false}, function(err, numDocs) {
+    if (err) {
+      return alert(err);
+    }
+    if (!numDocs) {
+      return alert('No docs updated');
+    }
+  });
+};
 
 Template.vertical_section_block.events({
-  'mouseup .fold-editable': window.updateUIBasedOnSelection
+  'mouseup .fold-editable': window.updateUIBasedOnSelection,
+  'blur .title' : function(e, template){
+    autoSaveVerticalSectionField(template, 'title');
+    return true;
+  },
+  'blur .content' : function(e, template){
+    autoSaveVerticalSectionField(template, 'content', 'html');
+    return true;
+  }
 });
 
 
 
 Template.vertical_section_block.rendered = function() {
   console.log('Vertical Section Rendered');
+   // only allow plaintext in title
+  this.$(".title.editable").on('paste', window.plainTextPaste);
+
+  var cleanHtmlOptions = {
+    allowedTags: ['strong', 'em', 'u', 'a'], // only allow tags used in fold-editor
+    format: false,
+    removeAttrs: ['class', 'id', 'href'], // strip away hrefs and other undesired attributes that might slip into a paste
+    allowedAttributes: [["data-context-id"]] // data-context-id is used to direct links to context cards
+  };
+
+  var matchAnchors =  /<a( data-context-id=["|'].*?["|'])?.*?>/gm; // match anchors, capture data-context-id so it can be kept in string
+  var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match anchors that are left over from above if copied from somewhere else, capture contents so can be kept
+
+  // clean up pasting into vertical section content
   return this.$(".fold-editable").on('paste', function(e) {
-    var cleanHtml, clipboardData, html;
+    var clipboardData, html;
     e.preventDefault();
     clipboardData = (e.originalEvent || e).clipboardData;
     if (!clipboardData){return}
-    html = clipboardData.getData('text/html') || clipboardData.getData('text/plain')
-    cleanHtml = $.htmlClean(html, {
-      allowedTags: ['strong', 'em', 'a'],
-      format: false,
-      removeAttrs: ['class', 'id']
-    });
+    html = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
+
+    var cleanHtml = $.htmlClean(html, cleanHtmlOptions)
+      .replace(matchAnchors, '<a href="javascript:void(0);"$1>') // add js void to all anchors and keep all data-context-ids
+      .replace(matchBlankAnchors, '$1'); // remove anchors without data-context-ids
+
     return document.execCommand('insertHTML', false, cleanHtml);
   });
+};
+
+Template.story_title.rendered = function(){
+  // only allow plaintext in title
+  return this.$("[contenteditable]").on('paste', window.plainTextPaste);
 };
 
 Template.background_image.helpers({
@@ -228,9 +285,9 @@ Template.add_vertical.events({
       _id: storyId
     }, {
       $set: {
-        verticalSections: verticalSections
+        'draftStory.verticalSections': verticalSections
       }
-    }, function(err, numDocs) {
+    }, {removeEmptyStrings: false}, function(err, numDocs) {
       if (err) {
         return alert(err);
       }
@@ -432,7 +489,7 @@ Template.context_anchor_option.events = {
 
 addContextToStory = function(storyId, contextId, verticalSectionIndex) {
   var pushObject, pushSelectorString;
-  pushSelectorString = 'verticalSections.' + verticalSectionIndex + '.contextBlocks';
+  pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
   pushObject = {};
   pushObject[pushSelectorString] = contextId;
   return Stories.update({
@@ -671,50 +728,6 @@ Template.horizontal_section_block.events({
 });
 
 Template.create_options.events({
-  "click div.save-story": function() {
-    var backgroundImage, contextBlocks, oldStory, storyTitle, verticalSections;
-    console.log("SAVE");
-    storyTitle = $.trim($('div.title-author div.title').text());
-    backgroundImage = Session.get("backgroundImage");
-    oldStory = Session.get("story");
-    contextBlocks = _.pluck(oldStory.verticalSections, 'contextBlocks');
-    verticalSections = [];
-    $('.vertical-narrative-section').each(function(verticalIndex) {
-      var content, title, verticalId;
-      verticalId = $(this).data('verticalId');
-      title = $.trim($(this).find('div.title').text());
-      content = $.trim($(this).find('div.content').html());
-      return verticalSections.push({
-        title: title,
-        content: content,
-        contextBlocks: contextBlocks[verticalIndex],
-        _id: verticalId
-      });
-    });
-    this.title = storyTitle;
-    this.backgroundImage = backgroundImage;
-    this.verticalSections = verticalSections;
-    if (this._id) {
-      return this.save();
-    } else {
-      return Meteor.call('saveNewStory', this, function(err, story) {
-        return Router.go('edit', {
-          userPathSegment: story.userPathSegment,
-          storyPathSegment: story.storyPathSegment
-        });
-      });
-    }
-  },
-  "click div.delete-story": function() {
-    var storyId;
-    storyId = Session.get('storyId');
-    if (storyId) {
-      Stories.remove({
-        _id: storyId
-      });
-    }
-    return Router.go('home');
-  },
   "click div.publish-story": function() {
     console.log("PUBLISH");
     return this.publish();

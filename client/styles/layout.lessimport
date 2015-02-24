@@ -178,6 +178,11 @@
   height: 100%;
 }
 
+.size(@s){
+  height:@s;
+  width: @s;
+}
+
 // Universal Link Styling
 a {
   text-decoration: none !important;
@@ -317,7 +322,7 @@ div#overlay {
     color: inherit;
     padding: 0 4px;
     &:hover {
-      background-color: @action-color;
+      background-color: @light-color;
     }
   }
 
@@ -476,6 +481,19 @@ div.horizontal-context {
   }
 }
 
+.content-count {
+  margin-left: 7px;
+  @size: 30px;
+  position: absolute;
+  top: -0.5 * @size;
+  svg{
+    margin-left: 7px;
+    circle{
+      fill: @action-color;
+    }
+    .size(@size);
+  }
+}
 
 
 .horizontal-narrative-section {

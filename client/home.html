@@ -52,7 +52,7 @@
 
 <template name="home">
   {{> top_banner}}
-  <section class="stories">
+  <section class="stories"> 
     <div class="story-container">
       {{> all_stories}}
     </div>
@@ -61,7 +61,7 @@
 
 <template name="filters">
   <span class="filters">
-    <select>
+    <select data-custom-id="custom" data-custom-class="custom">
       {{#each filters}}
         <option value="{{this}}">
           {{this}}
@@ -97,16 +97,40 @@
 </template>
 
 <template name="_story_preview_content">
+  <div class="content-count">
+    <!--{{ > twitter_icon }}-->
+    {{#if contextCountOfType 'video'}}
+      {{ > video_icon }}
+      <!--{{contextCountOfType 'video'}}-->
+    {{/if}}
+    {{#if contextCountOfType 'map'}}
+      {{ > map_icon }}
+      <!--{{contextCountOfType 'map'}}-->
+    {{/if}}
+    <!--{{ > image_icon }}-->
+    {{#if contextCountOfType 'viz'}}
+      {{ > viz_icon }}
+      <!--{{contextCountOfType 'viz'}}-->
+    {{/if}}
+    <!--{{ > gif_icon }}-->
+    <!--{{ > audio_icon }}-->
+    {{#if contextCountOfType 'text'}}
+      {{ > text_icon }}
+      <!--{{contextCountOfType 'text'}}-->
+    {{/if}}
+    <!--TODO - add remix check-->
+  </div>
   <div class="overlay-image">
     <img src="{{backgroundImage}}" />
   </div>
   <div class="headline">
     {{title}}
   </div>
+
   <div class="byline">
     <div class="pull-left">
       <div class="author-image">
-        {{#if profileImage}}
+        {{#if profileImage}} 
          <img class="profile-picture" src="{{profileImage}}"/>
         {{/if}}
       </div>
@@ -120,7 +144,6 @@
       {{ > favorite_button }}
     </div>
   </div>
-
 </template>
 
 <template name="edit_or_read_bar">

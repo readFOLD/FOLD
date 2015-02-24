@@ -1,3 +1,6 @@
+@breakpoint-one: 900px;
+@breakpoint-two: 600px;
+
 div#login-buttons-and-more {
   position: absolute;
   top: 15px;
@@ -11,11 +14,15 @@ div.home-top {
   height: 145px;
   width: 100%;
   z-index: 10;
+  //border-bottom: 1px solid @medium-color;
+  -webkit-box-shadow: 0 2px 8px -6px @dark-color;
+  -moz-box-shadow: 0 2px 8px -6px @dark-color;
+  box-shadow: 0 2px 8px -6px @dark-color;
   div.logo-title {
     display: inline-block;
     margin-left: 50px;
     margin-top: 37px;
-    width: 260px;
+    width: 255px;
     div.logo {
       float: left;
       z-index: 10;
@@ -30,9 +37,9 @@ div.home-top {
 
   div.filter {
     position: absolute;
-    font-size: 18px;
-    top: 45px;
-    left: 400px;
+    font-size: 15px;
+    top: 67px;
+    right: 68px;
 
     span.filters {
       margin-right: 10px;
@@ -48,15 +55,16 @@ div.home-top {
     right: 60px;
 
     & > div, & > a div {
+      height: 45px;
       display: inline-block;
       color: @light-color;
-      font-weight: bold;
-      padding: 9px 20px 8px 20px;
+      font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+      padding: 12px 20px 8px 20px;
       margin-right: 12px;
 
       position: relative;
       &:hover {
-        top: 1px;
+        background-color: @dark-color;
       }
     }
 
@@ -66,6 +74,9 @@ div.home-top {
 
     div.user-action {
       background-color: @remix-color; 
+      &:hover {
+        background-color: @dark-color;
+      }
     }
 
     div.about-fold {
@@ -73,7 +84,7 @@ div.home-top {
     }
   }
 
-  div.user-image {
+ /* div.user-image {
     position: absolute;
     top: 40px;
     right: 60px;
@@ -81,8 +92,8 @@ div.home-top {
     height: 60px;
     border-radius: 30px;
     background-color: @dark-color;
-  }
-}
+  } */
+} 
 
 section.stories {
   padding-top: 150px;
@@ -117,13 +128,14 @@ section.stories {
     /*height depends on length of story headline*/
     width: 100%;
     position: relative;
+    line-height: 29px;
     font-size: 21px;
     font-weight: bold;
-    padding: 25px 30px 0px 30px;
+    padding: 20px 30px 0px 30px;
   }
 
   div.byline {
-    padding: 10px 25px;
+    padding: 15px 25px;
     div.pull-left {
       width: 420px;
       div.author-image {
@@ -135,14 +147,22 @@ section.stories {
         border-radius: 25px;
       }
       div.author-name-date {
+        font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
         display: inline-block;
         margin-left: 20px;
+        margin-top: -9px;
         & > div {
-          line-height: 14px;
-          font-size: 12px;
+          line-height: 24px;
+          font-size: 14px;
         }
         div.author-name {
           margin-top: 12px;
+          font-size: 15px;
+        }
+        div.publish-date {
+          //font-style: italic;
+          text-transform: uppercase;
+          font-size: 12px;
         }
       }
     }
@@ -165,12 +185,12 @@ section.stories {
 
   div.story {
     background-color: @white-color;
-    border: 1px solid @medium-color;
+    border: 2px solid @light-color;
     // box-shadow: 3px 3px @medium-color;
 
     // 540 980+
     // 415 980-
-    height: 290px;
+    height: 330px;
     /*height depends on length of story abstract*/
     width: 540px;
     z-index: 2;
@@ -183,7 +203,7 @@ section.stories {
     &:nth-child(even) { float: right; }
 
     &:hover {
-      box-shadow: 0 0 5px rgba(0,0,0,.2);
+      //box-shadow: 0 0 5px rgba(0,0,0,.2);
     }
 
     img.profile-picture {
@@ -227,5 +247,4 @@ section.stories {
       }
     }
   }
-
 }

@@ -1,3 +1,25 @@
 div.about-content {
-	padding-top: 150px;
+	padding-top: 200px;
+	padding-left: 50px;
+}
+
+img.portrait {
+  height: 200px;
+  width: auto;
+  border-radius: 100px;
+  margin-top: 35px; 
+}
+
+img.alexis {
+  margin-right: 15px; 
+}
+
+img.kevin {
+  margin-left: 15px;
+  margin-right: 15px; 
+}
+
+img.joe {
+  margin-left: 15px;
+  margin-right: 15px; 
 }

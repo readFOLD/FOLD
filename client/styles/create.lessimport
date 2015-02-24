@@ -120,17 +120,23 @@ div.title-overlay {
   div.title-author {
     position: absolute;
     margin-left: 20px;
-      margin-top: 125px;
+    margin-top: 125px;
+    max-width: 1100px;
     padding: 11px;
     background-color: @dark-color;
     &.fixed {
       position: fixed;
       padding-top: 20px;
     }
-    div.title {
+    div.story-title {
+      max-width: 100%;
       font-weight: bold;
       font-size: 30px;
-      margin-bottom: 15px;
+      padding-bottom: 15px;
+      overflow-x: hidden;
+      overflow-y: visible;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     div.author {
       font-size: 25px;
@@ -672,9 +678,11 @@ div#fold-editor{
       height: @icon-size;
       width: @icon-size;
       float: left;
-      margin-right: 8px;
+      margin-right: 10px;
+      margin-top: -3px;
     }
     svg.back-arrow{
+      margin-top: .05em;
       @arrow-size: 20px;
       height: @arrow-size;
       width: @arrow-size;
@@ -727,7 +735,8 @@ div#fold-editor{
     border:none;
     color: @light-color;
     background-color: inherit;
-    font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+    font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;
+    font-weight: 400;
     font-size: .9em;
     padding: 0.5em 1em 0 1em;
     text-align: left;

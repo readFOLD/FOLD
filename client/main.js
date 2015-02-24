@@ -236,21 +236,8 @@ Template.story.events = {
   "click a": function(e) {
     var contextId;
     e.preventDefault();
-    contextId = $(e.target).attr('href').slice(1);
+    contextId = $(e.target).data('contextId');
     return goToContext(contextId);
-  },
-  "keydown": function(d) {
-    if (Session.get("read")) {
-      if (d.keyCode === 38) {
-        return goToY(Session.get("currentY") - 1);
-      } else if (d.keyCode === 40) {
-        return goToY(Session.get("currentY") + 1);
-      } else if (d.keyCode === 39) {
-
-      } else if (d.keyCode === 37) {
-
-      }
-    }
   }
 };
 
@@ -355,24 +342,35 @@ Template.horizontal_context.helpers({
   horizontalSections: function() {
     return this.verticalSections.map(function(verticalSection, verticalIndex) {
       var sortedContext, unsortedContext;
-      unsortedContext = ContextBlocks.find({
-        _id: {
-          $in: verticalSection.contextBlocks
+
+      if (Session.get('read')){ // In READ, these are denormalized right on the document
+        var data = verticalSection.contextBlocks.map(function(datum, index){
+          return _.extend({}, datum, {index: index});
+        }).map(window.newTypeSpecificContextBlock);
+        return {
+          data: data,
+          index: verticalIndex
         }
-      }).map(function(datum) {
-        var horizontalIndex;
-        horizontalIndex = verticalSection.contextBlocks.indexOf(datum._id);
-        return _.extend(datum, {
-          index: horizontalIndex
+      } else { // In CREATE, these need to be looked up from the db
+        unsortedContext = ContextBlocks.find({
+          _id: {
+            $in: verticalSection.contextBlocks
+          }
+        }).map(function(datum) {
+          var horizontalIndex;
+          horizontalIndex = verticalSection.contextBlocks.indexOf(datum._id);
+          return _.extend(datum, {
+            index: horizontalIndex
+          });
         });
-      });
-      sortedContext = _.sortBy(unsortedContext, function(datum) {
-        return datum.horizontalIndex;
-      });
-      return {
-        index: verticalIndex,
-        data: sortedContext
-      };
+        sortedContext = _.sortBy(unsortedContext, function(datum) {
+          return datum.horizontalIndex;
+        });
+        return {
+          index: verticalIndex,
+          data: sortedContext
+        };
+      }
     });
   },
   last: function() {

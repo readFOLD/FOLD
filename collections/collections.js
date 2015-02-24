@@ -39,24 +39,6 @@ Story = (function() {
     return this.title = "";
   };
 
-  Story.prototype.save = function() {
-    var updateDoc;
-    if (!this._id) {
-      throw new Meteor.Error('not-yet-created');
-    }
-    updateDoc = {
-      lastSaved: new Date,
-      verticalSections: this.verticalSections,
-      title: this.title,
-      backgroundImage: this.backgroundImage
-    };
-    return Stories.update({
-      _id: this._id
-    }, {
-      $set: updateDoc
-    });
-  };
-
   Story.prototype.publish = function() {
     var dasherizedTitle;
     if (!this.lastSaved) {
@@ -78,6 +60,19 @@ Story = (function() {
         }
       });
     }
+  };
+
+  var sum = function(a,b){ return a+b; };
+
+  Story.prototype.contextCountOfType = function(type) {
+    return this.verticalSections.map(function(verticalSection){
+      return verticalSection.contextBlocks.reduce(function(count, contextBlock){
+        if(contextBlock.type === type){
+          count++;
+        }
+        return count;
+      }, 0)
+    }).reduce(sum, 0)
   };
 
   return Story;
@@ -119,6 +114,11 @@ this.Stories.deny({
 });
 
 Schema.Stories = new SimpleSchema({
+  draftStory: {
+    type: Object,
+    optional: true,
+    blackbox:true
+  },
   backgroundImage: {
     type: String,
     optional: true
@@ -303,26 +303,31 @@ TextBlock = (function(_super) {
 
 })(ContextBlock);
 
+
+var newTypeSpecificContextBlock =  function(doc) {
+  switch (doc.type) {
+    case 'video':
+      return new VideoBlock(doc);
+    case 'text':
+      return new TextBlock(doc);
+    case 'map':
+      return new MapBlock(doc);
+    default:
+      return new ContextBlock(doc);
+  }
+};
+
 if (Meteor.isClient) {
   window.VideoBlock = VideoBlock;
   window.MapBlock = MapBlock;
   window.ContextBlock = ContextBlock;
   window.TextBlock = TextBlock;
+  window.newTypeSpecificContextBlock = newTypeSpecificContextBlock
 }
 
+
 this.ContextBlocks = new Meteor.Collection("context_blocks", {
-  transform: function(doc) {
-    switch (doc.type) {
-      case 'video':
-        return new VideoBlock(doc);
-      case 'text':
-        return new TextBlock(doc);
-      case 'map':
-        return new MapBlock(doc);
-      default:
-        return new ContextBlock(doc);
-    }
-  }
+  transform: newTypeSpecificContextBlock
 });
 
 this.ContextBlocks.allow({

@@ -1,4 +1,9 @@
 <template name="read">
-  {{> story_header}}
-  {{> story}}
+    {{#if read}}
+      {{> story_header}}
+      {{> story}}
+    {{else}}
+      {{> story_header}}
+      {{> story}}
+    {{/if}}
 </template>
