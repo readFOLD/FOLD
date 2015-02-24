@@ -532,10 +532,17 @@ Template.create_video_section.helpers({
 Template.create_video_section.events(createBlockEvents);
 
 Template.create_video_section.events({
-  "click .search-button": function(d, template) {
+  "click .search-trigger": function(d) {
+    d.preventDefault();
+    console.log("click");
+    $(".search-subform").toggleClass("search-open");
+  },
+
+  "submit .search": function(d, template) {
+    d.preventDefault();
     console.log("click");
     var videoSearch, _ref;
-    d.preventDefault();
+    
 
     videoSearch = $('input.search-input').val();
     return Meteor.call('youtubeVideoSearchList', videoSearch, function(err, results) {
@@ -568,7 +575,7 @@ Template.create_video_section.events({
       });
   },
 
-  "dblclick .search-result": function(d, template) {
+  "click .search-result": function(d, template) {
     template.focusResult.set(this);
     console.log('double clicked');
   },

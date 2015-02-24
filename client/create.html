@@ -168,10 +168,15 @@
 <template name="create_video_section">
   <div class="create-section">
     <div class="search-form">
-      <form>
-        <input class="search-input" placeholder="Radar technology">
-        <button type="button" class="search-button">Search</button>
-      </form>
+      <div class="search-subform">
+        <form class="search">
+          <button type="button" class="search-trigger">Search:</button>
+          <div class="search-input-container">
+            <input class="search-input" placeholder="Radar technology" autofocus="autofocus">
+          </div>
+          <button type="submit" class="search-button">{{ > search_icon }}</button>
+        </form>
+      </div>
     </div>
     {{#if url}}
       <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
@@ -192,10 +197,10 @@
                     <div class="descr">{{description}}</div>
                   {{/if}}
                   {{#if videoUsername}}
-                    <div class="focused user">{{videoUsername}}</div>
+                    <div class="user">{{videoUsername}}</div>
                   {{/if}}
                   {{#if videoCreationDate}}
-                    <div class="focused date">{{videoCreationDate}}</div>
+                    <div class="date">{{videoCreationDate}}</div>
                   {{/if}}
                 </div>
               </div>

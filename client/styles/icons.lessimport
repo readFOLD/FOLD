@@ -24,6 +24,10 @@ svg.browse-arrow {
     fill: @dark-color;
   }
 }
+svg.search-icon {
+  height: 20px;
+  width: 20px;
+}
 .favorite-button{
   @height: 25px;
   display: inline-block;
