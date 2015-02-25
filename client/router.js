@@ -85,10 +85,11 @@ Router.route("read", {
       Session.set("horizontalSectionsMap", _.map(_.pluck(story.verticalSections, "contextBlocks"), function(cBlocks, i) {
         return {
           verticalIndex: i,
-          horizontal: _.map(cBlocks, function(block, i) {
+          horizontal: _.map(_.pluck(cBlocks, '_id'), function(id, i) {
             return {
+              _id: id,
               horizontalIndex: i
-            };
+            }
           })
         };
       }));
@@ -152,13 +153,14 @@ Router.route("edit", {
       Session.set("story", story.draftStory);
       Session.set("storyId", story._id);
       Session.set("backgroundImage", story.draftStory.backgroundImage);
-      Session.set("horizontalSectionsMap", _.map(_.pluck(story.draftStory.verticalSections, "contextBlocks"), function(cBlocks, i) {
+      Session.set("horizontalSectionsMap", _.map(_.pluck(story.draftStory.verticalSections, "contextBlocks"), function(cBlockIds, i) {
         return {
           verticalIndex: i,
-          horizontal: _.map(cBlocks, function(block, i) {
+          horizontal: _.map(cBlockIds, function(id, i) {
             return {
+              _id: id,
               horizontalIndex: i
-            };
+            }
           })
         };
       }));

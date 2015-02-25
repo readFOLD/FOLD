@@ -195,8 +195,9 @@ Schema.Stories = new SimpleSchema({
     type: String
   },
   'verticalSections.$.contextBlocks': {
-    type: [String],
-    defaultValue: []
+    type: [Object],
+    defaultValue: [],
+    blackbox: true // TODO actually define schema
   }
 });
 

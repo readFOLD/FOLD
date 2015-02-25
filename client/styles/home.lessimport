@@ -20,7 +20,7 @@ div.home-top {
   box-shadow: 0 2px 8px -6px @dark-color;
   div.logo-title {
     display: inline-block;
-    margin-left: 50px;
+    margin-left: 60px;
     margin-top: 37px;
     width: 255px;
     div.logo {
@@ -219,6 +219,11 @@ section.stories {
       border-radius: @picture-radius;
       width: @picture-radius * 2;
       height: auto;
+    }
+
+    div.favorite-button {
+      font-size: 14px;
+      font-family: inherit;
     }
 
     div.edit-or-read {
