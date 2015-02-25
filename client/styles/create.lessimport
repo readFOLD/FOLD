@@ -440,65 +440,50 @@ div.horizontal-context {
 
     @searchTriggerWidth: 80px;
     @searchButtonWidth: 73px;
-    @searchInputHeight:35px; 
+    @searchInputHeight: 35px; 
     @searchInputWidth: calc(100% ~"-" @searchTriggerWidth ~"-" @innerElementPadding);
  
-    .search-subform {
-      position: relative;
-      margin-top: 10px;
-      width: 0%;
-      overflow: hidden;
-      min-width: calc(@searchTriggerWidth+@innerElementPadding);
-      height: @searchInputHeight; 
-      left: @innerElementPadding;
+    position: relative;
+    margin-top: 10px;
+    width: 0%;
+    overflow: hidden;
+    min-width: calc(@searchTriggerWidth+@innerElementPadding);
+    height: @searchInputHeight; 
+    left: @innerElementPadding;
 
-      -webkit-transition: width 0.3s;
-      -moz-transition: width 0.3s;
-      transition: width 0.3s;
+    -webkit-transition: width 0.3s;
+    -moz-transition: width 0.3s;
+    transition: width 0.3s;
 
-      -webkit-backface-visibility: hidden;        
-    }
+    -webkit-backface-visibility: hidden;        
 
-    .search-subform.search-open {
-      width: 100%;
-      input {
-        display:block;
-      }
-    }
-      
-
-    .search-trigger, .search-button, .search-input, .search-input-container {
+    .search-trigger, .search-input-container, input, .search-button {
       font-family: inherit;
       font-size: inherit;
-      border:none;
+      border: none;
       height: @searchInputHeight;
       color: @light-color;
       position: absolute; 
-      float:left;
+      float: left;
     }
 
      .search-trigger {
       z-index: 10;
       width: @searchTriggerWidth;
-      background: #1D1D1D;
-     }
+      background: @black-color;
+    }
 
     .search-input-container {
       background: @dark-color;
-      width:calc(100% ~"-"@searchButtonWidth ~"-" @innerElementPadding);
-      padding-left:10px;
+      width: calc(100% ~"-"@searchButtonWidth ~"-" @innerElementPadding);
+      padding-left: 10px;
     }
 
-    .search-input {     
+    input {     
       background: @dark-color;
       width: @searchInputWidth;
-      left: calc(@searchTriggerWidth ~"+"10px);
+      left: @searchTriggerWidth+10px;
       display: none;
-    }
-
-    input[type="search"].search-input {
-      -webkit-appearance: none;
-      -webkit-border-radius: 0px;
     }
 
     .search-button {
@@ -506,13 +491,20 @@ div.horizontal-context {
       left: calc(100% ~"-"@innerElementPadding ~"-" @searchButtonWidth);
       padding: 7.5px 13px 7.5px 40px;
     }
-  }    
+  }
+
+  .search-form.search-open {
+    width: 100%;
+    input {
+      display:block;
+    }
+  }  
      
       
-  dl.search-results-container {   
+  ol.search-results-container {   
     background-color: #ffffff;   
     width: 100%;   
-    height: calc(100% ~"-" @searchFormHeight ~"-" 90px);   
+    height: calc(100% ~"-" @searchFormHeight ~"-" 35px);   
     overflow-y: scroll;    
     overflow-x: hidden;    
     margin-top: 20px;  
@@ -522,10 +514,11 @@ div.horizontal-context {
     @thumbnailHeight: 90px;    
     @thumbnailWidth: 120px; 
     
-    dt.search-result {
+    li {
       border-top: 1px solid #e7e7e7;  
       border-right: none;
       border-left: none; 
+      white-space: normal;
     
       &:hover {
         background: @light-color; 
@@ -534,11 +527,11 @@ div.horizontal-context {
 
      
        
-    div.small-search-result {    
+    div.search-result {    
       height: @searchResultHeight;   
     }    
     
-    div.small-thumbnail {    
+    div.thumbnail {    
       img{   
         width:98px;    
         padding-top: @innerElementPadding;
@@ -548,10 +541,10 @@ div.horizontal-context {
      
     @focusedThumbnailHeight: 154px;
     @focusedThumbnailWidth: 304px;
-    @focusedPadding: calc(@searchResultHeight ~"-" @focusedThumbnailHeight~"*" 0.5);
+    @focusedPadding: @searchResultHeight - @focusedThumbnailHeight* 0.5;
     
     div.focused-search-result { 
-      height: calc(@searchResultHeight~"*"2);    
+      height: @searchResultHeight*2;    
       background: #e7e7e7;   
     }    
     
@@ -565,45 +558,45 @@ div.horizontal-context {
        
     @textAreaHeight: 75px;   
     div.info{    
-      position:relative;   
-      top:  calc(-@searchResultHeight~"+"@innerElementPadding);  
-      left: calc(@thumbnailWidth);   
+      position: relative;   
+      top:  -@searchResultHeight+@innerElementPadding;  
+      left: @thumbnailWidth;   
       max-width: calc(100% ~"-" 30px ~"-" @thumbnailWidth);   
-      max-height: calc(@searchResultHeight ~"-" 10px);   
+      max-height: @searchResultHeight - 10px;   
 
       div.content-title {    
         font-weight: bold;     
         overflow: hidden;    
-        height: calc(@textAreaHeight~"*"0.25);   
+        height: @textAreaHeight*0.25;   
       }    
          
       .date, .user {   
         font-size: 75%;    
-        height: calc(@textAreaHeight~"*"0.15);   
+        height: @textAreaHeight*0.15;   
       }    
      
       .date {    
         text-align: right;   
         position: relative;    
-        top: calc(-@textAreaHeight~"*"0.15);   
+        top: -@textAreaHeight*0.15;   
       }    
          
       .descr {   
         overflow: hidden;    
-        height: calc(@textAreaHeight~"*"0.62);   
+        height: @textAreaHeight*0.62;   
         line-height: 16px;   
       }    
     }
 
-    @focusedSearchResultHeight: @searchResultHeight~"*" 2;
+    @focusedSearchResultHeight: @searchResultHeight* 2;
     div.focused {
       top: -164px;
-      left: calc(10px ~"+" @focusedThumbnailWidth);   
+      left: 10px + @focusedThumbnailWidth;   
       max-width: calc(100% ~"-" 15px ~"-" @focusedThumbnailWidth);
-      max-height: calc(@focusedSearchResultHeight ~"-" 10px);   
+      max-height: @focusedSearchResultHeight - 10px;   
       
       .descr {
-        height: calc(@focusedThumbnailHeight~"*"0.70);
+        height: @focusedThumbnailHeight*0.70;
       }
       .date, .user {    
         text-align: right;   
@@ -611,11 +604,28 @@ div.horizontal-context {
       }   
      }  
   }  
-    div.add-button {
+    button.add-button {
       position: relative;
-      left: @innerElementPadding;
+      left: calc(100%~"-" 90px);
       background-color: @action-color;
-      width:90px;
+      color: @light-color;
+      width: 90px;
+      margin-top: 12px;
+      padding: 5px;
+      text-align: center;
+      font-size: 16px;
+      line-height: 35px;
+      float: left;
+      border: none;
+      cursor: auto;
+
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+
+      &.enabled {
+        cursor: pointer;
+      }
   }
 }
 

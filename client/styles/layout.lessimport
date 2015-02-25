@@ -644,3 +644,9 @@ div.collapse {
   display: none !important;
 }
 
+
+input[type="search"] {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+}
+

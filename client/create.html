@@ -162,70 +162,42 @@
 <template name="create_video_section">
   <div class="create-section">
     <div class="search-form">
-      <div class="search-subform">
-        <form class="search">
-          <button type="button" class="search-trigger">Search:</button>
-          <div class="search-input-container">
-            <input class="search-input" placeholder="Radar technology" autofocus="autofocus">
-          </div>
-          <button type="submit" class="search-button">{{ > search_icon }}</button>
-        </form>
-      </div>
+      <form>
+        <button type="button" class="search-trigger">Search:</button>
+        <div class="search-input-container">
+          <input type = "search" placeholder="Radar technology" autofocus="autofocus">
+        </div>
+        <button type="submit" class="search-button">{{ > search_icon }}</button>
+      </form>
     </div>
     {{#if url}}
       <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
     {{else}}
-      <dl class="search-results-container">
+      <ol class="search-results-container">
         {{#each results}}
-          <dt class="search-result">
-            {{#if isFocused}}  
-              <div class="focused-search-result">
-                <div class="focused-thumbnail">
-                  <iframe src="{{url}}"></iframe>
-                </div>
-                <div class="info focused">
-                  {{#if title}}
-                    <div class="content-title">{{title}}</div>
-                  {{/if}}
-                  {{#if description}}
-                    <div class="descr">{{description}}</div>
-                  {{/if}}
-                  {{#if videoUsername}}
-                    <div class="user">{{videoUsername}}</div>
-                  {{/if}}
-                  {{#if videoCreationDate}}
-                    <div class="date">{{videoCreationDate}}</div>
+          <li>
+              <div class="{{#if isFocused}}focused-{{/if}}search-result">
+                <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
+                  {{#if isFocused}}
+                    <iframe src="{{url}}"></iframe>
+                  {{else}}
+                    <img src="{{thumbnailUrl}}">
                   {{/if}}
                 </div>
-              </div>
-            {{else}}
-              <div class="small-search-result">
-                <div class="small-thumbnail">
-                  <img src="{{thumbnailUrl}}">
+                <div class="info {{#if isFocused}}focused{{/if}}">
+                  <div class="content-title">{{title}}</div>
+                  <div class="descr">{{description}}</div>
+                  <div class="user">{{videoUsername}}</div>
+                  <div class="date">{{videoCreationDate}}</div>
                 </div>
-                <div class="info">
-                  {{#if title}}
-                    <div class="content-title">{{title}}</div>
-                  {{/if}}
-                  {{#if description}}
-                    <div class="descr">{{description}}</div>
-                  {{/if}}
-                  {{#if videoUsername}}
-                    <div class="user">{{videoUsername}}</div>
-                  {{/if}}
-                  {{#if videoCreationDate}}
-                    <div class="date">{{videoCreationDate}}</div>
-                  {{/if}}
-                </div>
-              </div>
-            {{/if}}  
-          </dt>
+              </div> 
+          </li>
         {{/each}}
-      </dl>
+      </ol>
     {{/if}}
-    <div class="button-options">
-      <div class="add-button button" id="add-video-button">Add</div>
-    </div>
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}" id="add-video-button">
+      Add
+    </button>
   </div>
 </template>
 
