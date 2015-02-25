@@ -427,7 +427,11 @@ Template.horizontal_section_block.helpers({
     if (Session.get("addingContextToCurrentY")) {
       offset += cardWidth + Session.get("separation");
     }
-    horizontalLength = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal.length;
+    var currentHorizontal = Session.get("horizontalSectionsMap")[Session.get("currentY")];
+
+    if (!currentHorizontal) {return}
+
+    horizontalLength = currentHorizontal.horizontal.length;
     lastIndex = horizontalLength - 1;
     currentX = Session.get("currentX");
     adjustedIndex = this.index - currentX;
