@@ -480,8 +480,16 @@ Template.context_anchor_option.events = {
     e.preventDefault();
     hideFoldEditor();
     contextId = this._id;
-    link = '#' + contextId;
-    document.execCommand('createLink', false, link);
+
+    // need to create temporary link because want to take advantage of createLink browser functionality
+    // but the link really gets interacted with via the 'data-context-id' attribute
+    temporaryHrefToken = 'http://example.com/OhSuChToken';
+    document.execCommand('createLink', false, temporaryHrefToken);
+    temporaryAnchorElement = $('a[href="' + temporaryHrefToken +'"]'); // find temporary anchor
+    temporaryAnchorElement.attr('href', 'javascript:void(0);'); // get rid of temporary href
+    temporaryAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
+
+    //temporaryAnchorElement.data({contextId: contextId});
     goToContext(contextId);
     return false;
   }
