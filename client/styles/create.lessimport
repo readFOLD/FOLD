@@ -125,7 +125,7 @@ div.title-overlay {
       position: fixed;
       padding-top: 20px;
     }
-    a {
+    .toggle-preview {
       float: right;
       font-size: 15px;
     }
@@ -458,7 +458,6 @@ div.horizontal-context {
 
     .search-trigger, .search-input-container, input, .search-button {
       font-size: 12px;
-      border: none;
       height: @searchInputHeight;
       color: @light-color;
       position: absolute; 
@@ -621,7 +620,6 @@ div.horizontal-context {
       font-size: 16px;
       line-height: 35px;
       float: left;
-      border: none;
       cursor: auto;
 
       &:not(:last-child) {
@@ -747,7 +745,6 @@ div#fold-editor{
     }
   }
   button{
-    border:none;
     color: @light-color;
     background-color: inherit;
     font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;

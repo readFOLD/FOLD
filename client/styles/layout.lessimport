@@ -216,6 +216,11 @@ li{
 
 button{
   cursor: pointer;
+  border: none;
+  color: inherit;
+  background-color: inherit;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 section{
@@ -233,6 +238,7 @@ input {
 input[type="search"] {
   -webkit-appearance: none;
   -webkit-border-radius: 0px;
+  border: none;
   padding-left: 6px;
   padding-right: 6px;
 }
