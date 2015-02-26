@@ -15,7 +15,11 @@
         {{/if}}
         {{#if showDraft}}
           <button type="button" class="toggle-preview">
-            TOGGLE PREVIEW
+            {{#if read}}
+              EDIT
+            {{else}}
+              PREVIEW
+            {{/if}}
           </button>
         {{/if}}
       </div>
