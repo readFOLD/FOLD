@@ -428,14 +428,14 @@ div.horizontal-context {
   }
 
   div.create-section {
-    padding: 23px;
+    padding: 13px;
     height: calc(100% ~"-" @contentIconBannerHeight);
   }
 
 
     
   @searchFormHeight: 75px;   
-  @innerElementPadding: 9.5px;   
+  @innerElementPadding: 9px;   
      
   div.search-form { 
 
@@ -457,7 +457,7 @@ div.horizontal-context {
     -webkit-backface-visibility: hidden;        
 
     .search-trigger, .search-input-container, input, .search-button {
-      font-size: inherit;
+      font-size: 12px;
       border: none;
       height: @searchInputHeight;
       color: @light-color;
@@ -504,10 +504,11 @@ div.horizontal-context {
     width: 100%;   
     height: calc(100% ~"-" @searchFormHeight ~"-" 35px);   
     overflow-y: scroll;    
-    overflow-x: hidden;    
+    overflow-x: ellipsis;    
     margin-top: 20px;  
     list-style-type: none;  
      
+    @aspectRatio: 4/3;
     @searchResultHeight: 94px;     
     @thumbnailHeight: 90px;    
     @thumbnailWidth: 120px; 
@@ -526,20 +527,21 @@ div.horizontal-context {
      
        
     div.search-result {    
+      cursor: pointer;
       height: @searchResultHeight;   
     }    
     
-    div.thumbnail {    
+    div.thumbnail {
+      
       img{   
-        width:98px;    
+        width: @aspectRatio * (@searchResultHeight - (2 * @innerElementPadding));
         padding-top: @innerElementPadding;
-        margin-left: @innerElementPadding;
+        margin-left: 10px;
       }    
     }    
      
-    @focusedThumbnailHeight: 154px;
-    @focusedThumbnailWidth: 304px;
-    @focusedPadding: @searchResultHeight - @focusedThumbnailHeight* 0.5;
+    @focusedThumbnailHeight: (2 * @searchResultHeight) - (2 * @innerElementPadding);
+    @focusedThumbnailWidth: @aspectRatio * @focusedThumbnailHeight;
     
     div.focused-search-result { 
       height: @searchResultHeight*2;    
@@ -547,8 +549,13 @@ div.horizontal-context {
     }    
     
     div.focused-thumbnail {    
-      padding-top: @focusedPadding;
-      margin-left : 3.5px;  
+      padding-top: @innerElementPadding;
+      margin-left: 10px;  
+
+      iframe {
+        width: @focusedThumbnailWidth;
+        height: @focusedThumbnailHeight;
+      }
     }    
        
     @textAreaHeight: 75px;   
@@ -556,48 +563,51 @@ div.horizontal-context {
       position: relative;   
       top:  -@searchResultHeight+@innerElementPadding;  
       left: @thumbnailWidth;   
-      max-width: calc(100% ~"-" 30px ~"-" @thumbnailWidth);   
+      max-width: calc(100% ~"-" 10px ~"-" @thumbnailWidth);   
       max-height: @searchResultHeight - 10px;   
 
       div.content-title {    
-        font-weight: bold;     
+        font-weight: bold; 
+        font-size: 12px;
+        margin-bottom: 5px;    
         overflow: hidden;    
-        height: @textAreaHeight*0.25;   
+        height: @textAreaHeight*0.2;  // 15px
+        line-height: 16px;
       }    
          
       .date, .user {   
-        font-size: 75%;    
-        height: @textAreaHeight*0.15;   
+        font-size: 10px;    
+        height: @textAreaHeight*0.32;   
       }    
      
-      .date {    
-        text-align: right;   
-        position: relative;    
-        top: -@textAreaHeight*0.15;   
+      .date { 
+        text-align: right; 
+        position: relative;
+        top: -@textAreaHeight*0.32;   
       }    
          
       .descr {   
-        overflow: hidden;    
-        height: @textAreaHeight*0.62;   
+        margin-bottom: 8px;
+        overflow: hidden; 
+        font-size: 11px;   
+        height: @textAreaHeight*0.4533333;  // 34px
         line-height: 16px;   
       }    
     }
 
     @focusedSearchResultHeight: @searchResultHeight* 2;
     div.focused {
-      top: -164px;
-      left: 10px + @focusedThumbnailWidth;   
-      max-width: calc(100% ~"-" 15px ~"-" @focusedThumbnailWidth);
+      top: -177px;
+      left: 20px + @focusedThumbnailWidth;   
+      max-width: calc(100% ~"-" 30px ~"-" @focusedThumbnailWidth);
       max-height: @focusedSearchResultHeight - 10px;   
       
       .descr {
-        height: @focusedThumbnailHeight*0.70;
+        height: 132px;
+        overflow: hidden;
+        margin-bottom: 0px;
       }
-      .date, .user {    
-        text-align: right;   
-        position: initial;    
-      }   
-     }  
+    }  
   }  
     button.add-button {
       position: relative;
