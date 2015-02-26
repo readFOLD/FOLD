@@ -201,10 +201,20 @@ Template.vertical_section_block.events({
   }
 });
 
+window.refreshContentDep = new Tracker.Dependency();
 
+Template.vertical_section_block.created = function() {
+  this.semiReactiveContent = new ReactiveVar(); // used in edit mode so that browser undo functionality doesn't break when autosave
+  var that = this;
+  this.autorun(function() {
+    window.refreshContentDep.depend();
+    that.semiReactiveContent.set(that.data.content)
+  });
+};
 
 Template.vertical_section_block.rendered = function() {
   console.log('Vertical Section Rendered');
+
    // only allow plaintext in title
   this.$(".title.editable").on('paste', window.plainTextPaste);
 

@@ -108,7 +108,7 @@ Template.filters.events({
 
 Template.all_stories.helpers({
   stories: function() {
-    return Stories.find();
+    return Stories.find({ published: true }, {reactive: false});
   }
 });
 

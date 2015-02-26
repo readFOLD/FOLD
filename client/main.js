@@ -186,6 +186,7 @@ Template.story_header.events = {
   },
   "click .toggle-preview": function() {
     if (Session.get('read')) {
+      window.refreshContentDep.changed()
       Session.set('read', false)
     } else {
       Session.set('read', true)
@@ -297,7 +298,9 @@ Template.vertical_section_block.helpers({
     if (Session.get('read')) {
       return '<div class="content">' + this.content + '</div>';
     } else {
-      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true">' + this.content + '</div>';
+      // nonReactiveContent preserves browser undo functionality across saves
+      // this is contenteditable in edit mode
+      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true">' + Template.instance().semiReactiveContent.get() + '</div>';
     }
   }
 });

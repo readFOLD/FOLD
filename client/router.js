@@ -77,7 +77,7 @@ Router.route("read", {
   },
   data: function() {
     var story;
-    story = Stories.findOne();
+    story = Stories.findOne({}, {reactive: false});
     if (story) {
       Session.set("story", story);
       Session.set("storyId", story._id);
