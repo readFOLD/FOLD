@@ -452,14 +452,11 @@ div.horizontal-context {
     height: @searchInputHeight; 
     left: @innerElementPadding;
 
-    -webkit-transition: width 0.3s;
-    -moz-transition: width 0.3s;
-    transition: width 0.3s;
+    .transition(width 0.3s);
 
     -webkit-backface-visibility: hidden;        
 
     .search-trigger, .search-input-container, input, .search-button {
-      font-family: inherit;
       font-size: inherit;
       border: none;
       height: @searchInputHeight;
@@ -551,10 +548,7 @@ div.horizontal-context {
     
     div.focused-thumbnail {    
       padding-top: @focusedPadding;
-      margin-left : 3.5px;
-     iframe{    
-        border-style: none;
-      }    
+      margin-left : 3.5px;  
     }    
        
     @textAreaHeight: 75px;   
