@@ -14,6 +14,10 @@ Handlebars.registerHelper("read", function() {
   return Session.get("read");
 });
 
+Handlebars.registerHelper("showDraft", function() {
+  return Session.get("showDraft");
+});
+
 Handlebars.registerHelper("addingContext", function() {
   return Session.get("addingContext");
 });

@@ -184,6 +184,13 @@ Template.story_header.events = {
       return $("#to-header").removeClass('shown');
     }
   },
+  "click .toggle-preview": function() {
+    if (Session.get('read')) {
+      Session.set('read', false)
+    } else {
+      Session.set('read', true)
+    }
+  },
   "click #to-story": function() {
     $('#to-story, .attribution').fadeOut();
     goToX(0);
@@ -343,33 +350,33 @@ Template.horizontal_context.helpers({
     return this.verticalSections.map(function(verticalSection, verticalIndex) {
       var sortedContext, unsortedContext;
 
-      if (Session.get('read')){ // In READ, these are denormalized right on the document
-        var data = verticalSection.contextBlocks.map(function(datum, index){
-          return _.extend({}, datum, {index: index});
-        }).map(window.newTypeSpecificContextBlock);
-        return {
-          data: data,
-          index: verticalIndex
-        }
-      } else { // In CREATE, these need to be looked up from the db
+      if (Session.get('showDraft')) { // In CREATE, these need to be looked up from the db
         unsortedContext = ContextBlocks.find({
           _id: {
             $in: verticalSection.contextBlocks
           }
-        }).map(function(datum) {
+        }).map(function (datum) {
           var horizontalIndex;
           horizontalIndex = verticalSection.contextBlocks.indexOf(datum._id);
           return _.extend(datum, {
             index: horizontalIndex
           });
         });
-        sortedContext = _.sortBy(unsortedContext, function(datum) {
+        sortedContext = _.sortBy(unsortedContext, function (datum) {
           return datum.horizontalIndex;
         });
         return {
           index: verticalIndex,
           data: sortedContext
         };
+      } else { // In READ, these are denormalized right on the document
+        var data = verticalSection.contextBlocks.map(function (datum, index) {
+          return _.extend({}, datum, {index: index});
+        }).map(window.newTypeSpecificContextBlock);
+        return {
+          data: data,
+          index: verticalIndex
+        }
       }
     });
   },

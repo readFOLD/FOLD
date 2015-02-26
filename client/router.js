@@ -99,6 +99,7 @@ Router.route("read", {
   onBeforeAction: function() {
     Session.set("newStory", false);
     Session.set("read", true);
+    Session.set("showDraft", false);
     return this.next();
   }
 });
@@ -127,6 +128,7 @@ Router.route("create", {
     Session.set("horizontalSectionsMap", []);
     Session.set("newStory", true);
     Session.set("read", false);
+    Session.set("showDraft", true);
     if (user = Meteor.user()) {
       story.updateAuthor(user);
     }
@@ -176,6 +178,7 @@ Router.route("edit", {
     var user;
     Session.set("newStory", false);
     Session.set("read", false);
+    Session.set("showDraft", true);
     Session.set("userPathSegment", this.params.userPathSegment);
     Session.set("storyPathSegment", this.params.storyPathSegment);
     if ((user = Meteor.user()) || Meteor.loggingIn()) {

@@ -11,14 +11,12 @@
       {{ > story_title }}
       <div class="author">By {{authorName}}
         {{#if read}}
-          {{#linkTo route="edit" data=this}}
-            EDIT
-          {{/linkTo}}
           {{> favorite_button}}
-        {{else}}
-          {{#linkTo route="read" data=this}}
-            READ
-          {{/linkTo}}
+        {{/if}}
+        {{#if showDraft}}
+          <button type="button" class="toggle-preview">
+            TOGGLE PREVIEW
+          </button>
         {{/if}}
       </div>
 
