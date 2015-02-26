@@ -557,41 +557,94 @@ createBlockEvents = {
   }
 };
 
+Template.create_video_section.created = function() {
+  return this.focusResult = new ReactiveVar();
+};
+
+Template.create_video_section.helpers({
+  isFocused: function() {
+    var focusResult = Template.instance().focusResult.get();
+    if (_.isObject(focusResult)) {
+      if (this._id === focusResult._id) {
+        return true;
+     }
+    }
+  },
+  isActive: function() {
+    var focusResult = Template.instance().focusResult.get();
+    if (_.isObject(focusResult)) {return true;}
+    return false;
+  }
+});
+
+
 Template.create_video_section.helpers(createBlockHelpers);
+
+videoSearchDep = new Tracker.Dependency();
+
+Template.create_video_section.helpers({
+  results: function(){
+    videoSearchDep.depend();
+    return VideoSearchResults.find({searchQuery : $('input').val()});
+  }
+});
 
 Template.create_video_section.events(createBlockEvents);
 
 Template.create_video_section.events({
-  "submit": function(d) {
-    var horizontalIndex, parentSection, srcE, url, videoId, _ref;
+  "click .search-trigger": function(d) {
     d.preventDefault();
-    srcE = d.srcElement ? d.srcElement : d.target;
-    parentSection = $(srcE).closest('section');
-    horizontalIndex = parentSection.data('index');
-    url = $('input.youtube-link-input').val();
-    videoId = (_ref = url.match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/)) != null ? _ref[1] : void 0;
-    return Meteor.call('youtubeVideoInfo', videoId, function(err, info) {
-      var contextId, newContextBlock;
-      if (err) {
-        console.log(err);
-        return;
-      }
-      if (!info) {
-        console.log('video not found');
-        return;
-      }
-      newContextBlock = {
-        type: 'video',
-        service: 'youtube',
-        videoId: videoId,
-        description: info.title,
-        authorId: Meteor.user()._id
-      };
-      contextId = ContextBlocks.insert(newContextBlock);
-      return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
-    });
+    $(".search-form").toggleClass("search-open");
+  },
+
+  "submit form": function(d, template) {
+    d.preventDefault();
+    // d.stopPropagation();
+    var videoSearch;
+    videoSearch = $('input').val();
+    if (VideoSearchResults.find({searchQuery : videoSearch}).count() === 0) {
+      Meteor.call('youtubeVideoSearchList', videoSearch, function(err, results) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        if (!results) {
+          return;
+        }
+        _.chain(results)
+          .map(function(element) {
+            return {
+                type : 'video',
+                service : 'youtube',
+                authorId : Meteor.user()._id,
+                searchQuery : videoSearch,
+                title: element.title,
+                description: element.description,
+                videoId: element.videoId,
+                videoUsername : element.channelTitle,
+                videoUsernameId : element.channelId,
+                videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+            }
+        })
+        .each(function(result) {
+          VideoSearchResults.insert(result);
+        });
+      });
+    }
+    videoSearchDep.changed(); 
+    return;
+  },
+
+  "click li": function(d, template) {
+    template.focusResult.set(this);
+  },
+
+  "click #add-video-button": function(d, template) {
+    var contextId = ContextBlocks.insert(template.focusResult.get());
+    return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
   }
 });
+
 
 Template.create_map_section.created = function() {
   return this.blockPreview = new ReactiveVar();
@@ -630,6 +683,7 @@ Template.create_map_section.events({
     return Session.set('editingContext', null);
   }
 });
+
 
 Template.create_text_section.helpers({
   startingBlock: function() {

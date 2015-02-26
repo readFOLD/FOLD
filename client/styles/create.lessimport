@@ -379,10 +379,6 @@ div.horizontal-context {
     }
   }
 
-  div.create-section {
-    padding: 23px;
-  }
-
   img.content-type-button {
     position: absolute;
     background-color: white;
@@ -430,6 +426,202 @@ div.horizontal-context {
   div.edit-delete {
     right: 15px;
   }
+
+  div.create-section {
+    padding: 23px;
+    height: calc(100% ~"-" @contentIconBannerHeight);
+  }
+
+
+    
+  @searchFormHeight: 75px;   
+  @innerElementPadding: 9.5px;   
+     
+  div.search-form { 
+
+    @searchTriggerWidth: 80px;
+    @searchButtonWidth: 73px;
+    @searchInputHeight: 35px; 
+    @searchInputWidth: calc(100% ~"-" @searchTriggerWidth ~"-" @innerElementPadding);
+ 
+    position: relative;
+    margin-top: 10px;
+    width: 0%;
+    overflow: hidden;
+    min-width: calc(@searchTriggerWidth+@innerElementPadding);
+    height: @searchInputHeight; 
+    left: @innerElementPadding;
+
+    .transition(width 0.3s);
+
+    -webkit-backface-visibility: hidden;        
+
+    .search-trigger, .search-input-container, input, .search-button {
+      font-size: inherit;
+      border: none;
+      height: @searchInputHeight;
+      color: @light-color;
+      position: absolute; 
+      float: left;
+    }
+
+     .search-trigger {
+      z-index: 10;
+      width: @searchTriggerWidth;
+      background: @black-color;
+    }
+
+    .search-input-container {
+      background: @dark-color;
+      width: calc(100% ~"-"@searchButtonWidth ~"-" @innerElementPadding);
+      padding-left: 10px;
+    }
+
+    input {     
+      background: @dark-color;
+      width: @searchInputWidth;
+      left: @searchTriggerWidth+10px;
+      display: none;
+    }
+
+    .search-button {
+      background: @dark-color;
+      left: calc(100% ~"-"@innerElementPadding ~"-" @searchButtonWidth);
+      padding: 7.5px 13px 7.5px 40px;
+    }
+  }
+
+  .search-form.search-open {
+    width: 100%;
+    input {
+      display:block;
+    }
+  }  
+     
+      
+  ol.search-results-container {   
+    background-color: #ffffff;   
+    width: 100%;   
+    height: calc(100% ~"-" @searchFormHeight ~"-" 35px);   
+    overflow-y: scroll;    
+    overflow-x: hidden;    
+    margin-top: 20px;  
+    list-style-type: none;  
+     
+    @searchResultHeight: 94px;     
+    @thumbnailHeight: 90px;    
+    @thumbnailWidth: 120px; 
+    
+    li {
+      border-top: 1px solid #e7e7e7;  
+      border-right: none;
+      border-left: none; 
+      white-space: normal;
+    
+      &:hover {
+        background: @light-color; 
+      }
+    }
+
+     
+       
+    div.search-result {    
+      height: @searchResultHeight;   
+    }    
+    
+    div.thumbnail {    
+      img{   
+        width:98px;    
+        padding-top: @innerElementPadding;
+        margin-left: @innerElementPadding;
+      }    
+    }    
+     
+    @focusedThumbnailHeight: 154px;
+    @focusedThumbnailWidth: 304px;
+    @focusedPadding: @searchResultHeight - @focusedThumbnailHeight* 0.5;
+    
+    div.focused-search-result { 
+      height: @searchResultHeight*2;    
+      background: #e7e7e7;   
+    }    
+    
+    div.focused-thumbnail {    
+      padding-top: @focusedPadding;
+      margin-left : 3.5px;  
+    }    
+       
+    @textAreaHeight: 75px;   
+    div.info{    
+      position: relative;   
+      top:  -@searchResultHeight+@innerElementPadding;  
+      left: @thumbnailWidth;   
+      max-width: calc(100% ~"-" 30px ~"-" @thumbnailWidth);   
+      max-height: @searchResultHeight - 10px;   
+
+      div.content-title {    
+        font-weight: bold;     
+        overflow: hidden;    
+        height: @textAreaHeight*0.25;   
+      }    
+         
+      .date, .user {   
+        font-size: 75%;    
+        height: @textAreaHeight*0.15;   
+      }    
+     
+      .date {    
+        text-align: right;   
+        position: relative;    
+        top: -@textAreaHeight*0.15;   
+      }    
+         
+      .descr {   
+        overflow: hidden;    
+        height: @textAreaHeight*0.62;   
+        line-height: 16px;   
+      }    
+    }
+
+    @focusedSearchResultHeight: @searchResultHeight* 2;
+    div.focused {
+      top: -164px;
+      left: 10px + @focusedThumbnailWidth;   
+      max-width: calc(100% ~"-" 15px ~"-" @focusedThumbnailWidth);
+      max-height: @focusedSearchResultHeight - 10px;   
+      
+      .descr {
+        height: @focusedThumbnailHeight*0.70;
+      }
+      .date, .user {    
+        text-align: right;   
+        position: initial;    
+      }   
+     }  
+  }  
+    button.add-button {
+      position: relative;
+      left: calc(100%~"-" 90px);
+      background-color: @action-color;
+      color: @light-color;
+      width: 90px;
+      margin-top: 12px;
+      padding: 5px;
+      text-align: center;
+      font-size: 16px;
+      line-height: 35px;
+      float: left;
+      border: none;
+      cursor: auto;
+
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+
+      &.enabled {
+        cursor: pointer;
+      }
+  }
 }
 
 
@@ -442,8 +634,25 @@ div.text-section {
   margin-right: 30px;
 }
 
-@fold-editor-row-height: 55px;
+div.image-section {
+  div.description-overlay {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+  }
+  img {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
 
+
+@fold-editor-row-height: 55px;
 
 
 div#fold-editor{

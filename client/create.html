@@ -161,11 +161,39 @@
 
 <template name="create_video_section">
   <div class="create-section">
-    <form class="youtube-link">
-      <div class="input-label">Youtube Link:</div>
-      <input name='youtube' class="youtube-link-input">
-      <button type="submit">Save</button>
-    </form>
+    <div class="search-form">
+      <form>
+        <button type="button" class="search-trigger">Search:</button>
+        <div class="search-input-container">
+          <input type = "search" placeholder="Radar technology" autofocus="autofocus">
+        </div>
+        <button type="submit" class="search-button">{{ > search_icon }}</button>
+      </form>
+    </div>
+    <ol class="search-results-container" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
+      {{#each results}}
+        <li>
+            <div class="{{#if isFocused}}focused-{{/if}}search-result">
+              <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
+                {{#if isFocused}}
+                  <iframe src="{{url}}"></iframe>
+                {{else}}
+                  <img src="{{thumbnailUrl}}">
+                {{/if}}
+              </div>
+              <div class="info {{#if isFocused}}focused{{/if}}">
+                <div class="content-title">{{title}}</div>
+                <div class="descr">{{description}}</div>
+                <div class="user">{{videoUsername}}</div>
+                <div class="date">{{videoCreationDate}}</div>
+              </div>
+            </div> 
+        </li>
+      {{/each}}
+    </ol>
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}" id="add-video-button">
+      Add
+    </button>
   </div>
 </template>
 
