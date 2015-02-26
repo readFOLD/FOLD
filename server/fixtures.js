@@ -293,7 +293,7 @@ if (Stories.find().count() === 0) {
     published: true,
     userPathSegment: "author",
     storyPathSegment: "test-story",
-    title: "Test building an existing sotry",
+    title: "Test building an existing story",
     authorId: authorId,
     authorName: authorProfile.name,
     favorited: [],
@@ -313,6 +313,71 @@ if (Stories.find().count() === 0) {
           contextBlocks: [],
           title: "First block",
           content: "Here is a great story."
+        }
+      ]
+    }
+  });
+  Stories.insert({
+    backgroundImage: "header-image.jpg",
+    headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+    lastSaved: new Date(),
+    publishDate: new Date(),
+    published: true,
+    userPathSegment: "author",
+    storyPathSegment: "test-story2",
+    title: "This is also a story",
+    authorId: authorId,
+    authorName: authorProfile.name,
+    favorited: [],
+    views: 0,
+    verticalSections: [
+      {
+        _id: '931',
+        contextBlocks: [],
+        title: "In the beginning",
+        content: "Wow so good!"
+      }
+    ],
+    draftStory:{
+      verticalSections: [
+        {
+          _id: '931',
+          contextBlocks: [],
+          title: "In the beginning",
+          content: "Wow so good!"
+        }
+      ]
+    }
+  });
+
+  Stories.insert({
+    backgroundImage: "header-image.jpg",
+    headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+    lastSaved: new Date(),
+    publishDate: new Date(),
+    published: true,
+    userPathSegment: "author",
+    storyPathSegment: "charlottes-web",
+    title: "Charlotte's Web",
+    authorId: authorId,
+    authorName: authorProfile.name,
+    favorited: [],
+    views: 0,
+    verticalSections: [
+      {
+        _id: '931',
+        contextBlocks: [],
+        title: "A story about a pig",
+        content: "Bacon ipsum dolor amet et pork chop fugiat drumstick qui sirloin. Kevin cillum ex, in t-bone cupim pastrami excepteur ball tip tongue et kielbasa. Pork belly ut et, incididunt deserunt sed irure kevin quis culpa commodo adipisicing sunt pariatur. Anim beef kielbasa cillum sed veniam ut reprehenderit tempor. Alcatra ground round sausage, do pig lorem jowl."
+      }
+    ],
+    draftStory:{
+      verticalSections: [
+        {
+          _id: '931',
+          contextBlocks: [],
+          title: "A story about a pig",
+          content: "Bacon ipsum dolor amet et pork chop fugiat drumstick qui sirloin. Kevin cillum ex, in t-bone cupim pastrami excepteur ball tip tongue et kielbasa. Pork belly ut et, incididunt deserunt sed irure kevin quis culpa commodo adipisicing sunt pariatur. Anim beef kielbasa cillum sed veniam ut reprehenderit tempor. Alcatra ground round sausage, do pig lorem jowl."
         }
       ]
     }
