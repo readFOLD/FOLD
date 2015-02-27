@@ -483,7 +483,6 @@ div.oec-section {
 
 div.horizontal-context {
   float: right;
-  z-index: 20;
   top: 350px;
   margin-top: 12px;
   margin-bottom: 500px;
