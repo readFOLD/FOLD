@@ -229,6 +229,7 @@ Template.vertical_section_block.rendered = function() {
   var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match anchors that are left over from above if copied from somewhere else, capture contents so can be kept
 
   // clean up pasting into vertical section content
+  // TODO do this in save as well
   return this.$(".fold-editable").on('paste', function(e) {
     var clipboardData, html;
     e.preventDefault();

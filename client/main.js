@@ -278,9 +278,6 @@ Template.story.helpers({
     } else {
       return (width / 2) - (Session.get("separation") / 2) - Session.get("cardWidth");
     }
-  },
-  spacerHeight: function() {
-    return Session.get("windowHeight") - 230 - 300;
   }
 });
 
