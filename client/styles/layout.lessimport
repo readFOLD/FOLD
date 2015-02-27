@@ -265,10 +265,6 @@ input[type="search"]::-webkit-search-results-decoration {
   color: @placeholder-color;
 }
 
-html, body {
-  min-width: 1024px;
-}
-
 body {
   //still like san-serif for headlines and bylines
   font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;

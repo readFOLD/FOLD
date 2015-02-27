@@ -286,14 +286,78 @@ if (Stories.find().count() === 0) {
     }
   });
   Stories.insert({
-    backgroundImage: "header-image.jpg",
+    backgroundImage: "art.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     lastSaved: new Date(),
     publishDate: new Date(),
     published: true,
     userPathSegment: "author",
-    storyPathSegment: "test-story",
-    title: "Test building an existing story",
+    storyPathSegment: "leonard-nimoy",
+    title: "Star Trek is great, and Leonard Nimoy's Spock was the greatest thing about it",
+    authorId: authorId,
+    authorName: authorProfile.name,
+    favorited: [],
+    views: 0,
+    verticalSections: [
+      {
+        _id: '931',
+        contextBlocks: [],
+        title: "First block",
+        content: "Here is a great story."
+      }
+    ],
+    draftStory:{
+      verticalSections: [
+        {
+          _id: '931',
+          contextBlocks: [],
+          title: "First block",
+          content: "Here is a great story."
+        }
+      ]
+    }
+  });
+    Stories.insert({
+    backgroundImage: "banksy.jpg",
+    headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+    lastSaved: new Date(),
+    publishDate: new Date(),
+    published: true,
+    userPathSegment: "author",
+    storyPathSegment: "banksy",
+    title: "Banksy Spraypaints New Thing",
+    authorId: authorId,
+    authorName: authorProfile.name,
+    favorited: [],
+    views: 0,
+    verticalSections: [
+      {
+        _id: '931',
+        contextBlocks: [],
+        title: "First block",
+        content: "Here is a great story."
+      }
+    ],
+    draftStory:{
+      verticalSections: [
+        {
+          _id: '931',
+          contextBlocks: [],
+          title: "First block",
+          content: "Here is a great story."
+        }
+      ]
+    }
+  });
+    Stories.insert({
+    backgroundImage: "canoe.jpg",
+    headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+    lastSaved: new Date(),
+    publishDate: new Date(),
+    published: true,
+    userPathSegment: "author",
+    storyPathSegment: "wolf-alice",
+    title: "5 songs from alt-rock band Wolf Alice you need to hear",
     authorId: authorId,
     authorName: authorProfile.name,
     favorited: [],
@@ -318,14 +382,14 @@ if (Stories.find().count() === 0) {
     }
   });
   Stories.insert({
-    backgroundImage: "header-image.jpg",
+    backgroundImage: "dothething.png",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     lastSaved: new Date(),
     publishDate: new Date(),
     published: true,
     userPathSegment: "author",
-    storyPathSegment: "test-story2",
-    title: "This is also a story",
+    storyPathSegment: "art-heist",
+    title: "25 Years Later, an Art Heist Is Still Unsolved",
     authorId: authorId,
     authorName: authorProfile.name,
     favorited: [],
@@ -351,7 +415,7 @@ if (Stories.find().count() === 0) {
   });
 
   Stories.insert({
-    backgroundImage: "header-image.jpg",
+    backgroundImage: "stones.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     lastSaved: new Date(),
     publishDate: new Date(),

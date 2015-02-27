@@ -25,8 +25,9 @@ svg.browse-arrow {
   }
 }
 svg.search-icon {
-  height: 20px;
-  width: 20px;
+  height: 15px;
+  width: 15px;
+  margin-top: 2px;
 }
 .favorite-button{
   @height: 25px;

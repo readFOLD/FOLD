@@ -95,7 +95,7 @@ div.home-top {
   } */
 } 
 
-section.stories {
+div.stories {
   padding-top: 150px;
   width: 100%;
   height: 100%;
@@ -177,10 +177,12 @@ section.stories {
   }
 
   div.story-container {
-    padding-top: 50px;
+    padding-top: 15px;
+    @padding-side: 4px;
+    padding-left: @padding-side;
+    padding-right: @padding-side;
     padding-bottom: 75px;
-    width: 1150px;
-    margin: 0 auto;
+    overflow: hidden;
   }
 
   div.story {
@@ -190,17 +192,31 @@ section.stories {
 
     // 540 980+
     // 415 980-
-    height: 330px;
-    /*height depends on length of story abstract*/
-    width: 540px;
+    height: 100%;
+    min-height: 360px;
+    /*for screens between 1200px & 1440px width - 3 stories up*/
+    // max-width: 465px;
+    // min-width: 375px;
     z-index: 2;
     display: inline-block;
     position: relative;
-    margin-top: 20px;
-    margin-bottom: 40px;
+    margin-top: 8px;
+    margin-bottom: 23px;
+    @margin-side: 4px;
+    margin-left: @margin-side;
+    margin-right: @margin-side;
+    width: calc(33.33% ~"-" @margin-side * 2);
+    float: left;
 
-    &:nth-child(odd) { float: left; }
-    &:nth-child(even) { float: right; }
+
+    /*for screens up to 1200px width - 2 stories up*/
+    @media (max-width: 1200px) {
+      width: calc(50% ~"-" @margin-side * 2);
+    }
+
+    @media (max-width: 800px) {
+      width: calc(100% ~"-" @margin-side * 2);
+    }
 
     &:hover {
       //box-shadow: 0 0 5px rgba(0,0,0,.2);
