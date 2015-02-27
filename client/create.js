@@ -231,9 +231,7 @@ Template.story_title.events({
     storyId = Session.get('storyId');
     storyTitle = $.trim(template.$('div.story-title').text());
 
-    return Meteor.call('saveStory', {
-      _id: storyId
-    }, {$set: {'draftStory.title': storyTitle}}, {removeEmptyStrings: false}, function (err, numDocs) {
+    return Meteor.call('updateStoryTitle', storyId, storyTitle, function (err, numDocs) {
       if (err) {
         return alert(err);
       }

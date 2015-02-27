@@ -28,8 +28,15 @@ var checkOwner = function(userId, doc) {
   return userId && userId === doc.authorId;
 };
 
+
+
 Meteor.methods({
   // TODO PREVENT FROM SAVING OTHER WAYS
+  updateStoryTitle: function(storyId, title){
+    var storyPathSegment = _s.slugify(title.toLowerCase())+ '-' + Stories.findOne({_id: storyId}).shortId;
+    return Stories.update({_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }}, {removeEmptyStrings: false});
+  },
+  // TODO replace with specific methods
   saveStory: function(selector, modifier, options) {
     console.log('saveStory!')
     //update: function(userId, doc, fieldNames) {
@@ -44,6 +51,9 @@ Meteor.methods({
   //  return _s.slugify(titleField.value.toLowerCase())+ '-' + this.docId;
   //} else {
   //}
+    if (setModifier = modifier.$set){
+      console.log(_.pick(modifier.$set, 'draftStory.title'))
+    }
     return Stories.update(selector, modifier, _.defaults(options || {}, {removeEmptyStrings: false}));
   },
   favoriteStory: function(storyId) {
@@ -52,19 +62,16 @@ Meteor.methods({
   unfavoriteStory: function(storyId) {
     return changeFavorite.call(this, storyId, false);
   },
-  saveNewStory: function(story) {
-    var storyPathSegment, user;
-    user = Meteor.users.findOne({
-      _id: this.userId
-    });
-    story = _.omit(story, ['favorited', 'views', 'published']);
-    _.extend(story, {
+  createStory: function() {
+    var user = Meteor.users.findOne({ _id : this.userId });
+    shortId = Random.id(8);
+    return Stories.insert({
       lastSaved: new Date,
       userPathSegment: user.username,
+      storyPathSegment: _s.slugify('new-story')+ '-' + shortId , // TODO DRY
       authorId: this.userId,
-      authorName: user.profile.name || 'Anonymous'
+      authorName: user.profile.name || 'Anonymous',
+      shortId: shortId
     });
-    Stories.insert(story);
-    return story;
   }
 });

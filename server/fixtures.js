@@ -21,6 +21,7 @@ if (Meteor.users.find().count() === 0) {
 if (Stories.find().count() === 0) {
   Stories.insert({
     _id: '548781e397a6427c31384b73',
+    shortId: 'asdsk20',
     backgroundImage: "header-image.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     title: "Unfolding the 2014 Ebola Outbreak",
@@ -28,7 +29,7 @@ if (Stories.find().count() === 0) {
     publishDate: new Date(1406524369993),
     published: true,
     userPathSegment: "author",
-    storyPathSegment: "unfolding-the-2014-ebola-outbreak",
+    storyPathSegment: "unfolding-the-2014-ebola-outbreak-asdsk20",
     authorId: authorId,
     authorName: authorProfile.name,
     favorited: [],
@@ -239,7 +240,7 @@ if (Stories.find().count() === 0) {
       publishDate: new Date(1406524369993),  // could remove
       published: true,  // could remove
       userPathSegment: "author",  // could remove
-      storyPathSegment: "unfolding-the-2014-ebola-outbreak",  // could remove
+      storyPathSegment: "unfolding-the-2014-ebola-outbreak-548781e397a6427c31384b73",  // could remove
       title: "Unfolding the 2014 Ebola Outbreak",
       authorId: authorId,  // could remove
       authorName: authorProfile.name,  // could remove
@@ -286,13 +287,15 @@ if (Stories.find().count() === 0) {
     }
   });
   Stories.insert({
+    _id: '548781e397a6427c31384b79',
+    shortId: 'djksad20',
     backgroundImage: "header-image.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     lastSaved: new Date(),
     publishDate: new Date(),
     published: true,
     userPathSegment: "author",
-    storyPathSegment: "test-story",
+    storyPathSegment: "test-story-djksad20",
     title: "Test building an existing story",
     authorId: authorId,
     authorName: authorProfile.name,
@@ -318,13 +321,15 @@ if (Stories.find().count() === 0) {
     }
   });
   Stories.insert({
+    _id: '23bb79',
+    shortId: 'djdcak20',
     backgroundImage: "header-image.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     lastSaved: new Date(),
     publishDate: new Date(),
     published: true,
     userPathSegment: "author",
-    storyPathSegment: "test-story2",
+    storyPathSegment: "test-story2-djdcak20",
     title: "This is also a story",
     authorId: authorId,
     authorName: authorProfile.name,
@@ -351,13 +356,15 @@ if (Stories.find().count() === 0) {
   });
 
   Stories.insert({
+    _id: '23bbv',
+    shortId: 'djkdcsq20',
     backgroundImage: "header-image.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     lastSaved: new Date(),
     publishDate: new Date(),
     published: true,
     userPathSegment: "author",
-    storyPathSegment: "charlottes-web",
+    storyPathSegment: "charlottes-web-djkdcsq20",
     title: "Charlotte's Web",
     authorId: authorId,
     authorName: authorProfile.name,

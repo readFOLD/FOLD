@@ -8,6 +8,10 @@ ExistingStoryController = RouteController.extend({
   }
 });
 
+var idFromPathSegment = function(pathSegment) { // everything after last dash
+  return pathSegment.substring(pathSegment.lastIndexOf('-') + 1);
+};
+
 Router.route("home", {
   path: "/",
   template: "home",
@@ -68,7 +72,8 @@ Router.route("read", {
   template: "read",
   controller: ExistingStoryController,
   waitOn: function() {
-    return [Meteor.subscribe('readStoryPub', this.params.userPathSegment, this.params.storyPathSegment), Meteor.subscribe('contextBlocksPub')];
+    shortId = idFromPathSegment(this.params.storyPathSegment);
+    return [Meteor.subscribe('readStoryPub', this.params.userPathSegment, shortId), Meteor.subscribe('contextBlocksPub')];
   },
   action: function() {
     if (this.ready()) {
@@ -129,6 +134,7 @@ Router.route("create", {
     Session.set("newStory", true);
     Session.set("read", false);
     Session.set("showDraft", true);
+
     if (user = Meteor.user()) {
       story.updateAuthor(user);
     }
@@ -145,7 +151,8 @@ Router.route("edit", {
     return this.next();
   },
   waitOn: function() {
-    return [Meteor.subscribe('createStoryPub', this.params.userPathSegment, this.params.storyPathSegment), Meteor.subscribe('contextBlocksPub')];
+    shortId = idFromPathSegment(this.params.storyPathSegment);
+    return [Meteor.subscribe('createStoryPub', this.params.userPathSegment, shortId), Meteor.subscribe('contextBlocksPub')];
   },
   data: function() {
     var story;
@@ -180,7 +187,6 @@ Router.route("edit", {
     Session.set("read", false);
     Session.set("showDraft", true);
     Session.set("userPathSegment", this.params.userPathSegment);
-    Session.set("storyPathSegment", this.params.storyPathSegment);
     if ((user = Meteor.user()) || Meteor.loggingIn()) {
       if (user && user._id !== this.data().authorId) {
         this.redirect("read", this.data(), {

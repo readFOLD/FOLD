@@ -130,6 +130,9 @@ Schema.Stories = new SimpleSchema({
     type: String,
     optional: true
   },
+  shortId: {
+    type: String
+  },
   headerImageAttribution: {
     type: String,
     optional: true
