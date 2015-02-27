@@ -1,6 +1,5 @@
 Stories._ensureIndex({
-  userPathSegment: 1,
-  storyPathSegment: 1
+  shortId: 1
 }, {
   unique: 1
 });
@@ -17,10 +16,10 @@ Meteor.publish("ownStoriesPub", function() {
   });
 });
 
-Meteor.publish("readStoryPub", function(userPathSegment, storyPathSegment) {
+Meteor.publish("readStoryPub", function(userPathSegment, shortId) {
   return Stories.find({
     userPathSegment: userPathSegment,
-    storyPathSegment: storyPathSegment,
+    shortId: shortId,
     published: true
   },{
     fields : {
@@ -39,10 +38,10 @@ Meteor.publish("readStoriesPub", function(ids) {
   });
 });
 
-Meteor.publish("createStoryPub", function(userPathSegment, storyPathSegment) {
+Meteor.publish("createStoryPub", function(userPathSegment, shortId) {
   return Stories.find({
     userPathSegment: userPathSegment,
-    storyPathSegment: storyPathSegment
+    shortId: shortId
   });
 });
 

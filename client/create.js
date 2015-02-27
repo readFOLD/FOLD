@@ -177,7 +177,7 @@ var autoSaveVerticalSectionField = function(template, field, datatype){
   setObject = { $set:{} };
   setObject['$set'][setField] = value;
 
-  return Stories.update({
+  return Meteor.call('saveStory', {
     _id: storyId
   }, setObject, {removeEmptyStrings: false}, function(err, numDocs) {
     if (err) {
@@ -198,46 +198,49 @@ Template.vertical_section_block.events({
   'blur .content' : function(e, template){
     autoSaveVerticalSectionField(template, 'content', 'html');
     return true;
-  }
-});
-
-
-
-Template.vertical_section_block.rendered = function() {
-  console.log('Vertical Section Rendered');
-   // only allow plaintext in title
-  this.$(".title.editable").on('paste', window.plainTextPaste);
-
-  var cleanHtmlOptions = {
-    allowedTags: ['strong', 'em', 'u', 'a'], // only allow tags used in fold-editor
-    format: false,
-    removeAttrs: ['class', 'id', 'href'], // strip away hrefs and other undesired attributes that might slip into a paste
-    allowedAttributes: [["data-context-id"]] // data-context-id is used to direct links to context cards
-  };
-
-  var matchAnchors =  /<a( data-context-id=["|'].*?["|'])?.*?>/gm; // match anchors, capture data-context-id so it can be kept in string
-  var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match anchors that are left over from above if copied from somewhere else, capture contents so can be kept
-
+  },
   // clean up pasting into vertical section content
-  return this.$(".fold-editable").on('paste', function(e) {
+  // TODO do this in save as well
+  'paste .fold-editable': function(e) {
     var clipboardData, html;
     e.preventDefault();
     clipboardData = (e.originalEvent || e).clipboardData;
     if (!clipboardData){return}
     html = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
+    console.log('clean the html')
 
-    var cleanHtml = $.htmlClean(html, cleanHtmlOptions)
-      .replace(matchAnchors, '<a href="javascript:void(0);"$1>') // add js void to all anchors and keep all data-context-ids
-      .replace(matchBlankAnchors, '$1'); // remove anchors without data-context-ids
+    return document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
+  },
+  'paste .title.editable': window.plainTextPaste   // only allow plaintext in title
+});
 
-    return document.execCommand('insertHTML', false, cleanHtml);
+window.refreshContentDep = new Tracker.Dependency();
+
+Template.vertical_section_block.created = function() {
+  this.semiReactiveContent = new ReactiveVar(); // used in edit mode so that browser undo functionality doesn't break when autosave
+  var that = this;
+  this.autorun(function() {
+    window.refreshContentDep.depend();
+    that.semiReactiveContent.set(that.data.content)
   });
 };
 
-Template.story_title.rendered = function(){
-  // only allow plaintext in title
-  return this.$("[contenteditable]").on('paste', window.plainTextPaste);
-};
+Template.story_title.events({
+  'paste [contenteditable]': window.plainTextPaste,
+  'blur .story-title[contenteditable]': function(e,template) {
+    storyId = Session.get('storyId');
+    storyTitle = $.trim(template.$('div.story-title').text());
+
+    return Meteor.call('updateStoryTitle', storyId, storyTitle, function (err, numDocs) {
+      if (err) {
+        return alert(err);
+      }
+      if (!numDocs) {
+        return alert('No docs updated');
+      }
+    });
+  }
+});
 
 Template.background_image.helpers({
   backgroundImage: function() {
@@ -281,7 +284,7 @@ Template.add_vertical.events({
       content: ""
     });
 
-    return Stories.update({
+    return Meteor.call('saveStory', {
       _id: storyId
     }, {
       $set: {
@@ -313,21 +316,53 @@ Template.add_horizontal.helpers({
   }
 });
 
-Tracker.autorun(function() {
-  var currentY, story;
-  story = Session.get('story');
-  currentY = Session.get("currentY");
+Tracker.autorun(function(){
+  var story = Session.get('story');
+  var currentY = Session.get("currentY");
   if (story && (currentY != null)) {
-    return Session.set('currentYId', story.verticalSections[currentY]._id);
+    Session.set('currentVerticalSection', story.verticalSections[currentY]);
+  } else {
+    Session.set('currentVerticalSection', null);
+  }
+});
+
+Tracker.autorun(function() {
+  var verticalSection = Session.get('currentVerticalSection');
+  if (verticalSection) {
+    return Session.set('currentYId', verticalSection._id);
+  } else {
+    return Session.set('currentYId', null);
+  }
+});
+
+Tracker.autorun(function() {
+  var verticalSection = Session.get('currentVerticalSection');
+  var currentX = Session.get('currentX');
+  if (verticalSection) {
+    var currentContextBlock = verticalSection.contextBlocks[currentX];
+    if (currentContextBlock) {
+      if (Session.get('showDraft')){
+        return Session.set('currentXId', currentContextBlock);
+      } else {
+        return Session.set('currentXId', currentContextBlock._id);
+      }
+    }
+  }
+  return Session.set('currentXId', null);
+});
+
+Tracker.autorun(function() {
+  if (currentXId = Session.get('currentXId')){
+    $('a[data-context-id="' + currentXId + '"]').addClass('active');
+    $('a[data-context-id!="' + currentXId + '"]').removeClass('active');
   }
 });
 
 Tracker.autorun(function() {
   var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
-  story = Session.get('story');
-  currentY = Session.get("currentY");
-  if (story && (currentY != null)) {
-    currentContextBlocks = story.verticalSections[currentY].contextBlocks;
+  var verticalSection = Session.get('currentVerticalSection');
+  if (verticalSection) {
+    currentContextBlocks = verticalSection.contextBlocks;
     horizontalContextDiv = $(".horizontal-context");
     horizontalContextDiv.removeClass('editing');
     if (Session.get("addingContextToCurrentY") || (_ref = Session.get("editingContext"), __indexOf.call(currentContextBlocks, _ref) >= 0)) {
@@ -500,7 +535,7 @@ addContextToStory = function(storyId, contextId, verticalSectionIndex) {
   pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
   pushObject = {};
   pushObject[pushSelectorString] = contextId;
-  return Stories.update({
+  return Meteor.call('saveStory', {
     _id: storyId
   }, {
     $addToSet: pushObject

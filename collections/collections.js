@@ -39,6 +39,7 @@ Story = (function() {
     return this.title = "";
   };
 
+
   Story.prototype.publish = function() {
     var dasherizedTitle;
     if (!this.lastSaved) {
@@ -48,18 +49,18 @@ Story = (function() {
       throw new Meteor.Error('already-published');
     }
     dasherizedTitle = _s.slugify(this.title.toLowerCase());
-    if (confirm('Your story will have the url path: /' + dasherizedTitle)) {
-      return Stories.update({
-        _id: this._id
-      }, {
-        $set: {
-          published: true,
-          publishedDate: new Date,
-          lastSaved: new Date,
-          storyPathSegment: dasherizedTitle
-        }
-      });
-    }
+    alert('TODO actually do this')
+    //if (confirm('Your story will have the url path: /' + dasherizedTitle)) {
+    //  return Stories.update({
+    //    _id: this._id
+    //  }, {
+    //    $set: {
+    //      published: true,
+    //      publishedDate: new Date,
+    //      lastSaved: new Date
+    //    }
+    //  });
+    //}
   };
 
   var sum = function(a,b){ return a+b; };
@@ -79,8 +80,26 @@ Story = (function() {
 
 })();
 
+
+var cleanHtmlOptions = {
+  allowedTags: ['strong', 'em', 'u', 'a'], // only allow tags used in fold-editor
+  format: false,
+  removeAttrs: ['class', 'id', 'href'], // strip away hrefs and other undesired attributes that might slip into a paste
+  allowedAttributes: [["data-context-id"]] // data-context-id is used to direct links to context cards
+};
+
+var matchAnchors =  /<a( data-context-id=["|'].*?["|'])?.*?>/gm; // match anchors, capture data-context-id so it can be kept in string
+var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match anchors that are left over from above if copied from somewhere else, capture contents so can be kept
+
+cleanVerticalSectionContent = function(html) {
+  return $.htmlClean(html, cleanHtmlOptions)
+    .replace(matchAnchors, '<a href="javascript:void(0);"$1>') // add js void to all anchors and keep all data-context-ids
+    .replace(matchBlankAnchors, '$1'); // remove anchors without data-context-ids
+};
+
 if (Meteor.isClient) {
   window.Story = Story;
+  window.cleanVerticalSectionContent = cleanVerticalSectionContent;
 }
 
 this.Stories = new Meteor.Collection("stories", {
@@ -89,24 +108,12 @@ this.Stories = new Meteor.Collection("stories", {
   }
 });
 
-checkOwner = function(userId, doc) {
-  return userId && userId === doc.authorId;
-};
-
-this.Stories.allow({
-  update: function(userId, doc, fieldNames) {
-    var disallowedFields;
-    disallowedFields = ['authorId', 'storyPathSegment', 'userPathSegment', 'favorited'];
-    if (_.intersection(fieldNames, disallowedFields).length) {
-      return false;
-    }
-    return checkOwner(userId, doc);
-  }
-});
-
 this.Stories.deny({
   insert: function() {
     return true;
+  },
+  update: function() {
+    return true
   },
   remove: function() {
     return true;
@@ -122,6 +129,9 @@ Schema.Stories = new SimpleSchema({
   backgroundImage: {
     type: String,
     optional: true
+  },
+  shortId: {
+    type: String
   },
   headerImageAttribution: {
     type: String,

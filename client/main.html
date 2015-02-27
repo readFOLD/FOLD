@@ -48,8 +48,11 @@
         <div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}"
              style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
             {{> vertical_narrative}}
-            <div class="spacer" style="height: {{spacerHeight}}px">
-            </div>
+
+
+          <footer>
+
+          </footer>
         </div>
         {{#unless narrativeView}}
             <div class="horizontal-context" style="{{#unless read}}margin-top: 23px{{/unless}}">
@@ -57,6 +60,7 @@
             </div>
         {{/unless}}
     </article>
+
 
     {{#if pastHeader}}
         {{#if read}}

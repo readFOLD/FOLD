@@ -21,6 +21,7 @@ if (Meteor.users.find().count() === 0) {
 if (Stories.find().count() === 0) {
   Stories.insert({
     _id: '548781e397a6427c31384b73',
+    shortId: 'asdsk20',
     backgroundImage: "header-image.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     title: "Unfolding the 2014 Ebola Outbreak",
@@ -28,7 +29,7 @@ if (Stories.find().count() === 0) {
     publishDate: new Date(1406524369993),
     published: true,
     userPathSegment: "author",
-    storyPathSegment: "unfolding-the-2014-ebola-outbreak",
+    storyPathSegment: "unfolding-the-2014-ebola-outbreak-asdsk20",
     authorId: authorId,
     authorName: authorProfile.name,
     favorited: [],
@@ -239,7 +240,7 @@ if (Stories.find().count() === 0) {
       publishDate: new Date(1406524369993),  // could remove
       published: true,  // could remove
       userPathSegment: "author",  // could remove
-      storyPathSegment: "unfolding-the-2014-ebola-outbreak",  // could remove
+      storyPathSegment: "unfolding-the-2014-ebola-outbreak-548781e397a6427c31384b73",  // could remove
       title: "Unfolding the 2014 Ebola Outbreak",
       authorId: authorId,  // could remove
       authorName: authorProfile.name,  // could remove
@@ -292,7 +293,8 @@ if (Stories.find().count() === 0) {
     publishDate: new Date(),
     published: true,
     userPathSegment: "author",
-    storyPathSegment: "leonard-nimoy",
+    shortId: 'fdfdf3c3',
+    storyPathSegment: "leonard-nimoy-fdfdf3c3",
     title: "Star Trek is great, and Leonard Nimoy's Spock was the greatest thing about it",
     authorId: authorId,
     authorName: authorProfile.name,
@@ -317,14 +319,16 @@ if (Stories.find().count() === 0) {
       ]
     }
   });
-    Stories.insert({
+  Stories.insert({
     backgroundImage: "banksy.jpg",
+    _id: '548781e397a6427c31384b79',
+    shortId: 'djksad20',
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     lastSaved: new Date(),
     publishDate: new Date(),
     published: true,
     userPathSegment: "author",
-    storyPathSegment: "banksy",
+    storyPathSegment: "banksy-djksad20",
     title: "Banksy Spraypaints New Thing",
     authorId: authorId,
     authorName: authorProfile.name,
@@ -349,14 +353,15 @@ if (Stories.find().count() === 0) {
       ]
     }
   });
-    Stories.insert({
+  Stories.insert({
     backgroundImage: "canoe.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     lastSaved: new Date(),
     publishDate: new Date(),
     published: true,
     userPathSegment: "author",
-    storyPathSegment: "wolf-alice",
+    storyPathSegment: "wolf-alice-djkdsad20",
+    shortId: 'djkscsad20',
     title: "5 songs from alt-rock band Wolf Alice you need to hear",
     authorId: authorId,
     authorName: authorProfile.name,
@@ -383,12 +388,14 @@ if (Stories.find().count() === 0) {
   });
   Stories.insert({
     backgroundImage: "dothething.png",
+    _id: '23bb79',
+    shortId: 'djdcak20',
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     lastSaved: new Date(),
     publishDate: new Date(),
     published: true,
     userPathSegment: "author",
-    storyPathSegment: "art-heist",
+    storyPathSegment: "art-heist-djdcak20",
     title: "25 Years Later, an Art Heist Is Still Unsolved",
     authorId: authorId,
     authorName: authorProfile.name,
@@ -416,12 +423,14 @@ if (Stories.find().count() === 0) {
 
   Stories.insert({
     backgroundImage: "stones.jpg",
+    _id: '23bbv',
+    shortId: 'djkdcsq20',
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     lastSaved: new Date(),
     publishDate: new Date(),
     published: true,
     userPathSegment: "author",
-    storyPathSegment: "charlottes-web",
+    storyPathSegment: "charlottes-web-djkdcsq20",
     title: "Charlotte's Web",
     authorId: authorId,
     authorName: authorProfile.name,
