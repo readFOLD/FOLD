@@ -344,6 +344,29 @@ Tracker.autorun(function() {
 });
 
 Tracker.autorun(function() {
+  var verticalSection = Session.get('currentVerticalSection');
+  var currentX = Session.get('currentX');
+  if (verticalSection) {
+    var currentContextBlock = verticalSection.contextBlocks[currentX];
+    if (currentContextBlock) {
+      if (Session.get('showDraft')){
+        return Session.set('currentXId', currentContextBlock);
+      } else {
+        return Session.set('currentXId', currentContextBlock._id);
+      }
+    }
+  }
+  return Session.set('currentXId', null);
+});
+
+Tracker.autorun(function() {
+  if (currentXId = Session.get('currentXId')){
+    $('a[data-context-id="' + currentXId + '"]').addClass('active');
+    $('a[data-context-id!="' + currentXId + '"]').removeClass('active');
+  }
+});
+
+Tracker.autorun(function() {
   var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
   var verticalSection = Session.get('currentVerticalSection');
   if (verticalSection) {

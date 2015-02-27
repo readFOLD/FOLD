@@ -368,6 +368,9 @@ div#overlay {
     &:hover {
       background-color: @light-color;
     }
+    &.active {
+      background-color: @action-color;
+    }
   }
 
   div.vertical-nav-container {
