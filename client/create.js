@@ -324,21 +324,30 @@ Template.add_horizontal.helpers({
   }
 });
 
-Tracker.autorun(function() {
-  var currentY, story;
-  story = Session.get('story');
-  currentY = Session.get("currentY");
+Tracker.autorun(function(){
+  var story = Session.get('story');
+  var currentY = Session.get("currentY");
   if (story && (currentY != null)) {
-    return Session.set('currentYId', story.verticalSections[currentY]._id);
+    Session.set('currentVerticalSection', story.verticalSections[currentY]);
+  } else {
+    Session.set('currentVerticalSection', null);
+  }
+});
+
+Tracker.autorun(function() {
+  var verticalSection = Session.get('currentVerticalSection');
+  if (verticalSection) {
+    return Session.set('currentYId', verticalSection._id);
+  } else {
+    return Session.set('currentYId', null);
   }
 });
 
 Tracker.autorun(function() {
   var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
-  story = Session.get('story');
-  currentY = Session.get("currentY");
-  if (story && (currentY != null)) {
-    currentContextBlocks = story.verticalSections[currentY].contextBlocks;
+  var verticalSection = Session.get('currentVerticalSection');
+  if (verticalSection) {
+    currentContextBlocks = verticalSection.contextBlocks;
     horizontalContextDiv = $(".horizontal-context");
     horizontalContextDiv.removeClass('editing');
     if (Session.get("addingContextToCurrentY") || (_ref = Session.get("editingContext"), __indexOf.call(currentContextBlocks, _ref) >= 0)) {
