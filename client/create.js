@@ -198,7 +198,20 @@ Template.vertical_section_block.events({
   'blur .content' : function(e, template){
     autoSaveVerticalSectionField(template, 'content', 'html');
     return true;
-  }
+  },
+  // clean up pasting into vertical section content
+  // TODO do this in save as well
+  'paste .fold-editable': function(e) {
+    var clipboardData, html;
+    e.preventDefault();
+    clipboardData = (e.originalEvent || e).clipboardData;
+    if (!clipboardData){return}
+    html = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
+    console.log('clean the html')
+
+    return document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
+  },
+  'paste .title.editable': window.plainTextPaste   // only allow plaintext in title
 });
 
 window.refreshContentDep = new Tracker.Dependency();
@@ -212,29 +225,9 @@ Template.vertical_section_block.created = function() {
   });
 };
 
-Template.vertical_section_block.rendered = function() {
-  console.log('Vertical Section Rendered');
-
-   // only allow plaintext in title
-  this.$(".title.editable").on('paste', window.plainTextPaste);
-
-  // clean up pasting into vertical section content
-  // TODO do this in save as well
-  return this.$(".fold-editable").on('paste', function(e) {
-    var clipboardData, html;
-    e.preventDefault();
-    clipboardData = (e.originalEvent || e).clipboardData;
-    if (!clipboardData){return}
-    html = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
-
-    return document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
-  });
-};
-
-Template.story_title.rendered = function(){
-  // only allow plaintext in title
-  return this.$("[contenteditable]").on('paste', window.plainTextPaste);
-};
+Template.story_title.events({
+  'paste [contenteditable]': window.plainTextPaste
+});
 
 Template.background_image.helpers({
   backgroundImage: function() {
