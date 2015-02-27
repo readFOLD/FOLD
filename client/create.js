@@ -218,16 +218,6 @@ Template.vertical_section_block.rendered = function() {
    // only allow plaintext in title
   this.$(".title.editable").on('paste', window.plainTextPaste);
 
-  var cleanHtmlOptions = {
-    allowedTags: ['strong', 'em', 'u', 'a'], // only allow tags used in fold-editor
-    format: false,
-    removeAttrs: ['class', 'id', 'href'], // strip away hrefs and other undesired attributes that might slip into a paste
-    allowedAttributes: [["data-context-id"]] // data-context-id is used to direct links to context cards
-  };
-
-  var matchAnchors =  /<a( data-context-id=["|'].*?["|'])?.*?>/gm; // match anchors, capture data-context-id so it can be kept in string
-  var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match anchors that are left over from above if copied from somewhere else, capture contents so can be kept
-
   // clean up pasting into vertical section content
   // TODO do this in save as well
   return this.$(".fold-editable").on('paste', function(e) {
@@ -237,11 +227,7 @@ Template.vertical_section_block.rendered = function() {
     if (!clipboardData){return}
     html = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
 
-    var cleanHtml = $.htmlClean(html, cleanHtmlOptions)
-      .replace(matchAnchors, '<a href="javascript:void(0);"$1>') // add js void to all anchors and keep all data-context-ids
-      .replace(matchBlankAnchors, '$1'); // remove anchors without data-context-ids
-
-    return document.execCommand('insertHTML', false, cleanHtml);
+    return document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
   });
 };
 
