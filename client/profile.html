@@ -10,9 +10,7 @@
     {{/linkTo}}
     <div class="options">
       <div id="create-story">
-        {{#linkTo route="create"}}
-          Create Story
-        {{/linkTo}}
+        {{> create_story }}
       </div>
       <div id='login-buttons-and-more'>
         {{> loginButtons}}
@@ -37,6 +35,7 @@
     </div>
   </section>
 </template>
+
 
 <template name="user_profile">
   <section class="profile-info">

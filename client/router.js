@@ -156,9 +156,8 @@ Router.route("edit", {
   },
   data: function() {
     var story;
-    story = Stories.findOne();
+    story = Stories.findOne({shortId: idFromPathSegment(this.params.storyPathSegment)});
     if (story) {
-
       Session.set("story", story.draftStory);
       Session.set("storyId", story._id);
       Session.set("backgroundImage", story.draftStory.backgroundImage);

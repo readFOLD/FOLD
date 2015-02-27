@@ -63,15 +63,44 @@ Meteor.methods({
     return changeFavorite.call(this, storyId, false);
   },
   createStory: function() {
+    if (!this.userId) {
+      throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to create a story');
+    }
     var user = Meteor.users.findOne({ _id : this.userId });
-    shortId = Random.id(8);
-    return Stories.insert({
+
+    var shortId = Random.id(8);
+    console.log(1111);
+    var storyPathSegment = _s.slugify('new-story')+ '-' + shortId;  // TODO DRY
+    var userPathSegment= user.username;
+
+    Stories.insert({
+      published: false,
+      verticalSections: [{
+        _id: Random.id(8),
+        contextBlocks: [],
+        title: "",
+        content: ""
+      }],
       lastSaved: new Date,
-      userPathSegment: user.username,
-      storyPathSegment: _s.slugify('new-story')+ '-' + shortId , // TODO DRY
+      userPathSegment: userPathSegment,
+      storyPathSegment: storyPathSegment,
       authorId: this.userId,
       authorName: user.profile.name || 'Anonymous',
-      shortId: shortId
-    });
+      shortId: shortId,
+      draftStory: {
+        verticalSections: [{
+          _id: Random.id(8),
+          contextBlocks: [],
+          title: "",
+          content: ""
+        }],
+      userPathSegment: userPathSegment,
+      storyPathSegment: storyPathSegment,
+      }
+  }, {removeEmptyStrings: false});
+    return {
+      userPathSegment: userPathSegment,
+      storyPathSegment: storyPathSegment
+    };
   }
 });

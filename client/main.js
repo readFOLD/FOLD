@@ -519,3 +519,14 @@ Template.favorite_button.events({
     });
   }
 });
+
+Template.create_story.events({
+  'click': function(){
+    Meteor.call('createStory', function(err, pathObject){
+      if (err) {
+        return alert(err);
+      }
+      Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
+    })
+  }
+});
