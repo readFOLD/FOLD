@@ -24,7 +24,28 @@ changeFavorite = function(storyId, toFavorite) {
   }, userOperation);
 };
 
+var checkOwner = function(userId, doc) {
+  return userId && userId === doc.authorId;
+};
+
 Meteor.methods({
+  // TODO PREVENT FROM SAVING OTHER WAYS
+  saveStory: function(selector, modifier, options) {
+    console.log('saveStory!')
+    //update: function(userId, doc, fieldNames) {
+    //  var disallowedFields;
+    //  disallowedFields = ['authorId', 'storyPathSegment', 'userPathSegment', 'favorited'];
+    //  if (_.intersection(fieldNames, disallowedFields).length) {
+    //    return false;
+    //  }
+    //  return checkOwner(userId, doc);
+    //}
+  //  if (titleField.isSet){
+  //  return _s.slugify(titleField.value.toLowerCase())+ '-' + this.docId;
+  //} else {
+  //}
+    return Stories.update(selector, modifier, _.defaults(options || {}, {removeEmptyStrings: false}));
+  },
   favoriteStory: function(storyId) {
     return changeFavorite.call(this, storyId, true);
   },
@@ -36,12 +57,10 @@ Meteor.methods({
     user = Meteor.users.findOne({
       _id: this.userId
     });
-    storyPathSegment = (story.title ? _s.slugify(story.title.toLowerCase()) : 'unpublished-story') + '-' + Random.id(3);
     story = _.omit(story, ['favorited', 'views', 'published']);
     _.extend(story, {
       lastSaved: new Date,
       userPathSegment: user.username,
-      storyPathSegment: storyPathSegment,
       authorId: this.userId,
       authorName: user.profile.name || 'Anonymous'
     });

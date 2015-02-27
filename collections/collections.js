@@ -39,6 +39,7 @@ Story = (function() {
     return this.title = "";
   };
 
+
   Story.prototype.publish = function() {
     var dasherizedTitle;
     if (!this.lastSaved) {
@@ -48,18 +49,18 @@ Story = (function() {
       throw new Meteor.Error('already-published');
     }
     dasherizedTitle = _s.slugify(this.title.toLowerCase());
-    if (confirm('Your story will have the url path: /' + dasherizedTitle)) {
-      return Stories.update({
-        _id: this._id
-      }, {
-        $set: {
-          published: true,
-          publishedDate: new Date,
-          lastSaved: new Date,
-          storyPathSegment: dasherizedTitle
-        }
-      });
-    }
+    alert('TODO actually do this')
+    //if (confirm('Your story will have the url path: /' + dasherizedTitle)) {
+    //  return Stories.update({
+    //    _id: this._id
+    //  }, {
+    //    $set: {
+    //      published: true,
+    //      publishedDate: new Date,
+    //      lastSaved: new Date
+    //    }
+    //  });
+    //}
   };
 
   var sum = function(a,b){ return a+b; };
@@ -107,24 +108,12 @@ this.Stories = new Meteor.Collection("stories", {
   }
 });
 
-checkOwner = function(userId, doc) {
-  return userId && userId === doc.authorId;
-};
-
-this.Stories.allow({
-  update: function(userId, doc, fieldNames) {
-    var disallowedFields;
-    disallowedFields = ['authorId', 'storyPathSegment', 'userPathSegment', 'favorited'];
-    if (_.intersection(fieldNames, disallowedFields).length) {
-      return false;
-    }
-    return checkOwner(userId, doc);
-  }
-});
-
 this.Stories.deny({
   insert: function() {
     return true;
+  },
+  update: function() {
+    return true
   },
   remove: function() {
     return true;

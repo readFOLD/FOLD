@@ -177,7 +177,7 @@ var autoSaveVerticalSectionField = function(template, field, datatype){
   setObject = { $set:{} };
   setObject['$set'][setField] = value;
 
-  return Stories.update({
+  return Meteor.call('saveStory', {
     _id: storyId
   }, setObject, {removeEmptyStrings: false}, function(err, numDocs) {
     if (err) {
@@ -226,7 +226,22 @@ Template.vertical_section_block.created = function() {
 };
 
 Template.story_title.events({
-  'paste [contenteditable]': window.plainTextPaste
+  'paste [contenteditable]': window.plainTextPaste,
+  'blur .story-title[contenteditable]': function(e,template) {
+    storyId = Session.get('storyId');
+    storyTitle = $.trim(template.$('div.story-title').text());
+
+    return Meteor.call('saveStory', {
+      _id: storyId
+    }, {$set: {'draftStory.title': storyTitle}}, {removeEmptyStrings: false}, function (err, numDocs) {
+      if (err) {
+        return alert(err);
+      }
+      if (!numDocs) {
+        return alert('No docs updated');
+      }
+    });
+  }
 });
 
 Template.background_image.helpers({
@@ -271,7 +286,7 @@ Template.add_vertical.events({
       content: ""
     });
 
-    return Stories.update({
+    return Meteor.call('saveStory', {
       _id: storyId
     }, {
       $set: {
@@ -522,7 +537,7 @@ addContextToStory = function(storyId, contextId, verticalSectionIndex) {
   pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
   pushObject = {};
   pushObject[pushSelectorString] = contextId;
-  return Stories.update({
+  return Meteor.call('saveStory', {
     _id: storyId
   }, {
     $addToSet: pushObject
