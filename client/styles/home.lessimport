@@ -128,14 +128,16 @@ div.stories {
     /*height depends on length of story headline*/
     width: 100%;
     position: relative;
-    line-height: 29px;
+    line-height: 31px;
     font-size: 21px;
     font-weight: bold;
     padding: 20px 30px 0px 30px;
   }
 
   div.byline {
-    padding: 15px 25px;
+    //padding: 33px 25px;
+    padding-top: calc(9% ~"-" 27px);
+    padding-left: 25px;
     div.pull-left {
       width: 420px;
       div.author-image {
@@ -193,7 +195,7 @@ div.stories {
     // 540 980+
     // 415 980-
     height: 100%;
-    min-height: 350px;
+    min-height: 339px;
     /*for screens between 1200px & 1440px width - 3 stories up*/
     // max-width: 465px;
     // min-width: 375px;
@@ -242,7 +244,7 @@ div.stories {
       font-family: inherit;
       position: absolute;
       right: 23px;
-      bottom: 65px;
+      bottom: 60px;
     }
 
     div.edit-or-read {
@@ -250,21 +252,24 @@ div.stories {
       position: absolute;
       bottom: 0px;
       width: 100%;
-      background-color: @unselected-background-color;
+      background-color: white;
 
       &:hover {
         background-color: @action-color;
+        a {
+          color: @dark-color;
+        }
       }
 
       a {
-        color: @dark-color;
+        color: white;
       }
 
       div#edit-this-story {
         .background-transition;
         .color-transition;
-        padding-top: 10px;
-        padding-bottom: 8px;
+        padding-top: 11px;
+        padding-bottom: 3px;
         padding-left: 20px;
         &:hover {
           color: white;
