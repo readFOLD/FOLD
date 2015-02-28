@@ -360,7 +360,7 @@ if (Stories.find().count() === 0) {
     publishDate: new Date(),
     published: true,
     userPathSegment: "author",
-    storyPathSegment: "wolf-alice-djkdsad20",
+    storyPathSegment: "wolf-alice-djkscsad20",
     shortId: 'djkscsad20',
     title: "5 songs from alt-rock band Wolf Alice you need to hear",
     authorId: authorId,

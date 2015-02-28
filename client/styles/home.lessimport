@@ -263,8 +263,8 @@ div.stories {
       div#edit-this-story {
         .background-transition;
         .color-transition;
-        margin-top: 10px;
-        margin-bottom: 8px;
+        padding-top: 10px;
+        padding-bottom: 8px;
         padding-left: 20px;
         &:hover {
           color: white;
