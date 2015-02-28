@@ -154,18 +154,12 @@
       {{#linkTo route="edit" data=this}}
         <div id="edit-this-story">
           Edit This Story
-          <span class='pull-right'>
-            {{favorited.length}} Favorites
-          </span>
         </div>
       {{/linkTo}}
     {{else}}
       {{#linkTo route="read" data=this}}
         <div id="edit-this-story">
           Unfold This Story
-          <span class='pull-right'>
-            {{favorited.length}} Favorites
-          </span>
         </div>
       {{/linkTo}}
     {{/if}}

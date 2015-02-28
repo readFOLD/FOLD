@@ -8,7 +8,7 @@ div#login-buttons-and-more {
 }
 
 div.home-top {
-  border-top: 5px solid @action-color;
+  border-top: 6px solid @action-color;
   position: fixed;
   background-color: white;
   height: 145px;
@@ -187,13 +187,13 @@ div.stories {
 
   div.story {
     background-color: @white-color;
-    border: 2px solid @light-color;
+    border-bottom: 7px solid @action-color;
     // box-shadow: 3px 3px @medium-color;
 
     // 540 980+
     // 415 980-
     height: 100%;
-    min-height: 360px;
+    min-height: 350px;
     /*for screens between 1200px & 1440px width - 3 stories up*/
     // max-width: 465px;
     // min-width: 375px;
@@ -240,6 +240,9 @@ div.stories {
     div.favorite-button {
       font-size: 14px;
       font-family: inherit;
+      position: absolute;
+      right: 23px;
+      bottom: 65px;
     }
 
     div.edit-or-read {
@@ -254,14 +257,15 @@ div.stories {
       }
 
       a {
-        color: @black-color;
+        color: @dark-color;
       }
 
       div#edit-this-story {
         .background-transition;
         .color-transition;
-        padding: 12px;
-        padding-left: 30px;
+        margin-top: 10px;
+        margin-bottom: 8px;
+        padding-left: 20px;
         &:hover {
           color: white;
         }
