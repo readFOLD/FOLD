@@ -140,7 +140,7 @@ Template.story_header.rendered = function() {
   var range, sel, titleDiv;
   if (!this.data.title) {
     if (!Session.get('read')) {
-      titleDiv = $(this)[0].find('.title');
+      titleDiv = $(this)[0].find('.story-title');
       sel = window.getSelection();
       if (sel.rangeCount > 0) {
         sel.removeAllRanges();

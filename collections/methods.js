@@ -88,14 +88,16 @@ Meteor.methods({
       authorName: user.profile.name || 'Anonymous',
       shortId: shortId,
       draftStory: {
+        authorId: this.userId,
         verticalSections: [{
           _id: Random.id(8),
           contextBlocks: [],
           title: "",
           content: ""
         }],
-      userPathSegment: userPathSegment,
-      storyPathSegment: storyPathSegment,
+        storyTitle: '',
+        userPathSegment: userPathSegment,
+        storyPathSegment: storyPathSegment,
       }
   }, {removeEmptyStrings: false});
     return {

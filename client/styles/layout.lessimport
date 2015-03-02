@@ -186,6 +186,8 @@
 // Universal Link Styling
 a {
   text-decoration: none !important;
+  color: inherit;
+
   &:hover {
     color: inherit;
   }
