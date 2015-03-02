@@ -606,8 +606,8 @@ Template.create_video_section.created = function() {
 
 Template.create_video_section.rendered = function() {
   $("ol.search-results-container").scroll(function() {
-
-    numSearchResults = VideoSearchResults.find().count();
+    videoSearchDep.depend();
+    numSearchResults = VideoSearchResults.find({searchQuery : $('input').val()}).count();
     searchResultHeight = 95;
     searchResultsHeight = numSearchResults * searchResultHeight;
     console.log(($("ol.search-results-container").scrollTop() + $("ol.search-results-container").height()), searchResultsHeight)
