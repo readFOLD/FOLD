@@ -604,6 +604,19 @@ Template.create_video_section.created = function() {
   return this.focusResult = new ReactiveVar();
 };
 
+Template.create_video_section.rendered = function() {
+  $("ol.search-results-container").scroll(function() {
+
+    numSearchResults = VideoSearchResults.find().count();
+    searchResultHeight = 95;
+    searchResultsHeight = numSearchResults * searchResultHeight;
+    console.log(($("ol.search-results-container").scrollTop() + $("ol.search-results-container").height()), searchResultsHeight)
+    if (($("ol.search-results-container").scrollTop() + $("ol.search-results-container").height()) == searchResultsHeight) {
+      searchYoutube($('input').val());
+    }
+  })
+}
+
 Template.create_video_section.helpers({
   isFocused: function() {
     var focusResult = Template.instance().focusResult.get();
@@ -634,6 +647,54 @@ Template.create_video_section.helpers({
 
 Template.create_video_section.events(createBlockEvents);
 
+searchYoutube = function(query) {
+  // if (VideoSearchResults.find({searchQuery : query}).count() === 0) {
+    searchParams = {
+      q: query
+    }
+
+    pageToken = Session.get("nextPageToken");
+    if (pageToken) {
+      searchParams['pageToken'] = pageToken;
+    }
+
+    Meteor.call('youtubeVideoSearchList', searchParams, function(err, results) {
+      nextPageToken = results['nextPageToken'];
+      items = results['items'];
+
+      Session.set("nextPageToken", nextPageToken)
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (!items) {
+        return;
+      }
+      _.chain(items)
+      .map(function(element) {
+        return {
+          type : 'video',
+          service : 'youtube',
+          authorId : Meteor.user()._id,
+          pageToken : Session.get("nextPageToken"),
+          searchQuery : query,
+          title: element.title,
+          description: element.description,
+          videoId: element.videoId,
+          videoUsername : element.channelTitle,
+          videoUsernameId : element.channelId,
+          videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+        }
+      })
+      .each(function(item) {
+        VideoSearchResults.insert(item);
+      });
+    });
+  // }
+  videoSearchDep.changed(); 
+  return;
+}
+
 Template.create_video_section.events({
   "click .search-trigger": function(d) {
     d.preventDefault();
@@ -645,37 +706,7 @@ Template.create_video_section.events({
     // d.stopPropagation();
     var videoSearch;
     videoSearch = $('input').val();
-    if (VideoSearchResults.find({searchQuery : videoSearch}).count() === 0) {
-      Meteor.call('youtubeVideoSearchList', videoSearch, function(err, results) {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        if (!results) {
-          return;
-        }
-        _.chain(results)
-          .map(function(element) {
-            return {
-                type : 'video',
-                service : 'youtube',
-                authorId : Meteor.user()._id,
-                searchQuery : videoSearch,
-                title: element.title,
-                description: element.description,
-                videoId: element.videoId,
-                videoUsername : element.channelTitle,
-                videoUsernameId : element.channelId,
-                videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
-            }
-        })
-        .each(function(result) {
-          VideoSearchResults.insert(result);
-        });
-      });
-    }
-    videoSearchDep.changed(); 
-    return;
+    searchYoutube(videoSearch);
   },
 
   "click li": function(d, template) {
