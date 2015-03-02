@@ -605,13 +605,15 @@ Template.create_video_section.created = function() {
 };
 
 Template.create_video_section.rendered = function() {
-  $("ol.search-results-container").scroll(function() {
-    videoSearchDep.depend();
-    numSearchResults = VideoSearchResults.find({searchQuery : $('input').val()}).count();
-    searchResultHeight = 95;
-    searchResultsHeight = numSearchResults * searchResultHeight;
-    console.log(($("ol.search-results-container").scrollTop() + $("ol.search-results-container").height()), searchResultsHeight)
-    if (($("ol.search-results-container").scrollTop() + $("ol.search-results-container").height()) == searchResultsHeight) {
+  var searchContainer = $("ol.search-results-container")
+
+  searchContainer.scroll(function() {
+    var searchResultsHeight = _.reduce($('ol.search-results-container li'), 
+      function(memo, e) { 
+        return memo + $(e).outerHeight() }, 0 
+    );
+
+    if ((searchContainer.scrollTop() + searchContainer.height()) == searchResultsHeight) {
       searchYoutube($('input').val());
     }
   })
@@ -632,7 +634,6 @@ Template.create_video_section.helpers({
     return false;
   }
 });
-
 
 Template.create_video_section.helpers(createBlockHelpers);
 
