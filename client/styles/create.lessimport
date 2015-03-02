@@ -260,6 +260,12 @@ div.vertical-narrative {
   }
 }
 
+.narrative-babyburger {
+  float:right;
+  position: relative;
+  margin-right: -30px;
+}
+
 textarea {
   border: none;
   overflow: auto;

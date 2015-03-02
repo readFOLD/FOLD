@@ -92,6 +92,9 @@
 <template name="vertical_section_block">
   <div class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
     <section>
+      <button class="narrative-babyburger">
+        {{> babyburger_icon}}
+      </button>
       {{{titleDiv}}}
       {{{contentDiv}}}
       <div class="button">
