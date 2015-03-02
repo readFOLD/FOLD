@@ -37,11 +37,11 @@
 
 <template name="create_options">
   <div class="button-options save-publish">
-    {{#if lastSaved}}
+    {{#unless addingContext}}
       <div class="publish-story button">
         Publish
       </div>
-    {{/if}}
+    {{/unless}}
   </div>
 </template>
 

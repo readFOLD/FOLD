@@ -9,11 +9,6 @@
     <div class="left">
       <div class="logo-title">
         {{#linkTo route="home"}}
-        <div class="logo">
-          <img class="logo" src="/FOLD_LOGO.svg">
-        </div>
-        {{/linkTo}}
-        {{#linkTo route="home"}}
         <div class="title">
           <img src="/FOLD_TITLE.svg">
         </div>
@@ -158,18 +153,12 @@
       {{#linkTo route="edit" data=this}}
         <div id="edit-this-story">
           Edit This Story
-          <span class='pull-right'>
-            {{favorited.length}} Favorites
-          </span>
         </div>
       {{/linkTo}}
     {{else}}
       {{#linkTo route="read" data=this}}
         <div id="edit-this-story">
           Unfold This Story
-          <span class='pull-right'>
-            {{favorited.length}} Favorites
-          </span>
         </div>
       {{/linkTo}}
     {{/if}}

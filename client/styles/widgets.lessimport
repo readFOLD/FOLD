@@ -17,7 +17,7 @@
     line-height: 1;
 
     width: 200px;
-    padding: 12px 10px;
+    padding: 14px 10px;
     border: 1px solid @medium-color;
     background: #ffffff;
     color: #444444;
@@ -38,7 +38,7 @@
         border-top: @arrow-size solid @action-color;
         position: absolute;
         right: 15px;
-        top: 15px;
+        top: 18px;
     }
 
     &.open {
@@ -124,9 +124,8 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-
         position: relative;
-        padding: 10px 10px;
+        padding: 14px 10px;
         list-style-type: none;
 
         &.optgroup, &.optgroup.disabled {
@@ -147,7 +146,8 @@
 
         &.active {
             background: #f7f7f7;
-            color: #333333; 
+            color: #333333;
+
         }
 
         &.selected {
