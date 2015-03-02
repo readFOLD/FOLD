@@ -281,6 +281,17 @@ Template.story.helpers({
   }
 });
 
+Template.story_title.helpers({
+  storyTitleDiv: function(){
+    if (Session.get('read')) {
+      return '<div class="story-title">' + this.title + '</div>';
+    } else {
+      // this is contenteditable in edit mode
+      return '<div class="story-title" placeholder="Title" contenteditable="true">' + this.title + '</div>';
+    }
+  }
+});
+
 Template.vertical_section_block.helpers({
   notFirst: function() {
     return !Session.equals("currentY", 0);
@@ -290,6 +301,14 @@ Template.vertical_section_block.helpers({
   },
   validTitle: function() {
     return this.title === !"title";
+  },
+  titleDiv: function() {
+    if (Session.get('read')) {
+      return '<div class="title">' + this.title + '</div>';
+    } else {
+      // this is contenteditable in edit mode
+      return '<div class="title editable" placeholder="Title" contenteditable="true">' + this.title + '</div>';
+    }
   },
   contentDiv: function() {
     if (Session.get('read')) {

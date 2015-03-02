@@ -38,7 +38,7 @@
 </template>
 
 <template name="story_title">
-  <div class="story-title" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
+  {{{storyTitleDiv}}}
 </template>
 
 <template name="story">
@@ -92,7 +92,7 @@
 <template name="vertical_section_block">
   <div class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
     <section>
-      <div class="title {{#unless read}}editable{{/unless}}" placeholder="Title" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
+      {{{titleDiv}}}
       {{{contentDiv}}}
       <div class="button">
       </div>
