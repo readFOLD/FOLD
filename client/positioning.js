@@ -82,7 +82,6 @@ window.moveOneCard = function(d) {
 $(document).keydown(function(e) {
   if (Session.get('read')){
     letter = String.fromCharCode(e.keyCode)
-    console.log(letter)
     switch(letter){
       case 'J':
         goUpOneCard()

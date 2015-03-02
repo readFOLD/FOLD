@@ -191,6 +191,7 @@ var autoSaveVerticalSectionField = function(template, field, datatype){
 
 Template.vertical_section_block.events({
   'mouseup .fold-editable': window.updateUIBasedOnSelection,
+  'blur': window.updateUIBasedOnSelection,
   'blur .title' : function(e, template){
     autoSaveVerticalSectionField(template, 'title');
     return true;
