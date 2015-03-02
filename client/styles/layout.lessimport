@@ -358,14 +358,14 @@ div#overlay {
   a {
     .background-transition;
     cursor: pointer;
-    background-color: @medium-color;
+    background-color: @unselected-background-color;
     color: inherit;
     padding: 0 4px;
     &:hover {
-      background-color: @light-color;
+      background-color: @medium-color;
     }
     &.active {
-      background-color: @action-color;
+      background-color: rgba(69, 178, 29, 0.32);
     }
   }
 
