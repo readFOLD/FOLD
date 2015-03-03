@@ -116,7 +116,7 @@ Template._story_preview_content.helpers({
   lastPublishDate: function() {
     return formatDateNice(this.publishDate);
   }
-})
+});
 
 Template.user_stories.events({
   "click div#delete": function(d) {
