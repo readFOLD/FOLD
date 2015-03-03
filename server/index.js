@@ -8,3 +8,5 @@ WebApp.connectHandlers.use(function(req, res, next) {
     next();
   }
 });
+
+robots.addLine('User-agent: *\nDisallow: /');
