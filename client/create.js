@@ -684,6 +684,8 @@ Template.create_video_section.helpers({
 Template.create_video_section.events(createBlockEvents);
 
 Template.create_image_section.created = function() {
+  this.source = new ReactiveVar();
+  this.source.set('imgur');
   this.focusResult = new ReactiveVar();
   this.page = 0;
 
@@ -750,7 +752,15 @@ Template.create_image_section.helpers(createBlockHelpers);
 imageSearchDep = new Tracker.Dependency();
 
 Template.create_image_section.helpers({
-  results: function(){
+  dataSources: [
+    { source: 'imgur', display: 'Imgur' },
+    { source: 'flickr', display: 'Flickr' },
+    { source: 'getty', display: 'Getty Images' }
+  ],
+  selected: function() {
+    return (this.source === Template.instance().source.get());
+  },
+  results: function() {
     imageSearchDep.depend();
     return ImageSearchResults.find({searchQuery : $('input').val()});
   }
@@ -773,6 +783,10 @@ Template.create_image_section.events({
       }
     })
   },
+
+  "click .data-source": function(d, template) {
+    template.source.set(this.source);
+  }, 
 
   "click .search-trigger": function(d) {
     d.preventDefault();

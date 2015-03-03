@@ -149,9 +149,9 @@
   <div class="create-section">
     <div class="tabs">
       <ul>
-        <li class="">Imgur</li>
-        <li class="">Flickr</li>
-        <li class="">Getty Images</li>
+        {{#each dataSources}}
+          <li data-source="{{source}}" class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
       </ul>
     </div>
     {{> search_form}}
