@@ -327,6 +327,8 @@ var newTypeSpecificContextBlock =  function(doc) {
       return new TextBlock(doc);
     case 'map':
       return new MapBlock(doc);
+    case 'image':
+      return new ImageBlock(doc);
     default:
       return new ContextBlock(doc);
   }
@@ -337,6 +339,7 @@ if (Meteor.isClient) {
   window.MapBlock = MapBlock;
   window.ContextBlock = ContextBlock;
   window.TextBlock = TextBlock;
+  window.ImageBlock = ImageBlock;
   window.newTypeSpecificContextBlock = newTypeSpecificContextBlock
 }
 

@@ -6,6 +6,25 @@ if (!GOOGLE_API_SERVER_KEY) {
 }
 
 Meteor.methods({
+  imgurImageSearchList: function(params) {
+    var res;
+    check(params.q, String);
+    this.unblock();
+    requestParams = {
+      q: params.q,
+    };
+
+    // https://api.imgur.com/endpoints/gallery
+    res = HTTP.get('https://api.imgur.com/3/gallery/search', {
+      params: requestParams,
+      headers: {"Content-Type": "text", "Authorization": "Client-ID 7ed22d99c84c20c"}
+    });
+    console.log(res.data.data.length, "results for query", params.q)
+
+    return {
+      'items': res.data.data
+    }
+  },
   youtubeVideoSearchList: function(params) {
     var res;
     check(params.q, String);

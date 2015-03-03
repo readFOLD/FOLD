@@ -434,7 +434,7 @@ Template.add_horizontal.events({
 });
 
 Template.create_horizontal_section_block.created = function() {
-  return this.type = new ReactiveVar('video');
+  return this.type = new ReactiveVar('image');
 };
 
 Template.create_horizontal_section_block.helpers({
@@ -480,6 +480,9 @@ Template.create_horizontal_section_block.events({
   },
   'click svg.video-icon': function(d, t) {
     return t.type.set('video');
+  },
+  'click svg.image-icon': function(d, t) {
+    return t.type.set('image');
   }
 });
 
@@ -601,7 +604,54 @@ createBlockEvents = {
 };
 
 Template.create_video_section.created = function() {
-  return this.focusResult = new ReactiveVar();
+  this.focusResult = new ReactiveVar();
+
+  this.searchYoutube = function(query) {
+    searchParams = {
+      q: query
+    }
+
+    pageToken = Session.get("nextPageToken");
+    if (pageToken) {
+      searchParams['pageToken'] = pageToken;
+    }
+
+    Meteor.call('youtubeVideoSearchList', searchParams, function(err, results) {
+      nextPageToken = results['nextPageToken'];
+      items = results['items'];
+
+      Session.set("nextPageToken", nextPageToken)
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (!items) {
+        return;
+      }
+      _.chain(items)
+      .map(function(element) {
+        return {
+          type : 'video',
+          service : 'youtube',
+          authorId : Meteor.user()._id,
+          pageToken : Session.get("nextPageToken"),
+          searchQuery : query,
+          title: element.title,
+          description: element.description,
+          videoId: element.videoId,
+          videoUsername : element.channelTitle,
+          videoUsernameId : element.channelId,
+          videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+        }
+      })
+      .each(function(item) {
+        VideoSearchResults.insert(item);
+      });
+    });
+    videoSearchDep.changed(); 
+    return;
+  }
+  return
 };
 
 Template.create_video_section.helpers({
@@ -633,53 +683,82 @@ Template.create_video_section.helpers({
 
 Template.create_video_section.events(createBlockEvents);
 
-searchYoutube = function(query) {
-  searchParams = {
-    q: query
-  }
+Template.create_image_section.created = function() {
+  this.focusResult = new ReactiveVar();
+  this.page = 0;
 
-  pageToken = Session.get("nextPageToken");
-  if (pageToken) {
-    searchParams['pageToken'] = pageToken;
-  }
-
-  Meteor.call('youtubeVideoSearchList', searchParams, function(err, results) {
-    nextPageToken = results['nextPageToken'];
-    items = results['items'];
-
-    Session.set("nextPageToken", nextPageToken)
-    if (err) {
-      console.log(err);
-      return;
+  this.search = function(query) {
+    searchParams = {
+      q: query
     }
-    if (!items) {
-      return;
-    }
-    _.chain(items)
-    .map(function(element) {
-      return {
-        type : 'video',
-        service : 'youtube',
-        authorId : Meteor.user()._id,
-        pageToken : Session.get("nextPageToken"),
-        searchQuery : query,
-        title: element.title,
-        description: element.description,
-        videoId: element.videoId,
-        videoUsername : element.channelTitle,
-        videoUsernameId : element.channelId,
-        videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+
+    Meteor.call('imgurImageSearchList', searchParams, function(err, results) {
+      items = results.items;
+
+      if (err) {
+        console.log(err);
+        return;
       }
-    })
-    .each(function(item) {
-      VideoSearchResults.insert(item);
+      if (!items) {
+        return;
+      }
+      _.chain(items)
+      .map(function(e) {
+        return {
+          type : 'image',
+          service : 'imgur',
+          authorId : Meteor.user()._id,
+          searchQuery : query,
+          id : e.id,
+          type : e.type,
+          section : e.section,
+          title : e.title,
+          link : e.link
+        }
+      })
+      .each(function(item) {
+        console.log(item)
+        if (item.type) {
+          ImageSearchResults.insert(item);
+        }
+      });
     });
-  });
-  videoSearchDep.changed(); 
-  return;
-}
+    imageSearchDep.changed(); 
+    return;
+  }
+  return
+};
 
-Template.create_video_section.events({
+Template.create_image_section.helpers({
+  isFocused: function() {
+    var focusResult = Template.instance().focusResult.get();
+    if (_.isObject(focusResult)) {
+      if (this._id === focusResult._id) {
+        return true;
+     }
+    }
+  },
+  isActive: function() {
+    var focusResult = Template.instance().focusResult.get();
+    if (_.isObject(focusResult)) {return true;}
+    return false;
+  }
+});
+
+Template.create_image_section.helpers(createBlockHelpers);
+
+imageSearchDep = new Tracker.Dependency();
+
+Template.create_image_section.helpers({
+  results: function(){
+    imageSearchDep.depend();
+    return ImageSearchResults.find({searchQuery : $('input').val()});
+  }
+});
+
+Template.create_image_section.events(createBlockEvents);
+
+Template.create_image_section.events({
   "scroll ol.search-results-container": function(d) {
     var searchContainer = $("ol.search-results-container")
 
@@ -690,7 +769,7 @@ Template.create_video_section.events({
           );
 
       if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
-        searchYoutube($('input').val());
+        template.search($('input').val());
       }
     })
   },
@@ -702,10 +781,43 @@ Template.create_video_section.events({
 
   "submit form": function(d, template) {
     d.preventDefault();
-    // d.stopPropagation();
-    var videoSearch;
-    videoSearch = $('input').val();
-    searchYoutube(videoSearch);
+    template.search($('input').val());
+  },
+
+  "click li": function(d, template) {
+    template.focusResult.set(this);
+  },
+
+  "click #add-video-button": function(d, template) {
+    var contextId = ContextBlocks.insert(template.focusResult.get());
+    return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
+  }
+});
+
+Template.create_video_section.events({
+  "scroll ol.search-results-container": function(d, template) {
+    var searchContainer = $("ol.search-results-container")
+
+    searchContainer.scroll(function() {
+      var searchResultsHeight = _.reduce($('ol.search-results-container li'), 
+        function(memo, e) { 
+          return memo + $(e).outerHeight() }, 0 
+          );
+
+      if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
+        template.searchYoutube($('input').val());
+      }
+    })
+  },
+
+  "click .search-trigger": function(d) {
+    d.preventDefault();
+    $(".search-form").toggleClass("search-open");
+  },
+
+  "submit form": function(d, template) {
+    d.preventDefault();
+    template.searchYoutube($('input').val());
   },
 
   "click li": function(d, template) {
