@@ -28,17 +28,23 @@ var checkOwner = function(userId, doc) {
   return userId && userId === doc.authorId;
 };
 
+updateStory = function(selector, modifier, options) {
+  modifier = modifier || {};
+  modifier.$set = _.extend(modifier.$set || {}, {lastSaved: Date.now()});
+
+  return Stories.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
+};
 
 
 Meteor.methods({
   // TODO PREVENT FROM SAVING OTHER WAYS
   updateStoryTitle: function(storyId, title){
     var storyPathSegment = _s.slugify(title.toLowerCase())+ '-' + Stories.findOne({_id: storyId}).shortId;
-    return Stories.update({_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }}, {removeEmptyStrings: false});
+    return updateStory({_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
   // TODO replace with specific methods
   saveStory: function(selector, modifier, options) {
-    console.log('saveStory!')
+    console.log('saveStory!');
     //update: function(userId, doc, fieldNames) {
     //  var disallowedFields;
     //  disallowedFields = ['authorId', 'storyPathSegment', 'userPathSegment', 'favorited'];
@@ -51,10 +57,8 @@ Meteor.methods({
   //  return _s.slugify(titleField.value.toLowerCase())+ '-' + this.docId;
   //} else {
   //}
-    if (setModifier = modifier.$set){
-      console.log(_.pick(modifier.$set, 'draftStory.title'))
-    }
-    return Stories.update(selector, modifier, _.defaults(options || {}, {removeEmptyStrings: false}));
+
+    return updateStory(selector, modifier);
   },
   favoriteStory: function(storyId) {
     return changeFavorite.call(this, storyId, true);
@@ -97,7 +101,7 @@ Meteor.methods({
         }],
         storyTitle: '',
         userPathSegment: userPathSegment,
-        storyPathSegment: storyPathSegment,
+        storyPathSegment: storyPathSegment
       }
   }, {removeEmptyStrings: false});
     return {
