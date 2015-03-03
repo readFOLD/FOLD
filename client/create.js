@@ -825,5 +825,13 @@ Template.create_options.events({
   "click div.publish-story": function() {
     console.log("PUBLISH");
     return this.publish();
+  },
+  "click .toggle-preview": function() {
+    if (Session.get('read')) {
+      window.refreshContentDep.changed();
+      Session.set('read', false);
+    } else {
+      Session.set('read', true);
+    }
   }
 });

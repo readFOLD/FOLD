@@ -3,10 +3,8 @@
   {{ > story}}
   {{ > fold_editor }}
 
-  {{#unless read}}
-     {{! > background_image}}
-    {{ > create_options}}
-  {{/unless}}
+   {{! > background_image}}
+  {{ > create_options}}
 </template>
 
 <template name="fold_editor">
@@ -36,7 +34,7 @@
 
 
 <template name="create_options">
-  <div class="button-options save-publish">
+  <div class="floating-story-buttons">
     <div class="saved-text">
       {{#if saving}}
         Saving...
@@ -45,9 +43,15 @@
       {{/if}}
     </div>
     {{#unless addingContext}}
-
+      <button type="button" class="toggle-preview">
+        {{#if read}}
+          Edit
+        {{else}}
+          Preview
+        {{/if}}
+      </button>
       <button type="button" class="publish-story button">
-        Publish
+        Publish Changes
       </button>
     {{/unless}}
   </div>
@@ -122,14 +126,6 @@
   </div>
 </template>
 
-<template name="create_section_options">
-  <div class="button-options back-save">
-    <div class="save button">
-      <i class="fa fa-save"></i>
-    </div>
-  </div>
-</template>
-
 <!-- Create Templates -->
 <template name="create_text_section">
   <div class="create-section">
@@ -147,7 +143,6 @@
     <input class="image-url-input" value="{{url}}">
     <div class="input-label">Description:</div>
     <input class="image-description-input" value="{{description}}">
-    {{> create_section_options}}
   </div>
 </template>
 
