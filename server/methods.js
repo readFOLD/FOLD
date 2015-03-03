@@ -1,4 +1,5 @@
 var GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
+var IMGUR_CLIENT_ID = Meteor.settings.IMGUR_CLIENT_ID;
 
 if (!GOOGLE_API_SERVER_KEY) {
   console.error('Settings must be loaded for apis to work');
@@ -14,10 +15,11 @@ Meteor.methods({
       q: params.q,
     };
 
+    var authorizationStr = "Client-ID " + IMGUR_CLIENT_ID;
     // https://api.imgur.com/endpoints/gallery
     res = HTTP.get('https://api.imgur.com/3/gallery/search', {
       params: requestParams,
-      headers: {"Content-Type": "text", "Authorization": "Client-ID 7ed22d99c84c20c"}
+      headers: {"Content-Type": "text", "Authorization": authorizationStr}
     });
     console.log(res.data.data.length, "results for query", params.q)
 
