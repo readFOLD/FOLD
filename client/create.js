@@ -163,6 +163,20 @@ var rangeSelectsSingleNode = function (range) {
     range.endOffset === range.startOffset + 1;
 };
 
+Tracker.autorun(function(){
+  switch(Session.get('saveState')) {
+    case 'saving':
+      Session.set('saving', true);
+      break;
+    case 'failed':
+      alert('Saving failed. Please refresh and try again.');
+      break;
+    case 'saved':
+      Session.set('saving', false);
+      break;
+  }
+});
+
 var autoSaveVerticalSectionField = function(template, field, datatype){
   storyId = Session.get('storyId');
 
@@ -177,15 +191,19 @@ var autoSaveVerticalSectionField = function(template, field, datatype){
   setObject = { $set:{} };
   setObject['$set'][setField] = value;
 
+  Session.set('saveState', 'saving');
+
   return Meteor.call('saveStory', {
     _id: storyId
   }, setObject, {removeEmptyStrings: false}, function(err, numDocs) {
     if (err) {
-      return alert(err);
+      Session.set('saveState', 'failed');
     }
     if (!numDocs) {
       return alert('No docs updated');
+      Session.set('saveState', 'failed');
     }
+    Session.set('saveState', 'saved');
   });
 };
 

@@ -37,10 +37,18 @@
 
 <template name="create_options">
   <div class="button-options save-publish">
+    <div class="saved-text">
+      {{#if saving}}
+        Saving...
+      {{else}}
+        Saved
+      {{/if}}
+    </div>
     {{#unless addingContext}}
-      <div class="publish-story button">
+
+      <button type="button" class="publish-story button">
         Publish
-      </div>
+      </button>
     {{/unless}}
   </div>
 </template>
@@ -202,12 +210,12 @@
   {{#unless read}}
     {{#if selected}}
       <div class="button-options edit-delete">
-        <div class="edit button">
+        <button class="edit button">
           <i class="fa fa-pencil"></i>
-        </div>
-        <div class="delete button">
+        </button>
+        <button class="delete button">
           <i class="fa fa-times"></i>
-        </div>
+        </button>
       </div>
     {{/if}}
   {{/unless}}
