@@ -128,7 +128,6 @@ Template.all_stories.helpers({
 
 Template._story_preview_content.helpers({
   lastPublishDate: function() {
-    console.log("Story data", this)
     return formatDateNice(this.publishDate);
   }
 });

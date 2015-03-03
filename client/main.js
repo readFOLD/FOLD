@@ -184,14 +184,6 @@ Template.story_header.events = {
       return $("#to-header").removeClass('shown');
     }
   },
-  "click .toggle-preview": function() {
-    if (Session.get('read')) {
-      window.refreshContentDep.changed()
-      Session.set('read', false)
-    } else {
-      Session.set('read', true)
-    }
-  },
   "click #to-story": function() {
     $('#to-story, .attribution').fadeOut();
     goToX(0);

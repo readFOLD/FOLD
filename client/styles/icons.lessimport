@@ -29,6 +29,17 @@ svg.search-icon {
   width: 15px;
   margin-top: 2px;
 }
+
+svg.babyburger-icon{
+  .standard-icon-colors;
+  .size(20px);
+  &:hover {
+    circle{
+      fill: @action-color;
+    }
+  }
+}
+
 .favorite-button{
   @height: 25px;
   display: inline-block;

@@ -73,7 +73,7 @@ Router.route("read", {
   controller: ExistingStoryController,
   waitOn: function() {
     shortId = idFromPathSegment(this.params.storyPathSegment);
-    return [Meteor.subscribe('readStoryPub', this.params.userPathSegment, shortId), Meteor.subscribe('contextBlocksPub')];
+    return [Meteor.subscribe('readStoryPub', this.params.userPathSegment, shortId)];
   },
   action: function() {
     if (this.ready()) {
@@ -109,38 +109,6 @@ Router.route("read", {
   }
 });
 
-Router.route("create", {
-  path: "create",
-  template: "create",
-  onRun: function() {
-    $('html, body').scrollTop(0);
-    return this.next();
-  },
-  onBeforeAction: function() {
-    if (Meteor.user() || Meteor.loggingIn()) {
-      return this.next();
-    } else {
-      this.redirect("home", {
-        replaceState: true
-      });
-      return alert("You must be logged in to create a story");
-    }
-  },
-  data: function() {
-    var story, user;
-    story = new Story;
-    Session.set("story", story);
-    Session.set("horizontalSectionsMap", []);
-    Session.set("newStory", true);
-    Session.set("read", false);
-    Session.set("showDraft", true);
-
-    if (user = Meteor.user()) {
-      story.updateAuthor(user);
-    }
-    return story;
-  }
-});
 
 Router.route("edit", {
   path: "create/:userPathSegment/:storyPathSegment",
@@ -160,6 +128,7 @@ Router.route("edit", {
     if (story) {
       Session.set("story", story.draftStory);
       Session.set("storyId", story._id);
+      Session.set("storyPublished", story.published);
       Session.set("backgroundImage", story.draftStory.backgroundImage);
       Session.set("horizontalSectionsMap", _.map(_.pluck(story.draftStory.verticalSections, "contextBlocks"), function(cBlockIds, i) {
         return {
@@ -172,7 +141,7 @@ Router.route("edit", {
           })
         };
       }));
-      return story.draftStory;
+      return story;
     }
   },
   action: function() {
