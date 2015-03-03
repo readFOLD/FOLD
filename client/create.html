@@ -1,9 +1,10 @@
 <template name="create">
-  {{ > story_header }}
-  {{ > story}}
-  {{ > fold_editor }}
+  {{#with draftStory}}
+    {{ > story_header }}
+    {{ > story}}
+    {{ > fold_editor }}
+  {{/with}}
 
-   {{! > background_image}}
   {{ > create_options}}
 </template>
 
@@ -50,9 +51,15 @@
           Preview
         {{/if}}
       </button>
-      <button type="button" class="publish-story button">
-        Publish Changes
+      {{#if draftStory.unpublishedChanges}}
+        <button type="button" class="publish-story button">
+          {{#if published}}
+            Publish Changes
+          {{else}}
+            Publish
+          {{/if}}
       </button>
+      {{/if}}
     {{/unless}}
   </div>
 </template>

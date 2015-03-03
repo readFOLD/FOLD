@@ -29,8 +29,10 @@ var checkOwner = function(userId, doc) {
 };
 
 updateStory = function(selector, modifier, options) {
-  modifier = modifier || {};
-  modifier.$set = _.extend(modifier.$set || {}, {lastSaved: Date.now()});
+  if (_.isEmpty(modifier)){
+    return
+  }
+  modifier.$set = _.extend(modifier.$set || {}, {lastSaved: Date.now(), 'draftStory.unpublishedChanges' : true});
 
   return Stories.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
 };
@@ -109,4 +111,9 @@ Meteor.methods({
       storyPathSegment: storyPathSegment
     };
   }
+  // publishStory
+  // 'draftStory.unpublishedChanges' : false
+
 });
+
+

@@ -160,6 +160,7 @@ Router.route("edit", {
     if (story) {
       Session.set("story", story.draftStory);
       Session.set("storyId", story._id);
+      Session.set("storyPublished", story.published);
       Session.set("backgroundImage", story.draftStory.backgroundImage);
       Session.set("horizontalSectionsMap", _.map(_.pluck(story.draftStory.verticalSections, "contextBlocks"), function(cBlockIds, i) {
         return {
@@ -172,7 +173,7 @@ Router.route("edit", {
           })
         };
       }));
-      return story.draftStory;
+      return story;
     }
   },
   action: function() {
