@@ -101,7 +101,7 @@ Meteor.methods({
           title: "",
           content: ""
         }],
-        storyTitle: '',
+        title: '',
         userPathSegment: userPathSegment,
         storyPathSegment: storyPathSegment
       }
