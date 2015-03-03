@@ -1,0 +1,19 @@
+<template name="signup">
+  {{> top_banner}}
+  <div class="signup">
+    <section>
+      {{> signup_form}}
+    </section>
+  </div>
+</template>
+
+<template name="signup_form">
+  <form>
+    <label for="email"> What's your e-mail? </label>
+    <input class="user-signup" id="email" placeholder="email@fold.com">
+    <label for="name"> What's your name? </label>
+    <input class="user-signup" id="name" placeholder="Full Name">
+    <label for="username"> What username would you like? </label>
+    <input class="user-signup" id="username" placeholder="Username" value="{{#if twitterUsername}} twitterUsername {{/if}}">
+  </form>
+</template>

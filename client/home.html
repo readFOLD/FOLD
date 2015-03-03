@@ -24,7 +24,7 @@
           {{> create_story}}
         </div>
         <div class="user-action">
-          {{> loginButtons }}
+          {{> login_buttons }}
         </div>
         {{#linkTo route="about"}}
         <div class="about-fold">
@@ -40,6 +40,19 @@
         </div>
       </div>
     </div>
+  </div>
+</template>
+
+<template name="login_buttons">
+  <div class="signin">
+    <button class="signin"> Sign in
+    </button>
+    {{#if signingIn}}
+    <div class="signin-form">
+      <button class="twitter-signin">Sign in with Twitter</button>
+      <button class="email-signin">Sign in with email</button>
+    </div>
+    {{/if}}
   </div>
 </template>
 

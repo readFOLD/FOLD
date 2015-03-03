@@ -202,4 +202,21 @@ Router.route("edit", {
       return this.next();
     }
   }
-});
+})
+
+Router.route("signup", {
+  path: "signup",
+  template: "signup",
+  onRun: function() {
+    $('html, body').scrollTop(0);
+    return this.next();
+  },
+  action: function() {
+    if (this.ready()) {
+      return this.render();
+    }
+  },
+  data: function() {}
+
+})
+;

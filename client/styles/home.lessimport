@@ -73,6 +73,13 @@ div.home-top {
       background-color: @action-color;
     }
 
+    div.sign-in {
+      button.twitter-signin, button.email-signin {
+        background-color: @remix-color;  
+      }
+      
+    }
+
     div.user-action {
       background-color: @remix-color; 
       &:hover {
@@ -95,6 +102,13 @@ div.home-top {
     background-color: @dark-color;
   } */
 } 
+
+
+div.signup {
+  padding-top: 150px;
+  width: 100%;
+  height: 100%;
+}
 
 div.stories {
   padding-top: 150px;
