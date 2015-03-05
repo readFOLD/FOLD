@@ -410,7 +410,11 @@ div#overlay {
 }
 
 div.description-overlay {
-  font-size: 14px;
+  @font-size: 14px;
+  font-size: @font-size;
+  line-height: @font-size;
+  text-align: left;
+
 }
 
 
@@ -418,7 +422,9 @@ div.description-overlay {
 div.image-section {
   .size-to-fit;
   position: relative;
+  line-height: @horizontal-content-height;
   background-color: @dark-color;
+  text-align: center;
   &:hover{
     div.description-overlay{
       background-color: rgba(0, 0, 0, 0.8);
@@ -436,10 +442,11 @@ div.image-section {
   }
   img {
     width: auto;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    height: 100%;
+    max-width: 100%;
+    margin: auto;
+    vertical-align: middle;
+    display: inline-block;
+    max-height: 100%;
   }
 }
 
