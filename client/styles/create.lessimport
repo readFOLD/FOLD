@@ -27,12 +27,16 @@ div.floating-story-buttons {
     }
   }
   position: fixed;
-  top: 130px;
-  right: 30px;
+  top: 115px;
+  right: 13px;
   z-index: 10;
 
   .saved-text{
     float: left;
+    text-transform: uppercase;
+    margin-right: 10px;
+    margin-top: 32px;
+    font-size: 14px;
   }
 }
 
@@ -285,6 +289,7 @@ div.vertical-narrative {
   float:right;
   position: relative;
   margin-right: -30px;
+  margin-top: -25px;
 }
 
 textarea {
