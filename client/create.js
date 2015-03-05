@@ -612,6 +612,32 @@ createBlockHelpers = {
     if (this instanceof ContextBlock) {
       return this;
     }
+  },
+  isFocused: function () {
+    var focusResult = Template.instance().focusResult.get();
+    if (_.isObject(focusResult)) {
+      if (this._id === focusResult._id) {
+        return true;
+      }
+    }
+  },
+  isActive: function () {
+    var focusResult = Template.instance().focusResult.get();
+    if (_.isObject(focusResult)) {
+      return true;
+    }
+    return false;
+  },
+  selected: function() {
+    return (this.source === Template.instance().source.get());
+  },
+  results: function() {
+    console.log('R')
+    if (this.searchDep) {
+      console.log(this.searchDep)
+      this.searchDep.depend();
+      return this.searchResultsCollection.find({searchQuery: $('input').val()});
+    }
   }
 };
 
@@ -622,8 +648,14 @@ createBlockEvents = {
   }
 };
 
+
+var videoSearchDep = new Tracker.Dependency();
+
+
 Template.create_video_section.created = function() {
   this.focusResult = new ReactiveVar();
+  this.searchDep = videoSearchDep;
+  this.searchResultsCollection = VideoSearchResults;
 
   this.searchYoutube = function(query) {
     searchParams = {
@@ -673,39 +705,22 @@ Template.create_video_section.created = function() {
   return
 };
 
-Template.create_video_section.helpers({
-  isFocused: function() {
-    var focusResult = Template.instance().focusResult.get();
-    if (_.isObject(focusResult)) {
-      if (this._id === focusResult._id) {
-        return true;
-     }
-    }
-  },
-  isActive: function() {
-    var focusResult = Template.instance().focusResult.get();
-    if (_.isObject(focusResult)) {return true;}
-    return false;
-  }
-});
 
 Template.create_video_section.helpers(createBlockHelpers);
 
-videoSearchDep = new Tracker.Dependency();
-
-Template.create_video_section.helpers({
-  results: function(){
-    videoSearchDep.depend();
-    return VideoSearchResults.find({searchQuery : $('input').val()});
-  }
-});
-
 Template.create_video_section.events(createBlockEvents);
+
+
+
+var imageSearchDep = new Tracker.Dependency();
 
 Template.create_image_section.created = function() {
   this.source = new ReactiveVar();
   this.source.set('imgur');
   this.focusResult = new ReactiveVar();
+  this.searchDep = imageSearchDep;
+  console.log(this.searchDep)
+  this.searchResultsCollection = ImageSearchResults;
   this.page = 0;
 
   this.search = function(query) {
@@ -749,39 +764,16 @@ Template.create_image_section.created = function() {
   return
 };
 
-Template.create_image_section.helpers({
-  isFocused: function() {
-    var focusResult = Template.instance().focusResult.get();
-    if (_.isObject(focusResult)) {
-      if (this._id === focusResult._id) {
-        return true;
-     }
-    }
-  },
-  isActive: function() {
-    var focusResult = Template.instance().focusResult.get();
-    if (_.isObject(focusResult)) {return true;}
-    return false;
-  }
-});
 
 Template.create_image_section.helpers(createBlockHelpers);
 
-imageSearchDep = new Tracker.Dependency();
 
 Template.create_image_section.helpers({
   dataSources: [
     { source: 'imgur', display: 'Imgur' },
     { source: 'flickr', display: 'Flickr' },
     { source: 'getty', display: 'Getty Images' }
-  ],
-  selected: function() {
-    return (this.source === Template.instance().source.get());
-  },
-  results: function() {
-    imageSearchDep.depend();
-    return ImageSearchResults.find({searchQuery : $('input').val()});
-  }
+  ]
 });
 
 Template.create_image_section.events(createBlockEvents);
