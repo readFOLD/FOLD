@@ -607,6 +607,9 @@ AutoForm.hooks({
   })
 });
 
+var searchDep = new Tracker.Dependency();
+
+
 createBlockHelpers = {
   startingBlock: function() {
     if (this instanceof ContextBlock) {
@@ -630,6 +633,10 @@ createBlockHelpers = {
   },
   selected: function() {
     return (this.source === Template.instance().source.get());
+  },
+  results: function () {
+    searchDep.depend();
+    return Template.instance().searchResultsCollection.find({searchQuery: $('input').val()});
   }
 };
 
@@ -663,12 +670,10 @@ createBlockEvents = {
 };
 
 
-var videoSearchDep = new Tracker.Dependency();
 
 
 Template.create_video_section.created = function() {
   this.focusResult = new ReactiveVar();
-  this.searchDep = videoSearchDep;
   this.searchResultsCollection = VideoSearchResults;
 
   this.search = function(query) {
@@ -713,7 +718,7 @@ Template.create_video_section.created = function() {
         VideoSearchResults.insert(item);
       });
     });
-    videoSearchDep.changed(); 
+    searchDep.changed();
     return;
   }
   return
@@ -722,22 +727,15 @@ Template.create_video_section.created = function() {
 
 Template.create_video_section.helpers(createBlockHelpers);
 
-Template.create_video_section.helpers({
-  results: function () {
-    videoSearchDep.depend();
-    return VideoSearchResults.find({searchQuery: $('input').val()});
-  }
-});
 
 Template.create_video_section.events(createBlockEvents);
 
 
 
-var imageSearchDep = new Tracker.Dependency();
-
 Template.create_image_section.created = function() {
   this.source = new ReactiveVar();
   this.source.set('imgur');
+  this.searchResultsCollection = ImageSearchResults;
   this.focusResult = new ReactiveVar();
   this.page = 0;
 
@@ -776,7 +774,7 @@ Template.create_image_section.created = function() {
         ImageSearchResults.insert(item);
       });
     });
-    imageSearchDep.changed(); 
+    searchDep.changed();
     return;
   }
   return
@@ -791,11 +789,7 @@ Template.create_image_section.helpers({
       {source: 'imgur', display: 'Imgur'},
       {source: 'flickr', display: 'Flickr'},
       {source: 'getty', display: 'Getty Images'}
-    ],
-    results: function () {
-      imageSearchDep.depend();
-      return ImageSearchResults.find({searchQuery: $('input').val()});
-    }
+    ]
   }
 );
 
