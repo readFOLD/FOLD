@@ -423,7 +423,7 @@ div.image-section {
   .size-to-fit;
   position: relative;
   line-height: @horizontal-content-height;
-  background-color: @dark-color;
+  background-color: @black-color;
   text-align: center;
   &:hover{
     div.description-overlay{
