@@ -279,12 +279,21 @@ ImageBlock = (function(_super) {
   }
 
   ImageBlock.prototype.url = function() {
-    if (this.source === 'local') {
+    switch (this.source) {
+      case 'local':
+        return '/' + this.referenceId;
+      case 'imgur':
+        return '//i.imgur.com/' + this.referenceId + '.' + this.fileExtension;
+    }
 
-      return '/' + this.referenceId;
-    } else {
-      return '//i.imgur.com/' + this.referenceId;
+  };
 
+  ImageBlock.prototype.thumbnailUrl = function() {
+    switch (this.source) {
+      case 'local':
+        return '/' + this.referenceId;
+      case 'imgur':
+        return '//i.imgur.com/' + this.referenceId + 't' + '.' + this.fileExtension;
     }
   };
 
@@ -414,6 +423,10 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
+  fileExtension: {
+    type: String,
+    optional: true
+  },
   mapQuery: {
     type: String,
     optional: true
@@ -446,10 +459,7 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  description: {
-    type: String,
-    optional: true
-  },
+
   videoCreationDate: {
     type: String,
     optional: true

@@ -733,7 +733,8 @@ Template.create_image_section.created = function() {
           source : 'imgur',
           authorId : Meteor.user()._id,
           searchQuery : query,
-          id : e.id,
+          referenceId : e.id,
+          fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
           section : e.section,
           title : e.title
         }
