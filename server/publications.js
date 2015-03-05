@@ -63,3 +63,12 @@ Meteor.publish("publicUserPub", function(id) {
   });
 });
 
+Meteor.publish("twitterUserPub", function(id) {
+  return Meteor.users.find({
+    _id: id
+  }, {
+    fields: {
+      'tempUsername': 1,
+    }
+  });
+});

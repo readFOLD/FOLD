@@ -3,7 +3,9 @@ Accounts.onCreateUser(function(options, user) {
     console.log('error creating user');
     return;
     }
-    user.tempUsername = user.services.twitter.screenname;
+    if (user.services.twitter) {
+        user.tempUsername = user.services.twitter.screenName;
+    }
     return user;
 });
 

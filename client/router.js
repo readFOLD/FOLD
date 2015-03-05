@@ -171,7 +171,7 @@ Router.route("edit", {
       return this.next();
     }
   }
-})
+});
 
 Router.route("signup", {
   path: "signup",
@@ -180,12 +180,15 @@ Router.route("signup", {
     $('html, body').scrollTop(0);
     return this.next();
   },
+  waitOn: function() {
+    if (Meteor.user()) {
+      Meteor.subscribe('twitterUserPub');
+    }
+    return this.next();
+  },
   action: function() {
     if (this.ready()) {
       return this.render();
     }
-  },
-  data: function() {}
-
-})
-;
+  }
+});

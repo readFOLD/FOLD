@@ -1,12 +1,9 @@
+
 Template.signup.helpers({
   twitterUsername: function() {
-    return Template.instance().twitterUsername.get();
+    if (Meteor.user() && Meteor.user().tempUsername) {
+      return Meteor.user().tempUsername;
+    }
   }
 });
 
-Template.signup.created = function() {
-  this.twitterUsername = new ReactiveVar();
-  if (Meteor.user()) {
-    console.log(Meteor.user());
-  }
-}

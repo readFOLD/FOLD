@@ -15,5 +15,8 @@
     <input class="user-signup" id="name" placeholder="Full Name">
     <label for="username"> What username would you like? </label>
     <input class="user-signup" id="username" placeholder="Username" value="{{#if twitterUsername}} twitterUsername {{/if}}">
+    {{#if twitterUsername}} 
+      <h1>Twitter</h1>
+    {{/if}}
   </form>
 </template>
