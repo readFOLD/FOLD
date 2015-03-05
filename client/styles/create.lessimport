@@ -485,15 +485,16 @@ div.horizontal-context {
   }
 
   div.tabs {
-    margin: 0 -13px;
     border-bottom: 1px solid @medium-color;
+    margin-bottom: 15px;
     ul {
       margin: 0;
       padding-left: 0px;
       li {
         &:first-child {
-          padding-left: 20px;
+          padding-left: 5px;
         }
+        padding-left: 5px;
         cursor: pointer;
         font-size: 12px;
         font-weight: bold;
@@ -698,11 +699,12 @@ div.horizontal-context {
       left: calc(100%~"-" 90px);
       background-color: @action-color;
       color: @light-color;
+      height: 35px;
       width: 90px;
+      bottom: 15px;
       margin-top: 12px;
-      padding: 5px;
       text-align: center;
-      font-size: 16px;
+      font-size: 12px;
       line-height: 35px;
       float: left;
       cursor: auto;
