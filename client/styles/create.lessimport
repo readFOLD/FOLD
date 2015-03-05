@@ -13,13 +13,13 @@ div.floating-story-buttons {
     cursor: pointer;
     padding: 5px;
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
     float: left;
     &:not(:last-child) {
-      margin-right: 10px;
+      margin-right: 13px;
     }
-    height: 50px;
-    width: 110px;
+    height: 40px;
+    width: 85px;
 
     &:hover {
       background-color: @action-color;
@@ -34,9 +34,13 @@ div.floating-story-buttons {
   .saved-text{
     float: left;
     text-transform: uppercase;
-    margin-right: 10px;
-    margin-top: 32px;
-    font-size: 14px;
+    margin-right: 15px;
+    margin-top: 23px;
+    font-size: 13px;
+  }
+
+  .publish-story{
+    width: 140px;
   }
 }
 
@@ -292,6 +296,11 @@ div.vertical-narrative {
   margin-top: -25px;
 }
 
+.control-label {
+    font-weight: bold;
+    font-size: 17px;
+}
+
 textarea {
   border: none;
   overflow: auto;
@@ -302,8 +311,16 @@ textarea {
   box-shadow: none;
   font-size: 14px;
   width: 100%;
+  word-wrap: break-word;
+
   &.text-input {
-    height: 160px;
+    max-height: 300px;
+    background-color: @dark-color;
+    margin-top: 13px;
+    color: @white-color;
+    padding: 18px;
+    line-height: 27px;
+    font-size: 16px;
   }
 }
 
@@ -461,7 +478,9 @@ div.horizontal-context {
   }
 
   div.create-section {
-    padding: 13px;
+    padding-top: 22px;
+    padding-left: 22px;
+    padding-right: 22px;
     height: calc(100% ~"-" @contentIconBannerHeight);
   }
 
@@ -496,18 +515,16 @@ div.horizontal-context {
      
   div.search-form { 
 
-    @searchTriggerWidth: 80px;
-    @searchButtonWidth: 73px;
+    @searchTriggerWidth: 89px;
+    @searchButtonWidth: 66px;
     @searchInputHeight: 35px; 
     @searchInputWidth: calc(100% ~"-" @searchTriggerWidth ~"-" @innerElementPadding);
- 
+
     position: relative;
-    margin-top: 10px;
     width: 0%;
     overflow: hidden;
     min-width: calc(@searchTriggerWidth+@innerElementPadding);
     height: @searchInputHeight; 
-    left: @innerElementPadding;
 
     .transition(width 0.3s);
 
@@ -529,7 +546,8 @@ div.horizontal-context {
 
     .search-input-container {
       background: @dark-color;
-      width: calc(100% ~"-"@searchButtonWidth ~"-" @innerElementPadding);
+      //width: calc(100% ~"-"@searchButtonWidth ~"-" @innerElementPadding);
+      width: 100%;
       padding-left: 10px;
     }
 
@@ -542,7 +560,7 @@ div.horizontal-context {
 
     .search-button {
       background: @dark-color;
-      left: calc(100% ~"-"@innerElementPadding ~"-" @searchButtonWidth);
+      left: calc(100% ~"-" @searchButtonWidth);
       padding: 7.5px 13px 7.5px 40px;
     }
   }
