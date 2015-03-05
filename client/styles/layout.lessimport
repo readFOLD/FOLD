@@ -413,8 +413,12 @@ div.description-overlay {
   font-size: 14px;
 }
 
-div.image-section {
 
+
+div.image-section {
+  .size-to-fit;
+  position: relative;
+  background-color: @dark-color;
   &:hover{
     div.description-overlay{
       background-color: rgba(0, 0, 0, 0.8);
@@ -426,14 +430,15 @@ div.image-section {
     position: absolute;
     top: 0;
     width: 100%;
-    padding: 13px;
+    padding: 8px;
     opacity: 0.0;
     color: white;
   }
   img {
-    position: absolute;
-    top: 0;
-    width: 100%;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
     height: 100%;
   }
 }
