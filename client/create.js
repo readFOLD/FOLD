@@ -630,14 +630,6 @@ createBlockHelpers = {
   },
   selected: function() {
     return (this.source === Template.instance().source.get());
-  },
-  results: function() {
-    console.log('R')
-    if (this.searchDep) {
-      console.log(this.searchDep)
-      this.searchDep.depend();
-      return this.searchResultsCollection.find({searchQuery: $('input').val()});
-    }
   }
 };
 
@@ -708,6 +700,13 @@ Template.create_video_section.created = function() {
 
 Template.create_video_section.helpers(createBlockHelpers);
 
+Template.create_video_section.helpers({
+  results: function () {
+    videoSearchDep.depend();
+    return VideoSearchResults.find({searchQuery: $('input').val()});
+  }
+});
+
 Template.create_video_section.events(createBlockEvents);
 
 
@@ -718,9 +717,6 @@ Template.create_image_section.created = function() {
   this.source = new ReactiveVar();
   this.source.set('imgur');
   this.focusResult = new ReactiveVar();
-  this.searchDep = imageSearchDep;
-  console.log(this.searchDep)
-  this.searchResultsCollection = ImageSearchResults;
   this.page = 0;
 
   this.search = function(query) {
@@ -769,12 +765,17 @@ Template.create_image_section.helpers(createBlockHelpers);
 
 
 Template.create_image_section.helpers({
-  dataSources: [
-    { source: 'imgur', display: 'Imgur' },
-    { source: 'flickr', display: 'Flickr' },
-    { source: 'getty', display: 'Getty Images' }
-  ]
-});
+    dataSources: [
+      {source: 'imgur', display: 'Imgur'},
+      {source: 'flickr', display: 'Flickr'},
+      {source: 'getty', display: 'Getty Images'}
+    ],
+    results: function () {
+      imageSearchDep.depend();
+      return ImageSearchResults.find({searchQuery: $('input').val()});
+    }
+  }
+);
 
 Template.create_image_section.events(createBlockEvents);
 
