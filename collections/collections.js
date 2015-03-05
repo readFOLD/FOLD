@@ -232,27 +232,27 @@ VideoBlock = (function(_super) {
   function VideoBlock(doc) {
     VideoBlock.__super__.constructor.call(this, doc);
     this.type = 'video';
-    if (this.service == null) {
-      this.service = 'youtube';
+    if (this.source == null) {
+      this.source = 'youtube';
     }
   }
 
   VideoBlock.prototype.url = function() {
-    if (this.service === 'youtube') {
+    if (this.source === 'youtube') {
       return '//www.youtube.com/embed/' + this.videoId;
-    } else if (this.service === 'vimeo') {
+    } else if (this.source === 'vimeo') {
       return '//player.vimeo.com/video/' + this.videoId;
     }
   };
 
   VideoBlock.prototype.previewUrl = function() {
-    if (this.service === 'youtube') {
+    if (this.source === 'youtube') {
       return '//img.youtube.com/vi/' + this.videoId + '/0.jpg';
     }
   };
 
   VideoBlock.prototype.thumbnailUrl = function() {
-    if (this.service === 'youtube') {
+    if (this.source === 'youtube') {
       return '//i.ytimg.com/vi/' + this.videoId + '/default.jpg';
     }
   };
@@ -267,8 +267,8 @@ ImageBlock = (function(_super) {
   function ImageBlock(doc) {
     ImageBlock.__super__.constructor.call(this, doc);
     this.type = 'image';
-    if (this.service == null) {
-      this.service = 'imgur';
+    if (this.source == null) {
+      this.source = 'imgur';
     }
   }
 
@@ -291,8 +291,8 @@ MapBlock = (function(_super) {
   function MapBlock(doc) {
     MapBlock.__super__.constructor.call(this, doc);
     this.type = 'map';
-    if (this.service == null) {
-      this.service = 'google_maps';
+    if (this.source == null) {
+      this.source = 'google_maps';
     }
   }
 
@@ -305,13 +305,13 @@ MapBlock = (function(_super) {
   };
 
   MapBlock.prototype.url = function() {
-    if (this.service === 'google_maps') {
+    if (this.source === 'google_maps') {
       return 'https://www.google.com/maps/embed/v1/place?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&q=' + this.escape(this.mapQuery) + '&maptype=' + this.escape(this.mapType);
     }
   };
 
   MapBlock.prototype.previewUrl = function() {
-    if (this.service === 'google_maps') {
+    if (this.source === 'google_maps') {
       return 'https://maps.googleapis.com/maps/api/staticmap?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&center=' + this.escape(this.mapQuery) + '&maptype=' + this.escape(this.mapType) + '&size=' + '520x300';
     }
   };
@@ -394,7 +394,7 @@ Schema.ContextBlocks = new SimpleSchema({
   type: {
     type: String
   },
-  service: {
+  source: {
     type: String,
     optional: true
   },

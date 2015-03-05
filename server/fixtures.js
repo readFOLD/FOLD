@@ -45,7 +45,7 @@ if (Stories.find().count() === 0) {
         contextBlocks: [
           {
             type: "map",
-            service: 'google_maps',
+            source: 'google_maps',
             mapQuery: 'West Africa',
             mapType: 'roadmap',
             description: "West Africa region: Nigeria, Liberia, Sierra Leone, Guinea",
@@ -76,7 +76,7 @@ if (Stories.find().count() === 0) {
           _id: '3'
         }, {
           type: "video",
-          service: 'youtube',
+          source: 'youtube',
           videoId: 'aM3vhZrNa7E',
           description: "How did ebola evolve to affect humans?",
           authorId: authorId,
@@ -111,28 +111,28 @@ if (Stories.find().count() === 0) {
         _id: '23',
         contextBlocks: [{
           type: "video",
-          service: 'youtube',
+          source: 'youtube',
           videoId: 'PlmHZeukdh0',
           description: "Sierra Leone Lockdown",
           authorId: authorId,
           _id: '9'
         }, {
           type: "video",
-          service: 'youtube',
+          source: 'youtube',
           videoId: 'KEmSpyYLXr0',
           description: "WHO response",
           authorId: authorId,
           _id: '10'
         }, {
           type: "video",
-          service: 'youtube',
+          source: 'youtube',
           videoId: 'uAVk2IJDEsM',
           description: "Obama response",
           authorId: authorId,
           _id: '11'
         }, {
           type: "video",
-          service: 'youtube',
+          source: 'youtube',
           videoId: 'oouvsHBeF_Q',
           description: "Global community",
           authorId: authorId,
@@ -197,7 +197,7 @@ if (Stories.find().count() === 0) {
           _id: '20'
         }, {
           type: "video",
-          service: 'youtube',
+          source: 'youtube',
           videoId: 'T3v64ZchRkM',
           description: "Economic Cost",
           authorId: authorId,
@@ -215,14 +215,14 @@ if (Stories.find().count() === 0) {
           _id: '22'
         }, {
           type: "video",
-          service: 'vimeo',
+          source: 'vimeo',
           videoId: '106298449',
           description: "Dying of Ebola at the Hospital Door",
           authorId: authorId,
           _id: '23'
         }, {
           type: "video",
-          service: 'vimeo',
+          source: 'vimeo',
           videoId: '103567250',
           description: "Economic Cost",
           authorId: authorId,
@@ -461,7 +461,7 @@ if (ContextBlocks.find().count() === 0) {
   [
     {
       type: "map",
-      service: 'google_maps',
+      source: 'google_maps',
       mapQuery: 'West Africa',
       mapType: 'roadmap',
       description: "West Africa region: Nigeria, Liberia, Sierra Leone, Guinea",
@@ -486,7 +486,7 @@ if (ContextBlocks.find().count() === 0) {
       _id: '3'
     }, {
       type: "video",
-      service: 'youtube',
+      source: 'youtube',
       videoId: 'aM3vhZrNa7E',
       description: "How did ebola evolve to affect humans?",
       authorId: authorId,
@@ -516,28 +516,28 @@ if (ContextBlocks.find().count() === 0) {
       _id: '8'
     }, {
       type: "video",
-      service: 'youtube',
+      source: 'youtube',
       videoId: 'PlmHZeukdh0',
       description: "Sierra Leone Lockdown",
       authorId: authorId,
       _id: '9'
     }, {
       type: "video",
-      service: 'youtube',
+      source: 'youtube',
       videoId: 'KEmSpyYLXr0',
       description: "WHO response",
       authorId: authorId,
       _id: '10'
     }, {
       type: "video",
-      service: 'youtube',
+      source: 'youtube',
       videoId: 'uAVk2IJDEsM',
       description: "Obama response",
       authorId: authorId,
       _id: '11'
     }, {
       type: "video",
-      service: 'youtube',
+      source: 'youtube',
       videoId: 'oouvsHBeF_Q',
       description: "Global community",
       authorId: authorId,
@@ -592,7 +592,7 @@ if (ContextBlocks.find().count() === 0) {
       _id: '20'
     }, {
       type: "video",
-      service: 'youtube',
+      source: 'youtube',
       videoId: 'T3v64ZchRkM',
       description: "Economic Cost",
       authorId: authorId,
@@ -605,14 +605,14 @@ if (ContextBlocks.find().count() === 0) {
       _id: '22'
     }, {
       type: "video",
-      service: 'vimeo',
+      source: 'vimeo',
       videoId: '106298449',
       description: "Dying of Ebola at the Hospital Door",
       authorId: authorId,
       _id: '23'
     }, {
       type: "video",
-      service: 'vimeo',
+      source: 'vimeo',
       videoId: '103567250',
       description: "Economic Cost",
       authorId: authorId,

@@ -632,7 +632,7 @@ Template.create_video_section.created = function() {
       .map(function(element) {
         return {
           type : 'video',
-          service : 'youtube',
+          source : 'youtube',
           authorId : Meteor.user()._id,
           pageToken : Session.get("nextPageToken"),
           searchQuery : query,
@@ -711,7 +711,7 @@ Template.create_image_section.created = function() {
       .map(function(e) {
         return {
           type : 'image',
-          service : 'imgur',
+          source : 'imgur',
           authorId : Meteor.user()._id,
           searchQuery : query,
           id : e.id,
@@ -872,7 +872,7 @@ Template.create_map_section.events({
     var block, previewMapBlock;
     block = AutoForm.getFormValues('createMapSectionForm').insertDoc;
     previewMapBlock = new MapBlock(_.extend(block, {
-      service: 'google_maps'
+      source: 'google_maps'
     }));
     return template.blockPreview.set(previewMapBlock);
   },
