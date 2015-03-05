@@ -102,7 +102,7 @@
       <div class='{{#if map}}active{{/if}} inline-block'>
         {{ > map_icon }}
       </div>
-      <div class='unimplemented inline-block'>
+      <div class='{{#if image}}active{{/if}} inline-block'>
         {{ > image_icon }}
       </div>
       <div class='unimplemented inline-block'>
@@ -133,6 +133,18 @@
   </div>
 </template>
 
+<template name="search_form">
+  <div class="search-form">
+    <form>
+      <button type="button" class="search-trigger">Search</button>
+      <div class="search-input-container">
+        <input type = "search" placeholder="Radar technology" autofocus="autofocus">
+      </div>
+      <button type="submit" class="search-button">{{ > search_icon }}</button>
+    </form>
+  </div>
+</template>
+
 <!-- Create Templates -->
 <template name="create_text_section">
   <div class="create-section">
@@ -146,10 +158,24 @@
 
 <template name="create_image_section">
   <div class="create-section">
-    <div class="input-label">Image Url:</div>
-    <input class="image-url-input" value="{{url}}">
-    <div class="input-label">Description:</div>
-    <input class="image-description-input" value="{{description}}">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    {{> search_form}}
+    <ol class="search-results-container" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
+      {{#each results}}
+        <li class="tile {{#if isFocused}}focused{{/if}}">
+          <img src="{{thumbnailUrl}}">
+        </li>
+      {{/each}}
+    </ol>
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
   </div>
 </template>
 
@@ -171,15 +197,7 @@
 
 <template name="create_video_section">
   <div class="create-section">
-    <div class="search-form">
-      <form>
-        <button type="button" class="search-trigger">Search</button>
-        <div class="search-input-container">
-          <input type = "search" placeholder="Radar technology" autofocus="autofocus">
-        </div>
-        <button type="submit" class="search-button">{{ > search_icon }}</button>
-      </form>
-    </div>
+    {{> search_form}}
     <ol class="search-results-container" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
       {{#each results}}
         <li>
@@ -201,7 +219,7 @@
         </li>
       {{/each}}
     </ol>
-    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}" id="add-video-button">
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
       Add
     </button>
   </div>

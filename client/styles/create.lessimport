@@ -364,6 +364,7 @@ div.horizontal-context {
       margin-right: 10%;
     }
     svg {
+      cursor: pointer;
       padding: 1.5px;
       @circle-diameter: 44px;
       height: @circle-diameter;
@@ -464,6 +465,30 @@ div.horizontal-context {
     height: calc(100% ~"-" @contentIconBannerHeight);
   }
 
+  div.tabs {
+    margin: 0 -13px;
+    border-bottom: 1px solid @medium-color;
+    ul {
+      margin: 0;
+      padding-left: 0px;
+      li {
+        &:first-child {
+          padding-left: 20px;
+        }
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        display: inline-block;
+        width: 140px;
+        border-bottom: 2px solid white;
+
+        &.selected, &:hover {
+          border-bottom: 2px solid @action-color;
+        }
+      }
+    }
+  }
 
     
   @searchFormHeight: 75px;   
@@ -555,7 +580,17 @@ div.horizontal-context {
       }
     }
 
-     
+    li.tile {
+      height: 120px; 
+      display: inline-block;
+      img {
+        height: 120px;
+      }
+
+      &.focused {
+        border: 2px solid red;
+      }
+    }
        
     div.search-result {    
       cursor: pointer;

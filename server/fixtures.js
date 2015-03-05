@@ -45,7 +45,7 @@ if (Stories.find().count() === 0) {
         contextBlocks: [
           {
             type: "map",
-            service: 'google_maps',
+            source: 'google_maps',
             mapQuery: 'West Africa',
             mapType: 'roadmap',
             description: "West Africa region: Nigeria, Liberia, Sierra Leone, Guinea",
@@ -58,6 +58,7 @@ if (Stories.find().count() === 0) {
             _id: '1'
           }, {
             type: "image",
+            source: "local",
             url: "2014_Ebola_virus_epidemic_in_West_Africa.png",
             description: "Situation map of the outbreak. Source: Wikipedia.",
             authorId: authorId,
@@ -70,14 +71,15 @@ if (Stories.find().count() === 0) {
         _id: '43',
         contextBlocks: [{
           type: "image",
-          url: "Ebola_Virus.jpg",
+          source: "local",
+          referenceId: "Ebola_Virus.jpg",
           description: "Electron Micrograph image of Virus",
           authorId: authorId,
           _id: '3'
         }, {
           type: "video",
-          service: 'youtube',
-          videoId: 'aM3vhZrNa7E',
+          source: 'youtube',
+          referenceId: 'aM3vhZrNa7E',
           description: "How did ebola evolve to affect humans?",
           authorId: authorId,
           _id: '4'
@@ -88,19 +90,22 @@ if (Stories.find().count() === 0) {
           _id: '5'
         }, {
           type: "image",
-          url: "Ebola_Betten_Isolation.jpg",
+          source: "local",
+          referenceId: "Ebola_Betten_Isolation.jpg",
           description: "Isolation Chamber",
           authorId: authorId,
           _id: '6'
         }, {
           type: "image",
-          url: "EbolaCycle.png",
+          source: "local",
+          referenceId: "EbolaCycle.png",
           description: "Ebola Cycle",
           authorId: authorId,
           _id: '7'
         }, {
           type: "image",
-          url: "batsmonkeys.jpg",
+          source: "local",
+          referenceId: "batsmonkeys.jpg",
           description: "Red Cross communications materials teach people how Ebola is transmitted. Tommy Trenchard / Al Jazeera",
           authorId: authorId,
           _id: '8'
@@ -111,29 +116,29 @@ if (Stories.find().count() === 0) {
         _id: '23',
         contextBlocks: [{
           type: "video",
-          service: 'youtube',
-          videoId: 'PlmHZeukdh0',
+          source: 'youtube',
+          referenceId: 'PlmHZeukdh0',
           description: "Sierra Leone Lockdown",
           authorId: authorId,
           _id: '9'
         }, {
           type: "video",
-          service: 'youtube',
-          videoId: 'KEmSpyYLXr0',
+          source: 'youtube',
+          referenceId: 'KEmSpyYLXr0',
           description: "WHO response",
           authorId: authorId,
           _id: '10'
         }, {
           type: "video",
-          service: 'youtube',
-          videoId: 'uAVk2IJDEsM',
+          source: 'youtube',
+          referenceId: 'uAVk2IJDEsM',
           description: "Obama response",
           authorId: authorId,
           _id: '11'
         }, {
           type: "video",
-          service: 'youtube',
-          videoId: 'oouvsHBeF_Q',
+          source: 'youtube',
+          referenceId: 'oouvsHBeF_Q',
           description: "Global community",
           authorId: authorId,
           _id: '12'
@@ -156,19 +161,22 @@ if (Stories.find().count() === 0) {
           _id: '14'
         }, {
           type: "image",
-          url: "cdc_doctor_discards.jpg",
+          source: "local",
+          referenceId: "cdc_doctor_discards.jpg",
           description: "A doctor wearing protective equipment discards blood specimens during the 1976 Ebola outbreak in Zaire, 1976. Source: CDC",
           authorId: authorId,
           _id: '15'
         }, {
           type: "image",
-          url: "ebola_isolation_chamber.jpg",
+          source: "local",
+          referenceId: "ebola_isolation_chamber.jpg",
           description: "Ebola isolation chamber from the 1970s.",
           authorId: authorId,
           _id: '16'
         }, {
           type: "image",
-          url: "nurses_1976.jpg",
+          source: "local",
+          referenceId: "nurses_1976.jpg",
           description: "Nurses treat patient in 1976 Ebola outbreak.",
           authorId: authorId,
           _id: '17'
@@ -197,8 +205,8 @@ if (Stories.find().count() === 0) {
           _id: '20'
         }, {
           type: "video",
-          service: 'youtube',
-          videoId: 'T3v64ZchRkM',
+          source: 'youtube',
+          referenceId: 'T3v64ZchRkM',
           description: "Economic Cost",
           authorId: authorId,
           _id: '21'
@@ -209,21 +217,22 @@ if (Stories.find().count() === 0) {
         _id: '98',
         contextBlocks: [{
           type: "image",
-          url: "Deceased_per_day_Ebola_2014.png",
+          source: "local",
+          referenceId: "Deceased_per_day_Ebola_2014.png",
           description: "Deaths/cases over time",
           authorId: authorId,
           _id: '22'
         }, {
           type: "video",
-          service: 'vimeo',
-          videoId: '106298449',
+          source: 'vimeo',
+          referenceId: '106298449',
           description: "Dying of Ebola at the Hospital Door",
           authorId: authorId,
           _id: '23'
         }, {
           type: "video",
-          service: 'vimeo',
-          videoId: '103567250',
+          source: 'vimeo',
+          referenceId: '103567250',
           description: "Economic Cost",
           authorId: authorId,
           _id: '24'
@@ -461,7 +470,7 @@ if (ContextBlocks.find().count() === 0) {
   [
     {
       type: "map",
-      service: 'google_maps',
+      source: 'google_maps',
       mapQuery: 'West Africa',
       mapType: 'roadmap',
       description: "West Africa region: Nigeria, Liberia, Sierra Leone, Guinea",
@@ -474,20 +483,22 @@ if (ContextBlocks.find().count() === 0) {
       _id: '1'
     }, {
       type: "image",
+    source: "local",
       url: "2014_Ebola_virus_epidemic_in_West_Africa.png",
       description: "Situation map of the outbreak. Source: Wikipedia.",
       authorId: authorId,
       _id: '2'
     }, {
       type: "image",
+    source: "local",
       url: "Ebola_Virus.jpg",
       description: "Electron Micrograph image of Virus",
       authorId: authorId,
       _id: '3'
     }, {
       type: "video",
-      service: 'youtube',
-      videoId: 'aM3vhZrNa7E',
+      source: 'youtube',
+      referenceId: 'aM3vhZrNa7E',
       description: "How did ebola evolve to affect humans?",
       authorId: authorId,
       _id: '4'
@@ -498,47 +509,50 @@ if (ContextBlocks.find().count() === 0) {
       _id: '5'
     }, {
       type: "image",
+    source: "local",
       url: "Ebola_Betten_Isolation.jpg",
       description: "Isolation Chamber",
       authorId: authorId,
       _id: '6'
     }, {
       type: "image",
+    source: "local",
       url: "EbolaCycle.png",
       description: "Ebola Cycle",
       authorId: authorId,
       _id: '7'
     }, {
       type: "image",
+    source: "local",
       url: "batsmonkeys.jpg",
       description: "Red Cross communications materials teach people how Ebola is transmitted. Tommy Trenchard / Al Jazeera",
       authorId: authorId,
       _id: '8'
     }, {
       type: "video",
-      service: 'youtube',
-      videoId: 'PlmHZeukdh0',
+      source: 'youtube',
+      referenceId: 'PlmHZeukdh0',
       description: "Sierra Leone Lockdown",
       authorId: authorId,
       _id: '9'
     }, {
       type: "video",
-      service: 'youtube',
-      videoId: 'KEmSpyYLXr0',
+      source: 'youtube',
+      referenceId: 'KEmSpyYLXr0',
       description: "WHO response",
       authorId: authorId,
       _id: '10'
     }, {
       type: "video",
-      service: 'youtube',
-      videoId: 'uAVk2IJDEsM',
+      source: 'youtube',
+      referenceId: 'uAVk2IJDEsM',
       description: "Obama response",
       authorId: authorId,
       _id: '11'
     }, {
       type: "video",
-      service: 'youtube',
-      videoId: 'oouvsHBeF_Q',
+      source: 'youtube',
+      referenceId: 'oouvsHBeF_Q',
       description: "Global community",
       authorId: authorId,
       _id: '12'
@@ -556,18 +570,21 @@ if (ContextBlocks.find().count() === 0) {
       _id: '14'
     }, {
       type: "image",
+    source: "local",
       url: "cdc_doctor_discards.jpg",
       description: "A doctor wearing protective equipment discards blood specimens during the 1976 Ebola outbreak in Zaire, 1976. Source: CDC",
       authorId: authorId,
       _id: '15'
     }, {
       type: "image",
+    source: "local",
       url: "ebola_isolation_chamber.jpg",
       description: "Ebola isolation chamber from the 1970s.",
       authorId: authorId,
       _id: '16'
     }, {
       type: "image",
+    source: "local",
       url: "nurses_1976.jpg",
       description: "Nurses treat patient in 1976 Ebola outbreak.",
       authorId: authorId,
@@ -592,28 +609,29 @@ if (ContextBlocks.find().count() === 0) {
       _id: '20'
     }, {
       type: "video",
-      service: 'youtube',
-      videoId: 'T3v64ZchRkM',
+      source: 'youtube',
+      referenceId: 'T3v64ZchRkM',
       description: "Economic Cost",
       authorId: authorId,
       _id: '21'
     }, {
       type: "image",
+    source: "local",
       url: "Deceased_per_day_Ebola_2014.png",
       description: "Deaths/cases over time",
       authorId: authorId,
       _id: '22'
     }, {
       type: "video",
-      service: 'vimeo',
-      videoId: '106298449',
+      source: 'vimeo',
+      referenceId: '106298449',
       description: "Dying of Ebola at the Hospital Door",
       authorId: authorId,
       _id: '23'
     }, {
       type: "video",
-      service: 'vimeo',
-      videoId: '103567250',
+      source: 'vimeo',
+      referenceId: '103567250',
       description: "Economic Cost",
       authorId: authorId,
       _id: '24'
