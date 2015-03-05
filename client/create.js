@@ -163,6 +163,20 @@ var rangeSelectsSingleNode = function (range) {
     range.endOffset === range.startOffset + 1;
 };
 
+Tracker.autorun(function(){
+  switch(Session.get('saveState')) {
+    case 'saving':
+      Session.set('saving', true);
+      break;
+    case 'failed':
+      alert('Saving failed. Please refresh and try again.');
+      break;
+    case 'saved':
+      Session.set('saving', false);
+      break;
+  }
+});
+
 var autoSaveVerticalSectionField = function(template, field, datatype){
   storyId = Session.get('storyId');
 
@@ -177,20 +191,25 @@ var autoSaveVerticalSectionField = function(template, field, datatype){
   setObject = { $set:{} };
   setObject['$set'][setField] = value;
 
+  Session.set('saveState', 'saving');
+
   return Meteor.call('saveStory', {
     _id: storyId
   }, setObject, {removeEmptyStrings: false}, function(err, numDocs) {
     if (err) {
-      return alert(err);
+      Session.set('saveState', 'failed');
     }
     if (!numDocs) {
       return alert('No docs updated');
+      Session.set('saveState', 'failed');
     }
+    Session.set('saveState', 'saved');
   });
 };
 
 Template.vertical_section_block.events({
   'mouseup .fold-editable': window.updateUIBasedOnSelection,
+  'blur': window.updateUIBasedOnSelection,
   'blur .title' : function(e, template){
     autoSaveVerticalSectionField(template, 'title');
     return true;
@@ -931,5 +950,13 @@ Template.create_options.events({
   "click div.publish-story": function() {
     console.log("PUBLISH");
     return this.publish();
+  },
+  "click .toggle-preview": function() {
+    if (Session.get('read')) {
+      window.refreshContentDep.changed();
+      Session.set('read', false);
+    } else {
+      Session.set('read', true);
+    }
   }
 });

@@ -3,11 +3,41 @@
   cursor: text;
 }
 
-div.save-publish {
+
+
+div.floating-story-buttons {
+  button {
+    z-index: 30;
+    background-color: @dark-color;
+    color: @light-color;
+    cursor: pointer;
+    padding: 5px;
+    text-align: center;
+    font-size: 16px;
+    float: left;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+    height: 50px;
+    width: 110px;
+
+    &:hover {
+      background-color: @action-color;
+      color: @dark-color;
+    }
+  }
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  top: 115px;
+  right: 13px;
   z-index: 10;
+
+  .saved-text{
+    float: left;
+    text-transform: uppercase;
+    margin-right: 10px;
+    margin-top: 32px;
+    font-size: 14px;
+  }
 }
 
 input.background-image-input {
@@ -125,10 +155,6 @@ div.title-overlay {
       position: fixed;
       padding-top: 20px;
     }
-    .toggle-preview {
-      float: right;
-      font-size: 15px;
-    }
     div.story-title {
       max-width: 100%;
       font-weight: bold;
@@ -147,14 +173,13 @@ div.title-overlay {
 }
 
 div.button-options {
-  div {
+  button {
     background-color: @dark-color;
     color: @light-color;
     cursor: pointer;
     padding: 5px;
     text-align: center;
     font-size: 16px;
-    line-height: 35px;
     float: left;
     &:not(:last-child) {
       margin-right: 10px;
@@ -258,6 +283,13 @@ div.vertical-narrative {
       }
     }
   }
+}
+
+.narrative-babyburger {
+  float:right;
+  position: relative;
+  margin-right: -30px;
+  margin-top: -25px;
 }
 
 textarea {
@@ -393,13 +425,13 @@ div.horizontal-context {
 
 
 
-  div.back-save, div.edit-delete {
+  div.edit-delete {
     position: absolute;
     top: -10px;
     right: 62px;
     width: 60px;
     color: black;
-    div {
+    button {
       line-height: 0px;
       height: 25px;
       border-radius: 13px;
@@ -407,15 +439,15 @@ div.horizontal-context {
     }
 
     // TODO Create classes for these
-    div.edit {
+    .edit {
       float: left;
     }
-    div.save, div.delete {
+    .save, .delete {
       float: right;
       margin: 0;
     }
 
-    div.delete {
+    .delete {
       float: right;
 
       &:hover {

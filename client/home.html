@@ -9,6 +9,9 @@
     <div class="left">
       <div class="logo-title">
         {{#linkTo route="home"}}
+        <img src="/FOLD_LOGO.svg">
+        {{/linkTo}}
+        {{#linkTo route="home"}}
         <div class="title">
           <img src="/FOLD_TITLE.svg">
         </div>
@@ -20,11 +23,9 @@
     </div>
     <div class="right">
       <div class="action-items">
-        {{#linkTo route="create"}}
         <div class="create-story">
-          Make a Story
+          {{> create_story}}
         </div>
-        {{/linkTo}}
         <div class="user-action">
           {{> loginButtons }}
         </div>
@@ -43,6 +44,12 @@
       </div>
     </div>
   </div>
+</template>
+
+<template name="create_story">
+  <a class="create-story" href="javascript:void(0);">
+    Make a Story
+  </a>
 </template>
 
 <template name="home">

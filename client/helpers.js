@@ -18,6 +18,10 @@ Handlebars.registerHelper("showDraft", function() {
   return Session.get("showDraft");
 });
 
+Handlebars.registerHelper("saving", function() {
+  return Session.get("saving");
+});
+
 Handlebars.registerHelper("addingContext", function() {
   return Session.get("addingContext");
 });

@@ -622,3 +622,16 @@ if (ContextBlocks.find().count() === 0) {
     return ContextBlocks.insert(block);
   });
 }
+
+// External Services
+
+ServiceConfiguration.configurations.upsert(
+  { service: "twitter" },
+  {
+    $set: {
+      consumerKey: Meteor.settings.TWITTER_API_KEY,
+      loginStyle: "popup",
+      secret: Meteor.settings.TWITTER_API_SECRET
+    }
+  }
+);

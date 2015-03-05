@@ -1,12 +1,11 @@
 <template name="create">
-  {{ > story_header }}
-  {{ > story}}
-  {{ > fold_editor }}
+  {{#with draftStory}}
+    {{ > story_header }}
+    {{ > story}}
+    {{ > fold_editor }}
+  {{/with}}
 
-  {{#unless read}}
-     {{! > background_image}}
-    {{ > create_options}}
-  {{/unless}}
+  {{ > create_options}}
 </template>
 
 <template name="fold_editor">
@@ -36,12 +35,32 @@
 
 
 <template name="create_options">
-  <div class="button-options save-publish">
-    {{#if lastSaved}}
-      <div class="publish-story button">
-        Publish
-      </div>
-    {{/if}}
+  <div class="floating-story-buttons">
+    <div class="saved-text">
+      {{#if saving}}
+        Saving...
+      {{else}}
+        Saved
+      {{/if}}
+    </div>
+    {{#unless addingContext}}
+      <button type="button" class="toggle-preview">
+        {{#if read}}
+          Edit
+        {{else}}
+          Preview
+        {{/if}}
+      </button>
+      {{#if draftStory.unpublishedChanges}}
+        <button type="button" class="publish-story button">
+          {{#if published}}
+            Publish Changes
+          {{else}}
+            Publish
+          {{/if}}
+      </button>
+      {{/if}}
+    {{/unless}}
   </div>
 </template>
 
@@ -125,7 +144,7 @@
 <template name="search_form">
   <div class="search-form">
     <form>
-      <button type="button" class="search-trigger">Search:</button>
+      <button type="button" class="search-trigger">Search</button>
       <div class="search-input-container">
         <input type = "search" placeholder="Radar technology" autofocus="autofocus">
       </div>
@@ -219,12 +238,12 @@
   {{#unless read}}
     {{#if selected}}
       <div class="button-options edit-delete">
-        <div class="edit button">
+        <button class="edit button">
           <i class="fa fa-pencil"></i>
-        </div>
-        <div class="delete button">
+        </button>
+        <button class="delete button">
           <i class="fa fa-times"></i>
-        </div>
+        </button>
       </div>
     {{/if}}
   {{/unless}}

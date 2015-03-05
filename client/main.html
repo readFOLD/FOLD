@@ -13,15 +13,6 @@
         {{#if read}}
           {{> favorite_button}}
         {{/if}}
-        {{#if showDraft}}
-          <button type="button" class="toggle-preview">
-            {{#if read}}
-              EDIT
-            {{else}}
-              PREVIEW
-            {{/if}}
-          </button>
-        {{/if}}
       </div>
 
     </div>
@@ -38,7 +29,7 @@
 </template>
 
 <template name="story_title">
-  <div class="story-title" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
+  {{{storyTitleDiv}}}
 </template>
 
 <template name="story">
@@ -92,7 +83,12 @@
 <template name="vertical_section_block">
   <div class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
     <section>
-      <div class="title {{#unless read}}editable{{/unless}}" placeholder="Title" contenteditable="{{#unless read}}true{{/unless}}">{{title}}</div>
+      {{#unless read}}
+        <button class="narrative-babyburger">
+          {{> babyburger_icon}}
+        </button>
+      {{/unless}}
+      {{{titleDiv}}}
       {{{contentDiv}}}
       <div class="button">
       </div>

@@ -53,12 +53,13 @@ div.home-top {
     position: absolute;
     top: -6px;
     right: 60px;
+    color: @light-color;
+    font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+
 
     & > div, & > a div {
       height: 45px;
       display: inline-block;
-      color: @light-color;
-      font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
       padding: 12px 20px 8px 20px;
       margin-right: 12px;
 

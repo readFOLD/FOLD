@@ -140,7 +140,7 @@ Template.story_header.rendered = function() {
   var range, sel, titleDiv;
   if (!this.data.title) {
     if (!Session.get('read')) {
-      titleDiv = $(this)[0].find('.title');
+      titleDiv = $(this)[0].find('.story-title');
       sel = window.getSelection();
       if (sel.rangeCount > 0) {
         sel.removeAllRanges();
@@ -182,14 +182,6 @@ Template.story_header.events = {
   "mouseout #banner-overlay": function() {
     if (Session.get('pastHeader')) {
       return $("#to-header").removeClass('shown');
-    }
-  },
-  "click .toggle-preview": function() {
-    if (Session.get('read')) {
-      window.refreshContentDep.changed()
-      Session.set('read', false)
-    } else {
-      Session.set('read', true)
     }
   },
   "click #to-story": function() {
@@ -281,6 +273,17 @@ Template.story.helpers({
   }
 });
 
+Template.story_title.helpers({
+  storyTitleDiv: function(){
+    if (Session.get('read')) {
+      return '<div class="story-title">' + this.title + '</div>';
+    } else {
+      // this is contenteditable in edit mode
+      return '<div class="story-title" placeholder="Title" contenteditable="true">' + this.title + '</div>';
+    }
+  }
+});
+
 Template.vertical_section_block.helpers({
   notFirst: function() {
     return !Session.equals("currentY", 0);
@@ -290,6 +293,14 @@ Template.vertical_section_block.helpers({
   },
   validTitle: function() {
     return this.title === !"title";
+  },
+  titleDiv: function() {
+    if (Session.get('read')) {
+      return '<div class="title">' + this.title + '</div>';
+    } else {
+      // this is contenteditable in edit mode
+      return '<div class="title editable" placeholder="Title" contenteditable="true">' + this.title + '</div>';
+    }
   },
   contentDiv: function() {
     if (Session.get('read')) {
@@ -519,5 +530,16 @@ Template.favorite_button.events({
         return alert(err);
       }
     });
+  }
+});
+
+Template.create_story.events({
+  'click': function(){
+    Meteor.call('createStory', function(err, pathObject){
+      if (err) {
+        return alert(err);
+      }
+      Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
+    })
   }
 });
