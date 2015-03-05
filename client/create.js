@@ -634,6 +634,28 @@ createBlockHelpers = {
 };
 
 createBlockEvents = {
+  "click .data-source": function(d, template) {
+    template.source.set(this.source);
+  },
+
+  "click .search-trigger": function(d) {
+    d.preventDefault();
+    $(".search-form").toggleClass("search-open");
+  },
+
+  "submit form": function(d, template) {
+    d.preventDefault();
+    template.search($('input').val());
+  },
+
+  "click li": function(d, template) {
+    template.focusResult.set(this);
+  },
+
+  "click .add-button": function(d, template) {
+    var contextId = ContextBlocks.insert(template.focusResult.get());
+    return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
+  },
   "click .cancel": function() {
     Session.set('addingContext', false);
     return Session.set('editingContext', null);
@@ -649,7 +671,7 @@ Template.create_video_section.created = function() {
   this.searchDep = videoSearchDep;
   this.searchResultsCollection = VideoSearchResults;
 
-  this.searchYoutube = function(query) {
+  this.search = function(query) {
     searchParams = {
       q: query
     }
@@ -784,38 +806,15 @@ Template.create_image_section.events({
     var searchContainer = $("ol.search-results-container")
 
     searchContainer.scroll(function() {
-      var searchResultsHeight = _.reduce($('ol.search-results-container li'), 
-        function(memo, e) { 
-          return memo + $(e).outerHeight() }, 0 
-          );
+      var searchResultsHeight = _.reduce($('ol.search-results-container li'),
+        function(memo, e) {
+          return memo + $(e).outerHeight() }, 0
+      );
 
       if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
         template.search($('input').val());
       }
     })
-  },
-
-  "click .data-source": function(d, template) {
-    template.source.set(this.source);
-  }, 
-
-  "click .search-trigger": function(d) {
-    d.preventDefault();
-    $(".search-form").toggleClass("search-open");
-  },
-
-  "submit form": function(d, template) {
-    d.preventDefault();
-    template.search($('input').val());
-  },
-
-  "click li": function(d, template) {
-    template.focusResult.set(this);
-  },
-
-  "click .add-button": function(d, template) {
-    var contextId = ContextBlocks.insert(template.focusResult.get());
-    return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
   }
 });
 
@@ -824,34 +823,15 @@ Template.create_video_section.events({
     var searchContainer = $("ol.search-results-container")
 
     searchContainer.scroll(function() {
-      var searchResultsHeight = _.reduce($('ol.search-results-container li'), 
-        function(memo, e) { 
-          return memo + $(e).outerHeight() }, 0 
+      var searchResultsHeight = _.reduce($('ol.search-results-container li'),
+        function(memo, e) {
+          return memo + $(e).outerHeight() }, 0
           );
 
       if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
-        template.searchYoutube($('input').val());
+        template.search($('input').val());
       }
     })
-  },
-
-  "click .search-trigger": function(d) {
-    d.preventDefault();
-    $(".search-form").toggleClass("search-open");
-  },
-
-  "submit form": function(d, template) {
-    d.preventDefault();
-    template.searchYoutube($('input').val());
-  },
-
-  "click li": function(d, template) {
-    template.focusResult.set(this);
-  },
-
-  "click .add-button": function(d, template) {
-    var contextId = ContextBlocks.insert(template.focusResult.get());
-    return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
   }
 });
 
