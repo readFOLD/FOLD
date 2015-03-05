@@ -7,6 +7,11 @@ Stories._ensureIndex({
 Meteor.publish("exploreStoriesPub", function(filter, category, skip) {
   return Stories.find({
     published: true
+  },{
+    fields : {
+      draftStory: 0,
+      history: 0
+    }
   });
 });
 
@@ -23,7 +28,7 @@ Meteor.publish("readStoryPub", function(userPathSegment, shortId) {
     published: true
   },{
     fields : {
-      draft: 0,
+      draftStory: 0,
       history: 0
     }
   });

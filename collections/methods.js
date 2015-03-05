@@ -32,7 +32,7 @@ updateStory = function(selector, modifier, options) {
   if (_.isEmpty(modifier)){
     return
   }
-  modifier.$set = _.extend(modifier.$set || {}, {lastSaved: Date.now(), 'draftStory.unpublishedChanges' : true});
+  modifier.$set = _.extend(modifier.$set || {}, {lastSaved: Date.now()});
 
   return Stories.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
 };
@@ -41,7 +41,8 @@ updateStory = function(selector, modifier, options) {
 Meteor.methods({
   // TODO PREVENT FROM SAVING OTHER WAYS
   updateStoryTitle: function(storyId, title){
-    var storyPathSegment = _s.slugify(title.toLowerCase())+ '-' + Stories.findOne({_id: storyId}).shortId;
+    // TODO DRY
+    var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
     return updateStory({_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
   // TODO replace with specific methods
@@ -76,7 +77,7 @@ Meteor.methods({
 
     var shortId = Random.id(8);
     console.log(1111);
-    var storyPathSegment = _s.slugify('new-story')+ '-' + shortId;  // TODO DRY
+    var storyPathSegment = _s.slugify('new-story') + '-' + shortId;  // TODO DRY
     var userPathSegment= user.username;
 
     Stories.insert({

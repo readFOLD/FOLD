@@ -108,6 +108,12 @@ if (Meteor.isClient) {
 
 this.Stories = new Meteor.Collection("stories", {
   transform: function(doc) {
+    if (doc.draftStory){
+      _.extend(doc.draftStory, {
+        unpublishedChanges: (!doc.publishDate || doc.lastSaved > doc.publishDate),
+        lastSaved: doc.lastSaved
+      });
+    }
     return new Story(doc);
   }
 });
@@ -128,7 +134,7 @@ Schema.Stories = new SimpleSchema({
   draftStory: {
     type: Object,
     optional: true,
-    blackbox:true
+    blackbox: true
   },
   backgroundImage: {
     type: String,
