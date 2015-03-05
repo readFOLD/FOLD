@@ -1,4 +1,4 @@
-var ContextBlock, MapBlock, Schema, Story, TextBlock, VideoBlock, checkOwner,
+var ContextBlock, MapBlock, Schema, Story, TextBlock, VideoBlock, ImageBlock, checkOwner,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -261,6 +261,30 @@ VideoBlock = (function(_super) {
 
 })(ContextBlock);
 
+ImageBlock = (function(_super) {
+  __extends(ImageBlock, _super);
+
+  function ImageBlock(doc) {
+    ImageBlock.__super__.constructor.call(this, doc);
+    this.type = 'image';
+    if (this.service == null) {
+      this.service = 'imgur';
+    }
+  }
+
+  ImageBlock.prototype.url = function() {
+    if (this.url.startsWith('http')) {
+      return this.url;
+    } else {
+      return '/' + this.url;
+    }
+  }
+
+  return ImageBlock;
+
+})(ContextBlock);
+
+
 MapBlock = (function(_super) {
   __extends(MapBlock, _super);
 
@@ -320,6 +344,7 @@ TextBlock = (function(_super) {
 
 
 var newTypeSpecificContextBlock =  function(doc) {
+  console.log("new context block", doc)
   switch (doc.type) {
     case 'video':
       return new VideoBlock(doc);

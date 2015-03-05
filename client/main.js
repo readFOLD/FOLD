@@ -465,6 +465,8 @@ Template.horizontal_section_block.helpers({
 
 Template.display_oec_section.helpers(horizontalBlockHelpers);
 
+Template.display_image_section.helpers(horizontalBlockHelpers);
+
 Template.display_video_section.helpers(horizontalBlockHelpers);
 
 Template.display_map_section.helpers(horizontalBlockHelpers);

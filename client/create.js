@@ -434,7 +434,7 @@ Template.add_horizontal.events({
 });
 
 Template.create_horizontal_section_block.created = function() {
-  return this.type = new ReactiveVar('image');
+  return this.type = new ReactiveVar('video');
 };
 
 Template.create_horizontal_section_block.helpers({
@@ -712,14 +712,14 @@ Template.create_image_section.created = function() {
           authorId : Meteor.user()._id,
           searchQuery : query,
           id : e.id,
-          type : e.type,
           section : e.section,
           title : e.title,
-          link : e.link
+          url : e.link
         }
       })
       .each(function(item) {
-        if (item.type) {
+        console.log(item);
+        if (item.type && item.type.startsWith('image')) {
           ImageSearchResults.insert(item);
         }
       });
@@ -895,27 +895,27 @@ Template.create_text_section.helpers(createBlockHelpers);
 
 Template.create_text_section.events(createBlockEvents);
 
-Template.create_image_section.events({
-  "click div.save": function(d) {
-    var context, description, horizontalIndex, horizontalSections, newDocument, parentSection, srcE, url;
-    srcE = d.srcElement ? d.srcElement : d.target;
-    parentSection = $(srcE).closest('section');
-    horizontalIndex = parentSection.data('index');
-    url = parentSection.find('input.image-url-input').val();
-    description = parentSection.find('input.image-description-input').val();
-    newDocument = {
-      type: 'image',
-      url: url,
-      description: description,
-      index: horizontalIndex
-    };
-    horizontalSections = Session.get('horizontalSections');
-    horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument;
-    Session.set('horizontalSections', horizontalSections);
-    context = newDocument;
-    return renderTemplate(d, Template.display_image_section, context);
-  }
-});
+// Template.create_image_section.events({
+//   "click div.save": function(d) {
+//     var context, description, horizontalIndex, horizontalSections, newDocument, parentSection, srcE, url;
+//     srcE = d.srcElement ? d.srcElement : d.target;
+//     parentSection = $(srcE).closest('section');
+//     horizontalIndex = parentSection.data('index');
+//     url = parentSection.find('input.image-url-input').val();
+//     description = parentSection.find('input.image-description-input').val();
+//     newDocument = {
+//       type: 'image',
+//       url: url,
+//       description: description,
+//       index: horizontalIndex
+//     };
+//     horizontalSections = Session.get('horizontalSections');
+//     horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument;
+//     Session.set('horizontalSections', horizontalSections);
+//     context = newDocument;
+//     return renderTemplate(d, Template.display_image_section, context);
+//   }
+// });
 
 Template.horizontal_section_block.events({
   "click div.delete": function(d) {

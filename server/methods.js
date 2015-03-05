@@ -7,12 +7,12 @@ if (!GOOGLE_API_SERVER_KEY) {
 }
 
 Meteor.methods({
-  imgurImageSearchList: function(params) {
+  imageSearchList: function(params) {
     var res;
     check(params.q, String);
     this.unblock();
     requestParams = {
-      q: params.q,
+      q: params.q
     };
 
     var authorizationStr = "Client-ID " + IMGUR_CLIENT_ID;

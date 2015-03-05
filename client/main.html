@@ -150,7 +150,13 @@
                 {{> display_text_section}}
             {{/if}}
         {{/if}}
-        {{#if image}}{{> display_image_section}}{{/if}}
+        {{#if image}}
+            {{#if editingThisContext}}
+                {{> create_image_section}}
+            {{else}}
+                {{> display_image_section}}
+            {{/if}}
+        {{/if}}
         {{#if map}}
             {{#if editingThisContext}}
                 {{> create_map_section}}
@@ -195,7 +201,7 @@
 
 <template name="display_image_section">
   <div class="image-section">
-    <img src="/{{url}}" />
+    <img src="{{url}}" />
     {{#if description}}
         <div class="description-overlay">
           {{description}}
