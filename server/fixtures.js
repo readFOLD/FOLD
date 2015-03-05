@@ -483,15 +483,15 @@ if (ContextBlocks.find().count() === 0) {
       _id: '1'
     }, {
       type: "image",
-    source: "local",
-      url: "2014_Ebola_virus_epidemic_in_West_Africa.png",
+      source: "local",
+      referenceId: "2014_Ebola_virus_epidemic_in_West_Africa.png",
       description: "Situation map of the outbreak. Source: Wikipedia.",
       authorId: authorId,
       _id: '2'
     }, {
       type: "image",
-    source: "local",
-      url: "Ebola_Virus.jpg",
+      source: "local",
+      referenceId: "Ebola_Virus.jpg",
       description: "Electron Micrograph image of Virus",
       authorId: authorId,
       _id: '3'
@@ -509,22 +509,22 @@ if (ContextBlocks.find().count() === 0) {
       _id: '5'
     }, {
       type: "image",
-    source: "local",
-      url: "Ebola_Betten_Isolation.jpg",
+      source: "local",
+      referenceId: "Ebola_Betten_Isolation.jpg",
       description: "Isolation Chamber",
       authorId: authorId,
       _id: '6'
     }, {
       type: "image",
-    source: "local",
-      url: "EbolaCycle.png",
+      source: "local",
+      referenceId: "EbolaCycle.png",
       description: "Ebola Cycle",
       authorId: authorId,
       _id: '7'
     }, {
       type: "image",
-    source: "local",
-      url: "batsmonkeys.jpg",
+      source: "local",
+      referenceId: "batsmonkeys.jpg",
       description: "Red Cross communications materials teach people how Ebola is transmitted. Tommy Trenchard / Al Jazeera",
       authorId: authorId,
       _id: '8'
@@ -570,22 +570,22 @@ if (ContextBlocks.find().count() === 0) {
       _id: '14'
     }, {
       type: "image",
-    source: "local",
-      url: "cdc_doctor_discards.jpg",
+      source: "local",
+      referenceId: "cdc_doctor_discards.jpg",
       description: "A doctor wearing protective equipment discards blood specimens during the 1976 Ebola outbreak in Zaire, 1976. Source: CDC",
       authorId: authorId,
       _id: '15'
     }, {
       type: "image",
-    source: "local",
-      url: "ebola_isolation_chamber.jpg",
+      source: "local",
+      referenceId: "ebola_isolation_chamber.jpg",
       description: "Ebola isolation chamber from the 1970s.",
       authorId: authorId,
       _id: '16'
     }, {
       type: "image",
-    source: "local",
-      url: "nurses_1976.jpg",
+      source: "local",
+      referenceId: "nurses_1976.jpg",
       description: "Nurses treat patient in 1976 Ebola outbreak.",
       authorId: authorId,
       _id: '17'
@@ -616,8 +616,8 @@ if (ContextBlocks.find().count() === 0) {
       _id: '21'
     }, {
       type: "image",
-    source: "local",
-      url: "Deceased_per_day_Ebola_2014.png",
+      source: "local",
+      referenceId: "Deceased_per_day_Ebola_2014.png",
       description: "Deaths/cases over time",
       authorId: authorId,
       _id: '22'
