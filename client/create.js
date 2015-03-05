@@ -636,7 +636,10 @@ createBlockHelpers = {
   },
   results: function () {
     searchDep.depend();
-    return Template.instance().searchResultsCollection.find({searchQuery: $('input').val()});
+    return SearchResults.find({
+      searchQuery: $('input').val(),
+      type: Template.instance().type
+    });
   }
 };
 
@@ -674,7 +677,9 @@ createBlockEvents = {
 
 Template.create_video_section.created = function() {
   this.focusResult = new ReactiveVar();
-  this.searchResultsCollection = VideoSearchResults;
+  this.type = 'video';
+
+  var that = this;
 
   this.search = function(query) {
     searchParams = {
@@ -701,7 +706,7 @@ Template.create_video_section.created = function() {
       _.chain(items)
       .map(function(element) {
         return {
-          type : 'video',
+          type : that.type,
           source : 'youtube',
           authorId : Meteor.user()._id,
           pageToken : Session.get("nextPageToken"),
@@ -715,7 +720,7 @@ Template.create_video_section.created = function() {
         }
       })
       .each(function(item) {
-        VideoSearchResults.insert(item);
+        SearchResults.insert(item);
       });
     });
     searchDep.changed();
@@ -734,10 +739,12 @@ Template.create_video_section.events(createBlockEvents);
 
 Template.create_image_section.created = function() {
   this.source = new ReactiveVar();
+  this.type = 'image';
   this.source.set('imgur');
-  this.searchResultsCollection = ImageSearchResults;
   this.focusResult = new ReactiveVar();
   this.page = 0;
+
+  var that = this;
 
   this.search = function(query) {
     searchParams = {
@@ -760,7 +767,7 @@ Template.create_image_section.created = function() {
       })
       .map(function(e) {
         return {
-          type : 'image',
+          type : that.type,
           source : 'imgur',
           authorId : Meteor.user()._id,
           searchQuery : query,
@@ -771,7 +778,7 @@ Template.create_image_section.created = function() {
         }
       })
       .each(function(item) {
-        ImageSearchResults.insert(item);
+        SearchResults.insert(item);
       });
     });
     searchDep.changed();
