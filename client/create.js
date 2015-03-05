@@ -705,6 +705,9 @@ Template.create_image_section.created = function() {
         return;
       }
       _.chain(items)
+      .filter(function(e) {
+        return (e.type && e.type.startsWith('image'))
+      })
       .map(function(e) {
         return {
           type : 'image',
@@ -718,10 +721,7 @@ Template.create_image_section.created = function() {
         }
       })
       .each(function(item) {
-        console.log(item);
-        if (item.type && item.type.startsWith('image')) {
-          ImageSearchResults.insert(item);
-        }
+        ImageSearchResults.insert(item);
       });
     });
     imageSearchDep.changed(); 

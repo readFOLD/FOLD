@@ -344,7 +344,6 @@ TextBlock = (function(_super) {
 
 
 var newTypeSpecificContextBlock =  function(doc) {
-  console.log("new context block", doc)
   switch (doc.type) {
     case 'video':
       return new VideoBlock(doc);

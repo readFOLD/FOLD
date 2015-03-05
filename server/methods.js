@@ -21,7 +21,6 @@ Meteor.methods({
       params: requestParams,
       headers: {"Content-Type": "text", "Authorization": authorizationStr}
     });
-    console.log(res.data.data.length, "results for query", params.q)
 
     return {
       'items': res.data.data
