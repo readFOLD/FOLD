@@ -245,21 +245,21 @@ VideoBlock = (function(_super) {
 
   VideoBlock.prototype.url = function() {
     if (this.source === 'youtube') {
-      return '//www.youtube.com/embed/' + this.videoId;
+      return '//www.youtube.com/embed/' + this.referenceId;
     } else if (this.source === 'vimeo') {
-      return '//player.vimeo.com/video/' + this.videoId;
+      return '//player.vimeo.com/video/' + this.referenceId;
     }
   };
 
   VideoBlock.prototype.previewUrl = function() {
     if (this.source === 'youtube') {
-      return '//img.youtube.com/vi/' + this.videoId + '/0.jpg';
+      return '//img.youtube.com/vi/' + this.referenceId + '/0.jpg';
     }
   };
 
   VideoBlock.prototype.thumbnailUrl = function() {
     if (this.source === 'youtube') {
-      return '//i.ytimg.com/vi/' + this.videoId + '/default.jpg';
+      return '//i.ytimg.com/vi/' + this.referenceId + '/default.jpg';
     }
   };
 
@@ -273,18 +273,20 @@ ImageBlock = (function(_super) {
   function ImageBlock(doc) {
     ImageBlock.__super__.constructor.call(this, doc);
     this.type = 'image';
-    if (this.source == null) {
+    if (!this.source) { // TO-DO Remove
       this.source = 'imgur';
     }
   }
 
   ImageBlock.prototype.url = function() {
-    if (this.url.startsWith('http')) {
-      return this.url;
+    if (this.source === 'local') {
+
+      return '/' + this.referenceId;
     } else {
-      return '/' + this.url;
+      return '//i.imgur.com/' + this.referenceId;
+
     }
-  }
+  };
 
   return ImageBlock;
 
@@ -408,7 +410,7 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  videoId: {
+  referenceId: {
     type: String,
     optional: true
   },

@@ -657,7 +657,7 @@ Template.create_video_section.created = function() {
           searchQuery : query,
           title: element.title,
           description: element.description,
-          videoId: element.videoId,
+          referenceId: element.videoId,
           videoUsername : element.channelTitle,
           videoUsernameId : element.channelId,
           videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
@@ -725,7 +725,7 @@ Template.create_image_section.created = function() {
       }
       _.chain(items)
       .filter(function(e) {
-        return (e.type && e.type.startsWith('image'))
+        return (e.type && e.type.indexOf('image') === 0)
       })
       .map(function(e) {
         return {
@@ -735,8 +735,7 @@ Template.create_image_section.created = function() {
           searchQuery : query,
           id : e.id,
           section : e.section,
-          title : e.title,
-          url : e.link
+          title : e.title
         }
       })
       .each(function(item) {
