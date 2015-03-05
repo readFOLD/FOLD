@@ -694,7 +694,7 @@ Template.create_image_section.created = function() {
       q: query
     }
 
-    Meteor.call('imgurImageSearchList', searchParams, function(err, results) {
+    Meteor.call('imageSearchList', searchParams, function(err, results) {
       items = results.items;
 
       if (err) {
@@ -719,7 +719,6 @@ Template.create_image_section.created = function() {
         }
       })
       .each(function(item) {
-        console.log(item)
         if (item.type) {
           ImageSearchResults.insert(item);
         }
@@ -802,7 +801,7 @@ Template.create_image_section.events({
     template.focusResult.set(this);
   },
 
-  "click #add-video-button": function(d, template) {
+  "click .add-button": function(d, template) {
     var contextId = ContextBlocks.insert(template.focusResult.get());
     return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
   }
@@ -838,7 +837,7 @@ Template.create_video_section.events({
     template.focusResult.set(this);
   },
 
-  "click #add-video-button": function(d, template) {
+  "click .add-button": function(d, template) {
     var contextId = ContextBlocks.insert(template.focusResult.get());
     return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
   }
