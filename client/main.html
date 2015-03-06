@@ -86,9 +86,11 @@
   <div class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
     <section>
       {{#unless read}}
-        <button class="narrative-babyburger">
-          {{> babyburger_icon}}
-        </button>
+        {{#if verticalSelected}}
+          <button class="narrative-babyburger">
+            {{> babyburger_icon}}
+          </button>
+        {{/if}}
       {{/unless}}
       {{{titleDiv}}}
       {{{contentDiv}}}
