@@ -129,14 +129,28 @@ Template.create_video_section.created = function() {
   var that = this;
 
   this.search = function(query) {
+
+    var source = that.source.get();
+
     searchParams = {
       q: query
     };
 
-    pageToken = that.nextPageToken;
-    if (pageToken) {
-      searchParams['pageToken'] = pageToken;
-    };
+    var mostRecentResult = SearchResults.find({
+      searchQuery: $('input').val(),
+      type: that.type,
+      source: source
+    }, {sort: {ordinalId: 1} }).fetch().slice(-1)[0];
+
+    var page;
+
+    if (mostRecentResult){
+      page = mostRecentResult.nextPage;
+    }
+    
+    if (page) {
+      searchParams['pageToken'] = page;
+    }
 
     that.loadingResults.set(true);
     searchDep.changed();
