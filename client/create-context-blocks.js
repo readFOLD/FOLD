@@ -153,6 +153,11 @@ Template.create_video_section.created = function() {
   return
 };
 
+var imageDataSources = [
+  {source: 'imgur', display: 'Imgur'},
+  {source: 'flickr', display: 'Flickr'},
+  {source: 'getty', display: 'Getty Images'}
+];
 
 Template.create_image_section.created = function() {
   this.source = new ReactiveVar();
@@ -160,27 +165,33 @@ Template.create_image_section.created = function() {
   this.type = 'image';
   this.source.set('flickr');
   this.focusResult = new ReactiveVar();
-  this.page = 0;
-
+  this.page = {};
   var that = this;
+
+  // page = { "name of source" : "next results page", ....}
+  _.each(imageDataSources, function(sourceObj){
+    that.page[sourceObj.source] = 0;
+  });
+
+
 
   var finishSearch = function(){
     that.loadingResults.set(false);
   };
 
   this.search = function(query) {
+    var source = that.source.get();
     var searchParams = {
       q: query,
-      page: that.page
+      page: that.page[source]
     };
 
-    that.page = that.page + 1;
+    that.page[source]++;
 
     that.loadingResults.set(true);
     searchDep.changed();
 
 
-    var source = that.source.get();
 
     if (source === 'imgur') {
       Meteor.call('imgurImageSearchList', searchParams, function(err, results) {
@@ -252,11 +263,7 @@ Template.create_image_section.created = function() {
 
 
 Template.create_image_section.helpers({
-    dataSources: [
-      {source: 'imgur', display: 'Imgur'},
-      {source: 'flickr', display: 'Flickr'},
-      {source: 'getty', display: 'Getty Images'}
-    ]
+    dataSources: imageDataSources
   }
 );
 

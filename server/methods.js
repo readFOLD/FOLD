@@ -11,7 +11,7 @@ Meteor.methods({
   flickrImageSearchList: function(params) {
     check(params.q, String);
     var page = params.page + 1;  // flickr starts from 1
-    this.unblock()
+    this.unblock();
 
     var url = "https://api.flickr.com/services/rest/?&method=flickr.photos.search";
 
@@ -23,16 +23,16 @@ Meteor.methods({
       media: 'photos',
       nojsoncallback: 1,
       page: page
-    }
+    };
 
     var res = HTTP.get(url, {
       params: requestParams
-    })
+    });
     var items = JSON.parse(res.content).photos.photo;
 
     return {
       'items': items
-    }
+    };
   },
   imgurImageSearchList: function(params) {
     var res;
@@ -62,7 +62,7 @@ Meteor.methods({
     requestParams = {
       part: 'snippet',
       q: params.q,
-      maxResults: 10,
+      maxResults: 50,
       key: GOOGLE_API_SERVER_KEY
     };
     if (params['pageToken']) {
