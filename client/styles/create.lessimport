@@ -516,7 +516,7 @@ div.horizontal-context {
      
   div.search-form { 
 
-    @searchTriggerWidth: 89px;
+    @searchTriggerWidth: 90px;
     @searchButtonWidth: 66px;
     @searchInputHeight: 35px; 
     @searchInputWidth: calc(100% ~"-" @searchTriggerWidth ~"-" @innerElementPadding);
@@ -580,7 +580,7 @@ div.horizontal-context {
     height: calc(100% ~"-" @searchFormHeight ~"-" 35px);   
     overflow-y: scroll;    
     overflow-x: ellipsis;    
-    margin-top: 20px;  
+    margin-top: 15px;  
     list-style-type: none;  
      
     @aspectRatio: 4/3;
@@ -611,12 +611,14 @@ div.horizontal-context {
     li.tile {
       height: 120px; 
       display: inline-block;
+      margin-right: 5px;
+
       img {
-        height: 120px;
+        height: 116px;
       }
 
       &.focused {
-        border: 2px solid red;
+        border: 2px solid @action-color;
       }
     }
        
