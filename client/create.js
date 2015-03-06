@@ -1,4 +1,4 @@
-var addContextToStory, autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHorizontalUI, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
+var autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHorizontalUI, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 window.updateUIBasedOnSelection = function(e){
@@ -552,7 +552,7 @@ Template.context_anchor_option.events = {
   }
 };
 
-addContextToStory = function(storyId, contextId, verticalSectionIndex) {
+window.addContextToStory = function(storyId, contextId, verticalSectionIndex) {
   var pushObject, pushSelectorString;
   pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
   pushObject = {};
@@ -577,7 +577,7 @@ addContextToStory = function(storyId, contextId, verticalSectionIndex) {
 
 autoFormContextAddedHooks = {
   onSuccess: function(operation, contextId, template) {
-    return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
+    return window.addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
   },
   onError: function(operation, err, template) {
     return alert(err);

@@ -63,7 +63,7 @@ var createBlockEvents = {
 
   "click .add-button": function(d, template) {
     var contextId = ContextBlocks.insert(template.focusResult.get());
-    return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
+    return window.addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
   },
   "click .cancel": function() {
     Session.set('addingContext', false);
