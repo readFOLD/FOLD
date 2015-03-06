@@ -410,11 +410,21 @@ div#overlay {
 }
 
 div.description-overlay {
-  font-size: 14px;
+  @font-size: 14px;
+  font-size: @font-size;
+  line-height: @font-size;
+  text-align: left;
+
 }
 
-div.image-section {
 
+
+div.image-section {
+  .size-to-fit;
+  position: relative;
+  line-height: @horizontal-content-height;
+  background-color: @black-color;
+  text-align: center;
   &:hover{
     div.description-overlay{
       background-color: rgba(0, 0, 0, 0.8);
@@ -426,15 +436,17 @@ div.image-section {
     position: absolute;
     top: 0;
     width: 100%;
-    padding: 13px;
+    padding: 8px;
     opacity: 0.0;
     color: white;
   }
   img {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    width: auto;
+    max-width: 100%;
+    margin: auto;
+    vertical-align: middle;
+    display: inline-block;
+    max-height: 100%;
   }
 }
 

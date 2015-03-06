@@ -29,7 +29,9 @@
 </template>
 
 <template name="story_title">
-  {{{storyTitleDiv}}}
+  <div>
+    {{{storyTitleDiv}}}
+  </div>
 </template>
 
 <template name="story">
@@ -84,9 +86,11 @@
   <div class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
     <section>
       {{#unless read}}
-        <button class="narrative-babyburger">
-          {{> babyburger_icon}}
-        </button>
+        {{#if verticalSelected}}
+          <button class="narrative-babyburger">
+            {{> babyburger_icon}}
+          </button>
+        {{/if}}
       {{/unless}}
       {{{titleDiv}}}
       {{{contentDiv}}}
@@ -146,7 +150,13 @@
                 {{> display_text_section}}
             {{/if}}
         {{/if}}
-        {{#if image}}{{> display_image_section}}{{/if}}
+        {{#if image}}
+            {{#if editingThisContext}}
+                {{> create_image_section}}
+            {{else}}
+                {{> display_image_section}}
+            {{/if}}
+        {{/if}}
         {{#if map}}
             {{#if editingThisContext}}
                 {{> create_map_section}}
@@ -191,7 +201,7 @@
 
 <template name="display_image_section">
   <div class="image-section">
-    <img src="/{{url}}" />
+    <img src="{{url}}" />
     {{#if description}}
         <div class="description-overlay">
           {{description}}

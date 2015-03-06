@@ -1,4 +1,5 @@
 var GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
+var IMGUR_CLIENT_ID = Meteor.settings.IMGUR_CLIENT_ID;
 
 if (!GOOGLE_API_SERVER_KEY) {
   console.error('Settings must be loaded for apis to work');
@@ -6,6 +7,25 @@ if (!GOOGLE_API_SERVER_KEY) {
 }
 
 Meteor.methods({
+  imageSearchList: function(params) {
+    var res;
+    check(params.q, String);
+    this.unblock();
+    requestParams = {
+      q: params.q
+    };
+
+    var authorizationStr = "Client-ID " + IMGUR_CLIENT_ID;
+    // https://api.imgur.com/endpoints/gallery
+    res = HTTP.get('https://api.imgur.com/3/gallery/search', {
+      params: requestParams,
+      headers: {"Content-Type": "text", "Authorization": authorizationStr}
+    });
+
+    return {
+      'items': res.data.data
+    }
+  },
   youtubeVideoSearchList: function(params) {
     var res;
     check(params.q, String);
@@ -14,7 +34,7 @@ Meteor.methods({
       part: 'snippet',
       q: params.q,
       maxResults: 10,
-      key: GOOGLE_API_SERVER_KEY,
+      key: GOOGLE_API_SERVER_KEY
     };
     if (params['pageToken']) {
       requestParams['pageToken'] = params['pageToken'];

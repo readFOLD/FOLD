@@ -1,4 +1,4 @@
-var ContextBlock, MapBlock, Schema, Story, TextBlock, VideoBlock, checkOwner,
+var ContextBlock, MapBlock, Schema, Story, TextBlock, VideoBlock, ImageBlock, checkOwner,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -108,6 +108,12 @@ if (Meteor.isClient) {
 
 this.Stories = new Meteor.Collection("stories", {
   transform: function(doc) {
+    if (doc.draftStory){
+      _.extend(doc.draftStory, {
+        unpublishedChanges: (!doc.publishDate || doc.lastSaved > doc.publishDate),
+        lastSaved: doc.lastSaved
+      });
+    }
     return new Story(doc);
   }
 });
@@ -128,7 +134,7 @@ Schema.Stories = new SimpleSchema({
   draftStory: {
     type: Object,
     optional: true,
-    blackbox:true
+    blackbox: true
   },
   backgroundImage: {
     type: String,
@@ -232,28 +238,28 @@ VideoBlock = (function(_super) {
   function VideoBlock(doc) {
     VideoBlock.__super__.constructor.call(this, doc);
     this.type = 'video';
-    if (this.service == null) {
-      this.service = 'youtube';
+    if (this.source == null) {
+      this.source = 'youtube';
     }
   }
 
   VideoBlock.prototype.url = function() {
-    if (this.service === 'youtube') {
-      return '//www.youtube.com/embed/' + this.videoId;
-    } else if (this.service === 'vimeo') {
-      return '//player.vimeo.com/video/' + this.videoId;
+    if (this.source === 'youtube') {
+      return '//www.youtube.com/embed/' + this.referenceId;
+    } else if (this.source === 'vimeo') {
+      return '//player.vimeo.com/video/' + this.referenceId;
     }
   };
 
   VideoBlock.prototype.previewUrl = function() {
-    if (this.service === 'youtube') {
-      return '//img.youtube.com/vi/' + this.videoId + '/0.jpg';
+    if (this.source === 'youtube') {
+      return '//img.youtube.com/vi/' + this.referenceId + '/0.jpg';
     }
   };
 
   VideoBlock.prototype.thumbnailUrl = function() {
-    if (this.service === 'youtube') {
-      return '//i.ytimg.com/vi/' + this.videoId + '/default.jpg';
+    if (this.source === 'youtube') {
+      return '//i.ytimg.com/vi/' + this.referenceId + '/default.jpg';
     }
   };
 
@@ -261,14 +267,49 @@ VideoBlock = (function(_super) {
 
 })(ContextBlock);
 
+ImageBlock = (function(_super) {
+  __extends(ImageBlock, _super);
+
+  function ImageBlock(doc) {
+    ImageBlock.__super__.constructor.call(this, doc);
+    this.type = 'image';
+    if (!this.source) { // TO-DO Remove
+      this.source = 'imgur';
+    }
+  }
+
+  ImageBlock.prototype.url = function() {
+    switch (this.source) {
+      case 'local':
+        return '/' + this.referenceId;
+      case 'imgur':
+        return '//i.imgur.com/' + this.referenceId + '.' + this.fileExtension;
+    }
+
+  };
+
+  ImageBlock.prototype.thumbnailUrl = function() {
+    switch (this.source) {
+      case 'local':
+        return '/' + this.referenceId;
+      case 'imgur':
+        return '//i.imgur.com/' + this.referenceId + 't' + '.' + this.fileExtension;
+    }
+  };
+
+  return ImageBlock;
+
+})(ContextBlock);
+
+
 MapBlock = (function(_super) {
   __extends(MapBlock, _super);
 
   function MapBlock(doc) {
     MapBlock.__super__.constructor.call(this, doc);
     this.type = 'map';
-    if (this.service == null) {
-      this.service = 'google_maps';
+    if (this.source == null) {
+      this.source = 'google_maps';
     }
   }
 
@@ -281,13 +322,13 @@ MapBlock = (function(_super) {
   };
 
   MapBlock.prototype.url = function() {
-    if (this.service === 'google_maps') {
+    if (this.source === 'google_maps') {
       return 'https://www.google.com/maps/embed/v1/place?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&q=' + this.escape(this.mapQuery) + '&maptype=' + this.escape(this.mapType);
     }
   };
 
   MapBlock.prototype.previewUrl = function() {
-    if (this.service === 'google_maps') {
+    if (this.source === 'google_maps') {
       return 'https://maps.googleapis.com/maps/api/staticmap?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&center=' + this.escape(this.mapQuery) + '&maptype=' + this.escape(this.mapType) + '&size=' + '520x300';
     }
   };
@@ -327,6 +368,8 @@ var newTypeSpecificContextBlock =  function(doc) {
       return new TextBlock(doc);
     case 'map':
       return new MapBlock(doc);
+    case 'image':
+      return new ImageBlock(doc);
     default:
       return new ContextBlock(doc);
   }
@@ -337,6 +380,7 @@ if (Meteor.isClient) {
   window.MapBlock = MapBlock;
   window.ContextBlock = ContextBlock;
   window.TextBlock = TextBlock;
+  window.ImageBlock = ImageBlock;
   window.newTypeSpecificContextBlock = newTypeSpecificContextBlock
 }
 
@@ -367,7 +411,7 @@ Schema.ContextBlocks = new SimpleSchema({
   type: {
     type: String
   },
-  service: {
+  source: {
     type: String,
     optional: true
   },
@@ -375,7 +419,11 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  videoId: {
+  referenceId: {
+    type: String,
+    optional: true
+  },
+  fileExtension: {
     type: String,
     optional: true
   },
@@ -411,10 +459,7 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  description: {
-    type: String,
-    optional: true
-  },
+
   videoCreationDate: {
     type: String,
     optional: true

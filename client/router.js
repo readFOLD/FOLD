@@ -1,13 +1,3 @@
-var ExistingStoryController;
-
-ExistingStoryController = RouteController.extend({
-  onRun: function() {
-    console.log('set currentY to null');
-    Session.set("currentY", null);
-    return this.next();
-  }
-});
-
 var idFromPathSegment = function(pathSegment) { // everything after last dash
   return pathSegment.substring(pathSegment.lastIndexOf('-') + 1);
 };
@@ -70,7 +60,6 @@ Router.route("profile", {
 Router.route("read", {
   path: "read/:userPathSegment/:storyPathSegment",
   template: "read",
-  controller: ExistingStoryController,
   waitOn: function() {
     shortId = idFromPathSegment(this.params.storyPathSegment);
     return [Meteor.subscribe('readStoryPub', this.params.userPathSegment, shortId)];
@@ -101,7 +90,8 @@ Router.route("read", {
       return story;
     }
   },
-  onBeforeAction: function() {
+  onRun: function() {
+    Session.set("currentY", null);
     Session.set("newStory", false);
     Session.set("read", true);
     Session.set("showDraft", false);
@@ -113,8 +103,12 @@ Router.route("read", {
 Router.route("edit", {
   path: "create/:userPathSegment/:storyPathSegment",
   template: "create",
-  controller: ExistingStoryController,
   onRun: function() {
+    Session.set("currentY", null);
+    Session.set("read", false);
+    Session.set("newStory", false);
+    Session.set("showDraft", true);
+    Session.set("userPathSegment", this.params.userPathSegment);
     $('html, body').scrollTop(0);
     return this.next();
   },
@@ -151,10 +145,6 @@ Router.route("edit", {
   },
   onBeforeAction: function() {
     var user;
-    Session.set("newStory", false);
-    Session.set("read", false);
-    Session.set("showDraft", true);
-    Session.set("userPathSegment", this.params.userPathSegment);
     if ((user = Meteor.user()) || Meteor.loggingIn()) {
       if (user && user._id !== this.data().authorId) {
         this.redirect("read", this.data(), {

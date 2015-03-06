@@ -1,4 +1,4 @@
-var addContextToStory, autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHorizontalUI, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
+var autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHorizontalUI, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 window.updateUIBasedOnSelection = function(e){
@@ -177,6 +177,20 @@ Tracker.autorun(function(){
   }
 });
 
+var saveCallback =  function(err, numDocs) {
+  var saveUIUpdateDelay = 300;
+  setTimeout(function(){
+    if (err) {
+      Session.set('saveState', 'failed');
+    }
+    if (!numDocs) {
+      return alert('No docs updated');
+      Session.set('saveState', 'failed');
+    }
+    Session.set('saveState', 'saved');
+  }, saveUIUpdateDelay);
+};
+
 var autoSaveVerticalSectionField = function(template, field, datatype){
   storyId = Session.get('storyId');
 
@@ -195,26 +209,17 @@ var autoSaveVerticalSectionField = function(template, field, datatype){
 
   return Meteor.call('saveStory', {
     _id: storyId
-  }, setObject, {removeEmptyStrings: false}, function(err, numDocs) {
-    if (err) {
-      Session.set('saveState', 'failed');
-    }
-    if (!numDocs) {
-      return alert('No docs updated');
-      Session.set('saveState', 'failed');
-    }
-    Session.set('saveState', 'saved');
-  });
+  }, setObject, {removeEmptyStrings: false}, saveCallback)
 };
 
 Template.vertical_section_block.events({
-  'mouseup .fold-editable': window.updateUIBasedOnSelection,
-  'blur': window.updateUIBasedOnSelection,
-  'blur .title' : function(e, template){
+  'mouseup [contenteditable]': window.updateUIBasedOnSelection,
+  'blur [contenteditable]': window.updateUIBasedOnSelection,
+  'blur .title[contenteditable]' : function(e, template){
     autoSaveVerticalSectionField(template, 'title');
     return true;
   },
-  'blur .content' : function(e, template){
+  'blur .content[contenteditable]' : function(e, template){
     autoSaveVerticalSectionField(template, 'content', 'html');
     return true;
   },
@@ -250,14 +255,8 @@ Template.story_title.events({
     storyId = Session.get('storyId');
     storyTitle = $.trim(template.$('div.story-title').text());
 
-    return Meteor.call('updateStoryTitle', storyId, storyTitle, function (err, numDocs) {
-      if (err) {
-        return alert(err);
-      }
-      if (!numDocs) {
-        return alert('No docs updated');
-      }
-    });
+    Session.set('saveState', 'saving');
+    return Meteor.call('updateStoryTitle', storyId, storyTitle, saveCallback)
   }
 });
 
@@ -499,6 +498,9 @@ Template.create_horizontal_section_block.events({
   },
   'click svg.video-icon': function(d, t) {
     return t.type.set('video');
+  },
+  'click svg.image-icon': function(d, t) {
+    return t.type.set('image');
   }
 });
 
@@ -549,7 +551,7 @@ Template.context_anchor_option.events = {
   }
 };
 
-addContextToStory = function(storyId, contextId, verticalSectionIndex) {
+window.addContextToStory = function(storyId, contextId, verticalSectionIndex) {
   var pushObject, pushSelectorString;
   pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
   pushObject = {};
@@ -559,22 +561,18 @@ addContextToStory = function(storyId, contextId, verticalSectionIndex) {
   }, {
     $addToSet: pushObject
   }, function(err, numDocs) {
-    if (err) {
-      return alert(err);
-    }
     if (numDocs) {
       Session.set("addingContext", null);
       Session.set("editingContext", null);
       return goToContext(contextId);
-    } else {
-      return alert('No docs updated');
     }
+    saveCallback(err, numDocs);
   });
 };
 
 autoFormContextAddedHooks = {
   onSuccess: function(operation, contextId, template) {
-    return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
+    return window.addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
   },
   onError: function(operation, err, template) {
     return alert(err);
@@ -602,213 +600,6 @@ AutoForm.hooks({
       }
     }
   })
-});
-
-createBlockHelpers = {
-  startingBlock: function() {
-    if (this instanceof ContextBlock) {
-      return this;
-    }
-  }
-};
-
-createBlockEvents = {
-  "click .cancel": function() {
-    Session.set('addingContext', false);
-    return Session.set('editingContext', null);
-  }
-};
-
-Template.create_video_section.created = function() {
-  return this.focusResult = new ReactiveVar();
-};
-
-Template.create_video_section.helpers({
-  isFocused: function() {
-    var focusResult = Template.instance().focusResult.get();
-    if (_.isObject(focusResult)) {
-      if (this._id === focusResult._id) {
-        return true;
-     }
-    }
-  },
-  isActive: function() {
-    var focusResult = Template.instance().focusResult.get();
-    if (_.isObject(focusResult)) {return true;}
-    return false;
-  }
-});
-
-Template.create_video_section.helpers(createBlockHelpers);
-
-videoSearchDep = new Tracker.Dependency();
-
-Template.create_video_section.helpers({
-  results: function(){
-    videoSearchDep.depend();
-    return VideoSearchResults.find({searchQuery : $('input').val()});
-  }
-});
-
-Template.create_video_section.events(createBlockEvents);
-
-searchYoutube = function(query) {
-  searchParams = {
-    q: query
-  }
-
-  pageToken = Session.get("nextPageToken");
-  if (pageToken) {
-    searchParams['pageToken'] = pageToken;
-  }
-
-  Meteor.call('youtubeVideoSearchList', searchParams, function(err, results) {
-    nextPageToken = results['nextPageToken'];
-    items = results['items'];
-
-    Session.set("nextPageToken", nextPageToken)
-    if (err) {
-      console.log(err);
-      return;
-    }
-    if (!items) {
-      return;
-    }
-    _.chain(items)
-    .map(function(element) {
-      return {
-        type : 'video',
-        service : 'youtube',
-        authorId : Meteor.user()._id,
-        pageToken : Session.get("nextPageToken"),
-        searchQuery : query,
-        title: element.title,
-        description: element.description,
-        videoId: element.videoId,
-        videoUsername : element.channelTitle,
-        videoUsernameId : element.channelId,
-        videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
-      }
-    })
-    .each(function(item) {
-      VideoSearchResults.insert(item);
-    });
-  });
-  videoSearchDep.changed(); 
-  return;
-}
-
-Template.create_video_section.events({
-  "scroll ol.search-results-container": function(d) {
-    var searchContainer = $("ol.search-results-container")
-
-    searchContainer.scroll(function() {
-      var searchResultsHeight = _.reduce($('ol.search-results-container li'), 
-        function(memo, e) { 
-          return memo + $(e).outerHeight() }, 0 
-          );
-
-      if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
-        searchYoutube($('input').val());
-      }
-    })
-  },
-
-  "click .search-trigger": function(d) {
-    d.preventDefault();
-    $(".search-form").toggleClass("search-open");
-  },
-
-  "submit form": function(d, template) {
-    d.preventDefault();
-    // d.stopPropagation();
-    var videoSearch;
-    videoSearch = $('input').val();
-    searchYoutube(videoSearch);
-  },
-
-  "click li": function(d, template) {
-    template.focusResult.set(this);
-  },
-
-  "click #add-video-button": function(d, template) {
-    var contextId = ContextBlocks.insert(template.focusResult.get());
-    return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
-  }
-});
-
-
-Template.create_map_section.created = function() {
-  return this.blockPreview = new ReactiveVar();
-};
-
-Template.create_map_section.helpers({
-  url: function() {
-    var preview = Template.instance().blockPreview.get();
-    if (preview) {
-      return preview.url()
-    }
-  },
-  previewUrl: function() {
-    var preview = Template.instance().blockPreview.get();
-    if (preview) {
-      return preview.previewUrl()
-    }
-  }
-});
-
-Template.create_map_section.helpers(createBlockHelpers);
-
-Template.create_map_section.events(createBlockEvents);
-
-Template.create_map_section.events({
-  "click .search": function(e, template) {
-    var block, previewMapBlock;
-    block = AutoForm.getFormValues('createMapSectionForm').insertDoc;
-    previewMapBlock = new MapBlock(_.extend(block, {
-      service: 'google_maps'
-    }));
-    return template.blockPreview.set(previewMapBlock);
-  },
-  "click .cancel": function() {
-    Session.set('addingContext', false);
-    return Session.set('editingContext', null);
-  }
-});
-
-
-Template.create_text_section.helpers({
-  startingBlock: function() {
-    if (this instanceof ContextBlock) {
-      return this;
-    }
-  }
-});
-
-Template.create_text_section.helpers(createBlockHelpers);
-
-Template.create_text_section.events(createBlockEvents);
-
-Template.create_image_section.events({
-  "click div.save": function(d) {
-    var context, description, horizontalIndex, horizontalSections, newDocument, parentSection, srcE, url;
-    srcE = d.srcElement ? d.srcElement : d.target;
-    parentSection = $(srcE).closest('section');
-    horizontalIndex = parentSection.data('index');
-    url = parentSection.find('input.image-url-input').val();
-    description = parentSection.find('input.image-description-input').val();
-    newDocument = {
-      type: 'image',
-      url: url,
-      description: description,
-      index: horizontalIndex
-    };
-    horizontalSections = Session.get('horizontalSections');
-    horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument;
-    Session.set('horizontalSections', horizontalSections);
-    context = newDocument;
-    return renderTemplate(d, Template.display_image_section, context);
-  }
 });
 
 Template.horizontal_section_block.events({

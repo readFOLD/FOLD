@@ -138,6 +138,7 @@ Meteor.startup(function() {
 
 Template.story_header.rendered = function() {
   var range, sel, titleDiv;
+  // add cursor to title section if empty
   if (!this.data.title) {
     if (!Session.get('read')) {
       titleDiv = $(this)[0].find('.story-title');
@@ -475,6 +476,8 @@ Template.horizontal_section_block.helpers({
 });
 
 Template.display_oec_section.helpers(horizontalBlockHelpers);
+
+Template.display_image_section.helpers(horizontalBlockHelpers);
 
 Template.display_video_section.helpers(horizontalBlockHelpers);
 
