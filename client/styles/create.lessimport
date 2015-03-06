@@ -599,6 +599,15 @@ div.horizontal-context {
       }
     }
 
+    li.loading-icon{
+      text-align: center;
+      height: 60px;
+      padding-top: 20px;
+      &:hover {
+        background: inherit;
+      }
+    }
+
     li.tile {
       height: 120px; 
       display: inline-block;

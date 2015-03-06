@@ -173,7 +173,7 @@
         </li>
       {{/each}}
       {{#if loading}}
-        {{>loading_icon}}
+        {{> loading_icon}}
       {{/if}}
     </ol>
     <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
@@ -221,6 +221,11 @@
             </div> 
         </li>
       {{/each}}
+      <li class="loading-icon">
+        {{#if loading}}
+          {{> loading_icon}}
+        {{/if}}
+      </li>
     </ol>
     <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
       Add

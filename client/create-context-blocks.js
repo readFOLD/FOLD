@@ -24,6 +24,9 @@ var createBlockHelpers = {
   selected: function() {
     return (this.source === Template.instance().source.get());
   },
+  loading: function() {
+    return Template.instance().loadingResults.get()
+  },
   results: function () {
     searchDep.depend();
     return SearchResults.find({
@@ -87,6 +90,7 @@ Template.create_text_section.events(createBlockEvents);
 
 Template.create_video_section.created = function() {
   this.focusResult = new ReactiveVar();
+  this.loadingResults = new ReactiveVar();
   this.type = 'video';
 
   var that = this;
@@ -100,6 +104,8 @@ Template.create_video_section.created = function() {
     if (pageToken) {
       searchParams['pageToken'] = pageToken;
     }
+
+    that.loadingResults.set(false);
 
     Meteor.call('youtubeVideoSearchList', searchParams, function(err, results) {
       nextPageToken = results['nextPageToken'];
@@ -133,6 +139,7 @@ Template.create_video_section.created = function() {
         SearchResults.insert(item);
       });
     });
+    that.loadingResults.set(true);
     searchDep.changed();
     return;
   }
