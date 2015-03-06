@@ -36,14 +36,14 @@
 
 <template name="create_options">
   <div class="floating-story-buttons">
-    <div class="saved-text">
-      {{#if saving}}
-        Saving...
-      {{else}}
-        Saved
-      {{/if}}
-    </div>
     {{#unless addingContext}}
+      <div class="saved-text">
+        {{#if saving}}
+          Saving...
+        {{else}}
+          Saved
+        {{/if}}
+      </div>
       <button type="button" class="toggle-preview">
         {{#if read}}
           Edit
