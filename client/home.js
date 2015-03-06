@@ -23,12 +23,19 @@ loginWithTwitter = function() {
   }, function (err) {
     if (err) {
       alert("can't login with Twitter");
-    } else if (!Meteor.user().username) {
+    } else if (!Meteor.user().hasOwnProperty('username')) {
       Router.go('/signup/');
     } 
     return;
   });
 };
+
+loginWithEmail = function() {
+  Router.go('/login/')
+}
+createAccount = function() {
+  //route to signup form with password input
+}
 
 
 Template.home.helpers({
@@ -158,9 +165,10 @@ Template.login_buttons.events({
     Template.instance().signingIn.set(true);
     return;
   },
-
   "click button.twitter-signin": function(d) {
     return loginWithTwitter();
-
+  },
+  "click button.email-signin": function(d) {
+    return loginWithEmail();
   }
 })

@@ -182,8 +182,22 @@ Router.route("signup", {
   },
   waitOn: function() {
     if (Meteor.user()) {
-      Meteor.subscribe('twitterUserPub');
+     [Meteor.subscribe('tempUsernamePub')];
+      return this.next();
     }
+  },
+  action: function() {
+    if (this.ready()) {
+      return this.render();
+    }
+  }
+});
+
+Router.route("login", {
+  path: "login",
+  template: "login",
+  onRun: function() {
+    $('html, body').scrollTop(0);
     return this.next();
   },
   action: function() {

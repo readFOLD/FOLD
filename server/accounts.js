@@ -9,6 +9,3 @@ Accounts.onCreateUser(function(options, user) {
     return user;
 });
 
-Accounts.onLogin(function(user) {
-  return user;
-})
