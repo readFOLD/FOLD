@@ -16,12 +16,14 @@ Meteor.methods({
     var url = "https://api.flickr.com/services/rest/?&method=flickr.photos.search";
 
     var requestParams = {
-      tags: params.q,
+      tags: params.q.replace(' ', ','),
+      text: params.q,
       api_key: FLICKR_API_KEY,
       format: 'json',
       privacy_filter: 1,
       media: 'photos',
       nojsoncallback: 1,
+      sort: 'relevance',
       page: page
     };
 
