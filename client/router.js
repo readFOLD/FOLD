@@ -119,7 +119,7 @@ Router.route("edit", {
   data: function() {
     var story;
     story = Stories.findOne({shortId: idFromPathSegment(this.params.storyPathSegment)});
-    if (story) {
+    if (story && story.draftStory) {
       Session.set("story", story.draftStory);
       Session.set("storyId", story._id);
       Session.set("storyPublished", story.published);
