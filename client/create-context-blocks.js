@@ -390,7 +390,9 @@ Template.search_form.helpers({
       _.sample([
         'radar technology',
         'competitive fly fishing',
-        'net neutrality'
+        'net neutrality',
+        'synthetic biology',
+        'beekeeping';
         ]);
   }
 });
