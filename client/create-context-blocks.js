@@ -33,20 +33,33 @@ var createBlockHelpers = {
   }
 };
 
+
+searchScrollFn = function(d, template) {
+  var searchContainer = $("ol.search-results-container");
+  var searchResultsHeight = _.reduce($('ol.search-results-container li'),
+    function(memo, e) {
+      return memo + $(e).outerHeight() }, 0
+  );
+
+  if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
+    template.search($('input').val());
+  }
+};
+
+throttledSearchScrollFn = _.throttle(searchScrollFn, 50);
+
+
 var createBlockEvents = {
   "click .data-source": function(d, template) {
     template.source.set(this.source);
-  },
-
-  "click .search-trigger": function(d) {
-    d.preventDefault();
-    $(".search-form").toggleClass("search-open");
   },
 
   "submit form": function(d, template) {
     d.preventDefault();
     template.search($('input').val());
   },
+
+  "scroll ol.search-results-container": throttledSearchScrollFn,
 
   "click li": function(d, template) {
     template.focusResult.set(this);
@@ -131,24 +144,6 @@ Template.create_video_section.created = function() {
 };
 
 
-Template.create_video_section.events({
-  "scroll ol.search-results-container": function(d, template) {
-    var searchContainer = $("ol.search-results-container")
-
-    searchContainer.scroll(function() {
-      var searchResultsHeight = _.reduce($('ol.search-results-container li'),
-        function(memo, e) {
-          return memo + $(e).outerHeight() }, 0
-          );
-
-      if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
-        template.search($('input').val());
-      }
-    })
-  }
-});
-
-
 Template.create_image_section.created = function() {
   this.source = new ReactiveVar();
   this.type = 'image';
@@ -208,24 +203,6 @@ Template.create_image_section.helpers({
     ]
   }
 );
-
-
-Template.create_image_section.events({
-  "scroll ol.search-results-container": function(d) {
-    var searchContainer = $("ol.search-results-container")
-
-    searchContainer.scroll(function() {
-      var searchResultsHeight = _.reduce($('ol.search-results-container li'),
-        function(memo, e) {
-          return memo + $(e).outerHeight() }, 0
-      );
-
-      if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
-        template.search($('input').val());
-      }
-    })
-  }
-});
 
 
 Template.create_map_section.created = function() {
