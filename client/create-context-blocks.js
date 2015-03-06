@@ -49,7 +49,13 @@ searchScrollFn = function(d, template) {
   var searchContainer = $("ol.search-results-container");
 
   if ((searchContainer.scrollTop() + searchContainer.height()) === searchContainer[0].scrollHeight && !template.loadingResults.get()) {
-    template.search($('input').val());
+    if (SearchResults.find({ // confirm there are already results and we're scrolling down
+      searchQuery: $('input').val(),
+      type: template.type,
+      source: template.source.get()
+    }).count()){
+      template.search($('input').val());
+    }
   }
 };
 
@@ -68,7 +74,13 @@ var createBlockEvents = {
   "submit form": function(d, template) {
     d.preventDefault();
     if(!template.loadingResults.get()){
-      template.search($('input').val());
+      if (!SearchResults.find({ // confirm there are no results yet
+          searchQuery: $('input').val(),
+          type: template.type,
+          source: template.source.get()
+        }).count()) {
+        template.search($('input').val());
+      }
     }
   },
 
