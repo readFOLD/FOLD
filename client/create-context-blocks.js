@@ -42,7 +42,7 @@ var createBlockHelpers = {
 searchScrollFn = function(d, template) {
   var searchContainer = $("ol.search-results-container");
 
-  if ((searchContainer.scrollTop() + searchContainer.height()) === searchContainer[0].scrollHeight) {
+  if ((searchContainer.scrollTop() + searchContainer.height()) === searchContainer[0].scrollHeight && !template.loadingResults.get()) {
     template.search($('input').val());
   }
 };
@@ -102,14 +102,16 @@ Template.create_video_section.created = function() {
   this.search = function(query) {
     searchParams = {
       q: query
-    }
+    };
 
     pageToken = that.nextPageToken;
     if (pageToken) {
       searchParams['pageToken'] = pageToken;
-    }
+    };
 
-    that.loadingResults.set(false);
+    that.loadingResults.set(true);
+    searchDep.changed();
+
 
     Meteor.call('youtubeVideoSearchList', searchParams, function(err, results) {
       var previousPageToken = that.nextPageToken;
@@ -126,27 +128,26 @@ Template.create_video_section.created = function() {
         return;
       }
       _.chain(items)
-      .map(function(element) {
-        return {
-          type : that.type,
-          source : 'youtube',
-          authorId : Meteor.user()._id,
-          pageToken : previousPageToken,
-          searchQuery : query,
-          title: element.title,
-          description: element.description,
-          referenceId: element.videoId,
-          videoUsername : element.channelTitle,
-          videoUsernameId : element.channelId,
-          videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
-        }
-      })
-      .each(function(item) {
-        SearchResults.insert(item);
-      });
+        .map(function(element) {
+          return {
+            type : that.type,
+            source : 'youtube',
+            authorId : Meteor.user()._id,
+            pageToken : previousPageToken,
+            searchQuery : query,
+            title: element.title,
+            description: element.description,
+            referenceId: element.videoId,
+            videoUsername : element.channelTitle,
+            videoUsernameId : element.channelId,
+            videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+          }
+        })
+        .each(function(item) {
+          SearchResults.insert(item);
+        });
+      that.loadingResults.set(false);
     });
-    that.loadingResults.set(true);
-    searchDep.changed();
     return;
   }
   return
@@ -163,15 +164,21 @@ Template.create_image_section.created = function() {
 
   var that = this;
 
+  var finishSearch = function(){
+    that.loadingResults.set(false);
+  };
+
   this.search = function(query) {
     var searchParams = {
       q: query,
       page: that.page
-    }
+    };
 
     that.page = that.page + 1;
 
-    that.loadingResults.set(false);
+    that.loadingResults.set(true);
+    searchDep.changed();
+
 
     var source = that.source.get();
 
@@ -205,6 +212,7 @@ Template.create_image_section.created = function() {
         .each(function(item) {
           SearchResults.insert(item);
         });
+        finishSearch();
       });
     } else if (source === 'flickr') {
       Meteor.call('flickrImageSearchList', searchParams, function(err, results) {
@@ -218,26 +226,25 @@ Template.create_image_section.created = function() {
           return;
         }
         _.chain(items)
-        .map(function(e) {
-          return {
-            type : that.type,
-            source : source,
-            authorId : Meteor.user()._id,
-            searchQuery : query,
-            farm: e.farm,
-            secret: e.secret,
-            id: e.id,
-            server: e.server,
-            title: e.title
-          }
-        })
-        .each(function(item) {
-          SearchResults.insert(item);
-        });
+          .map(function(e) {
+            return {
+              type : that.type,
+              source : source,
+              authorId : Meteor.user()._id,
+              searchQuery : query,
+              farm: e.farm,
+              secret: e.secret,
+              id: e.id,
+              server: e.server,
+              title: e.title
+            }
+          })
+          .each(function(item) {
+            SearchResults.insert(item);
+          });
+        finishSearch();
       });
     }
-
-    searchDep.changed();
     return;
   }
   return
