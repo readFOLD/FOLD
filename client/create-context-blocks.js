@@ -153,6 +153,7 @@ Template.create_video_section.created = function() {
 
 Template.create_image_section.created = function() {
   this.source = new ReactiveVar();
+  this.loadingResults = new ReactiveVar();
   this.type = 'image';
   this.source.set('flickr');
   this.focusResult = new ReactiveVar();
@@ -162,8 +163,13 @@ Template.create_image_section.created = function() {
 
   this.search = function(query) {
     var searchParams = {
-      q: query
+      q: query,
+      page: that.page
     }
+
+    that.page = that.page + 1;
+
+    that.loadingResults.set(false);
 
     var source = that.source.get();
 

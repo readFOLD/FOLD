@@ -10,6 +10,7 @@ if (!GOOGLE_API_SERVER_KEY) {
 Meteor.methods({
   flickrImageSearchList: function(params) {
     check(params.q, String);
+    var page = params.page + 1;  // flickr starts from 1
     this.unblock()
 
     var url = "https://api.flickr.com/services/rest/?&method=flickr.photos.search";
@@ -20,7 +21,8 @@ Meteor.methods({
       format: 'json',
       privacy_filter: 1,
       media: 'photos',
-      nojsoncallback: 1
+      nojsoncallback: 1,
+      page: page
     }
 
     var res = HTTP.get(url, {
@@ -35,14 +37,16 @@ Meteor.methods({
   imgurImageSearchList: function(params) {
     var res;
     check(params.q, String);
+    var page = params.page;
     this.unblock();
     requestParams = {
       q: params.q
     };
 
     var authorizationStr = "Client-ID " + IMGUR_CLIENT_ID;
+    var url = 'https://api.imgur.com/3/gallery/search/top/' + page;
     // https://api.imgur.com/endpoints/gallery
-    res = HTTP.get('https://api.imgur.com/3/gallery/search', {
+    var res = HTTP.get(url, {
       params: requestParams,
       headers: {"Content-Type": "text", "Authorization": authorizationStr}
     });
