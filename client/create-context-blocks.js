@@ -24,6 +24,10 @@ var createBlockHelpers = {
   selected: function() {
     return (this.source === Template.instance().source.get());
   },
+  loading: function() {
+    if (Template.instance().loadingResults)
+      return Template.instance().loadingResults.get()
+  },
   results: function () {
     searchDep.depend();
     return SearchResults.find({
@@ -33,14 +37,21 @@ var createBlockHelpers = {
   }
 };
 
+
+searchScrollFn = function(d, template) {
+  var searchContainer = $("ol.search-results-container");
+
+  if ((searchContainer.scrollTop() + searchContainer.height()) === searchContainer[0].scrollHeight) {
+    template.search($('input').val());
+  }
+};
+
+throttledSearchScrollFn = _.throttle(searchScrollFn, 20);
+
+
 var createBlockEvents = {
   "click .data-source": function(d, template) {
     template.source.set(this.source);
-  },
-
-  "click .search-trigger": function(d) {
-    d.preventDefault();
-    $(".search-form").toggleClass("search-open");
   },
 
   "submit form": function(d, template) {
@@ -48,13 +59,15 @@ var createBlockEvents = {
     template.search($('input').val());
   },
 
+  "scroll ol.search-results-container": throttledSearchScrollFn,
+
   "click li": function(d, template) {
     template.focusResult.set(this);
   },
 
   "click .add-button": function(d, template) {
     var contextId = ContextBlocks.insert(template.focusResult.get());
-    return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
+    return window.addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
   },
   "click .cancel": function() {
     Session.set('addingContext', false);
@@ -78,6 +91,7 @@ Template.create_text_section.events(createBlockEvents);
 
 Template.create_video_section.created = function() {
   this.focusResult = new ReactiveVar();
+  this.loadingResults = new ReactiveVar();
   this.type = 'video';
   this.nextPageToken = null;
 
@@ -92,6 +106,8 @@ Template.create_video_section.created = function() {
     if (pageToken) {
       searchParams['pageToken'] = pageToken;
     }
+
+    that.loadingResults.set(false);
 
     Meteor.call('youtubeVideoSearchList', searchParams, function(err, results) {
       var previousPageToken = that.nextPageToken;
@@ -127,29 +143,12 @@ Template.create_video_section.created = function() {
         SearchResults.insert(item);
       });
     });
+    that.loadingResults.set(true);
     searchDep.changed();
     return;
   }
   return
 };
-
-
-Template.create_video_section.events({
-  "scroll ol.search-results-container": function(d, template) {
-    var searchContainer = $("ol.search-results-container")
-
-    searchContainer.scroll(function() {
-      var searchResultsHeight = _.reduce($('ol.search-results-container li'),
-        function(memo, e) {
-          return memo + $(e).outerHeight() }, 0
-          );
-
-      if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
-        template.search($('input').val());
-      }
-    })
-  }
-});
 
 
 Template.create_image_section.created = function() {
@@ -245,24 +244,6 @@ Template.create_image_section.helpers({
     ]
   }
 );
-
-
-Template.create_image_section.events({
-  "scroll ol.search-results-container": function(d) {
-    var searchContainer = $("ol.search-results-container")
-
-    searchContainer.scroll(function() {
-      var searchResultsHeight = _.reduce($('ol.search-results-container li'),
-        function(memo, e) {
-          return memo + $(e).outerHeight() }, 0
-      );
-
-      if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
-        template.search($('input').val());
-      }
-    })
-  }
-});
 
 
 Template.create_map_section.created = function() {

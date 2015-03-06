@@ -59,7 +59,7 @@ Meteor.methods({
       part: 'snippet',
       q: params.q,
       maxResults: 10,
-      key: GOOGLE_API_SERVER_KEY,
+      key: GOOGLE_API_SERVER_KEY
     };
     if (params['pageToken']) {
       requestParams['pageToken'] = params['pageToken'];

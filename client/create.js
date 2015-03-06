@@ -1,29 +1,6 @@
 var autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHorizontalUI, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-window.addContextToStory = function(storyId, contextId, verticalSectionIndex) {
-  var pushObject, pushSelectorString;
-  pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
-  pushObject = {};
-  pushObject[pushSelectorString] = contextId;
-  return Meteor.call('saveStory', {
-    _id: storyId
-  }, {
-    $addToSet: pushObject
-  }, function(err, numDocs) {
-    if (err) {
-      return alert(err);
-    }
-    if (numDocs) {
-      Session.set("addingContext", null);
-      Session.set("editingContext", null);
-      return goToContext(contextId);
-    } else {
-      return alert('No docs updated');
-    }
-  });
-};
-
 window.updateUIBasedOnSelection = function(e){
   var selection = window.getSelection();
 
@@ -200,6 +177,20 @@ Tracker.autorun(function(){
   }
 });
 
+var saveCallback =  function(err, numDocs) {
+  var saveUIUpdateDelay = 300;
+  setTimeout(function(){
+    if (err) {
+      Session.set('saveState', 'failed');
+    }
+    if (!numDocs) {
+      return alert('No docs updated');
+      Session.set('saveState', 'failed');
+    }
+    Session.set('saveState', 'saved');
+  }, saveUIUpdateDelay);
+};
+
 var autoSaveVerticalSectionField = function(template, field, datatype){
   storyId = Session.get('storyId');
 
@@ -218,16 +209,7 @@ var autoSaveVerticalSectionField = function(template, field, datatype){
 
   return Meteor.call('saveStory', {
     _id: storyId
-  }, setObject, {removeEmptyStrings: false}, function(err, numDocs) {
-    if (err) {
-      Session.set('saveState', 'failed');
-    }
-    if (!numDocs) {
-      return alert('No docs updated');
-      Session.set('saveState', 'failed');
-    }
-    Session.set('saveState', 'saved');
-  });
+  }, setObject, {removeEmptyStrings: false}, saveCallback)
 };
 
 Template.vertical_section_block.events({
@@ -273,14 +255,8 @@ Template.story_title.events({
     storyId = Session.get('storyId');
     storyTitle = $.trim(template.$('div.story-title').text());
 
-    return Meteor.call('updateStoryTitle', storyId, storyTitle, function (err, numDocs) {
-      if (err) {
-        return alert(err);
-      }
-      if (!numDocs) {
-        return alert('No docs updated');
-      }
-    });
+    Session.set('saveState', 'saving');
+    return Meteor.call('updateStoryTitle', storyId, storyTitle, saveCallback)
   }
 });
 
@@ -575,9 +551,28 @@ Template.context_anchor_option.events = {
   }
 };
 
+window.addContextToStory = function(storyId, contextId, verticalSectionIndex) {
+  var pushObject, pushSelectorString;
+  pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
+  pushObject = {};
+  pushObject[pushSelectorString] = contextId;
+  return Meteor.call('saveStory', {
+    _id: storyId
+  }, {
+    $addToSet: pushObject
+  }, function(err, numDocs) {
+    if (numDocs) {
+      Session.set("addingContext", null);
+      Session.set("editingContext", null);
+      return goToContext(contextId);
+    }
+    saveCallback(err, numDocs);
+  });
+};
+
 autoFormContextAddedHooks = {
   onSuccess: function(operation, contextId, template) {
-    return addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
+    return window.addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
   },
   onError: function(operation, err, template) {
     return alert(err);
