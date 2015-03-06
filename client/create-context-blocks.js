@@ -177,9 +177,9 @@ Template.create_image_section.created = function() {
   this.page = {};
   var that = this;
 
-  // page = { "name of source" : "next results page", ....}
+  // page = { "name of source" : {"query" : "next results page"}, ....}
   _.each(imageDataSources, function(sourceObj){
-    that.page[sourceObj.source] = 0;
+    that.page[sourceObj.source] = {};
   });
 
 
@@ -190,12 +190,16 @@ Template.create_image_section.created = function() {
 
   this.search = function(query) {
     var source = that.source.get();
+    // set page to 0 if not set
+    that.page[source][query] = that.page[source][query] || 0;
+
     var searchParams = {
       q: query,
-      page: that.page[source]
+      page: that.page[source][query]
     };
 
-    that.page[source]++;
+
+    that.page[source][query]++;
 
     that.loadingResults.set(true);
     searchDep.changed();
