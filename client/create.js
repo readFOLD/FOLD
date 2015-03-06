@@ -177,6 +177,20 @@ Tracker.autorun(function(){
   }
 });
 
+var saveCallback =  function(err, numDocs) {
+  var saveUIUpdateDelay = 300;
+  setTimeout(function(){
+    if (err) {
+      Session.set('saveState', 'failed');
+    }
+    if (!numDocs) {
+      return alert('No docs updated');
+      Session.set('saveState', 'failed');
+    }
+    Session.set('saveState', 'saved');
+  }, saveUIUpdateDelay);
+};
+
 var autoSaveVerticalSectionField = function(template, field, datatype){
   storyId = Session.get('storyId');
 
@@ -195,16 +209,7 @@ var autoSaveVerticalSectionField = function(template, field, datatype){
 
   return Meteor.call('saveStory', {
     _id: storyId
-  }, setObject, {removeEmptyStrings: false}, function(err, numDocs) {
-    if (err) {
-      Session.set('saveState', 'failed');
-    }
-    if (!numDocs) {
-      return alert('No docs updated');
-      Session.set('saveState', 'failed');
-    }
-    Session.set('saveState', 'saved');
-  });
+  }, setObject, {removeEmptyStrings: false}, saveCallback)
 };
 
 Template.vertical_section_block.events({
@@ -250,14 +255,7 @@ Template.story_title.events({
     storyId = Session.get('storyId');
     storyTitle = $.trim(template.$('div.story-title').text());
 
-    return Meteor.call('updateStoryTitle', storyId, storyTitle, function (err, numDocs) {
-      if (err) {
-        return alert(err);
-      }
-      if (!numDocs) {
-        return alert('No docs updated');
-      }
-    });
+    return Meteor.call('updateStoryTitle', storyId, storyTitle, saveCallback)
   }
 });
 
@@ -562,16 +560,12 @@ window.addContextToStory = function(storyId, contextId, verticalSectionIndex) {
   }, {
     $addToSet: pushObject
   }, function(err, numDocs) {
-    if (err) {
-      return alert(err);
-    }
     if (numDocs) {
       Session.set("addingContext", null);
       Session.set("editingContext", null);
       return goToContext(contextId);
-    } else {
-      return alert('No docs updated');
     }
+    saveCallback(err, numDocs);
   });
 };
 
