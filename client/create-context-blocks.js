@@ -49,6 +49,10 @@ searchScrollFn = function(d, template) {
 
 throttledSearchScrollFn = _.throttle(searchScrollFn, 20);
 
+var addContext = function(contextBlock) {
+  var contextId = ContextBlocks.insert(contextBlock);
+  return window.addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
+};
 
 var createBlockEvents = {
   "click .data-source": function(d, template) {
@@ -67,8 +71,7 @@ var createBlockEvents = {
   },
 
   "click .add-button": function(d, template) {
-    var contextId = ContextBlocks.insert(template.focusResult.get());
-    return window.addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
+    addContext(template.focusResult.get());
   },
   "click .cancel": function() {
     Session.set('addingContext', false);
@@ -79,6 +82,12 @@ var createBlockEvents = {
 
 Template.create_video_section.helpers(createBlockHelpers);
 Template.create_video_section.events(createBlockEvents);
+
+Template.create_video_section.events({
+  "dblclick li": function (d, template) {
+    addContext(this);
+  }
+});
 
 Template.create_image_section.helpers(createBlockHelpers);
 Template.create_image_section.events(createBlockEvents);
