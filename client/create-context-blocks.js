@@ -1,5 +1,11 @@
 var searchDep = new Tracker.Dependency();
 
+var i = 0;
+
+var count = function(){
+  return i++;
+};
+
 var createBlockHelpers = {
   startingBlock: function() {
     if (this instanceof ContextBlock) {
@@ -34,7 +40,7 @@ var createBlockHelpers = {
       searchQuery: $('input').val(),
       type: Template.instance().type,
       source: Template.instance().source.get()
-    });
+    }, {sort: {ordinalId: 1} });
   }
 };
 
@@ -61,7 +67,9 @@ var createBlockEvents = {
 
   "submit form": function(d, template) {
     d.preventDefault();
-    template.search($('input').val());
+    if(!template.loadingResults.get()){
+      template.search($('input').val());
+    }
   },
 
   "scroll ol.search-results-container": throttledSearchScrollFn,
@@ -149,7 +157,8 @@ Template.create_video_section.created = function() {
             referenceId: element.videoId,
             videoUsername : element.channelTitle,
             videoUsernameId : element.channelId,
-            videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+            videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
+            nextPage: nextPageToken
           }
         })
         .each(function(item) {
@@ -190,16 +199,27 @@ Template.create_image_section.created = function() {
 
   this.search = function(query) {
     var source = that.source.get();
-    // set page to 0 if not set
-    that.page[source][query] = that.page[source][query] || 0;
+
+    var mostRecentResult = SearchResults.find({
+      searchQuery: $('input').val(),
+      type: that.type,
+      source: source
+    }, {sort: {ordinalId: 1} }).fetch().slice(-1)[0];
+
+
+    if (mostRecentResult){
+      page = mostRecentResult.nextPage;
+    } else {
+      page = 0
+    }
 
     var searchParams = {
       q: query,
-      page: that.page[source][query]
+      page: page
     };
 
+    var nextPage = page + 1;
 
-    that.page[source][query]++;
 
     that.loadingResults.set(true);
     searchDep.changed();
@@ -230,7 +250,9 @@ Template.create_image_section.created = function() {
             referenceId : e.id,
             fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
             section : e.section,
-            title : e.title
+            title : e.title,
+            nextPage: nextPage,
+            ordinalId: count()
           }
         })
         .each(function(item) {
@@ -260,7 +282,9 @@ Template.create_image_section.created = function() {
               secret: e.secret,
               id: e.id,
               server: e.server,
-              title: e.title
+              title: e.title,
+              nextPage: nextPage,
+              ordinalId: count()
             }
           })
           .each(function(item) {
