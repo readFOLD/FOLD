@@ -32,7 +32,8 @@ var createBlockHelpers = {
     searchDep.depend();
     return SearchResults.find({
       searchQuery: $('input').val(),
-      type: Template.instance().type
+      type: Template.instance().type,
+      source: Template.instance().source.get()
     });
   }
 };
@@ -93,6 +94,7 @@ Template.create_video_section.created = function() {
   this.focusResult = new ReactiveVar();
   this.loadingResults = new ReactiveVar();
   this.type = 'video';
+  this.source = new ReactiveVar('youtube');
   this.nextPageToken = null;
 
   var that = this;
