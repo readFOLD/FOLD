@@ -1,5 +1,6 @@
 var GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
 var IMGUR_CLIENT_ID = Meteor.settings.IMGUR_CLIENT_ID;
+var FLICKR_API_KEY = Meteor.settings.FLICKR_API_KEY;
 
 if (!GOOGLE_API_SERVER_KEY) {
   console.error('Settings must be loaded for apis to work');
@@ -7,7 +8,31 @@ if (!GOOGLE_API_SERVER_KEY) {
 }
 
 Meteor.methods({
-  imageSearchList: function(params) {
+  flickrImageSearchList: function(params) {
+    check(params.q, String);
+    this.unblock()
+
+    var url = "https://api.flickr.com/services/rest/?&method=flickr.photos.search";
+
+    var requestParams = {
+      tags: params.q,
+      api_key: FLICKR_API_KEY,
+      format: 'json',
+      privacy_filter: 1,
+      media: 'photos',
+      nojsoncallback: 1
+    }
+
+    var res = HTTP.get(url, {
+      params: requestParams
+    })
+    var items = JSON.parse(res.content).photos.photo;
+
+    return {
+      'items': items
+    }
+  },
+  imgurImageSearchList: function(params) {
     var res;
     check(params.q, String);
     this.unblock();

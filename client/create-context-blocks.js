@@ -79,6 +79,7 @@ Template.create_text_section.events(createBlockEvents);
 Template.create_video_section.created = function() {
   this.focusResult = new ReactiveVar();
   this.type = 'video';
+  this.nextPageToken = null;
 
   var that = this;
 
@@ -87,7 +88,7 @@ Template.create_video_section.created = function() {
       q: query
     }
 
-    pageToken = Session.get("nextPageToken");
+    pageToken = that.nextPageToken;
     if (pageToken) {
       searchParams['pageToken'] = pageToken;
     }
@@ -96,7 +97,7 @@ Template.create_video_section.created = function() {
       nextPageToken = results['nextPageToken'];
       items = results['items'];
 
-      Session.set("nextPageToken", nextPageToken)
+      that.nextPageToken = nextPageToken;
       if (err) {
         console.log(err);
         return;
@@ -110,7 +111,6 @@ Template.create_video_section.created = function() {
           type : that.type,
           source : 'youtube',
           authorId : Meteor.user()._id,
-          pageToken : Session.get("nextPageToken"),
           searchQuery : query,
           title: element.title,
           description: element.description,
@@ -152,47 +152,81 @@ Template.create_video_section.events({
 Template.create_image_section.created = function() {
   this.source = new ReactiveVar();
   this.type = 'image';
-  this.source.set('imgur');
+  this.source.set('flickr');
   this.focusResult = new ReactiveVar();
   this.page = 0;
 
   var that = this;
 
   this.search = function(query) {
-    searchParams = {
+    var searchParams = {
       q: query
     }
 
-    Meteor.call('imageSearchList', searchParams, function(err, results) {
-      items = results.items;
+    var source = that.source.get();
 
-      if (err) {
-        console.log(err);
-        return;
-      }
-      if (!items) {
-        return;
-      }
-      _.chain(items)
-      .filter(function(e) {
-        return (e.type && e.type.indexOf('image') === 0)
-      })
-      .map(function(e) {
-        return {
-          type : that.type,
-          source : 'imgur',
-          authorId : Meteor.user()._id,
-          searchQuery : query,
-          referenceId : e.id,
-          fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
-          section : e.section,
-          title : e.title
+    if (source === 'imgur') {
+      Meteor.call('imgurImageSearchList', searchParams, function(err, results) {
+        items = results.items;
+
+        if (err) {
+          console.log(err);
+          return;
         }
-      })
-      .each(function(item) {
-        SearchResults.insert(item);
+        if (!items) {
+          return;
+        }
+        _.chain(items)
+        .filter(function(e) {
+          return (e.type && e.type.indexOf('image') === 0)
+        })
+        .map(function(e) {
+          return {
+            type : that.type,
+            source : source,
+            authorId : Meteor.user()._id,
+            searchQuery : query,
+            referenceId : e.id,
+            fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
+            section : e.section,
+            title : e.title
+          }
+        })
+        .each(function(item) {
+          SearchResults.insert(item);
+        });
       });
-    });
+    } else if (source === 'flickr') {
+      Meteor.call('flickrImageSearchList', searchParams, function(err, results) {
+        items = results.items;
+
+        if (err) {
+          console.log(err);
+          return;
+        }
+        if (!items) {
+          return;
+        }
+        _.chain(items)
+        .map(function(e) {
+          return {
+            type : that.type,
+            source : source,
+            authorId : Meteor.user()._id,
+            searchQuery : query,
+            farm: e.farm,
+            secret: e.secret,
+            id: e.id,
+            server: e.server,
+            title: e.title
+          }
+        })
+        .each(function(item) {
+          SearchResults.insert(item);
+        });
+      });
+    }
+
     searchDep.changed();
     return;
   }

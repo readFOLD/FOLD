@@ -1,5 +1,28 @@
-var addContextToStory, autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHorizontalUI, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
+var autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHorizontalUI, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+window.addContextToStory = function(storyId, contextId, verticalSectionIndex) {
+  var pushObject, pushSelectorString;
+  pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
+  pushObject = {};
+  pushObject[pushSelectorString] = contextId;
+  return Meteor.call('saveStory', {
+    _id: storyId
+  }, {
+    $addToSet: pushObject
+  }, function(err, numDocs) {
+    if (err) {
+      return alert(err);
+    }
+    if (numDocs) {
+      Session.set("addingContext", null);
+      Session.set("editingContext", null);
+      return goToContext(contextId);
+    } else {
+      return alert('No docs updated');
+    }
+  });
+};
 
 window.updateUIBasedOnSelection = function(e){
   var selection = window.getSelection();
@@ -453,7 +476,7 @@ Template.add_horizontal.events({
 });
 
 Template.create_horizontal_section_block.created = function() {
-  return this.type = new ReactiveVar('video');
+  return this.type = new ReactiveVar('image');
 };
 
 Template.create_horizontal_section_block.helpers({
@@ -550,29 +573,6 @@ Template.context_anchor_option.events = {
     goToContext(contextId);
     return false;
   }
-};
-
-addContextToStory = function(storyId, contextId, verticalSectionIndex) {
-  var pushObject, pushSelectorString;
-  pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
-  pushObject = {};
-  pushObject[pushSelectorString] = contextId;
-  return Meteor.call('saveStory', {
-    _id: storyId
-  }, {
-    $addToSet: pushObject
-  }, function(err, numDocs) {
-    if (err) {
-      return alert(err);
-    }
-    if (numDocs) {
-      Session.set("addingContext", null);
-      Session.set("editingContext", null);
-      return goToContext(contextId);
-    } else {
-      return alert('No docs updated');
-    }
-  });
 };
 
 autoFormContextAddedHooks = {
