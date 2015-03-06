@@ -422,6 +422,11 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
+  fullDetails: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
   farm: {
     type: String,
     optional: true

@@ -147,7 +147,7 @@ Template.create_video_section.created = function() {
     if (mostRecentResult){
       page = mostRecentResult.nextPage;
     }
-    
+
     if (page) {
       searchParams['pageToken'] = page;
     }
@@ -184,6 +184,8 @@ Template.create_video_section.created = function() {
             videoUsername : element.channelTitle,
             videoUsernameId : element.channelId,
             videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
+            fullDetails: element,
+            ordinalId: count(),
             nextPage: nextPageToken
           }
         })
@@ -279,6 +281,7 @@ Template.create_image_section.created = function() {
             fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
             section : e.section,
             title : e.title,
+            fullDetails: e,
             nextPage: nextPage,
             ordinalId: count()
           }
@@ -311,6 +314,7 @@ Template.create_image_section.created = function() {
               id: e.id,
               server: e.server,
               title: e.title,
+              fullDetails: e,
               nextPage: nextPage,
               ordinalId: count()
             }
