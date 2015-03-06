@@ -55,7 +55,11 @@ Meteor.publish("storiesPub", function() {
 });
 
 Meteor.publish("contextBlocksPub", function() {
-  return ContextBlocks.find();
+  return ContextBlocks.find({},{
+    fields : {
+      fullDetails: 0
+    }
+  });
 });
 
 Meteor.publish("publicUserPub", function(id) {
