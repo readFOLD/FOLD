@@ -1,7 +1,6 @@
-
 var searchDep = new Tracker.Dependency();
 
-createBlockHelpers = {
+var createBlockHelpers = {
   startingBlock: function() {
     if (this instanceof ContextBlock) {
       return this;
@@ -34,7 +33,7 @@ createBlockHelpers = {
   }
 };
 
-createBlockEvents = {
+var createBlockEvents = {
   "click .data-source": function(d, template) {
     template.source.set(this.source);
   },
@@ -64,6 +63,17 @@ createBlockEvents = {
 };
 
 
+Template.create_video_section.helpers(createBlockHelpers);
+Template.create_video_section.events(createBlockEvents);
+
+Template.create_image_section.helpers(createBlockHelpers);
+Template.create_image_section.events(createBlockEvents);
+
+Template.create_map_section.helpers(createBlockHelpers);
+Template.create_map_section.events(createBlockEvents);
+
+Template.create_text_section.helpers(createBlockHelpers);
+Template.create_text_section.events(createBlockEvents);
 
 
 Template.create_video_section.created = function() {
@@ -121,11 +131,22 @@ Template.create_video_section.created = function() {
 };
 
 
-Template.create_video_section.helpers(createBlockHelpers);
-Template.create_video_section.events(createBlockEvents);
+Template.create_video_section.events({
+  "scroll ol.search-results-container": function(d, template) {
+    var searchContainer = $("ol.search-results-container")
 
-Template.create_image_section.helpers(createBlockHelpers);
-Template.create_image_section.events(createBlockEvents);
+    searchContainer.scroll(function() {
+      var searchResultsHeight = _.reduce($('ol.search-results-container li'),
+        function(memo, e) {
+          return memo + $(e).outerHeight() }, 0
+          );
+
+      if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
+        template.search($('input').val());
+      }
+    })
+  }
+});
 
 
 Template.create_image_section.created = function() {
@@ -179,9 +200,6 @@ Template.create_image_section.created = function() {
 };
 
 
-
-
-
 Template.create_image_section.helpers({
     dataSources: [
       {source: 'imgur', display: 'Imgur'},
@@ -190,7 +208,6 @@ Template.create_image_section.helpers({
     ]
   }
 );
-
 
 
 Template.create_image_section.events({
@@ -202,23 +219,6 @@ Template.create_image_section.events({
         function(memo, e) {
           return memo + $(e).outerHeight() }, 0
       );
-
-      if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
-        template.search($('input').val());
-      }
-    })
-  }
-});
-
-Template.create_video_section.events({
-  "scroll ol.search-results-container": function(d, template) {
-    var searchContainer = $("ol.search-results-container")
-
-    searchContainer.scroll(function() {
-      var searchResultsHeight = _.reduce($('ol.search-results-container li'),
-        function(memo, e) {
-          return memo + $(e).outerHeight() }, 0
-          );
 
       if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
         template.search($('input').val());
@@ -247,9 +247,7 @@ Template.create_map_section.helpers({
   }
 });
 
-Template.create_map_section.helpers(createBlockHelpers);
 
-Template.create_map_section.events(createBlockEvents);
 
 Template.create_map_section.events({
   "click .search": function(e, template) {
@@ -275,8 +273,6 @@ Template.create_text_section.helpers({
   }
 });
 
-Template.create_text_section.helpers(createBlockHelpers);
-Template.create_text_section.events(createBlockEvents);
 
 // Template.create_image_section.events({
 //   "click div.save": function(d) {
