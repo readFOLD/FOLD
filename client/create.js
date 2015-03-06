@@ -476,7 +476,7 @@ Template.add_horizontal.events({
 });
 
 Template.create_horizontal_section_block.created = function() {
-  return this.type = new ReactiveVar('image');
+  return this.type = new ReactiveVar('video');
 };
 
 Template.create_horizontal_section_block.helpers({

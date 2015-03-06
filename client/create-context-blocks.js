@@ -94,7 +94,9 @@ Template.create_video_section.created = function() {
     }
 
     Meteor.call('youtubeVideoSearchList', searchParams, function(err, results) {
-      nextPageToken = results['nextPageToken'];
+      var previousPageToken = that.nextPageToken;
+      var nextPageToken = results['nextPageToken'];
+
       items = results['items'];
 
       that.nextPageToken = nextPageToken;
@@ -111,6 +113,7 @@ Template.create_video_section.created = function() {
           type : that.type,
           source : 'youtube',
           authorId : Meteor.user()._id,
+          pageToken : previousPageToken,
           searchQuery : query,
           title: element.title,
           description: element.description,
