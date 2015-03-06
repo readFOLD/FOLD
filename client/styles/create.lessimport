@@ -70,6 +70,7 @@ div.title-overlay {
   z-index: 30;
   // background-color: @action-color;
   color: @light-color;
+  position: relative;
 
   background-color: @action-color;
   background-position: center center;
