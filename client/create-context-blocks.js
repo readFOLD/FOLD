@@ -322,6 +322,12 @@ Template.create_text_section.helpers({
   }
 });
 
+Template.search_form.events({
+  'keydown': function(){
+    searchDep.changed();
+  }
+})
+
 Template.search_form.helpers({
   placeholder: function() {
     return 'e.g. ' +
@@ -330,7 +336,7 @@ Template.search_form.helpers({
         'competitive fly fishing',
         'net neutrality'
         ]);
-  }
+  },
 });
 
 
