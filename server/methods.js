@@ -1,5 +1,6 @@
 var GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
 var IMGUR_CLIENT_ID = Meteor.settings.IMGUR_CLIENT_ID;
+var FLICKR_API_KEY = Meteor.settings.FLICKR_API_KEY;
 
 if (!GOOGLE_API_SERVER_KEY) {
   console.error('Settings must be loaded for apis to work');
@@ -7,17 +8,45 @@ if (!GOOGLE_API_SERVER_KEY) {
 }
 
 Meteor.methods({
-  imageSearchList: function(params) {
+  flickrImageSearchList: function(params) {
+    check(params.q, String);
+    var page = params.page + 1;  // flickr starts from 1
+    this.unblock();
+
+    var url = "https://api.flickr.com/services/rest/?&method=flickr.photos.search";
+
+    var requestParams = {
+      tags: params.q,
+      api_key: FLICKR_API_KEY,
+      format: 'json',
+      privacy_filter: 1,
+      media: 'photos',
+      nojsoncallback: 1,
+      page: page
+    };
+
+    var res = HTTP.get(url, {
+      params: requestParams
+    });
+    var items = JSON.parse(res.content).photos.photo;
+
+    return {
+      'items': items
+    };
+  },
+  imgurImageSearchList: function(params) {
     var res;
     check(params.q, String);
+    var page = params.page;
     this.unblock();
     requestParams = {
       q: params.q
     };
 
     var authorizationStr = "Client-ID " + IMGUR_CLIENT_ID;
+    var url = 'https://api.imgur.com/3/gallery/search/top/' + page;
     // https://api.imgur.com/endpoints/gallery
-    res = HTTP.get('https://api.imgur.com/3/gallery/search', {
+    var res = HTTP.get(url, {
       params: requestParams,
       headers: {"Content-Type": "text", "Authorization": authorizationStr}
     });
@@ -33,7 +62,7 @@ Meteor.methods({
     requestParams = {
       part: 'snippet',
       q: params.q,
-      maxResults: 10,
+      maxResults: 50,
       key: GOOGLE_API_SERVER_KEY
     };
     if (params['pageToken']) {

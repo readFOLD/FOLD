@@ -284,8 +284,9 @@ ImageBlock = (function(_super) {
         return '/' + this.referenceId;
       case 'imgur':
         return '//i.imgur.com/' + this.referenceId + '.' + this.fileExtension;
+      case 'flickr':
+        return '//farm' + this.farm + '.staticflickr.com/' + this.server + '/' + this.id + '_' + this.secret + '.jpg'
     }
-
   };
 
   ImageBlock.prototype.thumbnailUrl = function() {
@@ -294,6 +295,8 @@ ImageBlock = (function(_super) {
         return '/' + this.referenceId;
       case 'imgur':
         return '//i.imgur.com/' + this.referenceId + 't' + '.' + this.fileExtension;
+      case 'flickr':
+        return '//farm' + this.farm + '.staticflickr.com/' + this.server + '/' + this.id + '_' + this.secret + '.jpg'
     }
   };
 
@@ -412,6 +415,26 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String
   },
   source: {
+    type: String,
+    optional: true
+  },
+  referenceId: {
+    type: String,
+    optional: true
+  },
+  farm: {
+    type: String,
+    optional: true
+  },
+  secret: {
+    type: String,
+    optional: true
+  },
+  id: {
+    type: String,
+    optional: true
+  },
+  server: {
     type: String,
     optional: true
   },
