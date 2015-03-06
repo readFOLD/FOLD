@@ -90,6 +90,11 @@ Template.create.rendered = function() {
     hideContextAnchorMenu();
     return hideAnchorMenu();
   };
+  this.autorun(function(){
+    if (Session.get('read')){
+      return window.hideFoldEditor();
+    }
+  });
   if (!(Session.equals("currentY", void 0) && Session.equals("currentX", void 0))) {
     $('.attribution, #to-story').fadeOut(1);
     goToY(Session.get("currentY"));
