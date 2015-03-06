@@ -213,13 +213,13 @@ var autoSaveVerticalSectionField = function(template, field, datatype){
 };
 
 Template.vertical_section_block.events({
-  'mouseup .fold-editable': window.updateUIBasedOnSelection,
-  'blur': window.updateUIBasedOnSelection,
-  'blur .title' : function(e, template){
+  'mouseup [contenteditable]': window.updateUIBasedOnSelection,
+  'blur [contenteditable]': window.updateUIBasedOnSelection,
+  'blur .title[contenteditable]' : function(e, template){
     autoSaveVerticalSectionField(template, 'title');
     return true;
   },
-  'blur .content' : function(e, template){
+  'blur .content[contenteditable]' : function(e, template){
     autoSaveVerticalSectionField(template, 'content', 'html');
     return true;
   },
