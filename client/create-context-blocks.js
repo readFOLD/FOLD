@@ -313,6 +313,17 @@ Template.create_text_section.helpers({
   }
 });
 
+Template.search_form.helpers({
+  placeholder: function() {
+    return 'e.g. ' +
+      _.sample([
+        'radar technology',
+        'competitive fly fishing',
+        'net neutrality'
+        ]);
+  }
+});
+
 
 // Template.create_image_section.events({
 //   "click div.save": function(d) {
