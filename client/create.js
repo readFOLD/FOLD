@@ -255,6 +255,7 @@ Template.story_title.events({
     storyId = Session.get('storyId');
     storyTitle = $.trim(template.$('div.story-title').text());
 
+    Session.set('saveState', 'saving');
     return Meteor.call('updateStoryTitle', storyId, storyTitle, saveCallback)
   }
 });
