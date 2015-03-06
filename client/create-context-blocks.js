@@ -189,6 +189,8 @@ var imageDataSources = [
   {source: 'imgur', display: 'Imgur'}
 ];
 
+
+// TODO autosearch when change between sources
 Template.create_image_section.created = function() {
   this.source = new ReactiveVar();
   this.loadingResults = new ReactiveVar();
