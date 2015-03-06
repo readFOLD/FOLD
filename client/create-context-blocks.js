@@ -326,7 +326,7 @@ Template.search_form.events({
   'keydown': function(){
     searchDep.changed();
   }
-})
+});
 
 Template.search_form.helpers({
   placeholder: function() {
@@ -336,7 +336,7 @@ Template.search_form.helpers({
         'competitive fly fishing',
         'net neutrality'
         ]);
-  },
+  }
 });
 
 
