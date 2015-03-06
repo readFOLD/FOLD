@@ -1,27 +1,27 @@
 <template name="create">
   {{#with draftStory}}
-    {{ > story_header }}
-    {{ > story}}
-    {{ > fold_editor }}
+    {{> story_header }}
+    {{> story}}
+    {{> fold_editor }}
   {{/with}}
 
-  {{ > create_options}}
+  {{> create_options}}
 </template>
 
 <template name="fold_editor">
   <div id="fold-editor">
     <div id="fold-editor-button-group">
       <button type="button" class="bold-button {{#if boldActive}}active{{/if}}">
-        {{ > bold_icon }}
+        {{> bold_icon }}
       </button>
       <button type="button" class="italic-button {{#if italicActive}}active{{/if}}">
-        {{ > italic_icon }}
+        {{> italic_icon }}
       </button>
       <button type="button" class="underline-button {{#if underlineActive}}active{{/if}}">
-        {{ > underline_icon }}
+        {{> underline_icon }}
       </button>
       <button type="button" class="anchor-button {{#if anchorActive}}active{{/if}}">
-        {{ > link_card_icon }}
+        {{> link_card_icon }}
       </button>
     </div>
   {{> anchor_menu}}
@@ -66,26 +66,26 @@
 
 <template name="add_vertical_minimized">
   <div class="narrative-section new-section minimized">
-    {{ > add_vertical}}
+    {{> add_vertical}}
   </div>
 </template>
 
 <template name="add_vertical_unminimized">
   <div class="narrative-section new-section unminimized">
-    {{ > add_vertical}}
+    {{> add_vertical}}
   </div>
 </template>
 
 <template name="add_vertical">
     <div class="fit">
-      {{ > add_card_icon}}
+      {{> add_card_icon}}
     </div>
 </template>
 
 
 <template name="add_horizontal">
   <div class="narrative-section new-section horizontal-new-section {{#if addingContextToCurrentY}}editing{{/if}}" style="left: {{left}}px">
-    {{ > add_card_icon}}
+    {{> add_card_icon}}
   </div>
 </template>
 
@@ -94,34 +94,34 @@
   <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px">
     <div class="content-icons">
       <div class='unimplemented inline-block'>
-        {{ > twitter_icon }}
+        {{> twitter_icon }}
       </div>
       <div class='{{#if video}}active{{/if}} inline-block'>
-        {{ > video_icon }}
+        {{> video_icon }}
       </div>
       <div class='{{#if map}}active{{/if}} inline-block'>
-        {{ > map_icon }}
+        {{> map_icon }}
       </div>
       <div class='{{#if image}}active{{/if}} inline-block'>
-        {{ > image_icon }}
+        {{> image_icon }}
       </div>
       <div class='unimplemented inline-block'>
-        {{ > viz_icon }}
+        {{> viz_icon }}
       </div>
       <div class='unimplemented inline-block'>
-        {{ > gif_icon }}
+        {{> gif_icon }}
       </div>
       <div class='unimplemented inline-block'>
-        {{ > audio_icon }}
+        {{> audio_icon }}
       </div>
       <div class='{{#if text}}active{{/if}} inline-block'>
-        {{ > text_icon }}
+        {{> text_icon }}
       </div>
       <div class='unimplemented inline-block'>
-        {{ > link_icon }}
+        {{> link_icon }}
       </div>
       <div class='unimplemented inline-block'>
-        {{ > remix_icon }}
+        {{> remix_icon }}
       </div>
     </div>
     {{#if type}}
@@ -140,7 +140,7 @@
       <div class="search-input-container">
         <input type = "search" placeholder="Radar technology" autofocus="autofocus">
       </div>
-      <button type="submit" class="search-button">{{ > search_icon }}</button>
+      <button type="submit" class="search-button">{{> search_icon }}</button>
     </form>
   </div>
 </template>
@@ -172,6 +172,9 @@
           <img src="{{thumbnailUrl}}">
         </li>
       {{/each}}
+      {{#if loading}}
+        {{>loading_icon}}
+      {{/if}}
     </ol>
     <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
       Add
@@ -247,10 +250,10 @@
     <ol>
       <li class="link-to-card">
         <button type="button">
-          {{ > link_icon}} Link to existing card
+          {{> link_icon}} Link to existing card
         </button>
       </li>
-      {{ > context_anchor_new_card_option }}
+      {{> context_anchor_new_card_option }}
     </ol>
     <div class="bottom-bar"></div>
   </div>
@@ -276,7 +279,7 @@
 </template>
 
 <template name="context_anchor_option">
-  <button type="button">{{ > type_specific_icon}}<span class="text">{{description}}</span></button>
+  <button type="button">{{> type_specific_icon}}<span class="text">{{description}}</span></button>
 </template>
 
 <template name="context_anchor_go_back">
