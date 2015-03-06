@@ -25,7 +25,8 @@ var createBlockHelpers = {
     return (this.source === Template.instance().source.get());
   },
   loading: function() {
-    return Template.instance().loadingResults.get()
+    if (Template.instance().loadingResults)
+      return Template.instance().loadingResults.get()
   },
   results: function () {
     searchDep.depend();
