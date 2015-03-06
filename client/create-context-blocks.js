@@ -36,17 +36,13 @@ var createBlockHelpers = {
 
 searchScrollFn = function(d, template) {
   var searchContainer = $("ol.search-results-container");
-  var searchResultsHeight = _.reduce($('ol.search-results-container li'),
-    function(memo, e) {
-      return memo + $(e).outerHeight() }, 0
-  );
 
-  if ((searchContainer.scrollTop() + searchContainer.height()) === searchResultsHeight) {
+  if ((searchContainer.scrollTop() + searchContainer.height()) === searchContainer[0].scrollHeight) {
     template.search($('input').val());
   }
 };
 
-throttledSearchScrollFn = _.throttle(searchScrollFn, 50);
+throttledSearchScrollFn = _.throttle(searchScrollFn, 20);
 
 
 var createBlockEvents = {
