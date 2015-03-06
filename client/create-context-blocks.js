@@ -154,9 +154,9 @@ Template.create_video_section.created = function() {
 };
 
 var imageDataSources = [
-  {source: 'imgur', display: 'Imgur'},
   {source: 'flickr', display: 'Flickr'},
-  {source: 'getty', display: 'Getty Images'}
+  //{source: 'getty', display: 'Getty Images'},
+  {source: 'imgur', display: 'Imgur'}
 ];
 
 Template.create_image_section.created = function() {

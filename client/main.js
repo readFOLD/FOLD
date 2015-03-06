@@ -487,7 +487,7 @@ Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
 
 Template.story_browser.events({
-  "click .right": function(d) {
+  "click .right svg": function(d) {
     var currentX, horizontalSection, newX, path;
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
@@ -497,7 +497,7 @@ Template.story_browser.events({
     path = window.location.pathname.split("/");
     return path[4] = Session.get("currentX");
   },
-  "click .left": function(d) {
+  "click .left svg": function(d) {
     var currentX, horizontalSection, newX, path;
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
