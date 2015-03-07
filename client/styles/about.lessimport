@@ -89,4 +89,7 @@ div.footer {
   font-size: 12px;
   padding: 15px;
   background-color: white;
+  a {
+    color: @action-color;
+  }
 }
