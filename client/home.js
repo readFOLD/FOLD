@@ -165,6 +165,10 @@ Template.login_buttons.events({
     Template.instance().signingIn.set(true);
     return;
   },
+  'click button.logout' : function(e) {
+    e.preventDefault();
+    Meteor.logout();
+  },
   "click button.twitter-signin": function(d) {
     return loginWithTwitter();
   },

@@ -1,6 +1,6 @@
 Accounts.onCreateUser(function(options, user) {
    if(!options || !user) {
-    console.log('error creating user');
+    aler('error creating user');
     return;
     }
     if (user.services.twitter) {
@@ -8,4 +8,3 @@ Accounts.onCreateUser(function(options, user) {
     }
     return user;
 });
-

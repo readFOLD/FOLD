@@ -540,6 +540,10 @@ Schema.User = new SimpleSchema({
     type: String,
     optional: true
   },
+  name: {
+    type: String,
+    optional: true
+  },
   emails: {
     type: [Object],
     optional: true
@@ -571,5 +575,6 @@ Schema.User = new SimpleSchema({
     blackbox: true
   }
 });
+
 
 Meteor.users.attachSchema(Schema.User);

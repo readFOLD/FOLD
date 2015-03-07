@@ -8,6 +8,22 @@ if (!GOOGLE_API_SERVER_KEY) {
 }
 
 Meteor.methods({
+  updateUserInfo: function(user_info) {
+    if (Meteor.user().tempUsername) {
+      return Meteor.users.update({
+        _id: this.userId
+      }, {
+          $set: {
+            "name": user_info.name,
+            "username": user_info.username,
+            "tempUsername": ""
+          },
+          $push: {
+            "emails": {  "address" : user_info.email,  "verified" : false }
+           }
+        });
+    }
+  },
   flickrImageSearchList: function(params) {
     check(params.q, String);
     var page = params.page + 1;  // flickr starts from 1
@@ -77,7 +93,7 @@ Meteor.methods({
     nextPageToken = res.data.nextPageToken;
 
     items = _.map(res.data.items, function(element) {
-      element.snippet.videoId = element.id.videoId; //or playlistId
+      element.snippet.videoId = element.id.videoId; 
       return element.snippet;
     });
 

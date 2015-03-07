@@ -1,5 +1,3 @@
-// var isValidUsername = 
-
 var checkPassword = function(p1,p2) {
   if (!(p1.length >= 6) || !(p1===p2)) {
     return Template.instance().invalidPassword.set(true);
@@ -8,36 +6,44 @@ var checkPassword = function(p1,p2) {
   }
 };
 
-var createUser = function(user) {
-  Accounts.createUser({email: user.email, password: user.password, username: user.username,
+var createUser = function(user, template) {
+  Accounts.createUser({
+    email: user.email,
+    password: user.password,
+    username: user.username,
     profile: {
       'name':user.name
     }}, function(err) {
       if (err) {
-       //error creating user TODO
+        template.invalidUserSubmission.set(err.reason);
       } else {
         Router.go('/');
-     }
-    })
+     }});
     return;
   };
 
 Template.signup_form.created = function() {
   this.invalidPassword = new ReactiveVar(false);
+  this.invalidUserSubmission = new ReactiveVar('');
 }
 Template.signup_form.helpers({
-  tempUsername: function() {  
+  emailUser: function() {  
     if (Meteor.user()) {
-      return Meteor.user().tempUsername;
+        return false;
     }
+    return true;
   },
   invalidPassword: function() {
     return Template.instance().invalidPassword.get();
+  },
+  invalidUserSubmission: function() {
+    return Template.instance().invalidUserSubmission.get();
   }
+
 });
 
 Template.signup_form.events({
-  'submit #signup-form' : function(e, target) {
+  'submit #signup-form' : function(e, template) {
     e.preventDefault();
 
     inputs = $('#signup-form').serializeArray();
@@ -48,15 +54,19 @@ Template.signup_form.events({
         user_info[key]=value;
       });
 
-    //TODO
-    // if (Meteor.user()) {
-    //   //twitter signup, update user info
-    //   return;
-    // } 
+    if (Meteor.user()) {
+      Meteor.call('updateUserInfo', user_info, function(err) {
+      if (err) {
+        return alert(err); 
+      } else {
+        Router.go('/');
+      }});
+      return;
+    } 
 
     checkPassword(user_info.password, user_info.password2);
-    if (!Template.instance().invalidPassword.get()) {
-      createUser(user_info);
+    if (!template.invalidPassword.get()) { 
+      createUser(user_info, template);
     }
     return;
     }

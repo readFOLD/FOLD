@@ -15,7 +15,12 @@
       <label for="password"> Password </label>
       <input name="password" type="password" placeholder="password">
       <button type="submit" id="login-button">Sign in</button>
-      <a href="javascript:void(0)" onclick="Router.go('/signup/');"> Create an account</a>
+      {{#if loginFailed}}
+        <div> Invalid username or password </div>
+      {{/if}}
+      <div>
+        <a href="javascript:void(0)" onclick="Router.go('/signup/');">Create an account</a>
+      </div>
     </div>
   </form>
 </template>
