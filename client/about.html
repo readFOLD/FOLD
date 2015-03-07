@@ -1,21 +1,79 @@
 <template name="about">
 	{{> top_banner}}
 	{{> about_content}}
+    {{> footer}}
 </template>
 
 <template name="about_content">
-	<div class="about-content">
-        <div class="text">
-            FOLD is built by <b><a href="http://alexishope.com" target="_blank">Alexis Hope</a></b>, <b><a href="http://kevinzenghu.com" target="_blank">Kevin Hu</a></b>, and <b><a href="http://joegoldbeck.com" target="_blank">Joe Goldbeck</a></b> at the <b><a href="http://media.mit.edu" target="_blank">MIT Media Lab</a></b>.
+    <div class="container">
+        <div class="section">
+            <h1>About</h1>
+            <p>FOLD is a reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.</p>
+
+            <p>FOLD is built with love at the <b><a href="http://media.mit.edu" target="_blank">MIT Media Lab</a></b> with support from the <b><a href="https://civic.mit.edu/" target="_blank">Center for Civic Media</a></b>.</p>
+            <div class="logo">
+                <a href="http://media.mit.edu" target="_blank">
+                   <img src="/images/MIT_ML_Logo.jpg"/>
+                </a>
+            </div>
+            <div class="logo">
+                <a href="https://civic.mit.edu/" target="_blank">
+                   <img src="/images/civic_logo.png"/>
+                </a>
+            </div>
         </div>
-        <a href="http://alexishope.com" class="profile" target="_blank">
-        	<img class="alexis portrait" src="/images/alexis.jpg" />
-        </a>
-        <a href="http://kevinzenghu.com" class="profile" target="_blank">
-            <img class="kevin portrait" src="/images/kevin.png" />
-        </a>
-        <a href="http://joegoldbeck.com" class="profile" target="_blank">
-            <img class="joe portrait" src="/images/joe.png" />
-        </a>
-	</div>
+        <hr/>
+        <div class="section">
+            <h1>Frequently asked questions</h1>
+            <ul>
+                <li>Can I write a story?</li>
+                <div class="answer"> Absolutely! Sign up for an account with Twitter or e-mail to get started writing your own story.  It can be about any topic — something in the news, video games, beekeeping, whatever you want!</div>
+                <li>What is a "narrative card"?</li>
+                <div class="answer"> Narrative cards form the backbone of a FOLD story. Narrative cards can have a title, or they can simply be free text. Context cards are associated with individual narrative cards.</div>
+                <li>What is a "context card"?</li>
+                <div class="answer"> Context cards surround narrative cards. They can be explored with the left and right arrows, or linked directly to words and phrases in a narrative card. Context cards bring in multimedia elements, including videos, maps, photos, gifs, tweets, interactive data visualizations, text, and more. With the FOLD authoring platform, writers provide “curated tangents” to readers by adding context cards or remixing context blocks that other writers have created.</div>
+                <li>What does "remixing cards" mean?</li>
+                <div class="answer"> Any context card can be remixed by another author. If it is remixed, the new card will link back to the otiginal story and provide attribution to the author who first created it. While you're reading, if you see a card you'd like to use in your own stories, click on the pink icon underneath the context card. The card will appear in the context card builder the next time you write a story!</div>
+            </ul>
+        </div>
+        <hr/>
+        <div class="section">
+            <h1>Team</h1>
+            <p>We are current and former MIT kids who love building playful, useful, and well-designed technologies. Our other individual and collective passions include making music, playing video games, getting our hands dirty in the machine shop, and talking about quantum physics.</p>
+            <div class="outer-cent">
+                <div class="cent">
+                    <div class="photo">
+                        <a href="http://alexishope.com" class="profile" target="_blank">
+                    	   <img class="portrait" src="/images/alexis.jpg" />
+                        </a>
+                        <div class="caption">Alexis Hope</div>
+                    </div>
+                    <div class="photo">
+                        <a href="http://kevinzenghu.com" class="profile" target="_blank">
+                            <img class="portrait" src="/images/kevin.png" />
+                        </a>
+                        <div class="caption">Kevin Hu</div>
+                    </div>
+                    <div class="photo">
+                        <a href="http://joegoldbeck.com" class="profile" target="_blank">
+                            <img class="portrait" src="/images/joe.png" />
+                        </a>
+                        <div class="caption">Joe Goldbeck</div>
+                    </div>
+                    <div class="photo">
+                        <a href="http://www.nathaliehuynh.com" class="profile" target="_blank">
+                            <img class="portrait" src="/images/nathalie.png" />
+                        </a>
+                        <div class="caption">Nathalie Huynh</div>
+                    </div>
+                </div>
+            </div>
+    	</div>
+    </div>
+</template>
+
+<template name="footer">
+    <div class ="footer">
+        Follow us at <a href="http://twitter.com/readFOLD" target="_blank">@readFOLD</a> or e-mail us at <a href="mailto:fold@media.mit.edu">fold@media.mit.edu</a>.
+    </div>
 </template>
