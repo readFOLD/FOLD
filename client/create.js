@@ -200,7 +200,9 @@ Template.anchor_menu.events({
 Template.fold_link_remover.events({
   'mouseup button': function(e) {
     e.preventDefault();
+    parentDiv = ($(window.enclosingAnchorTag).closest('.content'));
     $(window.enclosingAnchorTag).contents().unwrap();
+    parentDiv.blur();
     hideFoldAll();
   }
 });
