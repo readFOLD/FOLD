@@ -367,7 +367,8 @@ div#overlay {
       background-color: @medium-color;
     }
     &.active {
-      background-color: rgba(69, 178, 29, 0.32);
+      background-color: @action-color;
+      color: white;
     }
   }
 
