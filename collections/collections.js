@@ -89,15 +89,16 @@ var cleanHtmlOptions = {
   allowedTags: ['strong', 'em', 'u', 'a'], // only allow tags used in fold-editor
   format: false,
   removeAttrs: ['class', 'id', 'href'], // strip away hrefs and other undesired attributes that might slip into a paste
-  allowedAttributes: [["data-context-id"]] // data-context-id is used to direct links to context cards
+  allowedAttributes: [["data-context-id"],["data-context-type"],["data-context-source"]] // data-context-id is used to direct links to context cards
 };
 
-var matchAnchors =  /<a( data-context-id=["|'].*?["|'])?.*?>/gm; // match anchors, capture data-context-id so it can be kept in string
+var matchAnchors =  /<a( data-context-id=["|'].*?["|'])?( data-context-type=["|'].*?["|'])?( data-context-source=["|'].*?["|'])?.*?>/gm; // match anchors, capture data-context-id and other attributes so it can be kept in string
 var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match anchors that are left over from above if copied from somewhere else, capture contents so can be kept
 
 cleanVerticalSectionContent = function(html) {
+  
   return $.htmlClean(html, cleanHtmlOptions)
-    .replace(matchAnchors, '<a href="javascript:void(0);"$1>') // add js void to all anchors and keep all data-context-ids
+    .replace(matchAnchors, '<a href="javascript:void(0);"$1$2$3>') // add js void to all anchors and keep all data-context-ids and other data attributes
     .replace(matchBlankAnchors, '$1'); // remove anchors without data-context-ids
 };
 

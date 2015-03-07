@@ -549,6 +549,8 @@ Template.context_anchor_option.events = {
     temporaryAnchorElement = $('a[href="' + temporaryHrefToken +'"]'); // find temporary anchor
     temporaryAnchorElement.attr('href', 'javascript:void(0);'); // get rid of temporary href
     temporaryAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
+    temporaryAnchorElement.attr('data-context-type', this.type);
+    temporaryAnchorElement.attr('data-context-source', this.source);
 
     //temporaryAnchorElement.data({contextId: contextId});
     goToContext(contextId);
