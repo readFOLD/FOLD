@@ -94,10 +94,15 @@ Meteor.methods({
 
     nextPageToken = res.data.nextPageToken;
 
-    items = _.map(res.data.items, function(element) {
+    items = _.chain(res.data.items)
+    .filter(function(element) {
+      return element.id.videoId;
+    })
+    .map(function(element) {
       element.snippet.videoId = element.id.videoId; 
       return element.snippet;
-    });
+    })
+    .value();
 
     return {
       'nextPageToken': nextPageToken,

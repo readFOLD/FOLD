@@ -172,30 +172,25 @@ Template.create_video_section.created = function() {
       }
       _.chain(items)
         .map(function(element) {
-          if (element.videoId) {
-            return {
-              type : that.type,
-              source : 'youtube',
-              authorId : Meteor.user()._id,
-              pageToken : previousPageToken,
-              searchQuery : query,
-              title: element.title,
-              description: element.description,
-              referenceId: element.videoId,
-              videoUsername : element.channelTitle,
-              videoUsernameId : element.channelId,
-              videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
-              fullDetails: element,
-              ordinalId: count(),
-              nextPage: nextPageToken
-            }
+          return {
+            type : that.type,
+            source : 'youtube',
+            authorId : Meteor.user()._id,
+            pageToken : previousPageToken,
+            searchQuery : query,
+            title: element.title,
+            description: element.description,
+            referenceId: element.videoId,
+            videoUsername : element.channelTitle,
+            videoUsernameId : element.channelId,
+            videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
+            fullDetails: element,
+            ordinalId: count(),
+            nextPage: nextPageToken
           }
-          return;
         })
         .each(function(item) {
-          if (item) {
-            SearchResults.insert(item);
-          }
+          SearchResults.insert(item);
         });
       that.loadingResults.set(false);
     });
