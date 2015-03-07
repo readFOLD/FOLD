@@ -72,3 +72,11 @@ Meteor.publish("publicUserPub", function(id) {
   });
 });
 
+Meteor.publish("tempUsernamePub", function() {
+  if (this.userId) {
+    return Meteor.users.find({_id: this.userId},
+                            {fields: {'tempUsername': 1,}});  
+  } else {
+    this.ready();
+  }
+});

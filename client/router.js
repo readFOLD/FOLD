@@ -162,3 +162,37 @@ Router.route("edit", {
     }
   }
 });
+
+Router.route("signup", {
+  path: "signup",
+  template: "signup",
+  onRun: function() {
+    $('html, body').scrollTop(0);
+    return this.next();
+  },
+  waitOn: function() {
+    if (Meteor.user()) {
+     [Meteor.subscribe('tempUsernamePub')];
+      return this.next();
+    }
+  },
+  action: function() {
+    if (this.ready()) {
+      return this.render();
+    }
+  }
+});
+
+Router.route("login", {
+  path: "login",
+  template: "login",
+  onRun: function() {
+    $('html, body').scrollTop(0);
+    return this.next();
+  },
+  action: function() {
+    if (this.ready()) {
+      return this.render();
+    }
+  }
+});

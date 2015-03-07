@@ -1,0 +1,32 @@
+<template name="signup">
+  {{> top_banner}}
+  <div class="signup">
+    <section>
+      {{> signup_form}}
+    </section>
+  </div>
+</template>
+
+<template name="signup_form">
+  <form id="signup-form" action="action">
+    {{#if invalidUserSubmission}}
+      <div>{{invalidUserSubmission}}</div>
+    {{/if}}
+    <label for="email"> What's your e-mail? </label>
+    <input name="email" placeholder="email@fold.com">
+    <label for="name"> What's your name? </label>
+    <input name ="name" placeholder="Full Name">
+    <label for="username"> What username would you like? </label>
+    <input name="username" placeholder="Username" value="{{#if tempUsername}} {{tempUsername}}{{/if}}">
+    {{#if emailUser}}
+      <label for="password"> Choose a password </label>
+      {{#if invalidPassword}}
+        <div class="invalid-inp">Invalid password</div>
+      {{/if}}
+      <input name="password" type="password" placeholder="password">
+      <label for="password2"> Reenter your password </label>
+      <input name="password2" type="password" placeholder="password">
+    {{/if}}
+    <button type="submit" id="signup-button">Sign up</button>
+  </form>
+</template>

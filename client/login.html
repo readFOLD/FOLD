@@ -1,0 +1,26 @@
+<template name="login">
+  {{> top_banner}}
+  <div class="login">
+    <section>
+      {{> login_form}}
+    </section>
+  </div>
+</template>
+
+<template name="login_form">
+  <form id="login-form" action="action">
+    <div>
+      <label for="username"> Username </label>
+      <input name="username" placeholder="username">
+      <label for="password"> Password </label>
+      <input name="password" type="password" placeholder="password">
+      <button type="submit" id="login-button">Sign in</button>
+      {{#if loginFailed}}
+        <div> Invalid username or password </div>
+      {{/if}}
+      {{#linkTo route="signup"}}
+        <div>Create an account</div>
+      {{/linkTo}}
+    </div>
+  </form>
+</template>

@@ -17,6 +17,23 @@ formatDateNice = function(date) {
   return monthNames[(date.getMonth() + 1)] + " " + date.getDate() + ", " + date.getFullYear();
 };
 
+loginWithTwitter = function() {
+  Meteor.loginWithTwitter({
+    requestPermissions: ['user']
+  }, function (err) {
+    if (err) {
+      alert("can't login with Twitter");
+    } else if (!Meteor.user().username) {
+      Router.go('/signup');
+    } 
+    return;
+  });
+};
+
+loginWithEmail = function() {
+  Router.go('/login')
+}
+
 Template.home.helpers({
   profileImage: function() {
     return Meteor.user().profile.profile_picture;
@@ -128,3 +145,30 @@ Template.user_stories.events({
     });
   }
 });
+
+Template.login_buttons.helpers({
+  signingIn: function() {
+    return Template.instance().signingIn.get();
+  }
+});
+
+Template.login_buttons.created = function() {
+  return this.signingIn = new ReactiveVar(false);
+};
+
+Template.login_buttons.events({
+  "click button.signin": function(d) {
+    Template.instance().signingIn.set(true);
+    return;
+  },
+  'click button.logout' : function(e) {
+    e.preventDefault();
+    Meteor.logout();
+  },
+  "click button.twitter-signin": function(d) {
+    return loginWithTwitter();
+  },
+  "click button.email-signin": function(d) {
+    return loginWithEmail();
+  }
+})
