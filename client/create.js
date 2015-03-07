@@ -1,6 +1,8 @@
 var autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHorizontalUI, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
+window.enclosingAnchorTag = null;
+
 window.updateUIBasedOnSelection = function(e){
   var selection = window.getSelection();
 
@@ -8,7 +10,8 @@ window.updateUIBasedOnSelection = function(e){
   return setTimeout((function(_this) {
     return function() {
       var boundary, boundaryMiddle, pageYOffset, range;
-      if (window.getSelection().type === 'Range') {
+      var selectionType = window.getSelection().type;
+      if(selectionType === 'Range' || selectionType === 'Caret' ) {
         range = selection.getRangeAt(0);
 
         // Get containing tag
@@ -21,25 +24,44 @@ window.updateUIBasedOnSelection = function(e){
         }
         var parentNode = selectedParentElement;
         var selectedTags = [];
+        var tagName;
+
+        window.enclosingAnchorTag = null;
 
         while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') {
-          selectedTags.push(parentNode.tagName.toLowerCase());
+          tagName = parentNode.tagName.toLowerCase();
+          selectedTags.push(tagName);
 
+          if (selectionType === 'Caret' && tagName === 'a'){
+            window.enclosingAnchorTag = parentNode;
+            break;
+          }
           parentNode = parentNode.parentNode;
         }
+
         Session.set('selectedTags', selectedTags);
 
         // TODO actually get this from selection
-        if(e) {
+        if (e) {
           boundary = range.getBoundingClientRect();
           boundaryMiddle = (boundary.left + boundary.right) / 2;
           pageYOffset = $(e.target).offset().top;
-          $('#fold-editor').show();
-          $('#fold-editor').css('left', e.pageX - 100);
-          return $('#fold-editor').css('top', e.pageY - 70);
+          if(selectionType === 'Range'){
+            showFoldEditor();
+            $('#fold-editor').css('left', e.pageX - 100);
+            return $('#fold-editor').css('top', e.pageY - 70);
+          } else if (window.enclosingAnchorTag) {
+            console.log('yes')
+            showFoldLinkRemover();
+            $('#fold-link-remover').css('left', e.pageX - 100);
+            return $('#fold-link-remover').css('top', e.pageY - 70);
+          } else {
+            return hideFoldAll();
+          }
+
         }
       } else {
-        return hideFoldEditor();
+        return hideFoldAll();
       }
     };
   })(this));
@@ -85,10 +107,27 @@ Template.create.rendered = function() {
     Session.set("contextAnchorMenuOpen", false);
     return $(".context-anchor-menu").hide();
   };
+  window.showFoldEditor = function() {
+    $('#fold-editor').show();
+    hideFoldLinkRemover();
+  };
   window.hideFoldEditor = function() {
     $('#fold-editor').hide();
     hideContextAnchorMenu();
     return hideAnchorMenu();
+  };
+
+  window.showFoldLinkRemover = function() {
+    $('#fold-link-remover').show();
+    hideFoldEditor();
+  };
+  window.hideFoldLinkRemover = function() {
+    $('#fold-link-remover').hide();
+  };
+
+  window.hideFoldAll = function() {
+    hideFoldEditor();
+    hideFoldLinkRemover();
   };
   this.autorun(function(){
     if (Session.get('read')){
@@ -155,6 +194,14 @@ Template.anchor_menu.events({
   },
   'mouseup .link-out-of-story': function(e) {
     return e.preventDefault();
+  }
+});
+
+Template.fold_link_remover.events({
+  'mouseup button': function(e) {
+    e.preventDefault();
+    $(window.enclosingAnchorTag).contents().unwrap();
+    hideFoldAll();
   }
 });
 

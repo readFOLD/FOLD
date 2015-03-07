@@ -3,6 +3,7 @@
     {{> story_header }}
     {{> story}}
     {{> fold_editor }}
+    {{> fold_link_remover }}
   {{/with}}
 
   {{> create_options}}
@@ -25,6 +26,16 @@
       </button>
     </div>
   {{> anchor_menu}}
+  </div>
+</template>
+
+<template name="fold_link_remover">
+  <div id="fold-link-remover">
+    <div id="fold-editor-button-group">
+      <button type="button" class="remove-link-button">
+        X
+      </button>
+    </div>
   </div>
 </template>
 
