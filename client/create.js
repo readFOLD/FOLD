@@ -90,6 +90,11 @@ Template.create.rendered = function() {
     hideContextAnchorMenu();
     return hideAnchorMenu();
   };
+  this.autorun(function(){
+    if (Session.get('read')){
+      return window.hideFoldEditor();
+    }
+  });
   if (!(Session.equals("currentY", void 0) && Session.equals("currentX", void 0))) {
     $('.attribution, #to-story').fadeOut(1);
     goToY(Session.get("currentY"));
@@ -544,6 +549,8 @@ Template.context_anchor_option.events = {
     temporaryAnchorElement = $('a[href="' + temporaryHrefToken +'"]'); // find temporary anchor
     temporaryAnchorElement.attr('href', 'javascript:void(0);'); // get rid of temporary href
     temporaryAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
+    temporaryAnchorElement.attr('data-context-type', this.type);
+    temporaryAnchorElement.attr('data-context-source', this.source);
 
     //temporaryAnchorElement.data({contextId: contextId});
     goToContext(contextId);

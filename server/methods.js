@@ -40,6 +40,8 @@ Meteor.methods({
       media: 'photos',
       nojsoncallback: 1,
       sort: 'relevance',
+      license: '1,2,3,4,5,6,7,8',
+      per_page: 200,
       page: page
     };
 

@@ -1,5 +1,11 @@
 var searchDep = new Tracker.Dependency();
 
+var i = 0;
+
+var count = function(){
+  return i++;
+};
+
 var createBlockHelpers = {
   startingBlock: function() {
     if (this instanceof ContextBlock) {
@@ -34,7 +40,7 @@ var createBlockHelpers = {
       searchQuery: $('input').val(),
       type: Template.instance().type,
       source: Template.instance().source.get()
-    });
+    }, {sort: {ordinalId: 1} });
   }
 };
 
@@ -43,7 +49,13 @@ searchScrollFn = function(d, template) {
   var searchContainer = $("ol.search-results-container");
 
   if ((searchContainer.scrollTop() + searchContainer.height()) === searchContainer[0].scrollHeight && !template.loadingResults.get()) {
-    template.search($('input').val());
+    if (SearchResults.find({ // confirm there are already results and we're scrolling down
+      searchQuery: $('input').val(),
+      type: template.type,
+      source: template.source.get()
+    }).count()){
+      template.search($('input').val());
+    }
   }
 };
 
@@ -61,7 +73,15 @@ var createBlockEvents = {
 
   "submit form": function(d, template) {
     d.preventDefault();
-    template.search($('input').val());
+    if(!template.loadingResults.get()){
+      if (!SearchResults.find({ // confirm there are no results yet
+          searchQuery: $('input').val(),
+          type: template.type,
+          source: template.source.get()
+        }).count()) {
+        template.search($('input').val());
+      }
+    }
   },
 
   "scroll ol.search-results-container": throttledSearchScrollFn,
@@ -109,14 +129,28 @@ Template.create_video_section.created = function() {
   var that = this;
 
   this.search = function(query) {
+
+    var source = that.source.get();
+
     searchParams = {
       q: query
     };
 
-    pageToken = that.nextPageToken;
-    if (pageToken) {
-      searchParams['pageToken'] = pageToken;
-    };
+    var mostRecentResult = SearchResults.find({
+      searchQuery: $('input').val(),
+      type: that.type,
+      source: source
+    }, {sort: {ordinalId: 1} }).fetch().slice(-1)[0];
+
+    var page;
+
+    if (mostRecentResult){
+      page = mostRecentResult.nextPage;
+    }
+
+    if (page) {
+      searchParams['pageToken'] = page;
+    }
 
     that.loadingResults.set(true);
     searchDep.changed();
@@ -149,7 +183,10 @@ Template.create_video_section.created = function() {
             referenceId: element.videoId,
             videoUsername : element.channelTitle,
             videoUsernameId : element.channelId,
-            videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+            videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
+            fullDetails: element,
+            ordinalId: count(),
+            nextPage: nextPageToken
           }
         })
         .each(function(item) {
@@ -168,6 +205,8 @@ var imageDataSources = [
   {source: 'imgur', display: 'Imgur'}
 ];
 
+
+// TODO autosearch when change between sources
 Template.create_image_section.created = function() {
   this.source = new ReactiveVar();
   this.loadingResults = new ReactiveVar();
@@ -177,9 +216,9 @@ Template.create_image_section.created = function() {
   this.page = {};
   var that = this;
 
-  // page = { "name of source" : "next results page", ....}
+  // page = { "name of source" : {"query" : "next results page"}, ....}
   _.each(imageDataSources, function(sourceObj){
-    that.page[sourceObj.source] = 0;
+    that.page[sourceObj.source] = {};
   });
 
 
@@ -190,12 +229,27 @@ Template.create_image_section.created = function() {
 
   this.search = function(query) {
     var source = that.source.get();
+
+    var mostRecentResult = SearchResults.find({
+      searchQuery: $('input').val(),
+      type: that.type,
+      source: source
+    }, {sort: {ordinalId: 1} }).fetch().slice(-1)[0];
+
+
+    if (mostRecentResult){
+      page = mostRecentResult.nextPage;
+    } else {
+      page = 0
+    }
+
     var searchParams = {
       q: query,
-      page: that.page[source]
+      page: page
     };
 
-    that.page[source]++;
+    var nextPage = page + 1;
+
 
     that.loadingResults.set(true);
     searchDep.changed();
@@ -226,7 +280,10 @@ Template.create_image_section.created = function() {
             referenceId : e.id,
             fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
             section : e.section,
-            title : e.title
+            title : e.title,
+            fullDetails: e,
+            nextPage: nextPage,
+            ordinalId: count()
           }
         })
         .each(function(item) {
@@ -256,7 +313,10 @@ Template.create_image_section.created = function() {
               secret: e.secret,
               id: e.id,
               server: e.server,
-              title: e.title
+              title: e.title,
+              fullDetails: e,
+              nextPage: nextPage,
+              ordinalId: count()
             }
           })
           .each(function(item) {
@@ -322,13 +382,21 @@ Template.create_text_section.helpers({
   }
 });
 
+Template.search_form.events({
+  'keydown': function(){
+    searchDep.changed();
+  }
+});
+
 Template.search_form.helpers({
   placeholder: function() {
     return 'e.g. ' +
       _.sample([
         'radar technology',
         'competitive fly fishing',
-        'net neutrality'
+        'net neutrality',
+        'synthetic biology',
+        'beekeeping'
         ]);
   }
 });
