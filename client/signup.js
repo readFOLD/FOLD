@@ -27,6 +27,12 @@ Template.signup_form.created = function() {
   this.invalidUserSubmission = new ReactiveVar('');
 }
 Template.signup_form.helpers({
+  tempUsername: function() {
+    if (Meteor.user()) {
+      return Meteor.user().tempUsername;
+    }
+    return;
+  },
   emailUser: function() {  
     if (Meteor.user()) {
         return false;

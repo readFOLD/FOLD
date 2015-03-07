@@ -33,10 +33,6 @@ loginWithTwitter = function() {
 loginWithEmail = function() {
   Router.go('/login/')
 }
-createAccount = function() {
-  //route to signup form with password input
-}
-
 
 Template.home.helpers({
   profileImage: function() {
