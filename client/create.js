@@ -2,6 +2,11 @@ var autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHor
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 window.enclosingAnchorTag = null;
+window.selectedNode = null;
+
+var saveUpdatedSelection = function () {
+  $(window.selectedNode).closest('.content').blur();
+};
 
 window.updateUIBasedOnSelection = function(e){
   var selection = window.getSelection();
@@ -10,6 +15,10 @@ window.updateUIBasedOnSelection = function(e){
   return setTimeout((function(_this) {
     return function() {
       var boundary, boundaryMiddle, pageYOffset, range;
+
+      window.enclosingAnchorTag = null;
+      window.selectedNode = null;
+
       var selectionType = window.getSelection().type;
       if(selectionType === 'Range' || selectionType === 'Caret' ) {
         range = selection.getRangeAt(0);
@@ -23,10 +32,10 @@ window.updateUIBasedOnSelection = function(e){
           selectedParentElement = range.startContainer;
         }
         var parentNode = selectedParentElement;
+        window.selectedNode = selectedParentElement;
         var selectedTags = [];
         var tagName;
 
-        window.enclosingAnchorTag = null;
 
         while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') {
           tagName = parentNode.tagName.toLowerCase();
@@ -162,15 +171,18 @@ Template.fold_editor.events({
   },
   'mouseup .bold-button': function(e) {
     e.preventDefault();
-    return window.document.execCommand('bold', false, null);
+    document.execCommand('bold', false, null);
+    saveUpdatedSelection();
   },
   'mouseup .italic-button': function(e) {
     e.preventDefault();
-    return window.document.execCommand('italic', false, null);
+    document.execCommand('italic', false, null);
+    saveUpdatedSelection();
   },
   'mouseup .underline-button': function(e) {
     e.preventDefault();
-    return window.document.execCommand('underline', false, null);
+    document.execCommand('underline', false, null);
+    saveUpdatedSelection();
   },
   'mouseup .anchor-button': function(e) {
     e.preventDefault();
@@ -602,6 +614,7 @@ Template.context_anchor_option.events = {
     temporaryAnchorElement.attr('data-context-source', this.source);
 
     //temporaryAnchorElement.data({contextId: contextId});
+    saveUpdatedSelection();
     goToContext(contextId);
     return false;
   }
