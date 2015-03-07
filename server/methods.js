@@ -14,10 +14,10 @@ Meteor.methods({
         _id: this.userId
       }, {
           $set: {
-            "name": user_info.name,
+            "profile.name": user_info.name,
             "username": user_info.username,
-            "tempUsername": ""
           },
+          $unset: {"tempUsername": ""},
           $push: {
             "emails": {  "address" : user_info.email,  "verified" : false }
            }

@@ -23,15 +23,15 @@ loginWithTwitter = function() {
   }, function (err) {
     if (err) {
       alert("can't login with Twitter");
-    } else if (!Meteor.user().hasOwnProperty('username')) {
-      Router.go('/signup/');
+    } else if (!Meteor.user().username) {
+      Router.go('/signup');
     } 
     return;
   });
 };
 
 loginWithEmail = function() {
-  Router.go('/login/')
+  Router.go('/login')
 }
 
 Template.home.helpers({

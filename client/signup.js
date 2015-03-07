@@ -7,13 +7,18 @@ var checkPassword = function(p1,p2) {
 };
 
 var createUser = function(user, template) {
+  console.log({
+    email: user.email,
+    password: user.password,
+    username: user.username,
+    profile : { "name" : user.name }
+    });
   Accounts.createUser({
     email: user.email,
     password: user.password,
     username: user.username,
-    profile: {
-      'name':user.name
-    }}, function(err) {
+    profile : { "name" : user.name }
+    }, function(err) {
       if (err) {
         template.invalidUserSubmission.set(err.reason);
       } else {

@@ -546,10 +546,6 @@ Schema.User = new SimpleSchema({
     type: String,
     optional: true
   },
-  name: {
-    type: String,
-    optional: true
-  },
   emails: {
     type: [Object],
     optional: true
