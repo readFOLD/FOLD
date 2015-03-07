@@ -399,6 +399,10 @@ Template.search_form.helpers({
         'beekeeping',
         'quantum physics',
         'bitcoin mining',
+        'glass blowing',
+        'falconry',
+        'origami',
+        'table tennis',
         ]);
   }
 });
