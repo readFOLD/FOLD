@@ -396,7 +396,9 @@ Template.search_form.helpers({
         'competitive fly fishing',
         'net neutrality',
         'synthetic biology',
-        'beekeeping'
+        'beekeeping',
+        'quantum physics',
+        'bitcoin mining',
         ]);
   }
 });
