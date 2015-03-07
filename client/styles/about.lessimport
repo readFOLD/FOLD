@@ -1,25 +1,92 @@
-div.about-content {
-	padding-top: 200px;
-	padding-left: 50px;
+div.container {
+  padding-top: 155px;
+  padding-left: 50px;
+  width: calc(100% ~"-" 50px);
+  height: auto;
+  margin-bottom: 45px;
+}
+
+h1 {
+  margin-bottom: 30px;
+}
+
+ul {
+  margin-top: 30px;
+}
+
+li {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+div.section {
+  margin-top: 45px;
+  margin-bottom: 45px;
+}
+
+hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+div.logo {
+  display: inline;
+
+  img {
+    margin-top: 30px;
+    height: 100px;
+    width: auto;
+    margin-right: 25px;
+  }
+}
+
+div.answer {
+  margin-top: 10px;
+  font-size: 14px;
+  width: calc(100% ~"-" 50px);
+}
+
+div.outer-cent {
+  text-align: center;
+}
+
+div.cent {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+div.caption {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+div.photo {
+    width: 200px;
+    float: left;
+    margin-right: 55px;
 }
 
 img.portrait {
-  height: 200px;
-  width: auto;
-  border-radius: 100px;
-  margin-top: 35px; 
+    height: 200px;
+    width: auto;
+    border-radius: 100px;
+    margin-top: 20px; 
 }
 
-img.alexis {
-  margin-right: 15px; 
-}
-
-img.kevin {
-  margin-left: 15px;
-  margin-right: 15px; 
-}
-
-img.joe {
-  margin-left: 15px;
-  margin-right: 15px; 
+div.footer {
+  height: 50px;
+  width: 100%;
+  margin-top: 45px;
+  display: inline-block;
+  text-align: center;
+  font-size: 12px;
+  padding: 15px;
+  background-color: white;
 }
