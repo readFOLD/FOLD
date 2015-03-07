@@ -746,7 +746,7 @@ div.text-section {
 @fold-editor-row-height: 55px;
 
 
-div#fold-editor{
+div#fold-editor, div#fold-link-remover{
   .inverted-icon-colors;
   display: none;
   max-height: @fold-editor-row-height * 5;
