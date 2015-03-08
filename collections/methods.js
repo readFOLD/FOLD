@@ -142,6 +142,34 @@ Meteor.methods({
       }
     })
   },
+  moveVerticalSectionDownOne: function(storyId, index) {
+
+
+    var selector = { _id: storyId };
+    var story = Stories.findOne(selector, {fields:
+      {
+        'draftStory.verticalSections': 1,
+        'authorId': 1
+      }
+    });
+
+    assertOwner(this.userId, story);
+
+    var verticalSections = story.draftStory.verticalSections;
+
+
+    if ((index + 1) >= story.draftStory.verticalSections){
+      throw new Meteor.Error('Index too high')
+    }
+
+    swapArrayElements(verticalSections, index, index + 1);
+
+    return updateStory({ _id: storyId }, {
+      $set: {
+        'draftStory.verticalSections': verticalSections
+      }
+    })
+  },
   favoriteStory: function(storyId) {
     return changeFavorite.call(this, storyId, true);
   },

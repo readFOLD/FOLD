@@ -397,14 +397,28 @@ Template.vertical_edit_menu.events({
     storyId = Session.get('storyId');
     var index = this.index;
 
-    if (!index) { return }
-
     return Meteor.call('moveVerticalSectionUpOne', storyId, index, function(err, numDocs) {
       if (err) {
         return alert(err);
       }
       if (numDocs) {
         return goToY(index - 1);
+      } else {
+        return alert('No docs updated');
+      }
+    });
+  },
+  "click .move-card-down": function() {
+    var indexToInsert, storyId, verticalSections;
+    storyId = Session.get('storyId');
+    var index = this.index;
+
+    return Meteor.call('moveVerticalSectionDownOne', storyId, index, function(err, numDocs) {
+      if (err) {
+        return alert(err);
+      }
+      if (numDocs) {
+        return goToY(index + 1);
       } else {
         return alert('No docs updated');
       }
