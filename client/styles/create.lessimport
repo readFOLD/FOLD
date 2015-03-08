@@ -540,8 +540,10 @@ div.horizontal-context {
       float: left;
     }
 
-     .search-trigger {
+    .search-trigger {
       z-index: 10;
+      text-align: center;
+      line-height: @searchInputHeight;
       width: @searchTriggerWidth;
       background: @black-color;
     }
@@ -594,6 +596,7 @@ div.horizontal-context {
       border-right: none;
       border-left: none; 
       white-space: normal;
+      cursor: pointer;
     
       &:hover {
         background: @light-color; 
