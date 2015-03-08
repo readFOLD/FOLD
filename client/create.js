@@ -367,6 +367,7 @@ Template.add_vertical.events({
   "click": function() {
     var indexToInsert, storyId, verticalSections;
     storyId = Session.get('storyId');
+    verticalSections = Session.get('story').verticalSections;
     indexToInsert = this.index != null ? this.index : verticalSections.length;
 
     return Meteor.call('insertVerticalSection', storyId, indexToInsert, function(err, numDocs) {
