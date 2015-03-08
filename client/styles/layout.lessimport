@@ -204,7 +204,7 @@ i {
   .color-transition;
 }
 
-ol{
+ol, ul{
   padding: 0;
   margin: 0;
 }

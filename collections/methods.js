@@ -42,6 +42,7 @@ Meteor.methods({
   // TODO PREVENT FROM SAVING OTHER WAYS
   updateStoryTitle: function(storyId, title){
     // TODO DRY
+    // TODO Security
     var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
     return updateStory({_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
@@ -61,7 +62,48 @@ Meteor.methods({
   //} else {
   //}
 
-    return updateStory(selector, modifier);
+    return updateStory(selector, modifier, options);
+  },
+  insertVerticalSection: function(storyId, position, section) {
+    // TODO - Once Meteor upgrades to use Mongo 2.6
+    // This should use the $position operator and work directly there
+    // Also, can probably get rid of the blackbox: true on verticalSections in the schema!
+
+    section = section || {
+      _id: Random.id(8),
+      contextBlocks: [],
+      title: "",
+      content: ""
+    };
+
+    var selector = { _id: storyId };
+
+    var story = Stories.findOne(selector, {fields:
+      {
+        'draftStory.verticalSections': 1,
+        'authorId': 1
+      }
+    });
+
+    if (story.authorId !== this.userId){
+      throw new Meteor.Error('Only the author may edit the story in this way')
+    }
+
+
+    var verticalSections = story.draftStory.verticalSections;
+
+    verticalSections.splice(position, 0, {
+      _id: Random.id(8),
+      contextBlocks: [],
+      title: "",
+      content: ""
+    });
+
+    return updateStory({ _id: storyId }, {
+      $set: {
+        'draftStory.verticalSections': verticalSections
+      }
+    })
   },
   favoriteStory: function(storyId) {
     return changeFavorite.call(this, storyId, true);

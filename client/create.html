@@ -39,6 +39,7 @@
   </div>
 </template>
 
+
 <template name="background_image">
   <input class="background-image-input" value="{{backgroundImage}}">
   <div class="save-background-image">Save</div>
@@ -293,6 +294,36 @@
     <div class="bottom-bar"></div>
   </div>
 </template>
+
+
+<template name="vertical_edit_menu">
+  <div class="vertical-edit-menu">
+    <ul>
+      <li>
+        <button class="add-title">
+          Add title (optional)
+        </button>
+      </li>
+      <li>
+        <button class="move-card-up">
+          Move card up one
+        </button>
+      </li>
+      <li>
+        <button class="move-card-down">
+          Move card down one
+        </button>
+      </li>
+      <li>
+        <button class="delete-card">
+          Delete card
+        </button>
+      </li>
+    </ul>
+  </div>
+</template>
+
+
 
 <template name="context_anchor_option">
   <button type="button">{{> type_specific_icon}}<span class="text">{{description}}</span></button>

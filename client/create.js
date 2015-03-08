@@ -300,19 +300,32 @@ Template.vertical_section_block.events({
 
     return document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
   },
-  'paste .title.editable': window.plainTextPaste   // only allow plaintext in title
+  'paste .title.editable': window.plainTextPaste,   // only allow plaintext in title
+  'mouseup .narrative-babyburger': function(e, template){
+    if(template.babyburgerOpen.get()){
+      template.babyburgerOpen.set(false)
+    } else {
+      template.babyburgerOpen.set(true)
+    }
+  }
 });
 
 window.refreshContentDep = new Tracker.Dependency();
 
 Template.vertical_section_block.created = function() {
   this.semiReactiveContent = new ReactiveVar(); // used in edit mode so that browser undo functionality doesn't break when autosave
+  this.babyburgerOpen = new ReactiveVar(false);
   var that = this;
   this.autorun(function() {
     window.refreshContentDep.depend();
     that.semiReactiveContent.set(that.data.content)
   });
 };
+Template.vertical_section_block.helpers({
+  babyburgerOpen: function(){
+    return Template.instance().babyburgerOpen.get();
+  }
+});
 
 Template.story_title.events({
   'paste [contenteditable]': window.plainTextPaste,
@@ -354,26 +367,9 @@ Template.add_vertical.events({
   "click": function() {
     var indexToInsert, storyId, verticalSections;
     storyId = Session.get('storyId');
-    verticalSections = Session.get('story').verticalSections;
     indexToInsert = this.index != null ? this.index : verticalSections.length;
-    console.log(indexToInsert);
-    // TODO - Once Meteor upgrades to use Mongo 2.6
-    // This should use the $position operator and work directly there
-    // Also, can probably get rid of the blackbox: true on verticalSections in the schema!
-    verticalSections.splice(indexToInsert, 0, {
-      _id: Random.id(8),
-      contextBlocks: [],
-      title: "",
-      content: ""
-    });
 
-    return Meteor.call('saveStory', {
-      _id: storyId
-    }, {
-      $set: {
-        'draftStory.verticalSections': verticalSections
-      }
-    }, {removeEmptyStrings: false}, function(err, numDocs) {
+    return Meteor.call('insertVerticalSection', storyId, indexToInsert, function(err, numDocs) {
       if (err) {
         return alert(err);
       }

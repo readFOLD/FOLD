@@ -90,6 +90,9 @@
           <button class="narrative-babyburger">
             {{> babyburger_icon}}
           </button>
+          {{#if babyburgerOpen}}
+            {{> vertical_edit_menu}}
+          {{/if}}
         {{/if}}
       {{/unless}}
       {{{titleDiv}}}

@@ -745,15 +745,13 @@ div.text-section {
 
 @fold-editor-row-height: 55px;
 
-
-.floating-menu{
+.edit-menu{
   .inverted-icon-colors;
-  display: none;
+
   max-height: @fold-editor-row-height * 5;
   opacity: 1;
   background-color: green;
   z-index: 9999999;
-  position: absolute;
   .underline-button{
     text-decoration: underline;
   }
@@ -835,6 +833,12 @@ div.text-section {
   }
 }
 
+.floating-menu{
+  .edit-menu;
+  display: none;
+  position: absolute;
+}
+
 
 div#fold-editor{
   .floating-menu;
@@ -873,7 +877,9 @@ div#fold-link-remover{
   width: 55px;
 }
 
-
+.vertical-edit-menu{
+  .edit-menu;
+}
 
 div.anchor-menu {
   display: none;
