@@ -28,7 +28,19 @@ var checkOwner = function(userId, doc) {
   return userId && userId === doc.authorId;
 };
 
-updateStory = function(selector, modifier, options) {
+var assertOwner = function(userId, doc) {
+  if(!checkOwner(userId, doc)){
+    throw new Meteor.Error('Only the author may edit in this way')
+  }
+};
+
+var swapArrayElements = function(arr, x, y){
+  var b = arr[y];
+  arr[y] = arr[x];
+  arr[x] = b;
+};
+
+var updateStory = function(selector, modifier, options) {
   if (_.isEmpty(modifier)){
     return
   }
@@ -36,6 +48,7 @@ updateStory = function(selector, modifier, options) {
 
   return Stories.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
 };
+
 
 
 Meteor.methods({
@@ -64,7 +77,7 @@ Meteor.methods({
 
     return updateStory(selector, modifier, options);
   },
-  insertVerticalSection: function(storyId, position, section) {
+  insertVerticalSection: function(storyId, index, section) {
     // TODO - Once Meteor upgrades to use Mongo 2.6
     // This should use the $position operator and work directly there
     // Also, can probably get rid of the blackbox: true on verticalSections in the schema!
@@ -76,8 +89,40 @@ Meteor.methods({
       content: ""
     };
 
-    var selector = { _id: storyId };
+    var selector = {_id: storyId};
 
+    var story = Stories.findOne(selector, {
+      fields: {
+        'draftStory.verticalSections': 1,
+        'authorId': 1
+      }
+    });
+
+    assertOwner(this.userId, story);
+
+
+    var verticalSections = story.draftStory.verticalSections;
+
+    verticalSections.splice(index, 0, {
+      _id: Random.id(8),
+      contextBlocks: [],
+      title: "",
+      content: ""
+    });
+
+    return updateStory({_id: storyId}, {
+      $set: {
+        'draftStory.verticalSections': verticalSections
+      }
+    })
+  },
+  moveVerticalSectionUpOne: function(storyId, index) {
+
+    if (!index){
+      throw new Meteor.Error('Must have a positive index')
+    }
+
+    var selector = { _id: storyId };
     var story = Stories.findOne(selector, {fields:
       {
         'draftStory.verticalSections': 1,
@@ -85,19 +130,11 @@ Meteor.methods({
       }
     });
 
-    if (story.authorId !== this.userId){
-      throw new Meteor.Error('Only the author may edit the story in this way')
-    }
-
+    assertOwner(this.userId, story);
 
     var verticalSections = story.draftStory.verticalSections;
 
-    verticalSections.splice(position, 0, {
-      _id: Random.id(8),
-      contextBlocks: [],
-      title: "",
-      content: ""
-    });
+    swapArrayElements(verticalSections, index, index - 1);
 
     return updateStory({ _id: storyId }, {
       $set: {

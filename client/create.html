@@ -304,16 +304,20 @@
           Add title (optional)
         </button>
       </li>
-      <li>
-        <button class="move-card-up">
-          Move card up one
-        </button>
-      </li>
-      <li>
-        <button class="move-card-down">
-          Move card down one
-        </button>
-      </li>
+      {{#if canMoveUp}}
+        <li>
+          <button class="move-card-up">
+            Move card up one
+          </button>
+        </li>
+      {{/if}}
+      {{#if canMoveDown}}
+        <li>
+          <button class="move-card-down">
+            Move card down one
+          </button>
+        </li>
+      {{/if}}
       <li>
         <button class="delete-card">
           Delete card

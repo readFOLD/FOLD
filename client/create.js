@@ -301,7 +301,7 @@ Template.vertical_section_block.events({
     return document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
   },
   'paste .title.editable': window.plainTextPaste,   // only allow plaintext in title
-  'mouseup .narrative-babyburger': function(e, template){
+  'click .narrative-babyburger': function(e, template){
     if(template.babyburgerOpen.get()){
       template.babyburgerOpen.set(false)
     } else {
@@ -376,6 +376,35 @@ Template.add_vertical.events({
       }
       if (numDocs) {
         return goToY(indexToInsert);
+      } else {
+        return alert('No docs updated');
+      }
+    });
+  }
+});
+
+Template.vertical_edit_menu.helpers({
+  canMoveUp: function () {
+    return this.index;
+  },
+  canMoveDown: function () {
+    return this.index < Session.get('story').verticalSections.length - 1;
+  }
+});
+Template.vertical_edit_menu.events({
+  "click .move-card-up": function() {
+    var indexToInsert, storyId, verticalSections;
+    storyId = Session.get('storyId');
+    var index = this.index;
+
+    if (!index) { return }
+
+    return Meteor.call('moveVerticalSectionUpOne', storyId, index, function(err, numDocs) {
+      if (err) {
+        return alert(err);
+      }
+      if (numDocs) {
+        return goToY(index - 1);
       } else {
         return alert('No docs updated');
       }
