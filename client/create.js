@@ -60,10 +60,9 @@ window.updateUIBasedOnSelection = function(e){
             $('#fold-editor').css('left', e.pageX - 100);
             return $('#fold-editor').css('top', e.pageY - 70);
           } else if (window.enclosingAnchorTag) {
-            console.log('yes')
             showFoldLinkRemover();
-            $('#fold-link-remover').css('left', e.pageX - 100);
-            return $('#fold-link-remover').css('top', e.pageY - 70);
+            $('#fold-link-remover').css('left', e.pageX - 25);
+            return $('#fold-link-remover').css('top', e.pageY - 45);
           } else {
             return hideFoldAll();
           }
