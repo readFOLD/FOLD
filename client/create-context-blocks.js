@@ -99,6 +99,39 @@ var createBlockEvents = {
   }
 };
 
+var searchIntegrations = {
+  image: {
+    imgur: {
+      methodName: 'imgurImageSearchList',
+      filterFn: function(e) {
+        return (e.type && e.type.indexOf('image') === 0)
+      },
+      mapFn: function(e) {
+        return {
+          referenceId : e.id,
+          fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
+          section : e.section,
+          title : e.title,
+          fullDetails: e // this should always be included unless that service makes it really large
+        }
+      }
+    },
+    flickr: {
+      methodName: 'flickrImageSearchList',
+      mapFn: function(e) {
+        return {
+          flickrImgFarm: e.farm,
+          flickrImgSecret: e.secret,
+          referenceId: e.id,
+          server: e.server,
+          title: e.title,
+          fullDetails: e // this should always be included unless that service makes it really large
+        }
+      }
+    }
+  }
+}
+
 
 Template.create_video_section.helpers(createBlockHelpers);
 Template.create_video_section.events(createBlockEvents);
@@ -229,10 +262,11 @@ Template.create_image_section.created = function() {
 
   this.search = function(query) {
     var source = that.source.get();
+    var type = that.type;
 
     var mostRecentResult = SearchResults.find({
       searchQuery: $('input').val(),
-      type: that.type,
+      type: type,
       source: source
     }, {sort: {ordinalId: 1} }).fetch().slice(-1)[0];
 
@@ -254,80 +288,37 @@ Template.create_image_section.created = function() {
     that.loadingResults.set(true);
     searchDep.changed();
 
+    integrationDetails = searchIntegrations[that.type][source];
 
+    Meteor.call(integrationDetails.methodName, searchParams, function(err, results) {
+      items = results.items;
 
-    if (source === 'imgur') {
-      Meteor.call('imgurImageSearchList', searchParams, function(err, results) {
-        items = results.items;
-
-        if (err) {
-          console.log(err);
-          return;
-        }
-        if (!items) {
-          return;
-        }
-        _.chain(items)
-        .filter(function(e) {
-          return (e.type && e.type.indexOf('image') === 0)
-        })
-        .map(function(e) {
-          return {
-            type : that.type,
-            source : source,
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (!items) {
+        return;
+      }
+      _.chain(items)
+        .filter(integrationDetails.filterFn)
+        .map(integrationDetails.mapFn)
+        .each(function(item){
+          _.extend(item, {
+            type : type,
+            source: source,
             authorId : Meteor.user()._id,
             searchQuery : query,
-            referenceId : e.id,
-            fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
-            section : e.section,
-            title : e.title,
-            fullDetails: e,
             nextPage: nextPage,
             ordinalId: count()
-          }
+          })
         })
         .each(function(item) {
           SearchResults.insert(item);
         });
-        finishSearch();
-      });
-    } else if (source === 'flickr') {
-      Meteor.call('flickrImageSearchList', searchParams, function(err, results) {
-        items = results.items;
-
-        if (err) {
-          console.log(err);
-          return;
-        }
-        if (!items) {
-          return;
-        }
-        _.chain(items)
-          .map(function(e) {
-            return {
-              type : that.type,
-              source : source,
-              authorId : Meteor.user()._id,
-              searchQuery : query,
-              farm: e.farm,
-              secret: e.secret,
-              id: e.id,
-              server: e.server,
-              title: e.title,
-              fullDetails: e,
-              nextPage: nextPage,
-              ordinalId: count()
-            }
-          })
-          .each(function(item) {
-            SearchResults.insert(item);
-          });
-        finishSearch();
-      });
-    }
-    return;
-  }
-  return
+      finishSearch();
+    });
+  };
 };
 
 
