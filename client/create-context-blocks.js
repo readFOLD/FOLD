@@ -303,7 +303,7 @@ Template.create_image_section.created = function() {
       _.chain(items)
         .filter(integrationDetails.filterFn)
         .map(integrationDetails.mapFn)
-        .each(function(item){
+        .each(function(item) {
           _.extend(item, {
             type : type,
             source: source,
@@ -311,9 +311,8 @@ Template.create_image_section.created = function() {
             searchQuery : query,
             nextPage: nextPage,
             ordinalId: count()
-          })
-        })
-        .each(function(item) {
+          });
+          
           SearchResults.insert(item);
         });
       finishSearch();
