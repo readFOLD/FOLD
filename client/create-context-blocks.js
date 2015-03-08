@@ -301,8 +301,8 @@ Template.create_image_section.created = function() {
         return;
       }
       _.chain(items)
-        .filter(integrationDetails.filterFn)
-        .map(integrationDetails.mapFn)
+        .filter(integrationDetails.filterFn || _.identity)
+        .map(integrationDetails.mapFn || _.identity)
         .each(function(item) {
           _.extend(item, {
             type : type,
