@@ -746,11 +746,10 @@ div.text-section {
 @fold-editor-row-height: 55px;
 
 
-div#fold-editor, div#fold-link-remover{
+.floating-menu{
   .inverted-icon-colors;
   display: none;
   max-height: @fold-editor-row-height * 5;
-  width: 205px;
   opacity: 1;
   background-color: green;
   z-index: 9999999;
@@ -800,33 +799,6 @@ div#fold-editor, div#fold-link-remover{
 
   }
 
-  #fold-editor-button-group {
-    height: @fold-editor-row-height;
-    background-color: @panel-color;
-    .standard-icon-colors;
-    svg{
-      @size: 40px;
-      height: @size;
-      width: @size;
-      vertical-align: middle;
-    }
-    button {
-      width: 25%;
-      height: 100%;
-      padding: 0;
-      text-align: center;
-      vertical-align: middle;
-      float: left;
-      font-size: 20pt;
-      line-height: @fold-editor-row-height;
-      &:hover {
-        circle{
-          fill: @action-color;
-        }
-        background-color: inherit;
-      }
-    }
-  }
   button{
     color: @light-color;
     background-color: inherit;
@@ -862,6 +834,46 @@ div#fold-editor, div#fold-link-remover{
     border-right: solid @triangleSize transparent;
   }
 }
+
+
+div#fold-editor{
+  .floating-menu;
+  width: 205px;
+
+  #fold-editor-button-group {
+    height: @fold-editor-row-height;
+    background-color: @panel-color;
+    .standard-icon-colors;
+    svg{
+      @size: 40px;
+      height: @size;
+      width: @size;
+      vertical-align: middle;
+    }
+    button {
+      width: 25%;
+      height: 100%;
+      padding: 0;
+      text-align: center;
+      vertical-align: middle;
+      float: left;
+      font-size: 20pt;
+      line-height: @fold-editor-row-height;
+      &:hover {
+        circle{
+          fill: @action-color;
+        }
+        background-color: inherit;
+      }
+    }
+  }
+}
+div#fold-link-remover{
+  .floating-menu;
+  width: 55px;
+}
+
+
 
 div.anchor-menu {
   display: none;
