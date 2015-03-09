@@ -135,14 +135,15 @@ var searchAPI = function(query) {
     }
     _.chain(items)
       .map(integrationDetails.mapFn || _.identity)
-      .each(function(item) {
+      .each(function(item, i) {
         _.extend(item, {
           type : type,
           source: source,
           authorId : Meteor.user()._id,
           searchQuery : query,
           nextPage: nextPage,
-          ordinalId: count()
+          ordinalId: count(),
+          fullDetails: items[i] // include all original details from the api
         });
 
         SearchResults.insert(item);
@@ -164,8 +165,7 @@ var searchIntegrations = {
           referenceId: e.videoId,
           videoUsername : e.channelTitle,
           videoUsernameId : e.channelId,
-          videoCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
-          fullDetails: e // this should always be included unless that service makes it really large
+          videoCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
         }
       }
     }
@@ -178,8 +178,7 @@ var searchIntegrations = {
           referenceId : e.id,
           fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
           section : e.section,
-          title : e.title,
-          fullDetails: e // this should always be included unless that service makes it really large
+          title : e.title
         }
       }
     },
@@ -191,8 +190,7 @@ var searchIntegrations = {
           flickrImgSecret: e.secret,
           referenceId: e.id,
           server: e.server,
-          title: e.title,
-          fullDetails: e // this should always be included unless that service makes it really large
+          title: e.title
         }
       }
     }
