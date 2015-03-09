@@ -290,12 +290,6 @@ div.vertical-narrative {
   }
 }
 
-.narrative-babyburger {
-  float:right;
-  position: relative;
-  margin-right: -30px;
-  margin-top: -25px;
-}
 
 .control-label {
     font-weight: bold;
@@ -754,7 +748,8 @@ div.text-section {
   max-height: @fold-editor-row-height * 5;
   opacity: 1;
   background-color: green;
-  z-index: 9999999;
+  position: absolute;
+
   .underline-button{
     text-decoration: underline;
   }
@@ -821,6 +816,13 @@ div.text-section {
   svg{
     fill: @light-color;
   }
+
+}
+
+.floating-menu{
+  .edit-menu;
+  display: none;
+  z-index: 9999999;
   &:after{
     @triangleSize: 8px;
     content:'';
@@ -834,12 +836,6 @@ div.text-section {
     border-left: solid @triangleSize transparent;
     border-right: solid @triangleSize transparent;
   }
-}
-
-.floating-menu{
-  .edit-menu;
-  display: none;
-  position: absolute;
 }
 
 
@@ -882,6 +878,16 @@ div#fold-link-remover{
 
 .vertical-edit-menu{
   .edit-menu;
+  right: 10px;
+  top: 10px;
+}
+
+.narrative-babyburger {
+  float:right;
+  position: relative;
+  margin-right: -30px;
+  margin-top: -25px;
+  z-index: 30;
 }
 
 div.anchor-menu {
