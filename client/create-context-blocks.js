@@ -217,7 +217,7 @@ var searchIntegrations = {
       methodName: 'giphyGifSearchList',
       mapFn: function(e){
         return {
-          referenceId: e.id
+          referenceId: e.id,
           referenceUsername: "mrdiv",
           referenceSource: "http://mrdiv.tumblr.com/post/48618427039/disco-sphere"
         }
