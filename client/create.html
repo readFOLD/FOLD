@@ -101,10 +101,11 @@
 </template>
 
 
+
 <template name="create_horizontal_section_block">
   <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px">
     <div class="content-icons">
-      <div class='unimplemented inline-block'>
+      <div class='{{#if twitter}}active{{/if}} inline-block'>
         {{> twitter_icon }}
       </div>
       <div class='{{#if video}}active{{/if}} inline-block'>
@@ -140,9 +141,11 @@
       {{#if image}}{{> create_image_section}}{{/if}}
       {{#if map}}{{> create_map_section}}{{/if}}
       {{#if video}}{{> create_video_section}}{{/if}}
+      {{#if twitter}}{{> create_twitter_section}}{{/if}}
     {{/if}}
   </div>
 </template>
+
 
 <template name="search_form">
   <div class="search-form search-open">
@@ -207,6 +210,11 @@
       <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
     {{/if}}
   </div>
+</template>
+
+
+<template name="create_twitter_section">
+  <button type="button" class="search">Search</button>
 </template>
 
 <template name="create_video_section">

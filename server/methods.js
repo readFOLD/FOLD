@@ -1,13 +1,34 @@
 var GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
 var IMGUR_CLIENT_ID = Meteor.settings.IMGUR_CLIENT_ID;
 var FLICKR_API_KEY = Meteor.settings.FLICKR_API_KEY;
+var TWITTER_API_KEY = Meteor.settings.TWITTER_API_KEY;
+var TWITTER_API_SECRET = Meteor.settings.TWITTER_API_SECRET;
+
+var Twit = Meteor.npmRequire('twit');
 
 if (!GOOGLE_API_SERVER_KEY) {
   console.error('Settings must be loaded for apis to work');
   throw new Meteor.Error('Settings must be loaded for apis to work');
 }
 
+
 Meteor.methods({
+   twitterTweetSearchList: function() {
+    var client = new Twit({
+      consumer_key: TWITTER_API_KEY,
+      consumer_secret: TWITTER_API_SECRET,
+      access_token: '77660191-kyOfXkCC9tdLwj6CHRixXBA0Km3HeSThz30OfWgsk',
+      access_token_secret: "zmBzEBHBDUX1ky3sZdmVrxbora71kQaFt1OUz0nr76jsv"
+    });
+    console.log(client);
+    var params = {screen_name: 'readFold'};
+    
+    Meteor.wrapAsync(client.get('statuses/user_timeline', params, function(error, tweets, response){
+      if (!error) {
+        console.log(tweets);
+      }
+    }));
+  },
   updateUserInfo: function(user_info) {
     if (Meteor.user().tempUsername) {
       return Meteor.users.update({

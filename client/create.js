@@ -523,6 +523,9 @@ Template.create_horizontal_section_block.helpers({
   video: function() {
     return Template.instance().type.get() === "video";
   },
+  twitter: function() {
+    return Template.instance().type.get() === "twitter";
+  },
   oec: function() {
     return Template.instance().type.get() === "oec";
   }
@@ -553,6 +556,9 @@ Template.create_horizontal_section_block.events({
   },
   'click svg.image-icon': function(d, t) {
     return t.type.set('image');
+  },
+  'click svg.twitter-icon': function(d, t) {
+    return t.type.set('twitter');
   }
 });
 

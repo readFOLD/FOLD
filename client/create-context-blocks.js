@@ -118,6 +118,11 @@ Template.create_map_section.events(createBlockEvents);
 Template.create_text_section.helpers(createBlockHelpers);
 Template.create_text_section.events(createBlockEvents);
 
+Template.create_twitter_section.events({
+  'click .search' : function(e){
+    Meteor.call('twitterTweetSearchList')
+  }
+})
 
 Template.create_video_section.created = function() {
   this.focusResult = new ReactiveVar();

@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "twit": {
+      "version": "1.1.20",
+      "dependencies": {
+        "oauth": {
+          "version": "0.9.9"
+        }
+      }
+    }
+  }
+}
