@@ -219,35 +219,32 @@ Template.create_text_section.events(createBlockEvents);
 
 
 Template.create_video_section.created = function() {
-  this.focusResult = new ReactiveVar();
-  this.loadingResults = new ReactiveVar();
   this.type = 'video';
   this.source = new ReactiveVar('youtube');
 
+  this.loadingResults = new ReactiveVar();
+  this.focusResult = new ReactiveVar();
   this.search = _.bind(searchAPI, this);
 };
-
-var imageDataSources = [
-  {source: 'flickr', display: 'Flickr'},
-  //{source: 'getty', display: 'Getty Images'},
-  {source: 'imgur', display: 'Imgur'}
-];
 
 
 // TODO autosearch when change between sources
 Template.create_image_section.created = function() {
-  this.source = new ReactiveVar();
-  this.loadingResults = new ReactiveVar();
   this.type = 'image';
-  this.source.set('flickr');
-  this.focusResult = new ReactiveVar();
+  this.source = new ReactiveVar('flickr');
 
+  this.loadingResults = new ReactiveVar();
+  this.focusResult = new ReactiveVar();
   this.search = _.bind(searchAPI, this)
 };
 
 
 Template.create_image_section.helpers({
-    dataSources: imageDataSources
+    dataSources: [
+      {source: 'flickr', display: 'Flickr'},
+      //{source: 'getty', display: 'Getty Images'},
+      {source: 'imgur', display: 'Imgur'}
+    ]
   }
 );
 
