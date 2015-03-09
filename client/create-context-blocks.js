@@ -294,7 +294,7 @@ Template.create_image_section.created = function() {
       items = results.items;
 
       if (err) {
-        console.log(err);
+        alert(err);
         return;
       }
       if (!items) {
