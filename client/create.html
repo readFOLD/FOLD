@@ -39,6 +39,7 @@
   </div>
 </template>
 
+
 <template name="background_image">
   <input class="background-image-input" value="{{backgroundImage}}">
   <div class="save-background-image">Save</div>
@@ -103,7 +104,7 @@
 
 
 <template name="create_horizontal_section_block">
-  <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px">
+  <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <div class="content-icons">
       <div class='{{#if twitter}}active{{/if}} inline-block'>
         {{> twitter_icon }}
@@ -150,7 +151,7 @@
 <template name="search_form">
   <div class="search-form search-open">
     <form>
-      <button type="button" class="search-trigger">Search</button>
+      <div class="search-trigger">Search</div>
       <div class="search-input-container">
         <input type = "search" placeholder={{placeholder}} autofocus="autofocus">
       </div>
@@ -180,7 +181,7 @@
       </ul>
     </div>
     {{> search_form}}
-    <ol class="search-results-container" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
+    <ol class="search-results-container">
       {{#each results}}
         <li class="tile {{#if isFocused}}focused{{/if}}">
           <img src="{{thumbnailUrl}}">
@@ -220,7 +221,7 @@
 <template name="create_video_section">
   <div class="create-section">
     {{> search_form}}
-    <ol class="search-results-container" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
+    <ol class="search-results-container">
       {{#each results}}
         <li>
             <div class="{{#if isFocused}}focused-{{/if}}search-result">
@@ -301,6 +302,40 @@
     <div class="bottom-bar"></div>
   </div>
 </template>
+
+
+<template name="vertical_edit_menu">
+  <div class="vertical-edit-menu">
+    <ul>
+      <li>
+        <button class="add-title">
+          XXAdd title (optional)XX
+        </button>
+      </li>
+      {{#if canMoveUp}}
+        <li>
+          <button class="move-card-up">
+            Move card up one
+          </button>
+        </li>
+      {{/if}}
+      {{#if canMoveDown}}
+        <li>
+          <button class="move-card-down">
+            Move card down one
+          </button>
+        </li>
+      {{/if}}
+      <li>
+        <button class="delete-card">
+          XXDelete cardXX
+        </button>
+      </li>
+    </ul>
+  </div>
+</template>
+
+
 
 <template name="context_anchor_option">
   <button type="button">{{> type_specific_icon}}<span class="text">{{description}}</span></button>

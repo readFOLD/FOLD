@@ -100,6 +100,104 @@ var createBlockEvents = {
 };
 
 
+var searchAPI = function(query) {
+  var source = this.source.get();
+  var type = this.type;
+  var page;
+
+  var mostRecentResult = SearchResults.find({
+    searchQuery: $('input').val(),
+    type: type,
+    source: source
+  }, {sort: {ordinalId: 1} }).fetch().slice(-1)[0];
+
+
+  if (mostRecentResult) {
+    page = mostRecentResult.nextPage;
+  }
+
+  this.loadingResults.set(true);
+  var that = this;
+  searchDep.changed();
+
+  integrationDetails = searchIntegrations[this.type][source];
+
+  Meteor.call(integrationDetails.methodName, query, page, function(err, results) {
+    var items = results.items;
+    var nextPage = results.nextPage;
+
+    if (err) {
+      alert(err);
+      return;
+    }
+    if (!items) {
+      return;
+    }
+    _.chain(items)
+      .map(integrationDetails.mapFn || _.identity)
+      .each(function(item, i) {
+        _.extend(item, {
+          type : type,
+          source: source,
+          authorId : Meteor.user()._id,
+          searchQuery : query,
+          nextPage: nextPage,
+          ordinalId: count(),
+          fullDetails: items[i] // include all original details from the api
+        });
+
+        SearchResults.insert(item);
+      });
+
+    // finish search
+    that.loadingResults.set(false);
+  });
+};
+
+var searchIntegrations = {
+  video: {
+    youtube: {
+      methodName: 'youtubeVideoSearchList',
+      mapFn: function(e){
+        return {
+          title: e.title,
+          description: e.description,
+          referenceId: e.videoId,
+          videoUsername : e.channelTitle,
+          videoUsernameId : e.channelId,
+          videoCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+        }
+      }
+    }
+  },
+  image: {
+    imgur: {
+      methodName: 'imgurImageSearchList',
+      mapFn: function(e) {
+        return {
+          referenceId : e.id,
+          fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
+          section : e.section,
+          title : e.title
+        }
+      }
+    },
+    flickr: {
+      methodName: 'flickrImageSearchList',
+      mapFn: function(e) {
+        return {
+          flickrImgFarm: e.farm,
+          flickrImgSecret: e.secret,
+          referenceId: e.id,
+          server: e.server,
+          title: e.title
+        }
+      }
+    }
+  }
+};
+
+
 Template.create_video_section.helpers(createBlockHelpers);
 Template.create_video_section.events(createBlockEvents);
 
@@ -125,219 +223,32 @@ Template.create_twitter_section.events({
 })
 
 Template.create_video_section.created = function() {
-  this.focusResult = new ReactiveVar();
-  this.loadingResults = new ReactiveVar();
   this.type = 'video';
   this.source = new ReactiveVar('youtube');
-  this.nextPageToken = null;
 
-  var that = this;
-
-  this.search = function(query) {
-
-    var source = that.source.get();
-
-    searchParams = {
-      q: query
-    };
-
-    var mostRecentResult = SearchResults.find({
-      searchQuery: $('input').val(),
-      type: that.type,
-      source: source
-    }, {sort: {ordinalId: 1} }).fetch().slice(-1)[0];
-
-    var page;
-
-    if (mostRecentResult){
-      page = mostRecentResult.nextPage;
-    }
-
-    if (page) {
-      searchParams['pageToken'] = page;
-    }
-
-    that.loadingResults.set(true);
-    searchDep.changed();
-
-
-    Meteor.call('youtubeVideoSearchList', searchParams, function(err, results) {
-      var previousPageToken = that.nextPageToken;
-      var nextPageToken = results['nextPageToken'];
-
-      items = results['items'];
-
-      that.nextPageToken = nextPageToken;
-      if (err) {
-        console.log(err);
-        return;
-      }
-      if (!items) {
-        return;
-      }
-      _.chain(items)
-        .map(function(element) {
-          return {
-            type : that.type,
-            source : 'youtube',
-            authorId : Meteor.user()._id,
-            pageToken : previousPageToken,
-            searchQuery : query,
-            title: element.title,
-            description: element.description,
-            referenceId: element.videoId,
-            videoUsername : element.channelTitle,
-            videoUsernameId : element.channelId,
-            videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
-            fullDetails: element,
-            ordinalId: count(),
-            nextPage: nextPageToken
-          }
-        })
-        .each(function(item) {
-          SearchResults.insert(item);
-        });
-      that.loadingResults.set(false);
-    });
-    return;
-  }
-  return
+  this.loadingResults = new ReactiveVar();
+  this.focusResult = new ReactiveVar();
+  this.search = _.bind(searchAPI, this);
 };
-
-var imageDataSources = [
-  {source: 'flickr', display: 'Flickr'},
-  //{source: 'getty', display: 'Getty Images'},
-  {source: 'imgur', display: 'Imgur'}
-];
 
 
 // TODO autosearch when change between sources
 Template.create_image_section.created = function() {
-  this.source = new ReactiveVar();
-  this.loadingResults = new ReactiveVar();
   this.type = 'image';
-  this.source.set('flickr');
+  this.source = new ReactiveVar('flickr');
+
+  this.loadingResults = new ReactiveVar();
   this.focusResult = new ReactiveVar();
-  this.page = {};
-  var that = this;
-
-  // page = { "name of source" : {"query" : "next results page"}, ....}
-  _.each(imageDataSources, function(sourceObj){
-    that.page[sourceObj.source] = {};
-  });
-
-
-
-  var finishSearch = function(){
-    that.loadingResults.set(false);
-  };
-
-  this.search = function(query) {
-    var source = that.source.get();
-
-    var mostRecentResult = SearchResults.find({
-      searchQuery: $('input').val(),
-      type: that.type,
-      source: source
-    }, {sort: {ordinalId: 1} }).fetch().slice(-1)[0];
-
-
-    if (mostRecentResult){
-      page = mostRecentResult.nextPage;
-    } else {
-      page = 0
-    }
-
-    var searchParams = {
-      q: query,
-      page: page
-    };
-
-    var nextPage = page + 1;
-
-
-    that.loadingResults.set(true);
-    searchDep.changed();
-
-
-
-    if (source === 'imgur') {
-      Meteor.call('imgurImageSearchList', searchParams, function(err, results) {
-        items = results.items;
-
-        if (err) {
-          console.log(err);
-          return;
-        }
-        if (!items) {
-          return;
-        }
-        _.chain(items)
-        .filter(function(e) {
-          return (e.type && e.type.indexOf('image') === 0)
-        })
-        .map(function(e) {
-          return {
-            type : that.type,
-            source : source,
-            authorId : Meteor.user()._id,
-            searchQuery : query,
-            referenceId : e.id,
-            fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
-            section : e.section,
-            title : e.title,
-            fullDetails: e,
-            nextPage: nextPage,
-            ordinalId: count()
-          }
-        })
-        .each(function(item) {
-          SearchResults.insert(item);
-        });
-        finishSearch();
-      });
-    } else if (source === 'flickr') {
-      Meteor.call('flickrImageSearchList', searchParams, function(err, results) {
-        items = results.items;
-
-        if (err) {
-          console.log(err);
-          return;
-        }
-        if (!items) {
-          return;
-        }
-        _.chain(items)
-          .map(function(e) {
-            return {
-              type : that.type,
-              source : source,
-              authorId : Meteor.user()._id,
-              searchQuery : query,
-              farm: e.farm,
-              secret: e.secret,
-              id: e.id,
-              server: e.server,
-              title: e.title,
-              fullDetails: e,
-              nextPage: nextPage,
-              ordinalId: count()
-            }
-          })
-          .each(function(item) {
-            SearchResults.insert(item);
-          });
-        finishSearch();
-      });
-    }
-    return;
-  }
-  return
+  this.search = _.bind(searchAPI, this)
 };
 
 
 Template.create_image_section.helpers({
-    dataSources: imageDataSources
+    dataSources: [
+      {source: 'flickr', display: 'Flickr'},
+      //{source: 'getty', display: 'Getty Images'},
+      {source: 'imgur', display: 'Imgur'}
+    ]
   }
 );
 
@@ -401,7 +312,13 @@ Template.search_form.helpers({
         'competitive fly fishing',
         'net neutrality',
         'synthetic biology',
-        'beekeeping'
+        'beekeeping',
+        'quantum physics',
+        'bitcoin mining',
+        'glass blowing',
+        'falconry',
+        'origami',
+        'table tennis',
         ]);
   }
 });

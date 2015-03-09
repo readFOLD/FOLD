@@ -36,7 +36,7 @@ Meteor.methods({
       }, {
           $set: {
             "profile.name": user_info.name,
-            "username": user_info.username,
+            "username": user_info.username
           },
           $unset: {"tempUsername": ""},
           $push: {
@@ -45,16 +45,26 @@ Meteor.methods({
         });
     }
   },
-  flickrImageSearchList: function(params) {
-    check(params.q, String);
-    var page = params.page + 1;  // flickr starts from 1
+
+  ///////////////////////////////////
+  /////// SEARCH API METHODS ///////
+  //////////////////////////////////
+  /*
+
+  input: (query, page (optional))
+  output: {items: [..], nextPage: any constant value})
+
+  */
+  flickrImageSearchList: function(query, page) {
+    check(query, String);
+    page = page || 1;  // flickr starts from 1
     this.unblock();
 
     var url = "https://api.flickr.com/services/rest/?&method=flickr.photos.search";
 
     var requestParams = {
-      tags: params.q.replace(' ', ','),
-      text: params.q,
+      tags: query.replace(' ', ','),
+      text: query,
       api_key: FLICKR_API_KEY,
       format: 'json',
       privacy_filter: 1,
@@ -72,16 +82,17 @@ Meteor.methods({
     var items = JSON.parse(res.content).photos.photo;
 
     return {
-      'items': items
+      'items': items,
+      'nextPage': page + 1
     };
   },
-  imgurImageSearchList: function(params) {
+  imgurImageSearchList: function(query, page) {
     var res;
-    check(params.q, String);
-    var page = params.page;
+    check(query, String);
     this.unblock();
+    page = page || 0;
     requestParams = {
-      q: params.q
+      q: query
     };
 
     var authorizationStr = "Client-ID " + IMGUR_CLIENT_ID;
@@ -93,21 +104,24 @@ Meteor.methods({
     });
 
     return {
-      'items': res.data.data
+      nextPage: page + 1,
+      items: _.filter(res.data.data, function(e) {
+        return (e.type && e.type.indexOf('image') === 0)
+      })
     }
   },
-  youtubeVideoSearchList: function(params) {
+  youtubeVideoSearchList: function(query, page) {
     var res;
-    check(params.q, String);
+    check(query, String);
     this.unblock();
     requestParams = {
       part: 'snippet',
-      q: params.q,
+      q: query,
       maxResults: 50,
       key: GOOGLE_API_SERVER_KEY
     };
-    if (params['pageToken']) {
-      requestParams['pageToken'] = params['pageToken'];
+    if (page) {
+      requestParams['pageToken'] = page;
     }
     res = HTTP.get('https://www.googleapis.com/youtube/v3/search', {
       params: requestParams
@@ -126,7 +140,7 @@ Meteor.methods({
     .value();
 
     return {
-      'nextPageToken': nextPageToken,
+      'nextPage': nextPageToken,
       'items': items
     }
   }

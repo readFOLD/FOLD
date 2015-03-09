@@ -87,9 +87,12 @@
     <section>
       {{#unless read}}
         {{#if verticalSelected}}
-          <button class="narrative-babyburger">
+          <button class="narrative-babyburger {{#if babyburgerOpen}}active{{/if}}">
             {{> babyburger_icon}}
           </button>
+          {{#if babyburgerOpen}}
+            {{> vertical_edit_menu}}
+          {{/if}}
         {{/if}}
       {{/unless}}
       {{{titleDiv}}}

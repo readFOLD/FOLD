@@ -28,7 +28,19 @@ var checkOwner = function(userId, doc) {
   return userId && userId === doc.authorId;
 };
 
-updateStory = function(selector, modifier, options) {
+var assertOwner = function(userId, doc) {
+  if(!checkOwner(userId, doc)){
+    throw new Meteor.Error('Only the author may edit in this way')
+  }
+};
+
+var swapArrayElements = function(arr, x, y){
+  var b = arr[y];
+  arr[y] = arr[x];
+  arr[x] = b;
+};
+
+var updateStory = function(selector, modifier, options) {
   if (_.isEmpty(modifier)){
     return
   }
@@ -38,10 +50,12 @@ updateStory = function(selector, modifier, options) {
 };
 
 
+
 Meteor.methods({
   // TODO PREVENT FROM SAVING OTHER WAYS
   updateStoryTitle: function(storyId, title){
     // TODO DRY
+    // TODO Security
     var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
     return updateStory({_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
@@ -61,7 +75,100 @@ Meteor.methods({
   //} else {
   //}
 
-    return updateStory(selector, modifier);
+    return updateStory(selector, modifier, options);
+  },
+  insertVerticalSection: function(storyId, index, section) {
+    // TODO - Once Meteor upgrades to use Mongo 2.6
+    // This should use the $position operator and work directly there
+    // Also, can probably get rid of the blackbox: true on verticalSections in the schema!
+
+    section = section || {
+      _id: Random.id(8),
+      contextBlocks: [],
+      title: "",
+      content: ""
+    };
+
+    var selector = {_id: storyId};
+
+    var story = Stories.findOne(selector, {
+      fields: {
+        'draftStory.verticalSections': 1,
+        'authorId': 1
+      }
+    });
+
+    assertOwner(this.userId, story);
+
+
+    var verticalSections = story.draftStory.verticalSections;
+
+    verticalSections.splice(index, 0, {
+      _id: Random.id(8),
+      contextBlocks: [],
+      title: "",
+      content: ""
+    });
+
+    return updateStory({_id: storyId}, {
+      $set: {
+        'draftStory.verticalSections': verticalSections
+      }
+    })
+  },
+  moveVerticalSectionUpOne: function(storyId, index) {
+
+    if (!index){
+      throw new Meteor.Error('Must have a positive index')
+    }
+
+    var selector = { _id: storyId };
+    var story = Stories.findOne(selector, {fields:
+      {
+        'draftStory.verticalSections': 1,
+        'authorId': 1
+      }
+    });
+
+    assertOwner(this.userId, story);
+
+    var verticalSections = story.draftStory.verticalSections;
+
+    swapArrayElements(verticalSections, index, index - 1);
+
+    return updateStory({ _id: storyId }, {
+      $set: {
+        'draftStory.verticalSections': verticalSections
+      }
+    })
+  },
+  moveVerticalSectionDownOne: function(storyId, index) {
+
+
+    var selector = { _id: storyId };
+    var story = Stories.findOne(selector, {fields:
+      {
+        'draftStory.verticalSections': 1,
+        'authorId': 1
+      }
+    });
+
+    assertOwner(this.userId, story);
+
+    var verticalSections = story.draftStory.verticalSections;
+
+
+    if ((index + 1) >= story.draftStory.verticalSections){
+      throw new Meteor.Error('Index too high')
+    }
+
+    swapArrayElements(verticalSections, index, index + 1);
+
+    return updateStory({ _id: storyId }, {
+      $set: {
+        'draftStory.verticalSections': verticalSections
+      }
+    })
   },
   favoriteStory: function(storyId) {
     return changeFavorite.call(this, storyId, true);

@@ -290,12 +290,6 @@ div.vertical-narrative {
   }
 }
 
-.narrative-babyburger {
-  float:right;
-  position: relative;
-  margin-right: -30px;
-  margin-top: -25px;
-}
 
 .control-label {
     font-weight: bold;
@@ -540,8 +534,10 @@ div.horizontal-context {
       float: left;
     }
 
-     .search-trigger {
+    .search-trigger {
       z-index: 10;
+      text-align: center;
+      line-height: @searchInputHeight;
       width: @searchTriggerWidth;
       background: @black-color;
     }
@@ -594,6 +590,7 @@ div.horizontal-context {
       border-right: none;
       border-left: none; 
       white-space: normal;
+      cursor: pointer;
     
       &:hover {
         background: @light-color; 
@@ -745,16 +742,14 @@ div.text-section {
 
 @fold-editor-row-height: 55px;
 
-
-div#fold-editor, div#fold-link-remover{
+.edit-menu{
   .inverted-icon-colors;
-  display: none;
+
   max-height: @fold-editor-row-height * 5;
-  width: 205px;
   opacity: 1;
   background-color: green;
-  z-index: 9999999;
   position: absolute;
+
   .underline-button{
     text-decoration: underline;
   }
@@ -800,6 +795,54 @@ div#fold-editor, div#fold-link-remover{
 
   }
 
+  button{
+    color: @light-color;
+    background-color: inherit;
+    font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;
+    font-weight: 400;
+    font-size: .9em;
+    padding: 0.5em 1em 0 1em;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    &:not([DISABLED]){
+      cursor: pointer;
+      &:hover {
+        color: white;
+        background-color: @action-color;
+      }
+    }
+  }
+  svg{
+    fill: @light-color;
+  }
+
+}
+
+.floating-menu{
+  .edit-menu;
+  display: none;
+  z-index: 9999999;
+  &:after{
+    @triangleSize: 8px;
+    content:'';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -@triangleSize;
+    width: 0;
+    height: 0;
+    border-top: solid @triangleSize @panel-color;
+    border-left: solid @triangleSize transparent;
+    border-right: solid @triangleSize transparent;
+  }
+}
+
+
+div#fold-editor{
+  .floating-menu;
+  width: 205px;
+
   #fold-editor-button-group {
     height: @fold-editor-row-height;
     background-color: @panel-color;
@@ -827,40 +870,24 @@ div#fold-editor, div#fold-link-remover{
       }
     }
   }
-  button{
-    color: @light-color;
-    background-color: inherit;
-    font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;
-    font-weight: 400;
-    font-size: .9em;
-    padding: 0.5em 1em 0 1em;
-    text-align: left;
-    text-decoration: none;
-    display: inline-block;
-    &:not([DISABLED]){
-      cursor: pointer;
-      &:hover {
-        color: white;
-        background-color: @action-color;
-      }
-    }
-  }
-  svg{
-    fill: @light-color;
-  }
-  &:after{
-    @triangleSize: 8px;
-    content:'';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -@triangleSize;
-    width: 0;
-    height: 0;
-    border-top: solid @triangleSize @panel-color;
-    border-left: solid @triangleSize transparent;
-    border-right: solid @triangleSize transparent;
-  }
+}
+div#fold-link-remover{
+  .floating-menu;
+  width: 55px;
+}
+
+.vertical-edit-menu{
+  .edit-menu;
+  right: 10px;
+  top: 10px;
+}
+
+.narrative-babyburger {
+  float:right;
+  position: relative;
+  margin-right: -30px;
+  margin-top: -25px;
+  z-index: 30;
 }
 
 div.anchor-menu {

@@ -2,6 +2,11 @@ var autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHor
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 window.enclosingAnchorTag = null;
+window.selectedNode = null;
+
+var saveUpdatedSelection = function () {
+  $(window.selectedNode).closest('.content').blur();
+};
 
 window.updateUIBasedOnSelection = function(e){
   var selection = window.getSelection();
@@ -10,6 +15,10 @@ window.updateUIBasedOnSelection = function(e){
   return setTimeout((function(_this) {
     return function() {
       var boundary, boundaryMiddle, pageYOffset, range;
+
+      window.enclosingAnchorTag = null;
+      window.selectedNode = null;
+
       var selectionType = window.getSelection().type;
       if(selectionType === 'Range' || selectionType === 'Caret' ) {
         range = selection.getRangeAt(0);
@@ -23,10 +32,10 @@ window.updateUIBasedOnSelection = function(e){
           selectedParentElement = range.startContainer;
         }
         var parentNode = selectedParentElement;
+        window.selectedNode = selectedParentElement;
         var selectedTags = [];
         var tagName;
 
-        window.enclosingAnchorTag = null;
 
         while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') {
           tagName = parentNode.tagName.toLowerCase();
@@ -51,10 +60,9 @@ window.updateUIBasedOnSelection = function(e){
             $('#fold-editor').css('left', e.pageX - 100);
             return $('#fold-editor').css('top', e.pageY - 70);
           } else if (window.enclosingAnchorTag) {
-            console.log('yes')
             showFoldLinkRemover();
-            $('#fold-link-remover').css('left', e.pageX - 100);
-            return $('#fold-link-remover').css('top', e.pageY - 70);
+            $('#fold-link-remover').css('left', e.pageX - 25);
+            return $('#fold-link-remover').css('top', e.pageY - 45);
           } else {
             return hideFoldAll();
           }
@@ -162,15 +170,18 @@ Template.fold_editor.events({
   },
   'mouseup .bold-button': function(e) {
     e.preventDefault();
-    return window.document.execCommand('bold', false, null);
+    document.execCommand('bold', false, null);
+    saveUpdatedSelection();
   },
   'mouseup .italic-button': function(e) {
     e.preventDefault();
-    return window.document.execCommand('italic', false, null);
+    document.execCommand('italic', false, null);
+    saveUpdatedSelection();
   },
   'mouseup .underline-button': function(e) {
     e.preventDefault();
-    return window.document.execCommand('underline', false, null);
+    document.execCommand('underline', false, null);
+    saveUpdatedSelection();
   },
   'mouseup .anchor-button': function(e) {
     e.preventDefault();
@@ -200,7 +211,9 @@ Template.anchor_menu.events({
 Template.fold_link_remover.events({
   'mouseup button': function(e) {
     e.preventDefault();
+    parentDiv = ($(window.enclosingAnchorTag).closest('.content'));
     $(window.enclosingAnchorTag).contents().unwrap();
+    parentDiv.blur();
     hideFoldAll();
   }
 });
@@ -287,19 +300,32 @@ Template.vertical_section_block.events({
 
     return document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
   },
-  'paste .title.editable': window.plainTextPaste   // only allow plaintext in title
+  'paste .title.editable': window.plainTextPaste,   // only allow plaintext in title
+  'click .narrative-babyburger': function(e, template){
+    if(template.babyburgerOpen.get()){
+      template.babyburgerOpen.set(false)
+    } else {
+      template.babyburgerOpen.set(true)
+    }
+  }
 });
 
 window.refreshContentDep = new Tracker.Dependency();
 
 Template.vertical_section_block.created = function() {
   this.semiReactiveContent = new ReactiveVar(); // used in edit mode so that browser undo functionality doesn't break when autosave
+  this.babyburgerOpen = new ReactiveVar(false);
   var that = this;
   this.autorun(function() {
     window.refreshContentDep.depend();
     that.semiReactiveContent.set(that.data.content)
   });
 };
+Template.vertical_section_block.helpers({
+  babyburgerOpen: function(){
+    return Template.instance().babyburgerOpen.get();
+  }
+});
 
 Template.story_title.events({
   'paste [contenteditable]': window.plainTextPaste,
@@ -343,29 +369,56 @@ Template.add_vertical.events({
     storyId = Session.get('storyId');
     verticalSections = Session.get('story').verticalSections;
     indexToInsert = this.index != null ? this.index : verticalSections.length;
-    console.log(indexToInsert);
-    // TODO - Once Meteor upgrades to use Mongo 2.6
-    // This should use the $position operator and work directly there
-    // Also, can probably get rid of the blackbox: true on verticalSections in the schema!
-    verticalSections.splice(indexToInsert, 0, {
-      _id: Random.id(8),
-      contextBlocks: [],
-      title: "",
-      content: ""
-    });
 
-    return Meteor.call('saveStory', {
-      _id: storyId
-    }, {
-      $set: {
-        'draftStory.verticalSections': verticalSections
-      }
-    }, {removeEmptyStrings: false}, function(err, numDocs) {
+    return Meteor.call('insertVerticalSection', storyId, indexToInsert, function(err, numDocs) {
       if (err) {
         return alert(err);
       }
       if (numDocs) {
         return goToY(indexToInsert);
+      } else {
+        return alert('No docs updated');
+      }
+    });
+  }
+});
+
+Template.vertical_edit_menu.helpers({
+  canMoveUp: function () {
+    return this.index;
+  },
+  canMoveDown: function () {
+    return this.index < Session.get('story').verticalSections.length - 1;
+  }
+});
+Template.vertical_edit_menu.events({
+  "click .move-card-up": function() {
+    var indexToInsert, storyId, verticalSections;
+    storyId = Session.get('storyId');
+    var index = this.index;
+
+    return Meteor.call('moveVerticalSectionUpOne', storyId, index, function(err, numDocs) {
+      if (err) {
+        return alert(err);
+      }
+      if (numDocs) {
+        return goToY(index - 1);
+      } else {
+        return alert('No docs updated');
+      }
+    });
+  },
+  "click .move-card-down": function() {
+    var indexToInsert, storyId, verticalSections;
+    storyId = Session.get('storyId');
+    var index = this.index;
+
+    return Meteor.call('moveVerticalSectionDownOne', storyId, index, function(err, numDocs) {
+      if (err) {
+        return alert(err);
+      }
+      if (numDocs) {
+        return goToY(index + 1);
       } else {
         return alert('No docs updated');
       }
@@ -606,6 +659,7 @@ Template.context_anchor_option.events = {
     temporaryAnchorElement.attr('data-context-source', this.source);
 
     //temporaryAnchorElement.data({contextId: contextId});
+    saveUpdatedSelection();
     goToContext(contextId);
     return false;
   }

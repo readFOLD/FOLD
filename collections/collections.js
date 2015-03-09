@@ -286,7 +286,7 @@ ImageBlock = (function(_super) {
       case 'imgur':
         return '//i.imgur.com/' + this.referenceId + '.' + this.fileExtension;
       case 'flickr':
-        return '//farm' + this.farm + '.staticflickr.com/' + this.server + '/' + this.id + '_' + this.secret + '.jpg'
+        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.server + '/' + this.referenceId + '_' + this.flickrImgSecret + '.jpg'
     }
   };
 
@@ -297,7 +297,7 @@ ImageBlock = (function(_super) {
       case 'imgur':
         return '//i.imgur.com/' + this.referenceId + 't' + '.' + this.fileExtension;
       case 'flickr':
-        return '//farm' + this.farm + '.staticflickr.com/' + this.server + '/' + this.id + '_' + this.secret + '.jpg'
+        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.server + '/' + this.referenceId + '_' + this.flickrImgSecret + '_t' + '.jpg'
     }
   };
 
@@ -428,15 +428,11 @@ Schema.ContextBlocks = new SimpleSchema({
     optional: true,
     blackbox: true
   },
-  farm: {
+  flickrImgFarm: {
     type: String,
     optional: true
   },
-  secret: {
-    type: String,
-    optional: true
-  },
-  id: {
+  flickrImgSecret: {
     type: String,
     optional: true
   },
@@ -448,7 +444,7 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  referenceId: {
+  referenceId: { // id used by source
     type: String,
     optional: true
   },

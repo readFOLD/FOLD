@@ -1,5 +1,17 @@
 .standard-icon-colors;
 
+.active{
+  circle{
+    fill: @action-color;
+  }
+}
+
+.back-arrow{
+  path{
+    fill: @light-color;
+  }
+}
+
 svg.icon {
   .size-to-fit;
 }
@@ -31,7 +43,6 @@ svg.search-icon {
 }
 
 svg.babyburger-icon{
-  .standard-icon-colors;
   .size(20px);
   &:hover {
     circle{
