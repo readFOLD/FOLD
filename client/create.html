@@ -105,7 +105,7 @@
 <template name="create_horizontal_section_block">
   <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <div class="content-icons">
-      <button class='unimplemented'>
+      <button class='{{#if twitter}}active{{/if}}'>
         {{> twitter_icon }}
       </button>
       <button class='{{#if video}}active{{/if}}'>
@@ -117,26 +117,31 @@
       <button class='{{#if image}}active{{/if}}'>
         {{> image_icon }}
       </button>
-      <button class='unimplemented'>
+      <button class='{{#if viz}}active{{/if}}'>
         {{> viz_icon }}
       </button>
       <button class='{{#if gif}}active{{/if}}'>
         {{> gif_icon }}
       </button>
-      <button class='unimplemented'>
+      <button class='{{#if audio}}active{{/if}}'>
         {{> audio_icon }}
       </button>
       <button class='{{#if text}}active{{/if}}'>
         {{> text_icon }}
       </button>
-      <button class='unimplemented'>
+      <button class='{{#if link}}active{{/if}}'>
         {{> link_icon }}
       </button>
-      <button class='unimplemented'>
+      <button class='{{#if remix}}active{{/if}}'>
         {{> remix_icon }}
       </button>
     </div>
     {{#if type}}
+      {{#if twitter}}{{> unimplemented_create_section}}{{/if}}
+      {{#if viz}}{{> unimplemented_create_section}}{{/if}}
+      {{#if audio}}{{> unimplemented_create_section}}{{/if}}
+      {{#if link}}{{> unimplemented_create_section}}{{/if}}
+      {{#if remix}}{{> unimplemented_create_section}}{{/if}}
       {{#if text}}{{> create_text_section}}{{/if}}
       {{#if image}}{{> create_image_section}}{{/if}}
       {{#if gif}}{{> create_gif_section}}{{/if}}
@@ -159,6 +164,13 @@
 </template>
 
 <!-- Create Templates -->
+<template name="unimplemented_create_section">
+  <div class="create-section">
+    Coming soon!
+  </div>
+</template>
+
+
 <template name="create_text_section">
   <div class="create-section">
     {{#autoForm collection='ContextBlocks' id="createTextSectionForm" doc=startingBlock type="insert" validation="keyup"}}
