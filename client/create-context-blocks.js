@@ -65,7 +65,7 @@ var createBlockEvents = {
   "submit form": function(d, template) {
     d.preventDefault();
     if(!template.loadingResults.get()){
-      if (!template.existingSearchResults().count()) {  // confirm there are no results yet
+      if (!template.existingSearchResults || !template.existingSearchResults().count()) {  // confirm there are no results yet
         template.search();
       }
     }
@@ -287,7 +287,19 @@ Template.create_gif_section.helpers({
 
 
 Template.create_map_section.created = function() {
-  return this.focusResult = new ReactiveVar();
+  this.loadingResults = new ReactiveVar();
+  this.focusResult = new ReactiveVar();
+
+  var that = this;
+  this.search = function(){
+    input = getSearchInput.call(this);
+    console.log(input)
+    that.focusResult.set(new MapBlock({
+      mapQuery: input.query,
+      mapType: input.option
+
+    }))
+  };
 };
 
 Template.create_map_section.helpers({
