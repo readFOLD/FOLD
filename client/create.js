@@ -242,7 +242,7 @@ Tracker.autorun(function(){
   }
 });
 
-var saveCallback =  function(err, numDocs) {
+var saveCallback =  function(err, numDocs, cb) {
   var saveUIUpdateDelay = 300;
   setTimeout(function(){
     if (err) {
@@ -254,6 +254,9 @@ var saveCallback =  function(err, numDocs) {
     }
     Session.set('saveState', 'saved');
   }, saveUIUpdateDelay);
+  if(cb){
+    cb(err, numDocs)
+  }
 };
 
 var autoSaveVerticalSectionField = function(template, field, datatype){
@@ -692,7 +695,7 @@ Template.context_anchor_option.events = {
   }
 };
 
-window.addContextToStory = function(storyId, contextId, verticalSectionIndex) {
+window.addContextToStory = function(storyId, contextId, verticalSectionIndex, cb) {
   var pushObject, pushSelectorString;
   pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
   pushObject = {};
@@ -707,7 +710,25 @@ window.addContextToStory = function(storyId, contextId, verticalSectionIndex) {
       Session.set("editingContext", null);
       return goToContext(contextId);
     }
-    saveCallback(err, numDocs);
+    saveCallback(err, numDocs, cb);
+  });
+};
+
+window.removeContextFromStory = function(storyId, contextId, verticalSectionIndex, cb) {
+  var pushObject, pushSelectorString;
+  pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
+  pullObject = {};
+  pullObject[pushSelectorString] = contextId;
+  return Meteor.call('saveStory', {
+    _id: storyId
+  }, {
+    $pull: pullObject
+  }, function(err, numDocs) {
+    if (numDocs) {
+      Session.set("addingContext", null);
+      Session.set("editingContext", null);
+    }
+    saveCallback(err, numDocs, cb);
   });
 };
 
@@ -734,10 +755,19 @@ AutoForm.hooks({
 });
 
 Template.horizontal_section_block.events({
-  "click div.delete": function(d) {
-    return console.log("delete");
+  "click .delete": function(d) {
+    if(confirm("Permanently delete this card?")){
+      Session.set('saveState', 'saving');
+      id = this._id;
+      window.removeContextFromStory(Session.get("storyId"), id, Session.get("currentY"), function(err){
+        if(err){
+          return
+        }
+        ContextBlocks.remove(id);
+      });
+    }
   },
-  "click div.edit": function(e, t) {
+  "click .edit": function(e, t) {
     Session.set('editingContext', this._id);
     return Session.set('addingContext', false);
   }
