@@ -564,9 +564,17 @@ div.horizontal-context {
       padding: 7.5px 13px 7.5px 40px;
     }
 
-    .search-radios{
-      position: absolute;
-      top: 60px;
+  }
+
+  .search-radios{
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    input {
+      width: auto;
+    }
+    label {
+      margin-right: 10px;
     }
   }
 
