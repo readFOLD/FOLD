@@ -99,7 +99,76 @@ var createBlockEvents = {
   }
 };
 
+
+var searchAPI = function(query) {
+  var source = this.source.get();
+  var type = this.type;
+  var page;
+
+  var mostRecentResult = SearchResults.find({
+    searchQuery: $('input').val(),
+    type: type,
+    source: source
+  }, {sort: {ordinalId: 1} }).fetch().slice(-1)[0];
+
+
+  if (mostRecentResult) {
+    page = mostRecentResult.nextPage;
+  }
+
+  this.loadingResults.set(true);
+  var that = this;
+  searchDep.changed();
+
+  integrationDetails = searchIntegrations[this.type][source];
+
+  Meteor.call(integrationDetails.methodName, query, page, function(err, results) {
+    var items = results.items;
+    var nextPage = results.nextPage;
+
+    if (err) {
+      alert(err);
+      return;
+    }
+    if (!items) {
+      return;
+    }
+    _.chain(items)
+      .map(integrationDetails.mapFn || _.identity)
+      .each(function(item) {
+        _.extend(item, {
+          type : type,
+          source: source,
+          authorId : Meteor.user()._id,
+          searchQuery : query,
+          nextPage: nextPage,
+          ordinalId: count()
+        });
+
+        SearchResults.insert(item);
+      });
+
+    // finish search
+    that.loadingResults.set(false);
+  });
+};
+
 var searchIntegrations = {
+  video: {
+    youtube: {
+      methodName: 'youtubeVideoSearchList',
+      mapFn: function(e){
+        return {
+          title: e.title,
+          description: e.description,
+          referenceId: e.videoId,
+          videoUsername : e.channelTitle,
+          videoUsernameId : e.channelId,
+          videoCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+        }
+      }
+    }
+  },
   image: {
     imgur: {
       methodName: 'imgurImageSearchList',
@@ -127,7 +196,7 @@ var searchIntegrations = {
       }
     }
   }
-}
+};
 
 
 Template.create_video_section.helpers(createBlockHelpers);
@@ -154,79 +223,8 @@ Template.create_video_section.created = function() {
   this.loadingResults = new ReactiveVar();
   this.type = 'video';
   this.source = new ReactiveVar('youtube');
-  this.nextPageToken = null;
 
-  var that = this;
-
-  this.search = function(query) {
-
-    var source = that.source.get();
-
-    searchParams = {
-      q: query
-    };
-
-    var mostRecentResult = SearchResults.find({
-      searchQuery: $('input').val(),
-      type: that.type,
-      source: source
-    }, {sort: {ordinalId: 1} }).fetch().slice(-1)[0];
-
-    var page;
-
-    if (mostRecentResult){
-      page = mostRecentResult.nextPage;
-    }
-
-    if (page) {
-      searchParams['pageToken'] = page;
-    }
-
-    that.loadingResults.set(true);
-    searchDep.changed();
-
-
-    Meteor.call('youtubeVideoSearchList', searchParams, function(err, results) {
-      var previousPageToken = that.nextPageToken;
-      var nextPageToken = results['nextPageToken'];
-
-      items = results['items'];
-
-      that.nextPageToken = nextPageToken;
-      if (err) {
-        console.log(err);
-        return;
-      }
-      if (!items) {
-        return;
-      }
-      _.chain(items)
-        .map(function(element) {
-          return {
-            type : that.type,
-            source : 'youtube',
-            authorId : Meteor.user()._id,
-            pageToken : previousPageToken,
-            searchQuery : query,
-            title: element.title,
-            description: element.description,
-            referenceId: element.videoId,
-            videoUsername : element.channelTitle,
-            videoUsernameId : element.channelId,
-            videoCreationDate : element.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
-            fullDetails: element,
-            ordinalId: count(),
-            nextPage: nextPageToken
-          }
-        })
-        .each(function(item) {
-          SearchResults.insert(item);
-        });
-      that.loadingResults.set(false);
-    });
-    return;
-  }
-  return
+  this.search = _.bind(searchAPI, this);
 };
 
 var imageDataSources = [
@@ -243,69 +241,8 @@ Template.create_image_section.created = function() {
   this.type = 'image';
   this.source.set('flickr');
   this.focusResult = new ReactiveVar();
-  this.page = {};
-  var that = this;
 
-  // page = { "name of source" : {"query" : "next results page"}, ....}
-  _.each(imageDataSources, function(sourceObj){
-    that.page[sourceObj.source] = {};
-  });
-
-
-
-  var finishSearch = function(){
-    that.loadingResults.set(false);
-  };
-
-  this.search = function(query) {
-    var source = that.source.get();
-    var type = that.type;
-    var page;
-
-    var mostRecentResult = SearchResults.find({
-      searchQuery: $('input').val(),
-      type: type,
-      source: source
-    }, {sort: {ordinalId: 1} }).fetch().slice(-1)[0];
-
-
-    if (mostRecentResult) {
-      page = mostRecentResult.nextPage;
-    }
-
-    that.loadingResults.set(true);
-    searchDep.changed();
-
-    integrationDetails = searchIntegrations[that.type][source];
-
-    Meteor.call(integrationDetails.methodName, query, page, function(err, results) {
-      var items = results.items;
-      var nextPage = results.nextPage;
-
-      if (err) {
-        alert(err);
-        return;
-      }
-      if (!items) {
-        return;
-      }
-      _.chain(items)
-        .map(integrationDetails.mapFn || _.identity)
-        .each(function(item) {
-          _.extend(item, {
-            type : type,
-            source: source,
-            authorId : Meteor.user()._id,
-            searchQuery : query,
-            nextPage: nextPage,
-            ordinalId: count()
-          });
-          
-          SearchResults.insert(item);
-        });
-      finishSearch();
-    });
-  };
+  this.search = _.bind(searchAPI, this)
 };
 
 
