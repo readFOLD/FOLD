@@ -513,15 +513,19 @@ Schema.ContextBlocks = new SimpleSchema({
     optional: true
   },
 
-  videoCreationDate: {
+  referenceCreationDate: {
     type: String,
     optional: true
   },
-  videoUsername: {
+  referenceUsername: {
     type: String,
     optional: true
   },
-  videoUsernameId: {
+  referenceUsernameId: {
+    type: String,
+    optional: true
+  },
+  referenceSource: {
     type: String,
     optional: true
   },

@@ -180,9 +180,9 @@ var searchIntegrations = {
           title: e.title,
           description: e.description,
           referenceId: e.videoId,
-          videoUsername : e.channelTitle,
-          videoUsernameId : e.channelId,
-          videoCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+          referenceUsername : e.channelTitle,
+          referenceUsernameId : e.channelId,
+          referenceCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
         }
       }
     }
@@ -218,8 +218,8 @@ var searchIntegrations = {
       mapFn: function(e){
         return {
           referenceId: e.id
-          //username: "mrdiv",
-          //source: "http://mrdiv.tumblr.com/post/48618427039/disco-sphere",
+          referenceUsername: "mrdiv",
+          referenceSource: "http://mrdiv.tumblr.com/post/48618427039/disco-sphere"
         }
       }
     }
