@@ -570,6 +570,9 @@ Template.create_horizontal_section_block.helpers({
   image: function() {
     return Template.instance().type.get() === "image";
   },
+  gif: function() {
+    return Template.instance().type.get() === "gif";
+  },
   map: function() {
     return Template.instance().type.get() === "map";
   },
@@ -606,6 +609,9 @@ Template.create_horizontal_section_block.events({
   },
   'click svg.image-icon': function(d, t) {
     return t.type.set('image');
+  },
+  'click svg.gif-icon': function(d, t) {
+    return t.type.set('gif');
   }
 });
 

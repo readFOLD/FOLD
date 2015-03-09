@@ -89,6 +89,29 @@ Meteor.methods({
       })
     }
   },
+  giphyGifSearchList: function(query, option, page) {
+    var res;
+    check(query, String);
+    this.unblock();
+    page = page || 0;
+    requestParams = {
+      q: query,
+      api_key: 'dc6zaTOxFJmzC',
+      offset: page,
+      limit: 25
+    };
+
+    var res = HTTP.get('http://api.giphy.com/v1/gifs/search', {
+      params: requestParams
+    });
+
+    var data = res.data;
+
+    return {
+      nextPage: data.pagination.count + data.pagination.offset,
+      items: data.data
+    }
+  },
   youtubeVideoSearchList: function(query, option, page) {
     var res;
     check(query, String);
@@ -113,7 +136,7 @@ Meteor.methods({
         return element.id.videoId;
       })
       .map(function(element) {
-        element.snippet.videoId = element.id.videoId; 
+        element.snippet.videoId = element.id.videoId;
         return element.snippet;
       })
       .value();

@@ -120,7 +120,7 @@
       <div class='unimplemented inline-block'>
         {{> viz_icon }}
       </div>
-      <div class='unimplemented inline-block'>
+      <div class='{{#if gif}}inline-block{{/if}}'>
         {{> gif_icon }}
       </div>
       <div class='unimplemented inline-block'>
@@ -139,6 +139,7 @@
     {{#if type}}
       {{#if text}}{{> create_text_section}}{{/if}}
       {{#if image}}{{> create_image_section}}{{/if}}
+      {{#if gif}}{{> create_gif_section}}{{/if}}
       {{#if map}}{{> create_map_section}}{{/if}}
       {{#if video}}{{> create_video_section}}{{/if}}
     {{/if}}
@@ -169,6 +170,32 @@
 </template>
 
 <template name="create_image_section">
+  <div class="create-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    {{> search_form}}
+    <ol class="search-results-container">
+      {{#each results}}
+        <li class="tile {{#if isFocused}}focused{{/if}}">
+          <img src="{{thumbnailUrl}}">
+        </li>
+      {{/each}}
+      {{#if loading}}
+        {{> loading_icon}}
+      {{/if}}
+    </ol>
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
+  </div>
+</template>
+
+<template name="create_gif_section">
   <div class="create-section">
     <div class="tabs">
       <ul>

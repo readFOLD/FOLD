@@ -286,7 +286,7 @@ ImageBlock = (function(_super) {
       case 'imgur':
         return '//i.imgur.com/' + this.referenceId + '.' + this.fileExtension;
       case 'flickr':
-        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.server + '/' + this.referenceId + '_' + this.flickrImgSecret + '.jpg'
+        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.flickrServer + '/' + this.referenceId + '_' + this.flickrImgSecret + '.jpg'
     }
   };
 
@@ -297,11 +297,37 @@ ImageBlock = (function(_super) {
       case 'imgur':
         return '//i.imgur.com/' + this.referenceId + 't' + '.' + this.fileExtension;
       case 'flickr':
-        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.server + '/' + this.referenceId + '_' + this.flickrImgSecret + '_t' + '.jpg'
+        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.flickrServer + '/' + this.referenceId + '_' + this.flickrImgSecret + '_t' + '.jpg'
     }
   };
 
   return ImageBlock;
+
+})(ContextBlock);
+
+GifBlock = (function(_super) {
+  __extends(GifBlock, _super);
+
+  function GifBlock(doc) {
+    GifBlock.__super__.constructor.call(this, doc);
+    this.type = 'gif';
+  }
+
+  GifBlock.prototype.url = function() {
+    switch (this.source) {
+      case 'giphy':
+        return 'http://media4.giphy.com/media/' + this.referenceId + '/giphy.gif'
+    }
+  };
+
+  GifBlock.prototype.thumbnailUrl = function() {
+    switch (this.source) {
+      case 'giphy':
+        return 'http://media4.giphy.com/media/' + this.referenceId + '/200_d.gif'
+    }
+  };
+
+  return GifBlock;
 
 })(ContextBlock);
 
@@ -374,6 +400,8 @@ var newTypeSpecificContextBlock =  function(doc) {
       return new MapBlock(doc);
     case 'image':
       return new ImageBlock(doc);
+    case 'gif':
+      return new GifBlock(doc);
     default:
       return new ContextBlock(doc);
   }
@@ -436,7 +464,7 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  server: {
+  flickrServer: {
     type: String,
     optional: true
   },

@@ -202,8 +202,20 @@ var searchIntegrations = {
           flickrImgFarm: e.farm,
           flickrImgSecret: e.secret,
           referenceId: e.id,
-          server: e.server,
+          flickServer: e.server,
           title: e.title
+        }
+      }
+    }
+  },
+  gif: {
+    giphy: {
+      methodName: 'giphyGifSearchList',
+      mapFn: function(e){
+        return {
+          referenceId: e.id
+          //username: "mrdiv",
+          //source: "http://mrdiv.tumblr.com/post/48618427039/disco-sphere",
         }
       }
     }
@@ -222,6 +234,9 @@ Template.create_video_section.events({
 
 Template.create_image_section.helpers(createBlockHelpers);
 Template.create_image_section.events(createBlockEvents);
+
+Template.create_gif_section.helpers(createBlockHelpers);
+Template.create_gif_section.events(createBlockEvents);
 
 Template.create_map_section.helpers(createBlockHelpers);
 Template.create_map_section.events(createBlockEvents);
@@ -252,12 +267,32 @@ Template.create_image_section.created = function() {
   this.existingSearchResults = _.bind(existingSearchResults, this);
 };
 
+Template.create_gif_section.created = function() {
+  this.type = 'gif';
+  this.source = new ReactiveVar('giphy');
+
+  this.loadingResults = new ReactiveVar();
+  this.focusResult = new ReactiveVar();
+  this.search = _.bind(searchAPI, this);
+  this.existingSearchResults = _.bind(existingSearchResults, this);
+};
+
 
 Template.create_image_section.helpers({
     dataSources: [
       {source: 'flickr', display: 'Flickr'},
       //{source: 'getty', display: 'Getty Images'},
       {source: 'imgur', display: 'Imgur'}
+    ]
+  }
+);
+
+
+Template.create_gif_section.helpers({
+    dataSources: [
+      {source: 'giphy', display: 'Giphy'},
+      //{source: 'getty', display: 'Getty Images'},
+      //{source: 'imgur', display: 'Imgur'}
     ]
   }
 );
