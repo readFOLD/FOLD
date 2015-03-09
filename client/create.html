@@ -105,36 +105,36 @@
 <template name="create_horizontal_section_block">
   <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <div class="content-icons">
-      <div class='unimplemented inline-block'>
+      <button class='unimplemented'>
         {{> twitter_icon }}
-      </div>
-      <div class='{{#if video}}active{{/if}} inline-block'>
+      </button>
+      <button class='{{#if video}}active{{/if}}'>
         {{> video_icon }}
-      </div>
-      <div class='{{#if map}}active{{/if}} inline-block'>
+      </button>
+      <button class='{{#if map}}active{{/if}}'>
         {{> map_icon }}
-      </div>
-      <div class='{{#if image}}active{{/if}} inline-block'>
+      </button>
+      <button class='{{#if image}}active{{/if}}'>
         {{> image_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='unimplemented'>
         {{> viz_icon }}
-      </div>
-      <div class='{{#if gif}}active{{/if}} inline-block'>
+      </button>
+      <button class='{{#if gif}}active{{/if}}'>
         {{> gif_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='unimplemented'>
         {{> audio_icon }}
-      </div>
-      <div class='{{#if text}}active{{/if}} inline-block'>
+      </button>
+      <button class='{{#if text}}active{{/if}}'>
         {{> text_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='unimplemented'>
         {{> link_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='unimplemented'>
         {{> remix_icon }}
-      </div>
+      </button>
     </div>
     {{#if type}}
       {{#if text}}{{> create_text_section}}{{/if}}
