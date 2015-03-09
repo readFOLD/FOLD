@@ -36,11 +36,7 @@ var createBlockHelpers = {
   },
   results: function () {
     searchDep.depend();
-    return SearchResults.find({
-      searchQuery: $('input').val(),
-      type: Template.instance().type,
-      source: Template.instance().source.get()
-    }, {sort: {ordinalId: 1} });
+    return Template.instance().existingSearchResults()
   }
 };
 
@@ -49,12 +45,8 @@ searchScrollFn = function(d, template) {
   var searchContainer = $("ol.search-results-container");
 
   if ((searchContainer.scrollTop() + searchContainer.height()) === searchContainer[0].scrollHeight && !template.loadingResults.get()) {
-    if (SearchResults.find({ // confirm there are already results and we're scrolling down
-      searchQuery: $('input').val(),
-      type: template.type,
-      source: template.source.get()
-    }).count()){
-      template.search($('input').val());
+    if (template.existingSearchResults().count()){ // confirm there are already results and we're scrolling down{
+      template.search();
     }
   }
 };
@@ -74,12 +66,8 @@ var createBlockEvents = {
   "submit form": function(d, template) {
     d.preventDefault();
     if(!template.loadingResults.get()){
-      if (!SearchResults.find({ // confirm there are no results yet
-          searchQuery: $('input').val(),
-          type: template.type,
-          source: template.source.get()
-        }).count()) {
-        template.search($('input').val());
+      if (!template.existingSearchResults().count()) {  // confirm there are no results yet
+        template.search();
       }
     }
   },
@@ -99,17 +87,41 @@ var createBlockEvents = {
   }
 };
 
+var getSearchInput = function(){
+  try { // wrap in try in case dom isn't ready
+    return {
+      query: this.$('input[type="search"]').val(),
+      option: this.$('input:radio').val()
+    }
+  } catch (e) {
+    return {};
+  }
+
+};
+
+
+var existingSearchResults = function(){
+  inputs = getSearchInput.call(this);
+  return SearchResults.find({
+    searchQuery: inputs.query,
+    searchOption: inputs.option,
+    type: this.type,
+    source: this.source.get()
+  }, {sort: {ordinalId: 1} })
+};
+
+
 
 var searchAPI = function(query) {
   var source = this.source.get();
   var type = this.type;
   var page;
 
-  var mostRecentResult = SearchResults.find({
-    searchQuery: $('input').val(),
-    type: type,
-    source: source
-  }, {sort: {ordinalId: 1} }).fetch().slice(-1)[0];
+  var inputs = getSearchInput.call(this);
+  var query = inputs.query;
+  var option = inputs.option;
+
+  var mostRecentResult = this.existingSearchResults().fetch().slice(-1)[0];
 
 
   if (mostRecentResult) {
@@ -122,7 +134,7 @@ var searchAPI = function(query) {
 
   integrationDetails = searchIntegrations[this.type][source];
 
-  Meteor.call(integrationDetails.methodName, query, page, function(err, results) {
+  Meteor.call(integrationDetails.methodName, query, option, page, function(err, results) {
     var items = results.items;
     var nextPage = results.nextPage;
 
@@ -141,6 +153,7 @@ var searchAPI = function(query) {
           source: source,
           authorId : Meteor.user()._id,
           searchQuery : query,
+          searchOption : option,
           nextPage: nextPage,
           ordinalId: count(),
           fullDetails: items[i] // include all original details from the api
@@ -224,6 +237,7 @@ Template.create_video_section.created = function() {
   this.loadingResults = new ReactiveVar();
   this.focusResult = new ReactiveVar();
   this.search = _.bind(searchAPI, this);
+  this.existingSearchResults = _.bind(existingSearchResults, this);
 };
 
 
@@ -234,7 +248,8 @@ Template.create_image_section.created = function() {
 
   this.loadingResults = new ReactiveVar();
   this.focusResult = new ReactiveVar();
-  this.search = _.bind(searchAPI, this)
+  this.search = _.bind(searchAPI, this);
+  this.existingSearchResults = _.bind(existingSearchResults, this);
 };
 
 

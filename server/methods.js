@@ -30,11 +30,11 @@ Meteor.methods({
   //////////////////////////////////
   /*
 
-  input: (query, page (optional))
+  input: (query, option, page (optional))
   output: {items: [..], nextPage: any constant value})
 
   */
-  flickrImageSearchList: function(query, page) {
+  flickrImageSearchList: function(query, option, page) {
     check(query, String);
     page = page || 1;  // flickr starts from 1
     this.unblock();
@@ -65,7 +65,7 @@ Meteor.methods({
       'nextPage': page + 1
     };
   },
-  imgurImageSearchList: function(query, page) {
+  imgurImageSearchList: function(query, option, page) {
     var res;
     check(query, String);
     this.unblock();
@@ -89,7 +89,7 @@ Meteor.methods({
       })
     }
   },
-  youtubeVideoSearchList: function(query, page) {
+  youtubeVideoSearchList: function(query, option, page) {
     var res;
     check(query, String);
     this.unblock();
