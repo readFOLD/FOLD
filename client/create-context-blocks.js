@@ -128,6 +128,10 @@ var searchAPI = function(query) {
     page = mostRecentResult.nextPage;
   }
 
+  if (page === 'end'){ // return if at end of possible results
+    return;
+  }
+
   this.loadingResults.set(true);
   var that = this;
   searchDep.changed();

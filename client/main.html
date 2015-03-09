@@ -160,6 +160,13 @@
                 {{> display_image_section}}
             {{/if}}
         {{/if}}
+        {{#if gif}}
+            {{#if editingThisContext}}
+                {{> create_gif_section}}
+            {{else}}
+                {{> display_image_section}}
+            {{/if}}
+        {{/if}}
         {{#if map}}
             {{#if editingThisContext}}
                 {{> create_map_section}}
