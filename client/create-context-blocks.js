@@ -206,7 +206,7 @@ var searchIntegrations = {
           flickrImgFarm: e.farm,
           flickrImgSecret: e.secret,
           referenceId: e.id,
-          flickServer: e.server,
+          flickrServer: e.server,
           title: e.title
         }
       }
