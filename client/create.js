@@ -579,8 +579,20 @@ Template.create_horizontal_section_block.helpers({
   video: function() {
     return Template.instance().type.get() === "video";
   },
-  oec: function() {
-    return Template.instance().type.get() === "oec";
+  twitter: function() {
+    return Template.instance().type.get() === "twitter";
+  },
+  viz: function() {
+    return Template.instance().type.get() === "viz";
+  },
+  audio: function() {
+    return Template.instance().type.get() === "audio";
+  },
+  link: function() {
+    return Template.instance().type.get() === "link";
+  },
+  remix: function() {
+    return Template.instance().type.get() === "remix";
   }
 });
 
@@ -612,6 +624,21 @@ Template.create_horizontal_section_block.events({
   },
   'click svg.gif-icon': function(d, t) {
     return t.type.set('gif');
+  },
+  'click svg.twitter-icon': function(d, t) {
+    return t.type.set('twitter');
+  },
+  'click svg.viz-icon': function(d, t) {
+    return t.type.set('viz');
+  },
+  'click svg.audio-icon': function(d, t) {
+    return t.type.set('audio');
+  },
+  'click svg.link-icon': function(d, t) {
+    return t.type.set('link');
+  },
+  'click svg.remix-icon': function(d, t) {
+    return t.type.set('remix');
   }
 });
 

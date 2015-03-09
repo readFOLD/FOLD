@@ -420,6 +420,18 @@ typeHelpers = {
   },
   oec: function() {
     return this.type === "oec";
+  },
+  viz: function() {
+    return this.type === "viz";
+  },
+  twitter: function() {
+    return this.type === "twitter";
+  },
+  audio: function() {
+    return this.type === "audio";
+  },
+  link: function() {
+    return this.type === "link";
   }
 };
 
