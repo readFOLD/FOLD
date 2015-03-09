@@ -90,7 +90,7 @@ var getSearchInput = function(){
   try { // wrap in try in case dom isn't ready
     return {
       query: this.$('input[type="search"]').val(),
-      option: this.$('input:radio').val()
+      option: this.$('input[name=option]:checked').val()
     }
   } catch (e) {
     return {};
