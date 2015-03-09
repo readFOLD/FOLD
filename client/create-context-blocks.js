@@ -25,7 +25,6 @@ var createBlockHelpers = {
     if (_.isObject(focusResult)) {
       return true;
     }
-    return false;
   },
   selected: function() {
     return (this.source === Template.instance().source.get());
@@ -288,41 +287,23 @@ Template.create_gif_section.helpers({
 
 
 Template.create_map_section.created = function() {
-  return this.blockPreview = new ReactiveVar();
+  return this.focusResult = new ReactiveVar();
 };
 
 Template.create_map_section.helpers({
   url: function() {
-    var preview = Template.instance().blockPreview.get();
+    var preview = Template.instance().focusResult.get();
     if (preview) {
       return preview.url()
     }
   },
   previewUrl: function() {
-    var preview = Template.instance().blockPreview.get();
+    var preview = Template.instance().focusResult.get();
     if (preview) {
       return preview.previewUrl()
     }
   }
 });
-
-
-
-Template.create_map_section.events({
-  "click .search": function(e, template) {
-    var block, previewMapBlock;
-    block = AutoForm.getFormValues('createMapSectionForm').insertDoc;
-    previewMapBlock = new MapBlock(_.extend(block, {
-      source: 'google_maps'
-    }));
-    return template.blockPreview.set(previewMapBlock);
-  },
-  "click .cancel": function() {
-    Session.set('addingContext', false);
-    return Session.set('editingContext', null);
-  }
-});
-
 
 Template.create_text_section.helpers({
   startingBlock: function() {

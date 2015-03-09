@@ -152,13 +152,26 @@
 </template>
 
 <template name="search_form">
-  <div class="search-form search-open">
+  <div class="search-form">
     <form>
-      <div class="search-trigger">Search</div>
-      <div class="search-input-container">
-        <input type = "search" placeholder={{placeholder}} autofocus="autofocus">
+      <div class="search-outside-input-container search-open">
+        <div class="search-trigger">Search</div>
+        <div class="search-input-container">
+          <input type = "search" placeholder={{placeholder}} autofocus="autofocus">
+        </div>
+        <button type="submit" class="search-button">{{> search_icon }}</button>
       </div>
-      <button type="submit" class="search-button">{{> search_icon }}</button>
+      {{#if option1}}
+        <div class="search-radios">
+          <p> BLDSFjdkfsjdkljh</p>
+          <input type="radio" name="option" value={{option1}} checked/>
+          <label for={{option1}}>{{option1}}</label>
+          {{#if option2}}
+            <input type="radio" name="option" value={{option2}}/>
+            <label for={{option2}}>{{option2}}</label>
+          {{/if}}
+        </div>
+      {{/if}}
     </form>
   </div>
 </template>
@@ -235,17 +248,13 @@
 
 <template name="create_map_section">
   <div class="create-section">
-    {{#autoForm collection='ContextBlocks' id="createMapSectionForm" doc=startingBlock type="insert" validation="keyup"}}
-      {{> afQuickField name='mapQuery'}}
-      {{> afQuickField name='mapType'}}
-
-      <button type="button" class="btn btn-primary search">Search</button>
-      <button type="submit" class="btn btn-primary">ADD</button>
-      <button type="button" class="btn btn-primary cancel">Cancel</button>
-    {{/autoForm}}
+    {{> search_form option1='satellite' option2='roadmap'}}
     {{#if url}}
       <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
     {{/if}}
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
   </div>
 </template>
 

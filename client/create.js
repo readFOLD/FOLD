@@ -721,16 +721,6 @@ autoFormContextAddedHooks = {
 };
 
 AutoForm.hooks({
-  createMapSectionForm: _.extend({}, autoFormContextAddedHooks, {
-    before: {
-      insert: function(doc) {
-        doc = new MapBlock(doc);
-        return _.extend(doc, {
-          authorId: Meteor.user()._id
-        });
-      }
-    }
-  }),
   createTextSectionForm: _.extend({}, autoFormContextAddedHooks, {
     before: {
       insert: function(doc) {

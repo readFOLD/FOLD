@@ -507,7 +507,7 @@ div.horizontal-context {
   @searchFormHeight: 75px;   
   @innerElementPadding: 9px;   
      
-  div.search-form { 
+  div.search-outside-input-container {
 
     @searchTriggerWidth: 90px;
     @searchButtonWidth: 66px;
@@ -528,7 +528,7 @@ div.horizontal-context {
       font-size: 12px;
       height: @searchInputHeight;
       color: @light-color;
-      position: absolute; 
+      position: absolute;
       float: left;
     }
 
@@ -559,9 +559,14 @@ div.horizontal-context {
       left: calc(100% ~"-" @searchButtonWidth);
       padding: 7.5px 13px 7.5px 40px;
     }
+
+    .search-radios{
+      position: absolute;
+      top: 60px;
+    }
   }
 
-  .search-form.search-open {
+  .search-outside-input-container.search-open {
     width: 100%;
     input {
       display:block;
