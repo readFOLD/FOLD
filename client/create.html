@@ -105,40 +105,46 @@
 <template name="create_horizontal_section_block">
   <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <div class="content-icons">
-      <div class='unimplemented inline-block'>
+      <button class='{{#if twitter}}active{{/if}}'>
         {{> twitter_icon }}
-      </div>
-      <div class='{{#if video}}active{{/if}} inline-block'>
+      </button>
+      <button class='{{#if video}}active{{/if}}'>
         {{> video_icon }}
-      </div>
-      <div class='{{#if map}}active{{/if}} inline-block'>
+      </button>
+      <button class='{{#if map}}active{{/if}}'>
         {{> map_icon }}
-      </div>
-      <div class='{{#if image}}active{{/if}} inline-block'>
+      </button>
+      <button class='{{#if image}}active{{/if}}'>
         {{> image_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='{{#if viz}}active{{/if}}'>
         {{> viz_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='{{#if gif}}active{{/if}}'>
         {{> gif_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='{{#if audio}}active{{/if}}'>
         {{> audio_icon }}
-      </div>
-      <div class='{{#if text}}active{{/if}} inline-block'>
+      </button>
+      <button class='{{#if text}}active{{/if}}'>
         {{> text_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='{{#if link}}active{{/if}}'>
         {{> link_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='{{#if remix}}active{{/if}}'>
         {{> remix_icon }}
-      </div>
+      </button>
     </div>
     {{#if type}}
+      {{#if twitter}}{{> unimplemented_create_section}}{{/if}}
+      {{#if viz}}{{> unimplemented_create_section}}{{/if}}
+      {{#if audio}}{{> unimplemented_create_section}}{{/if}}
+      {{#if link}}{{> unimplemented_create_section}}{{/if}}
+      {{#if remix}}{{> unimplemented_create_section}}{{/if}}
       {{#if text}}{{> create_text_section}}{{/if}}
       {{#if image}}{{> create_image_section}}{{/if}}
+      {{#if gif}}{{> create_gif_section}}{{/if}}
       {{#if map}}{{> create_map_section}}{{/if}}
       {{#if video}}{{> create_video_section}}{{/if}}
     {{/if}}
@@ -158,6 +164,13 @@
 </template>
 
 <!-- Create Templates -->
+<template name="unimplemented_create_section">
+  <div class="create-section">
+    Coming soon!
+  </div>
+</template>
+
+
 <template name="create_text_section">
   <div class="create-section">
     {{#autoForm collection='ContextBlocks' id="createTextSectionForm" doc=startingBlock type="insert" validation="keyup"}}
@@ -169,6 +182,32 @@
 </template>
 
 <template name="create_image_section">
+  <div class="create-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    {{> search_form}}
+    <ol class="search-results-container">
+      {{#each results}}
+        <li class="tile {{#if isFocused}}focused{{/if}}">
+          <img src="{{thumbnailUrl}}">
+        </li>
+      {{/each}}
+      {{#if loading}}
+        {{> loading_icon}}
+      {{/if}}
+    </ol>
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
+  </div>
+</template>
+
+<template name="create_gif_section">
   <div class="create-section">
     <div class="tabs">
       <ul>

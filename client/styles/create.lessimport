@@ -366,7 +366,6 @@ div.horizontal-context {
     height: @contentIconBannerHeight;
     padding-left: 17px;
     padding-right: 17px;
-    padding-top: 18px;
     background-color: @panel-color;
     div.row {
       text-align: justify;
@@ -376,7 +375,6 @@ div.horizontal-context {
       margin-right: 10%;
     }
     svg {
-      cursor: pointer;
       padding: 1.5px;
       @circle-diameter: 44px;
       height: @circle-diameter;

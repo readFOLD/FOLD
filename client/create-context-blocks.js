@@ -128,6 +128,10 @@ var searchAPI = function(query) {
     page = mostRecentResult.nextPage;
   }
 
+  if (page === 'end'){ // return if at end of possible results
+    return;
+  }
+
   this.loadingResults.set(true);
   var that = this;
   searchDep.changed();
@@ -176,9 +180,9 @@ var searchIntegrations = {
           title: e.title,
           description: e.description,
           referenceId: e.videoId,
-          videoUsername : e.channelTitle,
-          videoUsernameId : e.channelId,
-          videoCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+          referenceUsername : e.channelTitle,
+          referenceUsernameId : e.channelId,
+          referenceCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
         }
       }
     }
@@ -202,8 +206,20 @@ var searchIntegrations = {
           flickrImgFarm: e.farm,
           flickrImgSecret: e.secret,
           referenceId: e.id,
-          server: e.server,
+          flickrServer: e.server,
           title: e.title
+        }
+      }
+    }
+  },
+  gif: {
+    giphy: {
+      methodName: 'giphyGifSearchList',
+      mapFn: function(e){
+        return {
+          referenceId: e.id
+          referenceUsername: "mrdiv",
+          referenceSource: "http://mrdiv.tumblr.com/post/48618427039/disco-sphere"
         }
       }
     }
@@ -211,8 +227,20 @@ var searchIntegrations = {
 };
 
 
-Template.create_video_section.helpers(createBlockHelpers);
-Template.create_video_section.events(createBlockEvents);
+
+createTemplateNames = [
+  'create_image_section',
+  'create_gif_section',
+  'create_video_section',
+  'create_map_section',
+  'create_text_section'
+]
+
+_.each(createTemplateNames, function(templateName){
+  Template[templateName].helpers(createBlockHelpers);
+  Template[templateName].events(createBlockEvents);
+});
+
 
 Template.create_video_section.events({
   "dblclick li": function (d, template) {
@@ -220,37 +248,25 @@ Template.create_video_section.events({
   }
 });
 
-Template.create_image_section.helpers(createBlockHelpers);
-Template.create_image_section.events(createBlockEvents);
+searchTemplateCreatedBoilerplate = function(type, defaultSource) {
+  return function() {
+    this.type = type;
+    this.source = new ReactiveVar(defaultSource);
 
-Template.create_map_section.helpers(createBlockHelpers);
-Template.create_map_section.events(createBlockEvents);
-
-Template.create_text_section.helpers(createBlockHelpers);
-Template.create_text_section.events(createBlockEvents);
-
-
-Template.create_video_section.created = function() {
-  this.type = 'video';
-  this.source = new ReactiveVar('youtube');
-
-  this.loadingResults = new ReactiveVar();
-  this.focusResult = new ReactiveVar();
-  this.search = _.bind(searchAPI, this);
-  this.existingSearchResults = _.bind(existingSearchResults, this);
+    this.loadingResults = new ReactiveVar();
+    this.focusResult = new ReactiveVar();
+    this.search = _.bind(searchAPI, this);
+    this.existingSearchResults = _.bind(existingSearchResults, this);
+  };
 };
+
+Template.create_video_section.created = searchTemplateCreatedBoilerplate('video', 'youtube');
 
 
 // TODO autosearch when change between sources
-Template.create_image_section.created = function() {
-  this.type = 'image';
-  this.source = new ReactiveVar('flickr');
+Template.create_image_section.created = searchTemplateCreatedBoilerplate('image', 'flickr');
 
-  this.loadingResults = new ReactiveVar();
-  this.focusResult = new ReactiveVar();
-  this.search = _.bind(searchAPI, this);
-  this.existingSearchResults = _.bind(existingSearchResults, this);
-};
+Template.create_gif_section.created = searchTemplateCreatedBoilerplate('gif', 'giphy');
 
 
 Template.create_image_section.helpers({
@@ -258,6 +274,14 @@ Template.create_image_section.helpers({
       {source: 'flickr', display: 'Flickr'},
       //{source: 'getty', display: 'Getty Images'},
       {source: 'imgur', display: 'Imgur'}
+    ]
+  }
+);
+
+
+Template.create_gif_section.helpers({
+    dataSources: [
+      {source: 'giphy', display: 'Giphy'}
     ]
   }
 );
