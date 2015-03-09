@@ -107,7 +107,7 @@ Meteor.methods({
 
     var data = res.data;
 
-    var totalCount = data.pagination.offset;
+    var totalCount = data.pagination.total_count;
     var nextPage = data.pagination.count + data.pagination.offset;
 
     if (nextPage >= totalCount){
