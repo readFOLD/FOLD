@@ -103,7 +103,7 @@
 
 
 <template name="create_horizontal_section_block">
-  <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px">
+  <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <div class="content-icons">
       <div class='unimplemented inline-block'>
         {{> twitter_icon }}
@@ -178,7 +178,7 @@
       </ul>
     </div>
     {{> search_form}}
-    <ol class="search-results-container" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
+    <ol class="search-results-container">
       {{#each results}}
         <li class="tile {{#if isFocused}}focused{{/if}}">
           <img src="{{thumbnailUrl}}">
@@ -213,7 +213,7 @@
 <template name="create_video_section">
   <div class="create-section">
     {{> search_form}}
-    <ol class="search-results-container" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
+    <ol class="search-results-container">
       {{#each results}}
         <li>
             <div class="{{#if isFocused}}focused-{{/if}}search-result">
