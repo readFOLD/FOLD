@@ -7,7 +7,6 @@
 
 div.floating-story-buttons {
   button {
-    z-index: 30;
     background-color: @dark-color;
     color: @light-color;
     cursor: pointer;
@@ -29,7 +28,7 @@ div.floating-story-buttons {
   position: fixed;
   top: 115px;
   right: 13px;
-  z-index: 10;
+  z-index: 27;
 
   .saved-text{
     float: left;
