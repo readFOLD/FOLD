@@ -164,7 +164,8 @@ var searchIntegrations = {
           referenceId: e.videoId,
           videoUsername : e.channelTitle,
           videoUsernameId : e.channelId,
-          videoCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+          videoCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
+          fullDetails: e // this should always be included unless that service makes it really large
         }
       }
     }
