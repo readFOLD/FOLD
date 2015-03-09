@@ -98,7 +98,7 @@ Meteor.methods({
       q: query,
       api_key: 'dc6zaTOxFJmzC',
       offset: page,
-      limit: 25
+      limit: 50
     };
 
     var res = HTTP.get('http://api.giphy.com/v1/gifs/search', {
