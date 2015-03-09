@@ -342,7 +342,7 @@ Template.search_form.helpers({
   placeholder: function() {
     return 'e.g. ' +
       _.sample([
-        'radar technology',
+        'radar',
         'competitive fly fishing',
         'net neutrality',
         'synthetic biology',
@@ -353,6 +353,7 @@ Template.search_form.helpers({
         'falconry',
         'origami',
         'table tennis',
+        'llama training',
         ]);
   }
 });
