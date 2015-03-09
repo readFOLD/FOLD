@@ -323,7 +323,7 @@ Template.search_form.helpers({
         'net neutrality',
         'synthetic biology',
         'beekeeping',
-        'quantum physics',
+        'quantum mechanics',
         'bitcoin mining',
         'glass blowing',
         'falconry',
