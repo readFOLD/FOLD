@@ -170,6 +170,38 @@ Meteor.methods({
       }
     })
   },
+  deleteVerticalSection: function(storyId, index) {
+
+    check(index, Number);
+
+    var selector = { _id: storyId };
+    var story = Stories.findOne(selector, {fields:
+      {
+        'draftStory.verticalSections': 1,
+        'authorId': 1
+      }
+    });
+
+    assertOwner(this.userId, story);
+
+    var verticalSections = story.draftStory.verticalSections;
+
+    if (index < 0 || index >= story.draftStory.verticalSections){
+      throw new Meteor.Error('Index too high')
+    }
+
+    var contextBlocks = verticalSections[index].contextBlocks;
+
+    if (contextBlocks){ // TODO check owner and if remixed etc..
+      ContextBlocks.remove({_id: {$in: contextBlocks}})
+    }
+
+    return updateStory({ _id: storyId }, {
+      $pull: {
+        'draftStory.verticalSections': {_id: verticalSections[index]._id}
+      }
+    })
+  },
   favoriteStory: function(storyId) {
     return changeFavorite.call(this, storyId, true);
   },

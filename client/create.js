@@ -426,6 +426,24 @@ Template.vertical_edit_menu.events({
         return alert('No docs updated');
       }
     });
+  },
+  "click .delete-card": function() {
+    if(confirm("Permanently delete this card and all associated context cards?")) {
+      var indexToInsert, storyId, verticalSections;
+      storyId = Session.get('storyId');
+      var index = this.index;
+
+      return Meteor.call('deleteVerticalSection', storyId, index, function (err, numDocs) {
+        if (err) {
+          return alert(err);
+        }
+        if (numDocs) {
+          return
+        } else {
+          return alert('No docs updated');
+        }
+      });
+    }
   }
 });
 
