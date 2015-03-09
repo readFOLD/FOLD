@@ -103,9 +103,6 @@ var searchIntegrations = {
   image: {
     imgur: {
       methodName: 'imgurImageSearchList',
-      filterFn: function(e) {
-        return (e.type && e.type.indexOf('image') === 0)
-      },
       mapFn: function(e) {
         return {
           referenceId : e.id,
@@ -263,6 +260,7 @@ Template.create_image_section.created = function() {
   this.search = function(query) {
     var source = that.source.get();
     var type = that.type;
+    var page;
 
     var mostRecentResult = SearchResults.find({
       searchQuery: $('input').val(),
@@ -271,27 +269,18 @@ Template.create_image_section.created = function() {
     }, {sort: {ordinalId: 1} }).fetch().slice(-1)[0];
 
 
-    if (mostRecentResult){
+    if (mostRecentResult) {
       page = mostRecentResult.nextPage;
-    } else {
-      page = 0
     }
-
-    var searchParams = {
-      q: query,
-      page: page
-    };
-
-    var nextPage = page + 1;
-
 
     that.loadingResults.set(true);
     searchDep.changed();
 
     integrationDetails = searchIntegrations[that.type][source];
 
-    Meteor.call(integrationDetails.methodName, searchParams, function(err, results) {
-      items = results.items;
+    Meteor.call(integrationDetails.methodName, query, page, function(err, results) {
+      var items = results.items;
+      var nextPage = results.nextPage;
 
       if (err) {
         alert(err);
@@ -301,7 +290,6 @@ Template.create_image_section.created = function() {
         return;
       }
       _.chain(items)
-        .filter(integrationDetails.filterFn || _.identity)
         .map(integrationDetails.mapFn || _.identity)
         .each(function(item) {
           _.extend(item, {
