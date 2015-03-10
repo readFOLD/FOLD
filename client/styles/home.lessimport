@@ -50,27 +50,38 @@ div.home-top {
   }
 
   div.action-items {
+    @height: 45px;
     position: absolute;
     top: -6px;
     right: 60px;
     color: @light-color;
     font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
 
+    a, button{
+      padding: 12px 20px;
+      .size-to-fit;
+    }
+    a{
+      line-height: @height;
+    }
 
-    & > div, & > a div {
-      height: 45px;
-      display: inline-block;
-      padding: 12px 20px 8px 20px;
-      margin-right: 12px;
-
-      position: relative;
+    .create-story {
+      background-color: @action-color;
       &:hover {
         background-color: @dark-color;
       }
     }
 
-    div.create-story {
-      background-color: @action-color;
+    li {
+      height: @height;
+      float: left;
+      display: inline-block;
+      margin-right: 12px;
+      &:hover {
+        background-color: @dark-color;
+      }
+      position: relative;
+
     }
 
     div.sign-in {
@@ -80,14 +91,14 @@ div.home-top {
       
     }
 
-    div.user-action {
+    .user-action {
       background-color: @remix-color; 
       &:hover {
         background-color: @dark-color;
       }
     }
 
-    div.about-fold {
+    .about-fold {
       background-color: @panel-color;
     }
   }

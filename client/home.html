@@ -23,17 +23,19 @@
     </div>
     <div class="right">
       <div class="action-items">
-        <div class="create-story">
-          {{> create_story}}
-        </div>
-        <div class="user-action">
-          {{> login_buttons }}
-        </div>
-        {{#linkTo route="about"}}
-        <div class="about-fold">
-          About FOLD
-        </div>
-        {{/linkTo}}
+        <ol>
+          <li class="create-story">
+            {{> create_story}}
+          </li>
+          <li class="user-action">
+            {{> login_buttons }}
+          </li>
+          <li class="about-fold">
+            {{#linkTo route="about"}}
+                About FOLD
+            {{/linkTo}}
+          </li>
+        </ol>
       </div>
       <div class="user-image">
         <div class="author-image">
@@ -47,7 +49,6 @@
 </template>
 
 <template name="login_buttons">
-  <div class="signin">
     {{#if currentUser}}
       <button class="logout"> Log out</button>
     {{else}}
@@ -59,7 +60,6 @@
       </div>
       {{/if}}
     {{/if}}
-  </div>
 </template>
 
 <template name="create_story">
