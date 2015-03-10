@@ -20,6 +20,11 @@ form#login-form {
 	margin: auto;
 }
 
+h1.login-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
 
 form#signup-form {
 	width: 350px;
@@ -65,7 +70,6 @@ div.sign-up-right {
 div.sign-up-options {
   margin: auto;
   width: 350px;
-  margin-top: @vertical-center - @button-height/2;
   a{
     background-color: @action-color;
     height: @button-height;
