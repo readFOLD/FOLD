@@ -366,11 +366,10 @@ Template.create_map_section.created = function() {
   var that = this;
   this.search = function(){
     input = getSearchInput.call(this);
-    console.log(input)
+
     that.focusResult.set(new MapBlock({
       mapQuery: input.query,
       mapType: input.option
-
     }))
   };
 };

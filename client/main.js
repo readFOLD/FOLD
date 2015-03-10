@@ -1,4 +1,4 @@
-var getCardWidth, horizontalBlockHelpers, scrollSnap, throttledResize, typeHelpers, updatecurrentY,
+var getCardWidth, horizontalBlockHelpers, throttledResize, typeHelpers, updatecurrentY,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 UI.registerHelper('selectedIf', function(val) {
@@ -24,34 +24,17 @@ Session.set("width", window.outerWidth);
 
 Session.set("cardWidth", getCardWidth(Session.get("width")));
 
-throttledResize = _.throttle(function() {
+var resize = function() {
   if (window.outerWidth > 1024) {
     Session.set("resize", new Date());
     Session.set("width", window.outerWidth);
     return Session.set("cardWidth", getCardWidth(Session.get("width")));
   }
-}, 5);
+};
+
+throttledResize = _.throttle(resize, 5);
 
 $(window).resize(throttledResize);
-
-scrollSnap = function() {
-  var height, i, scrollTop, tolerance, verticalHeights, _i, _len, _results;
-  scrollTop = $(document).scrollTop();
-  Session.set("scrollTop", scrollTop);
-  verticalHeights = window.getVerticalHeights();
-  tolerance = 20;
-  _results = [];
-  for (i = _i = 0, _len = verticalHeights.length; _i < _len; i = ++_i) {
-    height = verticalHeights[i];
-    if (((height - tolerance) < scrollTop) && (scrollTop < (height + tolerance))) {
-      console.log(scrollTop, i);
-      _results.push(goToY(i));
-    } else {
-      _results.push(void 0);
-    }
-  }
-  return _results;
-};
 
 updatecurrentY = function() {
   var actualY, h, i, maxScroll, readMode, scrollTop, stickyBody, stickyTitle, vertTop, _i, _len, _ref;

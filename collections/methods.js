@@ -215,7 +215,7 @@ Meteor.methods({
     var user = Meteor.users.findOne({ _id : this.userId });
 
     var shortId = Random.id(8);
-    console.log(1111);
+
     var storyPathSegment = _s.slugify('new-story') + '-' + shortId;  // TODO DRY
     var userPathSegment= user.username;
 

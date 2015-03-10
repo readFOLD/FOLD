@@ -299,7 +299,6 @@ Template.vertical_section_block.events({
     clipboardData = (e.originalEvent || e).clipboardData;
     if (!clipboardData){return}
     html = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
-    console.log('clean the html')
 
     return document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
   },
