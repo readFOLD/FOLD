@@ -328,7 +328,7 @@ Template.create_viz_section.created = function() {
       type: that.type,
       source: that.source.get()
     }));
-  })
+  });
 };
 
 Template.create_viz_section.rendered = function() {

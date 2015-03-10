@@ -23,17 +23,19 @@
     </div>
     <div class="right">
       <div class="action-items">
-        <div class="create-story">
-          {{> create_story}}
-        </div>
-        <div class="user-action">
-          {{> login_buttons }}
-        </div>
-        {{#linkTo route="about"}}
-        <div class="about-fold">
-          About FOLD
-        </div>
-        {{/linkTo}}
+        <ol>
+          <li class="create-story">
+            {{> create_story}}
+          </li>
+          <li class="user-action">
+            {{> login_buttons }}
+          </li>
+          <li class="about-fold">
+            {{#linkTo route="about"}}
+                About FOLD
+            {{/linkTo}}
+          </li>
+        </ol>
       </div>
       <div class="user-image">
         <div class="author-image">
@@ -47,19 +49,21 @@
 </template>
 
 <template name="login_buttons">
-  <div class="signin">
     {{#if currentUser}}
       <button class="logout"> Log out</button>
     {{else}}
       <button class="signin"> Log in / Sign up</button>
       {{#if signingIn}}
-      <div class="signin-form">
-        <button class="twitter-signin">Log in with Twitter</button>
-        <button class="email-signin">Log in with email</button>
-      </div>
+      <ol class="signin">
+        <li>
+          <button class="twitter-signin">Log in with Twitter</button>
+        </li>
+        <li>
+          <button class="email-signin">Log in with email</button>
+        </li>
+      </ol>
       {{/if}}
     {{/if}}
-  </div>
 </template>
 
 <template name="create_story">
@@ -111,8 +115,17 @@
 
 <template name="story_preview">
   <div class="story" data-story-id="{{_id}}">
-    {{> _story_preview_content}}
-    {{> edit_or_read_bar}}
+    {{#if isAuthor}}
+      {{#linkTo route="edit" data=this}}
+        {{> _story_preview_content}}
+        {{> edit_or_read_bar}}
+      {{/linkTo}}
+    {{else}}
+      {{#linkTo route="read" data=this}}
+        {{> _story_preview_content}}
+        {{> edit_or_read_bar}}
+      {{/linkTo}}
+    {{/if}}
   </div>
 </template>
 
@@ -160,26 +173,14 @@
         <div class="publish-date">{{lastPublishDate}}</div>
       </div>
     </div>
-    <div class="pull-right">
-      {{ > favorite_button }}
-    </div>
+    <!--<div class="pull-right">-->
+      <!--{{ > favorite_button }}-->
+    <!--</div>-->
   </div>
 </template>
 
 <template name="edit_or_read_bar">
   <div class="edit-or-read">
-    {{#if isAuthor}}
-      {{#linkTo route="edit" data=this}}
-        <div id="edit-this-story">
-          Edit This Story
-        </div>
-      {{/linkTo}}
-    {{else}}
-      {{#linkTo route="read" data=this}}
-        <div id="edit-this-story">
-          Unfold This Story
-        </div>
-      {{/linkTo}}
-    {{/if}}
+
   </div>
 </template>

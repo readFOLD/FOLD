@@ -296,7 +296,7 @@
             <div class="{{#if isFocused}}focused-{{/if}}search-result">
               <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
                 {{#if isFocused}}
-                  <iframe src="{{url}}"></iframe>
+                  <iframe class="video" src="{{url}}"></iframe>
                 {{else}}
                   <img src="{{thumbnailUrl}}">
                 {{/if}}
@@ -323,7 +323,7 @@
 </template>
 
 <template name="create_audio_section">
-  <div class="create-section">
+  <div class="create-section audio">
     {{> search_form}}
     <ol class="search-results-container">
       {{#each results}}
@@ -331,16 +331,22 @@
             <div class="{{#if isFocused}}focused-{{/if}}search-result">
               <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
                 {{#if isFocused}}
-                  <iframe width="100%" src="{{url}}"></iframe>
+                  <iframe class="audio" width="100%" src="{{url}}"></iframe>
                 {{else}}
-                  <img src="{{soundcloudArtworkUrl}}">
+                  <div class="thumbnail">
+                    {{#if soundcloudArtworkUrl}}
+                      <img class="square" src="{{soundcloudArtworkUrl}}" />
+                    {{else}}
+                      <img class="square" src="https://addons.opera.com/media/extensions/45/11645/0.5-rev2/icons/icon_64x64.png" />
+                    {{/if}}
+                  </div>
+                  <div class="info {{#if isFocused}}focused{{/if}}">
+                    <div class="content-title">{{title}}</div>
+                    <div class="descr">{{description}}</div>
+                    <div class="user">{{videoUsername}}</div>
+                    <div class="date">{{videoCreationDate}}</div>
+                  </div>
                 {{/if}}
-              </div>
-              <div class="info {{#if isFocused}}focused{{/if}}">
-                <div class="content-title">{{title}}</div>
-                <div class="descr">{{description}}</div>
-                <div class="user">{{videoUsername}}</div>
-                <div class="date">{{videoCreationDate}}</div>
               </div>
             </div> 
         </li>

@@ -1,0 +1,74 @@
+div.login {
+	width: 100%;
+	padding-top: 240px;
+    height: auto;
+    margin-bottom: 45px;
+}
+
+div.login-left {
+	position: relative;
+	float: left;
+	width: 45%;
+}
+
+form#login-form {
+	width: 350px;
+	font-size: 15px;
+	font-family: Muli;
+	margin: auto;
+}
+
+input {
+	font-family: Muli;
+	margin-top: 5px;
+	margin-bottom: 15px;
+	height: 55px;
+	border: none;
+	border-bottom: 5px solid @action-color;
+	padding-left: 18px;
+	font-size: 17px;
+
+}
+
+form#signup-form {
+	width: 350px;
+	margin-left: 75px;
+	margin-top: 55px;
+	font-family: Muli;
+}
+
+.login-button {
+	margin-top: 20px;
+	height: 45px;
+	width: 100px;
+    background-color: @action-color;
+    color: @white-color;
+
+    &:hover {
+    	background-color: @dark-color;
+    }
+}
+
+div.log-in-error {
+	margin-top: 10px;
+}
+
+div.divider {
+	position: relative;
+	float: left;
+	width: 10%;
+	font-size: 20px;
+	margin-top: 80px;
+	text-align: center;
+}
+
+div.sign-up-right {
+	position: relative;
+	float: left;
+	width: 45%;
+}
+
+div.sign-up-options {
+	margin: auto;
+	width: 350px;
+}

@@ -157,18 +157,20 @@ Template.login_buttons.created = function() {
 };
 
 Template.login_buttons.events({
-  "click button.signin": function(d) {
+  "mouseover .signin": function(d) {
     Template.instance().signingIn.set(true);
-    return;
   },
-  'click button.logout' : function(e) {
+  "mouseout .signin": function(d) {
+    Template.instance().signingIn.set(false);
+  },
+  'click .logout' : function(e) {
     e.preventDefault();
     Meteor.logout();
   },
-  "click button.twitter-signin": function(d) {
+  "click .twitter-signin": function(d) {
     return loginWithTwitter();
   },
-  "click button.email-signin": function(d) {
+  "click .email-signin": function(d) {
     return loginWithEmail();
   }
 })
