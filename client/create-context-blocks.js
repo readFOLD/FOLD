@@ -371,7 +371,8 @@ Template.create_map_section.created = function() {
 
     that.focusResult.set(new MapBlock({
       mapQuery: input.query,
-      mapType: input.option
+      mapType: input.option,
+      authorId : Meteor.user()._id
     }))
   };
 };
