@@ -180,7 +180,7 @@ var searchIntegrations = {
           description: e.description,
           referenceId: e.videoId,
           referenceUsername : e.channelTitle,
-          referenceUsernameId : e.channelId,
+          referenceUserId : e.channelId,
           referenceCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
         }
       }
@@ -192,6 +192,8 @@ var searchIntegrations = {
       mapFn: function(e) {
         return {
           referenceId : e.id,
+          referenceUsername : e.account_url,
+          referenceUserId : e.account_id,
           fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
           section : e.section,
           title : e.title

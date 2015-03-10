@@ -581,7 +581,7 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  referenceUsernameId: {
+  referenceUserId: {
     type: String,
     optional: true
   },
