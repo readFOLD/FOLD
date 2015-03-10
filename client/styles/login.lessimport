@@ -1,3 +1,5 @@
+@button-height: 45px;
+
 div.login {
 	width: 100%;
 	padding-top: 240px;
@@ -18,17 +20,6 @@ form#login-form {
 	margin: auto;
 }
 
-input {
-	font-family: Muli;
-	margin-top: 5px;
-	margin-bottom: 15px;
-	height: 55px;
-	border: none;
-	border-bottom: 5px solid @action-color;
-	padding-left: 18px;
-	font-size: 17px;
-
-}
 
 form#signup-form {
 	width: 350px;
@@ -37,12 +28,12 @@ form#signup-form {
 	font-family: Muli;
 }
 
-.login-button {
+.login-button, .signup-button {
 	margin-top: 20px;
-	height: 45px;
 	width: 100px;
     background-color: @action-color;
     color: @white-color;
+    height: @button-height;
 
     &:hover {
     	background-color: @dark-color;
@@ -53,13 +44,16 @@ div.log-in-error {
 	margin-top: 10px;
 }
 
+@vertical-center: 90px;
+
 div.divider {
-	position: relative;
-	float: left;
-	width: 10%;
-	font-size: 20px;
-	margin-top: 80px;
-	text-align: center;
+  @font-size: 20px;
+  position: relative;
+  float: left;
+  width: 10%;
+  font-size: @font-size;
+  text-align: center;
+  margin-top: @vertical-center - @font-size/2;
 }
 
 div.sign-up-right {
@@ -69,6 +63,16 @@ div.sign-up-right {
 }
 
 div.sign-up-options {
-	margin: auto;
-	width: 350px;
+  margin: auto;
+  width: 350px;
+  margin-top: @vertical-center - @button-height/2;
+  a{
+    background-color: @action-color;
+    height: @button-height;
+    display: block;
+    color: @white-color;
+    text-align: center;
+    line-height: @button-height;
+
+  }
 }

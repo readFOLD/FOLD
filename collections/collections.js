@@ -46,7 +46,7 @@ Story = (function() {
 
   Story.prototype.publish = function() {
     var dasherizedTitle;
-    if (!this.lastSaved) {
+    if (!this.savedAt) {
       throw new Meteor.Error('not-yet-saved');
     }
     if (this.published) {
@@ -61,7 +61,7 @@ Story = (function() {
     //    $set: {
     //      published: true,
     //      publishedDate: new Date,
-    //      lastSaved: new Date
+    //      savedAt: new Date
     //    }
     //  });
     //}
@@ -111,8 +111,9 @@ this.Stories = new Meteor.Collection("stories", {
   transform: function(doc) {
     if (doc.draftStory){
       _.extend(doc.draftStory, {
-        unpublishedChanges: (!doc.publishDate || doc.lastSaved > doc.publishDate),
-        lastSaved: doc.lastSaved
+        unpublishedChanges: (!doc.publishedAt || doc.savedAt > doc.publishedAt),
+        savedAt: doc.savedAt,
+        contextCountOfType: function(){} // stub out method for now
       });
     }
     return new Story(doc);
@@ -148,12 +149,24 @@ Schema.Stories = new SimpleSchema({
     type: String,
     optional: true
   },
-  lastSaved: {
+  savedAt: {
     type: Date
   },
-  publishDate: {
+  publishedAt: {
     type: Date,
     optional: true
+  },
+  createdAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: new Date};
+      } else {
+        this.unset();
+      }
+    }
   },
   published: {
     type: Boolean,
@@ -183,7 +196,7 @@ Schema.Stories = new SimpleSchema({
     type: Boolean,
     defaultValue: false
   },
-  deletedDate: {
+  deletedAt: {
     type: Date,
     optional: true
   },
@@ -288,12 +301,6 @@ AudioBlock = (function(_super) {
   AudioBlock.prototype.artworkUrl = function() {
     if (this.source === 'soundcloud') {
       return this.soundcloudArtworkUrl;
-    }
-  };
-
-  AudioBlock.prototype.waveformUrl = function() {
-    if (this.source === 'soundcloud') {
-      return this.soundcloudWaveformUrl;
     }
   };
 
@@ -506,6 +513,18 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
+  createdAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: new Date};
+      } else {
+        this.unset();
+      }
+    }
+  },
   referenceId: {
     type: String,
     optional: true
@@ -600,7 +619,7 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  referenceUsernameId: {
+  referenceUserId: {
     type: String,
     optional: true
   },
@@ -640,6 +659,13 @@ Schema.UserProfile = new SimpleSchema({
     type: [String],
     optional: true,
     defaultValue: []
+  },
+  displayUsername: { // allows for caps
+    type: String
+  },
+  twitterUser: {
+    type: Boolean,
+    optional: true
   }
 });
 
@@ -647,7 +673,14 @@ Schema.User = new SimpleSchema({
   username: {
     type: String,
     regEx: /^[a-z0-9A-Z_]{3,15}$/,
-    optional: true
+    optional: true,
+    autoValue: function () {
+      if (this.isSet && typeof this.value === "string") {
+        return this.value.toLowerCase();
+      } else {
+        this.unset()
+      }
+    }
   },
   tempUsername: {
     type: String,
@@ -661,6 +694,13 @@ Schema.User = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Email,
     label: "Email address",
+    autoValue: function () {
+      if (this.isSet && typeof this.value === "string") {
+        return this.value.toLowerCase();
+      } else {
+        this.unset()
+      }
+    },
     autoform: {
       afFieldInput: {
         readOnly: true,

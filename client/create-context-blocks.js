@@ -180,7 +180,7 @@ var searchIntegrations = {
           description: e.description,
           referenceId: e.videoId,
           referenceUsername : e.channelTitle,
-          referenceUsernameId : e.channelId,
+          referenceUserId : e.channelId,
           referenceCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
         }
       }
@@ -197,8 +197,7 @@ var searchIntegrations = {
           referenceUsername : e.channelTitle,
           referenceUsernameId : e.user_id,
           referenceCreationDate : e.created_at.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
-          soundcloudArtworkUrl: e.artwork_url,
-          soundcloudWaveformUrl: e.waveform_url
+          soundcloudArtworkUrl: e.artwork_url
         }
       }
     }
@@ -209,6 +208,8 @@ var searchIntegrations = {
       mapFn: function(e) {
         return {
           referenceId : e.id,
+          referenceUsername : e.account_url,
+          referenceUserId : e.account_id,
           fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
           section : e.section,
           title : e.title
@@ -234,8 +235,8 @@ var searchIntegrations = {
       mapFn: function(e){
         return {
           referenceId: e.id,
-          referenceUsername: "mrdiv",
-          referenceSource: "http://mrdiv.tumblr.com/post/48618427039/disco-sphere"
+          referenceUsername: e.username,
+          referenceSource: e.source
         }
       }
     }
@@ -303,7 +304,6 @@ Template.create_image_section.helpers({
   }
 );
 
-// TODO autosearch when change between sources
 Template.create_viz_section.created = function() {
   this.type = 'viz';
   this.source = new ReactiveVar('oec');
@@ -317,7 +317,11 @@ Template.create_viz_section.created = function() {
   this.selectedYear = new ReactiveVar(2012);
 
   this.focusResult = new ReactiveVar();
+};
 
+
+Template.create_viz_section.rendered = function() {
+  $("select").selectOrDie({});
   var that = this;
   this.autorun(function() {
     that.focusResult.set(new VizBlock({
@@ -330,10 +334,6 @@ Template.create_viz_section.created = function() {
     }));
   });
 };
-
-Template.create_viz_section.rendered = function() {
-  $("select").selectOrDie({})
-}
 
 Template.create_viz_section.helpers({
     dataSources: [
@@ -393,11 +393,11 @@ Template.create_map_section.created = function() {
   var that = this;
   this.search = function(){
     input = getSearchInput.call(this);
-    console.log(input)
+
     that.focusResult.set(new MapBlock({
       mapQuery: input.query,
-      mapType: input.option
-
+      mapType: input.option,
+      authorId : Meteor.user()._id
     }))
   };
 };

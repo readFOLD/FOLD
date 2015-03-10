@@ -57,6 +57,28 @@ Router.route("profile", {
   }
 });
 
+Router.route("my_stories", {
+  path: "my-stories",
+  template: "my_stories",
+  waitOn: function() {
+    return [Meteor.subscribe('ownStoriesPub')];
+  },
+  onBeforeAction: function() {
+    var user;
+    if ((user = Meteor.user()) || Meteor.loggingIn()) {
+      //if (user) {
+      //  this.subscribe('readStoriesPub', user.profile.favorites);
+      //}
+      return this.next();
+    } else {
+      this.redirect("home", {
+        replaceState: true
+      });
+      return alert("You must be logged in view your profile");
+    }
+  }
+});
+
 Router.route("read", {
   path: "read/:userPathSegment/:storyPathSegment",
   template: "read",

@@ -58,12 +58,7 @@ Template.home.helpers({
 Template.home.rendered = function() {
   $("select").selectOrDie({
 
-  })
-  // return $('div.content').each(function(i, e) {
-  //   return $(e).dotdotdot({
-  //     ellipsis: '...'
-  //   });
-  // });
+  });
 };
 
 Template.home.events({
@@ -131,7 +126,9 @@ Template.all_stories.helpers({
 
 Template._story_preview_content.helpers({
   lastPublishDate: function() {
-    return formatDateNice(this.publishDate);
+    if(this.publishedAt) {
+      return formatDateNice(this.publishedAt);
+    }
   }
 });
 
@@ -157,15 +154,16 @@ Template.login_buttons.created = function() {
 };
 
 Template.login_buttons.events({
-  "mouseover .signin": function(d) {
+  "mouseover": function(d) {
     Template.instance().signingIn.set(true);
   },
-  "mouseout .signin": function(d) {
+  "mouseout": function(d) {
     Template.instance().signingIn.set(false);
   },
   'click .logout' : function(e) {
     e.preventDefault();
     Meteor.logout();
+    Router.go('home');
   },
   "click .twitter-signin": function(d) {
     return loginWithTwitter();

@@ -50,7 +50,7 @@ window.updateUIBasedOnSelection = function(e){
 
         Session.set('selectedTags', selectedTags);
 
-        // TODO actually get this from selection
+        // TO-DO actually get this from selection
         if (e) {
           boundary = range.getBoundingClientRect();
           boundaryMiddle = (boundary.left + boundary.right) / 2;
@@ -299,7 +299,6 @@ Template.vertical_section_block.events({
     clipboardData = (e.originalEvent || e).clipboardData;
     if (!clipboardData){return}
     html = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
-    console.log('clean the html')
 
     return document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
   },
@@ -403,7 +402,7 @@ Template.vertical_edit_menu.events({
     Session.set('saveState', 'saving');
     return Meteor.call('moveVerticalSectionUpOne', storyId, index, function(err, numDocs) {
       if (numDocs) {
-        return goToY(index - 1);
+        goToY(index - 1);
       }
       saveCallback(err, numDocs);
     });
@@ -416,7 +415,7 @@ Template.vertical_edit_menu.events({
     Session.set('saveState', 'saving');
     return Meteor.call('moveVerticalSectionDownOne', storyId, index, function(err, numDocs) {
       if (numDocs) {
-        return goToY(index + 1);
+        goToY(index + 1);
       }
       saveCallback(err, numDocs);
     });
@@ -564,7 +563,7 @@ Template.add_horizontal.events({
 });
 
 Template.create_horizontal_section_block.created = function() {
-  return this.type = new ReactiveVar('audio');
+  return this.type = new ReactiveVar('video');
 };
 
 Template.create_horizontal_section_block.helpers({
@@ -778,9 +777,8 @@ Template.horizontal_section_block.events({
 });
 
 Template.create_options.events({
-  "click div.publish-story": function() {
-    console.log("PUBLISH");
-    return this.publish();
+  "click .publish-story": function() {
+    return alert("Publish will be available soon! You'll be able to use it to submit your story to be featured on our site when we launch in early April.");
   },
   "click .toggle-preview": function() {
     if (Session.get('read')) {

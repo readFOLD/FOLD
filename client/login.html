@@ -1,5 +1,5 @@
 <template name="login">
-  {{> top_banner}}
+  {{> top_banner_simple}}
   <div class="login">
     <section>
       {{> login_form}}
@@ -11,7 +11,7 @@
         <div class="login-left">   
           <form id="login-form" action="action">
               <label for="username"> Username </label>
-              <input name="username" type="text" placeholder="username">
+              <input name="username" type="text" placeholder="username" autofocus="autofocus">
               <label for="password"> Password </label>
               <input name="password" type="password" placeholder="password">
               <button type="submit" class="login-button">Log in</button>
@@ -28,7 +28,7 @@
         <div class="sign-up-right">
           <div class="sign-up-options">
             {{#linkTo route="signup"}}
-              <div>Create an account with e-mail</div>
+              Create an account with e-mail
             {{/linkTo}}
             <!-- add "create an account with twitter" to double down-->
           </div>

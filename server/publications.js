@@ -18,6 +18,10 @@ Meteor.publish("exploreStoriesPub", function(filter, category, skip) {
 Meteor.publish("ownStoriesPub", function() {
   return Stories.find({
     authorId: this.userId
+  },{
+    fields : {
+      history: 0
+    }
   });
 });
 

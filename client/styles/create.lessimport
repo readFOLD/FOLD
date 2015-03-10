@@ -473,7 +473,7 @@ div.horizontal-context {
       width: 25px;
     }
 
-    // TODO Create classes for these
+    // TO-DO Create classes for these
     .edit {
       float: left;
     }

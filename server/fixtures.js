@@ -25,8 +25,8 @@ if (Stories.find().count() === 0) {
     backgroundImage: "header-image.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     title: "Unfolding the 2014 Ebola Outbreak",
-    lastSaved: new Date(1406524368561),
-    publishDate: new Date(1406524369993),
+    savedAt: new Date(1406524368561),
+    publishedAt: new Date(1406524369993),
     published: true,
     userPathSegment: "author",
     storyPathSegment: "unfolding-the-2014-ebola-outbreak-asdsk20",
@@ -59,7 +59,7 @@ if (Stories.find().count() === 0) {
           }, {
             type: "image",
             source: "local",
-            url: "2014_Ebola_virus_epidemic_in_West_Africa.png",
+            referenceId: "2014_Ebola_virus_epidemic_in_West_Africa.png",
             description: "Situation map of the outbreak. Source: Wikipedia.",
             authorId: authorId,
             _id: '2'
@@ -254,8 +254,8 @@ if (Stories.find().count() === 0) {
       _id: '548781e397a6427c31384b73', // could remove
       backgroundImage: "header-image.jpg",
       headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-      lastSaved: new Date(1406524368561),  // could remove
-      publishDate: new Date(1406524369993),  // could remove
+      savedAt: new Date(1406524368561),  // could remove
+      publishedAt: new Date(1406524369993),  // could remove
       published: true,  // could remove
       userPathSegment: "author",  // could remove
       storyPathSegment: "unfolding-the-2014-ebola-outbreak-548781e397a6427c31384b73",  // could remove
@@ -307,8 +307,8 @@ if (Stories.find().count() === 0) {
   Stories.insert({
     backgroundImage: "art.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-    lastSaved: new Date(),
-    publishDate: new Date(),
+    savedAt: new Date(),
+    publishedAt: new Date(),
     published: true,
     userPathSegment: "author",
     shortId: 'fdfdf3c3',
@@ -327,6 +327,17 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "art.jpg",
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      savedAt: new Date(),
+      publishedAt: new Date(),
+      published: true,
+      userPathSegment: "author",
+      shortId: 'fdfdf3c3',
+      storyPathSegment: "leonard-nimoy-fdfdf3c3",
+      title: "Star Trek is great, and Leonard Nimoy's Spock was the greatest thing about it",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -342,8 +353,8 @@ if (Stories.find().count() === 0) {
     _id: '548781e397a6427c31384b79',
     shortId: 'djksad20',
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-    lastSaved: new Date(),
-    publishDate: new Date(),
+    savedAt: new Date(),
+    publishedAt: new Date(),
     published: true,
     userPathSegment: "author",
     storyPathSegment: "banksy-djksad20",
@@ -361,6 +372,18 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "banksy.jpg",
+      _id: '548781e397a6427c31384b79',
+      shortId: 'djksad20',
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      savedAt: new Date(),
+      publishedAt: new Date(),
+      published: true,
+      userPathSegment: "author",
+      storyPathSegment: "banksy-djksad20",
+      title: "Banksy Spraypaints New Thing",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -374,8 +397,8 @@ if (Stories.find().count() === 0) {
   Stories.insert({
     backgroundImage: "canoe.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-    lastSaved: new Date(),
-    publishDate: new Date(),
+    savedAt: new Date(),
+    publishedAt: new Date(),
     published: true,
     userPathSegment: "author",
     storyPathSegment: "wolf-alice-djkscsad20",
@@ -394,6 +417,17 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "canoe.jpg",
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      savedAt: new Date(),
+      publishedAt: new Date(),
+      published: true,
+      userPathSegment: "author",
+      storyPathSegment: "wolf-alice-djkscsad20",
+      shortId: 'djkscsad20',
+      title: "5 songs from alt-rock band Wolf Alice you need to hear",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -409,8 +443,8 @@ if (Stories.find().count() === 0) {
     _id: '23bb79',
     shortId: 'djdcak20',
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-    lastSaved: new Date(),
-    publishDate: new Date(),
+    savedAt: new Date(),
+    publishedAt: new Date(),
     published: true,
     userPathSegment: "author",
     storyPathSegment: "art-heist-djdcak20",
@@ -428,6 +462,18 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "dothething.png",
+      _id: '23bb79',
+      shortId: 'djdcak20',
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      savedAt: new Date(),
+      publishedAt: new Date(),
+      published: true,
+      userPathSegment: "author",
+      storyPathSegment: "art-heist-djdcak20",
+      title: "25 Years Later, an Art Heist Is Still Unsolved",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -444,8 +490,8 @@ if (Stories.find().count() === 0) {
     _id: '23bbv',
     shortId: 'djkdcsq20',
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-    lastSaved: new Date(),
-    publishDate: new Date(),
+    savedAt: new Date(),
+    publishedAt: new Date(),
     published: true,
     userPathSegment: "author",
     storyPathSegment: "charlottes-web-djkdcsq20",
@@ -463,6 +509,18 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "stones.jpg",
+      _id: '23bbv',
+      shortId: 'djkdcsq20',
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      savedAt: new Date(),
+      publishedAt: new Date(),
+      published: true,
+      userPathSegment: "author",
+      storyPathSegment: "charlottes-web-djkdcsq20",
+      title: "Charlotte's Web",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -665,9 +723,9 @@ ServiceConfiguration.configurations.upsert(
   { service: "twitter" },
   {
     $set: {
-      consumerKey: Meteor.settings.TWITTER_API_KEY,
+      consumerKey: process.env.TWITTER_API_KEY || Meteor.settings.TWITTER_API_KEY,
       loginStyle: "popup",
-      secret: Meteor.settings.TWITTER_API_SECRET
+      secret: process.env.TWITTER_API_SECRET || Meteor.settings.TWITTER_API_SECRET
     }
   }
 );
