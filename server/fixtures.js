@@ -665,9 +665,9 @@ ServiceConfiguration.configurations.upsert(
   { service: "twitter" },
   {
     $set: {
-      consumerKey: Meteor.settings.TWITTER_API_KEY,
+      consumerKey: process.env.TWITTER_API_KEY || Meteor.settings.TWITTER_API_KEY,
       loginStyle: "popup",
-      secret: Meteor.settings.TWITTER_API_SECRET
+      secret: process.env.TWITTER_API_SECRET || Meteor.settings.TWITTER_API_SECRET
     }
   }
 );
