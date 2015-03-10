@@ -186,20 +186,29 @@ if (Stories.find().count() === 0) {
       }, {
         _id: '92',
         contextBlocks: [{
-          type: "oec",
-          url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/gin/all/show/2012/?controls=false&lang=en",
+          type: "viz",
+          source: "oec",
+          oecDirection: 'export',
+          oecCountry: 'gin',
+          oecYear: '2012',
           description: "Products exported by Guinea (2012)",
           authorId: authorId,
           _id: '18'
         }, {
-          type: "oec",
-          url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/lbr/all/show/2012/?controls=false&lang=en",
+          type: "viz",
+          source: "oec",
+          oecDirection: 'export',
+          oecCountry: 'lbr',
+          oecYear: '2012',
           description: "Products exported by Liberia (2012)",
           authorId: authorId,
           _id: '19'
         }, {
-          type: "oec",
-          url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/sle/all/show/2012/?controls=false&lang=en",
+          type: "viz",
+          source: "oec",
+          oecDirection: 'export',
+          oecCountry: 'sle',
+          oecYear: '2012',
           description: "Products exported by Sierra Leone (2012)",
           authorId: authorId,
           _id: '20'
@@ -590,20 +599,29 @@ if (ContextBlocks.find().count() === 0) {
       authorId: authorId,
       _id: '17'
     }, {
-      type: "oec",
-      url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/gin/all/show/2012/?controls=false&lang=en",
+      type: "viz",
+      source: "oec",
+      oecDirection: 'export',
+      oecCountry: 'gin',
+      oecYear: '2012',
       description: "Products exported by Guinea (2012)",
       authorId: authorId,
       _id: '18'
     }, {
-      type: "oec",
-      url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/lbr/all/show/2012/?controls=false&lang=en",
+      type: "viz",
+      source: "oec",
+      oecDirection: 'export',
+      oecCountry: 'lbr',
+      oecYear: '2012',
       description: "Products exported by Liberia (2012)",
       authorId: authorId,
       _id: '19'
     }, {
-      type: "oec",
-      url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/sle/all/show/2012/?controls=false&lang=en",
+      type: "viz",
+      source: "oec",
+      oecDirection: 'export',
+      oecCountry: 'sle',
+      oecYear: '2012',
       description: "Products exported by Sierra Leone (2012)",
       authorId: authorId,
       _id: '20'

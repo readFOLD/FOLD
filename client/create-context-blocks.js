@@ -302,20 +302,8 @@ Template.create_viz_section.created = function() {
       type: that.type,
       source: that.source.get()
     }));
-  })
+  });
 
-
-  // var that = this;
-  // this.autorun(function() {
-  //   that.focusResult.set({
-  //     "oecCountry": that.selectedCountry.get(),
-  //     "oecYear": that.selectedYear.get(),
-  //     "oecDirection": that.selectedDirection.get(),
-  //     "authorId" : Meteor.user()._id,
-  //     "type": that.type,
-  //     "source": that.source.get()
-  //   });
-  // })
 };
 
 Template.create_viz_section.rendered = function() {
