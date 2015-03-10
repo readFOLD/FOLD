@@ -109,23 +109,22 @@
 
 <template name="all_stories">
   {{#each stories}}
-    {{> story_preview}}
+    {{#if isAuthor}}
+      {{#linkTo route="edit" data=this}}
+        {{> story_preview}}
+      {{/linkTo}}
+    {{else}}
+      {{#linkTo route="read" data=this}}
+        {{> story_preview}}
+      {{/linkTo}}
+    {{/if}}
   {{/each}}
 </template>
 
 <template name="story_preview">
   <div class="story" data-story-id="{{_id}}">
-    {{#if isAuthor}}
-      {{#linkTo route="edit" data=this}}
-        {{> _story_preview_content}}
-        {{> edit_or_read_bar}}
-      {{/linkTo}}
-    {{else}}
-      {{#linkTo route="read" data=this}}
-        {{> _story_preview_content}}
-        {{> edit_or_read_bar}}
-      {{/linkTo}}
-    {{/if}}
+    {{> _story_preview_content}}
+    {{> edit_or_read_bar}}
   </div>
 </template>
 
