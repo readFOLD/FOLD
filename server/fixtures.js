@@ -59,7 +59,7 @@ if (Stories.find().count() === 0) {
           }, {
             type: "image",
             source: "local",
-            url: "2014_Ebola_virus_epidemic_in_West_Africa.png",
+            referenceId: "2014_Ebola_virus_epidemic_in_West_Africa.png",
             description: "Situation map of the outbreak. Source: Wikipedia.",
             authorId: authorId,
             _id: '2'
