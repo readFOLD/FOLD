@@ -596,6 +596,9 @@ Schema.UserProfile = new SimpleSchema({
     type: [String],
     optional: true,
     defaultValue: []
+  },
+  displayUsername: { // allows for caps
+    type: String
   }
 });
 
@@ -603,7 +606,14 @@ Schema.User = new SimpleSchema({
   username: {
     type: String,
     regEx: /^[a-z0-9A-Z_]{3,15}$/,
-    optional: true
+    optional: true,
+    autoValue: function () {
+      if (this.isSet && typeof this.value === "string") {
+        return this.value.toLowerCase();
+      } else {
+        this.unset()
+      }
+    }
   },
   tempUsername: {
     type: String,
