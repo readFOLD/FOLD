@@ -346,8 +346,8 @@ Template.create_viz_section.events({
       "oecYear": t.selectedYear.get(),
       "oecDirection": t.selectedDirection.get(),
       "authorId" : Meteor.user()._id,
-      "type": this.type,
-      "source": this.source.get()
+      "type": t.type,
+      "source": t.source.get()
     }
     addContext(contextBlock);
   }
