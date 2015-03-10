@@ -94,7 +94,7 @@ div.home-top {
       background-color: @panel-color;
     }
 
-    ol.signin {
+    ol.user-menu {
       background-color: @remix-color;
       li {
         float: none;

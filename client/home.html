@@ -68,14 +68,26 @@
     </div>
   </div>
 </template>
-
 <template name="login_buttons">
     {{#if currentUser}}
-      <button class="logout"> Log out</button>
+      <button class="user-face">{{currentUser.profile.name}}</button>
+      {{#if signingIn}}
+        <ol class="user-menu">
+          <!--<li>-->
+            <!--{{#linkTo route="profile"}}Profile{{/linkTo}}-->
+          <!--</li>-->
+          <li>
+            {{#linkTo route="my_stories"}}My stories{{/linkTo}}
+          </li>
+          <li>
+            <button class="logout">Logout</button>
+          </li>
+        </ol>
+      {{/if}}
     {{else}}
       <button class="signin"> Log in / Sign up</button>
       {{#if signingIn}}
-      <ol class="signin">
+      <ol class="user-menu">
         <li>
           <button class="twitter-signin">Log in with Twitter</button>
         </li>

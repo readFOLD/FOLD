@@ -51,24 +51,35 @@
   </section>
 </template>
 
+<template name="my_stories">
+  {{> top_banner}}
+  <div class="stories">
+    <section>
+      <div class="story-container">
+        {{> user_stories}}
+      </div>
+    </section>
+  </div>
+</template>
+
 <template name="user_stories">
   <h3>User Stories</h3>
   {{#each userStories}}
-    <div class="story" data-story-id="{{_id}}">
-      {{> _story_preview_content}}
-      <div class="dates">
-        <p>Last Edited: {{lastEditDate}}</p>
-        <p>
-          {{#if published}}
-            Published On: {{lastPublishDate}}
-            {{else}}
-            Unpublished
-          {{/if}}
-        </p>
+    {{#linkTo route="edit" data=this}}
+      <div class="story" data-story-id="{{_id}}">
+        {{> _story_preview_content}}
+        <div class="dates">
+          <p>Last Edited: {{lastEditDate}}</p>
+          <p>
+            {{#if published}}
+              Published On: {{lastPublishDate}}
+              {{else}}
+              Unpublished
+            {{/if}}
+          </p>
+        </div>
       </div>
-
-      {{> edit_or_read_bar}}
-    </div>
+    {{/linkTo}}
   {{/each}}
 </template>
 
