@@ -142,15 +142,9 @@
 
 <template name="all_stories">
   {{#each stories}}
-    {{#if isAuthor}}
-      {{#linkTo route="edit" data=this}}
-        {{> story_preview}}
-      {{/linkTo}}
-    {{else}}
-      {{#linkTo route="read" data=this}}
-        {{> story_preview}}
-      {{/linkTo}}
-    {{/if}}
+    {{#linkTo route="read" data=this}}
+      {{> story_preview}}
+    {{/linkTo}}
   {{/each}}
 </template>
 
