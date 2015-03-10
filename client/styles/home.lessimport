@@ -83,6 +83,7 @@ div.home-top {
 
       position: relative;
 
+
     }
 
     .user-action {
@@ -93,10 +94,13 @@ div.home-top {
       background-color: @panel-color;
     }
 
-    .signin {
+    ol.signin {
+      background-color: @remix-color;
       li {
+        float: none;
         display: block;
-        background-color: @remix-color;
+        margin:0;
+        border-top: 1px solid @white-color;
       }
     }
   }
