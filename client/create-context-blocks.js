@@ -219,8 +219,8 @@ var searchIntegrations = {
       mapFn: function(e){
         return {
           referenceId: e.id,
-          referenceUsername: "mrdiv",
-          referenceSource: "http://mrdiv.tumblr.com/post/48618427039/disco-sphere"
+          referenceUsername: e.username,
+          referenceSource: e.source
         }
       }
     }
