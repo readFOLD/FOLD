@@ -131,7 +131,9 @@ Template.all_stories.helpers({
 
 Template._story_preview_content.helpers({
   lastPublishDate: function() {
-    return formatDateNice(this.publishDate);
+    if(this.publishDate) {
+      return formatDateNice(this.publishDate);
+    }
   }
 });
 
@@ -166,6 +168,7 @@ Template.login_buttons.events({
   'click .logout' : function(e) {
     e.preventDefault();
     Meteor.logout();
+    Router.go('home');
   },
   "click .twitter-signin": function(d) {
     return loginWithTwitter();
