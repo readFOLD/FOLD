@@ -50,7 +50,7 @@ window.updateUIBasedOnSelection = function(e){
 
         Session.set('selectedTags', selectedTags);
 
-        // TODO actually get this from selection
+        // TO-DO actually get this from selection
         if (e) {
           boundary = range.getBoundingClientRect();
           boundaryMiddle = (boundary.left + boundary.right) / 2;

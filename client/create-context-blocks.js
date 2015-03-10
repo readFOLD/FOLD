@@ -277,7 +277,6 @@ Template.create_image_section.helpers({
   }
 );
 
-// TODO autosearch when change between sources
 Template.create_viz_section.created = function() {
   this.type = 'viz';
   this.source = new ReactiveVar('oec');

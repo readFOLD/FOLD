@@ -225,6 +225,15 @@ Template.story_header.events = {
       return goToY(0);
     }
   },
+  "keydown": function (e) {
+    if (e.which == 13) { // enter
+      e.preventDefault();
+      $(':focus').blur(); // TO-DO this should move focus to the first block
+      $('#to-story, .attribution').fadeOut();
+      goToX(0);
+      return goToY(0);
+    }
+  },
   "click #to-header": function() {
     var path;
     $("#to-header").removeClass("shown");
