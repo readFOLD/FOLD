@@ -126,8 +126,8 @@ Template.all_stories.helpers({
 
 Template._story_preview_content.helpers({
   lastPublishDate: function() {
-    if(this.publishDate) {
-      return formatDateNice(this.publishDate);
+    if(this.publishedAt) {
+      return formatDateNice(this.publishedAt);
     }
   }
 });

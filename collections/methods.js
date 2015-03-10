@@ -44,7 +44,7 @@ var updateStory = function(selector, modifier, options) {
   if (_.isEmpty(modifier)){
     return
   }
-  modifier.$set = _.extend(modifier.$set || {}, {lastSaved: Date.now()});
+  modifier.$set = _.extend(modifier.$set || {}, {savedAt: Date.now()});
 
   return Stories.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
 };
@@ -229,7 +229,7 @@ Meteor.methods({
     Stories.insert({
       published: false,
       verticalSections: [initialVerticalSection],
-      lastSaved: new Date,
+      savedAt: new Date,
       userPathSegment: userPathSegment,
       storyPathSegment: storyPathSegment,
       authorId: this.userId,

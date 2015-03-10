@@ -46,7 +46,7 @@ Story = (function() {
 
   Story.prototype.publish = function() {
     var dasherizedTitle;
-    if (!this.lastSaved) {
+    if (!this.savedAt) {
       throw new Meteor.Error('not-yet-saved');
     }
     if (this.published) {
@@ -61,7 +61,7 @@ Story = (function() {
     //    $set: {
     //      published: true,
     //      publishedDate: new Date,
-    //      lastSaved: new Date
+    //      savedAt: new Date
     //    }
     //  });
     //}
@@ -111,8 +111,8 @@ this.Stories = new Meteor.Collection("stories", {
   transform: function(doc) {
     if (doc.draftStory){
       _.extend(doc.draftStory, {
-        unpublishedChanges: (!doc.publishDate || doc.lastSaved > doc.publishDate),
-        lastSaved: doc.lastSaved,
+        unpublishedChanges: (!doc.publishedAt || doc.savedAt > doc.publishedAt),
+        savedAt: doc.savedAt,
         contextCountOfType: function(){} // stub out method for now
       });
     }
@@ -149,12 +149,24 @@ Schema.Stories = new SimpleSchema({
     type: String,
     optional: true
   },
-  lastSaved: {
+  savedAt: {
     type: Date
   },
-  publishDate: {
+  publishedAt: {
     type: Date,
     optional: true
+  },
+  createdAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: new Date};
+      } else {
+        this.unset();
+      }
+    }
   },
   published: {
     type: Boolean,
@@ -184,7 +196,7 @@ Schema.Stories = new SimpleSchema({
     type: Boolean,
     defaultValue: false
   },
-  deletedDate: {
+  deletedAt: {
     type: Date,
     optional: true
   },
@@ -470,6 +482,18 @@ Schema.ContextBlocks = new SimpleSchema({
   source: {
     type: String,
     optional: true
+  },
+  createdAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: new Date};
+      } else {
+        this.unset();
+      }
+    }
   },
   referenceId: {
     type: String,
