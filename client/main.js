@@ -501,6 +501,8 @@ Template.display_viz_section.helpers(horizontalBlockHelpers);
 
 Template.display_image_section.helpers(horizontalBlockHelpers);
 
+Template.display_audio_section.helpers(horizontalBlockHelpers);
+
 Template.display_video_section.helpers(horizontalBlockHelpers);
 
 Template.display_map_section.helpers(horizontalBlockHelpers);

@@ -684,12 +684,20 @@ div.horizontal-context {
       height: @searchResultHeight;   
     }    
     
+    @searchResultWidth: @aspectRatio * (@searchResultHeight - (2 * @innerElementPadding));
     div.thumbnail {
-      
       img{   
-        width: @aspectRatio * (@searchResultHeight - (2 * @innerElementPadding));
+        width: @searchResultWidth;
         padding-top: @innerElementPadding;
         margin-left: 10px;
+
+        &.square {
+          width: @searchResultHeight - (2 * @innerElementPadding);
+        }
+
+        &.overlay {
+          margin-left: -@searchResultWidth;
+        }
       }    
     }    
      
@@ -706,8 +714,14 @@ div.horizontal-context {
       margin-left: 10px;  
 
       iframe {
-        width: @focusedThumbnailWidth;
-        height: @focusedThumbnailHeight;
+        &.video {
+          width: @focusedThumbnailWidth;
+          height: @focusedThumbnailHeight;        
+        }
+        &.audio {
+          width: calc(100% ~"-" 10px);
+          height: @focusedThumbnailHeight
+        }
       }
     }    
        

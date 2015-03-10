@@ -138,10 +138,10 @@
     </div>
     {{#if type}}
       {{#if twitter}}{{> unimplemented_create_section}}{{/if}}
-      {{#if audio}}{{> unimplemented_create_section}}{{/if}}
       {{#if link}}{{> unimplemented_create_section}}{{/if}}
       {{#if remix}}{{> unimplemented_create_section}}{{/if}}
       {{#if text}}{{> create_text_section}}{{/if}}
+      {{#if audio}}{{> create_audio_section}}{{/if}}
       {{#if image}}{{> create_image_section}}{{/if}}
       {{#if gif}}{{> create_gif_section}}{{/if}}
       {{#if map}}{{> create_map_section}}{{/if}}
@@ -298,7 +298,7 @@
             <div class="{{#if isFocused}}focused-{{/if}}search-result">
               <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
                 {{#if isFocused}}
-                  <iframe src="{{url}}"></iframe>
+                  <iframe class="video" src="{{url}}"></iframe>
                 {{else}}
                   <img src="{{thumbnailUrl}}">
                 {{/if}}
@@ -324,6 +324,46 @@
   </div>
 </template>
 
+<template name="create_audio_section">
+  <div class="create-section audio">
+    {{> search_form}}
+    <ol class="search-results-container">
+      {{#each results}}
+        <li>
+            <div class="{{#if isFocused}}focused-{{/if}}search-result">
+              <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
+                {{#if isFocused}}
+                  <iframe class="audio" width="100%" src="{{url}}"></iframe>
+                {{else}}
+                  <div class="thumbnail">
+                    {{#if soundcloudArtworkUrl}}
+                      <img class="square" src="{{soundcloudArtworkUrl}}" />
+                    {{else}}
+                      <img class="square" src="https://addons.opera.com/media/extensions/45/11645/0.5-rev2/icons/icon_64x64.png" />
+                    {{/if}}
+                  </div>
+                  <div class="info {{#if isFocused}}focused{{/if}}">
+                    <div class="content-title">{{title}}</div>
+                    <div class="descr">{{description}}</div>
+                    <div class="user">{{videoUsername}}</div>
+                    <div class="date">{{videoCreationDate}}</div>
+                  </div>
+                {{/if}}
+              </div>
+            </div> 
+        </li>
+      {{/each}}
+      <li class="loading-icon">
+        {{#if loading}}
+          {{> loading_icon}}
+        {{/if}}
+      </li>
+    </ol>
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
+  </div>
+</template>
 
 <template name="horizontal_section_edit_delete">
   {{#unless read}}
