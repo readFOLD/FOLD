@@ -780,7 +780,7 @@ Template.horizontal_section_block.events({
 Template.create_options.events({
   "click div.publish-story": function() {
     console.log("PUBLISH");
-    return this.publish();
+    return alert("Publish will be available soon! You'll be able to use it to submit your story to be featured on our site when we launch in early April.")
   },
   "click .toggle-preview": function() {
     if (Session.get('read')) {

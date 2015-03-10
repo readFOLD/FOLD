@@ -327,6 +327,17 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "art.jpg",
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      lastSaved: new Date(),
+      publishDate: new Date(),
+      published: true,
+      userPathSegment: "author",
+      shortId: 'fdfdf3c3',
+      storyPathSegment: "leonard-nimoy-fdfdf3c3",
+      title: "Star Trek is great, and Leonard Nimoy's Spock was the greatest thing about it",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -361,6 +372,18 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "banksy.jpg",
+      _id: '548781e397a6427c31384b79',
+      shortId: 'djksad20',
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      lastSaved: new Date(),
+      publishDate: new Date(),
+      published: true,
+      userPathSegment: "author",
+      storyPathSegment: "banksy-djksad20",
+      title: "Banksy Spraypaints New Thing",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -394,6 +417,17 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "canoe.jpg",
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      lastSaved: new Date(),
+      publishDate: new Date(),
+      published: true,
+      userPathSegment: "author",
+      storyPathSegment: "wolf-alice-djkscsad20",
+      shortId: 'djkscsad20',
+      title: "5 songs from alt-rock band Wolf Alice you need to hear",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -428,6 +462,18 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "dothething.png",
+      _id: '23bb79',
+      shortId: 'djdcak20',
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      lastSaved: new Date(),
+      publishDate: new Date(),
+      published: true,
+      userPathSegment: "author",
+      storyPathSegment: "art-heist-djdcak20",
+      title: "25 Years Later, an Art Heist Is Still Unsolved",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -463,6 +509,18 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "stones.jpg",
+      _id: '23bbv',
+      shortId: 'djkdcsq20',
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      lastSaved: new Date(),
+      publishDate: new Date(),
+      published: true,
+      userPathSegment: "author",
+      storyPathSegment: "charlottes-web-djkdcsq20",
+      title: "Charlotte's Web",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',

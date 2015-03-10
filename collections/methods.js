@@ -235,6 +235,7 @@ Meteor.methods({
       shortId: shortId,
       draftStory: {
         authorId: this.userId,
+        authorName: user.profile.name || 'Anonymous',
         verticalSections: [{
           _id: Random.id(8),
           contextBlocks: [],

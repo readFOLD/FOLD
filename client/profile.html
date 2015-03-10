@@ -67,17 +67,19 @@
   {{#each userStories}}
     {{#linkTo route="edit" data=this}}
       <div class="story" data-story-id="{{_id}}">
-        {{> _story_preview_content}}
-        <div class="dates">
-          <p>Last Edited: {{lastEditDate}}</p>
-          <p>
-            {{#if published}}
-              Published On: {{lastPublishDate}}
-              {{else}}
-              Unpublished
-            {{/if}}
-          </p>
-        </div>
+        {{#with draftStory}}
+          {{> _story_preview_content}}
+        {{/with}}
+        <!--<div class="dates">-->
+          <!--<p>Last Edited: {{lastEditDate}}</p>-->
+          <!--<p>-->
+            <!--{{#if published}}-->
+              <!--Published On: {{lastPublishDate}}-->
+              <!--{{else}}-->
+              <!--Unpublished-->
+            <!--{{/if}}-->
+          <!--</p>-->
+        <!--</div>-->
       </div>
     {{/linkTo}}
   {{/each}}

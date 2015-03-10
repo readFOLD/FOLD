@@ -112,7 +112,8 @@ this.Stories = new Meteor.Collection("stories", {
     if (doc.draftStory){
       _.extend(doc.draftStory, {
         unpublishedChanges: (!doc.publishDate || doc.lastSaved > doc.publishDate),
-        lastSaved: doc.lastSaved
+        lastSaved: doc.lastSaved,
+        contextCountOfType: function(){} // stub out method for now
       });
     }
     return new Story(doc);
