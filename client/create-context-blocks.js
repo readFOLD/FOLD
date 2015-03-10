@@ -25,7 +25,6 @@ var createBlockHelpers = {
     if (_.isObject(focusResult)) {
       return true;
     }
-    return false;
   },
   selected: function() {
     return (this.source === Template.instance().source.get());
@@ -66,7 +65,7 @@ var createBlockEvents = {
   "submit form": function(d, template) {
     d.preventDefault();
     if(!template.loadingResults.get()){
-      if (!template.existingSearchResults().count()) {  // confirm there are no results yet
+      if (!template.existingSearchResults || !template.existingSearchResults().count()) {  // confirm there are no results yet
         template.search();
       }
     }
@@ -91,7 +90,7 @@ var getSearchInput = function(){
   try { // wrap in try in case dom isn't ready
     return {
       query: this.$('input[type="search"]').val(),
-      option: this.$('input:radio').val()
+      option: this.$('input[name=option]:checked').val()
     }
   } catch (e) {
     return {};
@@ -291,14 +290,32 @@ Template.create_viz_section.created = function() {
   this.selectedDirection = new ReactiveVar('export');
   this.selectedYear = new ReactiveVar(2012);
 
-  // this.focusResult = new ReactiveVar({
-  //   "oecCountry": this.selectedCountry.get(),
-  //   "oecYear": this.selectedYear.get(),
-  //   "oecDirection": this.selectedDirection.get(),
-  //   "authorId" : Meteor.user()._id,
-  //   "type": this.type,
-  //   "source": this.source.get()
-  // });
+  this.focusResult = new ReactiveVar();
+
+  var that = this;
+  this.autorun(function() {
+    that.focusResult.set(new VizBlock({
+      oecCountry: that.selectedCountry.get(),
+      oecYear: that.selectedYear.get(),
+      oecDirection: that.selectedDirection.get(),
+      authorId : Meteor.user()._id,
+      type: that.type,
+      source: that.source.get()
+    }));
+  })
+
+
+  // var that = this;
+  // this.autorun(function() {
+  //   that.focusResult.set({
+  //     "oecCountry": that.selectedCountry.get(),
+  //     "oecYear": that.selectedYear.get(),
+  //     "oecDirection": that.selectedDirection.get(),
+  //     "authorId" : Meteor.user()._id,
+  //     "type": that.type,
+  //     "source": that.source.get()
+  //   });
+  // })
 };
 
 Template.create_viz_section.rendered = function() {
@@ -319,6 +336,12 @@ Template.create_viz_section.helpers({
     isSelectedYear: function() { return (this == Template.instance().selectedYear.get()); },
     isSelectedCountry: function() { return (this.id === Template.instance().selectedCountry.get()); },
     isSelectedDirection: function() { return (this === Template.instance().selectedDirection.get()); },
+    url: function() {
+      var preview = Template.instance().focusResult.get();
+      if (preview) {
+        return preview.url()
+      }
+    },
   }
 );
 
@@ -351,41 +374,35 @@ Template.create_gif_section.helpers({
 
 
 Template.create_map_section.created = function() {
-  return this.blockPreview = new ReactiveVar();
+  this.loadingResults = new ReactiveVar();
+  this.focusResult = new ReactiveVar();
+
+  var that = this;
+  this.search = function(){
+    input = getSearchInput.call(this);
+    console.log(input)
+    that.focusResult.set(new MapBlock({
+      mapQuery: input.query,
+      mapType: input.option
+
+    }))
+  };
 };
 
 Template.create_map_section.helpers({
   url: function() {
-    var preview = Template.instance().blockPreview.get();
+    var preview = Template.instance().focusResult.get();
     if (preview) {
       return preview.url()
     }
   },
   previewUrl: function() {
-    var preview = Template.instance().blockPreview.get();
+    var preview = Template.instance().focusResult.get();
     if (preview) {
       return preview.previewUrl()
     }
   }
 });
-
-
-
-Template.create_map_section.events({
-  "click .search": function(e, template) {
-    var block, previewMapBlock;
-    block = AutoForm.getFormValues('createMapSectionForm').insertDoc;
-    previewMapBlock = new MapBlock(_.extend(block, {
-      source: 'google_maps'
-    }));
-    return template.blockPreview.set(previewMapBlock);
-  },
-  "click .cancel": function() {
-    Session.set('addingContext', false);
-    return Session.set('editingContext', null);
-  }
-});
-
 
 Template.create_text_section.helpers({
   startingBlock: function() {

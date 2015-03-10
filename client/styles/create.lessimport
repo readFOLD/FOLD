@@ -7,7 +7,6 @@
 
 div.floating-story-buttons {
   button {
-    z-index: 30;
     background-color: @dark-color;
     color: @light-color;
     cursor: pointer;
@@ -29,7 +28,7 @@ div.floating-story-buttons {
   position: fixed;
   top: 115px;
   right: 13px;
-  z-index: 10;
+  z-index: 27;
 
   .saved-text{
     float: left;
@@ -522,6 +521,10 @@ div.horizontal-context {
     }    
   }
 
+  div.create-section.unimplemented {
+    font-weight: bold;
+  }
+
   div.tabs {
     border-bottom: 1px solid @medium-color;
     margin-bottom: 15px;
@@ -552,7 +555,7 @@ div.horizontal-context {
   @searchFormHeight: 75px;   
   @innerElementPadding: 9px;   
      
-  div.search-form { 
+  div.search-outside-input-container {
 
     @searchTriggerWidth: 90px;
     @searchButtonWidth: 66px;
@@ -573,7 +576,7 @@ div.horizontal-context {
       font-size: 12px;
       height: @searchInputHeight;
       color: @light-color;
-      position: absolute; 
+      position: absolute;
       float: left;
     }
 
@@ -604,9 +607,22 @@ div.horizontal-context {
       left: calc(100% ~"-" @searchButtonWidth);
       padding: 7.5px 13px 7.5px 40px;
     }
+
   }
 
-  .search-form.search-open {
+  .search-radios{
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    input {
+      width: auto;
+    }
+    label {
+      margin-right: 10px;
+    }
+  }
+
+  .search-outside-input-container.search-open {
     width: 100%;
     input {
       display:block;
@@ -775,7 +791,7 @@ div.horizontal-context {
 div.text-section {
   line-height: 26px;
   text-align: left;
-  font-size: 17px;
+  font-size: 16.5px;
   margin-top: 25px;
   margin-left: 30px;
   margin-right: 30px;

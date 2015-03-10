@@ -401,7 +401,7 @@ div#overlay {
     overflow-y: scroll;
     overflow-x: hidden;
     text-align: left;
-    font-size: 17px;
+    font-size: 16.5px;
     margin-top: 25px;
     &.minimized {
       height: 0;
