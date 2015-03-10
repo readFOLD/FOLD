@@ -157,10 +157,10 @@ Template.login_buttons.created = function() {
 };
 
 Template.login_buttons.events({
-  "mouseover .signin": function(d) {
+  "mouseover": function(d) {
     Template.instance().signingIn.set(true);
   },
-  "mouseout .signin": function(d) {
+  "mouseout": function(d) {
     Template.instance().signingIn.set(false);
   },
   'click .logout' : function(e) {
