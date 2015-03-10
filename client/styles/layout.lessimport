@@ -237,6 +237,19 @@ input {
   font-family: inherit;
 }
 
+
+input[type="text"], input[type="password"] {
+  font-family: Muli;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  height: 55px;
+  border: none;
+  border-bottom: 5px solid @action-color;
+  padding-left: 18px;
+  font-size: 17px;
+
+}
+
 input[type="search"] {
   -webkit-appearance: none;
   -webkit-border-radius: 0px;

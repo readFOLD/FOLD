@@ -20,17 +20,6 @@ form#login-form {
 	margin: auto;
 }
 
-input {
-	font-family: Muli;
-	margin-top: 5px;
-	margin-bottom: 15px;
-	height: 55px;
-	border: none;
-	border-bottom: 5px solid @action-color;
-	padding-left: 18px;
-	font-size: 17px;
-
-}
 
 form#signup-form {
 	width: 350px;
