@@ -186,6 +186,23 @@ var searchIntegrations = {
       }
     }
   },
+  audio: {
+    soundcloud: {
+      methodName: 'soundcloudAudioSearchList',
+      mapFn: function(e){
+        return {
+          title: e.title,
+          description: e.description,
+          referenceId: e.id,
+          referenceUsername : e.channelTitle,
+          referenceUsernameId : e.user_id,
+          referenceCreationDate : e.created_at.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
+          soundcloudArtworkUrl: e.artwork_url,
+          soundcloudWaveformUrl: e.waveform_url
+        }
+      }
+    }
+  },
   image: {
     imgur: {
       methodName: 'imgurImageSearchList',
@@ -233,12 +250,19 @@ createTemplateNames = [
   'create_video_section',
   'create_map_section',
   'create_text_section',
+  'create_audio_section',
   'create_viz_section'
 ]
 
 _.each(createTemplateNames, function(templateName){
   Template[templateName].helpers(createBlockHelpers);
   Template[templateName].events(createBlockEvents);
+});
+
+Template.create_audio_section.events({
+  "dblclick li": function (d, template) {
+    addContext(this);
+  }
 });
 
 Template.create_video_section.events({
@@ -266,6 +290,8 @@ Template.create_video_section.created = searchTemplateCreatedBoilerplate('video'
 Template.create_image_section.created = searchTemplateCreatedBoilerplate('image', 'flickr');
 
 Template.create_gif_section.created = searchTemplateCreatedBoilerplate('gif', 'giphy');
+
+Template.create_audio_section.created = searchTemplateCreatedBoilerplate('audio', 'soundcloud');
 
 
 Template.create_image_section.helpers({
@@ -303,19 +329,6 @@ Template.create_viz_section.created = function() {
       source: that.source.get()
     }));
   })
-
-
-  // var that = this;
-  // this.autorun(function() {
-  //   that.focusResult.set({
-  //     "oecCountry": that.selectedCountry.get(),
-  //     "oecYear": that.selectedYear.get(),
-  //     "oecDirection": that.selectedDirection.get(),
-  //     "authorId" : Meteor.user()._id,
-  //     "type": that.type,
-  //     "source": that.source.get()
-  //   });
-  // })
 };
 
 Template.create_viz_section.rendered = function() {

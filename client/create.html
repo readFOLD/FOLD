@@ -138,10 +138,10 @@
     </div>
     {{#if type}}
       {{#if twitter}}{{> unimplemented_create_section}}{{/if}}
-      {{#if audio}}{{> unimplemented_create_section}}{{/if}}
       {{#if link}}{{> unimplemented_create_section}}{{/if}}
       {{#if remix}}{{> unimplemented_create_section}}{{/if}}
       {{#if text}}{{> create_text_section}}{{/if}}
+      {{#if audio}}{{> create_audio_section}}{{/if}}
       {{#if image}}{{> create_image_section}}{{/if}}
       {{#if gif}}{{> create_gif_section}}{{/if}}
       {{#if map}}{{> create_map_section}}{{/if}}
@@ -322,6 +322,40 @@
   </div>
 </template>
 
+<template name="create_audio_section">
+  <div class="create-section">
+    {{> search_form}}
+    <ol class="search-results-container">
+      {{#each results}}
+        <li>
+            <div class="{{#if isFocused}}focused-{{/if}}search-result">
+              <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
+                {{#if isFocused}}
+                  <iframe width="100%" src="{{url}}"></iframe>
+                {{else}}
+                  <img src="{{soundcloudArtworkUrl}}">
+                {{/if}}
+              </div>
+              <div class="info {{#if isFocused}}focused{{/if}}">
+                <div class="content-title">{{title}}</div>
+                <div class="descr">{{description}}</div>
+                <div class="user">{{videoUsername}}</div>
+                <div class="date">{{videoCreationDate}}</div>
+              </div>
+            </div> 
+        </li>
+      {{/each}}
+      <li class="loading-icon">
+        {{#if loading}}
+          {{> loading_icon}}
+        {{/if}}
+      </li>
+    </ol>
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
+  </div>
+</template>
 
 <template name="horizontal_section_edit_delete">
   {{#unless read}}

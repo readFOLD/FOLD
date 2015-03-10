@@ -1,6 +1,8 @@
 var GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
+var SOUNDCLOUD_CLIENT_ID = Meteor.settings.SOUNDCLOUD_CLIENT_ID;
 var IMGUR_CLIENT_ID = Meteor.settings.IMGUR_CLIENT_ID;
 var FLICKR_API_KEY = Meteor.settings.FLICKR_API_KEY;
+
 
 if (!GOOGLE_API_SERVER_KEY) {
   console.error('Settings must be loaded for apis to work');
@@ -117,6 +119,34 @@ Meteor.methods({
     return {
       nextPage: nextPage,
       items: data.data
+    }
+  },
+  soundcloudAudioSearchList: function(query, option, page) {
+    var res;
+    check(query, String);
+    this.unblock();
+    offset = page || 0;
+    limit = 50;
+    requestParams = {
+      q: query,
+      limit: limit,
+      offset: offset,
+      client_id: SOUNDCLOUD_CLIENT_ID
+    };
+
+    if (page) {
+      requestParams['pageToken'] = page;
+    }
+    res = HTTP.get('http://api.soundcloud.com/tracks.json', {
+      params: requestParams
+    });
+
+    // console.log("RES", res)
+    var items = JSON.parse(res.content);
+
+    return {
+      'nextPage': offset + limit,
+      'items': items
     }
   },
   youtubeVideoSearchList: function(query, option, page) {

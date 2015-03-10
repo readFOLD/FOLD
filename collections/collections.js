@@ -1,4 +1,4 @@
-var ContextBlock, MapBlock, Schema, Story, TextBlock, VideoBlock, ImageBlock, checkOwner,
+var ContextBlock, MapBlock, Schema, Story, TextBlock, VideoBlock, ImageBlock, AudioBlock, VizBlock, checkOwner,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -268,6 +268,39 @@ VideoBlock = (function(_super) {
 
 })(ContextBlock);
 
+AudioBlock = (function(_super) {
+  __extends(AudioBlock, _super);
+
+  function AudioBlock(doc) {
+    AudioBlock.__super__.constructor.call(this, doc);
+    this.type = 'audio';
+    if (this.source == null) {
+      this.source = 'soundcloud';
+    }
+  }
+
+  AudioBlock.prototype.url = function() {
+    if (this.source === 'soundcloud') {
+      return '//w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/' + this.referenceId + '&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=true'
+    }
+  };
+
+  AudioBlock.prototype.artworkUrl = function() {
+    if (this.source === 'soundcloud') {
+      return this.soundcloudArtworkUrl;
+    }
+  };
+
+  AudioBlock.prototype.waveformUrl = function() {
+    if (this.source === 'soundcloud') {
+      return this.soundcloudWaveformUrl;
+    }
+  };
+
+  return AudioBlock;
+
+})(ContextBlock);
+
 ImageBlock = (function(_super) {
   __extends(ImageBlock, _super);
 
@@ -422,6 +455,8 @@ var newTypeSpecificContextBlock =  function(doc) {
       return new ImageBlock(doc);
     case 'gif':
       return new GifBlock(doc);
+    case 'audio':
+      return new AudioBlock(doc);
     case 'viz':
       return new VizBlock(doc);
     default:
@@ -435,6 +470,7 @@ if (Meteor.isClient) {
   window.ContextBlock = ContextBlock;
   window.TextBlock = TextBlock;
   window.ImageBlock = ImageBlock;
+  window.AudioBlock = AudioBlock;
   window.VizBlock = VizBlock;
   window.newTypeSpecificContextBlock = newTypeSpecificContextBlock
 }
@@ -488,6 +524,14 @@ Schema.ContextBlocks = new SimpleSchema({
     optional: true
   },
   flickrServer: {
+    type: String,
+    optional: true
+  },
+  soundcloudArtworkUrl: {
+    type: String,
+    optional: true
+  },
+  soundcloudWaveformUrl: {
     type: String,
     optional: true
   },
