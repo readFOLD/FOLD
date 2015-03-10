@@ -319,6 +319,7 @@ div.story-browser {
   height: 0px;
   z-index: 25;
   div{
+    height: 0px;
     display: inline-block;
   }
   svg {
