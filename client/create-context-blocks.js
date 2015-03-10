@@ -291,7 +291,11 @@ Template.create_viz_section.created = function() {
   this.selectedYear = new ReactiveVar(2012);
 
   this.focusResult = new ReactiveVar();
+};
 
+
+Template.create_viz_section.rendered = function() {
+  $("select").selectOrDie({});
   var that = this;
   this.autorun(function() {
     that.focusResult.set(new VizBlock({
@@ -303,11 +307,6 @@ Template.create_viz_section.created = function() {
       source: that.source.get()
     }));
   });
-
-};
-
-Template.create_viz_section.rendered = function() {
-  $("select").selectOrDie({})
 }
 
 Template.create_viz_section.helpers({

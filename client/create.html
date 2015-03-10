@@ -269,7 +269,9 @@
       {{/each}}
     </select>
 
-    <iframe width="{{cardWidth}}" height="315" src="{{url}}" frameborder="0" ></iframe>
+    {{#if addingContext}}
+      <iframe width="{{cardWidth}}" height="315" src="{{url}}" frameborder="0" ></iframe>
+    {{/if}}
 
     <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
       Add
