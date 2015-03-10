@@ -60,6 +60,9 @@ div.home-top {
     a, button{
       padding: 12px 20px;
       .size-to-fit;
+      &:hover {
+        background-color: @dark-color;
+      }
     }
     a{
       line-height: @height;
@@ -77,29 +80,24 @@ div.home-top {
       float: left;
       display: inline-block;
       margin-right: 12px;
-      &:hover {
-        background-color: @dark-color;
-      }
+
       position: relative;
 
     }
 
-    div.sign-in {
-      button.twitter-signin, button.email-signin {
-        background-color: @remix-color;  
-      }
-      
-    }
-
     .user-action {
-      background-color: @remix-color; 
-      &:hover {
-        background-color: @dark-color;
-      }
+      background-color: @remix-color;
     }
 
     .about-fold {
       background-color: @panel-color;
+    }
+
+    .signin {
+      li {
+        display: block;
+        background-color: @remix-color;
+      }
     }
   }
 
