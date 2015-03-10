@@ -103,13 +103,15 @@ updatecurrentY = function() {
   if (scrollTop >= maxScroll) {
     $("div.title-overlay, div#banner-overlay").addClass("fixed");
     $("div.logo").addClass("visible");
+    Session.set("pastHeader", true);
   } else {
     $("div.title-overlay, div#banner-overlay").removeClass("fixed");
     $("div.logo").removeClass("visible");
+    return Session.set("pastHeader", false);
+
   }
   if (scrollTop >= readMode) {
     var selectOffset = - 40;
-    Session.set("pastHeader", true);
     _ref = _.map(window.getVerticalHeights(), function(height){ return height + selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
@@ -122,8 +124,6 @@ updatecurrentY = function() {
       Session.set("currentX", 0);
       return Session.set("currentY", actualY);
     }
-  } else {
-    return Session.set("pastHeader", false);
   }
 };
 
