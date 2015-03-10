@@ -332,6 +332,26 @@ GifBlock = (function(_super) {
 })(ContextBlock);
 
 
+VizBlock = (function(_super) {
+  __extends(VizBlock, _super);
+
+  function VizBlock(doc) {
+    VizBlock.__super__.constructor.call(this, doc);
+    this.type = 'viz';
+  }
+
+  VizBlock.prototype.url = function() {
+    switch (this.source) {
+      case 'oec':
+        return 'http://atlas.media.mit.edu/explore/embed/tree_map/hs/' + this.oecDirection + '/' + this.oecCountry + '/all/show/' + this.oecYear + '/?controls=false&lang=en'
+    }
+  };
+
+  return VizBlock;
+
+})(ContextBlock);
+
+
 MapBlock = (function(_super) {
   __extends(MapBlock, _super);
 
@@ -402,6 +422,8 @@ var newTypeSpecificContextBlock =  function(doc) {
       return new ImageBlock(doc);
     case 'gif':
       return new GifBlock(doc);
+    case 'viz':
+      return new VizBlock(doc);
     default:
       return new ContextBlock(doc);
   }
@@ -413,6 +435,7 @@ if (Meteor.isClient) {
   window.ContextBlock = ContextBlock;
   window.TextBlock = TextBlock;
   window.ImageBlock = ImageBlock;
+  window.VizBlock = VizBlock;
   window.newTypeSpecificContextBlock = newTypeSpecificContextBlock
 }
 
@@ -477,6 +500,18 @@ Schema.ContextBlocks = new SimpleSchema({
     optional: true
   },
   fileExtension: {
+    type: String,
+    optional: true
+  },
+  oecYear: {
+    type: String,
+    optional: true
+  },
+  oecCountry: {
+    type: String,
+    optional: true
+  },
+  oecDirection: {
     type: String,
     optional: true
   },

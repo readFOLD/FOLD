@@ -138,7 +138,6 @@
     </div>
     {{#if type}}
       {{#if twitter}}{{> unimplemented_create_section}}{{/if}}
-      {{#if viz}}{{> unimplemented_create_section}}{{/if}}
       {{#if audio}}{{> unimplemented_create_section}}{{/if}}
       {{#if link}}{{> unimplemented_create_section}}{{/if}}
       {{#if remix}}{{> unimplemented_create_section}}{{/if}}
@@ -147,6 +146,7 @@
       {{#if gif}}{{> create_gif_section}}{{/if}}
       {{#if map}}{{> create_map_section}}{{/if}}
       {{#if video}}{{> create_video_section}}{{/if}}
+      {{#if viz}}{{> create_viz_section}}{{/if}}
     {{/if}}
   </div>
 </template>
@@ -245,12 +245,42 @@
   </div>
 </template>
 
+<template name="create_viz_section">
+  <div class="create-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    <select class="countries">
+      {{#each countries}}
+        <option class="countries" data-id="{{this.id}}" {{selectedIf isSelectedCountry}}>
+          {{this.name}}
+        </option>
+      {{/each}}
+    </select>
+    <select class="years">
+      {{#each years}}
+        <option class="year" data-category="{{this}}" {{selectedIf isSelectedYear}}>
+          {{this}}
+        </option>
+      {{/each}}
+    </select>
+
+    <iframe width="{{cardWidth}}" height="315" src="{{url}}" frameborder="0" ></iframe>
+
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
+  </div>
+</template>
+
 <template name="create_map_section">
   <div class="create-section">
     {{> search_form option1='satellite' option2='roadmap'}}
-    {{#if url}}
-      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
-    {{/if}}
+    <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
     <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
       Add
     </button>

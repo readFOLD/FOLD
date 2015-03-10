@@ -19,6 +19,14 @@
       {{/linkTo}}
     </div>
 
+    <div class="upload {{#unless pastHeader}}shown{{/unless}}">
+      {{#if uploading}}
+        Upload / change photo
+        {{else}}
+        URL
+      {{/if}}
+    </div>
+
     <div class="attribution {{#unless pastHeader}}shown{{/unless}}">
       Header Image Source: {{headerImageAttribution}}
     </div>
@@ -178,7 +186,13 @@
                 {{> display_video_section}}
             {{/if}}
         {{/if}}
-        {{#if oec}}{{> display_oec_section}}{{/if}}
+        {{#if viz}}
+            {{#if editingThisContext}}
+                {{> create_viz_section}}
+            {{else}}
+                {{> display_viz_section}}
+            {{/if}}
+        {{/if}}
     {{/if}}
     {{#if read}}
         {{> remix_bar}}
@@ -238,15 +252,15 @@
   {{/unless}}
 </template>
 
-<template name="display_oec_section">
-  <div class="oec-section">
+<template name="display_viz_section">
+  <div class="viz-section">
     {{#if selected}}
-      <iframe width="100%" height="300" frameborder="0" style="border:0;" src="{{url}}"></iframe>
+    <iframe width="100%" height="315" src="{{url}}" frameborder="0" ></iframe>
     {{/if}}
   </div>
   {{#unless read}}
-      {{> horizontal_section_edit_delete}}
-    {{/unless}}
+    {{> horizontal_section_edit_delete}}
+  {{/unless}}
 </template>
 
 <template name="display_video_section">

@@ -130,6 +130,32 @@ div.title-overlay {
     margin-top: 100px;
   }
 
+  div.upload {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background-color: @dark-color;
+    color: @light-color;
+    cursor: pointer;
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 30px;
+    height: 40px;
+    width: 180px;
+
+    &:hover {
+      background-color: @action-color;
+      color: @dark-color;
+    }
+
+    opacity: 0.0;
+
+    &.shown {
+      opacity: 1.0;
+    }
+  }
+
 
   div.attribution {
     position: absolute;
@@ -476,10 +502,28 @@ div.horizontal-context {
     height: calc(100% ~"-" @contentIconBannerHeight);
   }
 
+  // Dropdowns
+  div.create-section {
+    select {
+      padding-bottom: 10px;
+    }
+    .sod_select {
+      padding: 10px 5px;
+      // background-color: @dark-color;
+      // color: @light-color;
+      &:before, &:after {
+        right: 11px;
+        top: 14px;
+      }
+      .sod_option {
+        padding: 10px 5px;
+      }
+    }    
+  }
+
   div.create-section.unimplemented {
     font-weight: bold;
   }
-
 
   div.tabs {
     border-bottom: 1px solid @medium-color;
