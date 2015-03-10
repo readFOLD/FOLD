@@ -8,19 +8,29 @@
 </template>
 
 <template name="login_form">
-  <form id="login-form" action="action">
-    <div class="login-form">
-      <label for="username"> Username </label>
-      <input name="username" placeholder="username">
-      <label for="password"> Password </label>
-      <input name="password" type="password" placeholder="password">
-      <button type="submit" id="login-button">Sign in</button>
-      {{#if loginFailed}}
-        <div> Invalid username or password </div>
-      {{/if}}
-      {{#linkTo route="signup"}}
-        <div>Create an account</div>
-      {{/linkTo}}
-    </div>
-  </form>
+        <div class="login-left">   
+          <form id="login-form" action="action">
+              <label for="username"> Username </label>
+              <input name="username" type="text" placeholder="username">
+              <label for="password"> Password </label>
+              <input name="password" type="password" placeholder="password">
+              <button type="submit" class="login-button">Log in</button>
+            {{#if loginFailed}}
+            <div class="log-in-error">
+              Invalid username or password
+            </div>
+            {{/if}}
+          </form>
+        </div>
+        <div class="divider">
+          - or -
+        </div>
+        <div class="sign-up-right">
+          <div class="sign-up-options">
+            {{#linkTo route="signup"}}
+              <div>Create an account with e-mail</div>
+            {{/linkTo}}
+            <!-- add "create an account with twitter" to double down-->
+          </div>
+        </div>
 </template>
