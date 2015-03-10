@@ -599,6 +599,10 @@ Schema.UserProfile = new SimpleSchema({
   },
   displayUsername: { // allows for caps
     type: String
+  },
+  twitterUser: {
+    type: Boolean,
+    optional: true
   }
 });
 
