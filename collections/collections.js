@@ -632,6 +632,13 @@ Schema.User = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Email,
     label: "Email address",
+    autoValue: function () {
+      if (this.isSet && typeof this.value === "string") {
+        return this.value.toLowerCase();
+      } else {
+        this.unset()
+      }
+    },
     autoform: {
       afFieldInput: {
         readOnly: true,
