@@ -1,0 +1,13 @@
+div.login-form {
+	margin-left: 50px;
+	margin-top: 50px;
+	width: 350px;
+
+	input {
+		height: 55px;
+		border: none;
+		border-bottom: 5px solid @action-color;
+		padding-left: 18px;
+		font-size: 17px;
+	}
+}
