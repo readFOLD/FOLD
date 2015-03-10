@@ -400,15 +400,12 @@ Template.vertical_edit_menu.events({
     storyId = Session.get('storyId');
     var index = this.index;
 
+    Session.set('saveState', 'saving');
     return Meteor.call('moveVerticalSectionUpOne', storyId, index, function(err, numDocs) {
-      if (err) {
-        return alert(err);
-      }
       if (numDocs) {
         return goToY(index - 1);
-      } else {
-        return alert('No docs updated');
       }
+      saveCallback(err, numDocs);
     });
   },
   "click .move-card-down": function() {
@@ -416,15 +413,12 @@ Template.vertical_edit_menu.events({
     storyId = Session.get('storyId');
     var index = this.index;
 
+    Session.set('saveState', 'saving');
     return Meteor.call('moveVerticalSectionDownOne', storyId, index, function(err, numDocs) {
-      if (err) {
-        return alert(err);
-      }
       if (numDocs) {
         return goToY(index + 1);
-      } else {
-        return alert('No docs updated');
       }
+      saveCallback(err, numDocs);
     });
   },
   "click .delete-card": function() {
@@ -433,16 +427,8 @@ Template.vertical_edit_menu.events({
       storyId = Session.get('storyId');
       var index = this.index;
 
-      return Meteor.call('deleteVerticalSection', storyId, index, function (err, numDocs) {
-        if (err) {
-          return alert(err);
-        }
-        if (numDocs) {
-          return
-        } else {
-          return alert('No docs updated');
-        }
-      });
+      Session.set('saveState', 'saving');
+      return Meteor.call('deleteVerticalSection', storyId, index, saveCallback);
     }
   }
 });
