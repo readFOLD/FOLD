@@ -403,7 +403,7 @@ Template.vertical_edit_menu.events({
     Session.set('saveState', 'saving');
     return Meteor.call('moveVerticalSectionUpOne', storyId, index, function(err, numDocs) {
       if (numDocs) {
-        return goToY(index - 1);
+        goToY(index - 1);
       }
       saveCallback(err, numDocs);
     });
@@ -416,7 +416,7 @@ Template.vertical_edit_menu.events({
     Session.set('saveState', 'saving');
     return Meteor.call('moveVerticalSectionDownOne', storyId, index, function(err, numDocs) {
       if (numDocs) {
-        return goToY(index + 1);
+        goToY(index + 1);
       }
       saveCallback(err, numDocs);
     });
