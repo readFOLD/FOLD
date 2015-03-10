@@ -219,14 +219,16 @@ Meteor.methods({
     var storyPathSegment = _s.slugify('new-story') + '-' + shortId;  // TODO DRY
     var userPathSegment= user.username;
 
+    initialVerticalSection = {
+      _id: Random.id(8),
+      contextBlocks: [],
+      title: "",
+      content: ""
+    };
+
     Stories.insert({
       published: false,
-      verticalSections: [{
-        _id: Random.id(8),
-        contextBlocks: [],
-        title: "",
-        content: ""
-      }],
+      verticalSections: [initialVerticalSection],
       lastSaved: new Date,
       userPathSegment: userPathSegment,
       storyPathSegment: storyPathSegment,
@@ -236,12 +238,7 @@ Meteor.methods({
       draftStory: {
         authorId: this.userId,
         authorName: user.profile.name || 'Anonymous',
-        verticalSections: [{
-          _id: Random.id(8),
-          contextBlocks: [],
-          title: "",
-          content: ""
-        }],
+        verticalSections: [initialVerticalSection],
         title: '',
         userPathSegment: userPathSegment,
         storyPathSegment: storyPathSegment
