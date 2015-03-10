@@ -115,8 +115,17 @@
 
 <template name="story_preview">
   <div class="story" data-story-id="{{_id}}">
-    {{> _story_preview_content}}
-    {{> edit_or_read_bar}}
+    {{#if isAuthor}}
+      {{#linkTo route="edit" data=this}}
+        {{> _story_preview_content}}
+        {{> edit_or_read_bar}}
+      {{/linkTo}}
+    {{else}}
+      {{#linkTo route="read" data=this}}
+        {{> _story_preview_content}}
+        {{> edit_or_read_bar}}
+      {{/linkTo}}
+    {{/if}}
   </div>
 </template>
 
@@ -164,26 +173,14 @@
         <div class="publish-date">{{lastPublishDate}}</div>
       </div>
     </div>
-    <div class="pull-right">
-      {{ > favorite_button }}
-    </div>
+    <!--<div class="pull-right">-->
+      <!--{{ > favorite_button }}-->
+    <!--</div>-->
   </div>
 </template>
 
 <template name="edit_or_read_bar">
   <div class="edit-or-read">
-    {{#if isAuthor}}
-      {{#linkTo route="edit" data=this}}
-        <div id="edit-this-story">
-          Edit This Story
-        </div>
-      {{/linkTo}}
-    {{else}}
-      {{#linkTo route="read" data=this}}
-        <div id="edit-this-story">
-          Unfold This Story
-        </div>
-      {{/linkTo}}
-    {{/if}}
+
   </div>
 </template>

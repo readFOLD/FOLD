@@ -293,7 +293,7 @@ div.stories {
         color: white;
       }
 
-      div#edit-this-story {
+      div.edit-this-story {
         .background-transition;
         .color-transition;
         padding-top: 11px;
