@@ -21,28 +21,49 @@
         {{> filters}} in {{> categories}}
       </div>
     </div>
-    <div class="right">
-      <div class="action-items">
-        <ol>
-          <li class="create-story">
-            {{> create_story}}
-          </li>
-          <li class="user-action">
-            {{> login_buttons }}
-          </li>
-          <li class="about-fold">
-            {{#linkTo route="about"}}
-                About FOLD
-            {{/linkTo}}
-          </li>
-        </ol>
+    {{> banner_buttons}}
+  </div>
+</template>
+
+<template name="top_banner_simple">
+  <div class="home-top">
+    <div class="left">
+      <div class="logo-title">
+        {{#linkTo route="home"}}
+          <img src="/FOLD_LOGO.svg">
+        {{/linkTo}}
+        {{#linkTo route="home"}}
+          <div class="title">
+            <img src="/FOLD_TITLE.svg">
+          </div>
+        {{/linkTo}}
       </div>
-      <div class="user-image">
-        <div class="author-image">
-          {{#if profileImage}}
+    </div>
+  </div>
+</template>
+
+<template name="banner_buttons">
+  <div class="right">
+    <div class="action-items">
+      <ol>
+        <li class="create-story">
+          {{> create_story}}
+        </li>
+        <li class="user-action">
+          {{> login_buttons }}
+        </li>
+        <li class="about-fold">
+          {{#linkTo route="about"}}
+            About FOLD
+          {{/linkTo}}
+        </li>
+      </ol>
+    </div>
+    <div class="user-image">
+      <div class="author-image">
+        {{#if profileImage}}
           <img class="profile-picture" src="{{profileImage}}"/>
-          {{/if}}
-        </div>
+        {{/if}}
       </div>
     </div>
   </div>
