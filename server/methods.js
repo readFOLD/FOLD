@@ -126,8 +126,8 @@ Meteor.methods({
     var res;
     check(query, String);
     this.unblock();
-    offset = page || 0;
-    limit = 50;
+    var offset = page || 0;
+    var limit = 50;
     requestParams = {
       q: query,
       limit: limit,
@@ -135,14 +135,10 @@ Meteor.methods({
       client_id: SOUNDCLOUD_CLIENT_ID
     };
 
-    if (page) {
-      requestParams['pageToken'] = page;
-    }
     res = HTTP.get('http://api.soundcloud.com/tracks.json', {
       params: requestParams
     });
 
-    // console.log("RES", res)
     var items = JSON.parse(res.content);
 
     return {
