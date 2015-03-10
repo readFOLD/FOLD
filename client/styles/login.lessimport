@@ -28,7 +28,7 @@ form#signup-form {
 	font-family: Muli;
 }
 
-.login-button {
+.login-button, .signup-button {
 	margin-top: 20px;
 	width: 100px;
     background-color: @action-color;

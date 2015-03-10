@@ -238,7 +238,7 @@ input {
 }
 
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="email"] {
   font-family: Muli;
   margin-top: 5px;
   margin-bottom: 15px;
