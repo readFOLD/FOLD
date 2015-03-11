@@ -153,6 +153,7 @@ Meteor.methods({
   },
   twitterSearchList: function(query, option, page) {
     var res;
+
     check(query, String);
     this.unblock();
     count = 10;
@@ -164,21 +165,31 @@ Meteor.methods({
       access_token: Meteor.user().services.twitter.accessToken,
       access_token_secret: Meteor.user().services.twitter.accessTokenSecret,
     });
-
-    var params = {q: 'fold', count: count};
     var twitterResultsSync = Meteor.wrapAsync(client.get, client);
 
-    if (page) {
+    //example radio choise
+    regularSearch = true;
+    userSearch = false;
+    favoriteSearch = false;
+
+    params = {count: count};
+
+    if (regularSearch) {
+      params.q = query;
       params.max_id = page;
-    } 
-    res = twitterResultsSync('search/tweets', params);
-    
-    // console.log(res);
-    // console.log(res.statuses[0].user);
+
+      res = twitterResultsSync('search/tweets', params);
+      page = res.search_metadata.next_results.match(/\d+/)[0];
+      res = res.statuses;
+    } else {
+      params.screen_name = query;
+      var apiCall = userSearch ? 'statuses/user_timeline' : 'favorites/list';
+      res = twitterResultsSync( apiCall, params);
+    }
 
     searchResults = {
-      nextPage: res.search_metadata.next_results.match(/\d+/)[0],
-      items: res.statuses
+      nextPage: page,
+      items: res
     };
 
     return searchResults;
@@ -211,7 +222,7 @@ Meteor.methods({
         return element.snippet;
       })
       .value();
-    console.log(items);
+
     return {
       'nextPage': nextPageToken,
       'items': items

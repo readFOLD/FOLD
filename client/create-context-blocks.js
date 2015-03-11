@@ -64,7 +64,6 @@ var createBlockEvents = {
 
   "submit form": function(d, template) {
     d.preventDefault();
-    console.log("search button pressed");
     if(!template.loadingResults.get()){
       if (!template.existingSearchResults || !template.existingSearchResults().count()) {  // confirm there are no results yet
         template.search();
@@ -208,9 +207,11 @@ var searchIntegrations = {
       methodName: 'twitterSearchList',
       mapFn: function(e){
         return {
-          title: e.user.name,
-          description: e.text,
-          referenceId: e.id,
+          author : e.user.name,
+          screen_name : e.user.screen_name,
+          description : e.text,
+          referenceId : e.id,
+          referenceCreationDate : e.created_at
         }
       }
     }
