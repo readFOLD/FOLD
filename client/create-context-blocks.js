@@ -73,6 +73,7 @@ var createBlockEvents = {
 
   "submit form": function(d, template) {
     d.preventDefault();
+    console.log("search button pressed");
     if(!template.loadingResults.get()){
       if (!SearchResults.find({ // confirm there are no results yet
           searchQuery: $('input').val(),
@@ -125,6 +126,9 @@ var searchAPI = function(query) {
   Meteor.call(integrationDetails.methodName, query, page, function(err, results) {
     var items = results.items;
     var nextPage = results.nextPage;
+    
+    console.log(nextPage);
+    console.log(items);
 
     if (err) {
       alert(err);
@@ -166,6 +170,18 @@ var searchIntegrations = {
           videoUsername : e.channelTitle,
           videoUsernameId : e.channelId,
           videoCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+        }
+      }
+    }
+  },
+  twitter: {
+    twitter: {
+      methodName: 'twitterSearchList',
+      mapFn: function(e){
+        return {
+          title: e.user.name,
+          description: e.text,
+          referenceId: e.id,
         }
       }
     }
@@ -216,11 +232,18 @@ Template.create_map_section.events(createBlockEvents);
 Template.create_text_section.helpers(createBlockHelpers);
 Template.create_text_section.events(createBlockEvents);
 
-Template.create_twitter_section.events({
-  'click .search' : function(e){
-    Meteor.call('twitterTweetSearchList')
-  }
-})
+Template.create_twitter_section.helpers(createBlockHelpers);
+Template.create_twitter_section.events(createBlockEvents);
+
+
+Template.create_twitter_section.created = function() {
+  this.type = 'twitter';
+  this.source = new ReactiveVar('twitter');
+
+  this.loadingResults = new ReactiveVar();
+  this.focusResult = new ReactiveVar();
+  this.search = _.bind(searchAPI, this);
+};
 
 Template.create_video_section.created = function() {
   this.type = 'video';

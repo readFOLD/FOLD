@@ -215,7 +215,29 @@
 
 
 <template name="create_twitter_section">
-  <button type="button" class="search">Search</button>
+  <div class="create-section">
+    {{> search_form}}
+    <ol class="search-results-container">
+      {{#each results}}
+        <li>
+            <div class="{{#if isFocused}}focused-{{/if}}search-result">
+              <div class="info {{#if isFocused}}focused{{/if}}">
+                <div class="content-title">{{title}}</div>
+                <div class="descr">{{description}}</div>
+              </div>
+            </div> 
+        </li>
+      {{/each}}
+      <li class="loading-icon">
+        {{#if loading}}
+          {{> loading_icon}}
+        {{/if}}
+      </li>
+    </ol>
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
+  </div>
 </template>
 
 <template name="create_video_section">

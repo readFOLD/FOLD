@@ -13,22 +13,6 @@ if (!GOOGLE_API_SERVER_KEY) {
 
 
 Meteor.methods({
-   twitterTweetSearchList: function() {
-    var client = new Twit({
-      consumer_key: TWITTER_API_KEY,
-      consumer_secret: TWITTER_API_SECRET,
-      access_token: '77660191-kyOfXkCC9tdLwj6CHRixXBA0Km3HeSThz30OfWgsk',
-      access_token_secret: "zmBzEBHBDUX1ky3sZdmVrxbora71kQaFt1OUz0nr76jsv"
-    });
-    console.log(client);
-    var params = {screen_name: 'readFold'};
-    
-    Meteor.wrapAsync(client.get('statuses/user_timeline', params, function(error, tweets, response){
-      if (!error) {
-        console.log(tweets);
-      }
-    }));
-  },
   updateUserInfo: function(user_info) {
     if (Meteor.user().tempUsername) {
       return Meteor.users.update({
@@ -109,6 +93,38 @@ Meteor.methods({
         return (e.type && e.type.indexOf('image') === 0)
       })
     }
+  },
+  twitterSearchList: function(query, page) {
+    var res;
+    check(query, String);
+    this.unblock();
+    count = 10;
+
+
+    var client = new Twit({
+      consumer_key: TWITTER_API_KEY,
+      consumer_secret: TWITTER_API_SECRET,
+      access_token: Meteor.user().services.twitter.accessToken,
+      access_token_secret: Meteor.user().services.twitter.accessTokenSecret,
+    });
+
+    var params = {q: 'fold', count: count};
+    var twitterResultsSync = Meteor.wrapAsync(client.get, client);
+
+    if (page) {
+      params.max_id = page;
+    } 
+    res = twitterResultsSync('search/tweets', params);
+    
+    // console.log(res);
+    // console.log(res.statuses[0].user);
+
+    searchResults = {
+      nextPage: res.search_metadata.next_results.match(/\d+/)[0],
+      items: res.statuses
+    };
+
+    return searchResults;
   },
   youtubeVideoSearchList: function(query, page) {
     var res;
