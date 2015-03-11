@@ -25,8 +25,8 @@ if (Stories.find().count() === 0) {
     backgroundImage: "header-image.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     title: "Unfolding the 2014 Ebola Outbreak",
-    lastSaved: new Date(1406524368561),
-    publishDate: new Date(1406524369993),
+    savedAt: new Date(1406524368561),
+    publishedAt: new Date(1406524369993),
     published: true,
     userPathSegment: "author",
     storyPathSegment: "unfolding-the-2014-ebola-outbreak-asdsk20",
@@ -50,7 +50,7 @@ if (Stories.find().count() === 0) {
             mapType: 'roadmap',
             description: "West Africa region: Nigeria, Liberia, Sierra Leone, Guinea",
             authorId: authorId,
-            _id: '0'
+            _id: '35259309fdfs'
           }, {
             type: "text",
             content: "From the Centers for Disease Control and Prevention: “On July 25, 2014, the Nigerian Ministry of Health confirmed that a man in Lagos, Nigeria, died from Ebola. The man had been in a Lagos hospital since arriving at the Lagos airport from Liberia. Currently, a small number of Ebola cases linked to this patient have been reported in Lagos and Port Harcourt. The Nigerian government has taken actions to contain further spread, but it is not yet known if these actions will be successful.",
@@ -59,7 +59,7 @@ if (Stories.find().count() === 0) {
           }, {
             type: "image",
             source: "local",
-            url: "2014_Ebola_virus_epidemic_in_West_Africa.png",
+            referenceId: "2014_Ebola_virus_epidemic_in_West_Africa.png",
             description: "Situation map of the outbreak. Source: Wikipedia.",
             authorId: authorId,
             _id: '2'
@@ -186,20 +186,29 @@ if (Stories.find().count() === 0) {
       }, {
         _id: '92',
         contextBlocks: [{
-          type: "oec",
-          url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/gin/all/show/2012/?controls=false&lang=en",
+          type: "viz",
+          source: "oec",
+          oecDirection: 'export',
+          oecCountry: 'gin',
+          oecYear: '2012',
           description: "Products exported by Guinea (2012)",
           authorId: authorId,
           _id: '18'
         }, {
-          type: "oec",
-          url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/lbr/all/show/2012/?controls=false&lang=en",
+          type: "viz",
+          source: "oec",
+          oecDirection: 'export',
+          oecCountry: 'lbr',
+          oecYear: '2012',
           description: "Products exported by Liberia (2012)",
           authorId: authorId,
           _id: '19'
         }, {
-          type: "oec",
-          url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/sle/all/show/2012/?controls=false&lang=en",
+          type: "viz",
+          source: "oec",
+          oecDirection: 'export',
+          oecCountry: 'sle',
+          oecYear: '2012',
           description: "Products exported by Sierra Leone (2012)",
           authorId: authorId,
           _id: '20'
@@ -245,8 +254,8 @@ if (Stories.find().count() === 0) {
       _id: '548781e397a6427c31384b73', // could remove
       backgroundImage: "header-image.jpg",
       headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-      lastSaved: new Date(1406524368561),  // could remove
-      publishDate: new Date(1406524369993),  // could remove
+      savedAt: new Date(1406524368561),  // could remove
+      publishedAt: new Date(1406524369993),  // could remove
       published: true,  // could remove
       userPathSegment: "author",  // could remove
       storyPathSegment: "unfolding-the-2014-ebola-outbreak-548781e397a6427c31384b73",  // could remove
@@ -263,7 +272,7 @@ if (Stories.find().count() === 0) {
           content: "Earlier this year, a major outbreak of a hemorrhagic fever called Ebola began in Guinea. Ebola was first reported nearly 40 years ago in 1976, though the death toll of this outbreak numbers 3,000 — the largest in recorded history. Because of the medical complexities of the disease, there is currently no cure, and infection has spread to other neighboring countries. The outbreak is drawing the concern of governments and international health organizations alike, and responses have included both investment in health infrastructure as well as more drastic measures like border closures. In addition to the tragic loss of human life, the outbreak has severely crippled the economies of the affected countries."
         }, {
           _id: '24',
-          contextBlocks: ['0', '1', '2'],
+          contextBlocks: ['35259309fdfs', '1', '2'],
           title: "Geographic",
           content: "The recent Ebola outbreak began in a remote area of Guinea, but has since spread to neighboring countries and is currently concentrated in Guinea, Liberia, and Sierra Leone. <a href='javascript:void(0);' data-context-id='1'>Cases of the virus have also been reported in Nigeria</a>, but the virus appears to be largely contained. This is the first time in recorded history that an outbreak of the virus has occurred in West Africa."
         }, {
@@ -298,8 +307,8 @@ if (Stories.find().count() === 0) {
   Stories.insert({
     backgroundImage: "art.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-    lastSaved: new Date(),
-    publishDate: new Date(),
+    savedAt: new Date(),
+    publishedAt: new Date(),
     published: true,
     userPathSegment: "author",
     shortId: 'fdfdf3c3',
@@ -318,6 +327,17 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "art.jpg",
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      savedAt: new Date(),
+      publishedAt: new Date(),
+      published: true,
+      userPathSegment: "author",
+      shortId: 'fdfdf3c3',
+      storyPathSegment: "leonard-nimoy-fdfdf3c3",
+      title: "Star Trek is great, and Leonard Nimoy's Spock was the greatest thing about it",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -333,8 +353,8 @@ if (Stories.find().count() === 0) {
     _id: '548781e397a6427c31384b79',
     shortId: 'djksad20',
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-    lastSaved: new Date(),
-    publishDate: new Date(),
+    savedAt: new Date(),
+    publishedAt: new Date(),
     published: true,
     userPathSegment: "author",
     storyPathSegment: "banksy-djksad20",
@@ -352,6 +372,18 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "banksy.jpg",
+      _id: '548781e397a6427c31384b79',
+      shortId: 'djksad20',
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      savedAt: new Date(),
+      publishedAt: new Date(),
+      published: true,
+      userPathSegment: "author",
+      storyPathSegment: "banksy-djksad20",
+      title: "Banksy Spraypaints New Thing",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -365,8 +397,8 @@ if (Stories.find().count() === 0) {
   Stories.insert({
     backgroundImage: "canoe.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-    lastSaved: new Date(),
-    publishDate: new Date(),
+    savedAt: new Date(),
+    publishedAt: new Date(),
     published: true,
     userPathSegment: "author",
     storyPathSegment: "wolf-alice-djkscsad20",
@@ -385,6 +417,17 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "canoe.jpg",
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      savedAt: new Date(),
+      publishedAt: new Date(),
+      published: true,
+      userPathSegment: "author",
+      storyPathSegment: "wolf-alice-djkscsad20",
+      shortId: 'djkscsad20',
+      title: "5 songs from alt-rock band Wolf Alice you need to hear",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -400,8 +443,8 @@ if (Stories.find().count() === 0) {
     _id: '23bb79',
     shortId: 'djdcak20',
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-    lastSaved: new Date(),
-    publishDate: new Date(),
+    savedAt: new Date(),
+    publishedAt: new Date(),
     published: true,
     userPathSegment: "author",
     storyPathSegment: "art-heist-djdcak20",
@@ -419,6 +462,18 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "dothething.png",
+      _id: '23bb79',
+      shortId: 'djdcak20',
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      savedAt: new Date(),
+      publishedAt: new Date(),
+      published: true,
+      userPathSegment: "author",
+      storyPathSegment: "art-heist-djdcak20",
+      title: "25 Years Later, an Art Heist Is Still Unsolved",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -435,8 +490,8 @@ if (Stories.find().count() === 0) {
     _id: '23bbv',
     shortId: 'djkdcsq20',
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-    lastSaved: new Date(),
-    publishDate: new Date(),
+    savedAt: new Date(),
+    publishedAt: new Date(),
     published: true,
     userPathSegment: "author",
     storyPathSegment: "charlottes-web-djkdcsq20",
@@ -454,6 +509,18 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
+      backgroundImage: "stones.jpg",
+      _id: '23bbv',
+      shortId: 'djkdcsq20',
+      headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
+      savedAt: new Date(),
+      publishedAt: new Date(),
+      published: true,
+      userPathSegment: "author",
+      storyPathSegment: "charlottes-web-djkdcsq20",
+      title: "Charlotte's Web",
+      authorId: authorId,
+      authorName: authorProfile.name,
       verticalSections: [
         {
           _id: '931',
@@ -475,7 +542,7 @@ if (ContextBlocks.find().count() === 0) {
       mapType: 'roadmap',
       description: "West Africa region: Nigeria, Liberia, Sierra Leone, Guinea",
       authorId: authorId,
-      _id: '0'
+      _id: '35259309fdfs'
     }, {
       type: "text",
       content: "From the Centers for Disease Control and Prevention: “On July 25, 2014, the Nigerian Ministry of Health confirmed that a man in Lagos, Nigeria, died from Ebola. The man had been in a Lagos hospital since arriving at the Lagos airport from Liberia. Currently, a small number of Ebola cases linked to this patient have been reported in Lagos and Port Harcourt. The Nigerian government has taken actions to contain further spread, but it is not yet known if these actions will be successful.",
@@ -590,20 +657,29 @@ if (ContextBlocks.find().count() === 0) {
       authorId: authorId,
       _id: '17'
     }, {
-      type: "oec",
-      url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/gin/all/show/2012/?controls=false&lang=en",
+      type: "viz",
+      source: "oec",
+      oecDirection: 'export',
+      oecCountry: 'gin',
+      oecYear: '2012',
       description: "Products exported by Guinea (2012)",
       authorId: authorId,
       _id: '18'
     }, {
-      type: "oec",
-      url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/lbr/all/show/2012/?controls=false&lang=en",
+      type: "viz",
+      source: "oec",
+      oecDirection: 'export',
+      oecCountry: 'lbr',
+      oecYear: '2012',
       description: "Products exported by Liberia (2012)",
       authorId: authorId,
       _id: '19'
     }, {
-      type: "oec",
-      url: "http://atlas.media.mit.edu/explore/embed/tree_map/hs/export/sle/all/show/2012/?controls=false&lang=en",
+      type: "viz",
+      source: "oec",
+      oecDirection: 'export',
+      oecCountry: 'sle',
+      oecYear: '2012',
       description: "Products exported by Sierra Leone (2012)",
       authorId: authorId,
       _id: '20'
@@ -647,9 +723,9 @@ ServiceConfiguration.configurations.upsert(
   { service: "twitter" },
   {
     $set: {
-      consumerKey: Meteor.settings.TWITTER_API_KEY,
+      consumerKey: process.env.TWITTER_API_KEY || Meteor.settings.TWITTER_API_KEY,
       loginStyle: "popup",
-      secret: Meteor.settings.TWITTER_API_SECRET
+      secret: process.env.TWITTER_API_SECRET || Meteor.settings.TWITTER_API_SECRET
     }
   }
 );

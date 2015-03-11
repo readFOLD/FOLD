@@ -50,45 +50,58 @@ div.home-top {
   }
 
   div.action-items {
+    @height: 45px;
     position: absolute;
     top: -6px;
     right: 60px;
     color: @light-color;
     font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
 
+    a, button{
+      padding: 12px 20px;
+      .size-to-fit;
+      &:hover {
+        background-color: @dark-color;
+      }
+    }
+    a{
+      line-height: @height;
+    }
 
-    & > div, & > a div {
-      height: 45px;
+    .create-story {
+      background-color: @action-color;
+      &:hover {
+        background-color: @dark-color;
+      }
+    }
+
+    li {
+      height: @height;
+      float: left;
       display: inline-block;
-      padding: 12px 20px 8px 20px;
       margin-right: 12px;
 
       position: relative;
-      &:hover {
-        background-color: @dark-color;
-      }
+
+
     }
 
-    div.create-story {
-      background-color: @action-color;
+    .user-action {
+      background-color: @remix-color;
     }
 
-    div.sign-in {
-      button.twitter-signin, button.email-signin {
-        background-color: @remix-color;  
-      }
-      
-    }
-
-    div.user-action {
-      background-color: @remix-color; 
-      &:hover {
-        background-color: @dark-color;
-      }
-    }
-
-    div.about-fold {
+    .about-fold {
       background-color: @panel-color;
+    }
+
+    ol.user-menu {
+      background-color: @remix-color;
+      li {
+        float: none;
+        display: block;
+        margin:0;
+        border-top: 1px solid @white-color;
+      }
     }
   }
 
@@ -280,7 +293,7 @@ div.stories {
         color: white;
       }
 
-      div#edit-this-story {
+      div.edit-this-story {
         .background-transition;
         .color-transition;
         padding-top: 11px;

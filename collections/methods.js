@@ -44,7 +44,7 @@ var updateStory = function(selector, modifier, options) {
   if (_.isEmpty(modifier)){
     return
   }
-  modifier.$set = _.extend(modifier.$set || {}, {lastSaved: Date.now()});
+  modifier.$set = _.extend(modifier.$set || {}, {savedAt: Date.now()});
 
   return Stories.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
 };
@@ -170,6 +170,38 @@ Meteor.methods({
       }
     })
   },
+  deleteVerticalSection: function(storyId, index) {
+
+    check(index, Number);
+
+    var selector = { _id: storyId };
+    var story = Stories.findOne(selector, {fields:
+      {
+        'draftStory.verticalSections': 1,
+        'authorId': 1
+      }
+    });
+
+    assertOwner(this.userId, story);
+
+    var verticalSections = story.draftStory.verticalSections;
+
+    if (index < 0 || index >= story.draftStory.verticalSections){
+      throw new Meteor.Error('Index too high')
+    }
+
+    var contextBlocks = verticalSections[index].contextBlocks;
+
+    if (contextBlocks){ // TODO check owner and if remixed etc..
+      ContextBlocks.remove({_id: {$in: contextBlocks}})
+    }
+
+    return updateStory({ _id: storyId }, {
+      $pull: {
+        'draftStory.verticalSections': {_id: verticalSections[index]._id}
+      }
+    })
+  },
   favoriteStory: function(storyId) {
     return changeFavorite.call(this, storyId, true);
   },
@@ -183,19 +215,21 @@ Meteor.methods({
     var user = Meteor.users.findOne({ _id : this.userId });
 
     var shortId = Random.id(8);
-    console.log(1111);
+
     var storyPathSegment = _s.slugify('new-story') + '-' + shortId;  // TODO DRY
     var userPathSegment= user.username;
 
+    initialVerticalSection = {
+      _id: Random.id(8),
+      contextBlocks: [],
+      title: "",
+      content: ""
+    };
+
     Stories.insert({
       published: false,
-      verticalSections: [{
-        _id: Random.id(8),
-        contextBlocks: [],
-        title: "",
-        content: ""
-      }],
-      lastSaved: new Date,
+      verticalSections: [initialVerticalSection],
+      savedAt: new Date,
       userPathSegment: userPathSegment,
       storyPathSegment: storyPathSegment,
       authorId: this.userId,
@@ -203,12 +237,8 @@ Meteor.methods({
       shortId: shortId,
       draftStory: {
         authorId: this.userId,
-        verticalSections: [{
-          _id: Random.id(8),
-          contextBlocks: [],
-          title: "",
-          content: ""
-        }],
+        authorName: user.profile.name || 'Anonymous',
+        verticalSections: [initialVerticalSection],
         title: '',
         userPathSegment: userPathSegment,
         storyPathSegment: storyPathSegment

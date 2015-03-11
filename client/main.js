@@ -1,5 +1,9 @@
-var getCardWidth, horizontalBlockHelpers, scrollSnap, throttledResize, typeHelpers, updatecurrentY,
+var getCardWidth, horizontalBlockHelpers, throttledResize, typeHelpers, updatecurrentY,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+UI.registerHelper('selectedIf', function(val) {
+  return val ? 'selected' : '';
+});
 
 getCardWidth = function(windowWidth) {
   var cardWidth;
@@ -20,34 +24,17 @@ Session.set("width", window.outerWidth);
 
 Session.set("cardWidth", getCardWidth(Session.get("width")));
 
-throttledResize = _.throttle(function() {
+var resize = function() {
   if (window.outerWidth > 1024) {
     Session.set("resize", new Date());
     Session.set("width", window.outerWidth);
     return Session.set("cardWidth", getCardWidth(Session.get("width")));
   }
-}, 5);
+};
+
+throttledResize = _.throttle(resize, 5);
 
 $(window).resize(throttledResize);
-
-scrollSnap = function() {
-  var height, i, scrollTop, tolerance, verticalHeights, _i, _len, _results;
-  scrollTop = $(document).scrollTop();
-  Session.set("scrollTop", scrollTop);
-  verticalHeights = window.getVerticalHeights();
-  tolerance = 20;
-  _results = [];
-  for (i = _i = 0, _len = verticalHeights.length; _i < _len; i = ++_i) {
-    height = verticalHeights[i];
-    if (((height - tolerance) < scrollTop) && (scrollTop < (height + tolerance))) {
-      console.log(scrollTop, i);
-      _results.push(goToY(i));
-    } else {
-      _results.push(void 0);
-    }
-  }
-  return _results;
-};
 
 updatecurrentY = function() {
   var actualY, h, i, maxScroll, readMode, scrollTop, stickyBody, stickyTitle, vertTop, _i, _len, _ref;
@@ -99,13 +86,15 @@ updatecurrentY = function() {
   if (scrollTop >= maxScroll) {
     $("div.title-overlay, div#banner-overlay").addClass("fixed");
     $("div.logo").addClass("visible");
+    Session.set("pastHeader", true);
   } else {
     $("div.title-overlay, div#banner-overlay").removeClass("fixed");
     $("div.logo").removeClass("visible");
+    return Session.set("pastHeader", false);
+
   }
   if (scrollTop >= readMode) {
     var selectOffset = - 40;
-    Session.set("pastHeader", true);
     _ref = _.map(window.getVerticalHeights(), function(height){ return height + selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
@@ -118,8 +107,6 @@ updatecurrentY = function() {
       Session.set("currentX", 0);
       return Session.set("currentY", actualY);
     }
-  } else {
-    return Session.set("pastHeader", false);
   }
 };
 
@@ -154,6 +141,11 @@ Template.story_header.rendered = function() {
   }
 };
 
+Template.story_header.created = function() {
+  this.imageUploadURL = 'test'
+  this.uploading = new ReactiveVar(false);
+}
+
 Template.story_header.helpers({
   title: function() {
     if (this.title) {
@@ -161,6 +153,9 @@ Template.story_header.helpers({
     } else {
       return Session.get("storyTitle");
     }
+  },
+  headerImageURL: function() {
+    return Template.instance().imageUploadURL.get();
   },
   headerImageAttribution: function() {
     return this.headerImageAttribution;
@@ -171,6 +166,9 @@ Template.story_header.helpers({
     } else {
       return Session.get("backgroundImage");
     }
+  },
+  uploading: function() {
+    return Template.instance().uploading.get();
   }
 });
 
@@ -210,6 +208,15 @@ Template.story_header.events = {
       return goToY(0);
     }
   },
+  "keydown": function (e) {
+    if (e.which == 13) { // enter
+      e.preventDefault();
+      $(':focus').blur(); // TO-DO this should move focus to the first block
+      $('#to-story, .attribution').fadeOut();
+      goToX(0);
+      return goToY(0);
+    }
+  },
   "click #to-header": function() {
     var path;
     $("#to-header").removeClass("shown");
@@ -223,6 +230,9 @@ Template.story_header.events = {
     path = window.location.pathname.split("/");
     path.pop();
     return path.pop();
+  },
+  "click .upload": function(e, t) {
+    t.uploading.set(!t.uploading.get())
   }
 };
 
@@ -409,14 +419,26 @@ typeHelpers = {
   image: function() {
     return this.type === "image";
   },
+  gif: function() {
+    return this.type === "gif";
+  },
   map: function() {
     return this.type === "map";
   },
   video: function() {
     return this.type === "video";
   },
-  oec: function() {
-    return this.type === "oec";
+  viz: function() {
+    return this.type === "viz";
+  },
+  twitter: function() {
+    return this.type === "twitter";
+  },
+  audio: function() {
+    return this.type === "audio";
+  },
+  link: function() {
+    return this.type === "link";
   }
 };
 
@@ -475,9 +497,11 @@ Template.horizontal_section_block.helpers({
   }
 });
 
-Template.display_oec_section.helpers(horizontalBlockHelpers);
+Template.display_viz_section.helpers(horizontalBlockHelpers);
 
 Template.display_image_section.helpers(horizontalBlockHelpers);
+
+Template.display_audio_section.helpers(horizontalBlockHelpers);
 
 Template.display_video_section.helpers(horizontalBlockHelpers);
 

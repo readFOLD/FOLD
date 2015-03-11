@@ -106,61 +106,85 @@
 <template name="create_horizontal_section_block">
   <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <div class="content-icons">
-      <div class='{{#if twitter}}active{{/if}} inline-block'>
+      <button class='{{#if twitter}}active{{/if}}'>
         {{> twitter_icon }}
-      </div>
-      <div class='{{#if video}}active{{/if}} inline-block'>
+      </button>
+      <button class='{{#if video}}active{{/if}}'>
         {{> video_icon }}
-      </div>
-      <div class='{{#if map}}active{{/if}} inline-block'>
+      </button>
+      <button class='{{#if map}}active{{/if}}'>
         {{> map_icon }}
-      </div>
-      <div class='{{#if image}}active{{/if}} inline-block'>
+      </button>
+      <button class='{{#if image}}active{{/if}}'>
         {{> image_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='{{#if viz}}active{{/if}}'>
         {{> viz_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='{{#if gif}}active{{/if}}'>
         {{> gif_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='{{#if audio}}active{{/if}}'>
         {{> audio_icon }}
-      </div>
-      <div class='{{#if text}}active{{/if}} inline-block'>
+      </button>
+      <button class='{{#if text}}active{{/if}}'>
         {{> text_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='{{#if link}}active{{/if}}'>
         {{> link_icon }}
-      </div>
-      <div class='unimplemented inline-block'>
+      </button>
+      <button class='{{#if remix}}active{{/if}}'>
         {{> remix_icon }}
-      </div>
+      </button>
     </div>
     {{#if type}}
+      {{#if link}}{{> unimplemented_create_section}}{{/if}}
+      {{#if remix}}{{> unimplemented_create_section}}{{/if}}
       {{#if text}}{{> create_text_section}}{{/if}}
+      {{#if audio}}{{> create_audio_section}}{{/if}}
       {{#if image}}{{> create_image_section}}{{/if}}
+      {{#if gif}}{{> create_gif_section}}{{/if}}
       {{#if map}}{{> create_map_section}}{{/if}}
       {{#if video}}{{> create_video_section}}{{/if}}
       {{#if twitter}}{{> create_twitter_section}}{{/if}}
+      {{#if viz}}{{> create_viz_section}}{{/if}}
     {{/if}}
   </div>
 </template>
 
 
 <template name="search_form">
-  <div class="search-form search-open">
+  <div class="search-form">
     <form>
-      <div class="search-trigger">Search</div>
-      <div class="search-input-container">
-        <input type = "search" placeholder={{placeholder}} autofocus="autofocus">
+      <div class="search-outside-input-container search-open">
+        <div class="search-trigger">Search</div>
+        <div class="search-input-container">
+          <input type = "search" placeholder={{placeholder}} autofocus="autofocus">
+        </div>
+        <button type="submit" class="search-button">{{> search_icon }}</button>
       </div>
-      <button type="submit" class="search-button">{{> search_icon }}</button>
+      {{#if option1}}
+        <div class="search-radios">
+          <input type="radio" name="option" value={{option1}} checked />
+          <label for={{option1}}>{{option1}}</label>
+          {{#if option2}}
+            <input type="radio" name="option" value={{option2}} />
+            <label for={{option2}}>{{option2}}</label>
+          {{/if}}
+        </div>
+      {{/if}}
     </form>
   </div>
 </template>
 
 <!-- Create Templates -->
+<template name="unimplemented_create_section">
+  <div class="create-section unimplemented">
+    Coming soon!
+  </div>
+</template>
+
+
 <template name="create_text_section">
   <div class="create-section">
     {{#autoForm collection='ContextBlocks' id="createTextSectionForm" doc=startingBlock type="insert" validation="keyup"}}
@@ -197,19 +221,73 @@
   </div>
 </template>
 
+<template name="create_gif_section">
+  <div class="create-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    {{> search_form}}
+    <ol class="search-results-container">
+      {{#each results}}
+        <li class="tile {{#if isFocused}}focused{{/if}}">
+          <img src="{{thumbnailUrl}}">
+        </li>
+      {{/each}}
+      {{#if loading}}
+        {{> loading_icon}}
+      {{/if}}
+    </ol>
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
+  </div>
+</template>
+
+<template name="create_viz_section">
+  <div class="create-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    <select class="countries">
+      {{#each countries}}
+        <option class="countries" data-id="{{this.id}}" {{selectedIf isSelectedCountry}}>
+          {{this.name}}
+        </option>
+      {{/each}}
+    </select>
+    <select class="years">
+      {{#each years}}
+        <option class="year" data-category="{{this}}" {{selectedIf isSelectedYear}}>
+          {{this}}
+        </option>
+      {{/each}}
+    </select>
+
+    {{#if addingContext}}
+      <iframe width="{{cardWidth}}" height="315" src="{{url}}" frameborder="0" ></iframe>
+    {{/if}}
+
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
+  </div>
+</template>
+
 <template name="create_map_section">
   <div class="create-section">
-    {{#autoForm collection='ContextBlocks' id="createMapSectionForm" doc=startingBlock type="insert" validation="keyup"}}
-      {{> afQuickField name='mapQuery'}}
-      {{> afQuickField name='mapType'}}
-
-      <button type="button" class="btn btn-primary search">Search</button>
-      <button type="submit" class="btn btn-primary">ADD</button>
-      <button type="button" class="btn btn-primary cancel">Cancel</button>
-    {{/autoForm}}
-    {{#if url}}
-      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
-    {{/if}}
+    {{> search_form option1='satellite' option2='roadmap'}}
+    <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
   </div>
 </template>
 
@@ -249,7 +327,7 @@
             <div class="{{#if isFocused}}focused-{{/if}}search-result">
               <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
                 {{#if isFocused}}
-                  <iframe src="{{url}}"></iframe>
+                  <iframe class="video" src="{{url}}"></iframe>
                 {{else}}
                   <img src="{{thumbnailUrl}}">
                 {{/if}}
@@ -275,14 +353,54 @@
   </div>
 </template>
 
+<template name="create_audio_section">
+  <div class="create-section audio">
+    {{> search_form}}
+    <ol class="search-results-container">
+      {{#each results}}
+        <li>
+            <div class="{{#if isFocused}}focused-{{/if}}search-result">
+              <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
+                {{#if isFocused}}
+                  <iframe class="audio" width="100%" src="{{url}}"></iframe>
+                {{else}}
+                  <div class="thumbnail">
+                    {{#if soundcloudArtworkUrl}}
+                      <img class="square" src="{{soundcloudArtworkUrl}}" />
+                    {{else}}
+                      <img class="square" src="https://addons.opera.com/media/extensions/45/11645/0.5-rev2/icons/icon_64x64.png" />
+                    {{/if}}
+                  </div>
+                  <div class="info {{#if isFocused}}focused{{/if}}">
+                    <div class="content-title">{{title}}</div>
+                    <div class="descr">{{description}}</div>
+                    <div class="user">{{videoUsername}}</div>
+                    <div class="date">{{videoCreationDate}}</div>
+                  </div>
+                {{/if}}
+              </div>
+            </div> 
+        </li>
+      {{/each}}
+      <li class="loading-icon">
+        {{#if loading}}
+          {{> loading_icon}}
+        {{/if}}
+      </li>
+    </ol>
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
+  </div>
+</template>
 
 <template name="horizontal_section_edit_delete">
   {{#unless read}}
     {{#if selected}}
       <div class="button-options edit-delete">
-        <button class="edit button">
-          <i class="fa fa-pencil"></i>
-        </button>
+        <!--<button class="edit button">-->
+          <!--<i class="fa fa-pencil"></i>-->
+        <!--</button>-->
         <button class="delete button">
           <i class="fa fa-times"></i>
         </button>
@@ -329,28 +447,28 @@
 <template name="vertical_edit_menu">
   <div class="vertical-edit-menu">
     <ul>
-      <li>
-        <button class="add-title">
-          XXAdd title (optional)XX
-        </button>
-      </li>
+      <!--<li>-->
+        <!--<button class="add-title">-->
+          <!--XXAdd title (optional)XX-->
+        <!--</button>-->
+      <!--</li>-->
       {{#if canMoveUp}}
         <li>
           <button class="move-card-up">
-            Move card up one
+            Move row up one
           </button>
         </li>
       {{/if}}
       {{#if canMoveDown}}
         <li>
           <button class="move-card-down">
-            Move card down one
+            Move row down one
           </button>
         </li>
       {{/if}}
       <li>
         <button class="delete-card">
-          XXDelete cardXX
+          Delete card
         </button>
       </li>
     </ul>

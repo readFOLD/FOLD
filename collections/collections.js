@@ -1,4 +1,4 @@
-var ContextBlock, MapBlock, Schema, Story, TextBlock, VideoBlock, ImageBlock, checkOwner,
+var ContextBlock, MapBlock, Schema, Story, TextBlock, VideoBlock, ImageBlock, AudioBlock, VizBlock, checkOwner,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -46,7 +46,7 @@ Story = (function() {
 
   Story.prototype.publish = function() {
     var dasherizedTitle;
-    if (!this.lastSaved) {
+    if (!this.savedAt) {
       throw new Meteor.Error('not-yet-saved');
     }
     if (this.published) {
@@ -61,7 +61,7 @@ Story = (function() {
     //    $set: {
     //      published: true,
     //      publishedDate: new Date,
-    //      lastSaved: new Date
+    //      savedAt: new Date
     //    }
     //  });
     //}
@@ -111,8 +111,9 @@ this.Stories = new Meteor.Collection("stories", {
   transform: function(doc) {
     if (doc.draftStory){
       _.extend(doc.draftStory, {
-        unpublishedChanges: (!doc.publishDate || doc.lastSaved > doc.publishDate),
-        lastSaved: doc.lastSaved
+        unpublishedChanges: (!doc.publishedAt || doc.savedAt > doc.publishedAt),
+        savedAt: doc.savedAt,
+        contextCountOfType: function(){} // stub out method for now
       });
     }
     return new Story(doc);
@@ -148,12 +149,24 @@ Schema.Stories = new SimpleSchema({
     type: String,
     optional: true
   },
-  lastSaved: {
+  savedAt: {
     type: Date
   },
-  publishDate: {
+  publishedAt: {
     type: Date,
     optional: true
+  },
+  createdAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: new Date};
+      } else {
+        this.unset();
+      }
+    }
   },
   published: {
     type: Boolean,
@@ -183,7 +196,7 @@ Schema.Stories = new SimpleSchema({
     type: Boolean,
     defaultValue: false
   },
-  deletedDate: {
+  deletedAt: {
     type: Date,
     optional: true
   },
@@ -268,6 +281,33 @@ VideoBlock = (function(_super) {
 
 })(ContextBlock);
 
+AudioBlock = (function(_super) {
+  __extends(AudioBlock, _super);
+
+  function AudioBlock(doc) {
+    AudioBlock.__super__.constructor.call(this, doc);
+    this.type = 'audio';
+    if (this.source == null) {
+      this.source = 'soundcloud';
+    }
+  }
+
+  AudioBlock.prototype.url = function() {
+    if (this.source === 'soundcloud') {
+      return '//w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/' + this.referenceId + '&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=true'
+    }
+  };
+
+  AudioBlock.prototype.artworkUrl = function() {
+    if (this.source === 'soundcloud') {
+      return this.soundcloudArtworkUrl;
+    }
+  };
+
+  return AudioBlock;
+
+})(ContextBlock);
+
 ImageBlock = (function(_super) {
   __extends(ImageBlock, _super);
 
@@ -286,7 +326,7 @@ ImageBlock = (function(_super) {
       case 'imgur':
         return '//i.imgur.com/' + this.referenceId + '.' + this.fileExtension;
       case 'flickr':
-        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.server + '/' + this.referenceId + '_' + this.flickrImgSecret + '.jpg'
+        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.flickrServer + '/' + this.referenceId + '_' + this.flickrImgSecret + '.jpg'
     }
   };
 
@@ -297,11 +337,57 @@ ImageBlock = (function(_super) {
       case 'imgur':
         return '//i.imgur.com/' + this.referenceId + 't' + '.' + this.fileExtension;
       case 'flickr':
-        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.server + '/' + this.referenceId + '_' + this.flickrImgSecret + '_t' + '.jpg'
+        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.flickrServer + '/' + this.referenceId + '_' + this.flickrImgSecret + '_t' + '.jpg'
     }
   };
 
   return ImageBlock;
+
+})(ContextBlock);
+
+GifBlock = (function(_super) {
+  __extends(GifBlock, _super);
+
+  function GifBlock(doc) {
+    GifBlock.__super__.constructor.call(this, doc);
+    this.type = 'gif';
+  }
+
+  GifBlock.prototype.url = function() {
+    switch (this.source) {
+      case 'giphy':
+        return 'http://media4.giphy.com/media/' + this.referenceId + '/giphy.gif'
+    }
+  };
+
+  GifBlock.prototype.thumbnailUrl = function() {
+    switch (this.source) {
+      case 'giphy':
+        return 'http://media4.giphy.com/media/' + this.referenceId + '/200_d.gif'
+    }
+  };
+
+  return GifBlock;
+
+})(ContextBlock);
+
+
+VizBlock = (function(_super) {
+  __extends(VizBlock, _super);
+
+  function VizBlock(doc) {
+    VizBlock.__super__.constructor.call(this, doc);
+    this.type = 'viz';
+  }
+
+  VizBlock.prototype.url = function() {
+    switch (this.source) {
+      case 'oec':
+        return 'http://atlas.media.mit.edu/explore/embed/tree_map/hs/' + this.oecDirection + '/' + this.oecCountry + '/all/show/' + this.oecYear + '/?controls=false&lang=en'
+    }
+  };
+
+  return VizBlock;
 
 })(ContextBlock);
 
@@ -374,6 +460,12 @@ var newTypeSpecificContextBlock =  function(doc) {
       return new MapBlock(doc);
     case 'image':
       return new ImageBlock(doc);
+    case 'gif':
+      return new GifBlock(doc);
+    case 'audio':
+      return new AudioBlock(doc);
+    case 'viz':
+      return new VizBlock(doc);
     default:
       return new ContextBlock(doc);
   }
@@ -385,6 +477,8 @@ if (Meteor.isClient) {
   window.ContextBlock = ContextBlock;
   window.TextBlock = TextBlock;
   window.ImageBlock = ImageBlock;
+  window.AudioBlock = AudioBlock;
+  window.VizBlock = VizBlock;
   window.newTypeSpecificContextBlock = newTypeSpecificContextBlock
 }
 
@@ -419,6 +513,18 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
+  createdAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: new Date};
+      } else {
+        this.unset();
+      }
+    }
+  },
   referenceId: {
     type: String,
     optional: true
@@ -436,7 +542,15 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  server: {
+  flickrServer: {
+    type: String,
+    optional: true
+  },
+  soundcloudArtworkUrl: {
+    type: String,
+    optional: true
+  },
+  soundcloudWaveformUrl: {
     type: String,
     optional: true
   },
@@ -449,6 +563,18 @@ Schema.ContextBlocks = new SimpleSchema({
     optional: true
   },
   fileExtension: {
+    type: String,
+    optional: true
+  },
+  oecYear: {
+    type: String,
+    optional: true
+  },
+  oecCountry: {
+    type: String,
+    optional: true
+  },
+  oecDirection: {
     type: String,
     optional: true
   },
@@ -485,15 +611,19 @@ Schema.ContextBlocks = new SimpleSchema({
     optional: true
   },
 
-  videoCreationDate: {
+  referenceCreationDate: {
     type: String,
     optional: true
   },
-  videoUsername: {
+  referenceUsername: {
     type: String,
     optional: true
   },
-  videoUsernameId: {
+  referenceUserId: {
+    type: String,
+    optional: true
+  },
+  referenceSource: {
     type: String,
     optional: true
   },
@@ -529,6 +659,13 @@ Schema.UserProfile = new SimpleSchema({
     type: [String],
     optional: true,
     defaultValue: []
+  },
+  displayUsername: { // allows for caps
+    type: String
+  },
+  twitterUser: {
+    type: Boolean,
+    optional: true
   }
 });
 
@@ -536,7 +673,14 @@ Schema.User = new SimpleSchema({
   username: {
     type: String,
     regEx: /^[a-z0-9A-Z_]{3,15}$/,
-    optional: true
+    optional: true,
+    autoValue: function () {
+      if (this.isSet && typeof this.value === "string") {
+        return this.value.toLowerCase();
+      } else {
+        this.unset()
+      }
+    }
   },
   tempUsername: {
     type: String,
@@ -550,6 +694,13 @@ Schema.User = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Email,
     label: "Email address",
+    autoValue: function () {
+      if (this.isSet && typeof this.value === "string") {
+        return this.value.toLowerCase();
+      } else {
+        this.unset()
+      }
+    },
     autoform: {
       afFieldInput: {
         readOnly: true,

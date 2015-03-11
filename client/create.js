@@ -50,7 +50,7 @@ window.updateUIBasedOnSelection = function(e){
 
         Session.set('selectedTags', selectedTags);
 
-        // TODO actually get this from selection
+        // TO-DO actually get this from selection
         if (e) {
           boundary = range.getBoundingClientRect();
           boundaryMiddle = (boundary.left + boundary.right) / 2;
@@ -242,7 +242,7 @@ Tracker.autorun(function(){
   }
 });
 
-var saveCallback =  function(err, numDocs) {
+var saveCallback =  function(err, numDocs, cb) {
   var saveUIUpdateDelay = 300;
   setTimeout(function(){
     if (err) {
@@ -254,6 +254,9 @@ var saveCallback =  function(err, numDocs) {
     }
     Session.set('saveState', 'saved');
   }, saveUIUpdateDelay);
+  if(cb){
+    cb(err, numDocs)
+  }
 };
 
 var autoSaveVerticalSectionField = function(template, field, datatype){
@@ -296,7 +299,6 @@ Template.vertical_section_block.events({
     clipboardData = (e.originalEvent || e).clipboardData;
     if (!clipboardData){return}
     html = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
-    console.log('clean the html')
 
     return document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
   },
@@ -397,15 +399,12 @@ Template.vertical_edit_menu.events({
     storyId = Session.get('storyId');
     var index = this.index;
 
+    Session.set('saveState', 'saving');
     return Meteor.call('moveVerticalSectionUpOne', storyId, index, function(err, numDocs) {
-      if (err) {
-        return alert(err);
-      }
       if (numDocs) {
-        return goToY(index - 1);
-      } else {
-        return alert('No docs updated');
+        goToY(index - 1);
       }
+      saveCallback(err, numDocs);
     });
   },
   "click .move-card-down": function() {
@@ -413,16 +412,23 @@ Template.vertical_edit_menu.events({
     storyId = Session.get('storyId');
     var index = this.index;
 
+    Session.set('saveState', 'saving');
     return Meteor.call('moveVerticalSectionDownOne', storyId, index, function(err, numDocs) {
-      if (err) {
-        return alert(err);
-      }
       if (numDocs) {
-        return goToY(index + 1);
-      } else {
-        return alert('No docs updated');
+        goToY(index + 1);
       }
+      saveCallback(err, numDocs);
     });
+  },
+  "click .delete-card": function() {
+    if(confirm("Permanently delete this card and all associated context cards?")) {
+      var indexToInsert, storyId, verticalSections;
+      storyId = Session.get('storyId');
+      var index = this.index;
+
+      Session.set('saveState', 'saving');
+      return Meteor.call('deleteVerticalSection', storyId, index, saveCallback);
+    }
   }
 });
 
@@ -570,6 +576,9 @@ Template.create_horizontal_section_block.helpers({
   image: function() {
     return Template.instance().type.get() === "image";
   },
+  gif: function() {
+    return Template.instance().type.get() === "gif";
+  },
   map: function() {
     return Template.instance().type.get() === "map";
   },
@@ -581,6 +590,18 @@ Template.create_horizontal_section_block.helpers({
   },
   oec: function() {
     return Template.instance().type.get() === "oec";
+  },
+  viz: function() {
+    return Template.instance().type.get() === "viz";
+  },
+  audio: function() {
+    return Template.instance().type.get() === "audio";
+  },
+  link: function() {
+    return Template.instance().type.get() === "link";
+  },
+  remix: function() {
+    return Template.instance().type.get() === "remix";
   }
 });
 
@@ -610,8 +631,23 @@ Template.create_horizontal_section_block.events({
   'click svg.image-icon': function(d, t) {
     return t.type.set('image');
   },
+  'click svg.gif-icon': function(d, t) {
+    return t.type.set('gif');
+  },
   'click svg.twitter-icon': function(d, t) {
     return t.type.set('twitter');
+  },
+  'click svg.viz-icon': function(d, t) {
+    return t.type.set('viz');
+  },
+  'click svg.audio-icon': function(d, t) {
+    return t.type.set('audio');
+  },
+  'click svg.link-icon': function(d, t) {
+    return t.type.set('link');
+  },
+  'click svg.remix-icon': function(d, t) {
+    return t.type.set('remix');
   }
 });
 
@@ -665,7 +701,7 @@ Template.context_anchor_option.events = {
   }
 };
 
-window.addContextToStory = function(storyId, contextId, verticalSectionIndex) {
+window.addContextToStory = function(storyId, contextId, verticalSectionIndex, cb) {
   var pushObject, pushSelectorString;
   pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
   pushObject = {};
@@ -680,7 +716,25 @@ window.addContextToStory = function(storyId, contextId, verticalSectionIndex) {
       Session.set("editingContext", null);
       return goToContext(contextId);
     }
-    saveCallback(err, numDocs);
+    saveCallback(err, numDocs, cb);
+  });
+};
+
+window.removeContextFromStory = function(storyId, contextId, verticalSectionIndex, cb) {
+  var pushObject, pushSelectorString;
+  pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
+  pullObject = {};
+  pullObject[pushSelectorString] = contextId;
+  return Meteor.call('saveStory', {
+    _id: storyId
+  }, {
+    $pull: pullObject
+  }, function(err, numDocs) {
+    if (numDocs) {
+      Session.set("addingContext", null);
+      Session.set("editingContext", null);
+    }
+    saveCallback(err, numDocs, cb);
   });
 };
 
@@ -694,16 +748,6 @@ autoFormContextAddedHooks = {
 };
 
 AutoForm.hooks({
-  createMapSectionForm: _.extend({}, autoFormContextAddedHooks, {
-    before: {
-      insert: function(doc) {
-        doc = new MapBlock(doc);
-        return _.extend(doc, {
-          authorId: Meteor.user()._id
-        });
-      }
-    }
-  }),
   createTextSectionForm: _.extend({}, autoFormContextAddedHooks, {
     before: {
       insert: function(doc) {
@@ -717,19 +761,27 @@ AutoForm.hooks({
 });
 
 Template.horizontal_section_block.events({
-  "click div.delete": function(d) {
-    return console.log("delete");
+  "click .delete": function(d) {
+    if(confirm("Permanently delete this card?")){
+      Session.set('saveState', 'saving');
+      id = this._id;
+      window.removeContextFromStory(Session.get("storyId"), id, Session.get("currentY"), function(err){
+        if(err){
+          return
+        }
+        ContextBlocks.remove(id);
+      });
+    }
   },
-  "click div.edit": function(e, t) {
+  "click .edit": function(e, t) {
     Session.set('editingContext', this._id);
     return Session.set('addingContext', false);
   }
 });
 
 Template.create_options.events({
-  "click div.publish-story": function() {
-    console.log("PUBLISH");
-    return this.publish();
+  "click .publish-story": function() {
+    return alert("Publish will be available soon! You'll be able to use it to submit your story to be featured on our site when we launch in early April.");
   },
   "click .toggle-preview": function() {
     if (Session.get('read')) {

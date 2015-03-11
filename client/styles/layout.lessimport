@@ -237,6 +237,19 @@ input {
   font-family: inherit;
 }
 
+
+input[type="text"], input[type="password"], input[type="email"] {
+  font-family: Muli;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  height: 55px;
+  border: none;
+  border-bottom: 5px solid @action-color;
+  padding-left: 18px;
+  font-size: 17px;
+
+}
+
 input[type="search"] {
   -webkit-appearance: none;
   -webkit-border-radius: 0px;
@@ -306,6 +319,7 @@ div.story-browser {
   height: 0px;
   z-index: 25;
   div{
+    height: 0px;
     display: inline-block;
   }
   svg {
@@ -401,7 +415,7 @@ div#overlay {
     overflow-y: scroll;
     overflow-x: hidden;
     text-align: left;
-    font-size: 17px;
+    font-size: 16.5px;
     margin-top: 25px;
     &.minimized {
       height: 0;

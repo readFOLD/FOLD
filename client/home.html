@@ -21,45 +21,82 @@
         {{> filters}} in {{> categories}}
       </div>
     </div>
-    <div class="right">
-      <div class="action-items">
-        <div class="create-story">
-          {{> create_story}}
-        </div>
-        <div class="user-action">
-          {{> login_buttons }}
-        </div>
-        {{#linkTo route="about"}}
-        <div class="about-fold">
-          About FOLD
-        </div>
+    {{> banner_buttons}}
+  </div>
+</template>
+
+<template name="top_banner_simple">
+  <div class="home-top">
+    <div class="left">
+      <div class="logo-title">
+        {{#linkTo route="home"}}
+          <img src="/FOLD_LOGO.svg">
         {{/linkTo}}
-      </div>
-      <div class="user-image">
-        <div class="author-image">
-          {{#if profileImage}}
-          <img class="profile-picture" src="{{profileImage}}"/>
-          {{/if}}
-        </div>
+        {{#linkTo route="home"}}
+          <div class="title">
+            <img src="/FOLD_TITLE.svg">
+          </div>
+        {{/linkTo}}
       </div>
     </div>
   </div>
 </template>
 
-<template name="login_buttons">
-  <div class="signin">
-    {{#if currentUser}}
-      <button class="logout"> Log out</button>
-    {{else}}
-      <button class="signin"> Sign in</button>
-      {{#if signingIn}}
-      <div class="signin-form">
-        <button class="twitter-signin">Sign in with Twitter</button>
-        <button class="email-signin">Sign in with email</button>
+<template name="banner_buttons">
+  <div class="right">
+    <div class="action-items">
+      <ol>
+        <li class="create-story">
+          {{> create_story}}
+        </li>
+        <li class="user-action">
+          {{> login_buttons }}
+        </li>
+        <li class="about-fold">
+          {{#linkTo route="about"}}
+            About FOLD
+          {{/linkTo}}
+        </li>
+      </ol>
+    </div>
+    <div class="user-image">
+      <div class="author-image">
+        {{#if profileImage}}
+          <img class="profile-picture" src="{{profileImage}}"/>
+        {{/if}}
       </div>
+    </div>
+  </div>
+</template>
+<template name="login_buttons">
+    {{#if currentUser}}
+      <button class="user-face">{{currentUser.profile.name}}</button>
+      {{#if signingIn}}
+        <ol class="user-menu">
+          <!--<li>-->
+            <!--{{#linkTo route="profile"}}Profile{{/linkTo}}-->
+          <!--</li>-->
+          <li>
+            {{#linkTo route="my_stories"}}My stories{{/linkTo}}
+          </li>
+          <li>
+            <button class="logout">Logout</button>
+          </li>
+        </ol>
+      {{/if}}
+    {{else}}
+      <button class="signin"> Log in / Sign up</button>
+      {{#if signingIn}}
+      <ol class="user-menu">
+        <li>
+          <button class="twitter-signin">Log in with Twitter</button>
+        </li>
+        <li>
+          <button class="email-signin">Log in with email</button>
+        </li>
+      </ol>
       {{/if}}
     {{/if}}
-  </div>
 </template>
 
 <template name="create_story">
@@ -105,7 +142,9 @@
 
 <template name="all_stories">
   {{#each stories}}
-    {{> story_preview}}
+    {{#linkTo route="read" data=this}}
+      {{> story_preview}}
+    {{/linkTo}}
   {{/each}}
 </template>
 
@@ -160,26 +199,14 @@
         <div class="publish-date">{{lastPublishDate}}</div>
       </div>
     </div>
-    <div class="pull-right">
-      {{ > favorite_button }}
-    </div>
+    <!--<div class="pull-right">-->
+      <!--{{ > favorite_button }}-->
+    <!--</div>-->
   </div>
 </template>
 
 <template name="edit_or_read_bar">
   <div class="edit-or-read">
-    {{#if isAuthor}}
-      {{#linkTo route="edit" data=this}}
-        <div id="edit-this-story">
-          Edit This Story
-        </div>
-      {{/linkTo}}
-    {{else}}
-      {{#linkTo route="read" data=this}}
-        <div id="edit-this-story">
-          Unfold This Story
-        </div>
-      {{/linkTo}}
-    {{/if}}
+
   </div>
 </template>

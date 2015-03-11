@@ -1,0 +1,82 @@
+@button-height: 45px;
+
+div.login {
+	width: 100%;
+	padding-top: 240px;
+    height: auto;
+    margin-bottom: 45px;
+}
+
+div.login-left {
+	position: relative;
+	float: left;
+	width: 45%;
+}
+
+form#login-form {
+	width: 350px;
+	font-size: 15px;
+	font-family: Muli;
+	margin: auto;
+}
+
+h1.login-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+
+form#signup-form {
+	width: 350px;
+	margin-left: 75px;
+	margin-top: 55px;
+	font-family: Muli;
+}
+
+.login-button, .signup-button {
+	margin-top: 20px;
+	width: 100px;
+    background-color: @action-color;
+    color: @white-color;
+    height: @button-height;
+
+    &:hover {
+    	background-color: @dark-color;
+    }
+}
+
+div.log-in-error {
+	margin-top: 10px;
+}
+
+@vertical-center: 90px;
+
+div.divider {
+  @font-size: 20px;
+  position: relative;
+  float: left;
+  width: 10%;
+  font-size: @font-size;
+  text-align: center;
+  margin-top: @vertical-center - @font-size/2;
+}
+
+div.sign-up-right {
+	position: relative;
+	float: left;
+	width: 45%;
+}
+
+div.sign-up-options {
+  margin: auto;
+  width: 350px;
+  a{
+    background-color: @action-color;
+    height: @button-height;
+    display: block;
+    color: @white-color;
+    text-align: center;
+    line-height: @button-height;
+
+  }
+}

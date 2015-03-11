@@ -1,10 +1,12 @@
 var GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
+var SOUNDCLOUD_CLIENT_ID = Meteor.settings.SOUNDCLOUD_CLIENT_ID;
 var IMGUR_CLIENT_ID = Meteor.settings.IMGUR_CLIENT_ID;
 var FLICKR_API_KEY = Meteor.settings.FLICKR_API_KEY;
 var TWITTER_API_KEY = Meteor.settings.TWITTER_API_KEY;
 var TWITTER_API_SECRET = Meteor.settings.TWITTER_API_SECRET;
 
 var Twit = Meteor.npmRequire('twit');
+
 
 if (!GOOGLE_API_SERVER_KEY) {
   console.error('Settings must be loaded for apis to work');
@@ -20,6 +22,7 @@ Meteor.methods({
       }, {
           $set: {
             "profile.name": user_info.name,
+            "displayUsername": user_info.username, // this will keep caps
             "username": user_info.username
           },
           $unset: {"tempUsername": ""},
@@ -35,11 +38,11 @@ Meteor.methods({
   //////////////////////////////////
   /*
 
-  input: (query, page (optional))
+  input: (query, option, page (optional))
   output: {items: [..], nextPage: any constant value})
 
   */
-  flickrImageSearchList: function(query, page) {
+  flickrImageSearchList: function(query, option, page) {
     check(query, String);
     page = page || 1;  // flickr starts from 1
     this.unblock();
@@ -70,7 +73,7 @@ Meteor.methods({
       'nextPage': page + 1
     };
   },
-  imgurImageSearchList: function(query, page) {
+  imgurImageSearchList: function(query, option, page) {
     var res;
     check(query, String);
     this.unblock();
@@ -93,8 +96,62 @@ Meteor.methods({
         return (e.type && e.type.indexOf('image') === 0)
       })
     }
+  }, 
+  giphyGifSearchList: function(query, option, page) {
+    var res;
+    check(query, String);
+    this.unblock();
+    page = page || 0;
+    requestParams = {
+      q: query,
+      api_key: 'dc6zaTOxFJmzC',
+      offset: page,
+      limit: 50
+    };
+
+    var res = HTTP.get('http://api.giphy.com/v1/gifs/search', {
+      params: requestParams
+    });
+
+    var data = res.data;
+
+    var totalCount = data.pagination.total_count;
+    var nextPage = data.pagination.count + data.pagination.offset;
+
+    if (nextPage >= totalCount){
+      nextPage = 'end';
+    }
+
+    return {
+      nextPage: nextPage,
+      items: data.data
+    }
   },
-  twitterSearchList: function(query, page) {
+  soundcloudAudioSearchList: function(query, option, page) {
+    var res;
+    check(query, String);
+    this.unblock();
+    var offset = page || 0;
+    var limit = 50;
+    requestParams = {
+      q: query,
+      limit: limit,
+      offset: offset,
+      client_id: SOUNDCLOUD_CLIENT_ID
+    };
+
+    res = HTTP.get('http://api.soundcloud.com/tracks.json', {
+      params: requestParams
+    });
+
+    var items = JSON.parse(res.content);
+
+    return {
+      'nextPage': offset + limit,
+      'items': items
+    }
+  },
+  twitterSearchList: function(query, option, page) {
     var res;
     check(query, String);
     this.unblock();
@@ -126,7 +183,7 @@ Meteor.methods({
 
     return searchResults;
   },
-  youtubeVideoSearchList: function(query, page) {
+  youtubeVideoSearchList: function(query, option, page) {
     var res;
     check(query, String);
     this.unblock();
@@ -146,15 +203,15 @@ Meteor.methods({
     nextPageToken = res.data.nextPageToken;
 
     items = _.chain(res.data.items)
-    .filter(function(element) {
-      return element.id.videoId;
-    })
-    .map(function(element) {
-      element.snippet.videoId = element.id.videoId; 
-      return element.snippet;
-    })
-    .value();
-
+      .filter(function(element) {
+        return element.id.videoId;
+      })
+      .map(function(element) {
+        element.snippet.videoId = element.id.videoId;
+        return element.snippet;
+      })
+      .value();
+    console.log(items);
     return {
       'nextPage': nextPageToken,
       'items': items

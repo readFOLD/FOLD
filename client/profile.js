@@ -17,10 +17,10 @@ Template.user_stories.helpers({
     }
   },
   lastEditDate: function() {
-    return formatDate(this.lastSaved);
+    return formatDate(this.savedAt);
   },
   lastPublishDate: function() {
-    return formatDate(this.publishDate);
+    return formatDate(this.publishedAt);
   },
   displayName: function() {
     if (Meteor.user()) {

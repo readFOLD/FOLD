@@ -57,6 +57,28 @@ Router.route("profile", {
   }
 });
 
+Router.route("my_stories", {
+  path: "my-stories",
+  template: "my_stories",
+  waitOn: function() {
+    return [Meteor.subscribe('ownStoriesPub')];
+  },
+  onBeforeAction: function() {
+    var user;
+    if ((user = Meteor.user()) || Meteor.loggingIn()) {
+      //if (user) {
+      //  this.subscribe('readStoriesPub', user.profile.favorites);
+      //}
+      return this.next();
+    } else {
+      this.redirect("home", {
+        replaceState: true
+      });
+      return alert("You must be logged in view your profile");
+    }
+  }
+});
+
 Router.route("read", {
   path: "read/:userPathSegment/:storyPathSegment",
   template: "read",
@@ -90,7 +112,7 @@ Router.route("read", {
       return story;
     }
   },
-  onRun: function() {
+  onBeforeAction: function() {
     Session.set("currentY", null);
     Session.set("newStory", false);
     Session.set("read", true);
@@ -105,9 +127,7 @@ Router.route("edit", {
   template: "create",
   onRun: function() {
     Session.set("currentY", null);
-    Session.set("read", false);
-    Session.set("newStory", false);
-    Session.set("showDraft", true);
+
     Session.set("userPathSegment", this.params.userPathSegment);
     $('html, body').scrollTop(0);
     return this.next();
@@ -139,6 +159,9 @@ Router.route("edit", {
     }
   },
   action: function() {
+    Session.set("read", false);
+    Session.set("newStory", false);
+    Session.set("showDraft", true);
     if (this.ready()) {
       return this.render();
     }

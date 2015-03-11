@@ -1,5 +1,5 @@
 <template name="login">
-  {{> top_banner}}
+  {{> top_banner_simple}}
   <div class="login">
     <section>
       {{> login_form}}
@@ -8,19 +8,31 @@
 </template>
 
 <template name="login_form">
-  <form id="login-form" action="action">
-    <div>
-      <label for="username"> Username </label>
-      <input name="username" placeholder="username">
-      <label for="password"> Password </label>
-      <input name="password" type="password" placeholder="password">
-      <button type="submit" id="login-button">Sign in</button>
-      {{#if loginFailed}}
-        <div> Invalid username or password </div>
-      {{/if}}
-      {{#linkTo route="signup"}}
-        <div>Create an account</div>
-      {{/linkTo}}
-    </div>
-  </form>
+        <div class="login-left">   
+          <h1 class="login-header">Log in with an existing account</h1>
+          <form id="login-form" action="action">
+              <label for="username"> Username </label>
+              <input name="username" type="text" placeholder="username" autofocus="autofocus">
+              <label for="password"> Password </label>
+              <input name="password" type="password" placeholder="password">
+              <button type="submit" class="login-button">Log in</button>
+            {{#if loginFailed}}
+            <div class="log-in-error">
+              Invalid username or password
+            </div>
+            {{/if}}
+          </form>
+        </div>
+        <div class="divider">
+           or 
+        </div>
+        <div class="sign-up-right">
+          <div class="sign-up-options">
+          <h1 class="login-header">Sign up for a new account</h1>
+            {{#linkTo route="signup"}}
+              Create an account with e-mail
+            {{/linkTo}}
+            <!-- add "create an account with twitter" to double down-->
+          </div>
+        </div>
 </template>

@@ -3,12 +3,19 @@ Accounts.onCreateUser(function(options, user) {
     throw new Meteor.Error('Error creating user');
   return;
   }
+  if (options.profile) {
+    user.profile = options.profile;
+  } else {
+    user.profile = {};
+  }
 
   if (user.services.twitter) {
-    console.log(user.services.twitter);
     user.tempUsername = user.services.twitter.screenName;
-  } else if (options.profile){
-    user.profile = options.profile;
+    user.profile.displayUsername = user.services.twitter.screenName;
+    user.profile.twitterUser = true;
+  } else {
+    user.profile.displayUsername = options.username;
   }
+
   return user;
 });
