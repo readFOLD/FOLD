@@ -265,22 +265,12 @@ Template.story.helpers({
     var width;
     width = Session.get("width");
     if (width <= 1304) {
-      return 88 + 16;
+      left =  88 + 16;
     } else {
-      return (width / 2) - (Session.get("separation") / 2) - Session.get("cardWidth");
+      left = (width / 2) - (Session.get("separation") / 2) - Session.get("cardWidth");
     }
-  },
-  verticalLeft: function() {
-    var width;
-    width = Session.get("width");
-    if (Session.get("narrativeView")) {
-      return (width - 800) / 2;
-    }
-    if (width <= 1304) {
-      return 88 + 16;
-    } else {
-      return (width / 2) - (Session.get("separation") / 2) - Session.get("cardWidth");
-    }
+    Session.set("verticalLeft", left);
+    return left
   }
 });
 
@@ -453,45 +443,46 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 
 Template.horizontal_section_block.helpers(horizontalBlockHelpers);
 
+// Magic layout function
 Template.horizontal_section_block.helpers({
   left: function() {
-    var adjustedIndex, cardWidth, currentX, halfWidth, horizontalLength, lastIndex, left, offset, read, width;
-    width = Session.get("width");
-    if (width < 1024) {
-      width = 1024;
+    var currentPos, currentHorizontal, cardWidth, numCards, left, offset, pageWidth, addContextBlockWidth, cardSeparation;
+
+    currentHorizontal = Session.get("horizontalSectionsMap")[Session.get("currentY")];
+    if (!currentHorizontal) { 
+      return 
     }
-    halfWidth = width / 2;
+
+    // Variable definitions (width of page, width of card, offset of cards)
+    pageWidth = Session.get("width") >= 1024 ? Session.get("width") : 1024;
     cardWidth = Session.get("cardWidth");
-    read = Session.get("read");
-    if (read) {
+    cardSeparation = Session.get("separation");
+    addContextBlockWidth = 75;
+
+    // Offset of first card, different on create page because of (+) button
+    if (Session.get("read")) {
       offset = 0;
     } else {
-      offset = 75 + Session.get("separation");
+      offset = addContextBlockWidth + cardSeparation;
     }
     if (Session.get("addingContextToCurrentY")) {
-      offset += cardWidth + Session.get("separation");
+      offset += cardWidth + cardSeparation;
     }
-    var currentHorizontal = Session.get("horizontalSectionsMap")[Session.get("currentY")];
 
-    if (!currentHorizontal) {return}
-
-    horizontalLength = currentHorizontal.horizontal.length;
-    lastIndex = horizontalLength - 1;
-    currentX = Session.get("currentX");
-    adjustedIndex = this.index - currentX;
-    if (adjustedIndex < 0) {
-      adjustedIndex = horizontalLength + adjustedIndex;
+    numCards = currentHorizontal.horizontal.length;
+    currentPos = this.index - Session.get("currentX");
+    if (currentPos < 0) {
+      currentPos = numCards + currentPos;
     }
-    if ((lastIndex >= 2) && (adjustedIndex === lastIndex)) {
-      if (width <= 1304) {
-        left = (-cardWidth + 88) + offset;
-      } else {
-        left = -Session.get("cardWidth") + (width - (Session.get("separation") * 3) - (Session.get("cardWidth") * 2)) / 2;
+
+    // Default context positioning (all to the right of vertical narrative)
+    left = (currentPos * (cardWidth + cardSeparation)) + ((pageWidth / 2) + offset);
+
+    // Last card positioning if number of cards is greater than 3
+    if (numCards >= 3) {
+      if (currentPos === numCards - 1) {
+        left = Session.get("verticalLeft") - cardWidth - cardSeparation;
       }
-    } else if (adjustedIndex) {
-      left = (adjustedIndex * cardWidth) + halfWidth + (3 * (Session.get("separation")) / 2) + offset;
-    } else {
-      left = halfWidth + ((Session.get("separation")) / 2) + offset;
     }
     return left;
   },
