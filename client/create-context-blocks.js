@@ -207,11 +207,12 @@ var searchIntegrations = {
       methodName: 'twitterSearchList',
       mapFn: function(e){
         return {
-          author : e.user.name,
-          screen_name : e.user.screen_name,
           description : e.text,
           referenceId : e.id,
-          referenceCreationDate : e.created_at
+          referenceUsername : e.user.name,
+          referenceScreenname : e.user.screen_name,
+          referenceUserPic : e.user.profile_image_url_https,
+          referenceCreationDate : e.created_at.substring(0, 19)
         }
       }
     }

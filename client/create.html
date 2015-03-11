@@ -298,11 +298,18 @@
     <ol class="search-results-container">
       {{#each results}}
         <li>
-            <div class="{{#if isFocused}}focused-{{/if}}search-result">
-              <div class="info {{#if isFocused}}focused{{/if}}">
-                <div class="content-title">{{author}} @{{screen_name}}</div>
+            <div class="search-result">
+              <div class="thumbnail">
+               <img src="{{referenceUserPic}}"> 
+              </div>
+              <div class="info">
+                <div class="content-title">{{referenceUsername}} 
+                  <span>
+                  <a href="https://twitter.com/{{referenceScreenname}}">@{{referenceScreenname}}</a>
+                  </span>
+                </div>
                 <div class="descr">{{description}}</div>
-                <div class="date">{{referenceCreationDate}}</div>
+                <a href="https://twitter.com/" class="date">{{referenceCreationDate}}</a>
               </div>
             </div> 
         </li>

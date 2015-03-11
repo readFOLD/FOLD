@@ -167,9 +167,9 @@ Meteor.methods({
     });
     var twitterResultsSync = Meteor.wrapAsync(client.get, client);
 
-    //example radio choise
-    regularSearch = true;
-    userSearch = false;
+    //example radio choice
+    regularSearch = false;
+    userSearch = true;
     favoriteSearch = false;
 
     params = {count: count};
@@ -187,6 +187,7 @@ Meteor.methods({
       res = twitterResultsSync( apiCall, params);
     }
 
+    console.log(res);
     searchResults = {
       nextPage: page,
       items: res
