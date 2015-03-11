@@ -1,7 +1,61 @@
 window.constants = {
   verticalSpacing: 12,
-  readModeOffset: 250
+  readModeOffset: 250,
+  minPageWidth: 1024
 };
+
+window.getVerticalLeft = function(width) {
+  if (width <= 1304) {
+    left =  88 + 16;
+  } else {
+    left = (width / 2) - (Session.get("separation") / 2) - Session.get("cardWidth");
+  }
+  return left
+}
+
+window.getHorizontalLeft = function() {
+  var currentPos, currentHorizontal, cardWidth, numCards, left, offset, pageWidth, verticalRight, addContextBlockWidth, cardSeparation;
+
+  currentHorizontal = Session.get("horizontalSectionsMap")[Session.get("currentY")];
+  if (!currentHorizontal) { 
+    return 
+  }
+
+  // Variable definitions (width of page, width of card, offset of cards)
+  pageWidth = Session.get("width") >= 1024 ? Session.get("width") : 1024;
+  cardWidth = Session.get("cardWidth");
+  cardSeparation = Session.get("separation");
+  addContextBlockWidth = 75;
+  verticalLeft = Session.get("verticalLeft");
+
+  // Offset of first card, different on create page because of (+) button
+  if (Session.get("read")) {
+    offset = 0;
+  } else {
+    offset = addContextBlockWidth + cardSeparation;
+  }
+  if (Session.get("addingContextToCurrentY")) {
+    offset += cardWidth + cardSeparation;
+  }
+
+  numCards = currentHorizontal.horizontal.length;
+  currentPos = this.index - Session.get("currentX");
+  if (currentPos < 0) {
+    currentPos = numCards + currentPos;
+  }
+
+  // Default context positioning (all to the right of vertical narrative)
+  verticalRight = verticalLeft + cardWidth
+  left = (currentPos * (cardWidth + cardSeparation)) + (verticalRight + cardSeparation + offset);
+
+  // Last card positioning if number of cards is greater than 3
+  if (numCards >= 3) {
+    if (currentPos === numCards - 1) {
+      left = verticalLeft - cardWidth - cardSeparation;
+    }
+  }
+  return left;
+}
 
 window.getVerticalHeights = function() {
   var sum, verticalHeights;

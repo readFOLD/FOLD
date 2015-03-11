@@ -7,9 +7,9 @@ UI.registerHelper('selectedIf', function(val) {
 
 getCardWidth = function(windowWidth) {
   var cardWidth;
-  if (windowWidth <= 1024) {
+  if (windowWidth <= window.constants.minPageWidth) {
     return cardWidth = 400;
-  } else if ((windowWidth > 1024) && (windowWidth <= 1304)) {
+  } else if ((windowWidth > window.constants.minPageWidth) && (windowWidth <= 1304)) {
     return cardWidth = (windowWidth - (16 * 3) - (88 * 2)) / 2;
   } else {
     return cardWidth = 520;
@@ -24,8 +24,10 @@ Session.set("width", window.outerWidth);
 
 Session.set("cardWidth", getCardWidth(Session.get("width")));
 
+Session.set("verticalLeft", getVerticalLeft(Session.get("width")))
+
 var resize = function() {
-  if (window.outerWidth > 1024) {
+  if (window.outerWidth > window.constants.minPageWidth) {
     Session.set("resize", new Date());
     Session.set("width", window.outerWidth);
     return Session.set("cardWidth", getCardWidth(Session.get("width")));
@@ -261,16 +263,8 @@ Template.story.helpers({
   pastHeader: function() {
     return Session.get("pastHeader");
   },
-  verticalLeft: function() {
-    var width;
-    width = Session.get("width");
-    if (width <= 1304) {
-      left =  88 + 16;
-    } else {
-      left = (width / 2) - (Session.get("separation") / 2) - Session.get("cardWidth");
-    }
-    Session.set("verticalLeft", left);
-    return left
+  verticalLeft: function () {
+    return Session.get("verticalLeft");
   }
 });
 
@@ -445,47 +439,7 @@ Template.horizontal_section_block.helpers(horizontalBlockHelpers);
 
 // Magic layout function
 Template.horizontal_section_block.helpers({
-  left: function() {
-    var currentPos, currentHorizontal, cardWidth, numCards, left, offset, pageWidth, addContextBlockWidth, cardSeparation;
-
-    currentHorizontal = Session.get("horizontalSectionsMap")[Session.get("currentY")];
-    if (!currentHorizontal) { 
-      return 
-    }
-
-    // Variable definitions (width of page, width of card, offset of cards)
-    pageWidth = Session.get("width") >= 1024 ? Session.get("width") : 1024;
-    cardWidth = Session.get("cardWidth");
-    cardSeparation = Session.get("separation");
-    addContextBlockWidth = 75;
-
-    // Offset of first card, different on create page because of (+) button
-    if (Session.get("read")) {
-      offset = 0;
-    } else {
-      offset = addContextBlockWidth + cardSeparation;
-    }
-    if (Session.get("addingContextToCurrentY")) {
-      offset += cardWidth + cardSeparation;
-    }
-
-    numCards = currentHorizontal.horizontal.length;
-    currentPos = this.index - Session.get("currentX");
-    if (currentPos < 0) {
-      currentPos = numCards + currentPos;
-    }
-
-    // Default context positioning (all to the right of vertical narrative)
-    left = (currentPos * (cardWidth + cardSeparation)) + ((pageWidth / 2) + offset);
-
-    // Last card positioning if number of cards is greater than 3
-    if (numCards >= 3) {
-      if (currentPos === numCards - 1) {
-        left = Session.get("verticalLeft") - cardWidth - cardSeparation;
-      }
-    }
-    return left;
-  },
+  left: getHorizontalLeft,
   lastUpdate: function() {
     Session.get('lastUpdate');
   }
