@@ -335,13 +335,16 @@ Template.vertical_narrative.helpers({
 });
 
 Template.vertical_narrative.events({
-  "click section": function(d) {
+  "click .vertical-narrative-section": function(d) {
     var i, srcE;
+    if (Session.get("pastHeader")) {
+      Session.get("pastHeader", true)
+    }
     $('#to-story, .attribution').fadeOut();
     srcE = d.srcElement ? d.srcElement : d.target;
     i = $(srcE).data('vertical-index');
     if (i == null) {
-      i = $(srcE).closest('section').data('vertical-index');
+      i = $(srcE).closest('.vertical-narrative-section').data('vertical-index');
     }
     if (i != null) {
       if (i !== Session.get("currentY")) {
