@@ -206,13 +206,32 @@ var searchIntegrations = {
     twitter: {
       methodName: 'twitterSearchList',
       mapFn: function(e){
+        var imgIndex = e.text.indexOf("http://");
+        var desc ='';
+        var imgUrl;
+        var retweetUser;
+        if (imgIndex != -1) {
+          desc = e.text.substring(0, imgIndex);
+          if (e.extended_entities) {
+            imgUrl = e.extended_entities.media[0].media_url_https;        
+          }
+        } else {
+          desc = e.text;
+        }
+
+        if (e.retweeted_status) {
+          retweetUser = e.retweeted_status.user.screen_name;
+        }
         return {
-          description : e.text,
+          description : desc,
+          referenceImage : imgUrl,
           referenceId : e.id,
+          referenceUrlId : e.id_str,
           referenceUsername : e.user.name,
           referenceScreenname : e.user.screen_name,
           referenceUserPic : e.user.profile_image_url_https,
-          referenceCreationDate : e.created_at.substring(0, 19)
+          referenceCreationDate : e.created_at.substring(0, 19),
+          referenceRetweet : retweetUser
         }
       }
     }
@@ -441,6 +460,12 @@ Template.create_text_section.helpers({
     }
   }
 });
+
+Template.create_twitter_section.helpers({
+  twitterUser: function() {
+    return Meteor.user().profile.twitterProfile;
+  }
+})
 
 Template.search_form.events({
   'keydown': function(){

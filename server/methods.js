@@ -156,8 +156,13 @@ Meteor.methods({
 
     check(query, String);
     this.unblock();
-    count = 5;
-
+    count = 10;
+    var api = {
+      'all' : "search/tweets",
+      'user' : 'statuses/user_timeline',
+      'favorites' : 'favorites/list'
+    };
+    
     var client = new Twit({
       consumer_key: TWITTER_API_KEY,
       consumer_secret: TWITTER_API_SECRET,
@@ -165,34 +170,36 @@ Meteor.methods({
       access_token_secret: Meteor.user().services.twitter.accessTokenSecret,
     });
     var twitterResultsSync = Meteor.wrapAsync(client.get, client);
-    var api = {
-      all : {option : "All tweets", url : "search/tweets"},
-      user : {option : "User", url : 'statuses/user_timeline'},
-      favorite : {option : "Favorites", url : 'favorites/list'}
-    };
 
     params = {count: count};
     if (page) {params.max_id = page;}
 
-    if (option === api.all.option) {
+    if (option === 'all') {
       params.q = query;
-      res = twitterResultsSync( api.all.url, params);
+      res = twitterResultsSync(api[option], params);
       if (res.statuses.length > 0) {
         page = res.search_metadata.next_results.match(/\d+/)[0];
-        res = res.statuses;
+        items = res.statuses;
+      } else {
+        page = "end";
       }
     } else {
       params.screen_name = query;
-      var apiCall = option === api.user.option ? api.user.url : api.favorite.url;
-      res = twitterResultsSync(apiCall, params);
-      if (res) {
-        page = res[res.length-1].id - 20; //avoid repeated tweets
+      items = twitterResultsSync(api[option], params);
+      if (items && items.length) {
+        var idString = items[items.length-1].id_str
+        var start = idString.substring(0, idString.length-1);
+        var end = idString.substring(idString.length-1);
+        var newEnd = parseInt(end) -1;
+        page = start + newEnd.toString();
+      } else {
+        page = "end"
       }
     }
 
     searchResults = {
       nextPage: page,
-      items: res
+      items: items
     };
 
     return searchResults;
