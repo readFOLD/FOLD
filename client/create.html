@@ -105,34 +105,34 @@
 <template name="create_horizontal_section_block">
   <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <div class="content-icons">
-      <button class='{{#if twitter}}active{{/if}}'>
+      <button class='twitter-button {{#if twitter}}active{{/if}}'>
         {{> twitter_icon }}
       </button>
-      <button class='{{#if video}}active{{/if}}'>
+      <button class='video-button {{#if video}}active{{/if}}'>
         {{> video_icon }}
       </button>
-      <button class='{{#if map}}active{{/if}}'>
+      <button class='map-button {{#if map}}active{{/if}}'>
         {{> map_icon }}
       </button>
-      <button class='{{#if image}}active{{/if}}'>
+      <button class='image-button {{#if image}}active{{/if}}'>
         {{> image_icon }}
       </button>
-      <button class='{{#if viz}}active{{/if}}'>
+      <button class='viz-button {{#if viz}}active{{/if}}'>
         {{> viz_icon }}
       </button>
-      <button class='{{#if gif}}active{{/if}}'>
+      <button class='gif-button {{#if gif}}active{{/if}}'>
         {{> gif_icon }}
       </button>
-      <button class='{{#if audio}}active{{/if}}'>
+      <button class='audio-button {{#if audio}}active{{/if}}'>
         {{> audio_icon }}
       </button>
-      <button class='{{#if text}}active{{/if}}'>
+      <button class='text-button {{#if text}}active{{/if}}'>
         {{> text_icon }}
       </button>
-      <button class='{{#if link}}active{{/if}}'>
+      <button class='link-button {{#if link}}active{{/if}}'>
         {{> link_icon }}
       </button>
-      <button class='{{#if remix}}active{{/if}}'>
+      <button class='remix-button {{#if remix}}active{{/if}}'>
         {{> remix_icon }}
       </button>
     </div>

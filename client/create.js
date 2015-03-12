@@ -616,34 +616,34 @@ Template.create_horizontal_section_block.helpers({
 });
 
 Template.create_horizontal_section_block.events({
-  'click svg.text-icon': function(d, t) {
+  'click .text-button': function(d, t) {
     return t.type.set('text');
   },
-  'click svg.map-icon': function(d, t) {
+  'click .map-button': function(d, t) {
     return t.type.set('map');
   },
-  'click svg.video-icon': function(d, t) {
+  'click .video-button': function(d, t) {
     return t.type.set('video');
   },
-  'click svg.image-icon': function(d, t) {
+  'click .image-button': function(d, t) {
     return t.type.set('image');
   },
-  'click svg.gif-icon': function(d, t) {
+  'click .gif-button': function(d, t) {
     return t.type.set('gif');
   },
-  'click svg.twitter-icon': function(d, t) {
+  'click .twitter-button': function(d, t) {
     return t.type.set('twitter');
   },
-  'click svg.viz-icon': function(d, t) {
+  'click .viz-button': function(d, t) {
     return t.type.set('viz');
   },
-  'click svg.audio-icon': function(d, t) {
+  'click .audio-button': function(d, t) {
     return t.type.set('audio');
   },
-  'click svg.link-icon': function(d, t) {
+  'click .link-button': function(d, t) {
     return t.type.set('link');
   },
-  'click svg.remix-icon': function(d, t) {
+  'click .remix-button': function(d, t) {
     return t.type.set('remix');
   }
 });

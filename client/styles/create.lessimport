@@ -399,28 +399,29 @@ div.horizontal-context {
       margin-left: 10%;
       margin-right: 10%;
     }
-    svg {
-      padding: 1.5px;
-      @circle-diameter: 44px;
+
+    @circle-diameter: 44px;
+    button {
       height: @circle-diameter;
-      width: @circle-diameter;
-      vertical-align: top;
-      display: inline-block;
-      &:hover {
-        circle{
-          fill: @action-color;
+      padding: 0;
+      margin-left: 2px;
+      margin-top: 18px;
+      svg {
+        padding: 1.5px;
+
+        height: @circle-diameter;
+        width: @circle-diameter;
+        vertical-align: top;
+        display: inline-block;
+
+        &:hover, &.active {
+          circle{
+            fill: @action-color;
+          }
         }
       }
-
-
     }
-    .active{
-      svg{
-        circle{
-          fill: @action-color;
-        }
-      }
-    }
+
     .unimplemented {
 //      svg {
 //        fill: @inactive-color;
