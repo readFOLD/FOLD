@@ -139,7 +139,7 @@ Template.create.rendered = function() {
   };
   this.autorun(function(){
     if (Session.get('read')){
-      return window.hideFoldEditor();
+      return window.hideFoldAll();
     }
   });
   if (!(Session.equals("currentY", void 0) && Session.equals("currentX", void 0))) {
