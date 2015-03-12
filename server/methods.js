@@ -156,8 +156,7 @@ Meteor.methods({
 
     check(query, String);
     this.unblock();
-    count = 10;
-
+    count = 5;
 
     var client = new Twit({
       consumer_key: TWITTER_API_KEY,
@@ -166,28 +165,31 @@ Meteor.methods({
       access_token_secret: Meteor.user().services.twitter.accessTokenSecret,
     });
     var twitterResultsSync = Meteor.wrapAsync(client.get, client);
-
-    //example radio choice
-    regularSearch = false;
-    userSearch = true;
-    favoriteSearch = false;
+    var api = {
+      all : {option : "All tweets", url : "search/tweets"},
+      user : {option : "User", url : 'statuses/user_timeline'},
+      favorite : {option : "Favorites", url : 'favorites/list'}
+    };
 
     params = {count: count};
+    if (page) {params.max_id = page;}
 
-    if (regularSearch) {
+    if (option === api.all.option) {
       params.q = query;
-      params.max_id = page;
-
-      res = twitterResultsSync('search/tweets', params);
-      page = res.search_metadata.next_results.match(/\d+/)[0];
-      res = res.statuses;
+      res = twitterResultsSync( api.all.url, params);
+      if (res.statuses.length > 0) {
+        page = res.search_metadata.next_results.match(/\d+/)[0];
+        res = res.statuses;
+      }
     } else {
       params.screen_name = query;
-      var apiCall = userSearch ? 'statuses/user_timeline' : 'favorites/list';
-      res = twitterResultsSync( apiCall, params);
+      var apiCall = option === api.user.option ? api.user.url : api.favorite.url;
+      res = twitterResultsSync(apiCall, params);
+      if (res) {
+        page = res[res.length-1].id - 20; //avoid repeated tweets
+      }
     }
 
-    console.log(res);
     searchResults = {
       nextPage: page,
       items: res
