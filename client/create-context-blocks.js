@@ -400,17 +400,6 @@ Template.create_viz_section.events({
   },
   "change select.years": function(e, t) {
     t.selectedYear.set($(e.target).val());
-  },
-  "click .add-button": function(d, t) {
-    var contextBlock = {
-      "oecCountry": t.selectedCountry.get(),
-      "oecYear": t.selectedYear.get(),
-      "oecDirection": t.selectedDirection.get(),
-      "authorId" : Meteor.user()._id,
-      "type": t.type,
-      "source": t.source.get()
-    }
-    addContext(contextBlock);
   }
 })
 
