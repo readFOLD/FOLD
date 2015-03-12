@@ -528,10 +528,10 @@ toggleHorizontalUI = function() {
   };
 
   if (Session.get("addingContext")) {
-    scrollToRelativePosition(350 + 29 - 140)
+    scrollToRelativePosition(350 + 29 - 140);
     return Session.set("addingContext", null);
   } else {
-    scrollToRelativePosition(350 + 29)
+    scrollToRelativePosition(350 + 29);
     Session.set("addingContext", Session.get('currentYId'));
     return Session.set("editingContext", null);
   }
