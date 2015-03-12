@@ -7,9 +7,9 @@ UI.registerHelper('selectedIf', function(val) {
 
 getCardWidth = function(windowWidth) {
   var cardWidth;
-  if (windowWidth <= 1024) {
+  if (windowWidth <= window.constants.minPageWidth) {
     return cardWidth = 400;
-  } else if ((windowWidth > 1024) && (windowWidth <= 1304)) {
+  } else if ((windowWidth > window.constants.minPageWidth) && (windowWidth <= 1304)) {
     return cardWidth = (windowWidth - (16 * 3) - (88 * 2)) / 2;
   } else {
     return cardWidth = 520;
@@ -24,8 +24,10 @@ Session.set("width", window.outerWidth);
 
 Session.set("cardWidth", getCardWidth(Session.get("width")));
 
+Session.set("verticalLeft", getVerticalLeft(Session.get("width")))
+
 var resize = function() {
-  if (window.outerWidth > 1024) {
+  if (window.outerWidth > window.constants.minPageWidth) {
     Session.set("resize", new Date());
     Session.set("width", window.outerWidth);
     return Session.set("cardWidth", getCardWidth(Session.get("width")));
@@ -261,26 +263,8 @@ Template.story.helpers({
   pastHeader: function() {
     return Session.get("pastHeader");
   },
-  verticalLeft: function() {
-    var width;
-    width = Session.get("width");
-    if (width <= 1304) {
-      return 88 + 16;
-    } else {
-      return (width / 2) - (Session.get("separation") / 2) - Session.get("cardWidth");
-    }
-  },
-  verticalLeft: function() {
-    var width;
-    width = Session.get("width");
-    if (Session.get("narrativeView")) {
-      return (width - 800) / 2;
-    }
-    if (width <= 1304) {
-      return 88 + 16;
-    } else {
-      return (width / 2) - (Session.get("separation") / 2) - Session.get("cardWidth");
-    }
+  verticalLeft: function () {
+    return Session.get("verticalLeft");
   }
 });
 
@@ -335,13 +319,16 @@ Template.vertical_narrative.helpers({
 });
 
 Template.vertical_narrative.events({
-  "click section": function(d) {
+  "click .vertical-narrative-section": function(d) {
     var i, srcE;
+    if (Session.get("pastHeader")) {
+      Session.get("pastHeader", true)
+    }
     $('#to-story, .attribution').fadeOut();
     srcE = d.srcElement ? d.srcElement : d.target;
     i = $(srcE).data('vertical-index');
     if (i == null) {
-      i = $(srcE).closest('section').data('vertical-index');
+      i = $(srcE).closest('.vertical-narrative-section').data('vertical-index');
     }
     if (i != null) {
       if (i !== Session.get("currentY")) {
@@ -450,48 +437,9 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 
 Template.horizontal_section_block.helpers(horizontalBlockHelpers);
 
+// Magic layout function
 Template.horizontal_section_block.helpers({
-  left: function() {
-    var adjustedIndex, cardWidth, currentX, halfWidth, horizontalLength, lastIndex, left, offset, read, width;
-    width = Session.get("width");
-    if (width < 1024) {
-      width = 1024;
-    }
-    halfWidth = width / 2;
-    cardWidth = Session.get("cardWidth");
-    read = Session.get("read");
-    if (read) {
-      offset = 0;
-    } else {
-      offset = 75 + Session.get("separation");
-    }
-    if (Session.get("addingContextToCurrentY")) {
-      offset += cardWidth + Session.get("separation");
-    }
-    var currentHorizontal = Session.get("horizontalSectionsMap")[Session.get("currentY")];
-
-    if (!currentHorizontal) {return}
-
-    horizontalLength = currentHorizontal.horizontal.length;
-    lastIndex = horizontalLength - 1;
-    currentX = Session.get("currentX");
-    adjustedIndex = this.index - currentX;
-    if (adjustedIndex < 0) {
-      adjustedIndex = horizontalLength + adjustedIndex;
-    }
-    if ((lastIndex >= 2) && (adjustedIndex === lastIndex)) {
-      if (width <= 1304) {
-        left = (-cardWidth + 88) + offset;
-      } else {
-        left = -Session.get("cardWidth") + (width - (Session.get("separation") * 3) - (Session.get("cardWidth") * 2)) / 2;
-      }
-    } else if (adjustedIndex) {
-      left = (adjustedIndex * cardWidth) + halfWidth + (3 * (Session.get("separation")) / 2) + offset;
-    } else {
-      left = halfWidth + ((Session.get("separation")) / 2) + offset;
-    }
-    return left;
-  },
+  left: getHorizontalLeft,
   lastUpdate: function() {
     Session.get('lastUpdate');
   }
