@@ -138,7 +138,7 @@ Template.create.rendered = function() {
     hideFoldLinkRemover();
   };
   this.autorun(function(){
-    if (Session.get('read')){
+    if (Session.get('read') || Session.get('currentYId')){
       return window.hideFoldAll();
     }
   });
