@@ -138,7 +138,7 @@ Template.create.rendered = function() {
     hideFoldLinkRemover();
   };
   this.autorun(function(){
-    if (Session.get('read')){
+    if (Session.get('read') || Session.get('currentYId')){
       return window.hideFoldAll();
     }
   });
@@ -303,12 +303,11 @@ Template.vertical_section_block.events({
     return document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
   },
   'paste .title.editable': window.plainTextPaste,   // only allow plaintext in title
-  'click .narrative-babyburger': function(e, template){
-    if(template.babyburgerOpen.get()){
-      template.babyburgerOpen.set(false)
-    } else {
-      template.babyburgerOpen.set(true)
-    }
+  'mouseover .narrative-babyburger-and-menu': function(e, template){
+    template.babyburgerOpen.set(true)
+  },
+  'mouseout .narrative-babyburger-and-menu': function(e, template){
+    template.babyburgerOpen.set(false)
   }
 });
 

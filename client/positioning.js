@@ -76,15 +76,15 @@ window.goToXY = function(x, y) {
 };
 
 window.goToY = function(y) {
-  var verticalHeights;
-  $('.horizontal-context').fadeOut(100);
-  verticalHeights = window.getVerticalHeights();
-  $('body,html').animate({
-    scrollTop: verticalHeights[y]
-  }, 500, 'easeInExpo', function() {
-    Session.set("currentY", y);
-    return $('.horizontal-context').fadeIn();
-  });
+  if (Session.get("currentY") !== y){
+    var verticalHeights;
+    verticalHeights = window.getVerticalHeights();
+    $('body,html').animate({
+      scrollTop: verticalHeights[y]
+    }, 500, 'easeInExpo', function() {
+      Session.set("currentY", y);
+    });
+  }
 };
 
 window.goToX = function(x) {
