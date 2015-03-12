@@ -34,7 +34,7 @@ window.getHorizontalLeft = function() {
   } else {
     offset = addContextBlockWidth + cardSeparation;
   }
-  if (Session.get("addingContextToCurrentY")) {
+  if (Session.get("addingContext")) {
     offset += cardWidth + cardSeparation;
   }
 

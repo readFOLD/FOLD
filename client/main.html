@@ -65,7 +65,7 @@
             {{> minimap}}
         {{/if}}
         {{#if horizontalExists}}
-            {{#unless addingContextToCurrentY}}
+            {{#unless addingContext}}
                 <div class="browser-offset">
                     {{> story_browser}}
                 </div>
@@ -120,7 +120,7 @@
           {{ > context_anchor_menu}}
         {{/if}}
       {{/each}}
-      <div style="display: {{#if addingContextToCurrentY}}inherit{{else}}none{{/if}}">
+      <div style="display: {{#if addingContext}}inherit{{else}}none{{/if}}">
         {{ > create_horizontal_section_block}}
       </div>
     {{/if}}

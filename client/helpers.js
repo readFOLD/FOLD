@@ -26,10 +26,6 @@ Handlebars.registerHelper("addingContext", function() {
   return Session.get("addingContext");
 });
 
-Handlebars.registerHelper("addingContextToCurrentY", function() {
-  return Session.get("addingContextToCurrentY");
-});
-
 Handlebars.registerHelper("editingThisContext", function() {
   return Session.get("editingContext") === this._id;
 });

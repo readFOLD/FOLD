@@ -417,7 +417,7 @@ typeHelpers = {
 
 horizontalBlockHelpers = _.extend({}, typeHelpers, {
   selected: function() {
-    return Session.equals("currentX", this.index) && !Session.get("addingContextToCurrentY");
+    return Session.equals("currentX", this.index) && !Session.get("addingContext");
   }
 });
 

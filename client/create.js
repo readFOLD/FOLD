@@ -304,10 +304,10 @@ Template.vertical_section_block.events({
   },
   'paste .title.editable': window.plainTextPaste,   // only allow plaintext in title
   'mouseover .narrative-babyburger-and-menu': function(e, template){
-    template.babyburgerOpen.set(true)
+    template.babyburgerOpen.set(true);
   },
   'mouseout .narrative-babyburger-and-menu': function(e, template){
-    template.babyburgerOpen.set(false)
+    template.babyburgerOpen.set(false);
   }
 });
 
@@ -493,7 +493,7 @@ Tracker.autorun(function() {
     currentContextBlocks = verticalSection.contextBlocks;
     horizontalContextDiv = $(".horizontal-context");
     horizontalContextDiv.removeClass('editing');
-    if (Session.get("addingContextToCurrentY") || (_ref = Session.get("editingContext"), __indexOf.call(currentContextBlocks, _ref) >= 0)) {
+    if (Session.get("addingContext") || (_ref = Session.get("editingContext"), __indexOf.call(currentContextBlocks, _ref) >= 0)) {
       return horizontalContextDiv.addClass('editing');
     } else {
       return horizontalContextDiv.removeClass('editing');
@@ -501,34 +501,6 @@ Tracker.autorun(function() {
   }
 });
 
-Tracker.autorun(function(){
-  var currentSection = $('.vertical-narrative-section.selected')
-
-  var scrollToRelativePosition = function(offset) {
-    if(currentSection.length) {
-      $('body,html').animate({
-        scrollTop: currentSection.position().top + offset
-      }, 200, 'easeInCubic');
-    }
-  };
-
-  if (Session.get("addingContext")){
-    if(currentSection.length){
-      scrollToRelativePosition(350 + 29)
-    }
-  }
-  else {
-    if (currentSection.length) {
-      scrollToRelativePosition(350 + 29 - 140)
-    }
-  }
-});
-
-Tracker.autorun(function() {
-  var currentYId;
-  currentYId = Session.get('currentYId');
-  return Session.set("addingContextToCurrentY", (currentYId != null) && Session.get("addingContext") === Session.get('currentYId') && !Session.get('read'));
-});
 
 // Hide add card menu when scroll
 // TO-DO probably remove all the currentY stuff, since we're not tracking that in any real way
@@ -547,9 +519,19 @@ hideNewHorizontalUI = function() {
 };
 
 toggleHorizontalUI = function() {
-  if (Session.get("addingContextToCurrentY")) {
+  var currentSection = $('.vertical-narrative-section.selected')
+
+  var scrollToRelativePosition = function(offset) {
+    $('body,html').animate({
+      scrollTop: currentSection.position().top + offset
+    }, 200, 'easeInCubic');
+  };
+
+  if (Session.get("addingContext")) {
+    scrollToRelativePosition(350 + 29 - 140)
     return Session.set("addingContext", null);
   } else {
+    scrollToRelativePosition(350 + 29)
     Session.set("addingContext", Session.get('currentYId'));
     return Session.set("editingContext", null);
   }
