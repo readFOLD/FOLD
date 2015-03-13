@@ -33,6 +33,10 @@ var createBlockHelpers = {
     if (Template.instance().loadingResults)
       return Template.instance().loadingResults.get()
   },
+  noMoreResults: function() {
+    if (Template.instance().noMoreResults)
+      return Template.instance().noMoreResults.get()
+  },
   results: function () {
     searchDep.depend();
     return Template.instance().existingSearchResults()
@@ -127,11 +131,16 @@ var searchAPI = function(query) {
     page = mostRecentResult.nextPage;
   }
 
-  if (page === 'end'){ // return if at end of possible results
+  if (page === 'end') { // return if at end of possible results
+    this.noMoreResults.set(true);
+    this.loadingResults.set(false);
     return;
   }
 
+  this.noMoreResults.set(false);
   this.loadingResults.set(true);
+
+
   var that = this;
   searchDep.changed();
 
@@ -145,7 +154,9 @@ var searchAPI = function(query) {
       alert(err);
       return;
     }
-    if (!items) {
+    if (!items || !items.length) {
+      that.noMoreResults.set(true);
+      that.loadingResults.set(false);
       return;
     }
     _.chain(items)
@@ -279,6 +290,7 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
 
     this.loadingResults = new ReactiveVar();
     this.focusResult = new ReactiveVar();
+    this.noMoreResults = new ReactiveVar();
     this.search = _.bind(searchAPI, this);
     this.existingSearchResults = _.bind(existingSearchResults, this);
   };
