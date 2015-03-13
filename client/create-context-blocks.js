@@ -256,7 +256,7 @@ var searchIntegrations = {
 
 
 
-createTemplateNames = [
+var createTemplateNames = [
   'create_image_section',
   'create_gif_section',
   'create_video_section',
@@ -314,6 +314,8 @@ Template.create_image_section.created = searchTemplateCreatedBoilerplate('image'
 Template.create_gif_section.created = searchTemplateCreatedBoilerplate('gif', 'giphy');
 
 Template.create_audio_section.created = searchTemplateCreatedBoilerplate('audio', 'soundcloud');
+
+
 
 
 Template.create_image_section.helpers({
