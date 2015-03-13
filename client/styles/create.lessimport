@@ -225,7 +225,7 @@ div.button-options {
 
   div.delete-button {
     &:hover {
-      background-color: red;
+      background-color: @danger-color;
     }
   }
 }
@@ -487,7 +487,7 @@ div.horizontal-context {
       float: right;
 
       &:hover {
-        background-color: red;
+        background-color: @danger-color;
       }
     }
   }
@@ -904,12 +904,10 @@ div.text-section {
     text-align: left;
     text-decoration: none;
     display: inline-block;
-    &:not([DISABLED]){
-      cursor: pointer;
-      &:hover {
-        color: white;
-        background-color: @action-color;
-      }
+    cursor: pointer;
+    &:hover {
+      color: white;
+      background-color: @action-color;
     }
   }
   svg{
@@ -962,7 +960,7 @@ div#fold-editor{
       font-size: 20pt;
       line-height: @fold-editor-row-height;
       &:hover {
-        circle{
+        circle {
           fill: @action-color;
         }
         background-color: inherit;
@@ -970,9 +968,36 @@ div#fold-editor{
     }
   }
 }
+
 div#fold-link-remover{
   .floating-menu;
-  width: 55px;
+  background-color: rgba(0,0,0,0);
+  @size: 30px;
+  width: @size;
+  .standard-icon-colors;
+  button {
+    height: 100%;
+    padding: 0;
+    text-align: center;
+    vertical-align: middle;
+    float: left;
+    font-size: 20pt;
+    line-height: @size;
+
+    &:hover {
+      circle {
+        fill: @danger-color;
+      }
+      background-color: inherit;
+
+    }
+  }
+  svg{
+    height: @size;
+    width: @size;
+    vertical-align: middle;
+  }
+
 }
 
 .vertical-edit-menu{
