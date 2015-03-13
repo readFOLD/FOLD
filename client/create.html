@@ -218,6 +218,9 @@
       {{#if loading}}
         {{> loading_icon}}
       {{/if}}
+      {{#if noMoreResults}}
+        No more results
+      {{/if}}
     </ol>
     <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
       Add
@@ -243,6 +246,9 @@
       {{/each}}
       {{#if loading}}
         {{> loading_icon}}
+      {{/if}}
+      {{#if noMoreResults}}
+        No more results
       {{/if}}
     </ol>
     <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
@@ -377,6 +383,9 @@
         {{#if loading}}
           {{> loading_icon}}
         {{/if}}
+        {{#if noMoreResults}}
+          No more results
+        {{/if}}
       </li>
     </ol>
     <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
@@ -417,6 +426,9 @@
       <li class="loading-icon">
         {{#if loading}}
           {{> loading_icon}}
+        {{/if}}
+        {{#if noMoreResults}}
+          No more results
         {{/if}}
       </li>
     </ol>

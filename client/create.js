@@ -1,4 +1,4 @@
-var autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, hideNewHorizontalUI, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
+var autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 window.enclosingAnchorTag = null;
@@ -510,15 +510,10 @@ Tracker.autorun(function() {
 });
 
 showNewHorizontalUI = function() {
-  Session.set("addingContext", Session.get('currentYId'));
-  return Session.set("editingContext", null);
+  toggleHorizontalUI(true);
 };
 
-hideNewHorizontalUI = function() {
-  return Session.set("addingContext", null);
-};
-
-toggleHorizontalUI = function() {
+toggleHorizontalUI = function(forceBool) {
   var currentSection = $('.vertical-narrative-section.selected')
 
   var scrollToRelativePosition = function(offset) {
@@ -527,13 +522,13 @@ toggleHorizontalUI = function() {
     }, 200, 'easeInCubic');
   };
 
-  if (Session.get("addingContext")) {
-    scrollToRelativePosition(350 + 29 - 140);
-    return Session.set("addingContext", null);
-  } else {
+  if (forceBool || !Session.get("addingContext")) {
     scrollToRelativePosition(350 + 29);
     Session.set("addingContext", Session.get('currentYId'));
     return Session.set("editingContext", null);
+  } else {
+    scrollToRelativePosition(350 + 29 - 140);
+    return Session.set("addingContext", null);
   }
 };
 

@@ -183,12 +183,13 @@ div.title-overlay {
     background-color: @dark-color;
     &.fixed {
       position: fixed;
-      padding-top: 20px;
+      padding-top: 16px;
     }
     div.story-title {
       max-width: 100%;
       font-weight: bold;
       font-size: 30px;
+      line-height: 30px;
       padding-bottom: 15px;
       overflow-x: hidden;
       overflow-y: visible;
@@ -403,6 +404,7 @@ div.horizontal-context {
     @circle-diameter: 44px;
     button {
       height: @circle-diameter;
+      width: @circle-diameter;
       padding: 0;
       margin-left: 2px;
       margin-top: 18px;

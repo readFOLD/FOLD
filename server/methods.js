@@ -224,7 +224,7 @@ Meteor.methods({
       params: requestParams
     });
 
-    nextPageToken = res.data.nextPageToken;
+    nextPageToken = res.data.nextPageToken || 'end';
 
     items = _.chain(res.data.items)
       .filter(function(element) {
