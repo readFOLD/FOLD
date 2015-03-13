@@ -315,17 +315,20 @@ Template.create_gif_section.created = searchTemplateCreatedBoilerplate('gif', 'g
 
 Template.create_audio_section.created = searchTemplateCreatedBoilerplate('audio', 'soundcloud');
 
+var dataSourcesByType = {
+  'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}],
+  'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
+  'gif': [{source: 'giphy', display: 'Giphy'}],
+  'video': [{source: 'youtube', display: 'Youtube'}],
+  // 'map': [{source: 'google', display: 'Google Maps'}],
+  'audio': [{source: 'soundcloud', display: 'SoundCloud'}],
+}
 
-
-
-Template.create_image_section.helpers({
-    dataSources: [
-      {source: 'flickr', display: 'Flickr'},
-      //{source: 'getty', display: 'Getty Images'},
-      {source: 'imgur', display: 'Imgur'}
-    ]
-  }
-);
+_.each(dataSourcesByType, function(dataSources, type){
+  var templateName = 'create_' + type + '_section';
+  console.log(templateName, dataSources)
+  Template[templateName].helpers({dataSources: dataSources});
+});
 
 Template.create_viz_section.created = function() {
   this.type = 'viz';
@@ -359,9 +362,6 @@ Template.create_viz_section.rendered = function() {
 };
 
 Template.create_viz_section.helpers({
-    dataSources: [
-      {source: 'oec', display: 'Observatory of Economic Complexity'},
-    ],
     cardWidth: function() { return Session.get('cardWidth') - 40; } ,
     directions: function() { return Template.instance().directions; },
     countries: function() { return Template.instance().countries; },
@@ -389,14 +389,6 @@ Template.create_viz_section.events({
     t.selectedYear.set($(e.target).val());
   }
 })
-
-Template.create_gif_section.helpers({
-    dataSources: [
-      {source: 'giphy', display: 'Giphy'}
-    ]
-  }
-);
-
 
 Template.create_map_section.created = function() {
   this.loadingResults = new ReactiveVar();

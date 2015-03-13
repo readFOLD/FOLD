@@ -544,7 +544,7 @@ div.horizontal-context {
         font-weight: bold;
         text-transform: uppercase;
         display: inline-block;
-        width: 140px;
+        min-width: 140px;
         border-bottom: 2px solid white;
 
         &.selected, &:hover {
