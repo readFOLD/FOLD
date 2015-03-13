@@ -102,6 +102,15 @@ var getSearchInput = function(){
 
 };
 
+var setSearchInput = function(query){
+  try { // wrap in try in case dom isn't ready
+    this.$('input[type="search"]').val(query);
+  } catch (e) {
+    return {};
+  }
+
+};
+
 
 var existingSearchResults = function(){
   inputs = getSearchInput.call(this);
@@ -264,12 +273,13 @@ var createTemplateNames = [
   'create_text_section',
   'create_audio_section',
   'create_viz_section'
-]
+];
 
 _.each(createTemplateNames, function(templateName){
   Template[templateName].helpers(createBlockHelpers);
   Template[templateName].events(createBlockEvents);
 });
+
 
 Template.create_audio_section.events({
   "dblclick li": function (d, template) {
@@ -292,6 +302,11 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
     this.focusResult = new ReactiveVar();
     this.noMoreResults = new ReactiveVar();
 
+    this.search = _.bind(searchAPI, this);
+    this.existingSearchResults = _.bind(existingSearchResults, this);
+    this.getSearchInput = _.bind(getSearchInput, this);
+    this.setSearchInput = _.bind(setSearchInput, this);
+
     var that = this;
 
     this.autorun(function(){
@@ -299,21 +314,38 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
       that.noMoreResults.set(false);
       that.loadingResults.set(false);
     });
-
-    this.search = _.bind(searchAPI, this);
-    this.existingSearchResults = _.bind(existingSearchResults, this);
   };
 };
 
+searchTemplateRenderedBoilerplate  = function() {
+  return function() {
+    var that = this;
+
+    this.autorun(function(){
+      searchDep.depend();
+      if (that.getSearchInput().query) {
+        Session.set('query', that.getSearchInput().query);
+      } else {
+        that.setSearchInput(Session.get('query'));
+      }
+    });
+
+  };
+};
+
+
 Template.create_video_section.created = searchTemplateCreatedBoilerplate('video', 'youtube');
+Template.create_video_section.rendered = searchTemplateRenderedBoilerplate();
 
 
 // TODO autosearch when change between sources
 Template.create_image_section.created = searchTemplateCreatedBoilerplate('image', 'flickr');
+Template.create_image_section.rendered = searchTemplateRenderedBoilerplate();
+
 
 Template.create_gif_section.created = searchTemplateCreatedBoilerplate('gif', 'giphy');
+Template.create_gif_section.rendered = searchTemplateRenderedBoilerplate();
 
-Template.create_audio_section.created = searchTemplateCreatedBoilerplate('audio', 'soundcloud');
 
 var dataSourcesByType = {
   'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}],
@@ -326,9 +358,13 @@ var dataSourcesByType = {
 
 _.each(dataSourcesByType, function(dataSources, type){
   var templateName = 'create_' + type + '_section';
-  console.log(templateName, dataSources)
   Template[templateName].helpers({dataSources: dataSources});
 });
+
+
+Template.create_audio_section.created = searchTemplateCreatedBoilerplate('audio', 'soundcloud');
+Template.create_audio_section.rendered = searchTemplateRenderedBoilerplate();
+
 
 Template.create_viz_section.created = function() {
   this.type = 'viz';
@@ -343,22 +379,30 @@ Template.create_viz_section.created = function() {
   this.selectedYear = new ReactiveVar(2012);
 
   this.focusResult = new ReactiveVar();
-};
 
-
-Template.create_viz_section.rendered = function() {
-  $("select").selectOrDie({});
   var that = this;
   this.autorun(function() {
+    var oecYear = that.selectedYear.get();
+    var oecCountryCode = that.selectedCountry.get();
+    var oecCountryName = _.findWhere(that.countries, {id: oecCountryCode})['name'];
+    var oecDirection = that.selectedDirection.get();
+    var description = oecCountryName + " " + oecDirection + "s in " + oecYear;
+
     that.focusResult.set(new VizBlock({
-      oecCountry: that.selectedCountry.get(),
-      oecYear: that.selectedYear.get(),
-      oecDirection: that.selectedDirection.get(),
+      description: description,
+      oecCountry: oecCountryCode,
+      oecYear: oecYear,
+      oecDirection: oecDirection,
       authorId : Meteor.user()._id,
       type: that.type,
       source: that.source.get()
     }));
   });
+};
+
+
+Template.create_viz_section.rendered = function() {
+  $("select").selectOrDie({});
 };
 
 Template.create_viz_section.helpers({
@@ -377,7 +421,7 @@ Template.create_viz_section.helpers({
       if (preview) {
         return preview.url()
       }
-    },
+    }
   }
 );
 
