@@ -264,12 +264,13 @@ var createTemplateNames = [
   'create_text_section',
   'create_audio_section',
   'create_viz_section'
-]
+];
 
 _.each(createTemplateNames, function(templateName){
   Template[templateName].helpers(createBlockHelpers);
   Template[templateName].events(createBlockEvents);
 });
+
 
 Template.create_audio_section.events({
   "dblclick li": function (d, template) {
@@ -340,11 +341,7 @@ Template.create_viz_section.created = function() {
   this.selectedYear = new ReactiveVar(2012);
 
   this.focusResult = new ReactiveVar();
-};
 
-
-Template.create_viz_section.rendered = function() {
-  $("select").selectOrDie({});
   var that = this;
   this.autorun(function() {
     that.focusResult.set(new VizBlock({
@@ -356,6 +353,11 @@ Template.create_viz_section.rendered = function() {
       source: that.source.get()
     }));
   });
+};
+
+
+Template.create_viz_section.rendered = function() {
+  $("select").selectOrDie({});
 };
 
 Template.create_viz_section.helpers({
