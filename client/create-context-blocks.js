@@ -291,6 +291,15 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
     this.loadingResults = new ReactiveVar();
     this.focusResult = new ReactiveVar();
     this.noMoreResults = new ReactiveVar();
+
+    var that = this;
+
+    this.autorun(function(){
+      searchDep.depend();
+      that.noMoreResults.set(false);
+      that.loadingResults.set(false);
+    });
+
     this.search = _.bind(searchAPI, this);
     this.existingSearchResults = _.bind(existingSearchResults, this);
   };
