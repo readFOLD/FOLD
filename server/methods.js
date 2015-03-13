@@ -153,6 +153,7 @@ Meteor.methods({
   },
   twitterSearchList: function(query, option, page) {
     var res;
+    var items;
 
     check(query, String);
     this.unblock();
@@ -176,23 +177,25 @@ Meteor.methods({
 
     if (option === 'all') {
       params.q = query;
-      res = twitterResultsSync(api[option], params);
-      if (res.statuses.length > 0) {
+      try {
+        res = twitterResultsSync(api[option], params);  
         page = res.search_metadata.next_results.match(/\d+/)[0];
         items = res.statuses;
-      } else {
+      } catch(error) {
+        items = [];
         page = "end";
       }
     } else {
       params.screen_name = query;
-      items = twitterResultsSync(api[option], params);
-      if (items && items.length) {
+      try {
+        items = twitterResultsSync(api[option], params);
         var idString = items[items.length-1].id_str
         var start = idString.substring(0, idString.length-1);
         var end = idString.substring(idString.length-1);
         var newEnd = parseInt(end) -1;
         page = start + newEnd.toString();
-      } else {
+      } catch(error) {
+        items = [];
         page = "end"
       }
     }

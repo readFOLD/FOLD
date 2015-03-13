@@ -452,7 +452,7 @@ Template.create_text_section.helpers({
 
 Template.create_twitter_section.helpers({
   twitterUser: function() {
-    return Meteor.user().profile.twitterProfile;
+    return Meteor.user().profile.twitterUser;
   }
 })
 
