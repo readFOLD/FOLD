@@ -965,6 +965,7 @@ div#fold-link-remover{
     float: left;
     font-size: 20pt;
     line-height: @size;
+    margin-bottom: -2px;
 
     &:hover {
       circle {
