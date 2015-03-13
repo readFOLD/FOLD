@@ -616,7 +616,6 @@ Template.create_horizontal_section_block.events({
     return t.type.set('gif');
   },
   'click .twitter-button': function(d, t) {
-    console.log(Meteor.user().profile)
     return t.type.set('twitter');
   },
   'click .viz-button': function(d, t) {

@@ -222,6 +222,7 @@ var searchIntegrations = {
         if (e.retweeted_status) {
           retweetUser = e.retweeted_status.user.screen_name;
         }
+
         return {
           description : desc,
           referenceImage : imgUrl,

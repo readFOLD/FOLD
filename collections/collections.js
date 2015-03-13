@@ -1,4 +1,4 @@
-var ContextBlock, MapBlock, Schema, Story, TextBlock, VideoBlock, ImageBlock, AudioBlock, VizBlock, checkOwner,
+var ContextBlock, MapBlock, Schema, Story, TextBlock, VideoBlock, ImageBlock, AudioBlock, VizBlock, TwitterBlock, checkOwner,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -308,6 +308,27 @@ AudioBlock = (function(_super) {
 
 })(ContextBlock);
 
+TwitterBlock = (function(_super) {
+  __extends(TwitterBlock, _super);
+
+  function TwitterBlock(doc) {
+    TwitterBlock.__super__.constructor.call(this, doc);
+    this.type = 'twitter';
+    if (this.source == null) {
+      this.source = 'twitter';
+    }
+  }
+
+  TwitterBlock.prototype.url = function() {
+    if (this.source === 'twitter') {
+      return '//www.youtube.com/embed/K3p0EFtJIn8';
+    }
+  };
+
+  return TwitterBlock;
+
+})(ContextBlock);
+
 ImageBlock = (function(_super) {
   __extends(ImageBlock, _super);
 
@@ -466,6 +487,8 @@ var newTypeSpecificContextBlock =  function(doc) {
       return new AudioBlock(doc);
     case 'viz':
       return new VizBlock(doc);
+    case 'twitter':
+      return new TwitterBlock(doc);
     default:
       return new ContextBlock(doc);
   }
@@ -479,6 +502,7 @@ if (Meteor.isClient) {
   window.ImageBlock = ImageBlock;
   window.AudioBlock = AudioBlock;
   window.VizBlock = VizBlock;
+  window.TwitterBlock = TwitterBlock;
   window.newTypeSpecificContextBlock = newTypeSpecificContextBlock
 }
 

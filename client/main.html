@@ -195,6 +195,13 @@
                 {{> display_video_section}}
             {{/if}}
         {{/if}}
+        {{#if twitter}}
+            {{#if editingThisContext}}
+                {{> create_twitter_section}}
+            {{else}}
+                {{> display_twitter_section}}
+            {{/if}}
+        {{/if}}
         {{#if viz}}
             {{#if editingThisContext}}
                 {{> create_viz_section}}
@@ -317,6 +324,21 @@
       {{> horizontal_section_edit_delete}}
     {{/unless}}
 </template>
+
+<template name="display_twitter_section">
+  <div class="twitter-section">
+      <div class="active-display">
+      {{!-- <div class="active-display {{#unless selected}}hide{{/unless}}"> --}}
+      <!-- <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe> -->
+      <h1> twitter!</h1>
+      {{!-- </div> --}}
+      </div>
+  </div>
+  {{#unless read}}
+      {{> horizontal_section_edit_delete}}
+    {{/unless}}
+</template>
+
 
 <template name="story_browser">
   <div class="story-browser">
