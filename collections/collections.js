@@ -6,6 +6,8 @@ var checkOwner = function(userId, doc) {
   return userId && userId === doc.authorId;
 };
 
+SimpleSchema.debug = true; // TODO Remove after launch
+
 Schema = {};
 
 Story = (function() {
