@@ -312,7 +312,6 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
     this.autorun(function(){
       searchDep.depend();
       that.noMoreResults.set(false);
-      that.loadingResults.set(false);
     });
   };
 };
