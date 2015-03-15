@@ -402,7 +402,7 @@ Template.create_viz_section.created = function() {
 
 
 Template.create_viz_section.rendered = function() {
-  $("select").selectOrDie({});
+  $("select").selectOrDie({size: 8});
 };
 
 Template.create_viz_section.helpers({
