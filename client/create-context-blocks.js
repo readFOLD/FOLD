@@ -226,34 +226,47 @@ var searchIntegrations = {
     twitter: {
       methodName: 'twitterSearchList',
       mapFn: function(e){
-        var imgIndex = e.text.indexOf("http://");
-        var desc ='';
-        var imgUrl;
-        var retweetUser;
-        if (imgIndex != -1) {
-          desc = e.text.substring(0, imgIndex);
-          if (e.extended_entities) {
-            imgUrl = e.extended_entities.media[0].media_url_https;        
-          }
-        } else {
-          desc = e.text;
+        var imgUrl, retweetUser, hashtags, mentions, urls, text;
+        if (e.extended_entities) {
+          imgUrl = e.extended_entities.media[0].media_url_https;        
         }
-
         if (e.retweeted_status) {
           retweetUser = e.retweeted_status.user.screen_name;
+          hashtags = e.retweeted_status.entities.hashtags;
+          mentions = e.retweeted_status.entities.user_mentions;
+          urls = e.retweeted_status.entities.urls;
+          if (e.retweeted_status.entities.media) {imgUrl = e.retweeted_status.entities.media[0].media_url}
+        } else {
+          hashtags = e.entities.hashtags;
+          mentions = e.entities.user_mentions;
+          urls = e.entities.urls;
+          if (e.entities.media) {imgUrl = e.entities.media[0].media_url}
         }
 
-        return {
-          description : desc,
-          referenceImage : imgUrl,
-          referenceId : e.id,
-          referenceUrlId : e.id_str,
+        if (hashtags.length > 0 || mentions.length > 0 || urls.length >0) {
+          console.log([hashtags, mentions, urls]);
+          //construct tweet
+          var list = _.chain([hashtags, mentions, urls])
+          .reduce(function(a, b) { return a.concat(b)}, [])
+          .sortBy('indices')
+          .value()
+          console.log(list.reverse());
+        } else {
+          text = e.text;
+        }
+
+        var item = {
+          description : e.text, //change to text
+          referenceId : e.id_str,
           referenceUsername : e.user.name,
           referenceScreenname : e.user.screen_name,
           referenceUserPic : e.user.profile_image_url_https,
           referenceCreationDate : e.created_at.substring(0, 19),
-          referenceRetweet : retweetUser
+          referenceRetweet : retweetUser,
+          imgUrl : imgUrl
         }
+
+        return item;
       }
     }
   },

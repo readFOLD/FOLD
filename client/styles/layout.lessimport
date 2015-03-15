@@ -361,17 +361,7 @@ div#overlay {
 }
 
 .vertical-narrative-section {
-    padding: 30px;
-}
-
-.narrative-section {
-  float: left;
-  display: inline-block;
-  &.new-section{
-    padding: 0 15px;
-  }
-  background-color: @white-color;
-
+  padding: 30px;
   a {
     .background-transition;
     cursor: pointer;
@@ -386,6 +376,15 @@ div#overlay {
       color: white;
     }
   }
+}
+
+.narrative-section {
+  float: left;
+  display: inline-block;
+  &.new-section{
+    padding: 0 15px;
+  }
+  background-color: @white-color;
 
   div.vertical-nav-container {
     position: absolute;
@@ -507,6 +506,52 @@ div.vertical-narrative {
 
 div.oec-section {
   background-color: white;
+}
+
+div.twitter-section{
+  div.twitter-text-section {
+    padding: 30px;
+    .size-to-fit;
+    display: table;
+    &.image{
+      background-color: rgba(244,244,244,0.6);
+      position: relative;
+      top: -100%;
+      &:hover {
+            opacity: 0;
+            .opacity-transition;
+      }
+    }
+
+    div.tweet-card {
+      display: table-cell;
+      vertical-align: bottom;
+      position: relative;
+      div.title {
+        padding-bottom: 10px;
+        div.prof_pic {
+          float: left;
+        }
+        div.username {
+          position: relative;
+          left: 10px;
+          div.screenname {
+            font-size: 14px;
+          }
+        }
+      }
+      div.tweet {
+        font-size: 23px;
+        padding-bottom: 5px;
+      }
+    }
+  }
+  div.info {
+    float: left;
+  }
+  div.actions {
+    margin-left: calc(100% ~"-" 55px);
+  }
 }
 
 div.horizontal-context {

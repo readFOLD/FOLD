@@ -157,7 +157,7 @@ Meteor.methods({
 
     check(query, String);
     this.unblock();
-    count = 10;
+    count = 1;
     var api = {
       'all' : "search/tweets",
       'user' : 'statuses/user_timeline',

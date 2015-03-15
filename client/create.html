@@ -309,9 +309,11 @@
       <ol class="search-results-container">
         {{#each results}}
           <li class="{{#if isFocused}}focused{{/if}}">
-              <div class="search-result" style="{{#if referenceImage}}height:250px{{/if}}">
+            <div class="search-result" style="{{#if imgUrl}}height:250px{{/if}}">
                 <div class="thumbnail">
-                 <img class="small" src="{{referenceUserPic}}"> 
+                  <a href="//twitter.com/{{referenceScreenname}}" target="_blank">
+                    <img class="small" src="{{referenceUserPic}}"> 
+                  </a>
                 </div>
                 <div class="info twitter">
                   <div class="content-title">{{referenceUsername}} 
@@ -321,9 +323,9 @@
                   </div>
                   <div class="tweet">{{description}}
                   </div>
-                  {{#if referenceImage}}
+                  {{#if imgUrl}}
                     <div>
-                      <img src="{{referenceImage}}" class="image" style="max-height:150px; width:auto">
+                      <img src="{{imgUrl}}" class="image" style="max-height:150px; width:auto">
                     </div>
                   {{/if}}
                 
@@ -334,7 +336,7 @@
                         <a href="//twitter.com/{{referenceRetweet}} " target="_blank">
                         <i class="fa fa-retweet"></i> @{{referenceRetweet}}</a>
                       {{/if}}
-                      <a href="//twitter.com/{{referenceScreenname}}/status/{{referenceUrlId}}" target="_blank">{{referenceCreationDate}}</a>
+                      <a href="//twitter.com/{{referenceScreenname}}/status/{{referenceId}}" target="_blank">{{referenceCreationDate}}</a>
                     </span>
                   </div>
                 </div>

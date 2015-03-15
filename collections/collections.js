@@ -319,9 +319,24 @@ TwitterBlock = (function(_super) {
     }
   }
 
-  TwitterBlock.prototype.url = function() {
+  TwitterBlock.prototype.t = function() {
     if (this.source === 'twitter') {
-      return '//www.youtube.com/embed/K3p0EFtJIn8';
+      return {
+        userpic: this.referenceUserPic,
+        username: this.referenceUsername,
+        screenname: this.referenceScreenname,
+        description: this.description,
+        date: this.referenceCreationDate,
+        retweet: this.referenceRetweet,
+        imgUrl : this.imgUrl,
+        tweet_url: '//twitter.com/' + this.referenceScreenname + '/status/' + this.referenceId,
+        user_url: '//twitter.com/' + this.referenceScreenname,
+        retweet_url: '//twitter.com/' + this.referenceRetweet,
+        twitter_url: '//twitter.com/',
+        retweet_action: '//twitter.com/intent/retweet?tweet_id=' + this.referenceId,
+        reply_action: '//twitter.com/intent/tweet?in_reply_to=' + this.referenceId,
+        favorite_action: '//twitter.com/intent/favorite?tweet_id=' + this.referenceId
+     };
     }
   };
 
@@ -602,6 +617,14 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
+  twitterRetweetUser: {
+    type: String,
+    optional: true
+  },
+  imgUrl: {
+    type: String,
+    optional: true
+  },
   mapQuery: {
     type: String,
     optional: true
@@ -643,11 +666,19 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
+  referenceScreenname: {
+    type: String,
+    optional: true
+  },
   referenceUserId: {
     type: String,
     optional: true
   },
   referenceSource: {
+    type: String,
+    optional: true
+  },
+  referenceUserPic: {
     type: String,
     optional: true
   },
