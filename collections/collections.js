@@ -277,6 +277,10 @@ VideoBlock = (function(_super) {
     }
   };
 
+  VideoBlock.prototype.anchorMenuSnippet = function() {
+    return this.title;
+  };
+
   return VideoBlock;
 
 })(ContextBlock);
@@ -303,6 +307,11 @@ AudioBlock = (function(_super) {
       return this.soundcloudArtworkUrl;
     }
   };
+
+  AudioBlock.prototype.anchorMenuSnippet = function() {
+    return this.title;
+  };
+
 
   return AudioBlock;
 
@@ -341,6 +350,10 @@ ImageBlock = (function(_super) {
     }
   };
 
+  ImageBlock.prototype.anchorMenuSnippet = function() {
+    return this.title;
+  };
+
   return ImageBlock;
 
 })(ContextBlock);
@@ -365,6 +378,10 @@ GifBlock = (function(_super) {
       case 'giphy':
         return 'http://media4.giphy.com/media/' + this.referenceId + '/200_d.gif'
     }
+  };
+
+  GifBlock.prototype.anchorMenuSnippet = function() {
+    return this.referenceId;
   };
 
   return GifBlock;
@@ -406,6 +423,13 @@ VizBlock = (function(_super) {
     }
   };
 
+  VizBlock.prototype.anchorMenuSnippet = function() {
+    switch (this.source) {
+      case 'oec':
+        return this.oecCountryName() + " (" + this.oecYear + ")";
+    }
+  };
+
   return VizBlock;
 
 })(ContextBlock);
@@ -423,6 +447,10 @@ MapBlock = (function(_super) {
   }
 
   MapBlock.prototype.description = function() {
+    return this.mapQuery;
+  };
+
+  MapBlock.prototype.anchorMenuSnippet = function() {
     return this.mapQuery;
   };
 
@@ -462,6 +490,10 @@ TextBlock = (function(_super) {
     } else {
       return this.content.slice(0, maxLength) + '...';
     }
+  };
+
+  TextBlock.prototype.anchorMenuSnippet = function() {
+    return this.content;
   };
 
   return TextBlock;
@@ -570,6 +602,10 @@ Schema.ContextBlocks = new SimpleSchema({
     optional: true
   },
   soundcloudWaveformUrl: {
+    type: String,
+    optional: true
+  },
+  title: {
     type: String,
     optional: true
   },
