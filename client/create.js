@@ -393,6 +393,24 @@ Template.vertical_edit_menu.helpers({
   }
 });
 Template.vertical_edit_menu.events({
+  "click .add-title": function() {
+    var storyId = Session.get('storyId');
+    var index = this.index;
+
+    Session.set('saveState', 'saving');
+    return Meteor.call('addTitle', storyId, index, function(err, numDocs) {
+      saveCallback(err, numDocs);
+    });
+  },
+  "click .remove-title": function() {
+    var storyId = Session.get('storyId');
+    var index = this.index;
+
+    Session.set('saveState', 'saving');
+    return Meteor.call('removeTitle', storyId, index, function(err, numDocs) {
+      saveCallback(err, numDocs);
+    });
+  },
   "click .move-card-up": function() {
     var indexToInsert, storyId, verticalSections;
     storyId = Session.get('storyId');

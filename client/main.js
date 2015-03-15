@@ -298,12 +298,18 @@ Template.vertical_section_block.helpers({
     }
   },
   contentDiv: function() {
+    var minHeight;
+    if (this.hasTitle){
+      minHeight = 232;
+    } else {
+      minHeight= 232 + 48;
+    }
     if (Session.get('read')) {
-      return '<div class="content">' + this.content + '</div>';
+      return '<div class="content" style="min-height: ' + minHeight + 'px;">' + this.content + '</div>';
     } else {
       // nonReactiveContent preserves browser undo functionality across saves
       // this is contenteditable in edit mode
-      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true">' + Template.instance().semiReactiveContent.get() + '</div>';
+      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true" style="min-height: ' + minHeight + 'px;">' + Template.instance().semiReactiveContent.get() + '</div>';
     }
   }
 });

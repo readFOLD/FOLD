@@ -609,11 +609,18 @@ Schema.ContextBlocks = new SimpleSchema({
   },
   title: {
     type: String,
-    optional: true
+    optional: true,
+    defaultValue: ''
+  },
+  hasTitle: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
   },
   description: {
     type: String,
-    optional: true
+    optional: true,
+    defaultValue: ''
   },
   referenceId: { // id used by source
     type: String,

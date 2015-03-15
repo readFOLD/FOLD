@@ -408,15 +408,14 @@ div#overlay {
     text-align: left;
     font-size: 20px;
     font-weight: 600;
+    margin-bottom: 25px;
   }
 
   div.content {
-    min-height: 232px;
     line-height: 26px;
     overflow: hidden;
     text-align: left;
     font-size: 16.5px;
-    margin-top: 25px;
     &.minimized {
       height: 0;
       display: none;
