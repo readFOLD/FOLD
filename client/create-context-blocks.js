@@ -48,7 +48,7 @@ searchScrollFn = function(d, template) {
   var searchContainer = $("ol.search-results-container");
 
   if ((searchContainer.scrollTop() + searchContainer.height()) === searchContainer[0].scrollHeight && !template.loadingResults.get()) {
-    if (template.existingSearchResults().count()){ // confirm there are already results and we're scrolling down{
+    if (template.existingSearchResults({reactive: false}).count()){ // confirm there are already results and we're scrolling down{
       template.search();
     }
   }
@@ -69,7 +69,7 @@ var createBlockEvents = {
   "submit form": function(d, template) {
     d.preventDefault();
     if(!template.loadingResults.get()){
-      if (!template.existingSearchResults || !template.existingSearchResults().count()) {  // confirm there are no results yet
+      if (!template.existingSearchResults || !template.existingSearchResults({reactive: false}).count()) {  // confirm there are no results yet
         template.search();
       }
     }
@@ -112,14 +112,14 @@ var setSearchInput = function(query){
 };
 
 
-var existingSearchResults = function(){
+var existingSearchResults = function(options){
   inputs = getSearchInput.call(this);
   return SearchResults.find({
     searchQuery: inputs.query,
     searchOption: inputs.option,
     type: this.type,
     source: this.source.get()
-  }, {sort: {ordinalId: 1} })
+  }, _.extend({}, options, {sort: {ordinalId: 1} }))
 };
 
 
@@ -133,7 +133,7 @@ var searchAPI = function(query) {
   var query = inputs.query;
   var option = inputs.option;
 
-  var mostRecentResult = this.existingSearchResults().fetch().slice(-1)[0];
+  var mostRecentResult = this.existingSearchResults({reactive:false}).fetch().slice(-1)[0];
 
 
   if (mostRecentResult) {
@@ -320,12 +320,24 @@ searchTemplateRenderedBoilerplate  = function() {
   return function() {
     var that = this;
 
+    // set initial search query to session query
+    this.setSearchInput(Session.get('query'));
+    searchDep.changed();
+
+    // focus search box
+    this.$('input[type="search"]').focus();
+
+    // update session query whenever search input changes
     this.autorun(function(){
       searchDep.depend();
-      if (that.getSearchInput().query) {
-        Session.set('query', that.getSearchInput().query);
-      } else {
-        that.setSearchInput(Session.get('query'));
+      Session.set('query', that.getSearchInput().query);
+    });
+
+    // search when initially arrive and when source changes (if there aren't already results)
+    this.autorun(function(){
+      that.source.get();
+      if (Session.get('addingContext') && that.getSearchInput().query && !that.existingSearchResults({reactive: false}).count()) {
+        that.search();
       }
     });
 
@@ -353,7 +365,7 @@ var dataSourcesByType = {
   'video': [{source: 'youtube', display: 'Youtube'}],
   // 'map': [{source: 'google', display: 'Google Maps'}],
   'audio': [{source: 'soundcloud', display: 'SoundCloud'}],
-}
+};
 
 _.each(dataSourcesByType, function(dataSources, type){
   var templateName = 'create_' + type + '_section';
