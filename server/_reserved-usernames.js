@@ -841,10 +841,10 @@ var disallowedUsernames = _.sortBy([
 console.log(reservedUsernames)
 
 checkUsername = function(username) {
-  if(username && _.sortedIndex(reservedUsernames, username.toLowerCase()) !== -1){
+  if(username && _.indexOf(reservedUsernames, username.toLowerCase(), true) !== -1){ // this check relies on the list being sorted
     throw new Meteor.Error('This username is reserved. Please email us at fold@media.mit.edu if you have rights to this name.')
   }
-  if(username && _.sortedIndex(disallowedUsernames, username.toLowerCase()) !== -1){
+  if(username && _.indexOf(disallowedUsernames, username.toLowerCase(), true) !== -1){
     throw new Meteor.Error('This username is reserved.')
   }
 };
