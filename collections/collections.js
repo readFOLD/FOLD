@@ -342,7 +342,7 @@ ImageBlock = (function(_super) {
       case 'imgur':
         return '//i.imgur.com/' + this.reference.id + '.' + this.reference.fileExtension;
       case 'flickr':
-        return '//farm' + this.reference.imgFarm + '.staticflickr.com/' + this.reference.server + '/' + this.reference.id + '_' + this.reference.imgSecret + '.jpg'
+        return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg'
     }
   };
 
@@ -353,7 +353,7 @@ ImageBlock = (function(_super) {
       case 'imgur':
         return '//i.imgur.com/' + this.reference.id + 't' + '.' + this.reference.fileExtension;
       case 'flickr':
-        return '//farm' + this.reference.imgFarm + '.staticflickr.com/' + this.reference.server + '/' + this.reference.id + '_' + this.reference.imgSecret + '_t' + '.jpg'
+        return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_t' + '.jpg'
     }
   };
 
@@ -407,7 +407,7 @@ VizBlock = (function(_super) {
   VizBlock.prototype.url = function() {
     switch (this.source) {
       case 'oec':
-        return 'http://atlas.media.mit.edu/explore/embed/tree_map/hs/' + this.oecDirection + '/' + this.oecCountry + '/all/show/' + this.oecYear + '/?controls=false&lang=en'
+        return 'http://atlas.media.mit.edu/explore/embed/tree_map/hs/' + this.reference.oecDirection + '/' + this.reference.oecCountry + '/all/show/' + this.reference.oecYear + '/?controls=false&lang=en'
     }
   };
 
@@ -416,8 +416,8 @@ VizBlock = (function(_super) {
   VizBlock.prototype.oecCountryName = function() {
     switch (this.source) {
       case 'oec':
-        if (this.oecCountry) {
-          return _.findWhere(VizBlock.countries, {id: this.oecCountry})['name'];
+        if (this.reference.oecCountry) {
+          return _.findWhere(VizBlock.countries, {id: this.reference.oecCountry})['name'];
         }
     }
   };
@@ -426,14 +426,14 @@ VizBlock = (function(_super) {
   VizBlock.prototype.description = function() {
     switch (this.source) {
       case 'oec':
-        return this.oecCountryName() + " " + this.oecDirection + "s in " + this.oecYear;
+        return this.reference.oecCountryName() + " " + this.reference.oecDirection + "s in " + this.reference.oecYear;
     }
   };
 
   VizBlock.prototype.anchorMenuSnippet = function() {
     switch (this.source) {
       case 'oec':
-        return this.oecCountryName() + " (" + this.oecYear + ")";
+        return this.reference.oecCountryName() + " (" + this.reference.oecYear + ")";
     }
   };
 
@@ -454,11 +454,11 @@ MapBlock = (function(_super) {
   }
 
   MapBlock.prototype.description = function() {
-    return this.mapQuery;
+    return this.reference.mapQuery;
   };
 
   MapBlock.prototype.anchorMenuSnippet = function() {
-    return this.mapQuery;
+    return this.reference.mapQuery;
   };
 
   MapBlock.prototype.escape = function(value) {
@@ -467,13 +467,13 @@ MapBlock = (function(_super) {
 
   MapBlock.prototype.url = function() {
     if (this.source === 'google_maps') {
-      return 'https://www.google.com/maps/embed/v1/place?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&q=' + this.escape(this.mapQuery) + '&maptype=' + this.escape(this.mapType);
+      return 'https://www.google.com/maps/embed/v1/place?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&q=' + this.escape(this.reference.mapQuery) + '&maptype=' + this.escape(this.reference.mapType);
     }
   };
 
   MapBlock.prototype.previewUrl = function() {
     if (this.source === 'google_maps') {
-      return 'https://maps.googleapis.com/maps/api/staticmap?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&center=' + this.escape(this.mapQuery) + '&maptype=' + this.escape(this.mapType) + '&size=' + '520x300';
+      return 'https://maps.googleapis.com/maps/api/staticmap?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&center=' + this.escape(this.reference.mapQuery) + '&maptype=' + this.escape(this.reference.mapType) + '&size=' + '520x300';
     }
   };
 
@@ -607,19 +607,49 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
 
-  imgFarm: {
+
+  flickrFarm: {
     type: String,
     optional: true
   },
-  imgSecret: {
+  flickrSecret: {
     type: String,
     optional: true
   },
-  server: {
-  type: String,
+  flickrServer: {
+    type: String,
     optional: true
   },
 
+  oecYear: {
+    type: String,
+    optional: true
+  },
+  oecCountry: {
+    type: String,
+    optional: true
+  },
+  oecDirection: {
+    type: String,
+    optional: true
+  },
+
+  mapQuery: {
+    type: String,
+    optional: true
+  },
+  mapType: {
+    type: String,
+    allowedValues: ['roadmap', 'satellite'],
+    defaultValue: 'satellite',
+    optional: true,
+    autoform: {
+      afFieldInput: {
+        firstOption: false,
+        options: 'allowed'
+      }
+    }
+  },
 
 })
 
@@ -651,34 +681,7 @@ Schema.ContextBlocks = new SimpleSchema({
     optional: true,
     blackbox: true
   },
-  oecYear: {
-    type: String,
-    optional: true
-  },
-  oecCountry: {
-    type: String,
-    optional: true
-  },
-  oecDirection: {
-    type: String,
-    optional: true
-  },
-  mapQuery: {
-    type: String,
-    optional: true
-  },
-  mapType: {
-    type: String,
-    allowedValues: ['roadmap', 'satellite'],
-    defaultValue: 'satellite',
-    optional: true,
-    autoform: {
-      afFieldInput: {
-        firstOption: false,
-        options: 'allowed'
-      }
-    }
-  },
+
   content: {
     type: String,
     label: "Text",

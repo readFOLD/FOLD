@@ -247,10 +247,10 @@ var searchIntegrations = {
       mapFn: function(e) {
         return {
           reference: {
-            imgFarm: e.farm,
-            imgSecret: e.secret,
+            flickrFarm: e.farm,
+            flickrSecret: e.secret,
             id: e.id,
-            server: e.server,
+            flickrServer: e.server,
             title: e.title
           }
         }
@@ -408,9 +408,11 @@ Template.create_viz_section.created = function() {
     var oecDirection = that.selectedDirection.get();
 
     that.focusResult.set(new VizBlock({
-      oecCountry: oecCountryCode,
-      oecYear: oecYear,
-      oecDirection: oecDirection,
+      reference: {
+        oecCountry: oecCountryCode,
+        oecYear: oecYear,
+        oecDirection: oecDirection
+      },
       authorId : Meteor.user()._id,
       type: that.type,
       source: that.source.get()
@@ -463,8 +465,10 @@ Template.create_map_section.created = function() {
     input = getSearchInput.call(this);
 
     that.focusResult.set(new MapBlock({
-      mapQuery: input.query,
-      mapType: input.option,
+      reference: {
+        mapQuery: input.query,
+        mapType: input.option
+      },
       authorId : Meteor.user()._id
     }))
   };
