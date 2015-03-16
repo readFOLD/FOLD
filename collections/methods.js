@@ -56,7 +56,7 @@ var updateStory = function(selector, modifier, options) {
   if (_.isEmpty(modifier)){
     return
   }
-  modifier.$set = _.extend(modifier.$set || {}, {savedAt: Date.now()});
+  modifier.$set = _.extend(modifier.$set || {}, {savedAt: new Date});
 
   return Stories.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
 };
