@@ -61,7 +61,7 @@ div.divider {
   margin-top: @vertical-center - @font-size/2;
 }
 
-div.sign-up-right {
+div.login-right {
 	position: relative;
 	float: left;
 	width: 45%;

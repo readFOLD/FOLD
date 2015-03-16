@@ -15,21 +15,22 @@ if (!GOOGLE_API_SERVER_KEY) {
 
 
 Meteor.methods({
-  updateUserInfo: function(user_info) {
+  updateUserInfo: function(userInfo) {
     if (Meteor.user().tempUsername) {
-      var username = user_info.username;
+      var username = userInfo.username;
+      checkSignupCode(userInfo.signupCode);
       checkUsername(username);
       return Meteor.users.update({
         _id: this.userId
       }, {
           $set: {
-            "profile.name": user_info.name || username,
+            "profile.name": userInfo.name || username,
             "profile.displayUsername": username, // this will keep caps
             "username": username
           },
           $unset: {"tempUsername": ""},
           $push: {
-            "emails": {  "address" : user_info.email,  "verified" : false }
+            "emails": {  "address" : userInfo.email,  "verified" : false }
            }
         });
     }

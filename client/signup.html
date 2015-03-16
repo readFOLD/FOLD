@@ -25,6 +25,8 @@
         <input name="password2" type="password" placeholder="password">
         <!-- profile image here -->
       {{/if}}
+      <label for="signupCode"> Signup code </label>
+      <input name="signupCode" type="text" placeholder="Secret code for Beta">
       {{#if signupError}}
         <div class="error">
           {{signupError}}
