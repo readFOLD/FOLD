@@ -624,6 +624,7 @@ Schema.UserProfile = new SimpleSchema({
   },
   displayUsername: { // allows for caps
     type: String,
+    optional: true,
     autoValue: function () { // TODO ensure this matches username except for capitalization
       if (this.isSet && typeof this.value === "string") {
         return this.value.trim();

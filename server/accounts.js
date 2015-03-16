@@ -15,11 +15,10 @@ Accounts.onCreateUser(function(options, user) {
     user.profile = {};
   }
 
-  if (user.services.twitter) {
+  if (user.services.twitter) { // twitter signup
     user.tempUsername = user.services.twitter.screenName;
-    user.profile.displayUsername = user.services.twitter.screenName;
     user.profile.twitterUser = true;
-  } else {
+  } else { // email signup
     user.profile.displayUsername = options.username;
   }
 
