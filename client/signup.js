@@ -11,7 +11,10 @@ var createUser = function(user, template) {
     email: user.email,
     password: user.password,
     username: user.username,
-    profile : { "name" : user.name }
+    signupCode: user.signupCode,
+    profile : {
+      "name" : user.name
+      },
     }, function(err) {
       if (err) {
         template.signupError.set(err.reason || err.error);
