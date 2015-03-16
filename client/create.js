@@ -527,26 +527,29 @@ Tracker.autorun(function() {
   Session.set("addingContext", null);
 });
 
-showNewHorizontalUI = function() {
-  toggleHorizontalUI(true);
+var scrollToRelativePosition = function(offset) {
+  $('body,html').animate({
+    scrollTop: $('.vertical-narrative-section.selected').position().top + offset
+  }, 200, 'easeInCubic');
 };
 
-toggleHorizontalUI = function(forceBool) {
-  var currentSection = $('.vertical-narrative-section.selected')
+var showNewHorizontalUI = function() {
+  scrollToRelativePosition(350 + 29);
+  Session.set("addingContext", Session.get('currentYId'));
+  return Session.set("editingContext", null);
+};
 
-  var scrollToRelativePosition = function(offset) {
-    $('body,html').animate({
-      scrollTop: currentSection.position().top + offset
-    }, 200, 'easeInCubic');
-  };
+var hideNewHorizontalUI = function() {
+  scrollToRelativePosition(350 + 29 - 140);
+  return Session.set("addingContext", null);
+};
 
-  if (forceBool || !Session.get("addingContext")) {
-    scrollToRelativePosition(350 + 29);
-    Session.set("addingContext", Session.get('currentYId'));
-    return Session.set("editingContext", null);
+var toggleHorizontalUI = function(forceBool) {
+
+  if (!Session.get("addingContext")) {
+    showNewHorizontalUI()
   } else {
-    scrollToRelativePosition(350 + 29 - 140);
-    return Session.set("addingContext", null);
+    hideNewHorizontalUI()
   }
 };
 
@@ -703,8 +706,7 @@ window.addContextToStory = function(storyId, contextId, verticalSectionIndex, cb
     $addToSet: pushObject
   }, function(err, numDocs) {
     if (numDocs) {
-      Session.set("addingContext", null);
-      Session.set("editingContext", null);
+      hideNewHorizontalUI();
       return goToContext(contextId);
     }
     saveCallback(err, numDocs, cb);
