@@ -402,23 +402,32 @@ div#overlay {
     }
   }
 
+  @normalContentHeight: 232px;
+  @titleHeight: 23px;
+  @titleMarginBottom: 25px;
+
   div.title {
-    line-height: 23px;
+    line-height: @titleHeight;
     text-align: left;
     font-size: 20px;
     font-weight: 600;
+    margin-bottom: @titleMarginBottom;
   }
 
   div.content {
-    min-height: 232px;
     line-height: 26px;
     overflow: hidden;
     text-align: left;
     font-size: 16.5px;
-    margin-top: 25px;
+    min-height: @normalContentHeight + @titleHeight + @titleMarginBottom;
     &.minimized {
       height: 0;
       display: none;
+    }
+  }
+  &.has-title {
+    .content {
+      min-height: @normalContentHeight;
     }
   }
 }

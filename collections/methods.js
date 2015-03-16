@@ -24,6 +24,18 @@ changeFavorite = function(storyId, toFavorite) {
   }, userOperation);
 };
 
+var changeHasTitle = function(storyId, index, newValue){
+  var selector = {_id: storyId};
+  setObject = {};
+  key = 'draftStory.verticalSections.' + index + '.hasTitle'
+  setObject[key] = newValue;
+
+  return updateStory({_id: storyId, authorId: this.userId}, {
+    $set: setObject
+  })
+}
+
+
 var checkOwner = function(userId, doc) {
   return userId && userId === doc.authorId;
 };
@@ -44,7 +56,7 @@ var updateStory = function(selector, modifier, options) {
   if (_.isEmpty(modifier)){
     return
   }
-  modifier.$set = _.extend(modifier.$set || {}, {savedAt: Date.now()});
+  modifier.$set = _.extend(modifier.$set || {}, {savedAt: new Date});
 
   return Stories.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
 };
@@ -77,6 +89,12 @@ Meteor.methods({
 
     return updateStory(selector, modifier, options);
   },
+  addTitle: function(storyId, index) {
+    return changeHasTitle.call(this, storyId, index, true);
+  },
+  removeTitle: function(storyId, index) {
+    return changeHasTitle.call(this, storyId, index, false);
+  },
   insertVerticalSection: function(storyId, index, section) {
     // TODO - Once Meteor upgrades to use Mongo 2.6
     // This should use the $position operator and work directly there
@@ -86,7 +104,8 @@ Meteor.methods({
       _id: Random.id(8),
       contextBlocks: [],
       title: "",
-      content: ""
+      content: "",
+      hasTitle: false
     };
 
     var selector = {_id: storyId};
@@ -107,7 +126,8 @@ Meteor.methods({
       _id: Random.id(8),
       contextBlocks: [],
       title: "",
-      content: ""
+      content: "",
+      hasTitle: false
     });
 
     return updateStory({_id: storyId}, {
@@ -223,7 +243,8 @@ Meteor.methods({
       _id: Random.id(8),
       contextBlocks: [],
       title: "",
-      content: ""
+      content: "",
+      hasTitle: false
     };
 
     Stories.insert({

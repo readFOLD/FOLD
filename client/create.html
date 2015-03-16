@@ -520,11 +520,19 @@
 <template name="vertical_edit_menu">
   <div class="vertical-edit-menu">
     <ul>
-      <!--<li>-->
-        <!--<button class="add-title">-->
-          <!--XXAdd title (optional)XX-->
-        <!--</button>-->
-      <!--</li>-->
+      {{#if hasTitle}}
+        <li>
+          <button class="remove-title">
+            Remove title
+          </button>
+        </li>
+      {{else}}
+        <li>
+          <button class="add-title">
+            Add title (optional)
+          </button>
+        </li>
+      {{/if}}
       {{#if canMoveUp}}
         <li>
           <button class="move-card-up">
@@ -551,7 +559,7 @@
 
 
 <template name="context_anchor_option">
-  <button type="button">{{> type_specific_icon}}<span class="text">{{description}}</span></button>
+  <button type="button">{{> type_specific_icon}}<span class="text">{{anchorMenuSnippet}}</span></button>
 </template>
 
 <template name="context_anchor_go_back">

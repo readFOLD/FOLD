@@ -297,6 +297,7 @@ Template.vertical_section_block.helpers({
       return '<div class="title editable" placeholder="Title" contenteditable="true">' + this.title + '</div>';
     }
   },
+  // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
   contentDiv: function() {
     if (Session.get('read')) {
       return '<div class="content">' + this.content + '</div>';
@@ -321,7 +322,6 @@ Template.vertical_narrative.helpers({
 Template.vertical_section_block.events({
   "click": function(d, t) {
     goToY(t.data.index);
-    goToX(0);
   }
 });
 

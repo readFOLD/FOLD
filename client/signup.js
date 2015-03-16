@@ -14,16 +14,15 @@ var createUser = function(user, template) {
     profile : { "name" : user.name }
     }, function(err) {
       if (err) {
-        template.invalidUserSubmission.set(err.reason);
+        template.signupError.set(err.reason || err.error);
       } else {
         Router.go('/');
      }});
-    return;
   };
 
 Template.signup_form.created = function() {
   this.invalidPassword = new ReactiveVar(false);
-  this.invalidUserSubmission = new ReactiveVar('');
+  this.signupError = new ReactiveVar();
 }
 Template.signup_form.helpers({
   tempUsername: function() {
@@ -41,38 +40,37 @@ Template.signup_form.helpers({
   invalidPassword: function() {
     return Template.instance().invalidPassword.get();
   },
-  invalidUserSubmission: function() {
-    return Template.instance().invalidUserSubmission.get();
+  signupError: function() {
+    return Template.instance().signupError.get();
   }
 
 });
 
 Template.signup_form.events({
-  'submit #signup-form' : function(e, template) {
+  'submit #signup-form': function (e, template) {
     e.preventDefault();
 
-    inputs = $('#signup-form').serializeArray();
-    user_info = {};
-    _.each(inputs, function(input) {
-        key = input['name'];
-        value = input['value'];
-        user_info[key]=value;
+    var inputs = $('#signup-form').serializeArray();
+    var userInfo = {};
+    _.each(inputs, function (input) {
+      key = input['name'];
+      value = input['value'];
+      userInfo[key] = value;
+    });
+
+    if (Meteor.user()) { // if just finishing signup and already created a user via twitter
+      Meteor.call('updateUserInfo', userInfo, function (err) {
+        if (err) {
+          template.signupError.set(err.reason || err.error);
+        } else {
+          Router.go('/');
+        }
       });
-
-    if (Meteor.user()) {
-      Meteor.call('updateUserInfo', user_info, function(err) {
-      if (err) {
-        return alert(err); 
-      } else {
-        Router.go('/');
-      }});
-      return;
-    } 
-
-    checkPassword(user_info.password, user_info.password2);
-    if (!template.invalidPassword.get()) { 
-      createUser(user_info, template);
+    } else { // if email user
+      checkPassword(userInfo.password, userInfo.password2);
+      if (!template.invalidPassword.get()) {
+        createUser(userInfo, template);
+      }
     }
-    return;
-    }
-  })
+  }
+});

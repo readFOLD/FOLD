@@ -6,8 +6,6 @@ settings.json
 
 .idea/workspace.xml
 
-*.iml
-
 # User-specific stuff:
 .idea/workspace.xml
 .idea/tasks.xml
