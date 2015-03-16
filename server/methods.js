@@ -7,56 +7,17 @@ if (!GOOGLE_API_SERVER_KEY) {
   throw new Meteor.Error('Settings must be loaded for apis to work');
 }
 
-// TODO DRY
-var reservedUsernames = [
-  'joe',
-  'joegoldbeck',
-  'goldbeck',
-  'joseph',
-  'alexis',
-  'hope',
-  'alexishope',
-  'kevin',
-  'kevinhu',
-  'nathalie',
-  'nhuynh3',
-  'fold',
-  'readfold',
-  'civic',
-  'civicmedia',
-  'whitehouse',
-  'thewhitehouse',
-  'potus',
-  'scotus',
-  'flotus',
-  'medialab',
-  'mit',
-  'thepope',
-  'obama',
-  'barackobama',
-  'pontifex',
-  'usa'
-];
-
-var checkUsername = function(username) {
-  if(username && _.contains(reservedUsernames, username.toLowerCase())){
-    console.log('alsldldd')
-    throw new Meteor.Error('This username is reserved. Please email us at fold@media.mit.edu if you have rights to this name.')
-  }
-};
-
 Meteor.methods({
   updateUserInfo: function(user_info) {
     if (Meteor.user().tempUsername) {
-      var username = user_info.username.toLowerCase();
-      console.log(username)
+      var username = user_info.username;
       checkUsername(username);
       return Meteor.users.update({
         _id: this.userId
       }, {
           $set: {
             "profile.name": user_info.name,
-            "displayUsername": user_info.username, // this will keep caps
+            "displayUsername": username, // this will keep caps
             "username": username
           },
           $unset: {"tempUsername": ""},

@@ -25,6 +25,7 @@ var reservedUsernames = _.sortBy([
   'flotus',
   'medialab',
   'mit',
+  'mitmedialab',
   'thepope',
   'obama',
   'barackobama',
@@ -838,13 +839,12 @@ var disallowedUsernames = _.sortBy([
   "yourusername"
 ], _.identity);
 
-console.log(reservedUsernames)
 
 checkUsername = function(username) {
-  if(username && _.indexOf(reservedUsernames, username.toLowerCase(), true) !== -1){ // this check relies on the list being sorted
+  if(username && _.indexOf(reservedUsernames, username.toLowerCase().trim(), true) !== -1){ // this check relies on the list being sorted
     throw new Meteor.Error('This username is reserved. Please email us at fold@media.mit.edu if you have rights to this name.')
   }
-  if(username && _.indexOf(disallowedUsernames, username.toLowerCase(), true) !== -1){
+  if(username && _.indexOf(disallowedUsernames, username.toLowerCase().trim(), true) !== -1){
     throw new Meteor.Error('This username is reserved.')
   }
 };

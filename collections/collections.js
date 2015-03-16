@@ -638,7 +638,7 @@ Schema.User = new SimpleSchema({
     optional: true,
     autoValue: function () {
       if (this.isSet && typeof this.value === "string") {
-        return this.value.toLowerCase();
+        return this.value.toLowerCase().trim();
       } else {
         this.unset()
       }

@@ -58,8 +58,7 @@ Template.signup_form.events({
       userInfo[key] = value;
     });
 
-    if (Meteor.user()) {
-      // if twitter user
+    if (Meteor.user().tempUsername) { // if just finishing signup
       Meteor.call('updateUserInfo', userInfo, function (err) {
         if (err) {
           template.signupError.set(err.error);
