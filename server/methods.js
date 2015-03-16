@@ -16,8 +16,8 @@ Meteor.methods({
         _id: this.userId
       }, {
           $set: {
-            "profile.name": user_info.name,
-            "displayUsername": username, // this will keep caps
+            "profile.name": user_info.name || username,
+            "profile.displayUsername": username, // this will keep caps
             "username": username
           },
           $unset: {"tempUsername": ""},
