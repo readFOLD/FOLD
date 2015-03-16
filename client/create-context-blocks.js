@@ -190,6 +190,41 @@ var searchAPI = function(query) {
   });
 };
 
+var formatTweet = function(tweet, references, isRetweet) {
+  var i, pre, post;
+  var text = tweet,
+    openStart = '<a href=',
+    openEnd= ' target="_blank">',
+    close = '</a>',
+    hashUrlStart = '"https://twitter.com/hashtag/',
+    hashUrlEnd = '?src=hash"',
+    mentionUrl = '"https://twitter.com/';
+
+  _.each(references, function(ref) {
+    i = ref.indices;
+    if (isRetweet) {
+      var offset = tweet.indexOf(":") + 2; //start string after "RT @handle: "
+      i[0] = i[0] + offset;
+      i[1] = i[1] + offset;
+    }
+    pre = text.substring(0,i[0]);
+    post = text.substring(i[1], text.length);
+    
+    if (ref.url) {
+      formattedStr = openStart + ref.url + openEnd + 
+                     ref.display_url + close;
+    } else if (ref.text) {
+      formattedStr = openStart + hashUrlStart + ref.text + hashUrlEnd + openEnd +
+                     "#" + ref.text + close;
+    } else if (ref.screen_name) {
+      formattedStr = openStart + mentionUrl + ref.screen_name + '"' + openEnd +
+                     "@" + ref.screen_name + close;
+    }
+    text = pre + formattedStr +  post;
+  })
+  return text;
+};
+
 var searchIntegrations = {
   video: {
     youtube: {
@@ -227,10 +262,12 @@ var searchIntegrations = {
       methodName: 'twitterSearchList',
       mapFn: function(e){
         var imgUrl, retweetUser, hashtags, mentions, urls, text;
+        var isRetweet = false;
         if (e.extended_entities) {
           imgUrl = e.extended_entities.media[0].media_url_https;        
         }
         if (e.retweeted_status) {
+          isRetweet = true;
           retweetUser = e.retweeted_status.user.screen_name;
           hashtags = e.retweeted_status.entities.hashtags;
           mentions = e.retweeted_status.entities.user_mentions;
@@ -244,19 +281,20 @@ var searchIntegrations = {
         }
 
         if (hashtags.length > 0 || mentions.length > 0 || urls.length >0) {
-          console.log([hashtags, mentions, urls]);
-          //construct tweet
-          var list = _.chain([hashtags, mentions, urls])
+          //construct tweet according to twitter requirements
+          var references = _.chain([hashtags, mentions, urls])
           .reduce(function(a, b) { return a.concat(b)}, [])
-          .sortBy('indices')
+          .sortBy(function(ref) {
+            return ref.indices[0];
+          })
           .value()
-          console.log(list.reverse());
+          text = formatTweet(e.text, references.reverse(), isRetweet);
         } else {
           text = e.text;
         }
 
         var item = {
-          description : e.text, //change to text
+          description : text, 
           referenceId : e.id_str,
           referenceUsername : e.user.name,
           referenceScreenname : e.user.screen_name,
@@ -265,7 +303,6 @@ var searchIntegrations = {
           referenceRetweet : retweetUser,
           imgUrl : imgUrl
         }
-
         return item;
       }
     }
@@ -397,19 +434,25 @@ Template.create_gif_section.created = searchTemplateCreatedBoilerplate('gif', 'g
 Template.create_gif_section.rendered = searchTemplateRenderedBoilerplate();
 
 
+var dataSourcesByType = {
+  'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}],
+  'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
+  'gif': [{source: 'giphy', display: 'Giphy'}],
+  'video': [{source: 'youtube', display: 'Youtube'}],
+  // 'map': [{source: 'google', display: 'Google Maps'}],
+  'audio': [{source: 'soundcloud', display: 'SoundCloud'}],
+  'twitter': [{source: 'twitter', display: 'Twitter'}],
+}
+
+_.each(dataSourcesByType, function(dataSources, type){
+  var templateName = 'create_' + type + '_section';
+  Template[templateName].helpers({dataSources: dataSources});
+});
+
+
 Template.create_audio_section.created = searchTemplateCreatedBoilerplate('audio', 'soundcloud');
 Template.create_audio_section.rendered = searchTemplateRenderedBoilerplate();
 
-
-
-Template.create_image_section.helpers({
-    dataSources: [
-      {source: 'flickr', display: 'Flickr'},
-      //{source: 'getty', display: 'Getty Images'},
-      {source: 'imgur', display: 'Imgur'}
-    ]
-  }
-);
 
 Template.create_viz_section.created = function() {
   this.type = 'viz';
@@ -427,10 +470,17 @@ Template.create_viz_section.created = function() {
 
   var that = this;
   this.autorun(function() {
+    var oecYear = that.selectedYear.get();
+    var oecCountryCode = that.selectedCountry.get();
+    var oecCountryName = _.findWhere(that.countries, {id: oecCountryCode})['name'];
+    var oecDirection = that.selectedDirection.get();
+    var description = oecCountryName + " " + oecDirection + "s in " + oecYear;
+
     that.focusResult.set(new VizBlock({
-      oecCountry: that.selectedCountry.get(),
-      oecYear: that.selectedYear.get(),
-      oecDirection: that.selectedDirection.get(),
+      description: description,
+      oecCountry: oecCountryCode,
+      oecYear: oecYear,
+      oecDirection: oecDirection,
       authorId : Meteor.user()._id,
       type: that.type,
       source: that.source.get()
@@ -444,9 +494,6 @@ Template.create_viz_section.rendered = function() {
 };
 
 Template.create_viz_section.helpers({
-    dataSources: [
-      {source: 'oec', display: 'Observatory of Economic Complexity'},
-    ],
     cardWidth: function() { return Session.get('cardWidth') - 40; } ,
     directions: function() { return Template.instance().directions; },
     countries: function() { return Template.instance().countries; },
@@ -474,14 +521,6 @@ Template.create_viz_section.events({
     t.selectedYear.set($(e.target).val());
   }
 })
-
-Template.create_gif_section.helpers({
-    dataSources: [
-      {source: 'giphy', display: 'Giphy'}
-    ]
-  }
-);
-
 
 Template.create_map_section.created = function() {
   this.loadingResults = new ReactiveVar();

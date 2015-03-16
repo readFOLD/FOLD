@@ -511,6 +511,11 @@ div.horizontal-context {
       padding-bottom: 10px;
     }
     .sod_select {
+      .sod_list_wrapper {
+        height: 400px;        
+        overflow-y: scroll;
+      }
+
       padding: 10px 5px;
       // background-color: @dark-color;
       // color: @light-color;
@@ -544,7 +549,7 @@ div.horizontal-context {
         font-weight: bold;
         text-transform: uppercase;
         display: inline-block;
-        width: 140px;
+        min-width: 140px;
         border-bottom: 2px solid white;
 
         &.selected, &:hover {
@@ -640,7 +645,7 @@ div.horizontal-context {
   }  
      
   .twitter .search-results-container {
-    height: calc(100% ~"-" @searchFormHeight ~"-" 65px);   
+    height: calc(100% ~"-" @searchFormHeight ~"-" 95px);   
   }
 
   ol.search-results-container {   
@@ -985,6 +990,7 @@ div#fold-link-remover{
     float: left;
     font-size: 20pt;
     line-height: @size;
+    margin-bottom: -2px;
 
     &:hover {
       circle {

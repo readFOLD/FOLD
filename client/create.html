@@ -293,6 +293,13 @@
 
 <template name="create_map_section">
   <div class="create-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
     {{> search_form option1='satellite' optionText1='Satellite' option2='roadmap' optionText2='Roadmap'}}
     <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
     <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
@@ -305,6 +312,13 @@
 <template name="create_twitter_section">
   {{#if twitterUser}}
     <div class="create-section twitter">
+      <div class="tabs">
+        <ul>
+          {{#each dataSources}}
+            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+          {{/each}}
+        </ul>
+      </div>
       {{> search_form option1='all' optionText1='All tweets' option2='user' optionText2='User' option3= 'favorites' optionText3='Favorites'}}
       <ol class="search-results-container">
         {{#each results}}
@@ -321,14 +335,13 @@
                     <a href="//twitter.com/{{referenceScreenname}}" target="_blank">@{{referenceScreenname}}</a>
                     </span>
                   </div>
-                  <div class="tweet">{{description}}
+                  <div class="tweet">{{{description}}}
                   </div>
                   {{#if imgUrl}}
                     <div>
                       <img src="{{imgUrl}}" class="image" style="max-height:150px; width:auto">
                     </div>
                   {{/if}}
-                
                   <div class="descr">
                     <span>
                       <a href="//twitter.com"><i class="fa fa-twitter" target="_blank"></i></a>
@@ -360,6 +373,13 @@
 
 <template name="create_video_section">
   <div class="create-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
     {{> search_form}}
     <ol class="search-results-container">
       {{#each results}}
@@ -398,6 +418,13 @@
 
 <template name="create_audio_section">
   <div class="create-section audio">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
     {{> search_form}}
     <ol class="search-results-container">
       {{#each results}}
