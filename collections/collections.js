@@ -694,6 +694,10 @@ Schema.ContextBlocks = new SimpleSchema({
   searchQuery: {
     type:String,
     optional:true
+  },
+  searchOption: {
+    type: String,
+    optional:true
   }
 });
 
