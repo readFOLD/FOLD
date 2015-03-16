@@ -426,14 +426,14 @@ VizBlock = (function(_super) {
   VizBlock.prototype.description = function() {
     switch (this.source) {
       case 'oec':
-        return this.reference.oecCountryName() + " " + this.reference.oecDirection + "s in " + this.reference.oecYear;
+        return this.oecCountryName() + " " + this.reference.oecDirection + "s in " + this.reference.oecYear;
     }
   };
 
   VizBlock.prototype.anchorMenuSnippet = function() {
     switch (this.source) {
       case 'oec':
-        return this.reference.oecCountryName() + " (" + this.reference.oecYear + ")";
+        return this.oecCountryName() + " (" + this.reference.oecYear + ")";
     }
   };
 
