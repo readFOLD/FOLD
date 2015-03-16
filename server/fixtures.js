@@ -1,24 +1,25 @@
 var authorId, authorProfile;
 
-authorProfile = {
-  name: 'Cynthia Fold'
-};
-
 if (Meteor.users.find().count() === 0) {
   authorId = Accounts.createUser({
     email: 'author@example.com',
     username: 'author',
     password: 'password',
-    profile: authorProfile
+    profile: {
+      name: 'Cynthia Fold'
+    }
   });
   Accounts.createUser({
     email: 'test@example.com',
-    username: 'test',
+    username: 'testuser',
     password: 'password'
   });
 }
 
 if (Stories.find().count() === 0) {
+  author = Meteor.users.findOne({username: "author"});
+  authorId = author._id;
+  authorProfile = author.profile;
   Stories.insert({
     _id: '548781e397a6427c31384b73',
     shortId: 'asdsk20',
