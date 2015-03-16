@@ -327,7 +327,6 @@ Template.vertical_narrative.helpers({
 Template.vertical_section_block.events({
   "click": function(d, t) {
     goToY(t.data.index);
-    goToX(0);
   }
 });
 
