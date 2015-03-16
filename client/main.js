@@ -16,25 +16,27 @@ getCardWidth = function(windowWidth) {
   }
 };
 
-Session.set("windowHeight", $(window).height());
+var windowSizeDep = new Tracker.Dependency();
 
-Session.set("separation", 10);
+Tracker.autorun(function(){
+  windowSizeDep.depend();
 
-Session.set("width", window.outerWidth);
+  Session.set("windowHeight", $(window).height());
 
-Session.set("cardWidth", getCardWidth(Session.get("width")));
+  Session.set("separation", 10);
 
-Session.set("verticalLeft", getVerticalLeft(Session.get("width")))
+  Session.set("width", window.outerWidth);
 
-var resize = function() {
-  if (window.outerWidth > window.constants.minPageWidth) {
-    Session.set("resize", new Date());
-    Session.set("width", window.outerWidth);
-    return Session.set("cardWidth", getCardWidth(Session.get("width")));
-  }
+  Session.set("cardWidth", getCardWidth(window.outerWidth));
+
+  Session.set("verticalLeft", getVerticalLeft(window.outerWidth));
+});
+
+var windowResize = function() {
+  windowSizeDep.changed();
 };
 
-throttledResize = _.throttle(resize, 5);
+throttledResize = _.throttle(windowResize, 20);
 
 $(window).resize(throttledResize);
 
