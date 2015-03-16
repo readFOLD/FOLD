@@ -12,9 +12,9 @@
       <label for="email"> What's your e-mail? </label>
       <input name="email" type="email" placeholder="email@fold.com" autofocus="autofocus">
       <label for="name"> What's your name? </label>
-      <input name ="name" type="text" placeholder="Full Name">
+      <input name ="name" type="text" placeholder="Full Name" value="{{#if currentUser.profile.name}}{{currentUser.profile.name}}{{/if}}">
       <label for="username"> What username would you like? </label>
-      <input name="username" type="text" placeholder="Username" value="{{#if tempUsername}}{{tempUsername}}{{/if}}">
+      <input name="username" type="text" placeholder="Username" value="{{#if currentUser.tempUsername}}{{currentUser.tempUsername}}{{/if}}">
       {{#if emailUser}}
         <label for="password"> Choose a password </label>
         {{#if invalidPassword}}
