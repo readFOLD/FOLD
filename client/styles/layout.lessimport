@@ -519,7 +519,12 @@ div.oec-section {
 
 div.twitter-section{
   div.twitter-text-section {
-    padding: 30px;
+    a {
+      &:hover {
+        color: @action-color;
+      }
+    }
+    padding: 32px 30px 25px 32px;
     .size-to-fit;
     display: table;
     &.image{
@@ -537,7 +542,7 @@ div.twitter-section{
       vertical-align: bottom;
       position: relative;
       div.title {
-        padding-bottom: 10px;
+        margin-bottom: 20px;
         div.prof_pic {
           float: left;
         }
@@ -546,12 +551,14 @@ div.twitter-section{
           left: 10px;
           div.screenname {
             font-size: 14px;
+            font-weight: 100;
           }
         }
       }
       div.tweet {
-        font-size: 23px;
-        padding-bottom: 5px;
+        font-size: 19px;
+        line-height: 28px;
+        padding-bottom: 12px;
       }
     }
   }
