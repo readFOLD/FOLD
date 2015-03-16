@@ -16,14 +16,14 @@ getCardWidth = function(windowWidth) {
   }
 };
 
+Session.set("separation", 10);
+
 var windowSizeDep = new Tracker.Dependency();
 
 Tracker.autorun(function(){
   windowSizeDep.depend();
 
   Session.set("windowHeight", $(window).height());
-
-  Session.set("separation", 10);
 
   Session.set("width", window.outerWidth);
 
