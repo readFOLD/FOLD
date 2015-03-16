@@ -363,8 +363,8 @@ var dataSourcesByType = {
   'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
   'gif': [{source: 'giphy', display: 'Giphy'}],
   'video': [{source: 'youtube', display: 'Youtube'}],
-  // 'map': [{source: 'google', display: 'Google Maps'}],
-  'audio': [{source: 'soundcloud', display: 'SoundCloud'}],
+  'map': [{source: 'google_maps', display: 'Google Maps'}],
+  'audio': [{source: 'soundcloud', display: 'SoundCloud'}]
 };
 
 _.each(dataSourcesByType, function(dataSources, type){
@@ -443,6 +443,8 @@ Template.create_viz_section.events({
 })
 
 Template.create_map_section.created = function() {
+  this.type = 'map';
+  this.source = new ReactiveVar('google_maps');
   this.loadingResults = new ReactiveVar();
   this.focusResult = new ReactiveVar();
 
