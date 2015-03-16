@@ -339,7 +339,8 @@ TwitterBlock = (function(_super) {
         description: this.description,
         date: this.referenceCreationDate,
         retweet: this.referenceRetweet,
-        imgUrl : this.imgUrl,
+        links: this.referenceLinks,
+        imgUrl : this.referenceImg,
         tweet_url: '//twitter.com/' + this.referenceScreenname + '/status/' + this.referenceId,
         user_url: '//twitter.com/' + this.referenceScreenname,
         retweet_url: '//twitter.com/' + this.referenceRetweet,
@@ -349,6 +350,42 @@ TwitterBlock = (function(_super) {
         favorite_action: '//twitter.com/intent/favorite?tweet_id=' + this.referenceId
      };
     }
+  };
+
+  TwitterBlock.prototype.formattedTweet = function() { 
+    var pre, post;
+    var text = this.description,
+      openStart = '<a href=',
+      openEnd= ' target="_blank">',
+      close = '</a>',
+      hashUrlStart = '"https://twitter.com/hashtag/',
+      hashUrlEnd = '?src=hash"',
+      mentionUrl = '"https://twitter.com/',
+      offset = 0,
+      i = [];
+      if (this.referenceRetweet) {
+        offset = this.description.indexOf(":") + 2; //start string after "RT @handle: "
+      }
+
+    _.each(this.referenceLinks, function(link) {
+      i[0] = link.indices[0] + offset;
+      i[1] = link.indices[1] + offset;
+      pre = text.substring(0,i[0]);
+      post = text.substring(i[1], text.length);
+      
+      if (link.url) {
+        formattedStr = openStart + link.url + openEnd + 
+                       link.display_url + close;
+      } else if (link.text) {
+        formattedStr = openStart + hashUrlStart + link.text + hashUrlEnd + openEnd +
+                       "#" + link.text + close;
+      } else if (link.screen_name) {
+        formattedStr = openStart + mentionUrl + link.screen_name + '"' + openEnd +
+                       "@" + link.screen_name + close;
+      }
+      text = pre + formattedStr +  post;
+    })
+    return text;
   };
 
   return TwitterBlock;
@@ -685,7 +722,7 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  imgUrl: {
+  referenceImg: {
     type: String,
     optional: true
   },
@@ -721,7 +758,10 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-
+  referenceRetweet: {
+    type: String,
+    optional: true
+  },
   referenceCreationDate: {
     type: String,
     optional: true
@@ -733,6 +773,11 @@ Schema.ContextBlocks = new SimpleSchema({
   referenceScreenname: {
     type: String,
     optional: true
+  },
+  referenceLinks: {
+    type: [Object],
+    optional: true,
+    blackbox: true
   },
   referenceUserId: {
     type: String,

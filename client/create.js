@@ -585,9 +585,6 @@ Template.create_horizontal_section_block.helpers({
   twitter: function() {
     return Template.instance().type.get() === "twitter";
   },
-  oec: function() {
-    return Template.instance().type.get() === "oec";
-  },
   viz: function() {
     return Template.instance().type.get() === "viz";
   },

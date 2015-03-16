@@ -2,8 +2,8 @@ var GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
 var SOUNDCLOUD_CLIENT_ID = Meteor.settings.SOUNDCLOUD_CLIENT_ID;
 var IMGUR_CLIENT_ID = Meteor.settings.IMGUR_CLIENT_ID;
 var FLICKR_API_KEY = Meteor.settings.FLICKR_API_KEY;
-var TWITTER_API_KEY = Meteor.settings.TWITTER_API_KEY;
-var TWITTER_API_SECRET = Meteor.settings.TWITTER_API_SECRET;
+var TWITTER_API_KEY = process.env.TWITTER_API_KEY || Meteor.settings.TWITTER_API_KEY;
+var TWITTER_API_SECRET = process.env.TWITTER_API_SECRET || Meteor.settings.TWITTER_API_SECRET;
 
 var Twit = Meteor.npmRequire('twit');
 
@@ -192,8 +192,8 @@ Meteor.methods({
       try {
         items = twitterResultsSync(api[option], params);
         var idString = items[items.length-1].id_str
-        var start = idString.substring(0, idString.length-1);
-        var end = idString.substring(idString.length-1);
+        var start = idString.substring(0, idString.length-9);
+        var end = idString.substring(idString.length-9);
         var newEnd = parseInt(end) -1;
         page = start + newEnd.toString();
       } catch(error) {

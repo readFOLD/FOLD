@@ -351,14 +351,14 @@
                 </div>
               </div>
             </div>
-            <div class="tweet">{{{t.description}}}
+            <div class="tweet">{{{formattedTweet}}}
             </div>
             <div class="info">
               <span>
                 <a href='{{t.twitter_url}}'><i class="fa fa-twitter" target="_blank"></i>
                 </a>
                 {{#if t.retweet}}
-                  <a href="{{t.retweet_url}} " target="_blank">
+                  <a href="{{t.retweet_url}}" target="_blank">
                   <i class="fa fa-retweet"></i>@{{t.retweet}}</a>
                 {{/if}}
                 <a href="{{t.tweet_url}}" target="_blank">{{t.date}}</a>

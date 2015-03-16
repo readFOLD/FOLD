@@ -190,40 +190,6 @@ var searchAPI = function(query) {
   });
 };
 
-var formatTweet = function(tweet, references, isRetweet) {
-  var i, pre, post;
-  var text = tweet,
-    openStart = '<a href=',
-    openEnd= ' target="_blank">',
-    close = '</a>',
-    hashUrlStart = '"https://twitter.com/hashtag/',
-    hashUrlEnd = '?src=hash"',
-    mentionUrl = '"https://twitter.com/';
-
-  _.each(references, function(ref) {
-    i = ref.indices;
-    if (isRetweet) {
-      var offset = tweet.indexOf(":") + 2; //start string after "RT @handle: "
-      i[0] = i[0] + offset;
-      i[1] = i[1] + offset;
-    }
-    pre = text.substring(0,i[0]);
-    post = text.substring(i[1], text.length);
-    
-    if (ref.url) {
-      formattedStr = openStart + ref.url + openEnd + 
-                     ref.display_url + close;
-    } else if (ref.text) {
-      formattedStr = openStart + hashUrlStart + ref.text + hashUrlEnd + openEnd +
-                     "#" + ref.text + close;
-    } else if (ref.screen_name) {
-      formattedStr = openStart + mentionUrl + ref.screen_name + '"' + openEnd +
-                     "@" + ref.screen_name + close;
-    }
-    text = pre + formattedStr +  post;
-  })
-  return text;
-};
 
 var searchIntegrations = {
   video: {
@@ -262,7 +228,7 @@ var searchIntegrations = {
       methodName: 'twitterSearchList',
       mapFn: function(e){
         var imgUrl, retweetUser, hashtags, mentions, urls, text;
-        var isRetweet = false;
+
         if (e.extended_entities) {
           imgUrl = e.extended_entities.media[0].media_url_https;        
         }
@@ -282,16 +248,15 @@ var searchIntegrations = {
 
         if (hashtags.length > 0 || mentions.length > 0 || urls.length >0) {
           //construct tweet according to twitter requirements
-          var references = _.chain([hashtags, mentions, urls])
+          var links = _.chain([hashtags, mentions, urls])
           .reduce(function(a, b) { return a.concat(b)}, [])
-          .sortBy(function(ref) {
-            return ref.indices[0];
+          .sortBy(function(link) {
+            return link.indices[0];
           })
-          .value()
-          text = formatTweet(e.text, references.reverse(), isRetweet);
-        } else {
-          text = e.text;
-        }
+          .value();
+          links = links.reverse()
+        } 
+        text = e.text;
 
         var item = {
           description : text, 
@@ -301,7 +266,8 @@ var searchIntegrations = {
           referenceUserPic : e.user.profile_image_url_https,
           referenceCreationDate : e.created_at.substring(0, 19),
           referenceRetweet : retweetUser,
-          imgUrl : imgUrl
+          referenceImg : imgUrl,
+          referenceLinks : links
         }
         return item;
       }

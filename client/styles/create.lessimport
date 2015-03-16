@@ -700,7 +700,11 @@ div.horizontal-context {
     div.search-result {    
       cursor: pointer;
       height: @searchResultHeight;   
-    }    
+      &.image {
+        height:250px;
+      }
+    }
+    
     
     @searchResultWidth: @aspectRatio * (@searchResultHeight - (2 * @innerElementPadding));
     div.thumbnail {
@@ -789,6 +793,9 @@ div.horizontal-context {
       .descr {
         margin-bottom: 6px;
       }   
+      .tweet-image {
+        max-height:150px; width:auto;
+      }
     }
 
     @focusedSearchResultHeight: @searchResultHeight* 2;
