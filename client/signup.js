@@ -18,12 +18,11 @@ var createUser = function(user, template) {
       } else {
         Router.go('/');
      }});
-    return;
   };
 
 Template.signup_form.created = function() {
   this.invalidPassword = new ReactiveVar(false);
-  this.signupError = new ReactiveVar('');
+  this.signupError = new ReactiveVar();
 }
 Template.signup_form.helpers({
   tempUsername: function() {
@@ -51,17 +50,17 @@ Template.signup_form.events({
   'submit #signup-form': function (e, template) {
     e.preventDefault();
 
-    inputs = $('#signup-form').serializeArray();
-    user_info = {};
+    var inputs = $('#signup-form').serializeArray();
+    var userInfo = {};
     _.each(inputs, function (input) {
       key = input['name'];
       value = input['value'];
-      user_info[key] = value;
+      userInfo[key] = value;
     });
 
     if (Meteor.user()) {
       // if twitter user
-      Meteor.call('updateUserInfo', user_info, function (err) {
+      Meteor.call('updateUserInfo', userInfo, function (err) {
         if (err) {
           template.signupError.set(err.error);
         } else {
@@ -69,9 +68,9 @@ Template.signup_form.events({
         }
       });
     } else { // if email user
-      checkPassword(user_info.password, user_info.password2);
+      checkPassword(userInfo.password, userInfo.password2);
       if (!template.invalidPassword.get()) {
-        createUser(user_info, template);
+        createUser(userInfo, template);
       }
     }
   }
