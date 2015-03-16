@@ -623,7 +623,14 @@ Schema.UserProfile = new SimpleSchema({
     defaultValue: []
   },
   displayUsername: { // allows for caps
-    type: String
+    type: String,
+    autoValue: function () { // TODO ensure this matches username except for capitalization
+      if (this.isSet && typeof this.value === "string") {
+        return this.value.trim();
+      } else {
+        this.unset()
+      }
+    }
   },
   twitterUser: {
     type: Boolean,
@@ -634,7 +641,7 @@ Schema.UserProfile = new SimpleSchema({
 Schema.User = new SimpleSchema({
   username: {
     type: String,
-    regEx: /^[a-z0-9A-Z_]{3,15}$/,
+    regEx: /^[a-z0-9_]{3,15}$/,
     optional: true,
     autoValue: function () {
       if (this.isSet && typeof this.value === "string") {
@@ -688,3 +695,7 @@ Schema.User = new SimpleSchema({
 });
 
 Meteor.users.attachSchema(Schema.User);
+
+SimpleSchema.messages({
+  "regEx username": "Username must be at least 3 letters long and may only contain letters, numbers, and underscores"
+});

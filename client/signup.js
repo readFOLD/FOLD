@@ -14,7 +14,7 @@ var createUser = function(user, template) {
     profile : { "name" : user.name }
     }, function(err) {
       if (err) {
-        template.signupError.set(err.error);
+        template.signupError.set(err.reason || err.error);
       } else {
         Router.go('/');
      }});
@@ -58,10 +58,10 @@ Template.signup_form.events({
       userInfo[key] = value;
     });
 
-    if (Meteor.user().tempUsername) { // if just finishing signup
+    if (Meteor.user()) { // if just finishing signup and already created a user via twitter
       Meteor.call('updateUserInfo', userInfo, function (err) {
         if (err) {
-          template.signupError.set(err.error);
+          template.signupError.set(err.reason || err.error);
         } else {
           Router.go('/');
         }
