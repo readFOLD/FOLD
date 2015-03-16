@@ -297,19 +297,14 @@ Template.vertical_section_block.helpers({
       return '<div class="title editable" placeholder="Title" contenteditable="true">' + this.title + '</div>';
     }
   },
+  // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
   contentDiv: function() {
-    var minHeight;
-    if (this.hasTitle){
-      minHeight = 232;
-    } else {
-      minHeight= 232 + 48;
-    }
     if (Session.get('read')) {
-      return '<div class="content" style="min-height: ' + minHeight + 'px;">' + this.content + '</div>';
+      return '<div class="content">' + this.content + '</div>';
     } else {
       // nonReactiveContent preserves browser undo functionality across saves
       // this is contenteditable in edit mode
-      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true" style="min-height: ' + minHeight + 'px;">' + Template.instance().semiReactiveContent.get() + '</div>';
+      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true">' + Template.instance().semiReactiveContent.get() + '</div>';
     }
   }
 });

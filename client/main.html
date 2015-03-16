@@ -88,7 +88,7 @@
 </template>
 
 <template name="vertical_section_block">
-  <div class="narrative-section vertical-narrative-section{{#if verticalSelected}} selected{{/if}} {{#if read}}read{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
+  <div class="narrative-section vertical-narrative-section {{#if verticalSelected}}selected{{/if}} {{#if read}}read{{/if}} {{#if hasTitle}}has-title{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
     <section>
       {{#unless read}}
         {{#if verticalSelected}}
@@ -116,10 +116,10 @@
 <template name="horizontal_context">
   {{#unless read}}
     {{#if verticalExists}}
-      {{ > add_horizontal}}
+      {{> add_horizontal}}
       {{#each horizontalSections}}
         {{#if horizontalShown}}
-          {{ > context_anchor_menu}}
+          {{> context_anchor_menu}}
         {{/if}}
       {{/each}}
       <div style="display: {{#if addingContext}}inherit{{else}}none{{/if}}">
