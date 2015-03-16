@@ -9,9 +9,6 @@
 
 <template name="signup_form">
     <form id="signup-form" action="action">
-      {{#if invalidUserSubmission}}
-        <div>{{invalidUserSubmission}}</div>
-      {{/if}}
       <label for="email"> What's your e-mail? </label>
       <input name="email" type="email" placeholder="email@fold.com" autofocus="autofocus">
       <label for="name"> What's your name? </label>
@@ -27,6 +24,11 @@
         <label for="password2"> Reenter your password </label>
         <input name="password2" type="password" placeholder="password">
         <!-- profile image here -->
+      {{/if}}
+      {{#if signupError}}
+        <div class="error">
+          {{signupError}}
+        </div>
       {{/if}}
       <button type="submit" class="signup-button">Sign up</button>
     </form>

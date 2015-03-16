@@ -14,7 +14,7 @@ var createUser = function(user, template) {
     profile : { "name" : user.name }
     }, function(err) {
       if (err) {
-        template.invalidUserSubmission.set(err.reason);
+        template.signupError.set(err.error);
       } else {
         Router.go('/');
      }});
@@ -23,7 +23,7 @@ var createUser = function(user, template) {
 
 Template.signup_form.created = function() {
   this.invalidPassword = new ReactiveVar(false);
-  this.invalidUserSubmission = new ReactiveVar('');
+  this.signupError = new ReactiveVar('');
 }
 Template.signup_form.helpers({
   tempUsername: function() {
@@ -41,38 +41,38 @@ Template.signup_form.helpers({
   invalidPassword: function() {
     return Template.instance().invalidPassword.get();
   },
-  invalidUserSubmission: function() {
-    return Template.instance().invalidUserSubmission.get();
+  signupError: function() {
+    return Template.instance().signupError.get();
   }
 
 });
 
 Template.signup_form.events({
-  'submit #signup-form' : function(e, template) {
+  'submit #signup-form': function (e, template) {
     e.preventDefault();
 
     inputs = $('#signup-form').serializeArray();
     user_info = {};
-    _.each(inputs, function(input) {
-        key = input['name'];
-        value = input['value'];
-        user_info[key]=value;
-      });
+    _.each(inputs, function (input) {
+      key = input['name'];
+      value = input['value'];
+      user_info[key] = value;
+    });
 
     if (Meteor.user()) {
-      Meteor.call('updateUserInfo', user_info, function(err) {
-      if (err) {
-        return alert(err); 
-      } else {
-        Router.go('/');
-      }});
-      return;
-    } 
-
-    checkPassword(user_info.password, user_info.password2);
-    if (!template.invalidPassword.get()) { 
-      createUser(user_info, template);
+      // if twitter user
+      Meteor.call('updateUserInfo', user_info, function (err) {
+        if (err) {
+          template.signupError.set(err.error);
+        } else {
+          Router.go('/');
+        }
+      });
+    } else { // if email user
+      checkPassword(user_info.password, user_info.password2);
+      if (!template.invalidPassword.get()) {
+        createUser(user_info, template);
+      }
     }
-    return;
-    }
-  })
+  }
+});
