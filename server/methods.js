@@ -76,9 +76,17 @@ Meteor.methods({
     check(query, String);
     this.unblock();
     page = page || 0;
-    requestParams = {
-      q: query
-    };
+
+    if (query.indexOf('imgur.com') !==-1 || query.indexOf('http://') === 0 || query.indexOf('https://') === 0 || query.indexOf('www.') === 0){
+      requestParams = {
+        q: _.chain(query.split('/')).compact().last().value().split('.')[0] // if it's a url just send the final path segment without any extension
+      };
+    } else {
+      requestParams = {
+        q: query
+      };
+    }
+
 
     var authorizationStr = "Client-ID " + IMGUR_CLIENT_ID;
     var url = 'https://api.imgur.com/3/gallery/search/top/' + page;
