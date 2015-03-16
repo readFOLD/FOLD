@@ -1,5 +1,14 @@
+checkSignupCode = function(code){
+  if (!code || code.toLowerCase().trim() !== 'begin'){
+    throw new Meteor.Error("FOLD is open only to select authors ahead of our launch in early April. If you'd like to write a story, please email us at fold@media.mit.edu and ask for the *secret code*");
+  }
+}
+
 Accounts.validateNewUser(function(user) {
-  checkUsername(user.username);
+  if (user.username){ // only if an email user. if twitter user will do this later
+    checkSignupCode(user.signupCode);
+    checkUsername(user.username);
+  }
   return true
 });
 
@@ -13,6 +22,10 @@ Accounts.onCreateUser(function(options, user) {
     user.profile = options.profile;
   } else {
     user.profile = {};
+  }
+
+  if (options.signupCode) {
+    user.signupCode = options.signupCode;
   }
 
   if (user.services.twitter) { // twitter signup

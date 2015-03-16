@@ -18,21 +18,25 @@ formatDateNice = function(date) {
 };
 
 loginWithTwitter = function() {
+  Session.set('signingInWithTwitter', true);
   Meteor.loginWithTwitter({
     requestPermissions: ['user']
   }, function (err) {
+
     if (err) {
-      alert("can't login with Twitter");
+      alert("Twitter login failed");
+      Session.set('signingInWithTwitter', false);
     } else if (!Meteor.user().username) {
-      Router.go('/signup');
+      Router.go('signup');
+      Session.set('signingInWithTwitter', false);
     } 
     return;
   });
 };
 
 loginWithEmail = function() {
-  Router.go('/login')
-}
+  Router.go('login')
+};
 
 Template.home.helpers({
   profileImage: function() {
