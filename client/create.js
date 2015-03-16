@@ -36,37 +36,42 @@ window.updateUIBasedOnSelection = function(e){
         var selectedTags = [];
         var tagName;
 
+        // only do if selection is inside a narrative block
+        if($(parentNode).parents('.vertical-narrative-section').length) {
+          while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') {
+            tagName = parentNode.tagName.toLowerCase();
+            selectedTags.push(tagName);
+            console.log(tagName)
 
-        while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') {
-          tagName = parentNode.tagName.toLowerCase();
-          selectedTags.push(tagName);
-
-          if (selectionType === 'Caret' && tagName === 'a'){
-            window.enclosingAnchorTag = parentNode;
-            break;
-          }
-          parentNode = parentNode.parentNode;
-        }
-
-        Session.set('selectedTags', selectedTags);
-
-        // TO-DO actually get this from selection
-        if (e) {
-          boundary = range.getBoundingClientRect();
-          boundaryMiddle = (boundary.left + boundary.right) / 2;
-          pageYOffset = $(e.target).offset().top;
-          if(selectionType === 'Range'){
-            showFoldEditor();
-            $('#fold-editor').css('left', e.pageX - 100);
-            return $('#fold-editor').css('top', e.pageY - 70);
-          } else if (window.enclosingAnchorTag) {
-            showFoldLinkRemover();
-            $('#fold-link-remover').css('left', e.pageX - 25);
-            return $('#fold-link-remover').css('top', e.pageY - 45);
-          } else {
-            return hideFoldAll();
+            if (selectionType === 'Caret' && tagName === 'a') {
+              window.enclosingAnchorTag = parentNode;
+              break;
+            }
+            parentNode = parentNode.parentNode;
           }
 
+          Session.set('selectedTags', selectedTags);
+
+          // TO-DO actually get this from selection
+          if (e) {
+            boundary = range.getBoundingClientRect();
+            boundaryMiddle = (boundary.left + boundary.right) / 2;
+            pageYOffset = $(e.target).offset().top;
+            if (selectionType === 'Range') {
+              showFoldEditor();
+              $('#fold-editor').css('left', e.pageX - 100);
+              return $('#fold-editor').css('top', e.pageY - 70);
+            } else if (window.enclosingAnchorTag) {
+              showFoldLinkRemover();
+              $('#fold-link-remover').css('left', e.pageX - 25);
+              return $('#fold-link-remover').css('top', e.pageY - 45);
+            } else {
+              return hideFoldAll();
+            }
+
+          }
+        } else {
+          return hideFoldAll();
         }
       } else {
         return hideFoldAll();
