@@ -227,6 +227,11 @@ Schema.Stories = new SimpleSchema({
     type: String,
     optional: true
   },
+  'verticalSections.$.hasTitle': {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  },
   'verticalSections.$.content': {
     type: String
   },
@@ -261,26 +266,26 @@ VideoBlock = (function(_super) {
 
   VideoBlock.prototype.url = function() {
     if (this.source === 'youtube') {
-      return '//www.youtube.com/embed/' + this.referenceId;
+      return '//www.youtube.com/embed/' + this.reference.id;
     } else if (this.source === 'vimeo') {
-      return '//player.vimeo.com/video/' + this.referenceId;
+      return '//player.vimeo.com/video/' + this.reference.id;
     }
   };
 
   VideoBlock.prototype.previewUrl = function() {
     if (this.source === 'youtube') {
-      return '//img.youtube.com/vi/' + this.referenceId + '/0.jpg';
+      return '//img.youtube.com/vi/' + this.reference.id + '/0.jpg';
     }
   };
 
   VideoBlock.prototype.thumbnailUrl = function() {
     if (this.source === 'youtube') {
-      return '//i.ytimg.com/vi/' + this.referenceId + '/default.jpg';
+      return '//i.ytimg.com/vi/' + this.reference.id + '/default.jpg';
     }
   };
 
   VideoBlock.prototype.anchorMenuSnippet = function() {
-    return this.title;
+    return this.reference.title;
   };
 
   return VideoBlock;
@@ -300,18 +305,18 @@ AudioBlock = (function(_super) {
 
   AudioBlock.prototype.url = function() {
     if (this.source === 'soundcloud') {
-      return '//w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/' + this.referenceId + '&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=true'
+      return '//w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/' + this.reference.id + '&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=true'
     }
   };
 
   AudioBlock.prototype.artworkUrl = function() {
     if (this.source === 'soundcloud') {
-      return this.soundcloudArtworkUrl;
+      return this.reference.artworkUrl;
     }
   };
 
   AudioBlock.prototype.anchorMenuSnippet = function() {
-    return this.title;
+    return this.reference.title;
   };
 
 
@@ -333,22 +338,22 @@ ImageBlock = (function(_super) {
   ImageBlock.prototype.url = function() {
     switch (this.source) {
       case 'local':
-        return '/' + this.referenceId;
+        return '/' + this.reference.id;
       case 'imgur':
-        return '//i.imgur.com/' + this.referenceId + '.' + this.fileExtension;
+        return '//i.imgur.com/' + this.reference.id + '.' + this.reference.fileExtension;
       case 'flickr':
-        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.flickrServer + '/' + this.referenceId + '_' + this.flickrImgSecret + '.jpg'
+        return '//farm' + this.reference.imgFarm + '.staticflickr.com/' + this.reference.server + '/' + this.reference.id + '_' + this.reference.imgSecret + '.jpg'
     }
   };
 
   ImageBlock.prototype.thumbnailUrl = function() {
     switch (this.source) {
       case 'local':
-        return '/' + this.referenceId;
+        return '/' + this.reference.id;
       case 'imgur':
-        return '//i.imgur.com/' + this.referenceId + 't' + '.' + this.fileExtension;
+        return '//i.imgur.com/' + this.reference.id + 't' + '.' + this.reference.fileExtension;
       case 'flickr':
-        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.flickrServer + '/' + this.referenceId + '_' + this.flickrImgSecret + '_t' + '.jpg'
+        return '//farm' + this.reference.imgFarm + '.staticflickr.com/' + this.reference.server + '/' + this.reference.id + '_' + this.reference.imgSecret + '_t' + '.jpg'
     }
   };
 
@@ -371,19 +376,19 @@ GifBlock = (function(_super) {
   GifBlock.prototype.url = function() {
     switch (this.source) {
       case 'giphy':
-        return 'http://media4.giphy.com/media/' + this.referenceId + '/giphy.gif'
+        return 'http://media4.giphy.com/media/' + this.reference.id + '/giphy.gif'
     }
   };
 
   GifBlock.prototype.thumbnailUrl = function() {
     switch (this.source) {
       case 'giphy':
-        return 'http://media4.giphy.com/media/' + this.referenceId + '/200_d.gif'
+        return 'http://media4.giphy.com/media/' + this.reference.id + '/200_d.gif'
     }
   };
 
   GifBlock.prototype.anchorMenuSnippet = function() {
-    return this.referenceId;
+    return this.reference.id;
   };
 
   return GifBlock;
@@ -555,6 +560,69 @@ this.ContextBlocks.allow({
   }
 });
 
+Schema.ContextReferenceProfile = new SimpleSchema({
+  id: {
+    type: String,
+    optional: true
+  },
+
+  creationDate: {
+    type: String,
+    optional: true
+  },
+
+  username: {
+    type: String,
+    optional: true
+  },
+
+  userId: {
+    type: String,
+    optional: true
+  },
+
+  source: {
+    type: String,
+    optional: true
+  },
+
+  artworkUrl: {
+    type: String,
+    optional: true
+  },
+
+  title: {
+    type: String,
+    optional: true,
+    defaultValue: ''
+  },
+
+  description: {
+    type: String,
+    optional: true,
+    defaultValue: ''
+  },
+  fileExtension: {
+    type: String,
+    optional: true
+  },
+
+  imgFarm: {
+    type: String,
+    optional: true
+  },
+  imgSecret: {
+    type: String,
+    optional: true
+  },
+  server: {
+  type: String,
+    optional: true
+  },
+
+
+})
+
 Schema.ContextBlocks = new SimpleSchema({
   authorId: {
     type: String
@@ -578,57 +646,10 @@ Schema.ContextBlocks = new SimpleSchema({
       }
     }
   },
-  referenceId: {
-    type: String,
-    optional: true
-  },
   fullDetails: {
     type: Object,
     optional: true,
     blackbox: true
-  },
-  flickrImgFarm: {
-    type: String,
-    optional: true
-  },
-  flickrImgSecret: {
-    type: String,
-    optional: true
-  },
-  flickrServer: {
-    type: String,
-    optional: true
-  },
-  soundcloudArtworkUrl: {
-    type: String,
-    optional: true
-  },
-  soundcloudWaveformUrl: {
-    type: String,
-    optional: true
-  },
-  title: {
-    type: String,
-    optional: true,
-    defaultValue: ''
-  },
-  hasTitle: {
-    type: Boolean,
-    optional: true,
-    defaultValue: false
-  },
-  description: {
-    type: String,
-    optional: true,
-    defaultValue: ''
-  },
-  referenceId: { // id used by source
-    type: String,
-    optional: true
-  },
-  fileExtension: {
-    type: String,
-    optional: true
   },
   oecYear: {
     type: String,
@@ -674,21 +695,8 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-
-  referenceCreationDate: {
-    type: String,
-    optional: true
-  },
-  referenceUsername: {
-    type: String,
-    optional: true
-  },
-  referenceUserId: {
-    type: String,
-    optional: true
-  },
-  referenceSource: {
-    type: String,
+  reference: {
+    type: Schema.ContextReferenceProfile,
     optional: true
   },
   searchQuery: {
@@ -792,7 +800,8 @@ Schema.User = new SimpleSchema({
   },
   profile: {
     type: Schema.UserProfile,
-    optional: true
+    optional: true,
+    defaultValue: {}
   },
   services: {
     type: Object,
