@@ -31,7 +31,10 @@ Handlebars.registerHelper("addingContext", function() {
 });
 
 Handlebars.registerHelper("editingThisContext", function() {
-  return Session.get("editingContext") === this._id;
+  var editingContext = Session.get("editingContext");
+  if (editingContext){
+    return editingContext === this._id;
+  }
 });
 
 Handlebars.registerHelper("UsersCollection", Meteor.users);
