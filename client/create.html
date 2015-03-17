@@ -322,7 +322,7 @@
       <ol class="search-results-container">
         {{#each results}}
           <li class="{{#if isFocused}}focused{{/if}}">
-            <div class="search-result {{#if reference.img}}image{{/if}}">
+            <div class="search-result {{#if imgUrl}}image{{/if}}">
                 <div class="thumbnail">
                   <a href="//twitter.com/{{reference.screenname}}" target="_blank">
                     <img class="small" src="{{reference.userPic}}">
@@ -336,17 +336,17 @@
                   </div>
                   <div class="tweet">{{{formattedTweet}}}
                   </div>
-                  {{#if reference.img}}
+                  {{#if imgUrl}}
                     <div>
-                      <img src="{{reference.img}}" class="tweet-image">
+                      <img src="{{imgUrl}}" class="tweet-image">
                     </div>
                   {{/if}}
                   <div class="descr">
                     <span>
                       <a href="//twitter.com"><i class="fa fa-twitter" target="_blank"></i></a>
-                      {{#if reference.retweet}}
-                        <a href="//twitter.com/{{reference.retweet}}" target="_blank">
-                        <i class="fa fa-retweet"></i> @{{reference.retweet}}</a>
+                      {{#if retweetUser}}
+                        <a href="//twitter.com/{{retweetUser}}" target="_blank">
+                        <i class="fa fa-retweet"></i> @{{retweetUser}}</a>
                       {{/if}}
                       <a href="//twitter.com/{{reference.screenname}}/status/{{reference.id}}" target="_blank">{{reference.creationDate}}</a>
                     </span>

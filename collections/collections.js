@@ -343,8 +343,6 @@ TwitterBlock = (function(_super) {
         screenname: this.reference.screenname,
         text: this.text,
         date: this.reference.creationDate,
-        retweet: this.reference.retweet,
-        imgUrl : this.reference.img,
         tweet_url: '//twitter.com/' + this.reference.screenname + '/status/' + this.reference.id,
         user_url: '//twitter.com/' + this.reference.screenname,
         retweet_url: '//twitter.com/' + this.reference.retweet,
@@ -356,10 +354,10 @@ TwitterBlock = (function(_super) {
     }
   };
 
-  TwitterBlock.prototype.img = function(){
+  TwitterBlock.prototype.imgUrl = function(){
     var imgUrl;
-    if (e.extended_entities) {
-      imgUrl = e.extended_entities.media[0].media_url_https;
+    if (this.extendedEntities) {
+      imgUrl = this.extendedEntities.media[0].media_url_https;
     }
     if (this.reference.retweetedStatus) {
       if (this.reference.retweetedStatus.entities.media) {imgUrl = this.reference.retweetedStatus.entities.media[0].media_url}
