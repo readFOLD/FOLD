@@ -12,19 +12,29 @@ div.about {
     margin-bottom: 30px;
   }
 
+  h2 {
+    margin-top: 30px;
+  }
+
   ul {
     margin-top: 30px;
   }
 
-  li {
-    font-size: 16px;
-    font-weight: bold;
+  li.term_defs {
     margin-top: 15px;
+  }
+
+  li.question {
+    font-size: 16px;
+    margin-top: 15px;
+    font-weight: bold;
+
   }
 
   div.section {
     margin-top: 45px;
     margin-bottom: 45px;
+    width: calc(100% ~"-" 50px);
   }
 
   hr {
@@ -80,6 +90,12 @@ div.about {
     width: auto;
     border-radius: 100px;
     margin-top: 20px;
+  }
+
+  div.legal {
+    p {
+      font-size: 12px;
+    }
   }
 
   div.footer {
