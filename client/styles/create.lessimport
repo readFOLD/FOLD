@@ -875,6 +875,11 @@ div.horizontal-context {
   }
 }
 
+.create-map-section{
+  iframe{
+    outline: 1px solid #e0e1e2;
+  }
+}
 
 div.text-section {
   line-height: 26px;
