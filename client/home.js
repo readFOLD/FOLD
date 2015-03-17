@@ -174,16 +174,22 @@ Template.login_buttons.events({
   }
 });
 
+var closeSignInOverlay = function(){
+  Session.set('signingIn', false);
+};
+
+// TODO close sign in overlay on esc (27) need to do on whole window though
+
 Template.signin_overlay.events({
   "click .close": function(d) {
-    Session.set('signingIn', false);
+    closeSignInOverlay();
   },
   "click .twitter-signin": function(d) {
-    Session.set('signingIn', false);
+    closeSignInOverlay();
     return loginWithTwitter();
   },
   "click .email-signin": function(d) {
-    Session.set('signingIn', false);
+    closeSignInOverlay();
     return loginWithEmail();
   }
 });
