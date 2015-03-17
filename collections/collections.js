@@ -889,10 +889,6 @@ Schema.ContextBlocks = new SimpleSchema({
       }
     }
   },
-  url: {
-    type: String,
-    optional: true
-  },
 
   reference: {
     type: Schema.ContextReferenceProfile,
