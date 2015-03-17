@@ -56,9 +56,11 @@ searchScrollFn = function(d, template) {
 
 throttledSearchScrollFn = _.throttle(searchScrollFn, 20);
 
+// TODO make method
 var addContext = function(contextBlock) {
-  var contextId = ContextBlocks.insert(contextBlock);
-  return window.addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
+  var storyId = Session.get("storyId");
+  var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {storyId: storyId}));
+  return window.addContextToStory(storyId, contextId, Session.get("currentY"));
 };
 
 var createBlockEvents = {

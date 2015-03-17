@@ -846,6 +846,9 @@ Schema.ContextBlocks = new SimpleSchema({
   authorId: {
     type: String
   },
+  storyId: {
+    type: String
+  },
   type: {
     type: String
   },
