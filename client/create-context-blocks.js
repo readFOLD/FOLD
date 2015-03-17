@@ -82,7 +82,10 @@ var createBlockEvents = {
   },
 
   "click .add-button": function(d, template) {
-    addContext(template.focusResult.get());
+    var focusResult = template.focusResult.get();
+    if (focusResult) {
+      addContext(focusResult);
+    }
   },
   "click .cancel": function() {
     Session.set('addingContext', false);
