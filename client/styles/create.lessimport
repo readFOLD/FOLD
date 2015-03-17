@@ -192,13 +192,13 @@ div.title-overlay {
   }
 
 
-  div.attrib {
+  div.attribution {
     position: absolute;
     top: 305px;
     right: 15px;
     background-color: @dark-color;
     padding: 5px 10px;
-    opacity: 1.0;
+    opacity: 0.0;
 
     &.shown {
       opacity: 1.0;
