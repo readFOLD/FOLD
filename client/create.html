@@ -192,8 +192,9 @@
   <div class="create-section">
     {{#autoForm collection='ContextBlocks' id="createTextSectionForm" doc=startingBlock type="insert" validation="keyup"}}
       {{> afQuickField name='content'}}
-      <button type="submit" class="btn btn-primary">ADD</button>
-      <button type="button" class="btn btn-primary cancel">Cancel</button>
+      <button type="submit" class="add-button">
+        Add
+      </button>
     {{/autoForm}}
   </div>
 </template>
