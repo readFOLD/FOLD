@@ -59,6 +59,7 @@ throttledSearchScrollFn = _.throttle(searchScrollFn, 20);
 // TODO make method
 var addContext = function(contextBlock) {
   var storyId = Session.get("storyId");
+  Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
   var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {storyId: storyId}));
   return window.addContextToStory(storyId, contextId, Session.get("currentY"));
 };
