@@ -97,18 +97,24 @@ div.about {
       font-size: 12px;
     }
   }
+}
 
-  div.footer {
-    height: 50px;
-    width: 100%;
-    margin-top: 45px;
-    display: inline-block;
-    text-align: center;
-    font-size: 12px;
-    padding: 15px;
-    background-color: white;
-    a {
+a.green {
+    &:hover {
       color: @action-color;
     }
+}
+
+div.footer {
+  height: 50px;
+  width: 100%;
+  margin-top: 45px;
+  display: inline-block;
+  text-align: center;
+  font-size: 12px;
+  padding: 15px;
+  background-color: white;
+  a {
+      color: @action-color;
   }
 }
