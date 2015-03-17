@@ -167,22 +167,23 @@
 
 <template name="_story_preview_content">
   <div class="content-count">
-    <!--{{ > twitter_icon }}-->
     {{#if contextCountOfType 'video'}}
       {{ > video_icon }}
       <!--{{contextCountOfType 'video'}}-->
     {{/if}}
+    <!--{{ > image_icon }}-->
+    <!--{{ > gif_icon }}-->
     {{#if contextCountOfType 'map'}}
       {{ > map_icon }}
       <!--{{contextCountOfType 'map'}}-->
     {{/if}}
-    <!--{{ > image_icon }}-->
+    <!--{{ > twitter_icon }}-->
+    <!--{{ > audio_icon }}-->
+
     {{#if contextCountOfType 'viz'}}
       {{ > viz_icon }}
       <!--{{contextCountOfType 'viz'}}-->
     {{/if}}
-    <!--{{ > gif_icon }}-->
-    <!--{{ > audio_icon }}-->
     {{#if contextCountOfType 'text'}}
       {{ > text_icon }}
       <!--{{contextCountOfType 'text'}}-->

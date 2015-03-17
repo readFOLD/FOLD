@@ -105,26 +105,26 @@
 <template name="create_horizontal_section_block">
   <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <div class="content-icons">
-      <button class='twitter-button {{#if twitter}}active{{/if}}'>
-        {{> twitter_icon }}
-      </button>
       <button class='video-button {{#if video}}active{{/if}}'>
         {{> video_icon }}
-      </button>
-      <button class='map-button {{#if map}}active{{/if}}'>
-        {{> map_icon }}
       </button>
       <button class='image-button {{#if image}}active{{/if}}'>
         {{> image_icon }}
       </button>
-      <button class='viz-button {{#if viz}}active{{/if}}'>
-        {{> viz_icon }}
-      </button>
       <button class='gif-button {{#if gif}}active{{/if}}'>
         {{> gif_icon }}
       </button>
+      <button class='map-button {{#if map}}active{{/if}}'>
+        {{> map_icon }}
+      </button>
+      <button class='twitter-button {{#if twitter}}active{{/if}}'>
+        {{> twitter_icon }}
+      </button>
       <button class='audio-button {{#if audio}}active{{/if}}'>
         {{> audio_icon }}
+      </button>
+      <button class='viz-button {{#if viz}}active{{/if}}'>
+        {{> viz_icon }}
       </button>
       <button class='text-button {{#if text}}active{{/if}}'>
         {{> text_icon }}

@@ -674,16 +674,16 @@ div.horizontal-context {
       display:block;
     }
   }  
-     
+
   .twitter .search-results-container {
-    height: calc(100% ~"-" @searchFormHeight ~"-" 95px);   
+    height: calc(100% ~"-" @searchFormHeight ~"-" 100px);
   }
 
   ol.search-results-container {   
     background-color: #ffffff;   
-    width: 100%;   
-    height: calc(100% ~"-" @searchFormHeight ~"-" 35px);   
-    overflow-y: scroll;    
+    width: 100%;
+    height: calc(100% ~"-" @searchFormHeight ~"-" 83px);
+    overflow-y: scroll;
     overflow-x: ellipsis;    
     margin-top: 15px;  
     list-style-type: none;  
@@ -854,7 +854,6 @@ div.horizontal-context {
       color: @light-color;
       height: 35px;
       width: 90px;
-      bottom: 15px;
       margin-top: 12px;
       text-align: center;
       font-size: 12px;
@@ -868,6 +867,10 @@ div.horizontal-context {
 
       &.enabled {
         cursor: pointer;
+      }
+
+      &:hover{
+        background-color: @dark-color;
       }
   }
 }
