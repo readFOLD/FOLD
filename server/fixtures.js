@@ -27,7 +27,7 @@ if (Stories.find().count() === 0) {
     shortId: 'asdsk20',
     headerImage: "dfb95b7f-0c7c-4a51-a444-b0240b12610d.png",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-    title: "Unfolding the 2014 Ebola Outbreak",
+    title: "Unfolding the 2014 Ebola Outbreak (Example Story)",
     savedAt: new Date(1406524368561),
     publishedAt: new Date(1406524369993),
     published: true,
@@ -309,7 +309,7 @@ if (Stories.find().count() === 0) {
       published: true,  // could remove
       userPathSegment: "author",  // could remove
       storyPathSegment: "unfolding-the-2014-ebola-outbreak-548781e397a6427c31384b73",  // could remove
-      title: "Unfolding the 2014 Ebola Outbreak",
+      title: "Unfolding the 2014 Ebola Outbreak (Example Story)",
       authorId: authorId,  // could remove
       authorName: authorProfile.name,  // could remove
       favorited: [],
