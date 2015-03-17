@@ -814,15 +814,6 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
 
-  twitterRetweetUser: {
-    type: String,
-    optional: true
-  },
-  referenceImg: {
-    type: String,
-    optional: true
-  },
-
   mapQuery: {
     type: String,
     optional: true
