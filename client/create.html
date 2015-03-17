@@ -322,33 +322,33 @@
       <ol class="search-results-container">
         {{#each results}}
           <li class="{{#if isFocused}}focused{{/if}}">
-            <div class="search-result {{#if referenceImg}}image{{/if}}">
+            <div class="search-result {{#if reference.img}}image{{/if}}">
                 <div class="thumbnail">
-                  <a href="//twitter.com/{{referenceScreenname}}" target="_blank">
-                    <img class="small" src="{{referenceUserPic}}"> 
+                  <a href="//twitter.com/{{reference.screenname}}" target="_blank">
+                    <img class="small" src="{{reference.userPic}}">
                   </a>
                 </div>
                 <div class="info twitter">
-                  <div class="content-title">{{referenceUsername}} 
+                  <div class="content-title">{{reference.username}}
                     <span>
-                    <a href="//twitter.com/{{referenceScreenname}}" target="_blank">@{{referenceScreenname}}</a>
+                    <a href="//twitter.com/{{reference.screenname}}" target="_blank">@{{reference.screenname}}</a>
                     </span>
                   </div>
                   <div class="tweet">{{{formattedTweet}}}
                   </div>
-                  {{#if referenceImg}}
+                  {{#if reference.img}}
                     <div>
-                      <img src="{{referenceImg}}" class="tweet-image">
+                      <img src="{{reference.img}}" class="tweet-image">
                     </div>
                   {{/if}}
                   <div class="descr">
                     <span>
                       <a href="//twitter.com"><i class="fa fa-twitter" target="_blank"></i></a>
-                      {{#if referenceRetweet}}
-                        <a href="//twitter.com/{{referenceRetweet}}" target="_blank">
-                        <i class="fa fa-retweet"></i> @{{referenceRetweet}}</a>
+                      {{#if reference.retweet}}
+                        <a href="//twitter.com/{{reference.retweet}}" target="_blank">
+                        <i class="fa fa-retweet"></i> @{{reference.retweet}}</a>
                       {{/if}}
-                      <a href="//twitter.com/{{referenceScreenname}}/status/{{referenceId}}" target="_blank">{{referenceCreationDate}}</a>
+                      <a href="//twitter.com/{{reference.screenname}}/status/{{reference.id}}" target="_blank">{{reference.creationDate}}</a>
                     </span>
                   </div>
                 </div>

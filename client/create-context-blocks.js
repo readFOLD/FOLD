@@ -231,48 +231,19 @@ var searchIntegrations = {
     twitter: {
       methodName: 'twitterSearchList',
       mapFn: function(e){
-        var imgUrl, retweetUser, hashtags, mentions, urls, text;
-
-        if (e.extended_entities) {
-          imgUrl = e.extended_entities.media[0].media_url_https;        
-        }
-        if (e.retweeted_status) {
-          isRetweet = true;
-          retweetUser = e.retweeted_status.user.screen_name;
-          hashtags = e.retweeted_status.entities.hashtags;
-          mentions = e.retweeted_status.entities.user_mentions;
-          urls = e.retweeted_status.entities.urls;
-          if (e.retweeted_status.entities.media) {imgUrl = e.retweeted_status.entities.media[0].media_url}
-        } else {
-          hashtags = e.entities.hashtags;
-          mentions = e.entities.user_mentions;
-          urls = e.entities.urls;
-          if (e.entities.media) {imgUrl = e.entities.media[0].media_url}
-        }
-
-        if (hashtags.length > 0 || mentions.length > 0 || urls.length >0) {
-          //construct tweet according to twitter requirements
-          var links = _.chain([hashtags, mentions, urls])
-          .reduce(function(a, b) { return a.concat(b)}, [])
-          .sortBy(function(link) {
-            return link.indices[0];
-          })
-          .value();
-          links = links.reverse()
-        } 
-        text = e.text;
-
         var item = {
-          description : text, 
-          referenceId : e.id_str,
-          referenceUsername : e.user.name,
-          referenceScreenname : e.user.screen_name,
-          referenceUserPic : e.user.profile_image_url_https,
-          referenceCreationDate : e.created_at.substring(0, 19),
-          referenceRetweet : retweetUser,
-          referenceImg : imgUrl,
-          referenceLinks : links
-        }
+          reference: {
+            text : e.text,
+            extendedEntities: e.extended_entities,
+            retweetedStatus: e.retweeted_status,
+            entities: e.entities,
+            id : e.id_str,
+            username : e.user.name,
+            screenname : e.user.screen_name,
+            userPic : e.user.profile_image_url_https,
+            creationDate : e.created_at.substring(0, 19)
+          }
+        };
         return item;
       }
     }
