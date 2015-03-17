@@ -306,6 +306,10 @@ Template.vertical_section_block.events({
 
     return document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
   },
+  'drop': function(e){
+    e.preventDefault();
+    return false;
+  },
   'paste .title.editable': window.plainTextPaste,   // only allow plaintext in title
   'mouseover .narrative-babyburger-and-menu': function(e, template){
     template.babyburgerOpen.set(true);
@@ -334,6 +338,10 @@ Template.vertical_section_block.helpers({
 
 Template.story_title.events({
   'paste [contenteditable]': window.plainTextPaste,
+  'drop': function(e){
+    e.preventDefault();
+    return false;
+  },
   'blur .story-title[contenteditable]': function(e,template) {
     storyId = Session.get('storyId');
     storyTitle = $.trim(template.$('div.story-title').text());
