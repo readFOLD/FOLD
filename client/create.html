@@ -136,17 +136,19 @@
         {{> remix_icon }}
       </button>
     </div>
-    {{#if type}}
-      {{#if link}}{{> unimplemented_link_section}}{{/if}}
-      {{#if remix}}{{> unimplemented_remix_section}}{{/if}}
-      {{#if text}}{{> create_text_section}}{{/if}}
-      {{#if audio}}{{> create_audio_section}}{{/if}}
-      {{#if image}}{{> create_image_section}}{{/if}}
-      {{#if gif}}{{> create_gif_section}}{{/if}}
-      {{#if map}}{{> create_map_section}}{{/if}}
-      {{#if video}}{{> create_video_section}}{{/if}}
-      {{#if twitter}}{{> create_twitter_section}}{{/if}}
-      {{#if viz}}{{> create_viz_section}}{{/if}}
+    {{#if addingContext}}
+      {{#if type}}
+        {{#if link}}{{> unimplemented_link_section}}{{/if}}
+        {{#if remix}}{{> unimplemented_remix_section}}{{/if}}
+        {{#if text}}{{> create_text_section}}{{/if}}
+        {{#if audio}}{{> create_audio_section}}{{/if}}
+        {{#if image}}{{> create_image_section}}{{/if}}
+        {{#if gif}}{{> create_gif_section}}{{/if}}
+        {{#if map}}{{> create_map_section}}{{/if}}
+        {{#if video}}{{> create_video_section}}{{/if}}
+        {{#if twitter}}{{> create_twitter_section}}{{/if}}
+        {{#if viz}}{{> create_viz_section}}{{/if}}
+      {{/if}}
     {{/if}}
   </div>
 </template>

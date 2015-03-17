@@ -405,6 +405,7 @@ Template.create_video_section.created = searchTemplateCreatedBoilerplate('video'
 Template.create_video_section.rendered = searchTemplateRenderedBoilerplate();
 
 Template.create_twitter_section.created = searchTemplateCreatedBoilerplate('twitter', 'twitter');
+Template.create_twitter_section.rendered = searchTemplateRenderedBoilerplate();
 
 // TODO autosearch when change between sources
 Template.create_image_section.created = searchTemplateCreatedBoilerplate('image', 'flickr');
