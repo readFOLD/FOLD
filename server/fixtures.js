@@ -25,7 +25,7 @@ if (Stories.find().count() === 0) {
   Stories.insert({
     _id: '548781e397a6427c31384b73',
     shortId: 'asdsk20',
-    headerImage: "dfb95b7f-0c7c-4a51-a444-b0240b12610d.png",
+    headerImage: "header-image.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     title: "Unfolding the 2014 Ebola Outbreak (Example Story)",
     savedAt: new Date(1406524368561),

@@ -777,8 +777,9 @@ Template.create_options.events({
     var files = $("input.file-upload")[0].files
     S3.upload({
       files: files,
-      path: "subfolder"
+      path: "header-images"
     }, function(e, r) {
+      console.log(r)
       var filename = r.file.name;
       Session.set('saveState', 'saving');
       return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);

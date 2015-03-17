@@ -422,8 +422,12 @@ div.horizontal-context {
   @contentIconBannerHeight: 80px;
 
   div.content-icons {
-    display:flex;
-    justify-content:space-between;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+
+    width: 100%;
     height: @contentIconBannerHeight;
     padding-left: 17px;
     padding-right: 17px;
@@ -441,7 +445,6 @@ div.horizontal-context {
       height: @circle-diameter;
       width: @circle-diameter;
       padding: 0;
-      margin-left: 2px;
       margin-top: 18px;
       svg {
         padding: 1.5px;
