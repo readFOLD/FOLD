@@ -25,7 +25,7 @@ Tracker.autorun(function(){
 
   Session.set("windowHeight", $(window).height());
 
-  Session.set("width", window.outerWidth);
+  Session.set("windowWidth", window.outerWidth);
 
   Session.set("cardWidth", getCardWidth(window.outerWidth));
 
@@ -170,7 +170,7 @@ Template.story_header.helpers({
     return this.headerImageAttribution;
   },
   headerImageURL: function() {
-    return 'https://fold.media.mit.edu.s3.amazonaws.com/subfolder/' + this.headerImage;
+    return 'https://' + Meteor.settings["public"].AWS_BUCKET +'.s3.amazonaws.com/subfolder/' + this.headerImage;
   },
   "files": function(){
     return S3.collection.find();
@@ -493,11 +493,15 @@ Template.favorite_button.events({
 
 Template.create_story.events({
   'click': function(){
-    Meteor.call('createStory', function(err, pathObject){
-      if (err) {
-        return alert(err);
-      }
-      Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
-    })
+    if (Meteor.user()){
+      Meteor.call('createStory', function(err, pathObject){
+        if (err) {
+          return alert(err);
+        }
+        Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
+      })
+    } else {
+     Session.set('signingIn', true)
+    }
   }
 });
