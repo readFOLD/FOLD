@@ -847,7 +847,8 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String
   },
   storyId: {
-    type: String
+    type: String,
+    optional: true // TODO migrate and make non-optional
   },
   type: {
     type: String
