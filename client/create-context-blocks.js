@@ -330,6 +330,24 @@ Template.create_video_section.events({
   }
 });
 
+Template.create_twitter_section.events({
+  "dblclick li": function (d, template) {
+    addContext(this);
+  }
+});
+
+Template.create_image_section.events({ // TODO only allow after preview and caption
+  "dblclick li": function (d, template) {
+    addContext(this);
+  }
+});
+
+Template.create_gif_section.events({ // TODO only allow after preview and caption
+  "dblclick li": function (d, template) {
+    addContext(this);
+  }
+});
+
 searchTemplateCreatedBoilerplate = function(type, defaultSource) {
   return function() {
     this.type = type;
