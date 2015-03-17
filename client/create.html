@@ -101,6 +101,7 @@
 </template>
 
 
+
 <template name="create_horizontal_section_block">
   <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <div class="content-icons">
@@ -136,7 +137,6 @@
       </button>
     </div>
     {{#if type}}
-      {{#if twitter}}{{> unimplemented_create_section}}{{/if}}
       {{#if link}}{{> unimplemented_create_section}}{{/if}}
       {{#if remix}}{{> unimplemented_create_section}}{{/if}}
       {{#if text}}{{> create_text_section}}{{/if}}
@@ -145,10 +145,12 @@
       {{#if gif}}{{> create_gif_section}}{{/if}}
       {{#if map}}{{> create_map_section}}{{/if}}
       {{#if video}}{{> create_video_section}}{{/if}}
+      {{#if twitter}}{{> create_twitter_section}}{{/if}}
       {{#if viz}}{{> create_viz_section}}{{/if}}
     {{/if}}
   </div>
 </template>
+
 
 <template name="search_form">
   <div class="search-form">
@@ -163,10 +165,14 @@
       {{#if option1}}
         <div class="search-radios">
           <input type="radio" name="option" value={{option1}} checked />
-          <label for={{option1}}>{{option1}}</label>
+          <label for={{option1}}>{{label1}}</label>
           {{#if option2}}
             <input type="radio" name="option" value={{option2}} />
-            <label for={{option2}}>{{option2}}</label>
+            <label for={{option2}}>{{label2}}</label>
+            {{#if option3}}
+              <input type="radio" name="option" value={{option3}} />
+              <label for={{option3}}>{{label3}}</label>
+            {{/if}}
           {{/if}}
         </div>
       {{/if}}
@@ -293,12 +299,75 @@
         {{/each}}
       </ul>
     </div>
-    {{> search_form option1='satellite' option2='roadmap'}}
+    {{> search_form option1='satellite' label1='Satellite' option2='roadmap' label2='Roadmap'}}
     <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
     <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
       Add
     </button>
   </div>
+</template>
+
+
+<template name="create_twitter_section">
+  {{#if twitterUser}}
+    <div class="create-section twitter">
+      <div class="tabs">
+        <ul>
+          {{#each dataSources}}
+            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{> search_form option1='all' label1='All tweets' option2='user' label2='User' option3= 'favorites' label3='Favorites'}}
+      <ol class="search-results-container">
+        {{#each results}}
+          <li class="{{#if isFocused}}focused{{/if}}">
+            <div class="search-result {{#if imgUrl}}image{{/if}}">
+                <div class="thumbnail">
+                  <a href="//twitter.com/{{reference.screenname}}" target="_blank">
+                    <img class="small" src="{{reference.userPic}}">
+                  </a>
+                </div>
+                <div class="info twitter">
+                  <div class="content-title">{{reference.username}}
+                    <span>
+                    <a href="//twitter.com/{{reference.screenname}}" target="_blank">@{{reference.screenname}}</a>
+                    </span>
+                  </div>
+                  <div class="tweet">{{{formattedTweet}}}
+                  </div>
+                  {{#if imgUrl}}
+                    <div>
+                      <img src="{{imgUrl}}" class="tweet-image">
+                    </div>
+                  {{/if}}
+                  <div class="descr">
+                    <span>
+                      <a href="//twitter.com"><i class="fa fa-twitter" target="_blank"></i></a>
+                      {{#if retweetUser}}
+                        <a href="//twitter.com/{{retweetUser}}" target="_blank">
+                        <i class="fa fa-retweet"></i> @{{retweetUser}}</a>
+                      {{/if}}
+                      <a href="//twitter.com/{{reference.screenname}}/status/{{reference.id}}" target="_blank">{{reference.creationDate}}</a>
+                    </span>
+                  </div>
+                </div>
+              </div> 
+          </li>
+        {{/each}}
+        <li class="loading-icon">
+          {{#if loading}}
+            {{> loading_icon}}
+          {{/if}}
+        </li>
+      </ol>
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    </div>
+  {{else}}
+    {{> unimplemented_create_section}}
+  {{/if}}
 </template>
 
 <template name="create_video_section">

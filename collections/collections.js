@@ -1,4 +1,4 @@
-var ContextBlock, MapBlock, Schema, Story, TextBlock, VideoBlock, ImageBlock, AudioBlock, VizBlock, checkOwner,
+var ContextBlock, MapBlock, Schema, Story, TextBlock, VideoBlock, ImageBlock, AudioBlock, VizBlock, TwitterBlock, checkOwner,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -324,6 +324,135 @@ AudioBlock = (function(_super) {
 
 })(ContextBlock);
 
+TwitterBlock = (function(_super) {
+  __extends(TwitterBlock, _super);
+
+  function TwitterBlock(doc) {
+    TwitterBlock.__super__.constructor.call(this, doc);
+    this.type = 'twitter';
+    if (this.source == null) {
+      this.source = 'twitter';
+    }
+  }
+
+  TwitterBlock.prototype.t = function() {
+    if (this.source === 'twitter') {
+      return {
+        userpic: this.reference.userPic,
+        username: this.reference.username,
+        screenname: this.reference.screenname,
+        text: this.text,
+        date: this.reference.creationDate,
+        tweet_url: '//twitter.com/' + this.reference.screenname + '/status/' + this.reference.id,
+        user_url: '//twitter.com/' + this.reference.screenname,
+        retweet_url: '//twitter.com/' + this.reference.retweet,
+        twitter_url: '//twitter.com/',
+        retweet_action: '//twitter.com/intent/retweet?tweet_id=' + this.reference.id,
+        reply_action: '//twitter.com/intent/tweet?in_reply_to=' + this.reference.id,
+        favorite_action: '//twitter.com/intent/favorite?tweet_id=' + this.reference.id
+     };
+    }
+  };
+
+  TwitterBlock.prototype.imgUrl = function(){
+    var imgUrl;
+    if (this.extendedEntities) {
+      imgUrl = this.extendedEntities.media[0].media_url_https;
+    }
+    if (this.reference.retweetedStatus) {
+      if (this.reference.retweetedStatus.entities.media) {imgUrl = this.reference.retweetedStatus.entities.media[0].media_url}
+    } else {
+      if (this.reference.entities.media) {imgUrl = this.reference.entities.media[0].media_url}
+    }
+    return imgUrl
+  };
+
+  TwitterBlock.prototype.isRetweet = function() {
+    if (this.reference.retweetedStatus) {
+      return true
+    } else {
+      return false
+    }
+  };
+
+  TwitterBlock.prototype.retweetUser = function(){
+    if (this.reference.retweetedStatus) {
+      return this.reference.retweetedStatus.user.screen_name;
+    }
+  }
+
+  TwitterBlock.prototype.links = function(){
+
+    if (this.reference.retweetedStatus) {
+      var retweetUser = this.reference.retweetedStatus.user.screen_name;
+      var hashtags = this.reference.retweetedStatus.entities.hashtags;
+      var mentions = this.reference.retweetedStatus.entities.user_mentions;
+      var urls = this.reference.retweetedStatus.entities.urls;
+    } else {
+      var hashtags = this.reference.entities.hashtags;
+      var mentions = this.reference.entities.user_mentions;
+      var urls = this.reference.entities.urls;
+    }
+
+    if (hashtags.length > 0 || mentions.length > 0 || urls.length >0) {
+      //construct tweet according to twitter requirements
+      var links = _.chain([hashtags, mentions, urls])
+        .reduce(function(a, b) { return a.concat(b)}, [])
+        .sortBy(function(link) {
+          return link.indices[0];
+        })
+        .value();
+      links = links.reverse()
+    }
+    return links
+  };
+
+  TwitterBlock.prototype.formattedTweet = function() { 
+    var pre, post;
+    var text = this.reference.text,
+      openStart = '<a href=',
+      openEnd= ' target="_blank">',
+      close = '</a>',
+      hashUrlStart = '"https://twitter.com/hashtag/',
+      hashUrlEnd = '?src=hash"',
+      mentionUrl = '"https://twitter.com/',
+      offset = 0,
+      i = [];
+      if (this.retweetUser()) {
+        offset = text.indexOf(":") + 2; //start string after "RT @handle: "
+      }
+
+    _.each(this.links(), function(link) {
+      i[0] = link.indices[0] + offset;
+      i[1] = link.indices[1] + offset;
+      pre = text.substring(0,i[0]);
+      post = text.substring(i[1], text.length);
+      
+      if (link.url) {
+        formattedStr = openStart + encodeURI(link.url) + openEnd + 
+                       link.display_url + close;
+      } else if (link.text) {
+        formattedStr = openStart + hashUrlStart + encodeURI(link.text) + hashUrlEnd + openEnd +
+                       "#" + link.text + close;
+      } else if (link.screen_name) {
+        formattedStr = openStart + mentionUrl + encodeURI(link.screen_name) + '"' + openEnd +
+                       "@" + link.screen_name + close;
+      }
+      text = pre + formattedStr +  post;
+    })
+
+    var imgIndex = text.indexOf("http://"); //twitter strips all other user-tweeted links of the 'http://'
+    if (this.reference.img && imgIndex!=-1) {
+      text = text.substring(0, imgIndex);
+    }
+
+    return text;
+  };
+
+  return TwitterBlock;
+
+})(ContextBlock);
+
 ImageBlock = (function(_super) {
   __extends(ImageBlock, _super);
 
@@ -524,6 +653,8 @@ var newTypeSpecificContextBlock =  function(doc) {
       return new AudioBlock(doc);
     case 'viz':
       return new VizBlock(doc);
+    case 'twitter':
+      return new TwitterBlock(doc);
     default:
       return new ContextBlock(doc);
   }
@@ -537,6 +668,7 @@ if (Meteor.isClient) {
   window.ImageBlock = ImageBlock;
   window.AudioBlock = AudioBlock;
   window.VizBlock = VizBlock;
+  window.TwitterBlock = TwitterBlock;
   window.newTypeSpecificContextBlock = newTypeSpecificContextBlock
 }
 
@@ -621,6 +753,51 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
 
+  // twitter
+  retweet: {
+    type: String,
+    optional: true
+  },
+  creationDate: {
+    type: String,
+    optional: true
+  },
+  username: {
+    type: String,
+    optional: true
+  },
+  screenname: {
+    type: String,
+    optional: true
+  },
+  userId: {
+    type: String,
+    optional: true
+  },
+  userPic: {
+    type: String,
+    optional: true
+  },
+  text: {
+    type: String,
+    optional: true
+  },
+  entities: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  extendedEntities: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  retweetedStatus: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+
   oecYear: {
     type: String,
     optional: true
@@ -630,6 +807,15 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
   oecDirection: {
+    type: String,
+    optional: true
+  },
+
+  twitterRetweetUser: {
+    type: String,
+    optional: true
+  },
+  referenceImg: {
     type: String,
     optional: true
   },
@@ -701,10 +887,12 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
+
   reference: {
     type: Schema.ContextReferenceProfile,
     optional: true
   },
+
   searchQuery: {
     type:String,
     optional:true

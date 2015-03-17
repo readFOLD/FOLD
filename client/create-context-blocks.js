@@ -82,7 +82,10 @@ var createBlockEvents = {
   },
 
   "click .add-button": function(d, template) {
-    addContext(template.focusResult.get());
+    var focusResult = template.focusResult.get();
+    if (focusResult) {
+      addContext(focusResult);
+    }
   },
   "click .cancel": function() {
     Session.set('addingContext', false);
@@ -190,6 +193,7 @@ var searchAPI = function(query) {
   });
 };
 
+
 var searchIntegrations = {
   video: {
     youtube: {
@@ -223,6 +227,27 @@ var searchIntegrations = {
             artworkUrl: e.artwork_url
           }
         }
+      }
+    }
+  },
+  twitter: {
+    twitter: {
+      methodName: 'twitterSearchList',
+      mapFn: function(e){
+        var item = {
+          reference: {
+            text : e.text,
+            extendedEntities: e.extended_entities,
+            retweetedStatus: e.retweeted_status,
+            entities: e.entities,
+            id : e.id_str,
+            username : e.user.name,
+            screenname : e.user.screen_name,
+            userPic : e.user.profile_image_url_https,
+            creationDate : e.created_at.substring(0, 19)
+          }
+        };
+        return item;
       }
     }
   },
@@ -278,6 +303,7 @@ var createTemplateNames = [
   'create_image_section',
   'create_gif_section',
   'create_video_section',
+  'create_twitter_section',
   'create_map_section',
   'create_text_section',
   'create_audio_section',
@@ -357,6 +383,7 @@ searchTemplateRenderedBoilerplate  = function() {
 Template.create_video_section.created = searchTemplateCreatedBoilerplate('video', 'youtube');
 Template.create_video_section.rendered = searchTemplateRenderedBoilerplate();
 
+Template.create_twitter_section.created = searchTemplateCreatedBoilerplate('twitter', 'twitter');
 
 // TODO autosearch when change between sources
 Template.create_image_section.created = searchTemplateCreatedBoilerplate('image', 'flickr');
@@ -372,9 +399,11 @@ var dataSourcesByType = {
   'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
   'gif': [{source: 'giphy', display: 'Giphy'}],
   'video': [{source: 'youtube', display: 'Youtube'}],
-  'map': [{source: 'google_maps', display: 'Google Maps'}],
-  'audio': [{source: 'soundcloud', display: 'SoundCloud'}]
+  'audio': [{source: 'soundcloud', display: 'SoundCloud'}],
+  'twitter': [{source: 'twitter', display: 'Twitter'}],
+  'map': [{source: 'google_maps', display: 'Google Maps'}]
 };
+
 
 _.each(dataSourcesByType, function(dataSources, type){
   var templateName = 'create_' + type + '_section';
@@ -495,6 +524,12 @@ Template.create_text_section.helpers({
     }
   }
 });
+
+Template.create_twitter_section.helpers({
+  twitterUser: function() {
+    return Meteor.user().profile.twitterUser;
+  }
+})
 
 Template.search_form.events({
   'keydown': function(){

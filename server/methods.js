@@ -2,6 +2,10 @@ var GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
 var SOUNDCLOUD_CLIENT_ID = Meteor.settings.SOUNDCLOUD_CLIENT_ID;
 var IMGUR_CLIENT_ID = Meteor.settings.IMGUR_CLIENT_ID;
 var FLICKR_API_KEY = Meteor.settings.FLICKR_API_KEY;
+var TWITTER_API_KEY = process.env.TWITTER_API_KEY || Meteor.settings.TWITTER_API_KEY;
+var TWITTER_API_SECRET = process.env.TWITTER_API_SECRET || Meteor.settings.TWITTER_API_SECRET;
+
+var Twit = Meteor.npmRequire('twit');
 
 
 if (!GOOGLE_API_SERVER_KEY) {
@@ -9,11 +13,12 @@ if (!GOOGLE_API_SERVER_KEY) {
   throw new Meteor.Error('Settings must be loaded for apis to work');
 }
 
+
 S3.config = {
   key: Meteor.settings.AWS_ACCESS_KEY,
   secret: Meteor.settings.AWS_SECRET_KEY,
   bucket: Meteor.settings["public"].AWS_BUCKET
-}
+};
 
 Meteor.methods({
   updateUserInfo: function(userInfo) {
@@ -108,7 +113,7 @@ Meteor.methods({
         return (e.type && e.type.indexOf('image') === 0)
       })
     }
-  },
+  }, 
   giphyGifSearchList: function(query, option, page) {
     var res;
     check(query, String);
@@ -162,6 +167,62 @@ Meteor.methods({
       'nextPage': offset + limit,
       'items': items
     }
+  },
+  twitterSearchList: function(query, option, page) {
+    var res;
+    var items;
+
+    check(query, String);
+    this.unblock();
+    count = 15;
+    var api = {
+      'all' : "search/tweets",
+      'user' : 'statuses/user_timeline',
+      'favorites' : 'favorites/list'
+    };
+    
+    var client = new Twit({
+      consumer_key: TWITTER_API_KEY,
+      consumer_secret: TWITTER_API_SECRET,
+      access_token: Meteor.user().services.twitter.accessToken,
+      access_token_secret: Meteor.user().services.twitter.accessTokenSecret,
+    });
+    var twitterResultsSync = Meteor.wrapAsync(client.get, client);
+
+    params = {count: count};
+    if (page) {params.max_id = page;}
+
+    if (option === 'all') {
+      params.q = query;
+      try {
+        res = twitterResultsSync(api[option], params);  
+        page = res.search_metadata.next_results.match(/\d+/)[0];
+        items = res.statuses;
+      } catch(error) {
+        items = [];
+        page = "end";
+      }
+    } else {
+      params.screen_name = query;
+      try {
+        items = twitterResultsSync(api[option], params);
+        var idString = items[items.length-1].id_str
+        var start = idString.substring(0, idString.length-9);
+        var end = idString.substring(idString.length-9);
+        var newEnd = parseInt(end) -1;
+        page = start + newEnd.toString();
+      } catch(error) {
+        items = [];
+        page = "end"
+      }
+    }
+
+    searchResults = {
+      nextPage: page,
+      items: items
+    };
+
+    return searchResults;
   },
   youtubeVideoSearchList: function(query, option, page) {
     var res;

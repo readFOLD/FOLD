@@ -659,7 +659,14 @@ div.horizontal-context {
     label {
       margin-right: 10px;
     }
+
+    
   }
+
+  .twitter .search-radios {
+      margin-bottom: 0px
+    }
+
 
   .search-outside-input-container.search-open {
     width: 100%;
@@ -668,7 +675,10 @@ div.horizontal-context {
     }
   }  
      
-      
+  .twitter .search-results-container {
+    height: calc(100% ~"-" @searchFormHeight ~"-" 95px);   
+  }
+
   ol.search-results-container {   
     background-color: #ffffff;   
     width: 100%;   
@@ -693,6 +703,10 @@ div.horizontal-context {
       &:hover {
         background: @light-color; 
       }
+      &.focused {
+        background: @medium-color; 
+      }
+
     }
 
     li.loading-icon{
@@ -721,7 +735,11 @@ div.horizontal-context {
     div.search-result {    
       cursor: pointer;
       height: @searchResultHeight;   
-    }    
+      &.image {
+        height:250px;
+      }
+    }
+    
     
     @searchResultWidth: @aspectRatio * (@searchResultHeight - (2 * @innerElementPadding));
     div.thumbnail {
@@ -732,6 +750,11 @@ div.horizontal-context {
 
         &.square {
           width: @searchResultHeight - (2 * @innerElementPadding);
+        }
+
+        &.small {
+          width: .8*@searchResultHeight - (2 * @innerElementPadding);
+          height: auto;
         }
 
         &.overlay {
@@ -772,6 +795,10 @@ div.horizontal-context {
       max-width: calc(100% ~"-" 10px ~"-" @thumbnailWidth);   
       max-height: @searchResultHeight - 10px;   
 
+      &.twitter {
+        top: -64px;
+        left: 78px;
+      }
       div.content-title {    
         font-weight: bold; 
         font-size: 12px;
@@ -784,6 +811,7 @@ div.horizontal-context {
       .date, .user {   
         font-size: 10px;    
         height: @textAreaHeight*0.32;   
+        z-index: 100;
       }    
      
       .date { 
@@ -791,14 +819,18 @@ div.horizontal-context {
         position: relative;
         top: -@textAreaHeight*0.32;   
       }    
-         
-      .descr {   
-        margin-bottom: 8px;
+      .descr, .tweet {   
         overflow: hidden; 
         font-size: 11px;   
         height: @textAreaHeight*0.4533333;  // 34px
         line-height: 16px;   
       }    
+      .descr {
+        margin-bottom: 6px;
+      }   
+      .tweet-image {
+        max-height:150px; width:auto;
+      }
     }
 
     @focusedSearchResultHeight: @searchResultHeight* 2;

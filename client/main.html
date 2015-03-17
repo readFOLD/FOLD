@@ -189,6 +189,13 @@
                 {{> display_video_section}}
             {{/if}}
         {{/if}}
+        {{#if twitter}}
+            {{#if editingThisContext}}
+                {{> create_twitter_section}}
+            {{else}}
+                {{> display_twitter_section}}
+            {{/if}}
+        {{/if}}
         {{#if viz}}
             {{#if editingThisContext}}
                 {{> create_viz_section}}
@@ -306,6 +313,67 @@
       {{> horizontal_section_edit_delete}}
     {{/unless}}
 </template>
+
+<template name="display_twitter_section">
+  <div class="twitter-section">
+      <div class="active-display">
+      {{!-- <div class="active-display {{#unless selected}}hide{{/unless}}"> --}}
+      {{#if imgUrl}}
+        <div class='image-section'>
+          <img src='{{imgUrl}}'>
+        </div>
+      {{/if}}
+        <div class="twitter-text-section {{#if imgUrl}}image{{/if}}">
+          <div class='tweet-card'>
+            <div class='title'>
+              <div class='prof_pic'>
+                <a href="{{t.user_url}}" target="_blank">
+                  <img src="{{t.userpic}}"> 
+                </a>
+              </div>
+              <div class='username'>
+                <div>{{t.username}} 
+                </div>
+                <div class="screenname"><a href="{{t.user_url}}" target="_blank">@{{t.screenname}}</a>
+                </div>
+              </div>
+            </div>
+            <div class="tweet">{{{formattedTweet}}}
+            </div>
+            <div class="info">
+              <span>
+                <a href='{{t.twitter_url}}'><i class="fa fa-twitter" target="_blank"></i>
+                </a>
+                {{#if t.retweet}}
+                  <a href="{{t.retweet_url}}" target="_blank">
+                  <i class="fa fa-retweet"></i>@{{t.retweet}}</a>
+                {{/if}}
+                <a href="{{t.tweet_url}}" target="_blank">{{t.date}}</a>
+              </span>
+            </div>
+            <div class="actions">
+              <span>
+                <a href='{{t.reply_action}}'>
+                  <i class="fa fa-reply"></i>
+                </a>
+                <a href='{{t.retweet_action}}'>
+                  <i class="fa fa-retweet"></i>
+                </a>
+                <a href='{{t.favorite_action}}'>
+                  <i class="fa fa-star"></i>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      {{!-- </div> --}}
+      </div>
+  </div>
+  {{#unless read}}
+      {{> horizontal_section_edit_delete}}
+    {{/unless}}
+</template>
+
 
 <template name="story_browser">
   <div class="story-browser">
