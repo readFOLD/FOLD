@@ -196,12 +196,14 @@ var searchIntegrations = {
       methodName: 'youtubeVideoSearchList',
       mapFn: function(e){
         return {
-          title: e.title,
-          description: e.description,
-          referenceId: e.videoId,
-          referenceUsername : e.channelTitle,
-          referenceUserId : e.channelId,
-          referenceCreationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+          reference: {
+            title: e.title,
+            description: e.description,
+            id: e.videoId,
+            username : e.channelTitle,
+            userId : e.channelId,
+            creationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+          }
         }
       }
     }
@@ -211,13 +213,15 @@ var searchIntegrations = {
       methodName: 'soundcloudAudioSearchList',
       mapFn: function(e){
         return {
-          title: e.title,
-          description: e.description,
-          referenceId: e.id,
-          referenceUsername : e.channelTitle,
-          referenceUsernameId : e.user_id,
-          referenceCreationDate : e.created_at.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
-          soundcloudArtworkUrl: e.artwork_url
+          reference: {
+            title: e.title,
+            description: e.description,
+            id: e.id,
+            username : e.channelTitle,
+            usernameId : e.user_id,
+            creationDate : e.created_at.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
+            artworkUrl: e.artwork_url
+          }
         }
       }
     }
@@ -227,12 +231,13 @@ var searchIntegrations = {
       methodName: 'imgurImageSearchList',
       mapFn: function(e) {
         return {
-          referenceId : e.id,
-          referenceUsername : e.account_url,
-          referenceUserId : e.account_id,
-          fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
-          section : e.section,
-          title : e.title
+          reference: {
+            id : e.id,
+            username : e.account_url,
+            userId : e.account_id,
+            fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
+            title : e.title
+          }
         }
       }
     },
@@ -240,11 +245,13 @@ var searchIntegrations = {
       methodName: 'flickrImageSearchList',
       mapFn: function(e) {
         return {
-          flickrImgFarm: e.farm,
-          flickrImgSecret: e.secret,
-          referenceId: e.id,
-          flickrServer: e.server,
-          title: e.title
+          reference: {
+            flickrFarm: e.farm,
+            flickrSecret: e.secret,
+            id: e.id,
+            flickrServer: e.server,
+            title: e.title
+          }
         }
       }
     }
@@ -254,9 +261,11 @@ var searchIntegrations = {
       methodName: 'giphyGifSearchList',
       mapFn: function(e){
         return {
-          referenceId: e.id,
-          referenceUsername: e.username,
-          referenceSource: e.source
+          reference: {
+            id: e.id,
+            username: e.username,
+            source: e.source
+          }
         }
       }
     }
@@ -398,9 +407,11 @@ Template.create_viz_section.created = function() {
     var oecDirection = that.selectedDirection.get();
 
     that.focusResult.set(new VizBlock({
-      oecCountry: oecCountryCode,
-      oecYear: oecYear,
-      oecDirection: oecDirection,
+      reference: {
+        oecCountry: oecCountryCode,
+        oecYear: oecYear,
+        oecDirection: oecDirection
+      },
       authorId : Meteor.user()._id,
       type: that.type,
       source: that.source.get()
@@ -453,8 +464,10 @@ Template.create_map_section.created = function() {
     input = getSearchInput.call(this);
 
     that.focusResult.set(new MapBlock({
-      mapQuery: input.query,
-      mapType: input.option,
+      reference: {
+        mapQuery: input.query,
+        mapType: input.option
+      },
       authorId : Meteor.user()._id
     }))
   };

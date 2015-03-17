@@ -41,7 +41,6 @@ window.updateUIBasedOnSelection = function(e){
           while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') {
             tagName = parentNode.tagName.toLowerCase();
             selectedTags.push(tagName);
-            console.log(tagName)
 
             if (selectionType === 'Caret' && tagName === 'a') {
               window.enclosingAnchorTag = parentNode;
