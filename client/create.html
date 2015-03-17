@@ -190,8 +190,15 @@
 
 <template name="create_text_section">
   <div class="create-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
     {{#autoForm collection='ContextBlocks' id="createTextSectionForm" doc=startingBlock type="insert" validation="keyup"}}
-      {{> afQuickField name='content'}}
+      {{> afQuickField name='content' label=''}}
       <button type="submit" class="add-button">
         Add
       </button>

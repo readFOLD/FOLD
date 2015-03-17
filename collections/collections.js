@@ -876,7 +876,7 @@ Schema.ContextBlocks = new SimpleSchema({
   },
   content: {
     type: String,
-    label: "Text",
+    label: " ",
     optional: true,
     autoform: {
       afFieldInput: {

@@ -401,7 +401,8 @@ var dataSourcesByType = {
   'video': [{source: 'youtube', display: 'Youtube'}],
   'audio': [{source: 'soundcloud', display: 'SoundCloud'}],
   'twitter': [{source: 'twitter', display: 'Twitter'}],
-  'map': [{source: 'google_maps', display: 'Google Maps'}]
+  'map': [{source: 'google_maps', display: 'Google Maps'}],
+  'text': [{source: 'free_text', display: 'Free Text'}]
 };
 
 
@@ -516,6 +517,11 @@ Template.create_map_section.helpers({
     }
   }
 });
+
+Template.create_text_section.created = function() {
+  this.type = 'text';
+  this.source = new ReactiveVar('free_text');
+};
 
 Template.create_text_section.helpers({
   startingBlock: function() {
