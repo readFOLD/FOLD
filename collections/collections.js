@@ -555,7 +555,7 @@ VizBlock = (function(_super) {
   };
 
 
-  VizBlock.prototype.description = function() {
+  VizBlock.prototype.longSnippet = function() {
     switch (this.source) {
       case 'oec':
         return this.oecCountryName() + " " + this.reference.oecDirection + "s in " + this.reference.oecYear;
@@ -585,7 +585,7 @@ MapBlock = (function(_super) {
     }
   }
 
-  MapBlock.prototype.description = function() {
+  MapBlock.prototype.longSnippet = function() {
     return this.reference.mapQuery;
   };
 
@@ -621,7 +621,7 @@ TextBlock = (function(_super) {
     this.type = 'text';
   }
 
-  TextBlock.prototype.description = function() {
+  TextBlock.prototype.longSnippet = function() {
     var maxLength;
     maxLength = 40;
     if (this.content.length <= maxLength) {
