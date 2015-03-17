@@ -160,7 +160,7 @@ Meteor.methods({
 
     check(query, String);
     this.unblock();
-    count = 3;
+    count = 15;
     var api = {
       'all' : "search/tweets",
       'user' : 'statuses/user_timeline',

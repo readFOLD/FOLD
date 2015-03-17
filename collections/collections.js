@@ -374,17 +374,23 @@ TwitterBlock = (function(_super) {
       post = text.substring(i[1], text.length);
       
       if (link.url) {
-        formattedStr = openStart + link.url + openEnd + 
+        formattedStr = openStart + encodeURI(link.url) + openEnd + 
                        link.display_url + close;
       } else if (link.text) {
-        formattedStr = openStart + hashUrlStart + link.text + hashUrlEnd + openEnd +
+        formattedStr = openStart + hashUrlStart + encodeURI(link.text) + hashUrlEnd + openEnd +
                        "#" + link.text + close;
       } else if (link.screen_name) {
-        formattedStr = openStart + mentionUrl + link.screen_name + '"' + openEnd +
+        formattedStr = openStart + mentionUrl + encodeURI(link.screen_name) + '"' + openEnd +
                        "@" + link.screen_name + close;
       }
       text = pre + formattedStr +  post;
     })
+
+    var imgIndex = text.indexOf("http://"); //twitter strips all other user-tweeted links of the 'http://'
+    if (imgIndex!=-1) {
+      text = text.substring(0, imgIndex);
+    }
+
     return text;
   };
 

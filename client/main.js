@@ -504,6 +504,12 @@ Template.favorite_button.events({
   }
 });
 
+Template.display_twitter_section.events({
+  "click .show-image" : function() {
+    $('.twitter-text-section').toggleClass('transparent');
+  }
+})
+
 Template.create_story.events({
   'click': function(){
     Meteor.call('createStory', function(err, pathObject){

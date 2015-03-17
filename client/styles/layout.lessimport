@@ -3,6 +3,7 @@
 @dark-color: #323232;
 @medium-color: #CCCCCB;
 @light-color: #F4F4F4;
+@light-transparent-color: rgba(244,244,244,0.6);
 @white-color: white;
 
 @background-color: #F8F8F8;
@@ -527,15 +528,12 @@ div.twitter-section{
     padding: 32px 30px 25px 32px;
     .size-to-fit;
     display: table;
+
     &.image{
-      background-color: rgba(244,244,244,0.6);
+      background-color: @light-transparent-color;
       position: relative;
       top: -100%;
-      &:hover {
-            opacity: 0;
-            .opacity-transition;
       }
-    }
 
     div.tweet-card {
       display: table-cell;
