@@ -539,21 +539,34 @@ Template.search_form.events({
 
 Template.search_form.helpers({
   placeholder: function() {
-    return 'e.g. ' +
-      _.sample([
-        'radar',
-        'competitive fly fishing',
-        'net neutrality',
-        'synthetic biology',
-        'beekeeping',
-        'quantum mechanics',
-        'bitcoin mining',
-        'glass blowing',
-        'falconry',
-        'origami',
-        'table tennis',
-        'llama training',
-        ]);
+    switch(Template.instance().data.placeholderType){
+      case 'locations':
+        return 'e.g. ' +
+          _.sample([
+            'waffle tower',
+            'Aoshima Island',
+          ]);
+        break;
+      default:
+        return 'e.g. ' +
+          _.sample([
+            'radar',
+            'competitive fly fishing',
+            'net neutrality',
+            'synthetic biology',
+            'beekeeping',
+            'quantum mechanics',
+            'bitcoin mining',
+            'glass blowing',
+            'falconry',
+            'origami',
+            'table tennis',
+            'llama training',
+          ]);
+    }
+
+
+
   }
 });
 
