@@ -351,7 +351,7 @@ Template.horizontal_context.helpers({
           .map(function(id) {
             return ContextBlocks.findOne({ // by finding one at a time, this keeps in broken links. TO-DO maybe should find a better soln that uses $in
               _id: id
-            });
+            }) || {_id: id}; // fallback to just having id if cannot find
           })
           .tap(function(e){console.log(e)})
           .map(function (datum, horizontalIndex) {
