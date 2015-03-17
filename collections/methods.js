@@ -61,8 +61,6 @@ var updateStory = function(selector, modifier, options) {
   return Stories.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
 };
 
-
-
 Meteor.methods({
   // TODO PREVENT FROM SAVING OTHER WAYS
   updateStoryTitle: function(storyId, title){
@@ -88,6 +86,11 @@ Meteor.methods({
   //}
 
     return updateStory(selector, modifier, options);
+  },
+  updateHeaderImage: function(storyId, filename) {
+    return updateStory({_id: storyId, authorId: this.userId}, {
+      $set: {'draftStory.headerImage': filename}
+    })
   },
   addTitle: function(storyId, index) {
     return changeHasTitle.call(this, storyId, index, true);

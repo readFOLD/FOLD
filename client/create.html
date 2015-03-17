@@ -39,14 +39,12 @@
   </div>
 </template>
 
-
-<template name="background_image">
-  <input class="background-image-input" value="{{backgroundImage}}">
-  <div class="save-background-image">Save</div>
-</template>
-
-
 <template name="create_options">
+  {{#unless pastHeader}}
+  <div class="upload-header-image">
+    <input type="file" class="file-upload">
+  </div>
+  {{/unless}}
   <div class="floating-story-buttons">
     {{#unless addingContext}}
       <div class="saved-text">
@@ -56,6 +54,7 @@
           Saved
         {{/if}}
       </div>
+
       <button type="button" class="toggle-preview">
         {{#if read}}
           Edit

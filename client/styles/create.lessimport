@@ -3,6 +3,41 @@
   cursor: text;
 }
 
+div.upload-header-image {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 100;
+
+  input.file-upload {
+    height: 40px;
+    width: 165px;
+
+    &::-webkit-file-upload-button {
+      visibility: hidden;
+    }
+    &::before {
+      content: 'Change Header Image';
+      display: inline-block;
+      background: @dark-color;
+      color: @light-color;
+      outline: none;
+      white-space: nowrap;
+      -webkit-user-select: none;
+      cursor: pointer;
+      padding: 5px;
+      text-align: center;
+      font-size: 14px;
+      width: 100%;
+      line-height: 30px;
+
+    }
+    &:hover::before {
+      background-color: @action-color;
+      color: @dark-color;
+    }
+  }
+}
 
 
 div.floating-story-buttons {
@@ -157,13 +192,13 @@ div.title-overlay {
   }
 
 
-  div.attribution {
+  div.attrib {
     position: absolute;
     top: 305px;
     right: 15px;
     background-color: @dark-color;
     padding: 5px 10px;
-    opacity: 0.0;
+    opacity: 1.0;
 
     &.shown {
       opacity: 1.0;
