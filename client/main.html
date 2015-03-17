@@ -4,7 +4,7 @@
 
 <template name="story_header">
   {{setTitle title}}
-  <div class="title-overlay {{#unless read}}write{{/unless}}" style='{{#if backgroundImage}}background-image: url("/{{backgroundImage}}"){{/if}}'>
+  <div class="title-overlay {{#unless read}}write{{/unless}}" style='{{#if headerImage}}background-image: url("{{headerImageURL}}"){{/if}}'>
     <div id="banner-overlay">
     </div>
     <div class="title-author">
@@ -18,14 +18,6 @@
         <img src="/FOLD_LOGO.svg">
       {{/linkTo}}
     </div>
-
-    <!--<div class="upload {{#unless pastHeader}}shown{{/unless}}">-->
-      <!--{{#if uploading}}-->
-        <!--Upload / change photo-->
-        <!--{{else}}-->
-        <!--URL-->
-      <!--{{/if}}-->
-    <!--</div>-->
 
     <div class="attribution {{#unless pastHeader}}shown{{/unless}}">
       Header Image Source: {{headerImageAttribution}}

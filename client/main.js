@@ -156,11 +156,6 @@ Template.story_header.rendered = function() {
   }
 };
 
-Template.story_header.created = function() {
-  this.imageUploadURL = 'test'
-  this.uploading = new ReactiveVar(false);
-}
-
 Template.story_header.helpers({
   title: function() {
     if (this.title) {
@@ -169,21 +164,14 @@ Template.story_header.helpers({
       return Session.get("storyTitle");
     }
   },
-  headerImageURL: function() {
-    return Template.instance().imageUploadURL.get();
-  },
   headerImageAttribution: function() {
     return this.headerImageAttribution;
   },
-  backgroundImage: function() {
-    if (this.backgroundImage) {
-      return this.backgroundImage;
-    } else {
-      return Session.get("backgroundImage");
-    }
+  headerImageURL: function() {
+    return 'https://fold.media.mit.edu.s3.amazonaws.com/subfolder/' + this.headerImage;
   },
-  uploading: function() {
-    return Template.instance().uploading.get();
+  "files": function(){
+    return S3.collection.find();
   }
 });
 
@@ -245,9 +233,6 @@ Template.story_header.events = {
     path = window.location.pathname.split("/");
     path.pop();
     return path.pop();
-  },
-  "click .upload": function(e, t) {
-    t.uploading.set(!t.uploading.get())
   }
 };
 

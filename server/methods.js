@@ -9,6 +9,12 @@ if (!GOOGLE_API_SERVER_KEY) {
   throw new Meteor.Error('Settings must be loaded for apis to work');
 }
 
+S3.config = {
+  key: Meteor.settings.AWS_ACCESS_KEY,
+  secret: Meteor.settings.AWS_SECRET_KEY,
+  bucket: Meteor.settings.AWS_BUCKET
+}
+
 Meteor.methods({
   updateUserInfo: function(userInfo) {
     if (Meteor.user().tempUsername) {

@@ -339,22 +339,6 @@ Template.story_title.events({
   }
 });
 
-Template.background_image.helpers({
-  backgroundImage: function() {
-    if (this.backgroundImage) {
-      return this.backgroundImage;
-    } else {
-      return Session.get("backgroundImage");
-    }
-  }
-});
-
-Template.background_image.events({
-  "click div.save-background-image": function() {
-    return Session.set("backgroundImage", $('input.background-image-input').val());
-  }
-});
-
 Template.create.helpers({
   narrativeView: function() {
     return Session.get("narrativeView");
@@ -783,5 +767,17 @@ Template.create_options.events({
     } else {
       Session.set('read', true);
     }
-  }
+  },
+  "change input.file-upload": function(){
+    var storyId = Session.get('storyId');
+    var files = $("input.file-upload")[0].files
+    S3.upload({
+      files: files,
+      path: "subfolder"
+    }, function(e, r) {
+      var filename = r.file.name;
+      Session.set('saveState', 'saving');
+      return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);
+    });
+  },
 });

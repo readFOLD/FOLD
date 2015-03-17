@@ -25,7 +25,7 @@ if (Stories.find().count() === 0) {
   Stories.insert({
     _id: '548781e397a6427c31384b73',
     shortId: 'asdsk20',
-    backgroundImage: "header-image.jpg",
+    headerImage: "dfb95b7f-0c7c-4a51-a444-b0240b12610d.png",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     title: "Unfolding the 2014 Ebola Outbreak",
     savedAt: new Date(1406524368561),
@@ -262,7 +262,7 @@ if (Stories.find().count() === 0) {
     ],
     draftStory: {
       _id: '548781e397a6427c31384b73', // could remove
-      backgroundImage: "header-image.jpg",
+      headerImage: "header-image.jpg",
       headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
       savedAt: new Date(1406524368561),  // could remove
       publishedAt: new Date(1406524369993),  // could remove
@@ -322,7 +322,7 @@ if (Stories.find().count() === 0) {
     }
   });
   Stories.insert({
-    backgroundImage: "art.jpg",
+    headerImage: "art.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     savedAt: new Date(),
     publishedAt: new Date(),
@@ -345,7 +345,7 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
-      backgroundImage: "art.jpg",
+      headerImage: "art.jpg",
       headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
       savedAt: new Date(),
       publishedAt: new Date(),
@@ -368,7 +368,7 @@ if (Stories.find().count() === 0) {
     }
   });
   Stories.insert({
-    backgroundImage: "banksy.jpg",
+    headerImage: "banksy.jpg",
     _id: '548781e397a6427c31384b79',
     shortId: 'djksad20',
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
@@ -392,7 +392,7 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
-      backgroundImage: "banksy.jpg",
+      headerImage: "banksy.jpg",
       _id: '548781e397a6427c31384b79',
       shortId: 'djksad20',
       headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
@@ -416,7 +416,7 @@ if (Stories.find().count() === 0) {
     }
   });
   Stories.insert({
-    backgroundImage: "canoe.jpg",
+    headerImage: "canoe.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     savedAt: new Date(),
     publishedAt: new Date(),
@@ -439,7 +439,7 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
-      backgroundImage: "canoe.jpg",
+      headerImage: "canoe.jpg",
       headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
       savedAt: new Date(),
       publishedAt: new Date(),
@@ -462,7 +462,7 @@ if (Stories.find().count() === 0) {
     }
   });
   Stories.insert({
-    backgroundImage: "dothething.png",
+    headerImage: "dothething.png",
     _id: '23bb79',
     shortId: 'djdcak20',
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
@@ -486,7 +486,7 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
-      backgroundImage: "dothething.png",
+      headerImage: "dothething.png",
       _id: '23bb79',
       shortId: 'djdcak20',
       headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
@@ -511,7 +511,7 @@ if (Stories.find().count() === 0) {
   });
 
   Stories.insert({
-    backgroundImage: "stones.jpg",
+    headerImage: "stones.jpg",
     _id: '23bbv',
     shortId: 'djkdcsq20',
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
@@ -535,7 +535,7 @@ if (Stories.find().count() === 0) {
       }
     ],
     draftStory:{
-      backgroundImage: "stones.jpg",
+      headerImage: "stones.jpg",
       _id: '23bbv',
       shortId: 'djkdcsq20',
       headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
