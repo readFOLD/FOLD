@@ -846,6 +846,10 @@ Schema.ContextBlocks = new SimpleSchema({
   authorId: {
     type: String
   },
+  storyId: {
+    type: String,
+    optional: true // TODO migrate and make non-optional
+  },
   type: {
     type: String
   },
@@ -885,10 +889,6 @@ Schema.ContextBlocks = new SimpleSchema({
         "class": "text-input"
       }
     }
-  },
-  url: {
-    type: String,
-    optional: true
   },
 
   reference: {
