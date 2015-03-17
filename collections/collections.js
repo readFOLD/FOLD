@@ -649,9 +649,9 @@ Schema.ContextReferenceProfile = new SimpleSchema({
         options: 'allowed'
       }
     }
-  },
+  }
 
-})
+});
 
 Schema.ContextBlocks = new SimpleSchema({
   authorId: {
@@ -681,7 +681,10 @@ Schema.ContextBlocks = new SimpleSchema({
     optional: true,
     blackbox: true
   },
-
+  description: {
+    type: String,
+    optional: true
+  },
   content: {
     type: String,
     label: "Text",
