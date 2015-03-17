@@ -353,7 +353,6 @@ Template.horizontal_context.helpers({
               _id: id
             }) || {_id: id}; // fallback to just having id if cannot find
           })
-          .tap(function(e){console.log(e)})
           .map(function (datum, horizontalIndex) {
             return _.extend(datum || {}, {
               index: horizontalIndex
