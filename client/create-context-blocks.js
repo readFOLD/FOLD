@@ -550,7 +550,12 @@ Template.search_form.helpers({
         return 'e.g. ' +
           _.sample([
             'waffle tower',
-            'Aoshima Island',
+            'aoshima island',
+            'area 51',
+            'the south pole',
+            'twin peaks',
+            'neutral zone',
+            'cal anderson park'
           ]);
         break;
       default:
