@@ -393,10 +393,10 @@
                 {{/if}}
               </div>
               <div class="info {{#if isFocused}}focused{{/if}}">
-                <div class="content-title">{{title}}</div>
-                <div class="descr">{{description}}</div>
-                <div class="user">{{referenceUsername}}</div>
-                <div class="date">{{referenceCreationDate}}</div>
+                <div class="content-title">{{reference.title}}</div>
+                <div class="descr">{{reference.description}}</div>
+                <div class="user">{{reference.username}}</div>
+                <div class="date">{{reference.creationDate}}</div>
               </div>
             </div> 
         </li>
@@ -435,17 +435,17 @@
                   <iframe class="audio" width="100%" src="{{url}}"></iframe>
                 {{else}}
                   <div class="thumbnail">
-                    {{#if soundcloudArtworkUrl}}
-                      <img class="square" src="{{soundcloudArtworkUrl}}" />
+                    {{#if artworkUrl}}
+                      <img class="square" src="{{artworkUrl}}" />
                     {{else}}
                       <img class="square" src="https://addons.opera.com/media/extensions/45/11645/0.5-rev2/icons/icon_64x64.png" />
                     {{/if}}
                   </div>
                   <div class="info {{#if isFocused}}focused{{/if}}">
-                    <div class="content-title">{{title}}</div>
-                    <div class="descr">{{description}}</div>
-                    <div class="user">{{videoUsername}}</div>
-                    <div class="date">{{videoCreationDate}}</div>
+                    <div class="content-title">{{reference.title}}</div>
+                    <div class="descr">{{reference.description}}</div>
+                    <div class="user">{{reference.username}}</div>
+                    <div class="date">{{reference.creationDate}}</div>
                   </div>
                 {{/if}}
               </div>

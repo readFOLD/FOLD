@@ -227,6 +227,11 @@ Schema.Stories = new SimpleSchema({
     type: String,
     optional: true
   },
+  'verticalSections.$.hasTitle': {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  },
   'verticalSections.$.content': {
     type: String
   },
@@ -261,26 +266,26 @@ VideoBlock = (function(_super) {
 
   VideoBlock.prototype.url = function() {
     if (this.source === 'youtube') {
-      return '//www.youtube.com/embed/' + this.referenceId;
+      return '//www.youtube.com/embed/' + this.reference.id;
     } else if (this.source === 'vimeo') {
-      return '//player.vimeo.com/video/' + this.referenceId;
+      return '//player.vimeo.com/video/' + this.reference.id;
     }
   };
 
   VideoBlock.prototype.previewUrl = function() {
     if (this.source === 'youtube') {
-      return '//img.youtube.com/vi/' + this.referenceId + '/0.jpg';
+      return '//img.youtube.com/vi/' + this.reference.id + '/0.jpg';
     }
   };
 
   VideoBlock.prototype.thumbnailUrl = function() {
     if (this.source === 'youtube') {
-      return '//i.ytimg.com/vi/' + this.referenceId + '/default.jpg';
+      return '//i.ytimg.com/vi/' + this.reference.id + '/default.jpg';
     }
   };
 
   VideoBlock.prototype.anchorMenuSnippet = function() {
-    return this.title;
+    return this.reference.title;
   };
 
   return VideoBlock;
@@ -300,18 +305,18 @@ AudioBlock = (function(_super) {
 
   AudioBlock.prototype.url = function() {
     if (this.source === 'soundcloud') {
-      return '//w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/' + this.referenceId + '&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=true'
+      return '//w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/' + this.reference.id + '&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=true'
     }
   };
 
   AudioBlock.prototype.artworkUrl = function() {
     if (this.source === 'soundcloud') {
-      return this.soundcloudArtworkUrl;
+      return this.reference.artworkUrl;
     }
   };
 
   AudioBlock.prototype.anchorMenuSnippet = function() {
-    return this.title;
+    return this.reference.title;
   };
 
 
@@ -412,22 +417,22 @@ ImageBlock = (function(_super) {
   ImageBlock.prototype.url = function() {
     switch (this.source) {
       case 'local':
-        return '/' + this.referenceId;
+        return '/' + this.reference.id;
       case 'imgur':
-        return '//i.imgur.com/' + this.referenceId + '.' + this.fileExtension;
+        return '//i.imgur.com/' + this.reference.id + '.' + this.reference.fileExtension;
       case 'flickr':
-        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.flickrServer + '/' + this.referenceId + '_' + this.flickrImgSecret + '.jpg'
+        return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg'
     }
   };
 
   ImageBlock.prototype.thumbnailUrl = function() {
     switch (this.source) {
       case 'local':
-        return '/' + this.referenceId;
+        return '/' + this.reference.id;
       case 'imgur':
-        return '//i.imgur.com/' + this.referenceId + 't' + '.' + this.fileExtension;
+        return '//i.imgur.com/' + this.reference.id + 't' + '.' + this.reference.fileExtension;
       case 'flickr':
-        return '//farm' + this.flickrImgFarm + '.staticflickr.com/' + this.flickrServer + '/' + this.referenceId + '_' + this.flickrImgSecret + '_t' + '.jpg'
+        return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_t' + '.jpg'
     }
   };
 
@@ -450,19 +455,19 @@ GifBlock = (function(_super) {
   GifBlock.prototype.url = function() {
     switch (this.source) {
       case 'giphy':
-        return 'http://media4.giphy.com/media/' + this.referenceId + '/giphy.gif'
+        return 'http://media4.giphy.com/media/' + this.reference.id + '/giphy.gif'
     }
   };
 
   GifBlock.prototype.thumbnailUrl = function() {
     switch (this.source) {
       case 'giphy':
-        return 'http://media4.giphy.com/media/' + this.referenceId + '/200_d.gif'
+        return 'http://media4.giphy.com/media/' + this.reference.id + '/200_d.gif'
     }
   };
 
   GifBlock.prototype.anchorMenuSnippet = function() {
-    return this.referenceId;
+    return this.reference.id;
   };
 
   return GifBlock;
@@ -481,7 +486,7 @@ VizBlock = (function(_super) {
   VizBlock.prototype.url = function() {
     switch (this.source) {
       case 'oec':
-        return 'http://atlas.media.mit.edu/explore/embed/tree_map/hs/' + this.oecDirection + '/' + this.oecCountry + '/all/show/' + this.oecYear + '/?controls=false&lang=en'
+        return 'http://atlas.media.mit.edu/explore/embed/tree_map/hs/' + this.reference.oecDirection + '/' + this.reference.oecCountry + '/all/show/' + this.reference.oecYear + '/?controls=false&lang=en'
     }
   };
 
@@ -490,8 +495,8 @@ VizBlock = (function(_super) {
   VizBlock.prototype.oecCountryName = function() {
     switch (this.source) {
       case 'oec':
-        if (this.oecCountry) {
-          return _.findWhere(VizBlock.countries, {id: this.oecCountry})['name'];
+        if (this.reference.oecCountry) {
+          return _.findWhere(VizBlock.countries, {id: this.reference.oecCountry})['name'];
         }
     }
   };
@@ -500,14 +505,14 @@ VizBlock = (function(_super) {
   VizBlock.prototype.description = function() {
     switch (this.source) {
       case 'oec':
-        return this.oecCountryName() + " " + this.oecDirection + "s in " + this.oecYear;
+        return this.oecCountryName() + " " + this.reference.oecDirection + "s in " + this.reference.oecYear;
     }
   };
 
   VizBlock.prototype.anchorMenuSnippet = function() {
     switch (this.source) {
       case 'oec':
-        return this.oecCountryName() + " (" + this.oecYear + ")";
+        return this.oecCountryName() + " (" + this.reference.oecYear + ")";
     }
   };
 
@@ -528,11 +533,11 @@ MapBlock = (function(_super) {
   }
 
   MapBlock.prototype.description = function() {
-    return this.mapQuery;
+    return this.reference.mapQuery;
   };
 
   MapBlock.prototype.anchorMenuSnippet = function() {
-    return this.mapQuery;
+    return this.reference.mapQuery;
   };
 
   MapBlock.prototype.escape = function(value) {
@@ -541,13 +546,13 @@ MapBlock = (function(_super) {
 
   MapBlock.prototype.url = function() {
     if (this.source === 'google_maps') {
-      return 'https://www.google.com/maps/embed/v1/place?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&q=' + this.escape(this.mapQuery) + '&maptype=' + this.escape(this.mapType);
+      return 'https://www.google.com/maps/embed/v1/place?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&q=' + this.escape(this.reference.mapQuery) + '&maptype=' + this.escape(this.reference.mapType);
     }
   };
 
   MapBlock.prototype.previewUrl = function() {
     if (this.source === 'google_maps') {
-      return 'https://maps.googleapis.com/maps/api/staticmap?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&center=' + this.escape(this.mapQuery) + '&maptype=' + this.escape(this.mapType) + '&size=' + '520x300';
+      return 'https://maps.googleapis.com/maps/api/staticmap?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&center=' + this.escape(this.reference.mapQuery) + '&maptype=' + this.escape(this.reference.mapType) + '&size=' + '520x300';
     }
   };
 
@@ -637,6 +642,108 @@ this.ContextBlocks.allow({
   }
 });
 
+Schema.ContextReferenceProfile = new SimpleSchema({
+  id: {
+    type: String,
+    optional: true
+  },
+
+  creationDate: {
+    type: String,
+    optional: true
+  },
+
+  username: {
+    type: String,
+    optional: true
+  },
+
+  userId: {
+    type: String,
+    optional: true
+  },
+
+  source: {
+    type: String,
+    optional: true
+  },
+
+  artworkUrl: {
+    type: String,
+    optional: true
+  },
+
+  title: {
+    type: String,
+    optional: true,
+    defaultValue: ''
+  },
+
+  description: {
+    type: String,
+    optional: true,
+    defaultValue: ''
+  },
+  fileExtension: {
+    type: String,
+    optional: true
+  },
+
+
+  flickrFarm: {
+    type: String,
+    optional: true
+  },
+  flickrSecret: {
+    type: String,
+    optional: true
+  },
+  flickrServer: {
+    type: String,
+    optional: true
+  },
+
+  oecYear: {
+    type: String,
+    optional: true
+  },
+  oecCountry: {
+    type: String,
+    optional: true
+  },
+  oecDirection: {
+    type: String,
+    optional: true
+  },
+
+  twitterRetweetUser: {
+    type: String,
+    optional: true
+  },
+  referenceImg: {
+    type: String,
+    optional: true
+  },
+
+  mapQuery: {
+    type: String,
+    optional: true
+  },
+  mapType: {
+    type: String,
+    allowedValues: ['roadmap', 'satellite'],
+    defaultValue: 'satellite',
+    optional: true,
+    autoform: {
+      afFieldInput: {
+        firstOption: false,
+        options: 'allowed'
+      }
+    }
+  }
+
+});
+
 Schema.ContextBlocks = new SimpleSchema({
   authorId: {
     type: String
@@ -660,93 +767,14 @@ Schema.ContextBlocks = new SimpleSchema({
       }
     }
   },
-  referenceId: {
-    type: String,
-    optional: true
-  },
   fullDetails: {
     type: Object,
     optional: true,
     blackbox: true
   },
-  flickrImgFarm: {
-    type: String,
-    optional: true
-  },
-  flickrImgSecret: {
-    type: String,
-    optional: true
-  },
-  flickrServer: {
-    type: String,
-    optional: true
-  },
-  soundcloudArtworkUrl: {
-    type: String,
-    optional: true
-  },
-  soundcloudWaveformUrl: {
-    type: String,
-    optional: true
-  },
-  title: {
-    type: String,
-    optional: true,
-    defaultValue: ''
-  },
-  hasTitle: {
-    type: Boolean,
-    optional: true,
-    defaultValue: false
-  },
   description: {
     type: String,
-    optional: true,
-    defaultValue: ''
-  },
-  referenceId: { // id used by source
-    type: String,
     optional: true
-  },
-  fileExtension: {
-    type: String,
-    optional: true
-  },
-  oecYear: {
-    type: String,
-    optional: true
-  },
-  oecCountry: {
-    type: String,
-    optional: true
-  },
-  oecDirection: {
-    type: String,
-    optional: true
-  },
-  twitterRetweetUser: {
-    type: String,
-    optional: true
-  },
-  referenceImg: {
-    type: String,
-    optional: true
-  },
-  mapQuery: {
-    type: String,
-    optional: true
-  },
-  mapType: {
-    type: String,
-    allowedValues: ['roadmap', 'satellite'],
-    defaultValue: 'satellite',
-    optional: true,
-    autoform: {
-      afFieldInput: {
-        firstOption: false,
-        options: 'allowed'
-      }
-    }
   },
   content: {
     type: String,
@@ -789,8 +817,8 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  referenceSource: {
-    type: String,
+  reference: {
+    type: Schema.ContextReferenceProfile,
     optional: true
   },
   referenceUserPic: {
@@ -799,6 +827,10 @@ Schema.ContextBlocks = new SimpleSchema({
   },
   searchQuery: {
     type:String,
+    optional:true
+  },
+  searchOption: {
+    type: String,
     optional:true
   }
 });
@@ -894,7 +926,8 @@ Schema.User = new SimpleSchema({
   },
   profile: {
     type: Schema.UserProfile,
-    optional: true
+    optional: true,
+    defaultValue: {}
   },
   services: {
     type: Object,
