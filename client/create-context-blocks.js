@@ -236,7 +236,6 @@ var searchIntegrations = {
             username : e.account_url,
             userId : e.account_id,
             fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
-            section : e.section,
             title : e.title
           }
         }
