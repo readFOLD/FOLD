@@ -754,6 +754,45 @@ div.minimap {
   }
 }
 
+.signin-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(255,255,255,0.8);
+  .close{
+    float: right;
+    background-color: rgba(0,0,0,0);
+    font-size: 22px;
+    margin-right: 10px;
+    margin-top: 10px;
+  }
+  .signin-buttons{
+    margin:auto;
+    display:block;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 20%;
+    padding-left: 43%;
+    font-family: Muli, sans-serif;
+    li{
+      background-color: @remix-color;
+      &:hover{
+        background-color: @black-color;
+      }
+      color: @white-color;
+      margin-top: 10px;
+      width: 200px;
+      height: 45px;
+
+      button{
+        .size-to-fit;
+      }
+    }
+  }
+}
+
 .pull-right {
   float: right;
 }

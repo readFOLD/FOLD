@@ -25,7 +25,7 @@ Tracker.autorun(function(){
 
   Session.set("windowHeight", $(window).height());
 
-  Session.set("width", window.outerWidth);
+  Session.set("windowWidth", window.outerWidth);
 
   Session.set("cardWidth", getCardWidth(window.outerWidth));
 
@@ -158,11 +158,6 @@ Template.story_header.rendered = function() {
   }
 };
 
-Template.story_header.created = function() {
-  this.imageUploadURL = 'test'
-  this.uploading = new ReactiveVar(false);
-}
-
 Template.story_header.helpers({
   title: function() {
     if (this.title) {
@@ -171,21 +166,14 @@ Template.story_header.helpers({
       return Session.get("storyTitle");
     }
   },
-  headerImageURL: function() {
-    return Template.instance().imageUploadURL.get();
-  },
   headerImageAttribution: function() {
     return this.headerImageAttribution;
   },
-  backgroundImage: function() {
-    if (this.backgroundImage) {
-      return this.backgroundImage;
-    } else {
-      return Session.get("backgroundImage");
-    }
+  headerImageURL: function() {
+    return 'https://' + Meteor.settings["public"].AWS_BUCKET +'.s3.amazonaws.com/subfolder/' + this.headerImage;
   },
-  uploading: function() {
-    return Template.instance().uploading.get();
+  "files": function(){
+    return S3.collection.find();
   }
 });
 
@@ -247,9 +235,6 @@ Template.story_header.events = {
     path = window.location.pathname.split("/");
     path.pop();
     return path.pop();
-  },
-  "click .upload": function(e, t) {
-    t.uploading.set(!t.uploading.get())
   }
 };
 
@@ -514,11 +499,15 @@ Template.display_twitter_section.events({
 
 Template.create_story.events({
   'click': function(){
-    Meteor.call('createStory', function(err, pathObject){
-      if (err) {
-        return alert(err);
-      }
-      Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
-    })
+    if (Meteor.user()){
+      Meteor.call('createStory', function(err, pathObject){
+        if (err) {
+          return alert(err);
+        }
+        Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
+      })
+    } else {
+     Session.set('signingIn', true)
+    }
   }
 });

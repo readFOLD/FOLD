@@ -140,7 +140,7 @@ Schema.Stories = new SimpleSchema({
     optional: true,
     blackbox: true
   },
-  backgroundImage: {
+  headerImage: {
     type: String,
     optional: true
   },

@@ -24,6 +24,5 @@ service-configuration
 meteorhacks:kadira
 gadicohen:robots-txt
 meteorhacks:npm
-
-
 npm-container
+lepozepo:s3

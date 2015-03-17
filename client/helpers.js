@@ -22,6 +22,10 @@ Handlebars.registerHelper("saving", function() {
   return Session.get("saving");
 });
 
+Handlebars.registerHelper("signingIn", function() {
+  return Session.get("signingIn");
+});
+
 Handlebars.registerHelper("addingContext", function() {
   return Session.get("addingContext");
 });
@@ -41,6 +45,14 @@ Handlebars.registerHelper("cardWidth", function() {
     return 800;
   }
   return Session.get("cardWidth");
+});
+
+Handlebars.registerHelper("windowWidth", function() {
+  return Session.get("windowWidth");
+});
+
+Handlebars.registerHelper("windowHeight", function() {
+  return Session.get("windowHeight");
 });
 
 Handlebars.registerHelper("setTitle", function(title) {

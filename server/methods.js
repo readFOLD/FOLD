@@ -14,6 +14,12 @@ if (!GOOGLE_API_SERVER_KEY) {
 }
 
 
+S3.config = {
+  key: Meteor.settings.AWS_ACCESS_KEY,
+  secret: Meteor.settings.AWS_SECRET_KEY,
+  bucket: Meteor.settings["public"].AWS_BUCKET
+};
+
 Meteor.methods({
   updateUserInfo: function(userInfo) {
     if (Meteor.user().tempUsername) {

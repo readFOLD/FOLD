@@ -22,7 +22,7 @@ window.getHorizontalLeft = function() {
   }
 
   // Variable definitions (width of page, width of card, offset of cards)
-  pageWidth = Session.get("width") >= 1024 ? Session.get("width") : 1024;
+  pageWidth = Session.get("windowWidth") >= 1024 ? Session.get("windowWidth") : 1024;
   cardWidth = Session.get("cardWidth");
   cardSeparation = Session.get("separation");
   addContextBlockWidth = 75;

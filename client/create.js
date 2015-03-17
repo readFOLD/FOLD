@@ -343,22 +343,6 @@ Template.story_title.events({
   }
 });
 
-Template.background_image.helpers({
-  backgroundImage: function() {
-    if (this.backgroundImage) {
-      return this.backgroundImage;
-    } else {
-      return Session.get("backgroundImage");
-    }
-  }
-});
-
-Template.background_image.events({
-  "click div.save-background-image": function() {
-    return Session.set("backgroundImage", $('input.background-image-input').val());
-  }
-});
-
 Template.create.helpers({
   narrativeView: function() {
     return Session.get("narrativeView");
@@ -456,7 +440,7 @@ Template.vertical_edit_menu.events({
 Template.add_horizontal.helpers({
   left: function() {
     var cardWidth, halfWidth, width;
-    width = Session.get("width");
+    width = Session.get("windowWidth");
     if (width < 1024) {
       width = 1024;
     }
@@ -606,7 +590,7 @@ Template.create_horizontal_section_block.helpers({
 Template.create_horizontal_section_block.helpers({
   left: function() {
     var cardWidth, halfWidth, width;
-    width = Session.get("width");
+    width = Session.get("windowWidth");
     if (width < 1024) {
       width = 1024;
     }
@@ -787,5 +771,17 @@ Template.create_options.events({
     } else {
       Session.set('read', true);
     }
-  }
+  },
+  "change input.file-upload": function(){
+    var storyId = Session.get('storyId');
+    var files = $("input.file-upload")[0].files
+    S3.upload({
+      files: files,
+      path: "subfolder"
+    }, function(e, r) {
+      var filename = r.file.name;
+      Session.set('saveState', 'saving');
+      return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);
+    });
+  },
 });
