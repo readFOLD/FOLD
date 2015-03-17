@@ -440,7 +440,7 @@ Template.vertical_edit_menu.events({
 Template.add_horizontal.helpers({
   left: function() {
     var cardWidth, halfWidth, width;
-    width = Session.get("width");
+    width = Session.get("windowWidth");
     if (width < 1024) {
       width = 1024;
     }
@@ -590,7 +590,7 @@ Template.create_horizontal_section_block.helpers({
 Template.create_horizontal_section_block.helpers({
   left: function() {
     var cardWidth, halfWidth, width;
-    width = Session.get("width");
+    width = Session.get("windowWidth");
     if (width < 1024) {
       width = 1024;
     }

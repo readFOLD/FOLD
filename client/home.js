@@ -148,31 +148,42 @@ Template.user_stories.events({
 });
 
 Template.login_buttons.helpers({
-  signingIn: function() {
-    return Template.instance().signingIn.get();
+  showUserInfo: function() {
+    return Template.instance().showUserInfo.get();
   }
 });
 
 Template.login_buttons.created = function() {
-  return this.signingIn = new ReactiveVar(false);
+  return this.showUserInfo = new ReactiveVar(false);
 };
 
 Template.login_buttons.events({
   "mouseover": function(d) {
-    Template.instance().signingIn.set(true);
+    Template.instance().showUserInfo.set(true);
   },
   "mouseout": function(d) {
-    Template.instance().signingIn.set(false);
+    Template.instance().showUserInfo.set(false);
+  },
+  "click .signin": function(d) {
+    Session.set('signingIn', true);
   },
   'click .logout' : function(e) {
     e.preventDefault();
     Meteor.logout();
     Router.go('home');
+  }
+});
+
+Template.signin_overlay.events({
+  "click .close": function(d) {
+    Session.set('signingIn', false);
   },
   "click .twitter-signin": function(d) {
+    Session.set('signingIn', false);
     return loginWithTwitter();
   },
   "click .email-signin": function(d) {
+    Session.set('signingIn', false);
     return loginWithEmail();
   }
-})
+});

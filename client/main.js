@@ -25,7 +25,7 @@ Tracker.autorun(function(){
 
   Session.set("windowHeight", $(window).height());
 
-  Session.set("width", window.outerWidth);
+  Session.set("windowWidth", window.outerWidth);
 
   Session.set("cardWidth", getCardWidth(window.outerWidth));
 

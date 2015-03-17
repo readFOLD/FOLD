@@ -22,7 +22,25 @@
       </div>
     </div>
     {{> banner_buttons}}
+    {{> signin_overlay}}
   </div>
+</template>
+
+<template name="signin_overlay">
+  {{#if signingIn}}
+    <div class="signin-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+      <div class="signin-buttons">
+        <ol class="user-menu">
+          <li>
+            <button class="twitter-signin">Log in with Twitter</button>
+          </li>
+          <li>
+            <button class="email-signin">Log in with email</button>
+          </li>
+        </ol>
+      </div>
+    </div>
+  {{/if}}
 </template>
 
 <template name="top_banner_simple">
@@ -72,7 +90,7 @@
 <template name="login_buttons">
     {{#if currentUser}}
       <button class="user-face">{{currentUser.profile.name}}</button>
-      {{#if signingIn}}
+      {{#if showUserInfo}}
         <ol class="user-menu">
           <!--<li>-->
             <!--{{#linkTo route="profile"}}Profile{{/linkTo}}-->
@@ -87,16 +105,6 @@
       {{/if}}
     {{else}}
       <button class="signin"> Log in / Sign up</button>
-      {{#if signingIn}}
-      <ol class="user-menu">
-        <li>
-          <button class="twitter-signin">Log in with Twitter</button>
-        </li>
-        <li>
-          <button class="email-signin">Log in with email</button>
-        </li>
-      </ol>
-      {{/if}}
     {{/if}}
 </template>
 
