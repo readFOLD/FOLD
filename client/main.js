@@ -169,9 +169,7 @@ Template.story_header.helpers({
   headerImageAttribution: function() {
     return this.headerImageAttribution;
   },
-  headerImageURL: function() {
-    return 'http://' + Meteor.settings["public"].AWS_BUCKET +'.s3.amazonaws.com/subfolder/' + this.headerImage;
-  },
+
   "files": function(){
     return S3.collection.find();
   }

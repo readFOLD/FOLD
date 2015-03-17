@@ -45,6 +45,9 @@ Story = (function() {
     return this.title = "";
   };
 
+  Story.prototype.headerImageUrl = function() {
+    return 'http://' + Meteor.settings["public"].AWS_BUCKET +'.s3.amazonaws.com/header-images/' + this.headerImage;
+  };
 
   Story.prototype.publish = function() {
     var dasherizedTitle;
