@@ -54,7 +54,6 @@ if (Stories.find().count() === 0) {
               mapQuery: 'West Africa',
               mapType: 'roadmap',
             },
-            description: "West Africa region: Nigeria, Liberia, Sierra Leone, Guinea",
             authorId: authorId,
             _id: '35259309fdfs'
           }, {
@@ -188,7 +187,6 @@ if (Stories.find().count() === 0) {
             mapQuery: 'Central Africa',
             mapType: 'roadmap'
           },
-          description: "Central Africa",
           authorId: authorId,
           _id: '14'
         }, {
@@ -232,7 +230,6 @@ if (Stories.find().count() === 0) {
             oecCountry: 'gin',
             oecYear: '2012'
           },
-          description: "Products exported by Guinea (2012)",
           authorId: authorId,
           _id: '18'
         }, {
@@ -243,7 +240,6 @@ if (Stories.find().count() === 0) {
             oecCountry: 'lbr',
             oecYear: '2012'
           },
-          description: "Products exported by Liberia (2012)",
           authorId: authorId,
           _id: '19'
         }, {
@@ -254,7 +250,6 @@ if (Stories.find().count() === 0) {
             oecCountry: 'sle',
             oecYear: '2012'
           },
-          description: "Products exported by Sierra Leone (2012)",
           authorId: authorId,
           _id: '20'
         }, {
@@ -614,7 +609,6 @@ if (ContextBlocks.find().count() === 0) {
         mapQuery: 'West Africa',
         mapType: 'roadmap'
       },
-      description: "West Africa region: Nigeria, Liberia, Sierra Leone, Guinea",
       authorId: authorId,
       _id: '35259309fdfs'
     }, {
@@ -729,7 +723,6 @@ if (ContextBlocks.find().count() === 0) {
         mapQuery: 'Central Africa',
         mapType: 'roadmap'
       },
-      description: "Central Africa",
       authorId: authorId,
       _id: '14'
     }, {
@@ -767,7 +760,6 @@ if (ContextBlocks.find().count() === 0) {
         oecCountry: 'gin',
         oecYear: '2012'
       },
-      description: "Products exported by Guinea (2012)",
       authorId: authorId,
       _id: '18'
     }, {
@@ -778,7 +770,6 @@ if (ContextBlocks.find().count() === 0) {
         oecCountry: 'lbr',
         oecYear: '2012'
       },
-      description: "Products exported by Liberia (2012)",
       authorId: authorId,
       _id: '19'
     }, {
@@ -789,7 +780,6 @@ if (ContextBlocks.find().count() === 0) {
         oecCountry: 'sle',
         oecYear: '2012'
       },
-      description: "Products exported by Sierra Leone (2012)",
       authorId: authorId,
       _id: '20'
     }, {
