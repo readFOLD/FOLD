@@ -137,8 +137,8 @@
       </button>
     </div>
     {{#if type}}
-      {{#if link}}{{> unimplemented_create_section}}{{/if}}
-      {{#if remix}}{{> unimplemented_create_section}}{{/if}}
+      {{#if link}}{{> unimplemented_link_section}}{{/if}}
+      {{#if remix}}{{> unimplemented_remix_section}}{{/if}}
       {{#if text}}{{> create_text_section}}{{/if}}
       {{#if audio}}{{> create_audio_section}}{{/if}}
       {{#if image}}{{> create_image_section}}{{/if}}
@@ -181,12 +181,17 @@
 </template>
 
 <!-- Create Templates -->
-<template name="unimplemented_create_section">
+<template name="unimplemented_link_section">
   <div class="create-section unimplemented">
-    Coming soon!
+    Link Card - a flexible method for pulling outside content into a FOLD story. Coming soon!
   </div>
 </template>
 
+<template name="unimplemented_remix_section">
+  <div class="create-section unimplemented">
+    Remix Card - a way for writers to reuse cards from other FOLD stories with attribution to the original author. Coming soon!
+  </div>
+</template>
 
 <template name="create_text_section">
   <div class="create-section">
