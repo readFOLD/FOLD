@@ -676,7 +676,7 @@ div.horizontal-context {
   }  
 
   .twitter .search-results-container {
-    height: calc(100% ~"-" @searchFormHeight ~"-" 100px);
+    height: calc(100% ~"-" @searchFormHeight ~"-" 126px);
   }
 
   ol.search-results-container {   
