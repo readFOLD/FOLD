@@ -200,7 +200,6 @@ Meteor.methods({
         items = res.statuses;
       } catch(error) {
         items = [];
-        page = "end";
       }
     } else {
       params.screen_name = query;
@@ -213,8 +212,12 @@ Meteor.methods({
         page = start + newEnd.toString();
       } catch(error) {
         items = [];
-        page = "end"
       }
+    }
+
+
+    if (!items.length){
+      page = "end";
     }
 
     searchResults = {

@@ -374,6 +374,9 @@
           {{#if loading}}
             {{> loading_icon}}
           {{/if}}
+          {{#if noMoreResults}}
+            No more results
+          {{/if}}
         </li>
       </ol>
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
