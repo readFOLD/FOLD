@@ -347,20 +347,22 @@ Template.horizontal_context.helpers({
       var sortedContext, unsortedContext;
 
       if (Session.get('showDraft')) { // In CREATE, these need to be looked up from the db
-        unsortedContext = ContextBlocks.find({
-          _id: {
-            $in: verticalSection.contextBlocks
-          }
-        }).map(function (datum) {
-          var horizontalIndex;
-          horizontalIndex = verticalSection.contextBlocks.indexOf(datum._id);
-          return _.extend(datum, {
-            index: horizontalIndex
-          });
-        });
-        sortedContext = _.sortBy(unsortedContext, function (datum) {
-          return datum.horizontalIndex;
-        });
+        sortedContext = _.chain(verticalSection.contextBlocks)
+          .map(function(id) {
+            return ContextBlocks.findOne({ // by finding one at a time, this keeps in broken links. TO-DO maybe should find a better soln that uses $in
+              _id: id
+            });
+          })
+          .tap(function(e){console.log(e)})
+          .map(function (datum, horizontalIndex) {
+            return _.extend(datum || {}, {
+              index: horizontalIndex
+            });
+          })
+          .value();
+        //sortedContext = _.sortBy(unsortedContext, function (datum) {
+        //  return datum.horizontalIndex;
+        //});
         return {
           index: verticalIndex,
           data: sortedContext

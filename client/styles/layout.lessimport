@@ -474,6 +474,13 @@ div.image-section {
   }
 }
 
+div.broken-section {
+  height: @horizontal-content-height;
+  width: 100%;
+  background-color: @inactive-color;
+  position: relative;
+}
+
 div.vertical-narrative {
   position: absolute;
   top: 427px;

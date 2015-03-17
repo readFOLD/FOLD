@@ -123,9 +123,7 @@
     {{#if horizontalShown}}
     {{!-- <div class="inline-block {{#unless horizontalShown}}hide{{/unless}}"> --}}
       {{#each data}}
-        {{#if type}}
-          {{> horizontal_section_block}}
-        {{/if}}
+        {{> horizontal_section_block}}
       {{/each}}
       {{#unless read}}
         {{add_horizontal}}
@@ -138,78 +136,84 @@
 
 
 <template name="horizontal_section_block">
-    <div
-            class="narrative-section horizontal-narrative-section {{#if type}}{{type}}{{/if}} {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}"
-            data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px
-    ">
-    <section>
-    <!--    <div id="index">
+  <div
+      class="narrative-section horizontal-narrative-section {{#if type}}{{type}}{{/if}} {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}"
+      data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px
+  ">
+<section>
+  <!--    <div id="index">
       {{index}}
     </div> -->
+    {{debugContext}}
+
     {{#if type}}
-        {{#if text}}
-            {{#if editingThisContext}}
-                {{> create_text_section}}
-            {{else}}
-                {{> display_text_section}}
-            {{/if}}
+      {{#if text}}
+        {{#if editingThisContext}}
+          {{> create_text_section}}
+        {{else}}
+          {{> display_text_section}}
         {{/if}}
-        {{#if image}}
-            {{#if editingThisContext}}
-                {{> create_image_section}}
-            {{else}}
-                {{> display_image_section}}
-            {{/if}}
+      {{/if}}
+      {{#if image}}
+        {{#if editingThisContext}}
+          {{> create_image_section}}
+        {{else}}
+          {{> display_image_section}}
         {{/if}}
-        {{#if gif}}
-            {{#if editingThisContext}}
-                {{> create_gif_section}}
-            {{else}}
-                {{> display_image_section}}
-            {{/if}}
+      {{/if}}
+      {{#if gif}}
+        {{#if editingThisContext}}
+          {{> create_gif_section}}
+        {{else}}
+          {{> display_image_section}}
         {{/if}}
-        {{#if map}}
-            {{#if editingThisContext}}
-                {{> create_map_section}}
-            {{else}}
-                {{> display_map_section}}
-            {{/if}}
+      {{/if}}
+      {{#if map}}
+        {{#if editingThisContext}}
+          {{> create_map_section}}
+        {{else}}
+          {{> display_map_section}}
         {{/if}}
-        {{#if audio}}
-            {{#if editingThisContext}}
-                {{> create_audio_section}}
-            {{else}}
-                {{> display_audio_section}}
-            {{/if}}
+      {{/if}}
+      {{#if audio}}
+        {{#if editingThisContext}}
+          {{> create_audio_section}}
+        {{else}}
+          {{> display_audio_section}}
         {{/if}}
-        {{#if video}}
-            {{#if editingThisContext}}
-                {{> create_video_section}}
-            {{else}}
-                {{> display_video_section}}
-            {{/if}}
+      {{/if}}
+      {{#if video}}
+        {{#if editingThisContext}}
+          {{> create_video_section}}
+        {{else}}
+          {{> display_video_section}}
         {{/if}}
-        {{#if twitter}}
-            {{#if editingThisContext}}
-                {{> create_twitter_section}}
-            {{else}}
-                {{> display_twitter_section}}
-            {{/if}}
+      {{/if}}
+      {{#if twitter}}
+        {{#if editingThisContext}}
+          {{> create_twitter_section}}
+        {{else}}
+          {{> display_twitter_section}}
         {{/if}}
-        {{#if viz}}
-            {{#if editingThisContext}}
-                {{> create_viz_section}}
-            {{else}}
-                {{> display_viz_section}}
-            {{/if}}
+      {{/if}}
+      {{#if viz}}
+        {{#if editingThisContext}}
+          {{> create_viz_section}}
+        {{else}}
+          {{> display_viz_section}}
         {{/if}}
-    {{/if}}
-    {{#if read}}
+      {{/if}}
+      {{else}}
+        {{debugContext}}
+        {{log 'babnsn'}}
+        {{> display_broken_section}}
+      {{/if}}
+      {{#if read}}
         {{> remix_bar}}
-    {{/if}}
-    </section>
+      {{/if}}
+      </section>
     </div>
-</template>
+  </template>
 
 <template name="remix_bar">
     <div class="remix-bar">
@@ -372,6 +376,15 @@
   {{#unless read}}
       {{> horizontal_section_edit_delete}}
     {{/unless}}
+</template>
+
+
+<template name="display_broken_section">
+  <div class="broken-section">
+  </div>
+  {{#unless read}}
+    {{> horizontal_section_edit_delete}}
+  {{/unless}}
 </template>
 
 
