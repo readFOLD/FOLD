@@ -712,7 +712,9 @@ div.minimap {
   .close{
     float: right;
     background-color: rgba(0,0,0,0);
-    font-size: 24px;
+    font-size: 22px;
+    margin-right: 10px;
+    margin-top: 10px;
   }
   .signin-buttons{
     margin:auto;
@@ -723,6 +725,7 @@ div.minimap {
     bottom: 0;
     height: 20%;
     padding-left: 43%;
+    font-family: Muli, sans-serif;
     li{
       background-color: @remix-color;
       &:hover{
@@ -731,7 +734,7 @@ div.minimap {
       color: @white-color;
       margin-top: 10px;
       width: 200px;
-      height: 80px;
+      height: 45px;
 
       button{
         .size-to-fit;
