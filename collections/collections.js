@@ -387,7 +387,7 @@ TwitterBlock = (function(_super) {
     })
 
     var imgIndex = text.indexOf("http://"); //twitter strips all other user-tweeted links of the 'http://'
-    if (imgIndex!=-1) {
+    if (this.referenceImg && imgIndex!=-1) {
       text = text.substring(0, imgIndex);
     }
 
