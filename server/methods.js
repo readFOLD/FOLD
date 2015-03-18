@@ -52,6 +52,7 @@ Meteor.methods({
 
   */
   flickrImageSearchList: function(query, option, page) {
+    var items, nextPage;
     check(query, String);
     page = page || 1;  // flickr starts from 1
     this.unblock();
@@ -75,22 +76,35 @@ Meteor.methods({
     var res = HTTP.get(url, {
       params: requestParams
     });
-    var items = JSON.parse(res.content).photos.photo;
+
+    if (res.content){
+      items = JSON.parse(res.content).photos.photo;
+    } else {
+      items = [];
+    }
+
+    if (items.length){
+      nextPage = page + 1;
+    } else {
+      nextPage = 'end';
+    }
 
     return {
       'items': items,
-      'nextPage': page + 1
+      'nextPage': nextPage
     };
   },
   imgurImageSearchList: function(query, option, page) {
     var res;
+    var fullSearchItems
     check(query, String);
     this.unblock();
+    var nextPage;
     page = page || 0;
 
     var authorizationStr = "Client-ID " + IMGUR_CLIENT_ID;
 
-    var items = [];
+    var urlItems = [];
 
     if (query.indexOf('imgur.com') !==-1) { // if paste in an image link, just grab it
       var id = _.chain(query.split('/')).compact().last().value().split('.')[0]; // if it's a url just send the final path segment without any extension;
@@ -104,7 +118,7 @@ Meteor.methods({
         }
       }
       if (res.data && res.data.data){
-        items[0] = res.data.data;
+        urlItems[0] = res.data.data;
       }
     }
 
@@ -121,11 +135,26 @@ Meteor.methods({
       headers: {"Content-Type": "text", "Authorization": authorizationStr}
     });
 
-    return {
-      nextPage: page + 1,
-      items: items.concat(_.filter(res.data.data, function(e) {
+    if (res.data && res.data.data) {
+      fullSearchItems = _.filter(res.data.data, function (e) {
         return (e.type && e.type.indexOf('image') === 0)
-      }))
+      });
+      if (fullSearchItems.length) {
+        nextPage = page + 1;
+      } else {
+        nextPage = 'end'
+      }
+    } else {
+      fullSearchItems = []
+    }
+
+    if (!fullSearchItems.length){
+      nextPage = 'end'
+    }
+
+    return {
+      nextPage: nextPage,
+      items: urlItems.concat(fullSearchItems)
     }
   }, 
   giphyGifSearchList: function(query, option, page) {
@@ -269,6 +298,7 @@ Meteor.methods({
   },
   youtubeVideoSearchList: function(query, option, page) {
     var res;
+    var nextPageToken;
     check(query, String);
     this.unblock();
     requestParams = {
@@ -284,7 +314,6 @@ Meteor.methods({
       params: requestParams
     });
 
-    nextPageToken = res.data.nextPageToken || 'end';
 
     items = _.chain(res.data.items)
       .filter(function(element) {
@@ -295,6 +324,12 @@ Meteor.methods({
         return element.snippet;
       })
       .value();
+
+    if (items.length){
+      nextPageToken = res.data.nextPageToken || 'end';
+    } else {
+      nextPageToken = 'end';
+    }
 
     return {
       'nextPage': nextPageToken,
