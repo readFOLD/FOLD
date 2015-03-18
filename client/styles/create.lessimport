@@ -504,27 +504,16 @@ div.horizontal-context {
   div.edit-delete {
     position: absolute;
     top: -10px;
-    right: 62px;
-    // when there is just the delete button, the width should be 60 px
-//    width: 60px;
-    width: 95px;
     color: black;
     button {
+      display: inline-block;
       line-height: 0px;
       height: 25px;
       border-radius: 13px;
       width: 25px;
-      float: left;
     }
-
-    // TO-DO Create classes for these
-    .edit {
-      float: left;
-    }
-
 
     .delete {
-
       &:hover {
         background-color: @danger-color;
       }
