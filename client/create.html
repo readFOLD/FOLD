@@ -490,12 +490,16 @@
   {{#unless read}}
     {{#if selected}}
       <div class="button-options edit-delete">
-        <button class="move-card-left">
-          <i class="fa fa-caret-square-o-left"></i>
-        </button>
-        <button class="move-card-right">
-          <i class="fa fa-caret-square-o-right"></i>
-        </button>
+        {{#if canMoveLeft}}
+          <button class="move-card-left">
+            <i class="fa fa-caret-square-o-left"></i>
+          </button>
+        {{/if}}
+        {{#if canMoveRight}}
+          <button class="move-card-right">
+            <i class="fa fa-caret-square-o-right"></i>
+          </button>
+        {{/if}}
         <button class="delete button">
           <i class="fa fa-times"></i>
         </button>

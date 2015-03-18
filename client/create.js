@@ -250,11 +250,10 @@ var saveCallback =  function(err, numDocs, cb) {
   var saveUIUpdateDelay = 300;
   setTimeout(function(){
     if (err) {
-      Session.set('saveState', 'failed');
+      return Session.set('saveState', 'failed');
     }
     if (!numDocs) {
-      return alert('No docs updated');
-      Session.set('saveState', 'failed');
+      return Session.set('saveState', 'failed');
     }
     Session.set('saveState', 'saved');
   }, saveUIUpdateDelay);
@@ -752,6 +751,14 @@ AutoForm.hooks({
   })
 });
 
+Template.horizontal_section_edit_delete.helpers({
+  canMoveLeft: function () {
+    return this.index;
+  },
+  canMoveRight: function () {
+    return this.index < Session.get('story').verticalSections[this.verticalIndex].contextBlocks.length - 1;
+  }
+});
 Template.horizontal_section_block.events({
   "click .delete": function(d) {
     if(confirm("Permanently delete this card?")){
@@ -771,7 +778,7 @@ Template.horizontal_section_block.events({
     Session.set('saveState', 'saving');
     return Meteor.call('moveHorizontalContextLeftOne', Session.get('storyId'), this.verticalIndex, this.index, function(err, numDocs) {
       if (numDocs) {
-        goToContext(that.id);
+        goToContext(that._id);
       }
       saveCallback(err, numDocs);
     });
@@ -782,7 +789,7 @@ Template.horizontal_section_block.events({
     Session.set('saveState', 'saving');
     return Meteor.call('moveHorizontalContextRightOne', Session.get('storyId'), this.verticalIndex, this.index, function(err, numDocs) {
       if (numDocs) {
-        goToContext(that.id);
+        goToContext(that._id);
       }
       saveCallback(err, numDocs);
     });
