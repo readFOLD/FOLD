@@ -170,7 +170,6 @@ Template.story_header.helpers({
     return this.headerImageAttribution;
   },
   headerImageUrl: function() {
-    console.log(this);
     return 'http://' + Meteor.settings["public"].AWS_BUCKET + '.s3.amazonaws.com/header-images/' + this.headerImage;
   },
   "files": function(){

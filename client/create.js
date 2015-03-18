@@ -759,11 +759,15 @@ Template.horizontal_section_block.events({
       id = this._id;
       window.removeContextFromStory(Session.get("storyId"), id, Session.get("currentY"), function(err){
         if(err){
-          return
+          return saveCallback(err);
         }
-        ContextBlocks.remove(id);
+        ContextBlocks.remove(id, saveCallback);
       });
     }
+  },
+  "click .move-left": function(d) {
+    Session.set('saveState', 'saving');
+    id = this._id;
   },
   "click .edit": function(e, t) {
     Session.set('editingContext', this._id);
