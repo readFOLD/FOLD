@@ -88,18 +88,32 @@ Meteor.methods({
     this.unblock();
     page = page || 0;
 
-    if (query.indexOf('imgur.com') !==-1 || query.indexOf('http://') === 0 || query.indexOf('https://') === 0 || query.indexOf('www.') === 0){
-      requestParams = {
-        q: _.chain(query.split('/')).compact().last().value().split('.')[0] // if it's a url just send the final path segment without any extension
-      };
-    } else {
-      requestParams = {
-        q: query
-      };
+    var authorizationStr = "Client-ID " + IMGUR_CLIENT_ID;
+
+    var items = [];
+
+    if (query.indexOf('imgur.com') !==-1) { // if paste in an image link, just grab it
+      var id = _.chain(query.split('/')).compact().last().value().split('.')[0]; // if it's a url just send the final path segment without any extension;
+      try{
+        res = HTTP.get("https://api.imgur.com/3/image/" + id, {
+          headers: {"Content-Type": "text", "Authorization": authorizationStr}
+        });
+      } catch (err) {
+        if(!err.response || err.response.statusCode !== 404) { // swallow 404's, rethrow others
+          throw err;
+        }
+      }
+      if (res.data && res.data.data){
+        items[0] = res.data.data;
+      }
     }
 
 
-    var authorizationStr = "Client-ID " + IMGUR_CLIENT_ID;
+    requestParams = {
+      q: query
+    };
+
+
     var url = 'https://api.imgur.com/3/gallery/search/top/' + page;
     // https://api.imgur.com/endpoints/gallery
     var res = HTTP.get(url, {
@@ -109,9 +123,9 @@ Meteor.methods({
 
     return {
       nextPage: page + 1,
-      items: _.filter(res.data.data, function(e) {
+      items: items.concat(_.filter(res.data.data, function(e) {
         return (e.type && e.type.indexOf('image') === 0)
-      })
+      }))
     }
   }, 
   giphyGifSearchList: function(query, option, page) {

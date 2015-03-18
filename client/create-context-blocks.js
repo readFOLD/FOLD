@@ -162,13 +162,15 @@ var searchAPI = function(query) {
   integrationDetails = searchIntegrations[this.type][source];
 
   Meteor.call(integrationDetails.methodName, query, option, page, function(err, results) {
+    if (err) {
+      that.noMoreResults.set(true); // TODO - surface error to user?
+      that.loadingResults.set(false);
+      return;
+    }
+
     var items = results.items;
     var nextPage = results.nextPage;
 
-    if (err) {
-      alert(err);
-      return;
-    }
     if (!items || !items.length) {
       that.noMoreResults.set(true);
       that.loadingResults.set(false);
