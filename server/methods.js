@@ -130,6 +130,8 @@ Meteor.methods({
   }, 
   giphyGifSearchList: function(query, option, page) {
     var res;
+    var items;
+    var nextPage;
     check(query, String);
     this.unblock();
     page = page || 0;
@@ -146,20 +148,34 @@ Meteor.methods({
 
     var data = res.data;
 
-    var totalCount = data.pagination.total_count;
-    var nextPage = data.pagination.count + data.pagination.offset;
 
-    if (nextPage >= totalCount){
+
+    if (data.data) {
+      items = data.data;
+    } else {
+      items = [];
+    }
+
+    if (items.length && data.pagination){
+      var totalCount = data.pagination.total_count;
+      nextPage = data.pagination.count + data.pagination.offset;
+
+      if (nextPage >= totalCount){
+        nextPage = 'end';
+      }
+    } else {
       nextPage = 'end';
     }
 
+
     return {
       nextPage: nextPage,
-      items: data.data
+      items: items
     }
   },
   soundcloudAudioSearchList: function(query, option, page) {
     var res;
+    var items, nextPage;
     check(query, String);
     this.unblock();
     var offset = page || 0;
@@ -175,10 +191,20 @@ Meteor.methods({
       params: requestParams
     });
 
-    var items = JSON.parse(res.content);
+    if (res.content) {
+      items = JSON.parse(res.content);
+    } else {
+      items = [];
+    }
+
+    if (items.length) {
+      nextPage = offset + limit;
+    } else {
+      nextPage = 'end';
+    }
 
     return {
-      'nextPage': offset + limit,
+      'nextPage': nextPage,
       'items': items
     }
   },
