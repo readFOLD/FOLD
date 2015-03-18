@@ -344,7 +344,7 @@ TwitterBlock = (function(_super) {
         userpic: this.reference.userPic,
         username: this.reference.username,
         screenname: this.reference.screenname,
-        text: this.text,
+        text: this.reference.text,
         date: this.reference.creationDate,
         tweet_url: '//twitter.com/' + this.reference.screenname + '/status/' + this.reference.id,
         user_url: '//twitter.com/' + this.reference.screenname,
@@ -382,7 +382,11 @@ TwitterBlock = (function(_super) {
     if (this.reference.retweetedStatus) {
       return this.reference.retweetedStatus.user.screen_name;
     }
-  }
+  };
+
+  TwitterBlock.prototype.anchorMenuSnippet = function() {
+    return this.reference.text;
+  };
 
   TwitterBlock.prototype.links = function(){
 
