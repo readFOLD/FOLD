@@ -765,9 +765,27 @@ Template.horizontal_section_block.events({
       });
     }
   },
-  "click .move-left": function(d) {
+  "click .move-card-left": function() {
+    var that = this;
+
     Session.set('saveState', 'saving');
-    id = this._id;
+    return Meteor.call('moveHorizontalContextLeftOne', Session.get('storyId'), this.verticalIndex, this.index, function(err, numDocs) {
+      if (numDocs) {
+        goToContext(that.id);
+      }
+      saveCallback(err, numDocs);
+    });
+  },
+  "click .move-card-right": function() {
+    var that = this;
+
+    Session.set('saveState', 'saving');
+    return Meteor.call('moveHorizontalContextRightOne', Session.get('storyId'), this.verticalIndex, this.index, function(err, numDocs) {
+      if (numDocs) {
+        goToContext(that.id);
+      }
+      saveCallback(err, numDocs);
+    });
   },
   "click .edit": function(e, t) {
     Session.set('editingContext', this._id);

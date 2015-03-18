@@ -181,7 +181,7 @@ Meteor.methods({
     var verticalSections = story.draftStory.verticalSections;
 
 
-    if ((index + 1) >= story.draftStory.verticalSections){
+    if ((index + 1) >= verticalSections.length){
       throw new Meteor.Error('Index too high')
     }
 
@@ -191,6 +191,68 @@ Meteor.methods({
       $set: {
         'draftStory.verticalSections': verticalSections
       }
+    })
+  },
+  moveHorizontalContextLeftOne: function(storyId, verticalIndex, horizontalIndex) {
+    if (!horizontalIndex){
+      throw new Meteor.Error('Must have a positive horizontal index')
+    }
+    var selector = { _id: storyId };
+    var story = Stories.findOne(selector, {fields:
+      {
+        'draftStory.verticalSections': 1,
+        'authorId': 1
+      }
+    });
+
+    assertOwner(this.userId, story);
+
+    var verticalSection = story.draftStory.verticalSections[verticalIndex];
+
+    if (!verticalSection){
+      throw new Meteor.Error('Vertical index too high')
+    }
+
+    swapArrayElements(verticalSection.contextBlocks, horizontalIndex, horizontalIndex - 1);
+
+    setObject = {};
+
+    setObject['draftStory.verticalSections.' + verticalIndex + '.contextBlocks'] = verticalSection.contextBlocks;
+
+    return updateStory({ _id: storyId }, {
+      $set: setObject
+    })
+  },
+  moveHorizontalContextRightOne: function(storyId, verticalIndex, horizontalIndex) {
+    var selector = { _id: storyId };
+    var story = Stories.findOne(selector, {fields:
+      {
+        'draftStory.verticalSections': 1,
+        'authorId': 1
+      }
+    });
+
+    assertOwner(this.userId, story);
+
+    var verticalSection = story.draftStory.verticalSections[verticalIndex];
+
+    if (!verticalSection){
+      throw new Meteor.Error('Vertical index too high')
+    }
+
+
+    if ((horizontalIndex + 1) >= verticalSection.contextBlocks.length){
+      throw new Meteor.Error('Horizontal index too high')
+    }
+
+    swapArrayElements(verticalSection.contextBlocks, horizontalIndex, horizontalIndex + 1);
+
+    setObject = {};
+
+    setObject['draftStory.verticalSections.' + verticalIndex + '.contextBlocks'] = verticalSection.contextBlocks;
+
+    return updateStory({ _id: storyId }, {
+      $set: setObject
     })
   },
   deleteVerticalSection: function(storyId, index) {

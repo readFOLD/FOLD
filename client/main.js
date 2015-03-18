@@ -354,7 +354,8 @@ Template.horizontal_context.helpers({
           })
           .map(function (datum, horizontalIndex) {
             return _.extend(datum || {}, {
-              index: horizontalIndex
+              index: horizontalIndex,
+              verticalIndex: verticalIndex
             });
           })
           .value();
@@ -366,8 +367,11 @@ Template.horizontal_context.helpers({
           data: sortedContext
         };
       } else { // In READ, these are denormalized right on the document
-        var data = verticalSection.contextBlocks.map(function (datum, index) {
-          return _.extend({}, datum, {index: index});
+        var data = verticalSection.contextBlocks.map(function (datum, horizontalIndex) {
+          return _.extend({}, datum, {
+            index: horizontalIndex,
+            verticalIndex: verticalIndex
+          });
         }).map(window.newTypeSpecificContextBlock);
         return {
           data: data,
