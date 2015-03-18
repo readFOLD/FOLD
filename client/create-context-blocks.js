@@ -147,7 +147,7 @@ var searchAPI = function(query) {
   }
 
   if (page === 'end') { // return if at end of possible results
-    this.noMoreResults.set(true);
+    this.noMoreResults.set('No more results');
     this.loadingResults.set(false);
     return;
   }
@@ -162,9 +162,9 @@ var searchAPI = function(query) {
   integrationDetails = searchIntegrations[this.type][source];
 
   Meteor.call(integrationDetails.methodName, query, option, page, function(err, results) {
+    that.loadingResults.set(false);
     if (err) {
-      that.noMoreResults.set(true); // TODO - surface error to user?
-      that.loadingResults.set(false);
+      that.noMoreResults.set('No more results'); // TODO - surface error to user?
       return;
     }
 
@@ -172,8 +172,7 @@ var searchAPI = function(query) {
     var nextPage = results.nextPage;
 
     if (!items || !items.length) {
-      that.noMoreResults.set(true);
-      that.loadingResults.set(false);
+      that.noMoreResults.set('No results found');
       return;
     }
     _.chain(items)
@@ -192,9 +191,6 @@ var searchAPI = function(query) {
 
         SearchResults.insert(item);
       });
-
-    // finish search
-    that.loadingResults.set(false);
   });
 };
 
