@@ -908,7 +908,14 @@ Schema.UserProfile = new SimpleSchema({
     type: String,
     optional: true,
     min: 2,
-    max: 127
+    max: 127,
+    autoValue: function () { // trim off whitespace
+      if (this.isSet && typeof this.value === "string") {
+        return this.value.trim();
+      } else {
+        this.unset()
+      }
+    }
   },
   bio: {
     type: String,
