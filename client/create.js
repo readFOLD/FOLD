@@ -258,8 +258,9 @@ var saveCallback =  function(err, numDocs, cb) {
     Session.set('saveState', 'saved');
   }, saveUIUpdateDelay);
   if(cb){
-    cb(err, numDocs)
+    cb(err, numDocs);
   }
+  throw(err);
 };
 
 var autoSaveVerticalSectionField = function(template, field, datatype){

@@ -165,6 +165,7 @@ var searchAPI = function(query) {
     that.loadingResults.set(false);
     if (err) {
       that.noMoreResults.set('No more results'); // TODO - surface error to user?
+      throw(err);
       return;
     }
 
