@@ -906,7 +906,6 @@ this.ContextBlocks.attachSchema(Schema.ContextBlocks);
 Schema.UserProfile = new SimpleSchema({
   name: {
     type: String,
-    //regEx: /^[a-z0-9A-Z\s]*$/,
     optional: true,
     min: 2,
     max: 127
@@ -948,7 +947,9 @@ Schema.UserProfile = new SimpleSchema({
 Schema.User = new SimpleSchema({
   username: {
     type: String,
-    regEx: /^[a-z0-9_]{3,15}$/,
+    regEx: /^[a-z0-9_]*$/,
+    min: 3,
+    max: 15,
     optional: true,
     autoValue: function () {
       if (this.isSet && typeof this.value === "string") {
@@ -1005,5 +1006,5 @@ Schema.User = new SimpleSchema({
 Meteor.users.attachSchema(Schema.User);
 
 SimpleSchema.messages({
-  "regEx username": "Username must be at least 3 letters long and may only contain letters, numbers, and underscores"
+  "regEx username": "Username may only contain letters, numbers, and underscores"
 });
