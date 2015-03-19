@@ -512,14 +512,14 @@ GifBlock = (function(_super) {
   GifBlock.prototype.url = function() {
     switch (this.source) {
       case 'giphy':
-        return 'http://media4.giphy.com/media/' + this.reference.id + '/giphy.gif'
+        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif'
     }
   };
 
   GifBlock.prototype.thumbnailUrl = function() {
     switch (this.source) {
       case 'giphy':
-        return 'http://media4.giphy.com/media/' + this.reference.id + '/200_d.gif'
+        return '//media4.giphy.com/media/' + this.reference.id + '/200_d.gif'
     }
   };
 
