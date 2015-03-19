@@ -982,7 +982,7 @@ Schema.User = new SimpleSchema({
       if (this.isSet && typeof this.value === "string") {
         return this.value.toLowerCase();
       } else {
-        this.unset()
+        this.unset();
       }
     },
     autoform: {
@@ -997,6 +997,13 @@ Schema.User = new SimpleSchema({
   },
   createdAt: {
     type: Date
+  },
+  admin: {
+    type: Boolean,
+    optional: true,
+    autoValue: function(){
+      this.unset(); // don't allow to be set from anywhere within the code
+    }
   },
   profile: {
     type: Schema.UserProfile,

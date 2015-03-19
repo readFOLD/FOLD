@@ -84,3 +84,9 @@ Meteor.publish("tempUsernamePub", function() {
     this.ready();
   }
 });
+
+// this publishes info one server facts (used on /stats page)
+Facts.setUserIdFilter(function (userId) {
+  var user = Meteor.users.findOne(userId);
+  return user && user.admin;
+});

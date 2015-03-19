@@ -234,3 +234,8 @@ Router.route("login", {
     }
   }
 });
+
+Router.route("stats", {
+  path: "stats",
+  template: "stats"
+});
