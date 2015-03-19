@@ -369,6 +369,7 @@ Template.add_vertical.events({
 
     return Meteor.call('insertVerticalSection', storyId, indexToInsert, function(err, numDocs) {
       if (err) {
+        throw(err);
         return alert(err);
       }
       if (numDocs) {
@@ -736,6 +737,7 @@ autoFormContextAddedHooks = {
     return window.addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
   },
   onError: function(operation, err, template) {
+    throw(err);
     return alert(err);
   }
 };

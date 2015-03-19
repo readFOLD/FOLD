@@ -483,6 +483,7 @@ Template.favorite_button.events({
   "click .favorite": function() {
     return Meteor.call('favoriteStory', this._id, function(err) {
       if (err) {
+        throw(err);
         return alert(err);
       }
     });
@@ -490,6 +491,7 @@ Template.favorite_button.events({
   "click .unfavorite": function() {
     return Meteor.call('unfavoriteStory', this._id, function(err) {
       if (err) {
+        throw(err);
         return alert(err);
       }
     });
@@ -507,6 +509,7 @@ Template.create_story.events({
     if (Meteor.user()){
       Meteor.call('createStory', function(err, pathObject){
         if (err) {
+          throw(err);
           return alert(err);
         }
         Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
