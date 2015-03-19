@@ -223,7 +223,7 @@ var searchIntegrations = {
             description: e.description,
             id: e.id,
             username : e.channelTitle,
-            usernameId : e.user_id,
+            userId : e.user_id,
             creationDate : e.created_at.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
             artworkUrl: e.artwork_url
           }
