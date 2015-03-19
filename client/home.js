@@ -26,6 +26,7 @@ loginWithTwitter = function() {
     if (err) {
       alert("Twitter login failed");
       Session.set('signingInWithTwitter', false);
+      throw(err); // throw error so we see it on kadira
     } else if (!Meteor.user().username) {
       Router.go('signup');
       Session.set('signingInWithTwitter', false);
