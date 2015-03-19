@@ -59,11 +59,11 @@ Template.home.helpers({
   }
 });
 
-Template.home.rendered = function() {
+Template.home.onRendered(function() {
   $("select").selectOrDie({
 
   });
-};
+});
 
 Template.home.events({
   "click div#expand-filter": function(d) {
@@ -153,9 +153,9 @@ Template.login_buttons.helpers({
   }
 });
 
-Template.login_buttons.created = function() {
+Template.login_buttons.onCreated(function() {
   return this.showUserInfo = new ReactiveVar(false);
-};
+});
 
 Template.login_buttons.events({
   "mouseover": function(d) {

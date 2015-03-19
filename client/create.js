@@ -85,7 +85,7 @@ window.plainTextPaste = function(e) {
   return document.execCommand('insertText', false, clipboardData.getData('text/plain'));
 };
 
-Template.create.rendered = function() {
+Template.create.onRendered(function() {
   window.showAnchorMenu = function() {
     Session.set("anchorMenuOpen", true);
     return $(".anchor-menu").show();
@@ -151,7 +151,7 @@ Template.create.rendered = function() {
     goToY(Session.get("currentY"));
     return goToX(Session.get("currentX"));
   }
-};
+});
 
 Template.fold_editor.helpers({
   boldActive: function() {
@@ -320,7 +320,7 @@ Template.vertical_section_block.events({
 
 window.refreshContentDep = new Tracker.Dependency();
 
-Template.vertical_section_block.created = function() {
+Template.vertical_section_block.onCreated(function() {
   this.semiReactiveContent = new ReactiveVar(); // used in edit mode so that browser undo functionality doesn't break when autosave
   this.babyburgerOpen = new ReactiveVar(false);
   var that = this;
@@ -328,7 +328,8 @@ Template.vertical_section_block.created = function() {
     window.refreshContentDep.depend();
     that.semiReactiveContent.set(that.data.content)
   });
-};
+});
+
 Template.vertical_section_block.helpers({
   babyburgerOpen: function(){
     return Template.instance().babyburgerOpen.get();
@@ -557,9 +558,9 @@ Template.add_horizontal.events({
   }
 });
 
-Template.create_horizontal_section_block.created = function() {
+Template.create_horizontal_section_block.onCreated(function() {
   return this.type = new ReactiveVar('video');
-};
+});
 
 Template.create_horizontal_section_block.helpers({
   type: function() {

@@ -399,19 +399,24 @@ searchTemplateRenderedBoilerplate  = function() {
 };
 
 
-Template.create_video_section.created = searchTemplateCreatedBoilerplate('video', 'youtube');
-Template.create_video_section.rendered = searchTemplateRenderedBoilerplate();
+Template.create_video_section.onCreated(searchTemplateCreatedBoilerplate('video', 'youtube'));
+Template.create_video_section.onRendered(searchTemplateRenderedBoilerplate());
 
-Template.create_twitter_section.created = searchTemplateCreatedBoilerplate('twitter', 'twitter');
-Template.create_twitter_section.rendered = searchTemplateRenderedBoilerplate();
+Template.create_twitter_section.onCreated(searchTemplateCreatedBoilerplate('twitter', 'twitter'));
+Template.create_twitter_section.onRendered(searchTemplateRenderedBoilerplate());
 
 // TODO autosearch when change between sources
-Template.create_image_section.created = searchTemplateCreatedBoilerplate('image', 'flickr');
-Template.create_image_section.rendered = searchTemplateRenderedBoilerplate();
+Template.create_image_section.onCreated(searchTemplateCreatedBoilerplate('image', 'flickr'));
+Template.create_image_section.onRendered(searchTemplateRenderedBoilerplate());
 
 
-Template.create_gif_section.created = searchTemplateCreatedBoilerplate('gif', 'giphy');
-Template.create_gif_section.rendered = searchTemplateRenderedBoilerplate();
+Template.create_gif_section.onCreated(searchTemplateCreatedBoilerplate('gif', 'giphy'));
+Template.create_gif_section.onRendered(searchTemplateRenderedBoilerplate());
+
+
+
+Template.create_audio_section.onCreated(searchTemplateCreatedBoilerplate('audio', 'soundcloud'));
+Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
 
 
 var dataSourcesByType = {
@@ -432,11 +437,7 @@ _.each(dataSourcesByType, function(dataSources, type){
 });
 
 
-Template.create_audio_section.created = searchTemplateCreatedBoilerplate('audio', 'soundcloud');
-Template.create_audio_section.rendered = searchTemplateRenderedBoilerplate();
-
-
-Template.create_viz_section.created = function() {
+Template.create_viz_section.onCreated(function() {
   this.type = 'viz';
   this.source = new ReactiveVar('oec');
 
@@ -467,12 +468,12 @@ Template.create_viz_section.created = function() {
       source: that.source.get()
     }));
   });
-};
+});
 
 
-Template.create_viz_section.rendered = function() {
+Template.create_viz_section.onRendered(function() {
   $("select").selectOrDie({size: 8});
-};
+});
 
 Template.create_viz_section.helpers({
     cardWidth: function() { return Session.get('cardWidth') - 40; } ,
@@ -503,7 +504,7 @@ Template.create_viz_section.events({
   }
 })
 
-Template.create_map_section.created = function() {
+Template.create_map_section.onCreated(function() {
   this.type = 'map';
   this.source = new ReactiveVar('google_maps');
   this.loadingResults = new ReactiveVar();
@@ -521,7 +522,7 @@ Template.create_map_section.created = function() {
       authorId : Meteor.user()._id
     }))
   };
-};
+});
 
 Template.create_map_section.helpers({
   url: function() {
@@ -538,10 +539,10 @@ Template.create_map_section.helpers({
   }
 });
 
-Template.create_text_section.created = function() {
+Template.create_text_section.onCreated(function() {
   this.type = 'text';
   this.source = new ReactiveVar('free_text');
-};
+});
 
 Template.create_text_section.helpers({
   startingBlock: function() {

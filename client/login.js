@@ -1,12 +1,12 @@
-Template.login_form.created = function() {
+Template.login_form.onCreated(function() {
   this.loginFailed = new ReactiveVar(false);
-}
+});
 
 Template.login_form.helpers({
   loginFailed: function() {
     return Template.instance().loginFailed.get();
   } 
-})
+});
 
 
 Template.login_form.events({
@@ -29,5 +29,5 @@ Template.login_form.events({
       return;
     })
   }
-})
+});
 

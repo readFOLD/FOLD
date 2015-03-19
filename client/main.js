@@ -140,7 +140,7 @@ Tracker.autorun(function() {
   }
 });
 
-Template.story_header.rendered = function() {
+Template.story_header.onRendered(function() {
   var range, sel, titleDiv;
   // add cursor to title section if empty
   if (!this.data.title) {
@@ -156,7 +156,7 @@ Template.story_header.rendered = function() {
       return sel.addRange(range);
     }
   }
-};
+});
 
 Template.story_header.helpers({
   title: function() {

@@ -23,10 +23,11 @@ var createUser = function(user, template) {
      }});
   };
 
-Template.signup_form.created = function() {
+Template.signup_form.onCreated(function() {
   this.invalidPassword = new ReactiveVar(false);
   this.signupError = new ReactiveVar();
-}
+});
+
 Template.signup_form.helpers({
   tempUsername: function() {
     if (Meteor.user()) {
