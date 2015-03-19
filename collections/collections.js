@@ -906,7 +906,7 @@ this.ContextBlocks.attachSchema(Schema.ContextBlocks);
 Schema.UserProfile = new SimpleSchema({
   name: {
     type: String,
-    regEx: /^[a-z0-9A-Z\s]*$/,
+    //regEx: /^[a-z0-9A-Z\s]*$/,
     optional: true,
     min: 2,
     max: 127
