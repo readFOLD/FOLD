@@ -59,9 +59,6 @@ Router.route("profile", {
   onBeforeAction: function() {
     var user;
     if ((user = Meteor.user()) || Meteor.loggingIn()) {
-      if (user) {
-        this.subscribe('readStoriesPub', user.profile.favorites);
-      }
       return this.next();
     } else {
       this.redirect("home", {

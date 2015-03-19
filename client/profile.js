@@ -53,6 +53,10 @@ Template.user_stories.events({
   }
 });
 
+Template.user_favorite_stories.onCreated(function(){
+  this.subscribe('readStoriesPub', Meteor.user().profile.favorites);
+});
+
 Template.user_favorite_stories.helpers({
   favoriteStories: function() {
     if (Meteor.user()) {
