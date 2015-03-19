@@ -182,20 +182,20 @@ Router.route("edit", {
     }
   },
   onBeforeAction: function() {
-    var user;
-    if ((user = Meteor.user()) || Meteor.loggingIn()) {
-      if (user && user._id !== this.data().authorId) {
-        this.redirect("read", this.data(), {
+    var user, data;
+    if ((user = Meteor.user()) || Meteor.loggingIn()) { // if there is a user
+      data = this.data();
+      if (user && data && user._id !== data.authorId) { // if they don't own the story redirect them to read
+        this.redirect("read", data, {
           replaceState: true
         });
-        alert("Only the author may edit a story");
       }
-      return this.next();
+      return this.next(); // if they do own the story, let them through to create
     } else {
-      this.redirect("read", this.data(), {
+      Session.set('signingIn', true); // if there is no user, take them to the signin page
+      this.redirect("home", { // TO-DO, after they sign in, they should get back to the create page
         replaceState: true
       });
-      alert("You must be logged in to edit a story");
       return this.next();
     }
   }
