@@ -3,7 +3,7 @@
   <div class="signup">
     <section>
       {{> signup_form}}
-      {{> footer_signup}}
+      {{> footer}}
     </section>
   </div>
 </template>
@@ -36,10 +36,4 @@
       <p>By creating an account, I accept FOLD’s {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}}</p>
       <button type="submit" class="signup-button">Sign up</button>
     </form>
-</template>
-
-<template name="footer_signup">
-    <div class ="footer">
-        Follow us at <a href="http://twitter.com/readFOLD" target="_blank">@readFOLD</a> or e-mail us at <a href="mailto:fold@media.mit.edu">fold@media.mit.edu</a>.
-    </div>
 </template>
