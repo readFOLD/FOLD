@@ -22,16 +22,15 @@ loginWithTwitter = function() {
   Meteor.loginWithTwitter({
     requestPermissions: ['user']
   }, function (err) {
-
     if (err) {
       alert("Twitter login failed");
       Session.set('signingInWithTwitter', false);
       throw(err); // throw error so we see it on kadira
-    } else if (!Meteor.user().username) {
+    } else if (!Meteor.user().username) { // if they are signing up for the first time they won't have a username yet
       Router.go('twitter-signup');
       Session.set('signingInWithTwitter', false);
-    } 
-    return;
+    }
+    // otherwise they are a returning user, so do nothing because they are now logged in and free to proceed
   });
 };
 
