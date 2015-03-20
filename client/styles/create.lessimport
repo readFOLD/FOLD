@@ -218,21 +218,21 @@ div.title-overlay {
     background-color: @dark-color;
     &.fixed {
       position: fixed;
-      padding-top: 16px;
+      padding-top: 19px;
     }
     div.story-title {
       max-width: 100%;
       font-weight: bold;
-      font-size: 30px;
+      font-size: 25px;
       line-height: 30px;
-      padding-bottom: 15px;
+      padding-bottom: 9px;
       overflow-x: hidden;
       overflow-y: visible;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
     div.author {
-      font-size: 20px;
+      font-size: 18px;
       //font-style: italic;
     }
   }
