@@ -260,7 +260,9 @@ var saveCallback =  function(err, numDocs, cb) {
   if(cb){
     cb(err, numDocs);
   }
-  throw(err);
+  if (err){
+    throw(err);
+  }
 };
 
 var autoSaveVerticalSectionField = function(template, field, datatype){
