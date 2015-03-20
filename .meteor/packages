@@ -3,17 +3,13 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-standard-app-packages
 less
-coffeescript
 natestrauser:font-awesome@4.0.3
-accounts-ui
 accounts-password
 accounts-twitter
 underscore
 insecure
 iron:router
-tmeasday:html5-history-api
 
 reactive-var
 http
@@ -25,5 +21,6 @@ meteorhacks:kadira
 gadicohen:robots-txt
 meteorhacks:npm
 npm-container
-lepozepo:s3
 facts
+lepozepo:s3
+meteor-platform
