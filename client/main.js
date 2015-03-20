@@ -133,7 +133,7 @@ Tracker.autorun(function() {
     var user = Meteor.user();
     var currentRoute = Router.current();
     if (user && currentRoute){ //
-      if(!user.username && currentRoute.url.substring(currentRoute.url.lastIndexOf('/') + 1) !== 'signup'){ // if user has no username, confirm they are on the page where they can fill that out
+      if(!user.username && currentRoute.url.substring(currentRoute.url.lastIndexOf('/') + 1) !== 'twitter-signup'){ // if user has no username, confirm they are on the page where they can fill that out
         Meteor.logout(); // otherwise log them out
       }
     }

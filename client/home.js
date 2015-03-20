@@ -28,7 +28,7 @@ loginWithTwitter = function() {
       Session.set('signingInWithTwitter', false);
       throw(err); // throw error so we see it on kadira
     } else if (!Meteor.user().username) {
-      Router.go('signup');
+      Router.go('twitter-signup');
       Session.set('signingInWithTwitter', false);
     } 
     return;

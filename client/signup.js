@@ -36,10 +36,7 @@ Template.signup_form.helpers({
     return;
   },
   emailUser: function() {  
-    if (Meteor.user()) {
-        return false;
-    }
-    return true;
+   return Session.get('emailUser');
   },
   invalidPassword: function() {
     return Template.instance().invalidPassword.get();
