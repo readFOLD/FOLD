@@ -729,6 +729,10 @@ div.horizontal-context {
       &.image {
         height:250px;
       }
+
+      a:hover {
+        color: @action-color
+      }
     }
     
     

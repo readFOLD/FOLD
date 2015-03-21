@@ -342,7 +342,7 @@
             </div>
             <div class="info">
               <span>
-                <a href='{{t.twitter_url}}'><i class="fa fa-twitter" target="_blank"></i>
+                <a href="{{t.twitter_url}}" target="_blank"><i class="fa fa-twitter"></i>
                 </a>
                 {{#if t.retweet}}
                   <a href="{{t.retweet_url}}" target="_blank">
@@ -353,13 +353,13 @@
             </div>
             <div class="actions">
               <span>
-                <a href='{{t.reply_action}}'>
+                <a href="{{t.reply_action}}" target="_blank">
                   <i class="fa fa-reply"></i>
                 </a>
-                <a href='{{t.retweet_action}}'>
+                <a href="{{t.retweet_action}}" target="_blank">
                   <i class="fa fa-retweet"></i>
                 </a>
-                <a href='{{t.favorite_action}}'>
+                <a href="{{t.favorite_action}}" target="_blank">
                   <i class="fa fa-star"></i>
                 </a>
               </span>

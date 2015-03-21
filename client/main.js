@@ -248,7 +248,6 @@ Template.story.events = {
   },
   "click a": function(e) {
     var contextId;
-    e.preventDefault();
     contextId = $(e.target).data('contextId');
     return goToContext(contextId);
   }
