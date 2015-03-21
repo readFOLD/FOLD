@@ -198,8 +198,8 @@ Router.route("edit", {
   }
 });
 
-Router.route("signup", {
-  path: "signup",
+Router.route("twitter-signup", {
+  path: "twitter-signup",
   template: "signup",
   onRun: function() {
     $('html, body').scrollTop(0);
@@ -212,6 +212,22 @@ Router.route("signup", {
     }
   },
   action: function() {
+    Session.set("emailUser", false);
+    if (this.ready()) {
+      return this.render();
+    }
+  }
+});
+
+Router.route("email-signup", {
+  path: "email-signup",
+  template: "signup",
+  onRun: function() {
+    $('html, body').scrollTop(0);
+    return this.next();
+  },
+  action: function() {
+    Session.set("emailUser", true);
     if (this.ready()) {
       return this.render();
     }

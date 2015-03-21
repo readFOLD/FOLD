@@ -23,6 +23,7 @@ form#login-form {
 h1.login-header {
   text-align: center;
   margin-bottom: 50px;
+  font-size: 23px;
 }
 
 

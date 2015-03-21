@@ -219,7 +219,7 @@ if (Stories.find().count() === 0) {
         }],
         title: "Historical",
         hasTitle: true,
-        content: "<a href='javascript:void(0);' data-context-id='15'>In 1976</a>, Ebola first emerged in Sudan and Zaire, two countries in <a href='javascript:void(0);'data-context-id='15'>Central Africa</a>. This outbreak killed approximately 300 people, and although epidemiologists studied the area extensively, Ebola’s natural reservoir in the environment was never discovered. In 1989, Ebola was also discovered in the Philippines, after monkeys infected with the disease were exported from there to an animal testing laboratory in Reston, Virginia in the United States. "
+        content: "<a href='javascript:void(0);'data-context-id='15'>In 1976</a>, Ebola first emerged in Sudan and Zaire, two countries in <a href='javascript:void(0);'data-context-id='14'>Central Africa</a>. This outbreak killed approximately 300 people, and although epidemiologists studied the area extensively, Ebola’s natural reservoir in the environment was never discovered. In 1989, Ebola was also discovered in the Philippines, after monkeys infected with the disease were exported from there to an animal testing laboratory in Reston, Virginia in the United States. "
       }, {
         _id: '92',
         contextBlocks: [{
