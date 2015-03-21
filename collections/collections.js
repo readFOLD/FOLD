@@ -6,6 +6,7 @@ var checkOwner = function(userId, doc) {
   return userId && userId === doc.authorId;
 };
 
+
 SimpleSchema.debug = true; // TODO Remove after launch
 
 Schema = {};
@@ -391,69 +392,25 @@ TwitterBlock = (function(_super) {
   TwitterBlock.prototype.links = function(){
 
     if (this.reference.retweetedStatus) {
-      var retweetUser = this.reference.retweetedStatus.user.screen_name;
-      var hashtags = this.reference.retweetedStatus.entities.hashtags;
-      var mentions = this.reference.retweetedStatus.entities.user_mentions;
       var urls = this.reference.retweetedStatus.entities.urls;
     } else {
-      var hashtags = this.reference.entities.hashtags;
-      var mentions = this.reference.entities.user_mentions;
       var urls = this.reference.entities.urls;
     }
-
-    if (hashtags.length > 0 || mentions.length > 0 || urls.length >0) {
-      //construct tweet according to twitter requirements
-      var links = _.chain([hashtags, mentions, urls])
-        .reduce(function(a, b) { return a.concat(b)}, [])
-        .sortBy(function(link) {
-          return link.indices[0];
-        })
-        .value();
-      links = links.reverse()
-    }
-    return links
+    return urls
   };
 
   TwitterBlock.prototype.formattedTweet = function() { 
-    var pre, post;
-    var text = this.reference.text,
-      openStart = '<a href=',
-      openEnd= ' target="_blank">',
-      close = '</a>',
-      hashUrlStart = '"https://twitter.com/hashtag/',
-      hashUrlEnd = '?src=hash"',
-      mentionUrl = '"https://twitter.com/',
-      offset = 0,
-      i = [];
-      if (this.retweetUser()) {
-        offset = text.indexOf(":") + 2; //start string after "RT @handle: "
-      }
-
-    _.each(this.links(), function(link) {
-      i[0] = link.indices[0] + offset;
-      i[1] = link.indices[1] + offset;
-      pre = text.substring(0,i[0]);
-      post = text.substring(i[1], text.length);
-      
-      if (link.url) {
-        formattedStr = openStart + encodeURI(link.url) + openEnd + 
-                       link.display_url + close;
-      } else if (link.text) {
-        formattedStr = openStart + hashUrlStart + encodeURI(link.text) + hashUrlEnd + openEnd +
-                       "#" + link.text + close;
-      } else if (link.screen_name) {
-        formattedStr = openStart + mentionUrl + encodeURI(link.screen_name) + '"' + openEnd +
-                       "@" + link.screen_name + close;
-      }
-      text = pre + formattedStr +  post;
-    })
-
-    var imgIndex = text.indexOf("http://"); //twitter strips all other user-tweeted links of the 'http://'
-    if (this.reference.img && imgIndex!=-1) {
+    var text = this.reference.text;
+    
+    if (this.imgUrl()) {
+      var imgIndex = text.lastIndexOf("http://");
       text = text.substring(0, imgIndex);
     }
 
-    return text;
+    return twttr.txt.autoLink(text, {
+      urlEntities: this.links(),
+      targetBlank: true
+    });
   };
 
   return TwitterBlock;
