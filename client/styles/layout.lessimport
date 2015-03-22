@@ -376,6 +376,10 @@ div#overlay {
       background-color: @action-color;
       color: white;
     }
+    &.adding {
+      background-color: @panel-color;
+      color: white;
+    }
   }
 }
 
