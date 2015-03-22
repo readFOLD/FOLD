@@ -132,6 +132,9 @@ Template._story_preview_content.helpers({
     if(this.publishedAt) {
       return formatDateNice(this.publishedAt);
     }
+  },
+  headerImageUrl: function() {
+    return '//' + Meteor.settings["public"].AWS_BUCKET + '.s3.amazonaws.com/header-images/' + this.headerImage;
   }
 });
 
