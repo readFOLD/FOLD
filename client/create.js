@@ -671,11 +671,11 @@ Template.horizontal_context.helpers({
 });
 
 var findPlaceholderLink = function(verticalSectionIndex){
-  return $('.vertical-narrative-section[data-vertical-index="' + verticalSectionIndex + '"]').find('a.adding');
+  return $('.vertical-narrative-section[data-vertical-index="' + verticalSectionIndex + '"]').find('a.placeholder');
 };
 
 var removePlaceholderLinks = function(){
-  return $('.vertical-narrative-section').find('a.adding').contents().unwrap();
+  return $('.vertical-narrative-section').find('a.placeholder').contents().unwrap();
 };
 
 Template.context_anchor_new_card_option.events = {
@@ -689,7 +689,7 @@ Template.context_anchor_new_card_option.events = {
     var placeholderAnchorElement = $('a[href="' + placeholderHrefToken +'"]'); // find temporary anchor
     placeholderAnchorElement.attr('href', 'javascript:void(0);'); // get rid of temporary href
 
-    placeholderAnchorElement.addClass('adding');
+    placeholderAnchorElement.addClass('placeholder');
 
     return showNewHorizontalUI();
   }
@@ -736,7 +736,7 @@ window.addContextToStory = function(storyId, contextId, verticalSectionIndex, cb
       if (placeholderAnchorElement) {
         placeholderAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
         placeholderAnchorElement.attr('data-context-type', ContextBlocks.findOne(contextId).type);
-        placeholderAnchorElement.removeClass('adding'); // add active class because we go to this context and if we're already there it won't get the class
+        placeholderAnchorElement.removeClass('placeholder'); // add active class because we go to this context and if we're already there it won't get the class
         saveNarrativeSectionContent(verticalSectionIndex);
       }
 
