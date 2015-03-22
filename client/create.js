@@ -508,7 +508,7 @@ Tracker.autorun(function() {
   }
 });
 
-Tracker.autorun(function() {
+Tracker.autorun(function() { // update UI when start and stop adding/editing context
   var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
   var verticalSection = Session.get('currentVerticalSection');
   if (verticalSection) {
@@ -520,8 +520,8 @@ Tracker.autorun(function() {
     } else {
       if (document.body){
         document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
+        removePlaceholderLinks();
       }
-      return horizontalContextDiv.removeClass('editing');
     }
   }
 });
