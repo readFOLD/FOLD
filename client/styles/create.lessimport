@@ -620,8 +620,7 @@ div.horizontal-context {
 
     .search-input-container {
       background: @dark-color;
-      //width: calc(100% ~"-"@searchButtonWidth ~"-" @innerElementPadding);
-      width: 100%;
+      width: calc(100% ~"-" @searchButtonWidth);
       padding-left: 10px;
     }
 
