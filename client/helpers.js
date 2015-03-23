@@ -26,6 +26,10 @@ Handlebars.registerHelper("signingIn", function() {
   return Session.get("signingIn");
 });
 
+Handlebars.registerHelper("currentYId", function() {
+  return Session.get("currentYId");
+});
+
 Handlebars.registerHelper("addingContext", function() {
   return Session.get("addingContext");
 });
