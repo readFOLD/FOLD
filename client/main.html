@@ -222,7 +222,7 @@
 
 <!-- Display Templates -->
 <template name="display_text_section">
-  <div class="text-section">
+  <div class="text-section" dir="auto">
       {{content}}
     </div>
     {{#unless read}}
@@ -234,7 +234,7 @@
   <div class="image-section">
     <img src="{{url}}" />
     {{#if description}}
-        <div class="description-overlay">
+        <div class="description-overlay" dir="auto">
           {{description}}
         </div>
       {{/if}}
@@ -304,7 +304,7 @@
       <img src="{{previewUrl}}"/>
     </div>
     {{#if description}}
-        <div class="description-overlay">
+        <div class="description-overlay" dir="auto">
           {{! description}}
         </div>
       {{/if}}
@@ -338,7 +338,7 @@
                 </div>
               </div>
             </div>
-            <div class="tweet">{{{formattedTweet}}}
+            <div class="tweet" dir="auto">{{{formattedTweet}}}
             </div>
             <div class="info">
               <span>

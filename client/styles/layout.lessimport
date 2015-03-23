@@ -66,6 +66,11 @@
   }
 }
 
+.text-align-start{
+  text-align: left; // fallback
+  text-align: start;
+}
+
 
 // http://asimpleframe.com/
 @font-face {
@@ -434,7 +439,7 @@ div.description-overlay {
   @font-size: 14px;
   font-size: @font-size;
   line-height: 20px;
-  text-align: left;
+  .text-align-start;
 }
 
 

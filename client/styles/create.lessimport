@@ -873,7 +873,6 @@ div.horizontal-context {
 
 div.text-section {
   line-height: 26px;
-  text-align: left;
   font-size: 16.5px;
   margin-top: 25px;
   margin-left: 30px;
@@ -944,7 +943,7 @@ div.text-section {
     font-weight: 400;
     font-size: .9em;
     padding: 0.5em 1em 0 1em;
-    text-align: left;
+    .text-align-start;
     text-decoration: none;
     display: inline-block;
     cursor: pointer;
@@ -1078,8 +1077,7 @@ div.context-anchor-menu {
     }
   }
   button{
-    text-align: left;
-
+    .text-align-start;
   }
   .context-anchor-list{
     max-height: 3.9 * @fold-editor-row-height;

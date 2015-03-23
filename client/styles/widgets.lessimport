@@ -23,7 +23,7 @@
     color: #444444;
     font-size: 13px;
     font-weight: 700;
-    text-align: left;
+    .text-align-start;
     text-transform: uppercase;
     outline: 0;
     outline-offset: -2px; /* Opera */
