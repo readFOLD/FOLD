@@ -7,6 +7,21 @@ var TWITTER_API_SECRET = process.env.TWITTER_API_SECRET || Meteor.settings.TWITT
 
 var Twit = Meteor.npmRequire('twit');
 
+decrementByOne = function(bigInt) {
+    var intArr = bigInt.split("");
+    if (intArr.length === 1) {
+        return (intArr[0] -1).toString()
+    }
+    
+    var result = [],
+        borrow = 0;
+    for (var i=intArr.length ; i--;) {
+        var temp = intArr[i] - borrow - (i === intArr.length -1 ? 1 :0) ;
+        borrow = temp < 0 ? 1 : 0;
+        result.unshift(((borrow * 10) + temp).toString());
+    }
+    return result.join("")
+};
 
 if (!GOOGLE_API_SERVER_KEY) {
   console.error('Settings must be loaded for apis to work');
@@ -274,11 +289,8 @@ Meteor.methods({
       params.screen_name = query;
       try {
         items = twitterResultsSync(api[option], params);
-        var idString = items[items.length-1].id_str
-        var start = idString.substring(0, idString.length-9);
-        var end = idString.substring(idString.length-9);
-        var newEnd = parseInt(end) -1;
-        page = start + newEnd.toString();
+        var idString = items[items.length-1].id_str;
+        page = decrementByOne(idString);
       } catch(error) {
         items = [];
       }
