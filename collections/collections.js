@@ -619,6 +619,9 @@ TextBlock = (function(_super) {
   function TextBlock(doc) {
     TextBlock.__super__.constructor.call(this, doc);
     this.type = 'text';
+    if (!this.source) {
+      this.source = 'plaintext';
+    }
   }
 
   TextBlock.prototype.longSnippet = function() {

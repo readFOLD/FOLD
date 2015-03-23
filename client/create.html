@@ -204,12 +204,12 @@
         {{/each}}
       </ul>
     </div>
-    {{#autoForm collection='ContextBlocks' id="createTextSectionForm" doc=startingBlock type="insert" validation="keyup"}}
-      {{> afQuickField name='content' label=''}}
+    <form>
+      <textarea name="content" value={{content}} class="text-input" rows="10" dir="auto"></textarea>
       <button type="submit" class="add-button">
         Add
       </button>
-    {{/autoForm}}
+    </form>
   </div>
 </template>
 

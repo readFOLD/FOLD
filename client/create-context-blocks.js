@@ -60,7 +60,7 @@ throttledSearchScrollFn = _.throttle(searchScrollFn, 20);
 var addContext = function(contextBlock) {
   var storyId = Session.get("storyId");
   Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
-  var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {storyId: storyId}));
+  var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {storyId: storyId, authorId: Meteor.user()._id}));
   return window.addContextToStory(storyId, contextId, Session.get("currentY"));
 };
 
@@ -307,7 +307,6 @@ var createTemplateNames = [
   'create_video_section',
   'create_twitter_section',
   'create_map_section',
-  'create_text_section',
   'create_audio_section',
   'create_viz_section'
 ];
@@ -550,6 +549,17 @@ Template.create_text_section.helpers({
     if (this instanceof ContextBlock) {
       return this;
     }
+  }
+});
+
+Template.create_text_section.events({
+  'submit form': function(e, template){
+    e.preventDefault()
+    addContext(new TextBlock({
+      content: template.$('textarea[name=content]').val(),
+      authorId: Meteor.user()._id,
+      source: 'plaintext'
+    }));
   }
 });
 

@@ -745,19 +745,6 @@ autoFormContextAddedHooks = {
   }
 };
 
-AutoForm.hooks({
-  createTextSectionForm: _.extend({}, autoFormContextAddedHooks, {
-    before: {
-      insert: function(doc) {
-        doc = new TextBlock(doc);
-        return _.extend(doc, {
-          authorId: Meteor.user()._id
-        });
-      }
-    }
-  })
-});
-
 Template.horizontal_section_edit_delete.helpers({
   canMoveLeft: function () {
     return this.index;
