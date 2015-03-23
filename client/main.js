@@ -114,6 +114,13 @@ updatecurrentY = function() {
   }
 };
 
+Tracker.autorun(function(){
+  if(!Session.get('pastHeader')){
+    Session.set('currentY', null);
+    Session.set('currentX', null);
+  }
+});
+
 Meteor.startup(function() {
   var throttledUpdate;
   Session.setDefault("filterOpen", false);
