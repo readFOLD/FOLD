@@ -380,6 +380,10 @@ div#overlay {
       background-color: @action-color;
       color: white;
     }
+    &.placeholder {
+      background-color: @panel-color;
+      color: white;
+    }
   }
 }
 

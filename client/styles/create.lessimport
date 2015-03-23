@@ -849,7 +849,7 @@ div.horizontal-context {
       font-size: 12px;
       line-height: 35px;
       float: left;
-      cursor: auto;
+      cursor: pointer;
 
       &:not(:last-child) {
         margin-right: 10px;
