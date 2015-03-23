@@ -61,6 +61,7 @@ oauth@1.1.4
 oauth1@1.1.4
 observe-sequence@1.0.5
 ordered-dict@1.0.3
+percolatestudio:segment.io@1.1.1_1
 random@1.0.3
 reactive-dict@1.1.0
 reactive-var@1.0.5
