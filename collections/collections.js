@@ -46,10 +46,6 @@ Story = (function() {
     return this.title = "";
   };
 
-  Story.prototype.headerImageUrl = function() {
-    return this.headerImageUrl = '//' + Meteor.settings["public"].AWS_BUCKET +'.s3.amazonaws.com/header-images/' + this.headerImage;
-  };
-
   Story.prototype.publish = function() {
     var dasherizedTitle;
     if (!this.savedAt) {
@@ -580,6 +576,9 @@ TextBlock = (function(_super) {
   function TextBlock(doc) {
     TextBlock.__super__.constructor.call(this, doc);
     this.type = 'text';
+    if (!this.source) {
+      this.source = 'plaintext';
+    }
   }
 
   TextBlock.prototype.longSnippet = function() {

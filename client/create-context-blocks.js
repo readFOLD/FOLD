@@ -60,7 +60,7 @@ throttledSearchScrollFn = _.throttle(searchScrollFn, 20);
 var addContext = function(contextBlock) {
   var storyId = Session.get("storyId");
   Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
-  var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {storyId: storyId}));
+  var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {storyId: storyId, authorId: Meteor.user()._id}));
   return window.addContextToStory(storyId, contextId, Session.get("currentY"));
 };
 
@@ -307,7 +307,6 @@ var createTemplateNames = [
   'create_video_section',
   'create_twitter_section',
   'create_map_section',
-  'create_text_section',
   'create_audio_section',
   'create_viz_section'
 ];
@@ -446,7 +445,7 @@ Template.create_viz_section.onCreated(function() {
   this.countries = VizBlock.countries;
   this.years = [1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012];
 
-  this.selectedCountry = new ReactiveVar(this.countries[Math.floor(Math.random() * this.countries.length)].id);
+  this.selectedCountry = new ReactiveVar(_.sample(this.countries).id);
   this.selectedDirection = new ReactiveVar('export');
   this.selectedYear = new ReactiveVar(2012);
 
@@ -550,6 +549,17 @@ Template.create_text_section.helpers({
     if (this instanceof ContextBlock) {
       return this;
     }
+  }
+});
+
+Template.create_text_section.events({
+  'submit form': function(e, template){
+    e.preventDefault()
+    addContext(new TextBlock({
+      content: template.$('textarea[name=content]').val(),
+      authorId: Meteor.user()._id,
+      source: 'plaintext'
+    }));
   }
 });
 

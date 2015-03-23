@@ -66,6 +66,11 @@
   }
 }
 
+.text-align-start{
+  text-align: left; // fallback
+  text-align: start;
+}
+
 
 // http://asimpleframe.com/
 @font-face {
@@ -296,7 +301,6 @@ body {
   transition: background-color 0.25s ease;
 
   line-height: 23px;
-  text-align: left;
   font-size: 15px;
 }
 
@@ -376,6 +380,10 @@ div#overlay {
       background-color: @action-color;
       color: white;
     }
+    &.placeholder {
+      background-color: @panel-color;
+      color: white;
+    }
   }
 }
 
@@ -409,7 +417,6 @@ div#overlay {
 
   div.title {
     line-height: @titleHeight;
-    text-align: left;
     font-size: 20px;
     font-weight: 600;
     margin-bottom: @titleMarginBottom;
@@ -418,7 +425,6 @@ div#overlay {
   div.content {
     line-height: 26px;
     overflow: hidden;
-    text-align: left;
     font-size: 16.5px;
     min-height: @normalContentHeight + @titleHeight + @titleMarginBottom;
     &.minimized {
@@ -437,8 +443,7 @@ div.description-overlay {
   @font-size: 14px;
   font-size: @font-size;
   line-height: 20px;
-  text-align: left;
-
+  .text-align-start;
 }
 
 

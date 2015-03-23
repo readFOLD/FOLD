@@ -213,6 +213,7 @@ Router.route("twitter-signup", {
   },
   action: function() {
     Session.set("emailUser", false);
+    Session.set('signingInWithTwitter', false);
     if (this.ready()) {
       return this.render();
     }
@@ -228,6 +229,7 @@ Router.route("email-signup", {
   },
   action: function() {
     Session.set("emailUser", true);
+    Session.set('signingInWithTwitter', false);
     if (this.ready()) {
       return this.render();
     }

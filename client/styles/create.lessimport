@@ -620,8 +620,7 @@ div.horizontal-context {
 
     .search-input-container {
       background: @dark-color;
-      //width: calc(100% ~"-"@searchButtonWidth ~"-" @innerElementPadding);
-      width: 100%;
+      width: calc(100% ~"-" @searchButtonWidth);
       padding-left: 10px;
     }
 
@@ -854,7 +853,7 @@ div.horizontal-context {
       font-size: 12px;
       line-height: 35px;
       float: left;
-      cursor: auto;
+      cursor: pointer;
 
       &:not(:last-child) {
         margin-right: 10px;
@@ -878,7 +877,6 @@ div.horizontal-context {
 
 div.text-section {
   line-height: 26px;
-  text-align: left;
   font-size: 16.5px;
   margin-top: 25px;
   margin-left: 30px;
@@ -949,7 +947,7 @@ div.text-section {
     font-weight: 400;
     font-size: .9em;
     padding: 0.5em 1em 0 1em;
-    text-align: left;
+    .text-align-start;
     text-decoration: none;
     display: inline-block;
     cursor: pointer;
@@ -1083,8 +1081,7 @@ div.context-anchor-menu {
     }
   }
   button{
-    text-align: left;
-
+    .text-align-start;
   }
   .context-anchor-list{
     max-height: 3.9 * @fold-editor-row-height;

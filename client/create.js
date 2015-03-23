@@ -8,6 +8,10 @@ var saveUpdatedSelection = function () {
   $(window.selectedNode).closest('.content').blur();
 };
 
+var saveNarrativeSectionContent = function (verticalIndex) {
+  $('.vertical-narrative-section[data-vertical-index="' + verticalIndex + '"]').find('.content').blur();
+};
+
 window.updateUIBasedOnSelection = function(e){
   var selection = window.getSelection();
 
@@ -504,7 +508,7 @@ Tracker.autorun(function() {
   }
 });
 
-Tracker.autorun(function() {
+Tracker.autorun(function() { // update UI when start and stop adding/editing context
   var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
   var verticalSection = Session.get('currentVerticalSection');
   if (verticalSection) {
@@ -516,8 +520,8 @@ Tracker.autorun(function() {
     } else {
       if (document.body){
         document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
+        removePlaceholderLinks();
       }
-      return horizontalContextDiv.removeClass('editing');
     }
   }
 });
@@ -666,10 +670,27 @@ Template.horizontal_context.helpers({
   }
 });
 
+var findPlaceholderLink = function(verticalSectionIndex){
+  return $('.vertical-narrative-section[data-vertical-index="' + verticalSectionIndex + '"]').find('a.placeholder');
+};
+
+var removePlaceholderLinks = function(){
+  return $('.vertical-narrative-section').find('a.placeholder').contents().unwrap();
+};
+
 Template.context_anchor_new_card_option.events = {
   "mousedown": function(e) {
     e.preventDefault();
     hideFoldEditor();
+    removePlaceholderLinks();
+    var placeholderHrefToken = '#LinkToNextCard';
+
+    document.execCommand('createLink', false, placeholderHrefToken);
+    var placeholderAnchorElement = $('a[href="' + placeholderHrefToken +'"]'); // find temporary anchor
+    placeholderAnchorElement.attr('href', 'javascript:void(0);'); // get rid of temporary href
+
+    placeholderAnchorElement.addClass('placeholder');
+
     return showNewHorizontalUI();
   }
 };
@@ -683,9 +704,9 @@ Template.context_anchor_option.events = {
 
     // need to create temporary link because want to take advantage of createLink browser functionality
     // but the link really gets interacted with via the 'data-context-id' attribute
-    temporaryHrefToken = 'http://example.com/OhSuChToken';
+    var temporaryHrefToken = '#OhSuChToken';
     document.execCommand('createLink', false, temporaryHrefToken);
-    temporaryAnchorElement = $('a[href="' + temporaryHrefToken +'"]'); // find temporary anchor
+    var temporaryAnchorElement = $('a[href="' + temporaryHrefToken +'"]'); // find temporary anchor
     temporaryAnchorElement.attr('href', 'javascript:void(0);'); // get rid of temporary href
     temporaryAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
     temporaryAnchorElement.attr('data-context-type', this.type);
@@ -711,6 +732,14 @@ window.addContextToStory = function(storyId, contextId, verticalSectionIndex, cb
   }, function(err, numDocs) {
     if (numDocs) {
       hideNewHorizontalUI();
+      var placeholderAnchorElement = findPlaceholderLink(verticalSectionIndex);
+      if (placeholderAnchorElement) {
+        placeholderAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
+        placeholderAnchorElement.attr('data-context-type', ContextBlocks.findOne(contextId).type);
+        placeholderAnchorElement.removeClass('placeholder'); // add active class because we go to this context and if we're already there it won't get the class
+        saveNarrativeSectionContent(verticalSectionIndex);
+      }
+
       return goToContext(contextId);
     }
     saveCallback(err, numDocs, cb);
@@ -744,19 +773,6 @@ autoFormContextAddedHooks = {
     return alert(err);
   }
 };
-
-AutoForm.hooks({
-  createTextSectionForm: _.extend({}, autoFormContextAddedHooks, {
-    before: {
-      insert: function(doc) {
-        doc = new TextBlock(doc);
-        return _.extend(doc, {
-          authorId: Meteor.user()._id
-        });
-      }
-    }
-  })
-});
 
 Template.horizontal_section_edit_delete.helpers({
   canMoveLeft: function () {

@@ -160,7 +160,7 @@
       <div class="search-outside-input-container search-open">
         <div class="search-trigger">Search</div>
         <div class="search-input-container">
-          <input type = "search" placeholder={{placeholder}} autofocus="autofocus">
+          <input type="search" placeholder={{placeholder}} autofocus="autofocus" dir="auto">
         </div>
         <button type="submit" class="search-button">{{> search_icon }}</button>
       </div>
@@ -204,12 +204,12 @@
         {{/each}}
       </ul>
     </div>
-    {{#autoForm collection='ContextBlocks' id="createTextSectionForm" doc=startingBlock type="insert" validation="keyup"}}
-      {{> afQuickField name='content' label=''}}
+    <form>
+      <textarea name="content" value={{content}} class="text-input" rows="10" dir="auto"></textarea>
       <button type="submit" class="add-button">
         Add
       </button>
-    {{/autoForm}}
+    </form>
   </div>
 </template>
 
@@ -349,7 +349,7 @@
                     <a href="//twitter.com/{{reference.screenname}}" target="_blank">@{{reference.screenname}}</a>
                     </span>
                   </div>
-                  <div class="tweet">{{{formattedTweet}}}
+                  <div class="tweet" dir="auto">{{{formattedTweet}}}
                   </div>
                   {{#if imgUrl}}
                     <div>
