@@ -525,8 +525,11 @@ Template.create_link_section.onCreated(function() {
     var url = this.$('input[type="search"]').val();
 
     Meteor.call('embedlyEmbedResult', url, function(err, result) {
+      console.log(result);
+      console.log(result.type, "TYPE");
       switch(result.type) {
         case 'link':
+          console.log("Setting focusResult to link")
           that.focusResult.set(new LinkBlock({
             reference: {
               title: result.title,
@@ -540,9 +543,43 @@ Template.create_link_section.onCreated(function() {
             },
             description: result.title,
             authorId : Meteor.user()._id,
-            type: that.type,
+            type: 'link',
             source: that.source.get()
-        }));
+          }));
+          break;
+        case 'photo':
+          console.log("Setting focusResult to image")
+          that.focusResult.set(new ImageBlock({
+            reference: {
+              title: result.title,
+              providerName: result.provider_name,
+              providerUrl: result.provider_url,
+              url: result.url
+            },
+            authorId : Meteor.user()._id,
+            type: 'image',
+            source: 'link'
+          }));
+          break;
+        case 'video':
+        console.log("Setting focusResult to video")
+          that.focusResult.set(new VideoBlock({
+            reference: {
+              title: result.title,
+              linkDescription: result.description,
+              thumbnailUrl: result.thumbnail_url,
+              providerName: result.provider_name,
+              providerUrl: result.provider_url,
+              providerTruncatedUrl: result.provider_url.replace(/.*?:\/\/www./g, ""),
+              url: result.url,
+              imageOnLeft: ((result.thumbnail_width / result.thumbnail_height) <= 1.25),
+            },
+            description: result.title,
+            authorId : Meteor.user()._id,
+            type: 'video',
+            source: 'link'
+          }));
+          break;
       }
     });
   };
@@ -568,10 +605,8 @@ Template.create_link_section.helpers({
     }
   },
   imageOnLeft: function() {
-
     var preview = Template.instance().focusResult.get();
     if (preview) {
-      console.log("IMAGE ON LEFT", preview.imageOnLeft())
       return preview.imageOnLeft();
     }
   },
@@ -597,6 +632,19 @@ Template.create_link_section.helpers({
     var preview = Template.instance().focusResult.get();
     if (preview) {
       return (Template.instance().focusResult.get().type === 'link');      
+    }
+  },
+  image: function() {
+    console.log(Template.instance().focusResult.get());
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return (Template.instance().focusResult.get().type === 'image');      
+    }
+  },
+  video: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return (Template.instance().focusResult.get().type === 'video');      
     }
   }
 });

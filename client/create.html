@@ -214,7 +214,7 @@
 </template>
 
 <template name="create_link_section">
-  <div class="create-section">
+  <div class="create-section create-link-section">
     <div class="tabs">
       <ul>
         {{#each dataSources}}
@@ -245,7 +245,9 @@
     {{/if}}
 
     {{#if image}}
-    <img src="{{url}}" />
+    <div class="preview-section image-section">
+      <img class="image" src="{{url}}" />
+    </div>
     {{/if}}
 
     {{#if video}}

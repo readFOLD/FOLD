@@ -471,6 +471,8 @@ ImageBlock = (function(_super) {
     switch (this.source) {
       case 'local':
         return '/' + this.reference.id;
+      case 'link':
+        return this.reference.url;
       case 'imgur':
         return '//i.imgur.com/' + this.reference.id + '.' + this.reference.fileExtension;
       case 'flickr':
