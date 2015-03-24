@@ -524,12 +524,10 @@ Template.create_link_section.onCreated(function() {
     // https://www.youtube.com/watch?v=zMUrvO71Teg
     var url = this.$('input[type="search"]').val();
 
-    Meteor.call('embedlyEmbedResult', url, function(err, result) {
-      console.log(result);
-      console.log(result.type, "TYPE");
+    Meteor.call('embedlyEmbedResult', url, function(error, result) {
+      console.log("RESULT", result);
       switch(result.type) {
         case 'link':
-          console.log("Setting focusResult to link")
           that.focusResult.set(new LinkBlock({
             reference: {
               title: result.title,
@@ -548,7 +546,6 @@ Template.create_link_section.onCreated(function() {
           }));
           break;
         case 'photo':
-          console.log("Setting focusResult to image")
           that.focusResult.set(new ImageBlock({
             reference: {
               title: result.title,
@@ -562,23 +559,22 @@ Template.create_link_section.onCreated(function() {
           }));
           break;
         case 'video':
-        console.log("Setting focusResult to video")
-          that.focusResult.set(new VideoBlock({
-            reference: {
-              title: result.title,
-              linkDescription: result.description,
-              thumbnailUrl: result.thumbnail_url,
-              providerName: result.provider_name,
-              providerUrl: result.provider_url,
-              providerTruncatedUrl: result.provider_url.replace(/.*?:\/\/www./g, ""),
-              url: result.url,
-              imageOnLeft: ((result.thumbnail_width / result.thumbnail_height) <= 1.25),
-            },
-            description: result.title,
-            authorId : Meteor.user()._id,
-            type: 'video',
-            source: 'link'
-          }));
+          if (result.provider_name === "YouTube") {
+            var id = result.url.split("v=")[1]
+            that.focusResult.set(new VideoBlock({
+              reference: {
+                title: result.title,
+                description: result.description,
+                id: id,
+                username: result.author_name,
+                url: result.url,
+              },
+              description: result.title,
+              authorId : Meteor.user()._id,
+              type: 'video',
+              source: 'youtube'
+            }));
+          }
           break;
       }
     });
@@ -635,13 +631,13 @@ Template.create_link_section.helpers({
     }
   },
   image: function() {
-    console.log(Template.instance().focusResult.get());
     var preview = Template.instance().focusResult.get();
     if (preview) {
       return (Template.instance().focusResult.get().type === 'image');      
     }
   },
   video: function() {
+    console.log(Template.instance().focusResult.get().type)
     var preview = Template.instance().focusResult.get();
     if (preview) {
       return (Template.instance().focusResult.get().type === 'video');      

@@ -535,16 +535,6 @@ div.link-section {
   height: 300px;
   border-bottom: 7px solid @action-color;
 
-  &.preview-section {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    border: 1px solid @medium-color;
-    border-bottom: 7px solid @action-color;
-    // margin-left: -22px;
-    // margin-right: -22px;
-    height: 300px;
-  }
-
   div.top {
     .thumbnail {
       &.left {
@@ -569,9 +559,10 @@ div.link-section {
       padding: 10px;
 
       &.image-on-left {
+        display: flex;
+        align-items: center;
         background-color: @dark-color;
         float: right;
-        padding-top: 40px;
         width: calc(100% ~"-" 130px);
         border-bottom: 1px solid @dark-color;
         background-color: @dark-color;

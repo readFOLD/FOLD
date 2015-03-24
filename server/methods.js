@@ -306,12 +306,11 @@ Meteor.methods({
       url: query,
       key: EMBEDLY_KEY
     }
+
     res = HTTP.get('http://api.embed.ly/1/oembed', {
       params: requestParams
-    })
-
-    return res.data
-
+    });
+    return res.data;
   },
   youtubeVideoSearchList: function(query, option, page) {
     var res;
@@ -330,7 +329,6 @@ Meteor.methods({
     res = HTTP.get('https://www.googleapis.com/youtube/v3/search', {
       params: requestParams
     });
-
 
     items = _.chain(res.data.items)
       .filter(function(element) {
