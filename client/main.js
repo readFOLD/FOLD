@@ -248,18 +248,21 @@ Template.story_header.events = {
 Template.story.events = {
   "click": function(d) {
     if (!Session.get("pastHeader")) {
+      console.log("Clicking above header")
       Session.set("pastHeader", true)
       return goToY(0);
     }
   },
   "click .link": function(d) {
+    console.log("Clicking .link")
     var srcE, x, y;
     srcE = d.srcElement ? d.srcElement : d.target;
     x = $(srcE).data("x");
     y = $(srcE).data("y");
     return goToXY(x, y);
   },
-  "click a": function(e) {
+  "click .vertical-narrative-section a": function(e) {
+    console.log("Clicking .vns a")
     var contextId;
     e.preventDefault();
     contextId = $(e.target).data('contextId');
