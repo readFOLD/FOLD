@@ -246,6 +246,12 @@ Template.story_header.events = {
 };
 
 Template.story.events = {
+  "click": function(d) {
+    if (!Session.get("pastHeader")) {
+      Session.set("pastHeader", true)
+      return goToY(0);
+    }
+  },
   "click .link": function(d) {
     var srcE, x, y;
     srcE = d.srcElement ? d.srcElement : d.target;
@@ -452,6 +458,8 @@ Template.display_audio_section.helpers(horizontalBlockHelpers);
 Template.display_video_section.helpers(horizontalBlockHelpers);
 
 Template.display_map_section.helpers(horizontalBlockHelpers);
+
+Template.display_link_section.helpers(horizontalBlockHelpers);
 
 Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 

@@ -642,6 +642,44 @@ TextBlock = (function(_super) {
 
 })(ContextBlock);
 
+LinkBlock = (function(_super) {
+  __extends(LinkBlock, _super);
+
+  function LinkBlock(doc) {
+    LinkBlock.__super__.constructor.call(this, doc);
+    this.type = 'link';
+  }
+
+  LinkBlock.prototype.title = function() {
+    return this.reference.title;
+  };
+
+  LinkBlock.prototype.linkDescription = function() {
+    return this.reference.linkDescription;
+  };
+
+  LinkBlock.prototype.thumbnailUrl = function() {
+    return this.reference.thumbnailUrl;
+  };
+
+  LinkBlock.prototype.imageOnLeft = function() {
+    return this.reference.imageOnLeft;
+  };
+
+  LinkBlock.prototype.url = function() {
+    return this.reference.url;
+  };
+
+  LinkBlock.prototype.providerUrl = function() {
+    return this.reference.providerUrl;
+  };
+
+  LinkBlock.prototype.providerTruncatedUrl= function() {
+    return this.reference.providerTruncatedUrl;
+  };
+  return LinkBlock;
+
+})(ContextBlock);
 
 var newTypeSpecificContextBlock =  function(doc) {
   switch (doc.type) {
@@ -661,6 +699,8 @@ var newTypeSpecificContextBlock =  function(doc) {
       return new VizBlock(doc);
     case 'twitter':
       return new TwitterBlock(doc);
+    case 'link':
+      return new LinkBlock(doc);
     default:
       return new ContextBlock(doc);
   }
@@ -675,6 +715,7 @@ if (Meteor.isClient) {
   window.AudioBlock = AudioBlock;
   window.VizBlock = VizBlock;
   window.TwitterBlock = TwitterBlock;
+  window.LinkBlock = LinkBlock;
   window.newTypeSpecificContextBlock = newTypeSpecificContextBlock
 }
 
@@ -804,6 +845,17 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     blackbox: true
   },
 
+  // Link
+  title: { type: String, optional: true },
+  linkDescription: { type: String, optional: true },  
+  thumbnailUrl: { type: String, optional: true },
+  url: { type: String, optional: true },  
+  providerName: { type: String, optional: true },  
+  providerUrl: { type: String, optional: true },  
+  providerTruncatedUrl: { type: String, optional: true },  
+  imageOnLeft: { type: Boolean, optional: true },  
+
+  // OEC
   oecYear: {
     type: String,
     optional: true

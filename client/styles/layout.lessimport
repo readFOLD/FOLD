@@ -530,6 +530,82 @@ div.oec-section {
   background-color: white;
 }
 
+div.link-section {
+  position: relative;
+  height: 300px;
+  border-bottom: 7px solid @action-color;
+
+  &.preview-section {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border: 1px solid @medium-color;
+    border-bottom: 7px solid @action-color;
+    // margin-left: -22px;
+    // margin-right: -22px;
+    height: 300px;
+  }
+
+  div.top {
+    .thumbnail {
+      &.left {
+        float: left;
+        width: 130px;
+        height: 130px;
+      }
+      &.top {
+        background-color: @action-color;
+        background-position: center center;
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        height: 130px;   
+      }
+    }
+    div.link-title {
+      font-size: 20px;
+      font-weight: bold;
+      padding: 10px;
+
+      &.image-on-left {
+        background-color: @dark-color;
+        float: right;
+        padding-top: 40px;
+        width: calc(100% ~"-" 130px);
+        border-bottom: 1px solid @dark-color;
+        background-color: @dark-color;
+        color: white;
+        height: 130px;
+      }
+    }
+  }
+
+  div.link-description {
+    font-size: 14px;
+    width: 100%;
+
+    padding-left: 10px;
+    overflow-y: scroll;
+    &.image-on-top {
+      max-height: 50px;
+    }
+
+    &.image-on-left {
+      max-height: 100px;
+      padding-top: 10px;
+    }
+  }
+
+  a.bottom {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    cursor: pointer;
+    color: @action-color;
+  }
+}
+
 div.twitter-section{
   div.twitter-text-section {
     a {

@@ -138,8 +138,8 @@
     </div>
     {{#if addingContext}}
       {{#if type}}
-        {{#if link}}{{> unimplemented_link_section}}{{/if}}
         {{#if remix}}{{> unimplemented_remix_section}}{{/if}}
+        {{#if link}}{{> create_link_section}}{{/if}}
         {{#if text}}{{> create_text_section}}{{/if}}
         {{#if audio}}{{> create_audio_section}}{{/if}}
         {{#if image}}{{> create_image_section}}{{/if}}
@@ -210,6 +210,56 @@
         Add
       </button>
     </form>
+  </div>
+</template>
+
+<template name="create_link_section">
+  <div class="create-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+
+    {{> search_form placeholderType='links'}}
+
+    {{#if link}}
+    <div class="link-section preview-section {{#if isFocused}}focused{{/if}}">
+      <a href="{{url}}" target="_blank">
+        <div class="top">
+        {{#if thumbnailUrl}}
+          {{#if imageOnLeft}}
+            <img class="thumbnail left" src="{{thumbnailUrl}}" />
+          {{else}}
+            <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
+          {{/if}}
+          <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
+        {{/if}}
+        </div>
+      </a>
+      <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
+      <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+    </div>
+    {{/if}}
+
+    {{#if image}}
+    <img src="{{url}}" />
+    {{/if}}
+
+    {{#if video}}
+    {{/if}}
+  <!--
+      {{#if loading}}
+        {{> loading_icon}}
+      {{/if}}
+      {{#if noMoreResults}}
+        {{noMoreResults}}
+      {{/if}} -->
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
   </div>
 </template>
 
@@ -329,7 +379,6 @@
     {{/if}}
   </div>
 </template>
-
 
 <template name="create_twitter_section">
   {{#if twitterUser}}

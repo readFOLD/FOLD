@@ -4,6 +4,7 @@ var IMGUR_CLIENT_ID = Meteor.settings.IMGUR_CLIENT_ID;
 var FLICKR_API_KEY = Meteor.settings.FLICKR_API_KEY;
 var TWITTER_API_KEY = process.env.TWITTER_API_KEY || Meteor.settings.TWITTER_API_KEY;
 var TWITTER_API_SECRET = process.env.TWITTER_API_SECRET || Meteor.settings.TWITTER_API_SECRET;
+var EMBEDLY_KEY = Meteor.settings.EMBEDLY_KEY;
 
 var Twit = Meteor.npmRequire('twit');
 
@@ -295,6 +296,22 @@ Meteor.methods({
     };
 
     return searchResults;
+  },
+  embedlyEmbedResult: function(query) {
+    var res, requestParams;
+    check(query, String);
+    this.unblock();
+
+    requestParams = {
+      url: query,
+      key: EMBEDLY_KEY
+    }
+    res = HTTP.get('http://api.embed.ly/1/oembed', {
+      params: requestParams
+    })
+
+    return res.data
+
   },
   youtubeVideoSearchList: function(query, option, page) {
     var res;

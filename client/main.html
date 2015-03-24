@@ -203,6 +203,13 @@
           {{> display_viz_section}}
         {{/if}}
       {{/if}}
+      {{#if link}}
+        {{#if editingThisContext}}
+          {{> create_link_section}}
+        {{else}}
+          {{> display_link_section}}
+        {{/if}}
+      {{/if}}
       {{else}}
         {{> display_broken_section}}
       {{/if}}
@@ -314,6 +321,29 @@
   {{#unless read}}
       {{> horizontal_section_edit_delete}}
     {{/unless}}
+</template>
+
+
+<template name="display_link_section">
+  <div class="link-section {{#if isFocused}}focused{{/if}}">
+    <a href="{{url}}" target="_blank">
+      <div class="top">
+        {{#if thumbnailUrl}}
+          {{#if imageOnLeft}}
+            <img class="thumbnail left" src="{{thumbnailUrl}}" />
+          {{else}}
+            <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
+          {{/if}}
+          <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
+        {{/if}}
+      </div>
+    </a>
+    <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
+    <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+  </div>
+  {{#unless read}}
+    {{> horizontal_section_edit_delete}}
+  {{/unless}}
 </template>
 
 <template name="display_twitter_section">

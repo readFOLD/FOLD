@@ -311,7 +311,8 @@ var createTemplateNames = [
   'create_twitter_section',
   'create_map_section',
   'create_audio_section',
-  'create_viz_section'
+  'create_viz_section',
+  'create_link_section'
 ];
 
 _.each(createTemplateNames, function(templateName){
@@ -421,6 +422,9 @@ Template.create_gif_section.onRendered(searchTemplateRenderedBoilerplate());
 Template.create_audio_section.onCreated(searchTemplateCreatedBoilerplate('audio', 'soundcloud'));
 Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
 
+Template.create_audio_section.created = searchTemplateCreatedBoilerplate('audio', 'soundcloud');
+Template.create_audio_section.rendered = searchTemplateRenderedBoilerplate();
+
 
 var dataSourcesByType = {
   'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}],
@@ -430,7 +434,8 @@ var dataSourcesByType = {
   'audio': [{source: 'soundcloud', display: 'SoundCloud'}],
   'twitter': [{source: 'twitter', display: 'Twitter'}],
   'map': [{source: 'google_maps', display: 'Google Maps'}],
-  'text': [{source: 'free_text', display: 'Free Text'}]
+  'text': [{source: 'free_text', display: 'Free Text'}],
+  'link': [{source: 'link', display: 'Link'}]
 };
 
 
@@ -507,6 +512,96 @@ Template.create_viz_section.events({
   }
 })
 
+Template.create_link_section.onCreated(function() {
+  this.type = 'link';
+  this.source = new ReactiveVar('link');
+  this.loadingResults = new ReactiveVar();
+  this.focusResult = new ReactiveVar();
+
+  var that = this;
+  this.search = function(){
+    // http://nytimes.com
+    // https://www.youtube.com/watch?v=zMUrvO71Teg
+    var url = this.$('input[type="search"]').val();
+
+    Meteor.call('embedlyEmbedResult', url, function(err, result) {
+      switch(result.type) {
+        case 'link':
+          that.focusResult.set(new LinkBlock({
+            reference: {
+              title: result.title,
+              linkDescription: result.description,
+              thumbnailUrl: result.thumbnail_url,
+              providerName: result.provider_name,
+              providerUrl: result.provider_url,
+              providerTruncatedUrl: result.provider_url.replace(/.*?:\/\/www./g, ""),
+              url: result.url,
+              imageOnLeft: ((result.thumbnail_width / result.thumbnail_height) <= 1.25),
+            },
+            description: result.title,
+            authorId : Meteor.user()._id,
+            type: that.type,
+            source: that.source.get()
+        }));
+      }
+    });
+  };
+});
+
+Template.create_link_section.helpers({
+  title: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return preview.title();
+    }
+  },
+  linkDescription: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return preview.linkDescription();
+    }
+  },
+  url: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return preview.url();
+    }
+  },
+  imageOnLeft: function() {
+
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      console.log("IMAGE ON LEFT", preview.imageOnLeft())
+      return preview.imageOnLeft();
+    }
+  },
+  providerUrl: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return preview.providerUrl();
+    }
+  },
+  providerTruncatedUrl: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return preview.providerTruncatedUrl();
+    }
+  },
+  thumbnailUrl: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return preview.thumbnailUrl();
+    }
+  },
+  link: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return (Template.instance().focusResult.get().type === 'link');      
+    }
+  }
+});
+
+
 Template.create_map_section.onCreated(function() {
   this.type = 'map';
   this.source = new ReactiveVar('google_maps');
@@ -515,8 +610,6 @@ Template.create_map_section.onCreated(function() {
 
   var that = this;
   this.search = function(){
-    input = getSearchInput.call(this);
-
     that.focusResult.set(new MapBlock({
       reference: {
         mapQuery: input.query,
@@ -581,6 +674,14 @@ Template.search_form.events({
 Template.search_form.helpers({
   placeholder: function() {
     switch(Template.instance().data.placeholderType){
+      case 'links':
+        return 'e.g. ' +
+          _.sample([
+            'http://readfold.com',
+            'http://twitter.com/readFOLD',
+            'http://nytimes.com'
+          ]);
+        break;
       case 'locations':
         return 'e.g. ' +
           _.sample([
