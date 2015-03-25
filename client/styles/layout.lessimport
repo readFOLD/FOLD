@@ -556,7 +556,7 @@ div.link-section {
     div.link-title {
       font-size: 20px;
       font-weight: bold;
-      padding: 10px;
+      padding: 20px;
 
       &.image-on-left {
         display: flex;
@@ -576,7 +576,9 @@ div.link-section {
     font-size: 14px;
     width: 100%;
 
-    padding-left: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
     overflow-y: scroll;
     &.image-on-top {
       max-height: 50px;
@@ -584,13 +586,13 @@ div.link-section {
 
     &.image-on-left {
       max-height: 100px;
-      padding-top: 10px;
+      padding-top: 15px;
     }
   }
 
   a.bottom {
     position: absolute;
-    left: 10px;
+    left: 15px;
     bottom: 10px;
     cursor: pointer;
     color: @action-color;
