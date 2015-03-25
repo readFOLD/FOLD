@@ -422,10 +422,6 @@ Template.create_gif_section.onRendered(searchTemplateRenderedBoilerplate());
 Template.create_audio_section.onCreated(searchTemplateCreatedBoilerplate('audio', 'soundcloud'));
 Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
 
-Template.create_audio_section.created = searchTemplateCreatedBoilerplate('audio', 'soundcloud');
-Template.create_audio_section.rendered = searchTemplateRenderedBoilerplate();
-
-
 var dataSourcesByType = {
   'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}],
   'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
@@ -539,7 +535,6 @@ Template.create_link_section.onCreated(function() {
               url: result.url,
               imageOnLeft: ((result.thumbnail_width / result.thumbnail_height) <= 1.25),
             },
-            description: result.title,
             authorId : Meteor.user()._id,
             type: 'link',
             source: that.source.get()
@@ -569,7 +564,6 @@ Template.create_link_section.onCreated(function() {
                 username: result.author_name,
                 url: result.url,
               },
-              description: result.title,
               authorId : Meteor.user()._id,
               type: 'video',
               source: 'youtube'
