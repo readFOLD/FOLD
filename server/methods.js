@@ -275,36 +275,27 @@ Meteor.methods({
 
     params = {count: count};
     if (page) {params.max_id = page;}
-
     if (option === 'all') {
       params.q = query;
-      try {
-        res = twitterResultsSync(api[option], params);    
-      } catch (err) {
-        if(!err.response || err.response.statusCode !== 404) { 
-          throw err;
-        }
-      }
-      if (res.search_metadata && res.search_metadata.next_results) {
-        page = res.search_metadata.next_results.match(/\d+/)[0]
-      }
-      if (res.statuses) {items = res.statuses}
-    } 
-    else {
+    } else {
       params.screen_name = query;
-      try {
-        items = twitterResultsSync(api[option], params);
-      } catch (err) {
-        if(!err.response || err.response.statusCode !== 404) { 
-          throw err;
-        }
-      }
-      if (items[0] && items[0].id_str) {
-        page = decrementByOne(items[items.length-1].id_str); 
-      }
     }
 
-    if (!items.length){
+    try {
+      res = twitterResultsSync(api[option], params);
+    } 
+    catch (err) {
+      if (err.statusCode !== 404) { 
+        throw err;
+      }      
+    }
+    items = (res.statuses) ? res.statuses : res;
+
+    if (res.search_metadata && res.search_metadata.next_results) {
+      page = res.search_metadata.next_results.match(/\d+/)[0];
+    } else if (items[0] && items[0].id_str) {
+      page = decrementByOne(items[items.length-1].id_str); 
+    } else {
       page = "end";
     }
 
