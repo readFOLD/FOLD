@@ -8,6 +8,21 @@ var EMBEDLY_KEY = Meteor.settings.EMBEDLY_KEY;
 
 var Twit = Meteor.npmRequire('twit');
 
+var decrementByOne = function(bigInt) {
+    var intArr = bigInt.split("");
+    if (intArr.length === 1) {
+        return (intArr[0] -1).toString()
+    }
+    
+    var result = [],
+        borrow = 0;
+    for (var i=intArr.length ; i--;) {
+        var temp = intArr[i] - borrow - (i === intArr.length -1 ? 1 :0) ;
+        borrow = temp < 0 ? 1 : 0;
+        result.unshift(((borrow * 10) + temp).toString());
+    }
+    return result.join("")
+};
 
 if (!GOOGLE_API_SERVER_KEY) {
   console.error('Settings must be loaded for apis to work');
@@ -240,13 +255,20 @@ Meteor.methods({
   },
   twitterSearchList: function(query, option, page) {
     var res;
-    var items;
+    var items =[];
+    var isId = false;
 
     check(query, String);
+    if (query.indexOf('twitter.com') !==-1) {
+      var newQuery = _.chain(query.split('/')).compact().last().value().match(/[\d\w_]*/)[0];
+      query = newQuery || query;
+      isId = (/^\d+$/).test(query);
+    }
     this.unblock();
     count = 15;
     var api = {
-      'all' : "search/tweets",
+      'all' : 'search/tweets',
+      'all_url' : 'statuses/show', 
       'user' : 'statuses/user_timeline',
       'favorites' : 'favorites/list'
     };
@@ -261,33 +283,34 @@ Meteor.methods({
 
     params = {count: count};
     if (page) {params.max_id = page;}
-
-    if (option === 'all') {
+    if (option === 'all' && isId) {
+      option = 'all_url';
+      params.id = query;
+    } else if (option === 'all') {
       params.q = query;
-      try {
-        res = twitterResultsSync(api[option], params);  
-        page = res.search_metadata.next_results.match(/\d+/)[0];
-        items = res.statuses;
-      } catch(error) {
-        items = [];
-      }
     } else {
       params.screen_name = query;
-      try {
-        items = twitterResultsSync(api[option], params);
-        var idString = items[items.length-1].id_str
-        var start = idString.substring(0, idString.length-9);
-        var end = idString.substring(idString.length-9);
-        var newEnd = parseInt(end) -1;
-        page = start + newEnd.toString();
-      } catch(error) {
-        items = [];
-      }
     }
 
+    try {
+      res = twitterResultsSync(api[option], params);
+    } 
+    catch (err) {
+      if (err.statusCode !== 404) { 
+        throw err;
+      }  
+      res = {};    
+    }
 
-    if (!items.length){
+    if (option === 'all_url') {
+      items[0] = res;
       page = "end";
+    } else if (option === 'all') {
+      items = res.statuses;
+      page = res.search_metadata.next_results ? res.search_metadata.next_results.match(/\d+/)[0] : "end";
+    } else {
+      items = res;
+      page = decrementByOne(items[items.length-1].id_str); 
     }
 
     searchResults = {

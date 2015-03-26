@@ -366,19 +366,20 @@
         <div class='image-section'>
           <img src='{{imgUrl}}'>
         </div>
+        <button class="show-image"></button>
       {{/if}}
         <div class="twitter-text-section {{#if imgUrl}}image{{/if}}">
           <div class='tweet-card'>
             <div class='title'>
               <div class='prof_pic'>
-                <a href="{{t.user_url}}" target="_blank">
-                  <img src="{{t.userpic}}"> 
+                <a href="{{user_url}}" target="_blank">
+                  <img src="{{userpic}}"> 
                 </a>
               </div>
               <div class='username'>
-                <div>{{t.username}} 
+                <div>{{username}} 
                 </div>
-                <div class="screenname"><a href="{{t.user_url}}" target="_blank">@{{t.screenname}}</a>
+                <div class="screenname"><a href="{{user_url}}" target="_blank">@{{screenname}}</a>
                 </div>
               </div>
             </div>
@@ -386,24 +387,24 @@
             </div>
             <div class="info">
               <span>
-                <a href='{{t.twitter_url}}'><i class="fa fa-twitter" target="_blank"></i>
+                <a href="{{twitter_url}}" target="_blank"><i class="fa fa-twitter"></i>
                 </a>
-                {{#if t.retweet}}
-                  <a href="{{t.retweet_url}}" target="_blank">
-                  <i class="fa fa-retweet"></i>@{{t.retweet}}</a>
+                {{#if retweetUser}}
+                  <a href="{{retweet_url}}" target="_blank">
+                  <i class="fa fa-retweet"></i>@{{retweetUser}}</a>
                 {{/if}}
-                <a href="{{t.tweet_url}}" target="_blank">{{t.date}}</a>
+                <a href="{{tweet_url}}" target="_blank">{{date}}</a>
               </span>
             </div>
             <div class="actions">
               <span>
-                <a href='{{t.reply_action}}'>
+                <a href="{{reply_action}}" target="_blank">
                   <i class="fa fa-reply"></i>
                 </a>
-                <a href='{{t.retweet_action}}'>
+                <a href="{{retweet_action}}" target="_blank">
                   <i class="fa fa-retweet"></i>
                 </a>
-                <a href='{{t.favorite_action}}'>
+                <a href="{{favorite_action}}" target="_blank">
                   <i class="fa fa-star"></i>
                 </a>
               </span>

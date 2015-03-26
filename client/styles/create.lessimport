@@ -400,6 +400,18 @@ svg{
   }
 }
 
+div.create-section.link-twitter{
+  text-align: center;
+}
+.link-twitter-button{
+  background-color: @action-color;
+  height: 50px;
+  padding: 8px;
+  &:hover{
+    background-color: @black-color;
+  }
+}
+
 
 div.horizontal-context {
   section {
@@ -729,6 +741,10 @@ div.horizontal-context {
       height: @searchResultHeight;   
       &.image {
         height:250px;
+      }
+
+      a:hover {
+        color: @action-color
       }
     }
     

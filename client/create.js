@@ -859,3 +859,16 @@ Template.create_options.events({
     });
   },
 });
+
+Template.link_twitter.events({
+  "click button": function() {
+    Meteor.linkWithTwitter({
+      requestPermissions: ['user']
+    }, function (err) {
+      if (err) {
+        alert("Twitter login failed");
+        throw(err);
+      }
+    });
+  }
+});

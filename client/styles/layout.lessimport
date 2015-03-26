@@ -100,6 +100,15 @@
   transform: @string;
 }
 
+
+.linear-gradient (@direction, @startColor, @endColor) {
+  background: -webkit-linear-gradient(@direction, @startColor, @endColor);
+  background: -moz-linear-gradient(@direction, @startColor, @endColor);
+  background: -ms-linear-gradient(@direction, @startColor, @endColor);
+  background: -o-linear-gradient(@direction, @startColor, @endColor);
+  background: linear-gradient(@direction, @startColor, @endColor);
+}
+
 .transition (@value1,@value2:X,...)
 {
   @value: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
@@ -226,7 +235,7 @@ li{
 button{
   cursor: pointer;
   border: none;
-  color: inherit;
+  color: white;
   background-color: inherit;
   font-family: inherit;
   font-size: inherit;
@@ -603,6 +612,14 @@ div.link-section {
 }
 
 div.twitter-section{
+  button.show-image {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 1;
+  }
   div.twitter-text-section {
     a {
       &:hover {
@@ -617,8 +634,26 @@ div.twitter-section{
       background-color: @light-transparent-color;
       position: relative;
       top: -100%;
+      &.transparent {
+        z-index: -5;
       }
+      &.show-corner{
+        .linear-gradient(45deg, @light-transparent-color, @light-transparent-color);
+        .linear-gradient(135deg, @light-transparent-color, @light-transparent-color);
+        .linear-gradient(225deg, transparent 22px, @light-transparent-color 22px);
 
+        &:before {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 30px;
+          height: 30px;
+          .box-shadow(0 1px 1px rgba(0,0,0,0.3), -1px 1px 1px rgba(0,0,0,0.2));
+          .linear-gradient(225deg, transparent 50%, @light-transparent-color 50%);
+        }
+      }
+    }
     div.tweet-card {
       display: table-cell;
       vertical-align: bottom;

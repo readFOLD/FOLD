@@ -404,14 +404,14 @@
           <li class="{{#if isFocused}}focused{{/if}}">
             <div class="search-result {{#if imgUrl}}image{{/if}}">
                 <div class="thumbnail">
-                  <a href="//twitter.com/{{reference.screenname}}" target="_blank">
-                    <img class="small" src="{{reference.userPic}}">
+                  <a href="//twitter.com/{{screenname}}" target="_blank">
+                    <img class="small" src="{{userpic}}">
                   </a>
                 </div>
                 <div class="info twitter">
-                  <div class="content-title">{{reference.username}}
+                  <div class="content-title">{{username}}
                     <span>
-                    <a href="//twitter.com/{{reference.screenname}}" target="_blank">@{{reference.screenname}}</a>
+                    <a href="//twitter.com/{{screenname}}" target="_blank">@{{screenname}}</a>
                     </span>
                   </div>
                   <div class="tweet" dir="auto">{{{formattedTweet}}}
@@ -423,12 +423,12 @@
                   {{/if}}
                   <div class="descr">
                     <span>
-                      <a href="//twitter.com"><i class="fa fa-twitter" target="_blank"></i></a>
+                      <a href={{twitter_url}} target="_blank"><i class="fa fa-twitter"></i></a>
                       {{#if retweetUser}}
-                        <a href="//twitter.com/{{retweetUser}}" target="_blank">
+                        <a href={{retweet_url}} target="_blank">
                         <i class="fa fa-retweet"></i> @{{retweetUser}}</a>
                       {{/if}}
-                      <a href="//twitter.com/{{reference.screenname}}/status/{{reference.id}}" target="_blank">{{reference.creationDate}}</a>
+                      <a href={{tweet_url}} target="_blank">{{date}}</a>
                     </span>
                   </div>
                 </div>
@@ -451,10 +451,14 @@
       {{/if}}
     </div>
   {{else}}
-    <div class="create-section unimplemented">
-      Only users who've linked their Twitter accounts may search Twitter. But don't fret — you'll be able to link your account soon!
+    <div class="create-section link-twitter">
+      {{> link_twitter}}
     </div>
   {{/if}}
+</template>
+
+<template name="link_twitter">
+  <button class="link-twitter-button">Link Twitter Account</button>
 </template>
 
 <template name="create_video_section">
@@ -479,10 +483,10 @@
                 {{/if}}
               </div>
               <div class="info {{#if isFocused}}focused{{/if}}">
-                <div class="content-title">{{reference.title}}</div>
-                <div class="descr">{{reference.description}}</div>
-                <div class="user">{{reference.username}}</div>
-                <div class="date">{{reference.creationDate}}</div>
+                <div class="content-title">{{title}}</div>
+                <div class="descr">{{caption}}</div>
+                <div class="user">{{username}}</div>
+                <div class="date">{{creationDate}}</div>
               </div>
             </div> 
         </li>
