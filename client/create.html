@@ -394,12 +394,15 @@
       {{/if}}
     </div>
   {{else}}
-    <div class="create-section unimplemented">
-      Only users who've linked their Twitter accounts may search Twitter. But don't fret — you'll be able to link your account soon!
+    <div class="create-section">
+      {{> link_twitter}}
     </div>
   {{/if}}
 </template>
 
+<template name="link_twitter">
+  <button class="link-twitter">Link with Twitter</button>
+</template>
 <template name="create_video_section">
   <div class="create-section">
     <div class="tabs">

@@ -24,3 +24,4 @@ facts
 lepozepo:s3
 meteor-platform
 percolatestudio:segment.io@=1.1.1_1
+bozhao:link-accounts
