@@ -905,6 +905,14 @@ div.text-section {
       max-height: 100%;
     }
   }
+  .transparent-cover{
+    opacity: 0;
+    .size-to-fit;
+    position: absolute;
+    left:0;
+    top:0;
+    z-index: 100;
+  }
 }
 
 @fold-editor-row-height: 55px;
