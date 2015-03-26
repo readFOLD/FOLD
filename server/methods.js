@@ -255,12 +255,12 @@ Meteor.methods({
   twitterSearchList: function(query, option, page) {
     var res;
     var items =[];
-    var isUrl = false;
     var isId = false;
 
     check(query, String);
     if (query.indexOf('twitter.com') !==-1) {
-      query = _.chain(query.split('/')).compact().last().value().match(/[\d\w_]*/);
+      var newQuery = _.chain(query.split('/')).compact().last().value().match(/[\d\w_]*/)[0];
+      query = newQuery || query;
       isId = (/^\d+$/).test(query);
     }
     this.unblock();
