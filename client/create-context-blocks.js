@@ -521,16 +521,7 @@ Template.create_link_section.onCreated(function() {
     Meteor.call('embedlyEmbedResult', url, function(error, result) {
       switch(result.type) {
         case 'rich':
-          that.focusResult.set(new RichBlock({
-            reference: {
-              html: result.html
-            },
-            authorId : Meteor.user()._id,
-            type: 'rich',
-            source: result.provider_name.toLowerCase(),
-            input: 'embedly'
-          }));
-          break;
+          // fall through to the link
         case 'link':
           that.focusResult.set(new LinkBlock({
             reference: {
@@ -542,11 +533,14 @@ Template.create_link_section.onCreated(function() {
               providerTruncatedUrl: result.provider_url.replace(/.*?:\/\/www./g, ""),
               url: result.url,
               imageOnLeft: ((result.thumbnail_width / result.thumbnail_height) <= 1.25),
+              html: result.html,
+              embedlyType: result.type // later, we can update these all the be type 'rich' if we have first-class support for that
             },
+            fullDetails: result,
             authorId : Meteor.user()._id,
             type: 'link',
-            source: result.provider_name,
-            input: 'embedly'
+            source: 'embedly',
+            fromEmbedly: true
           }));
           break;
         case 'photo':
@@ -562,27 +556,30 @@ Template.create_link_section.onCreated(function() {
             },
             authorId : Meteor.user()._id,
             type: 'image',
-            source: (source ? source : 'link'),
-            input: 'embedly'
+            source: (source ? source : 'link'), // TODO FIX THIS LINE
+            fullDetails: result,
+            fromEmbedly: true
           }));
           break;
         case 'video':
           if (result.provider_name === "YouTube") {
-            var id = result.url.split("v=")[1]
+            var id = result.url.split("v=")[1];
             that.focusResult.set(new VideoBlock({
               reference: {
                 title: result.title,
                 description: result.description,
                 id: id,
                 username: result.author_name,
-                url: result.url,
+                url: result.url
               },
               authorId : Meteor.user()._id,
               type: 'video',
               source: 'youtube',
-              input: 'embedly'
+              fullDetails: result,
+              fromEmbedly: true
             }));
           }
+          // TODO other providers
           break;
       }
     });

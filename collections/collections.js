@@ -927,8 +927,8 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  input: {
-    type: String,
+  fromEmbedly: {
+    type: Boolean,
     optional: true
   }
   ,
