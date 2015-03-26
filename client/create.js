@@ -89,6 +89,10 @@ window.plainTextPaste = function(e) {
   return document.execCommand('insertText', false, clipboardData.getData('text/plain'));
 };
 
+Template.create.onCreated(function() {
+  this.publishing = new ReactiveVar()
+});
+
 Template.create.onRendered(function() {
   window.showAnchorMenu = function() {
     Session.set("anchorMenuOpen", true);
@@ -371,6 +375,18 @@ Template.create.helpers({
   },
   category: function() {
     return Session.get("storyCategory");
+  },
+  publishing: function() {
+    return Template.instance().publishing.get();
+  }
+});
+
+Template.create.events({
+  "click .publish-story": function (e, template) {
+    template.publishing.set(true);
+  },
+  "click .cancel-publish": function (e, template) {
+    template.publishing.set(false);
   }
 });
 
@@ -831,9 +847,6 @@ Template.horizontal_section_block.events({
 });
 
 Template.create_options.events({
-  "click .publish-story": function() {
-    return alert("Publish will be available soon! You'll be able to use it to submit your story to be featured on our site when we launch in early April.");
-  },
   "click .toggle-preview": function() {
     if (Session.get('read')) {
       window.refreshContentDep.changed();
