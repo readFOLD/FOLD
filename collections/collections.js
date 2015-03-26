@@ -264,6 +264,30 @@ VideoBlock = (function(_super) {
     }
   }
 
+  VideoBlock.prototype.title = function() {
+    if (this.source === 'youtube' || this.source === 'vimeo') {
+      return this.reference.title
+    }
+  };
+
+  VideoBlock.prototype.caption = function() {
+    if (this.source === 'youtube' || this.source === 'vimeo') {
+      return this.reference.description
+    }
+  };
+
+  VideoBlock.prototype.username = function() {
+    if (this.source === 'youtube' || this.source === 'vimeo') {
+      return this.reference.username
+    }
+  };
+
+  VideoBlock.prototype.creationDate = function() {
+    if (this.source === 'youtube' || this.source === 'vimeo') {
+      return this.reference.creationDate
+    }
+  };
+
   VideoBlock.prototype.url = function() {
     if (this.source === 'youtube') {
       return '//www.youtube.com/embed/' + this.reference.id;
@@ -363,10 +387,6 @@ TwitterBlock = (function(_super) {
       return '//twitter.com/' + this.reference.screenname
   };
 
-  TwitterBlock.prototype.retweet_url = function() {
-      return '//twitter.com/' + this.reference.retweet
-  };
-
   TwitterBlock.prototype.twitter_url = function() {
       return '//twitter.com/'
   };
@@ -396,12 +416,8 @@ TwitterBlock = (function(_super) {
     return imgUrl
   };
 
-  TwitterBlock.prototype.isRetweet = function() {
-    if (this.reference.retweetedStatus) {
-      return true
-    } else {
-      return false
-    }
+  TwitterBlock.prototype.retweet_url = function() {
+      return '//twitter.com/' + this.reference.retweetedStatus.user.screen_name
   };
 
   TwitterBlock.prototype.retweetUser = function(){
