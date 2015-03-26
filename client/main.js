@@ -500,6 +500,15 @@ Template.favorite_button.events({
 Template.display_twitter_section.events({
   "click .show-image" : function() {
     $('.twitter-text-section').toggleClass('transparent');
+  },
+  "mouseenter .twitter-section" : function() {
+    $('.twitter-text-section').addClass('show-corner');
+  },
+  "mouseleave .twitter-section" : function() {
+    $('.twitter-text-section').removeClass('show-corner');
+  },
+  "click .image-section" : function() {
+    $('.twitter-text-section').removeClass('transparent');
   }
 })
 
