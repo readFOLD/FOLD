@@ -335,23 +335,52 @@ TwitterBlock = (function(_super) {
     }
   }
 
-  TwitterBlock.prototype.t = function() {
-    if (this.source === 'twitter') {
-      return {
-        userpic: this.reference.userPic,
-        username: this.reference.username,
-        screenname: this.reference.screenname,
-        text: this.reference.text,
-        date: this.reference.creationDate,
-        tweet_url: '//twitter.com/' + this.reference.screenname + '/status/' + this.reference.id,
-        user_url: '//twitter.com/' + this.reference.screenname,
-        retweet_url: '//twitter.com/' + this.reference.retweet,
-        twitter_url: '//twitter.com/',
-        retweet_action: '//twitter.com/intent/retweet?tweet_id=' + this.reference.id,
-        reply_action: '//twitter.com/intent/tweet?in_reply_to=' + this.reference.id,
-        favorite_action: '//twitter.com/intent/favorite?tweet_id=' + this.reference.id
-     };
-    }
+  TwitterBlock.prototype.userpic = function() {
+      return this.reference.userPic
+  };
+
+  TwitterBlock.prototype.username = function() {
+      return this.reference.username
+  };
+
+  TwitterBlock.prototype.screenname = function() {
+      return this.reference.screenname
+  };
+
+  TwitterBlock.prototype.text = function() {
+      return this.reference.userPic
+  };
+
+  TwitterBlock.prototype.date = function() {
+      return this.reference.creationDate
+  };
+  
+  TwitterBlock.prototype.tweet_url = function() {
+      return '//twitter.com/' + this.reference.screenname + '/status/' + this.reference.id
+  };
+
+  TwitterBlock.prototype.user_url = function() {
+      return '//twitter.com/' + this.reference.screenname
+  };
+
+  TwitterBlock.prototype.retweet_url = function() {
+      return '//twitter.com/' + this.reference.retweet
+  };
+
+  TwitterBlock.prototype.twitter_url = function() {
+      return '//twitter.com/'
+  };
+
+  TwitterBlock.prototype.retweet_action = function() {
+      return '//twitter.com/intent/retweet?tweet_id=' + this.reference.id
+  };
+
+  TwitterBlock.prototype.reply_action = function() {
+      return '//twitter.com/intent/tweet?in_reply_to=' + this.reference.id
+  };
+
+  TwitterBlock.prototype.favorite_action = function() {
+      return '//twitter.com/intent/favorite?tweet_id=' + this.reference.id
   };
 
   TwitterBlock.prototype.imgUrl = function(){
