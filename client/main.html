@@ -108,7 +108,9 @@
 <template name="horizontal_context">
   {{#unless read}}
     {{#if verticalExists}}
-      {{> add_horizontal}}
+      {{#if currentYId}}
+        {{> add_horizontal}}
+      {{/if}}
       {{#each horizontalSections}}
         {{#if horizontalShown}}
           {{> context_anchor_menu}}

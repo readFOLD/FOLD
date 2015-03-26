@@ -236,9 +236,11 @@
         {{noMoreResults}}
       {{/if}}
     </ol>
-    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-      Add
-    </button>
+    {{#if focusResult}}
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    {{/if}}
   </div>
 </template>
 
@@ -265,9 +267,11 @@
         {{noMoreResults}}
       {{/if}}
     </ol>
-    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-      Add
-    </button>
+    {{#if focusResult}}
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    {{/if}}
   </div>
 </template>
 
@@ -299,9 +303,11 @@
       <iframe width="{{cardWidth}}" height="315" src="{{url}}" frameborder="0" ></iframe>
     {{/if}}
 
-    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-      Add
-    </button>
+    {{#if focusResult}}
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    {{/if}}
   </div>
 </template>
 
@@ -316,9 +322,11 @@
     </div>
     {{> search_form option1='satellite' label1='Satellite' option2='roadmap' label2='Roadmap' placeholderType='locations'}}
     <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
-    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-      Add
-    </button>
+    {{#if focusResult}}
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    {{/if}}
   </div>
 </template>
 
@@ -379,9 +387,11 @@
           {{/if}}
         </li>
       </ol>
-      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-        Add
-      </button>
+      {{#if focusResult}}
+        <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+          Add
+        </button>
+      {{/if}}
     </div>
   {{else}}
     <div class="create-section unimplemented">
@@ -429,9 +439,11 @@
         {{/if}}
       </li>
     </ol>
-    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-      Add
-    </button>
+    {{#if focusResult}}
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    {{/if}}
   </div>
 </template>
 
@@ -480,9 +492,11 @@
         {{/if}}
       </li>
     </ol>
-    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-      Add
-    </button>
+    {{#if focusResult}}
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    {{/if}}
   </div>
 </template>
 

@@ -12,6 +12,9 @@ var createBlockHelpers = {
       return this;
     }
   },
+  focusResult: function(){
+    return Template.instance().focusResult.get() ? true : false;
+  },
   isFocused: function () {
     var focusResult = Template.instance().focusResult.get();
     if (_.isObject(focusResult)) {

@@ -24,10 +24,18 @@ Meteor.startup(function() {
     if (! user)
       return;
 
-    analytics.identify(user._id, {
-      name: user.profile.name,
-      email: user.emails[0].address
-    });
+    var identificationInfo = {};
+
+    if (user.profile.name){
+      identificationInfo.name = user.profile.name;
+    }
+    if (user.emails && user.emails.length){
+      identificationInfo.email = user.emails[0].address;
+    }
+
+    if (user._id){
+      analytics.identify(user._id, identificationInfo);
+    }
 
     c.stop();
   });

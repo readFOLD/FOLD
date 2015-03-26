@@ -297,6 +297,13 @@ Template.vertical_section_block.events({
     autoSaveVerticalSectionField(template, 'title');
     return true;
   },
+  'keydown .title[contenteditable]' : function(e, template){
+    if (e.keyCode === 13){ // enter
+      e.preventDefault();
+      template.$('.content').focus()
+    }
+    return true;
+  },
   'blur .content[contenteditable]' : function(e, template){
     autoSaveVerticalSectionField(template, 'content', 'html');
     return true;
