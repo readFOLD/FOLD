@@ -255,12 +255,19 @@ Meteor.methods({
   twitterSearchList: function(query, option, page) {
     var res;
     var items =[];
+    var isUrl = false;
+    var isId = false;
 
     check(query, String);
+    if (query.indexOf('twitter.com') !==-1) {
+      query = _.chain(query.split('/')).compact().last().value().match(/[\d\w_]*/);
+      isId = (/^\d+$/).test(query);
+    }
     this.unblock();
     count = 15;
     var api = {
-      'all' : "search/tweets",
+      'all' : 'search/tweets',
+      'all_url' : 'statuses/show', 
       'user' : 'statuses/user_timeline',
       'favorites' : 'favorites/list'
     };
@@ -275,7 +282,10 @@ Meteor.methods({
 
     params = {count: count};
     if (page) {params.max_id = page;}
-    if (option === 'all') {
+    if (option === 'all' && isId) {
+      option = 'all_url';
+      params.id = query;
+    } else if (option === 'all') {
       params.q = query;
     } else {
       params.screen_name = query;
@@ -287,16 +297,19 @@ Meteor.methods({
     catch (err) {
       if (err.statusCode !== 404) { 
         throw err;
-      }      
+      }  
+      res = {};    
     }
-    items = (res.statuses) ? res.statuses : res;
 
-    if (res.search_metadata && res.search_metadata.next_results) {
-      page = res.search_metadata.next_results.match(/\d+/)[0];
-    } else if (items[0] && items[0].id_str) {
-      page = decrementByOne(items[items.length-1].id_str); 
-    } else {
+    if (option === 'all_url') {
+      items[0] = res;
       page = "end";
+    } else if (option === 'all') {
+      items = res.statuses;
+      page = res.search_metadata.next_results ? res.search_metadata.next_results.match(/\d+/)[0] : "end";
+    } else {
+      items = res;
+      page = decrementByOne(items[items.length-1].id_str); 
     }
 
     searchResults = {
