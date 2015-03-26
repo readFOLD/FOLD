@@ -896,6 +896,10 @@ div.text-section {
       border-bottom: 7px solid @action-color;      
     }
 
+    &.placeholder{
+      border: 1px solid @medium-color;
+    }
+
     img.image {
       width: auto;
       max-width: 100%;

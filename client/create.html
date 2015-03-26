@@ -183,11 +183,6 @@
 </template>
 
 <!-- Create Templates -->
-<template name="unimplemented_link_section">
-  <div class="create-section unimplemented">
-    Link Card - a flexible method for pulling outside content into a FOLD story. Coming soon!
-  </div>
-</template>
 
 <template name="unimplemented_remix_section">
   <div class="create-section unimplemented">
@@ -243,25 +238,24 @@
       <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
       <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
     </div>
+    {{else}}
+      {{#if image}}
+      <div class="preview-section image-section">
+        <img class="image" src="{{url}}" />
+      </div>
+      {{else}}
+
+        {{#if video}}
+        <div class="preview-section video-section">
+          <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+        </div>
+        {{else}}
+          <div class="preview-section placeholder">
+          </div>
+        {{/if}}
+      {{/if}}
     {{/if}}
 
-    {{#if image}}
-    <div class="preview-section image-section">
-      <img class="image" src="{{url}}" />
-    </div>
-    {{/if}}
-
-    {{#if video}}
-    <div class="preview-section video-section">
-      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
-    </div>
-    {{/if}}
-
-    {{#if rich}}
-    <div class="preview-section rich-section">
-      {{{html}}}
-    </div>
-    {{/if}}
   <!--
       {{#if loading}}
         {{> loading_icon}}
@@ -269,9 +263,11 @@
       {{#if noMoreResults}}
         {{noMoreResults}}
       {{/if}} -->
+  {{#if focusResult}}
     <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
       Add
     </button>
+  {{/if}}
   </div>
 </template>
 
