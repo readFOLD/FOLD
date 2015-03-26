@@ -556,7 +556,9 @@ div.link-section {
     div.link-title {
       font-size: 20px;
       font-weight: bold;
-      padding: 20px;
+      padding-left: 20px;
+      padding-top: 15px;
+      padding-right: 20px;
 
       &.image-on-left {
         display: flex;
@@ -578,14 +580,14 @@ div.link-section {
 
     padding-left: 15px;
     padding-right: 15px;
-    padding-top: 15px;
+    padding-top: 10px;
     overflow-y: scroll;
     &.image-on-top {
-      max-height: 50px;
+      max-height: 55px;
     }
 
     &.image-on-left {
-      max-height: 100px;
+      max-height: 110px;
       padding-top: 15px;
     }
   }
