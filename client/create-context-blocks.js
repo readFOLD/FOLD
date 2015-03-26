@@ -519,17 +519,16 @@ Template.create_link_section.onCreated(function() {
     var url = this.$('input[type="search"]').val();
 
     Meteor.call('embedlyEmbedResult', url, function(error, result) {
-      console.log(result);
       switch(result.type) {
         case 'rich':
-          console.log("RICH");
           that.focusResult.set(new RichBlock({
             reference: {
               html: result.html
             },
             authorId : Meteor.user()._id,
             type: 'rich',
-            source: result.provider_name.toLowerCase()
+            source: result.provider_name.toLowerCase(),
+            input: 'embedly'
           }));
           break;
         case 'link':
@@ -546,7 +545,8 @@ Template.create_link_section.onCreated(function() {
             },
             authorId : Meteor.user()._id,
             type: 'link',
-            source: that.source.get()
+            source: result.provider_name,
+            input: 'embedly'
           }));
           break;
         case 'photo':
@@ -562,7 +562,8 @@ Template.create_link_section.onCreated(function() {
             },
             authorId : Meteor.user()._id,
             type: 'image',
-            source: (source ? source : 'link')
+            source: (source ? source : 'link'),
+            input: 'embedly'
           }));
           break;
         case 'video':
@@ -578,7 +579,8 @@ Template.create_link_section.onCreated(function() {
               },
               authorId : Meteor.user()._id,
               type: 'video',
-              source: 'youtube'
+              source: 'youtube',
+              input: 'embedly'
             }));
           }
           break;
@@ -658,7 +660,6 @@ Template.create_link_section.helpers({
   },
   rich: function() {
     var preview = Template.instance().focusResult.get();
-    console.log("RICH PREVIEW", preview)
     if (preview) {
       return (Template.instance().focusResult.get().type === 'rich');      
     }

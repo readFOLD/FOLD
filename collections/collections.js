@@ -927,6 +927,11 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
+  input: {
+    type: String,
+    optional: true
+  }
+  ,
   createdAt: {
     type: Date,
     autoValue: function() {
