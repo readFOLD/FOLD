@@ -242,7 +242,7 @@ var searchIntegrations = {
         var item = {
           reference: {
             text : e.text,
-            extendedEntities: e.entities,
+            extendedEntities: e.extended_entities,
             retweetedStatus: e.retweeted_status,
             entities: e.entities,
             id : e.id_str,

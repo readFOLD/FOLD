@@ -257,15 +257,12 @@ Meteor.methods({
     var items =[];
     var isUrl = false;
     var isId = false;
-    var regex = /^\d+$/;
 
     check(query, String);
     if (query.indexOf('twitter.com') !==-1) {
-      isUrl = true;
-      query = _.chain(query.split('/')).compact().last().value();
-      isId = regex.test(query);
+      query = _.chain(query.split('/')).compact().last().value().match(/[\d\w_]*/);
+      isId = (/^\d+$/).test(query);
     }
-
     this.unblock();
     count = 15;
     var api = {
@@ -285,7 +282,7 @@ Meteor.methods({
 
     params = {count: count};
     if (page) {params.max_id = page;}
-    if (option === 'all' && isUrl && isId) {
+    if (option === 'all' && isId) {
       option = 'all_url';
       params.id = query;
     } else if (option === 'all') {
@@ -304,20 +301,15 @@ Meteor.methods({
       res = {};    
     }
 
-    if (res.statuses) {
-      items = res.statuses;
-    } else if (res[0]) {
-      items = res;
-    } else {
+    if (option === 'all_url') {
       items[0] = res;
-    }
-
-    if (res.search_metadata && res.search_metadata.next_results) {
-      page = res.search_metadata.next_results.match(/\d+/)[0];
-    } else if (items[0] && items[0].id_str) {
-      page = decrementByOne(items[items.length-1].id_str); 
-    } else {
       page = "end";
+    } else if (option === 'all') {
+      items = res.statuses;
+      page = res.search_metadata.next_results ? res.search_metadata.next_results.match(/\d+/)[0] : "end";
+    } else {
+      items = res;
+      page = decrementByOne(items[items.length-1].id_str); 
     }
 
     searchResults = {
