@@ -226,7 +226,7 @@ li{
 button{
   cursor: pointer;
   border: none;
-  color: inherit;
+  color: white;
   background-color: inherit;
   font-family: inherit;
   font-size: inherit;
