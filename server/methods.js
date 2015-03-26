@@ -7,7 +7,7 @@ var TWITTER_API_SECRET = process.env.TWITTER_API_SECRET || Meteor.settings.TWITT
 
 var Twit = Meteor.npmRequire('twit');
 
-decrementByOne = function(bigInt) {
+var decrementByOne = function(bigInt) {
     var intArr = bigInt.split("");
     if (intArr.length === 1) {
         return (intArr[0] -1).toString()
