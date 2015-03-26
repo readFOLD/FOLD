@@ -7,6 +7,21 @@ var TWITTER_API_SECRET = process.env.TWITTER_API_SECRET || Meteor.settings.TWITT
 
 var Twit = Meteor.npmRequire('twit');
 
+var decrementByOne = function(bigInt) {
+    var intArr = bigInt.split("");
+    if (intArr.length === 1) {
+        return (intArr[0] -1).toString()
+    }
+    
+    var result = [],
+        borrow = 0;
+    for (var i=intArr.length ; i--;) {
+        var temp = intArr[i] - borrow - (i === intArr.length -1 ? 1 :0) ;
+        borrow = temp < 0 ? 1 : 0;
+        result.unshift(((borrow * 10) + temp).toString());
+    }
+    return result.join("")
+};
 
 if (!GOOGLE_API_SERVER_KEY) {
   console.error('Settings must be loaded for apis to work');
@@ -239,7 +254,7 @@ Meteor.methods({
   },
   twitterSearchList: function(query, option, page) {
     var res;
-    var items;
+    var items =[];
 
     check(query, String);
     this.unblock();
@@ -260,32 +275,27 @@ Meteor.methods({
 
     params = {count: count};
     if (page) {params.max_id = page;}
-
     if (option === 'all') {
       params.q = query;
-      try {
-        res = twitterResultsSync(api[option], params);  
-        page = res.search_metadata.next_results.match(/\d+/)[0];
-        items = res.statuses;
-      } catch(error) {
-        items = [];
-      }
     } else {
       params.screen_name = query;
-      try {
-        items = twitterResultsSync(api[option], params);
-        var idString = items[items.length-1].id_str
-        var start = idString.substring(0, idString.length-9);
-        var end = idString.substring(idString.length-9);
-        var newEnd = parseInt(end) -1;
-        page = start + newEnd.toString();
-      } catch(error) {
-        items = [];
-      }
     }
 
+    try {
+      res = twitterResultsSync(api[option], params);
+    } 
+    catch (err) {
+      if (err.statusCode !== 404) { 
+        throw err;
+      }      
+    }
+    items = (res.statuses) ? res.statuses : res;
 
-    if (!items.length){
+    if (res.search_metadata && res.search_metadata.next_results) {
+      page = res.search_metadata.next_results.match(/\d+/)[0];
+    } else if (items[0] && items[0].id_str) {
+      page = decrementByOne(items[items.length-1].id_str); 
+    } else {
       page = "end";
     }
 

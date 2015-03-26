@@ -245,22 +245,6 @@ Template.story_header.events = {
   }
 };
 
-Template.story.events = {
-  "click .link": function(d) {
-    var srcE, x, y;
-    srcE = d.srcElement ? d.srcElement : d.target;
-    x = $(srcE).data("x");
-    y = $(srcE).data("y");
-    return goToXY(x, y);
-  },
-  "click a": function(e) {
-    var contextId;
-    e.preventDefault();
-    contextId = $(e.target).data('contextId');
-    return goToContext(contextId);
-  }
-};
-
 Template.story.helpers({
   horizontalExists: function() {
     var currentY, _ref;
@@ -329,6 +313,12 @@ Template.vertical_narrative.helpers({
 Template.vertical_section_block.events({
   "click": function(d, t) {
     goToY(t.data.index);
+  },
+  "click a": function(e) {
+    var contextId;
+    e.preventDefault();
+    contextId = $(e.target).data('contextId');
+    return goToContext(contextId);
   }
 });
 
@@ -508,6 +498,15 @@ Template.favorite_button.events({
 Template.display_twitter_section.events({
   "click .show-image" : function() {
     $('.twitter-text-section').toggleClass('transparent');
+  },
+  "mouseenter .twitter-section" : function() {
+    $('.twitter-text-section').addClass('show-corner');
+  },
+  "mouseleave .twitter-section" : function() {
+    $('.twitter-text-section').removeClass('show-corner');
+  },
+  "click .image-section" : function() {
+    $('.twitter-text-section').removeClass('transparent');
   }
 })
 

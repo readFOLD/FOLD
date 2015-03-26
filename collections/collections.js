@@ -6,6 +6,7 @@ var checkOwner = function(userId, doc) {
   return userId && userId === doc.authorId;
 };
 
+
 SimpleSchema.debug = true; // TODO Remove after launch
 
 Schema = {};
@@ -263,6 +264,30 @@ VideoBlock = (function(_super) {
     }
   }
 
+  VideoBlock.prototype.title = function() {
+    if (this.source === 'youtube' || this.source === 'vimeo') {
+      return this.reference.title
+    }
+  };
+
+  VideoBlock.prototype.caption = function() {
+    if (this.source === 'youtube' || this.source === 'vimeo') {
+      return this.reference.description
+    }
+  };
+
+  VideoBlock.prototype.username = function() {
+    if (this.source === 'youtube' || this.source === 'vimeo') {
+      return this.reference.username
+    }
+  };
+
+  VideoBlock.prototype.creationDate = function() {
+    if (this.source === 'youtube' || this.source === 'vimeo') {
+      return this.reference.creationDate
+    }
+  };
+
   VideoBlock.prototype.url = function() {
     if (this.source === 'youtube') {
       return '//www.youtube.com/embed/' + this.reference.id;
@@ -334,23 +359,48 @@ TwitterBlock = (function(_super) {
     }
   }
 
-  TwitterBlock.prototype.t = function() {
-    if (this.source === 'twitter') {
-      return {
-        userpic: this.reference.userPic,
-        username: this.reference.username,
-        screenname: this.reference.screenname,
-        text: this.reference.text,
-        date: this.reference.creationDate,
-        tweet_url: '//twitter.com/' + this.reference.screenname + '/status/' + this.reference.id,
-        user_url: '//twitter.com/' + this.reference.screenname,
-        retweet_url: '//twitter.com/' + this.reference.retweet,
-        twitter_url: '//twitter.com/',
-        retweet_action: '//twitter.com/intent/retweet?tweet_id=' + this.reference.id,
-        reply_action: '//twitter.com/intent/tweet?in_reply_to=' + this.reference.id,
-        favorite_action: '//twitter.com/intent/favorite?tweet_id=' + this.reference.id
-     };
-    }
+  TwitterBlock.prototype.userpic = function() {
+      return this.reference.userPic
+  };
+
+  TwitterBlock.prototype.username = function() {
+      return this.reference.username
+  };
+
+  TwitterBlock.prototype.screenname = function() {
+      return this.reference.screenname
+  };
+
+  TwitterBlock.prototype.text = function() {
+      return this.reference.userPic
+  };
+
+  TwitterBlock.prototype.date = function() {
+      return this.reference.creationDate
+  };
+  
+  TwitterBlock.prototype.tweet_url = function() {
+      return '//twitter.com/' + this.reference.screenname + '/status/' + this.reference.id
+  };
+
+  TwitterBlock.prototype.user_url = function() {
+      return '//twitter.com/' + this.reference.screenname
+  };
+
+  TwitterBlock.prototype.twitter_url = function() {
+      return '//twitter.com/'
+  };
+
+  TwitterBlock.prototype.retweet_action = function() {
+      return '//twitter.com/intent/retweet?tweet_id=' + this.reference.id
+  };
+
+  TwitterBlock.prototype.reply_action = function() {
+      return '//twitter.com/intent/tweet?in_reply_to=' + this.reference.id
+  };
+
+  TwitterBlock.prototype.favorite_action = function() {
+      return '//twitter.com/intent/favorite?tweet_id=' + this.reference.id
   };
 
   TwitterBlock.prototype.imgUrl = function(){
@@ -366,12 +416,8 @@ TwitterBlock = (function(_super) {
     return imgUrl
   };
 
-  TwitterBlock.prototype.isRetweet = function() {
-    if (this.reference.retweetedStatus) {
-      return true
-    } else {
-      return false
-    }
+  TwitterBlock.prototype.retweet_url = function() {
+      return '//twitter.com/' + this.reference.retweetedStatus.user.screen_name
   };
 
   TwitterBlock.prototype.retweetUser = function(){
@@ -387,69 +433,25 @@ TwitterBlock = (function(_super) {
   TwitterBlock.prototype.links = function(){
 
     if (this.reference.retweetedStatus) {
-      var retweetUser = this.reference.retweetedStatus.user.screen_name;
-      var hashtags = this.reference.retweetedStatus.entities.hashtags;
-      var mentions = this.reference.retweetedStatus.entities.user_mentions;
       var urls = this.reference.retweetedStatus.entities.urls;
     } else {
-      var hashtags = this.reference.entities.hashtags;
-      var mentions = this.reference.entities.user_mentions;
       var urls = this.reference.entities.urls;
     }
-
-    if (hashtags.length > 0 || mentions.length > 0 || urls.length >0) {
-      //construct tweet according to twitter requirements
-      var links = _.chain([hashtags, mentions, urls])
-        .reduce(function(a, b) { return a.concat(b)}, [])
-        .sortBy(function(link) {
-          return link.indices[0];
-        })
-        .value();
-      links = links.reverse()
-    }
-    return links
+    return urls
   };
 
   TwitterBlock.prototype.formattedTweet = function() { 
-    var pre, post;
-    var text = this.reference.text,
-      openStart = '<a href=',
-      openEnd= ' target="_blank">',
-      close = '</a>',
-      hashUrlStart = '"https://twitter.com/hashtag/',
-      hashUrlEnd = '?src=hash"',
-      mentionUrl = '"https://twitter.com/',
-      offset = 0,
-      i = [];
-      if (this.retweetUser()) {
-        offset = text.indexOf(":") + 2; //start string after "RT @handle: "
-      }
-
-    _.each(this.links(), function(link) {
-      i[0] = link.indices[0] + offset;
-      i[1] = link.indices[1] + offset;
-      pre = text.substring(0,i[0]);
-      post = text.substring(i[1], text.length);
-      
-      if (link.url) {
-        formattedStr = openStart + encodeURI(link.url) + openEnd + 
-                       link.display_url + close;
-      } else if (link.text) {
-        formattedStr = openStart + hashUrlStart + encodeURI(link.text) + hashUrlEnd + openEnd +
-                       "#" + link.text + close;
-      } else if (link.screen_name) {
-        formattedStr = openStart + mentionUrl + encodeURI(link.screen_name) + '"' + openEnd +
-                       "@" + link.screen_name + close;
-      }
-      text = pre + formattedStr +  post;
-    })
-
-    var imgIndex = text.indexOf("http://"); //twitter strips all other user-tweeted links of the 'http://'
-    if (this.reference.img && imgIndex!=-1) {
+    var text = this.reference.text;
+    
+    if (this.imgUrl()) {
+      var imgIndex = text.lastIndexOf("http://");
       text = text.substring(0, imgIndex);
     }
 
-    return text;
+    return twttr.txt.autoLink(text, {
+      urlEntities: this.links(),
+      targetBlank: true
+    });
   };
 
   return TwitterBlock;
