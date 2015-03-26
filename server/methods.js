@@ -255,12 +255,22 @@ Meteor.methods({
   twitterSearchList: function(query, option, page) {
     var res;
     var items =[];
+    var isUrl = false;
+    var isId = false;
+    var regex = /^\d+$/;
 
     check(query, String);
+    if (query.indexOf('twitter.com') !==-1) {
+      isUrl = true;
+      query = _.chain(query.split('/')).compact().last().value();
+      isId = regex.test(query);
+    }
+
     this.unblock();
     count = 15;
     var api = {
-      'all' : "search/tweets",
+      'all' : 'search/tweets',
+      'all_url' : 'statuses/show', 
       'user' : 'statuses/user_timeline',
       'favorites' : 'favorites/list'
     };
@@ -275,7 +285,10 @@ Meteor.methods({
 
     params = {count: count};
     if (page) {params.max_id = page;}
-    if (option === 'all') {
+    if (option === 'all' && isUrl && isId) {
+      option = 'all_url';
+      params.id = query;
+    } else if (option === 'all') {
       params.q = query;
     } else {
       params.screen_name = query;
@@ -287,9 +300,17 @@ Meteor.methods({
     catch (err) {
       if (err.statusCode !== 404) { 
         throw err;
-      }      
+      }  
+      res = {};    
     }
-    items = (res.statuses) ? res.statuses : res;
+
+    if (res.statuses) {
+      items = res.statuses;
+    } else if (res[0]) {
+      items = res;
+    } else {
+      items[0] = res;
+    }
 
     if (res.search_metadata && res.search_metadata.next_results) {
       page = res.search_metadata.next_results.match(/\d+/)[0];
