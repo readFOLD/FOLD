@@ -516,13 +516,22 @@ Template.create_link_section.onCreated(function() {
 
   var that = this;
   this.search = function(){
-    // http://nytimes.com
-    // https://www.youtube.com/watch?v=zMUrvO71Teg
     var url = this.$('input[type="search"]').val();
 
     Meteor.call('embedlyEmbedResult', url, function(error, result) {
-      console.log("RESULT", result);
+      console.log(result);
       switch(result.type) {
+        case 'rich':
+          console.log("RICH");
+          that.focusResult.set(new RichBlock({
+            reference: {
+              html: result.html
+            },
+            authorId : Meteor.user()._id,
+            type: 'rich',
+            source: result.provider_name.toLowerCase()
+          }));
+          break;
         case 'link':
           that.focusResult.set(new LinkBlock({
             reference: {
@@ -541,6 +550,9 @@ Template.create_link_section.onCreated(function() {
           }));
           break;
         case 'photo':
+          // if (result.provider_name.match("Imgur||Giphy||Flickr")) {
+          //   source = result.provider_name.toLowerCase();
+          // }
           that.focusResult.set(new ImageBlock({
             reference: {
               title: result.title,
@@ -550,7 +562,7 @@ Template.create_link_section.onCreated(function() {
             },
             authorId : Meteor.user()._id,
             type: 'image',
-            source: 'link'
+            source: (source ? source : 'link')
           }));
           break;
         case 'video':
@@ -575,6 +587,8 @@ Template.create_link_section.onCreated(function() {
   };
 });
 
+
+// TODO Don't overload this
 Template.create_link_section.helpers({
   title: function() {
     var preview = Template.instance().focusResult.get();
@@ -631,10 +645,22 @@ Template.create_link_section.helpers({
     }
   },
   video: function() {
-    console.log(Template.instance().focusResult.get().type)
     var preview = Template.instance().focusResult.get();
     if (preview) {
       return (Template.instance().focusResult.get().type === 'video');      
+    }
+  },
+  html: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return preview.html();
+    }
+  },
+  rich: function() {
+    var preview = Template.instance().focusResult.get();
+    console.log("RICH PREVIEW", preview)
+    if (preview) {
+      return (Template.instance().focusResult.get().type === 'rich');      
     }
   }
 });
@@ -717,7 +743,8 @@ Template.search_form.helpers({
           _.sample([
             'http://readfold.com',
             'http://twitter.com/readFOLD',
-            'http://nytimes.com'
+            'http://nytimes.com',
+            'http://flickr.com'
           ]);
         break;
       case 'locations':
@@ -749,9 +776,6 @@ Template.search_form.helpers({
             'llama training',
           ]);
     }
-
-
-
   }
 });
 

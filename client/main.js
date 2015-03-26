@@ -433,6 +433,9 @@ typeHelpers = {
   },
   link: function() {
     return this.type === "link";
+  },
+  rich: function() {
+    return this.type === "rich";
   }
 };
 
@@ -463,6 +466,8 @@ Template.display_video_section.helpers(horizontalBlockHelpers);
 Template.display_map_section.helpers(horizontalBlockHelpers);
 
 Template.display_link_section.helpers(horizontalBlockHelpers);
+
+Template.display_rich_section.helpers(horizontalBlockHelpers);
 
 Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 

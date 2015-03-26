@@ -565,6 +565,7 @@ div.link-section {
         align-items: center;
         background-color: @dark-color;
         float: right;
+        padding-top: 0;
         width: calc(100% ~"-" 130px);
         border-bottom: 1px solid @dark-color;
         background-color: @dark-color;

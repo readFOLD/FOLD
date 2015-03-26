@@ -210,6 +210,9 @@
           {{> display_link_section}}
         {{/if}}
       {{/if}}
+      {{#if rich}}
+        {{> display_rich_section}}
+      {{/if}}
       {{else}}
         {{> display_broken_section}}
       {{/if}}
@@ -340,6 +343,15 @@
     </a>
     <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
     <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+  </div>
+  {{#unless read}}
+    {{> horizontal_section_edit_delete}}
+  {{/unless}}
+</template>
+
+<template name="display_rich_section">
+  <div class="rich-section {{#if isFocused}}focused{{/if}}">
+    {{{html}}}
   </div>
   {{#unless read}}
     {{> horizontal_section_edit_delete}}

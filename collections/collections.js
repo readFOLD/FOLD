@@ -683,6 +683,22 @@ LinkBlock = (function(_super) {
 
 })(ContextBlock);
 
+RichBlock = (function(_super) {
+  __extends(RichBlock, _super);
+
+  function RichBlock(doc) {
+    RichBlock.__super__.constructor.call(this, doc);
+    this.type = 'rich';
+  }
+
+  RichBlock.prototype.html = function() {
+    return this.reference.html;
+  };
+
+  return RichBlock;
+
+})(ContextBlock);
+
 var newTypeSpecificContextBlock =  function(doc) {
   switch (doc.type) {
     case 'video':
@@ -703,6 +719,8 @@ var newTypeSpecificContextBlock =  function(doc) {
       return new TwitterBlock(doc);
     case 'link':
       return new LinkBlock(doc);
+    case 'rich':
+      return new RichBlock(doc);
     default:
       return new ContextBlock(doc);
   }
@@ -718,6 +736,7 @@ if (Meteor.isClient) {
   window.VizBlock = VizBlock;
   window.TwitterBlock = TwitterBlock;
   window.LinkBlock = LinkBlock;
+  window.RichBlock = RichBlock;
   window.newTypeSpecificContextBlock = newTypeSpecificContextBlock
 }
 
@@ -856,6 +875,9 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   providerUrl: { type: String, optional: true },  
   providerTruncatedUrl: { type: String, optional: true },  
   imageOnLeft: { type: Boolean, optional: true },  
+
+  // Rich
+  html: { type: String, optional: true },
 
   // OEC
   oecYear: {
