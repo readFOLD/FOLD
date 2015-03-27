@@ -519,6 +519,9 @@ Template.create_link_section.onCreated(function() {
     var url = this.$('input[type="search"]').val();
 
     Meteor.call('embedlyEmbedResult', url, function(error, result) {
+      console.log(result)
+
+      // TODO store original url in all cases
       switch(result.type) {
         case 'rich':
           // fall through to the link

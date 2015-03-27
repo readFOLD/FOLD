@@ -248,6 +248,8 @@ Meteor.methods({
       nextPage = 'end';
     }
 
+    console.log(items)
+
     return {
       'nextPage': nextPage,
       'items': items
@@ -325,7 +327,7 @@ Meteor.methods({
     check(query, String);
     this.unblock();
 
-    requestParams = {
+    requestParams = { // TODO add maxheight and maxwidth
       url: query,
       key: EMBEDLY_KEY
     }
