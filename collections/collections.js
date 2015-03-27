@@ -299,12 +299,16 @@ VideoBlock = (function(_super) {
   VideoBlock.prototype.previewUrl = function() {
     if (this.source === 'youtube') {
       return '//img.youtube.com/vi/' + this.reference.id + '/0.jpg';
+    } else if (this.source === 'vimeo') {
+      return '//i.vimeocdn.com/video/' + this.reference.previewImage + '_640x359.jpg'
     }
   };
 
   VideoBlock.prototype.thumbnailUrl = function() {
     if (this.source === 'youtube') {
       return '//i.ytimg.com/vi/' + this.reference.id + '/default.jpg';
+    } else if (this.source === 'vimeo') {
+      return '//i.vimeocdn.com/video/' + this.reference.previewImage + '_100x75.jpg'
     }
   };
 
@@ -335,7 +339,7 @@ AudioBlock = (function(_super) {
 
   AudioBlock.prototype.artworkUrl = function() {
     if (this.source === 'soundcloud') {
-      return this.reference.artworkUrl;
+      return this.reference.previewImage;
     }
   };
 
@@ -487,7 +491,7 @@ ImageBlock = (function(_super) {
       case 'imgur':
         return '//i.imgur.com/' + this.reference.id + 't' + '.' + this.reference.fileExtension;
       case 'flickr':
-        return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_t' + '.jpg'
+        return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_t' + '.jpg';
     }
   };
 
@@ -726,7 +730,7 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
 
-  artworkUrl: {
+  previewImage: {
     type: String,
     optional: true
   },
