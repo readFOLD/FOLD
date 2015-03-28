@@ -533,11 +533,11 @@ Template.create_link_section.onCreated(function() {
               thumbnailUrl: result.thumbnail_url,
               providerName: result.provider_name,
               providerUrl: result.provider_url,
-              providerTruncatedUrl: result.provider_url.replace(/.*?:\/\/www./g, ""),
               url: result.url,
-              imageOnLeft: ((result.thumbnail_width / result.thumbnail_height) <= 1.25),
-              html: result.html,
-              embedlyType: result.type // later, we can update these all the be type 'rich' if we have first-class support for that
+              thumbnailWidth: result.thumbnail_width,
+              thumbnailHeight: result.thumbnail_height,
+              //html: result.html, // this is on fullDetails anyway
+              embedlyType: result.type // later, we can update these rich cards to be type 'rich' if we have first-class support for that
             },
             fullDetails: result,
             authorId : Meteor.user()._id,
@@ -547,19 +547,51 @@ Template.create_link_section.onCreated(function() {
           }));
           break;
         case 'photo':
-          // if (result.provider_name.match("Imgur||Giphy||Flickr")) {
-          //   source = result.provider_name.toLowerCase();
-          // }
+          var source;
+          if (result.provider_name.match("Imgur||Giphy||Flickr")) {
+             source = result.provider_name.toLowerCase();
+          } else {
+            source = 'embedly'
+          }
+
+          var source, reference;
+
+          switch(result.provider_name) {
+            case 'Imgur':
+              source = 'imgur';
+              var info = _.chain(result.url.split('/')).compact().last().value().split('.');
+              reference = {
+                id: info[0],
+                fileExtension: info[1],
+                username : result.account_url,
+                title : result.title
+              };
+              break;
+            case 'Giphy':
+              source = 'giphy';
+              reference = {};
+              break;
+            case 'Flickr':
+              source = 'flickr';
+              reference = {};
+              break;
+            default:
+              source = 'embedly';
+              reference = {
+                title: result.title,
+                description: result.description,
+                providerName: result.provider_name,
+                providerUrl: result.provider_url,
+                url: result.url,
+                thumbnailUrl: result.thumbnail_url
+              };
+          }
+
           that.focusResult.set(new ImageBlock({
-            reference: {
-              title: result.title,
-              providerName: result.provider_name,
-              providerUrl: result.provider_url,
-              url: result.url
-            },
+            reference: reference,
             authorId : Meteor.user()._id,
             type: 'image',
-            source: (source ? source : 'link'), // TODO FIX THIS LINE
+            source: source,
             fullDetails: result,
             fromEmbedly: true
           }));
@@ -583,6 +615,7 @@ Template.create_link_section.onCreated(function() {
             }));
           }
           // TODO other providers
+          // thumbnailUrl and all that goodness
           break;
       }
     });

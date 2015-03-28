@@ -667,7 +667,7 @@ LinkBlock = (function(_super) {
   };
 
   LinkBlock.prototype.imageOnLeft = function() {
-    return this.reference.imageOnLeft;
+    return (result.thumbnail_width / result.thumbnail_height) <= 1.25;
   };
 
   LinkBlock.prototype.url = function() {
@@ -679,7 +679,7 @@ LinkBlock = (function(_super) {
   };
 
   LinkBlock.prototype.providerTruncatedUrl= function() {
-    return this.reference.providerTruncatedUrl;
+    this.reference.provider_url.replace(/.*?:\/\/www./g, "");
   };
   return LinkBlock;
 
