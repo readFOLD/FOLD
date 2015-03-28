@@ -339,7 +339,7 @@ AudioBlock = (function(_super) {
 
   AudioBlock.prototype.artworkUrl = function() {
     if (this.source === 'soundcloud') {
-      return this.reference.previewImage;
+      return this.reference.artworkUrl;
     }
   };
 
@@ -726,6 +726,11 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   },
 
   source: {
+    type: String,
+    optional: true
+  },
+
+  artworkUrl: {
     type: String,
     optional: true
   },

@@ -6,7 +6,7 @@ var TWITTER_API_KEY = process.env.TWITTER_API_KEY || Meteor.settings.TWITTER_API
 var TWITTER_API_SECRET = process.env.TWITTER_API_SECRET || Meteor.settings.TWITTER_API_SECRET;
 var VIMEO_API_KEY = Meteor.settings.VIMEO_API_KEY;
 var VIMEO_API_SECRET = Meteor.settings.VIMEO_API_SECRET;
-var VIMEO_ACCESS_KEY = Meteor.settings.VIMEO_ACCESS_KEY;
+var VIMEO_ACCESS_TOKEN = Meteor.settings.VIMEO_ACCESS_TOKEN;
 
 
 var Twit = Meteor.npmRequire('twit');
@@ -326,12 +326,13 @@ Meteor.methods({
     check(query, String);
     this.unblock();
     page = page || 1;
-
+    
     var client = new Vimeo(
       VIMEO_API_KEY,
       VIMEO_API_SECRET,
-      TEMP_ACCESS
+      VIMEO_ACCESS_TOKEN
     );
+
     var vimeoResultsSync = Meteor.wrapAsync(client.request, client);
     var params = {
       path: '/videos',

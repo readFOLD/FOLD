@@ -252,7 +252,7 @@ var searchIntegrations = {
             username : e.channelTitle,
             userId : e.user_id,
             creationDate : parseDate(e.created_at),
-            previewImage: e.artwork_url
+            artworkUrl: e.artwork_url
           }
         }
       }
