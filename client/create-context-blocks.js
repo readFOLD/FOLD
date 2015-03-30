@@ -71,8 +71,14 @@ throttledSearchScrollFn = _.throttle(searchScrollFn, 20);
 var addContext = function(contextBlock) {
   var storyId = Session.get("storyId");
   Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
-  var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {storyId: storyId, authorId: Meteor.user()._id}));
-  return window.addContextToStory(storyId, contextId, Session.get("currentY"));
+  ContextBlocks.insert(_.extend({}, contextBlock, {storyId: storyId, authorId: Meteor.user()._id}), function (err, id){
+    if(err){
+      alert('Adding context card failed');
+      throw(err);
+    }
+
+    return window.addContextToStory(storyId, id, Session.get("currentY"));
+  });
 };
 
 var createBlockEvents = {
