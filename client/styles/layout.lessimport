@@ -558,7 +558,7 @@ div.twitter-section{
     .size-to-fit;
     display: table;
 
-    .flag.selected.image.show-corner {
+    .flag.show-corner.selected {
       position: absolute;
       top: 0;
       right: 0;
