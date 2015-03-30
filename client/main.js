@@ -441,6 +441,8 @@ Template.display_audio_section.helpers(horizontalBlockHelpers);
 
 Template.display_video_section.helpers(horizontalBlockHelpers);
 
+Template.display_twitter_section.helpers(horizontalBlockHelpers);
+
 Template.display_map_section.helpers(horizontalBlockHelpers);
 
 Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
@@ -501,9 +503,11 @@ Template.display_twitter_section.events({
   },
   "mouseenter .twitter-section" : function() {
     $('.twitter-text-section').addClass('show-corner');
+    $('.flag').addClass('show-corner');
   },
   "mouseleave .twitter-section" : function() {
     $('.twitter-text-section').removeClass('show-corner');
+    $('.flag').removeClass('show-corner');
   },
   "click .image-section" : function() {
     $('.twitter-text-section').removeClass('transparent');
