@@ -20,7 +20,7 @@ var createBlockHelpers = {
       return this;
     }
   },
-  focusResult: function(){
+  showAddButton: function(){
     return Template.instance().focusResult.get() ? true : false;
   },
   isFocused: function () {
