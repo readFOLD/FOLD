@@ -6,6 +6,14 @@ var count = function(){
   return i++;
 };
 
+var getIdFromUrl = function(url){
+  return _.chain(url.split('/')).compact().last().value().match(/[\d]*/)[0]
+};
+
+var parseDate = function(date) {
+  return date.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1");
+};
+
 var createBlockHelpers = {
   startingBlock: function() {
     if (this instanceof ContextBlock) {
@@ -211,7 +219,22 @@ var searchIntegrations = {
             id: e.videoId,
             username : e.channelTitle,
             userId : e.channelId,
-            creationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+            creationDate : parseDate(e.publishedAt) 
+          }
+        }
+      }
+    },
+    vimeo: {
+      methodName: 'vimeoVideoSearchList',
+      mapFn: function(e){
+        return {
+          reference: {
+            title: e.name,
+            description: e.description,
+            id: getIdFromUrl(e.uri),
+            username: e.user.name,
+            creationDate: parseDate(e.created_time),
+            previewImage: getIdFromUrl(e.pictures.uri) 
           }
         }
       }
@@ -228,7 +251,7 @@ var searchIntegrations = {
             id: e.id,
             username : e.channelTitle,
             userId : e.user_id,
-            creationDate : e.created_at.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
+            creationDate : parseDate(e.created_at),
             artworkUrl: e.artwork_url
           }
         }
@@ -426,7 +449,7 @@ var dataSourcesByType = {
   'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}],
   'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
   'gif': [{source: 'giphy', display: 'Giphy'}],
-  'video': [{source: 'youtube', display: 'Youtube'}],
+  'video': [{source: 'youtube', display: 'Youtube'}, {source: 'vimeo', display: 'Vimeo'}],
   'audio': [{source: 'soundcloud', display: 'SoundCloud'}],
   'twitter': [{source: 'twitter', display: 'Twitter'}],
   'map': [{source: 'google_maps', display: 'Google Maps'}],
