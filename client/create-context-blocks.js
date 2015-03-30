@@ -97,7 +97,7 @@ var createBlockEvents = {
 
   "scroll ol.search-results-container": throttledSearchScrollFn,
 
-  "click .search-result": function(d, template) {
+  "click .search-results-container li": function(d, template) {
     template.focusResult.set(this);
   },
 
