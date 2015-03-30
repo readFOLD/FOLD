@@ -236,7 +236,7 @@
         {{noMoreResults}}
       {{/if}}
     </ol>
-    {{#if focusResult}}
+    {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
         Add
       </button>
@@ -267,7 +267,7 @@
         {{noMoreResults}}
       {{/if}}
     </ol>
-    {{#if focusResult}}
+    {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
         Add
       </button>
@@ -303,7 +303,7 @@
       <iframe width="{{cardWidth}}" height="315" src="{{url}}" frameborder="0" ></iframe>
     {{/if}}
 
-    {{#if focusResult}}
+    {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
         Add
       </button>
@@ -322,7 +322,7 @@
     </div>
     {{> search_form option1='satellite' label1='Satellite' option2='roadmap' label2='Roadmap' placeholderType='locations'}}
     <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
-    {{#if focusResult}}
+    {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
         Add
       </button>
@@ -387,7 +387,7 @@
           {{/if}}
         </li>
       </ol>
-      {{#if focusResult}}
+      {{#if showAddButton}}
         <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
           Add
         </button>
@@ -443,7 +443,7 @@
         {{/if}}
       </li>
     </ol>
-    {{#if focusResult}}
+    {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
         Add
       </button>
@@ -496,7 +496,7 @@
         {{/if}}
       </li>
     </ol>
-    {{#if focusResult}}
+    {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
         Add
       </button>
