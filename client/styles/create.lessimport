@@ -703,7 +703,7 @@ div.horizontal-context {
       border-left: none; 
       white-space: normal;
       cursor: pointer;
-    
+
       &:hover {
         background: @light-color; 
       }
@@ -729,6 +729,7 @@ div.horizontal-context {
 
       img {
         height: 116px;
+        max-width: 100%;
       }
 
       &.focused {
