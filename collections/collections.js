@@ -883,6 +883,9 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   url: { type: String, optional: true },  
   providerName: { type: String, optional: true },  
   providerUrl: { type: String, optional: true },  
+  thumbnailHeight: { type: Number, optional: true },
+  thumbnailWidth: { type: Number, optional: true },
+  embedlyType: { type: String, optional: true },
   imageOnLeft: { type: Boolean, optional: true },
 
   // Rich
