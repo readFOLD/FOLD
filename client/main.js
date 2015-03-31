@@ -441,6 +441,8 @@ Template.display_audio_section.helpers(horizontalBlockHelpers);
 
 Template.display_video_section.helpers(horizontalBlockHelpers);
 
+Template.display_twitter_section.helpers(horizontalBlockHelpers);
+
 Template.display_map_section.helpers(horizontalBlockHelpers);
 
 Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
@@ -496,17 +498,23 @@ Template.favorite_button.events({
 });
 
 Template.display_twitter_section.events({
-  "click .show-image" : function() {
-    $('.twitter-text-section').toggleClass('transparent');
+  "click .show-image" : function(e, template) {
+    template.$('.twitter-text-section').toggleClass('transparent');
   },
-  "mouseenter .twitter-section" : function() {
-    $('.twitter-text-section').addClass('show-corner');
+  "click .image-section" : function(e, template) {
+    template.$('.twitter-text-section').removeClass('transparent');
   },
-  "mouseleave .twitter-section" : function() {
-    $('.twitter-text-section').removeClass('show-corner');
+  "mouseenter .twitter-section" : function(e, template) {
+    if (template.data.imgUrl) {
+      template.$('.twitter-text-section').addClass('show-corner');
+      template.$('.flag').addClass('show-corner');
+    }
   },
-  "click .image-section" : function() {
-    $('.twitter-text-section').removeClass('transparent');
+  "mouseleave .twitter-section" : function(e, template) {
+    if (template.data.imgUrl) {
+      template.$('.twitter-text-section').removeClass('show-corner');
+      template.$('.flag').removeClass('show-corner');
+    }
   }
 })
 
