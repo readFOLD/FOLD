@@ -855,7 +855,7 @@ div.horizontal-context {
       }
     }  
   }  
-    button.add-button {
+    button.add-button, button.add-desc-button, button.back-button {
       position: relative;
       left: calc(100%~"-" 90px);
       background-color: @action-color;
@@ -866,7 +866,6 @@ div.horizontal-context {
       text-align: center;
       font-size: 12px;
       line-height: 35px;
-      float: left;
       cursor: pointer;
 
       &:not(:last-child) {
@@ -880,7 +879,16 @@ div.horizontal-context {
       &:hover{
         background-color: @dark-color;
       }
-  }
+    }
+
+    // TODO Factor this nicely
+    button.add-desc-button {
+      left: calc(100%~"-" 120px);
+      width: 120px;
+    }
+    button.back-button {
+      margin-left: -100px;
+    }
 }
 
 .create-map-section{
@@ -1025,6 +1033,33 @@ div#fold-editor{
         }
         background-color: inherit;
       }
+    }
+  }
+}
+
+.create-section {
+  .search-section, .add-desc-section {
+    height: 100%;
+  }
+
+  .image-preview {
+    .image-section {
+      height: 300px;      
+    }
+  }
+
+  form.desc-form {
+    position: relative;
+    top: -300px;
+    textarea {
+      background-color: rgba(0, 0, 0, 0.8);
+      opacity: 0.8;
+      color: white;
+      margin-top: 0px;
+      padding: 8px;
+      font-size: 14px;
+      line-height: 20px;
+      text-align: start;
     }
   }
 }

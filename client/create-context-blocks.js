@@ -101,9 +101,19 @@ var createBlockEvents = {
     template.focusResult.set(this);
   },
 
+  "click .add-image-description": function(d, template) {
+    var focusResult = template.focusResult.get();
+    if (focusResult) {
+      addContext(focusResult);
+    }
+  },
+
   "click .add-button": function(d, template) {
     var focusResult = template.focusResult.get();
     if (focusResult) {
+      var textAreaContent = template.$('textarea[name=content]').val()
+      focusResult.description = textAreaContent;
+      console.log("SAVING, FOCUSRESULT", focusResult);
       addContext(focusResult);
     }
   },
@@ -367,18 +377,57 @@ Template.create_twitter_section.events({
   }
 });
 
-Template.create_image_section.events({ // TODO only allow after preview and caption
+Template.create_image_section.onCreated(function() {
+  this.addingDescription = new ReactiveVar(false);
+});
+
+Template.create_image_section.events({
+  "click .add-desc-button": function (d, template) {
+    template.addingDescription.set(true);
+  },
+  "click .back-button": function (d, template) {
+    template.addingDescription.set(false);
+  },
   "dblclick li": function (d, template) {
     addContext(this);
   }
 });
 
-Template.create_gif_section.events({ // TODO only allow after preview and caption
+Template.create_image_section.helpers({
+  addingDescription: function() {
+    return Template.instance().addingDescription.get();
+  },
+  focusResult: function() {
+    var focusResult = Template.instance().focusResult.get();
+    if (focusResult) { return focusResult; }
+  },
+})
+
+Template.create_gif_section.onCreated(function() {
+  this.addingDescription = new ReactiveVar(false);
+});
+
+Template.create_gif_section.events({
+  "click .add-desc-button": function (d, template) {
+    template.addingDescription.set(true);
+  },
+  "click .back-button": function (d, template) {
+    template.addingDescription.set(false);
+  },
   "dblclick li": function (d, template) {
     addContext(this);
   }
 });
 
+Template.create_gif_section.helpers({
+  addingDescription: function() {
+    return Template.instance().addingDescription.get();
+  },
+  focusResult: function() {
+    var focusResult = Template.instance().focusResult.get();
+    if (focusResult) { return focusResult; }
+  },
+})
 searchTemplateCreatedBoilerplate = function(type, defaultSource) {
   return function() {
     this.type = type;
