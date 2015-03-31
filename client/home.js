@@ -169,11 +169,15 @@ Template.login_buttons.events({
   "click .signin": function(d) {
     Session.set('signingIn', true);
   },
-  'click .logout' : function(e) {
+  "click .logout" : function(e) {
     e.preventDefault();
     Meteor.logout();
     Router.go('home');
+  },
+  "click .profile" : function(e) {
+    Router.go('profile');
   }
+
 });
 
 var closeSignInOverlay = function(){

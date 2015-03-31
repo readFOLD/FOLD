@@ -930,7 +930,7 @@ Schema.UserProfile = new SimpleSchema({
   bio: {
     type: String,
     optional: true,
-    max: 2000,
+    max: 160,
     autoform: {
       afFieldInput: {
         type: "textarea",

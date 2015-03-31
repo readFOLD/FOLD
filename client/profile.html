@@ -1,58 +1,47 @@
 <template name="profile">
-  <div class="navbar">
-    <i class="fa fa-bars fa-2x"></i>
-  </div>
-  <section class="banner">
-    {{#linkTo route="home"}}
-      <div class="title">
-        <img src="/fold-title.png">
+  {{> top_banner border="remix-border"}}
+    <section>
+      <div class="user_profile">
+        {{> user_profile}}
       </div>
-    {{/linkTo}}
-    <div class="options">
-      <div id="create-story">
-        {{> create_story }}
-      </div>
-      <div id='login-buttons-and-more'>
-        {{> login_buttons}}
-      </div>
+    </section>
+    <div class="stories">
+      <section>
+        <div class="story-container">
+          {{> user_stories}}
+        </div>
+        <div class="horizontal-line"></div>
+        <div class="story-container">
+          {{> user_favorite_stories}}
+        </div>
+      </section>
     </div>
-    <div class="logo">
-      <img src="/FOLD_LOGO.svg">
-    </div>
-  </section>
-
-  {{> user_profile}}
-
-  <section class="stories">
-    <!-- {{> story_browser}} -->
-    <div class="horizontal-line">
-    </div>
-    <div class="story-container">
-      {{> user_stories}}
-    </div>
-    <div class="story-container">
-      {{> user_favorite_stories}}
-    </div>
-  </section>
+  {{> footer}}
 </template>
 
 
 <template name="user_profile">
-  <section class="profile-info">
-
+  <button class="edit_profile">Edit</button>
+  {{#if editting}}
     {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
       {{> afQuickField name='profile.name'}}
       {{> afQuickField name='profile.bio'}}
-      {{> afQuickField name='emails.0.address'}}
-      <div class="profile-picture">
-      </div>
-      <button type="submit" class="btn btn-primary">Save</button>
+      <!-- {{> afQuickField name='emails.0.address'}} -->
+      <button type="submit" class="save-profile-button">Save</button>
     {{/autoForm}}
-  </section>
+  {{else}}
+    <div class="profile-picture">
+      {{#if profileImage}} 
+         <img class="profile-picture-large" src="{{profileImage}}"/>
+      {{/if}}
+    </div>
+    <div class="username">{{username}}</div>
+    <div class="bio">{{bio}}</div>
+  {{/if}}
 </template>
 
 <template name="my_stories">
-  {{> top_banner}}
+  {{> top_banner border="remix-border"}}
   <div class="stories">
     <section>
       <div class="story-container">
@@ -87,7 +76,7 @@
 
 
 <template name="user_favorite_stories">
-  <h3>Favorites</h3>
+  <h1>Favorites</h1>
   {{#each favoriteStories}}
     {{> story_preview }}
   {{/each}}

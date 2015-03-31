@@ -1,3 +1,25 @@
 h1 {
  font-size: 30px;
 }
+
+div.profile-picture {
+  background-color: @black-color;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+}
+
+img.profile-picture-large {
+  @picture-radius: 22px;
+  // position: absolute;
+  // top: 168px;
+  // left: 30px;
+
+  float: left;
+  margin-right: 10px;
+  z-index: 10;
+
+  border-radius: @picture-radius;
+  width: @picture-radius * 4;
+  height: auto;
+}

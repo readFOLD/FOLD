@@ -5,7 +5,7 @@
 </head>
 
 <template name="top_banner">
-  <div class="home-top">
+  <div class="home-top {{#if border}}{{border}}{{/if}}">
     <div class="left">
       <div class="logo-title">
         {{#linkTo route="home"}}
@@ -17,9 +17,11 @@
         </div>
         {{/linkTo}}
       </div>
+      {{#if showFilters}}
       <div class="filter">
         {{> filters}} in {{> categories}}
       </div>
+      {{/if}}
     </div>
     {{> banner_buttons}}
     {{> signin_overlay}}
@@ -45,18 +47,13 @@
 </template>
 
 <template name="top_banner_simple">
-  <div class="home-top">
+  <div class="home-top remix-color">
     <div class="left">
       <div class="logo-title">
-        <!--Signup should not have links to home because might be in the middle of twitter signup-->
-        <!--{{#linkTo route="home"}}-->
           <img src="/FOLD_LOGO.svg">
-        <!--{{/linkTo}}-->
-        <!--{{#linkTo route="home"}}-->
           <div class="title">
             <img src="/FOLD_TITLE.svg">
           </div>
-        <!--{{/linkTo}}-->
       </div>
     </div>
   </div>
@@ -90,12 +87,9 @@
 </template>
 <template name="login_buttons">
     {{#if currentUser}}
-      <button class="user-face">{{currentUser.profile.name}}</button>
+      <button class="profile">{{currentUser.profile.name}}</button>
       {{#if showUserInfo}}
         <ol class="user-menu">
-          <!--<li>-->
-            <!--{{#linkTo route="profile"}}Profile{{/linkTo}}-->
-          <!--</li>-->
           <li>
             {{#linkTo route="my_stories"}}My stories{{/linkTo}}
           </li>
@@ -116,7 +110,7 @@
 </template>
 
 <template name="home">
-  {{> top_banner}}
+  {{> top_banner  showFilters="true" border="active-border"}}
   <div class="stories"> 
     <section>
       <div class="story-container">

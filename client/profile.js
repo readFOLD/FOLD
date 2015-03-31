@@ -68,3 +68,31 @@ Template.user_favorite_stories.helpers({
     }
   }
 });
+
+Template.user_profile.onCreated(function(){
+  this.editting = new ReactiveVar(false);
+});
+
+Template.user_profile.helpers({
+  editting : function() {
+    return Template.instance().editting.get()
+  },
+  username : function() {
+    return Meteor.user().profile.displayUsername
+  },
+  bio : function() {
+    return Meteor.user().profile.bio
+  },
+  profileImage: function() {
+    return Meteor.user().profile.profile_picture;
+   },
+});
+
+Template.user_profile.events({
+  "click .edit_profile" : function(d, template) {
+    template.editting.set(true);
+  },
+  "click .save-profile-button" : function(d, template) {
+    template.editting.set(false);
+  }
+})
