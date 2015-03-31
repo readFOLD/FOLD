@@ -550,39 +550,43 @@ Template.create_link_section.onCreated(function() {
     Meteor.call('embedlyEmbedResult', url, function(error, result) {
       console.log(result)
 
-      // TODO store original url in all cases
+      addPropertiesToBaseline = function(obj){
+        a = _.extend({}, obj, {
+          fullDetails: result,
+          authorId : Meteor.user()._id,
+          fromEmbedly: true
+        });
+
+        if (!a.reference){
+          a.reference = {};
+        }
+
+        _.extend(a.reference, {
+          title: result.title,
+          description: result.description,
+          providerName: result.provider_name,
+          providerUrl: result.provider_url,
+          url: result.url,
+          searchQuery: url,
+          thumbnailUrl: result.thumbnail_url,
+          thumbnailWidth: result.thumbnail_width,
+          thumbnailHeight: result.thumbnail_height,
+          embedlyType: result.type
+        });
+        return a
+      };
+
       switch(result.type) {
         case 'rich':
           // fall through to the link
         case 'link':
-          that.focusResult.set(new LinkBlock({
-            reference: {
-              title: result.title,
-              linkDescription: result.description,
-              thumbnailUrl: result.thumbnail_url,
-              providerName: result.provider_name,
-              providerUrl: result.provider_url,
-              url: result.url,
-              thumbnailWidth: result.thumbnail_width,
-              thumbnailHeight: result.thumbnail_height,
-              //html: result.html, // this is on fullDetails anyway
-              embedlyType: result.type // later, we can update these rich cards to be type 'rich' if we have first-class support for that
-            },
-            fullDetails: result,
-            authorId : Meteor.user()._id,
+          that.focusResult.set(new LinkBlock(addPropertiesToBaseline({
             type: 'link',
-            source: 'embedly',
-            fromEmbedly: true
-          }));
+            source: 'embedly'
+          })));
+          console.log(that.focusResult.get())
           break;
         case 'photo':
-          var source;
-          if (result.provider_name.match("Imgur||Giphy||Flickr")) {
-             source = result.provider_name.toLowerCase();
-          } else {
-            source = 'embedly'
-          }
-
           var source, reference;
 
           switch(result.provider_name) {
@@ -598,6 +602,7 @@ Template.create_link_section.onCreated(function() {
               break;
             case 'Giphy':
               source = 'giphy';
+              // http://media.giphy.com/media/wKDCzUzUhiEO4/giphy.gif
               reference = {};
               break;
             case 'Flickr':
@@ -606,15 +611,10 @@ Template.create_link_section.onCreated(function() {
               break;
             default:
               source = 'embedly';
-              reference = {
-                title: result.title,
-                description: result.description,
-                providerName: result.provider_name,
-                providerUrl: result.provider_url,
-                url: result.url,
-                thumbnailUrl: result.thumbnail_url
-              };
+              reference = {};
           }
+
+          _.extend(reference, baselineReference);
 
           that.focusResult.set(new ImageBlock({
             reference: reference,
@@ -654,64 +654,28 @@ Template.create_link_section.onCreated(function() {
 
 // TODO Don't overload this
 Template.create_link_section.helpers({
-  title: function() {
+  linkPreview: function(){
     var preview = Template.instance().focusResult.get();
-    if (preview) {
-      return preview.title();
-    }
-  },
-  linkDescription: function() {
-    var preview = Template.instance().focusResult.get();
-    if (preview) {
-      return preview.linkDescription();
-    }
-  },
-  url: function() {
-    var preview = Template.instance().focusResult.get();
-    if (preview) {
-      return preview.url();
-    }
-  },
-  imageOnLeft: function() {
-    var preview = Template.instance().focusResult.get();
-    if (preview) {
-      return preview.imageOnLeft();
-    }
-  },
-  providerUrl: function() {
-    var preview = Template.instance().focusResult.get();
-    if (preview) {
-      return preview.providerUrl();
-    }
-  },
-  providerTruncatedUrl: function() {
-    var preview = Template.instance().focusResult.get();
-    if (preview) {
-      return preview.providerTruncatedUrl();
-    }
-  },
-  thumbnailUrl: function() {
-    var preview = Template.instance().focusResult.get();
-    if (preview) {
-      return preview.thumbnailUrl();
+    if (preview.type === 'link'){
+      return preview;
     }
   },
   link: function() {
     var preview = Template.instance().focusResult.get();
     if (preview) {
-      return (Template.instance().focusResult.get().type === 'link');      
+      return (preview.type === 'link');
     }
   },
   image: function() {
     var preview = Template.instance().focusResult.get();
     if (preview) {
-      return (Template.instance().focusResult.get().type === 'image');      
+      return (preview.type === 'image');
     }
   },
   video: function() {
     var preview = Template.instance().focusResult.get();
     if (preview) {
-      return (Template.instance().focusResult.get().type === 'video');      
+      return (preview.type === 'video');
     }
   },
   html: function() {
@@ -723,7 +687,7 @@ Template.create_link_section.helpers({
   rich: function() {
     var preview = Template.instance().focusResult.get();
     if (preview) {
-      return (Template.instance().focusResult.get().type === 'rich');      
+      return (preview.type === 'rich');
     }
   }
 });

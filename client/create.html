@@ -221,23 +221,25 @@
     {{> search_form placeholderType='links'}}
 
     {{#if link}}
-    <div class="link-section preview-section {{#if isFocused}}focused{{/if}}">
-      <div class="transparent-cover"></div>
-      <a href="{{url}}" target="_blank">
-        <div class="top">
-        {{#if thumbnailUrl}}
-          {{#if imageOnLeft}}
-            <img class="thumbnail left" src="{{thumbnailUrl}}" />
-          {{else}}
-            <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
-          {{/if}}
-          <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
-        {{/if}}
+      {{#with linkPreview}}
+        <div class="link-section preview-section {{#if isFocused}}focused{{/if}}">
+          <div class="transparent-cover"></div>
+          <a href="{{url}}" target="_blank">
+            <div class="top">
+            {{#if thumbnailUrl}}
+              {{#if imageOnLeft}}
+                <img class="thumbnail left" src="{{thumbnailUrl}}" />
+              {{else}}
+                <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
+              {{/if}}
+              <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
+            {{/if}}
+            </div>
+          </a>
+          <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
+          <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
         </div>
-      </a>
-      <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
-      <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
-    </div>
+      {{/with}}
     {{else}}
       {{#if image}}
       <div class="preview-section image-section">

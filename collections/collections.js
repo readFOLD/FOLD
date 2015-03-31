@@ -663,7 +663,7 @@ LinkBlock = (function(_super) {
   };
 
   LinkBlock.prototype.linkDescription = function() {
-    return this.reference.linkDescription;
+    return this.reference.description;
   };
 
   LinkBlock.prototype.thumbnailUrl = function() {
@@ -671,7 +671,7 @@ LinkBlock = (function(_super) {
   };
 
   LinkBlock.prototype.imageOnLeft = function() {
-    return (result.thumbnail_width / result.thumbnail_height) <= 1.25;
+    return (this.reference.thumbnailWidth / this.reference.thumbnailHeight) <= 1.25;
   };
 
   LinkBlock.prototype.url = function() {
@@ -683,7 +683,7 @@ LinkBlock = (function(_super) {
   };
 
   LinkBlock.prototype.providerTruncatedUrl= function() {
-    this.reference.provider_url.replace(/.*?:\/\/www./g, "");
+    return this.reference.providerUrl.replace(/.*?:\/\/www./g, "");
   };
   return LinkBlock;
 
@@ -879,13 +879,11 @@ Schema.ContextReferenceProfile = new SimpleSchema({
 
   // Link
   title: { type: String, optional: true },
-  linkDescription: { type: String, optional: true },  
   thumbnailUrl: { type: String, optional: true },
   url: { type: String, optional: true },  
   providerName: { type: String, optional: true },  
   providerUrl: { type: String, optional: true },  
-  providerTruncatedUrl: { type: String, optional: true },  
-  imageOnLeft: { type: Boolean, optional: true },  
+  imageOnLeft: { type: Boolean, optional: true },
 
   // Rich
   html: { type: String, optional: true },
