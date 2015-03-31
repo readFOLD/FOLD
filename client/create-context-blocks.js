@@ -554,6 +554,7 @@ Template.create_link_section.onCreated(function() {
         a = _.extend({}, obj, {
           fullDetails: result,
           authorId : Meteor.user()._id,
+          searchQuery: url,
           fromEmbedly: true
         });
 
@@ -567,7 +568,6 @@ Template.create_link_section.onCreated(function() {
           providerName: result.provider_name,
           providerUrl: result.provider_url,
           url: result.url,
-          searchQuery: url,
           thumbnailUrl: result.thumbnail_url,
           thumbnailWidth: result.thumbnail_width,
           thumbnailHeight: result.thumbnail_height,
