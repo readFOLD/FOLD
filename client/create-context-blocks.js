@@ -568,6 +568,8 @@ Template.create_link_section.onCreated(function() {
           providerName: result.provider_name,
           providerUrl: result.provider_url,
           url: result.url,
+          authorUrl: result.author_url,
+          authorName: result.author_name,
           thumbnailUrl: result.thumbnail_url,
           thumbnailWidth: result.thumbnail_width,
           thumbnailHeight: result.thumbnail_height,
@@ -594,26 +596,35 @@ Template.create_link_section.onCreated(function() {
               var info = _.chain(result.url.split('/')).compact().last().value().split('.');
               reference = {
                 id: info[0],
-                fileExtension: info[1],
-                username : result.account_url,
-                title : result.title
+                fileExtension: info[1]
               };
               break;
             case 'Giphy':
               source = 'giphy';
-              // http://media.giphy.com/media/wKDCzUzUhiEO4/giphy.gif
-              reference = {};
+              var info = result.url.match(/\/media\/(.*)?\/giphy/);
+              reference = {
+                id: info[1]
+              };
               break;
             case 'Flickr':
               source = 'flickr';
-              reference = {};
+              //https://farm4.staticflickr.com/3197/3881925442_c2f2cacb8f_b.jpg
+              var info = result.url.match(/\/\/farm(.*)?\.staticflickr\.com\/(.*)?\/(.*)?_(.*)?_/);
+              reference = {
+                flickrFarm: info[1],
+                flickrServer: info[2],
+                id: info[3],
+                flickrSecret: info[4]
+              };
               break;
             default:
               source = 'embedly';
               reference = {};
           }
 
-          that.focusResult.set(new ImageBlock(addPropertiesToBaseline({
+          cardModel = source === 'giphy' ? GifBlock : ImageBlock;
+
+          that.focusResult.set(new cardModel(addPropertiesToBaseline({
             reference: reference,
             type: 'image',
             source: source
@@ -621,25 +632,45 @@ Template.create_link_section.onCreated(function() {
           console.log(that.focusResult.get())
           break;
         case 'video':
-          if (result.provider_name === "YouTube") {
-            var id = result.url.split("v=")[1];
-            that.focusResult.set(new VideoBlock({
-              reference: {
-                title: result.title,
-                description: result.description,
-                id: id,
-                username: result.author_name,
-                url: result.url
-              },
-              authorId : Meteor.user()._id,
-              type: 'video',
-              source: 'youtube',
-              fullDetails: result,
-              fromEmbedly: true
-            }));
+          switch (result.provider_name){
+
+            case "YouTube":
+              var id = result.url.split("v=")[1];
+              that.focusResult.set(new VideoBlock({
+                reference: {
+                  title: result.title,
+                  description: result.description,
+                  id: id,
+                  username: result.author_name,
+                  url: result.url
+                },
+                authorId : Meteor.user()._id,
+                type: 'video',
+                source: 'youtube',
+                fullDetails: result,
+                fromEmbedly: true
+              }));
+              break;
+            case 'Giphy':
+              source = 'giphy';
+              var info = result.url.match(/\/media\/(.*)?\/giphy/);
+              reference = {
+                id: info[1]
+              };
+              // TODO this is all sorts of probs here need:
+
+              // type: 'image'
+              break;
           }
           // TODO other providers
           // thumbnailUrl and all that goodness
+
+          cardModel = source === 'giphy' ? GifBlock : VideoBlock;
+
+          that.focusResult.set(new cardModel(addPropertiesToBaseline({
+            reference: reference,
+            source: source
+          })));
           break;
       }
     });
