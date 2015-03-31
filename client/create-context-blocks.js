@@ -551,18 +551,18 @@ Template.create_link_section.onCreated(function() {
       console.log(result)
 
       addPropertiesToBaseline = function(obj){
-        a = _.extend({}, obj, {
+        var newObj = _.extend({}, obj, {
           fullDetails: result,
           authorId : Meteor.user()._id,
           searchQuery: url,
           fromEmbedly: true
         });
 
-        if (!a.reference){
-          a.reference = {};
+        if (!newObj.reference){
+          newObj.reference = {};
         }
 
-        _.extend(a.reference, {
+        _.extend(newObj.reference, {
           title: result.title,
           description: result.description,
           providerName: result.provider_name,
@@ -573,7 +573,7 @@ Template.create_link_section.onCreated(function() {
           thumbnailHeight: result.thumbnail_height,
           embedlyType: result.type
         });
-        return a
+        return newObj
       };
 
       switch(result.type) {
@@ -584,7 +584,6 @@ Template.create_link_section.onCreated(function() {
             type: 'link',
             source: 'embedly'
           })));
-          console.log(that.focusResult.get())
           break;
         case 'photo':
           var source, reference;
@@ -614,16 +613,12 @@ Template.create_link_section.onCreated(function() {
               reference = {};
           }
 
-          _.extend(reference, baselineReference);
-
-          that.focusResult.set(new ImageBlock({
+          that.focusResult.set(new ImageBlock(addPropertiesToBaseline({
             reference: reference,
-            authorId : Meteor.user()._id,
             type: 'image',
-            source: source,
-            fullDetails: result,
-            fromEmbedly: true
-          }));
+            source: source
+          })));
+          console.log(that.focusResult.get())
           break;
         case 'video':
           if (result.provider_name === "YouTube") {
@@ -654,11 +649,8 @@ Template.create_link_section.onCreated(function() {
 
 // TODO Don't overload this
 Template.create_link_section.helpers({
-  linkPreview: function(){
-    var preview = Template.instance().focusResult.get();
-    if (preview.type === 'link'){
-      return preview;
-    }
+  preview: function(){
+    return Template.instance().focusResult.get();
   },
   link: function() {
     var preview = Template.instance().focusResult.get();

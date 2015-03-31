@@ -221,7 +221,7 @@
     {{> search_form placeholderType='links'}}
 
     {{#if link}}
-      {{#with linkPreview}}
+      {{#with preview}}
         <div class="link-section preview-section {{#if isFocused}}focused{{/if}}">
           <div class="transparent-cover"></div>
           <a href="{{url}}" target="_blank">
@@ -243,7 +243,7 @@
     {{else}}
       {{#if image}}
       <div class="preview-section image-section">
-        <img class="image" src="{{url}}" />
+        <img class="image" src="{{preview.url}}" />
       </div>
       {{else}}
 
