@@ -5,8 +5,13 @@ var FLICKR_API_KEY = Meteor.settings.FLICKR_API_KEY;
 var TWITTER_API_KEY = process.env.TWITTER_API_KEY || Meteor.settings.TWITTER_API_KEY;
 var TWITTER_API_SECRET = process.env.TWITTER_API_SECRET || Meteor.settings.TWITTER_API_SECRET;
 var EMBEDLY_KEY = Meteor.settings.EMBEDLY_KEY;
+var VIMEO_API_KEY = Meteor.settings.VIMEO_API_KEY;
+var VIMEO_API_SECRET = Meteor.settings.VIMEO_API_SECRET;
+var VIMEO_ACCESS_TOKEN = Meteor.settings.VIMEO_ACCESS_TOKEN;
 
 var Twit = Meteor.npmRequire('twit');
+var Vimeo = Meteor.npmRequire('vimeo-api').Vimeo;
+
 
 var decrementByOne = function(bigInt) {
     var intArr = bigInt.split("");
@@ -138,11 +143,9 @@ Meteor.methods({
       }
     }
 
-
     requestParams = {
       q: query
     };
-
 
     var url = 'https://api.imgur.com/3/gallery/search/top/' + page;
     // https://api.imgur.com/endpoints/gallery
@@ -193,8 +196,6 @@ Meteor.methods({
 
     var data = res.data;
 
-
-
     if (data.data) {
       items = data.data;
     } else {
@@ -211,7 +212,6 @@ Meteor.methods({
     } else {
       nextPage = 'end';
     }
-
 
     return {
       nextPage: nextPage,
@@ -279,7 +279,7 @@ Meteor.methods({
       consumer_key: TWITTER_API_KEY,
       consumer_secret: TWITTER_API_SECRET,
       access_token: Meteor.user().services.twitter.accessToken,
-      access_token_secret: Meteor.user().services.twitter.accessTokenSecret,
+      access_token_secret: Meteor.user().services.twitter.accessTokenSecret
     });
     var twitterResultsSync = Meteor.wrapAsync(client.get, client);
 
@@ -336,6 +336,52 @@ Meteor.methods({
       params: requestParams
     });
     return res.data;
+  },
+  vimeoVideoSearchList: function(query, option, page) {
+    var items;
+    var nextPage;
+    check(query, String);
+    this.unblock();
+    page = page || 1;
+    
+    var client = new Vimeo(
+      VIMEO_API_KEY,
+      VIMEO_API_SECRET,
+      VIMEO_ACCESS_TOKEN
+    );
+
+    var vimeoResultsSync = Meteor.wrapAsync(client.request, client);
+    var params = {
+      path: '/videos',
+      query: 
+        { query: query,
+          sort : 'relevant',
+          page: page,
+          per_page: 20
+        }
+      };
+
+    try {
+      res = vimeoResultsSync(params);
+      items = res.data;
+    } 
+    catch (err) {
+      if (err.statusCode !== 404) { 
+        throw err;
+      }  
+      items = [];    
+    }
+
+    if (items.length){
+      nextPage = page + 1;
+    } else {
+      nextPage = 'end';
+    }
+
+    return {
+      'items': items,
+      'nextPage': nextPage
+    };
   },
   youtubeVideoSearchList: function(query, option, page) {
     var res;

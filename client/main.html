@@ -260,9 +260,7 @@
   <div class="map-section">
     {{#if selected}}
       <div class="active-display">
-        {{!-- <div class="active-display {{#unless selected}}hide{{/unless}}"> --}}
         <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
-        {{!-- </div> --}}
       </div>
     {{/if}}
     <div class="preview">
@@ -289,9 +287,7 @@
   <div class="audio-section">
     {{#if selected}}
       <div class="active-display">
-      {{!-- <div class="active-display {{#unless selected}}hide{{/unless}}"> --}}
       <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
-      {{!-- </div> --}}
       </div>
     {{/if}}
     <div class="preview">
@@ -307,9 +303,7 @@
   <div class="video-section">
     {{#if selected}}
       <div class="active-display">
-      {{!-- <div class="active-display {{#unless selected}}hide{{/unless}}"> --}}
       <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
-      {{!-- </div> --}}
       </div>
     {{/if}}
     <div class="preview">
@@ -361,14 +355,14 @@
 <template name="display_twitter_section">
   <div class="twitter-section">
       <div class="active-display">
-      {{!-- <div class="active-display {{#unless selected}}hide{{/unless}}"> --}}
       {{#if imgUrl}}
         <div class='image-section'>
           <img src='{{imgUrl}}'>
         </div>
         <button class="show-image"></button>
       {{/if}}
-        <div class="twitter-text-section {{#if imgUrl}}image{{/if}}">
+        <div class="twitter-text-section {{#if selected}} selected {{/if}} {{#if imgUrl}}image{{/if}} ">
+          <div class="flag {{#if selected}} selected {{/if}}"></div>
           <div class='tweet-card'>
             <div class='title'>
               <div class='prof_pic'>
@@ -411,7 +405,6 @@
             </div>
           </div>
         </div>
-      {{!-- </div> --}}
       </div>
   </div>
   {{#unless read}}
