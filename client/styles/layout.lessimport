@@ -568,6 +568,8 @@ div.link-section {
       padding-left: 20px;
       padding-top: 15px;
       padding-right: 20px;
+      padding-bottom: 10px;
+      background-color: @white-color;
 
       &.image-on-left {
         display: flex;
@@ -587,13 +589,13 @@ div.link-section {
   div.link-description {
     font-size: 14px;
     width: 100%;
+    overflow: hidden;
 
     padding-left: 15px;
     padding-right: 15px;
-    padding-top: 10px;
-    overflow-y: scroll;
+    padding-top: 0px;
     &.image-on-top {
-      max-height: 55px;
+      max-height: 80px;
     }
 
     &.image-on-left {
@@ -602,12 +604,17 @@ div.link-section {
     }
   }
 
-  a.bottom {
+  .bottom {
     position: absolute;
     left: 15px;
     bottom: 10px;
+    padding-top: 13px;
     cursor: pointer;
-    color: @action-color;
+    width: 100%;
+    background-color: @white-color;
+    a{
+      color: @action-color;
+    }
   }
 }
 

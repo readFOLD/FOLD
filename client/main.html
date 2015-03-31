@@ -336,7 +336,9 @@
       </div>
     </a>
     <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
-    <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+    <div class="bottom">
+      <a href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+    </div>
   </div>
   {{#unless read}}
     {{> horizontal_section_edit_delete}}
