@@ -119,9 +119,10 @@ var createBlockEvents = {
     var focusResult = template.focusResult.get();
     if (focusResult) {
       var textAreaContent = template.$('textarea[name=content]').val()
-      var newFocusResult = focusResult;
-      newFocusResult.description = textAreaContent;
-      addContext(newFocusResult);
+      focusResult.description = textAreaContent;
+
+      template.focusResult.set(focusResult);
+      addContext(focusResult);
     }
   },
   "click .cancel": function() {
