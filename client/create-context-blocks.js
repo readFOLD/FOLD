@@ -668,6 +668,26 @@ Template.create_link_section.onCreated(function() {
                 fromEmbedly: true
               }));
               break;
+            case "Vimeo":
+              //var id = result.url.split("v=")[1];
+              var id = result.html.match(/%2Fvideo%2F(\d*)/)[1];
+              var previewImage = result.thumbnail_url.match(/\/video\/(.*)?_/)[1];
+              that.focusResult.set(new VideoBlock({
+                reference: {
+                  title: result.title,
+                  description: result.description,
+                  id: id,
+                  previewImage: previewImage,
+                  username: result.author_name,
+                  url: result.url
+                },
+                authorId : Meteor.user()._id,
+                type: 'video',
+                source: 'vimeo',
+                fullDetails: result,
+                fromEmbedly: true
+              }));
+              break;
             case 'Giphy':
               source = 'giphy';
               var info = result.url.match(/\/media\/(.*)?\/giphy/);
@@ -682,12 +702,12 @@ Template.create_link_section.onCreated(function() {
           // TODO other providers
           // thumbnailUrl and all that goodness
 
-          cardModel = source === 'giphy' ? GifBlock : VideoBlock;
-
-          that.focusResult.set(new cardModel(addPropertiesToBaseline({
-            reference: reference,
-            source: source
-          })));
+          //cardModel = source === 'giphy' ? GifBlock : VideoBlock;
+          //
+          //that.focusResult.set(new cardModel(addPropertiesToBaseline({
+          //  reference: reference,
+          //  source: source
+          //})));
           break;
       }
     });
