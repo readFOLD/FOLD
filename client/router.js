@@ -206,6 +206,29 @@ Router.route("edit", {
   }
 });
 
+
+// handle user bailing in middle of twitter signup, before a username is chosen. this probably only happens on page load or reload.
+Router.onBeforeAction(function() {
+  var that = this;
+
+  setTimeout(function(){
+    if (!Session.get('signingInWithTwitter')) { // don't forcible logout user if in the middle of twitter signup
+      var user = Meteor.user();
+      var currentRoute = that.route.getName();
+      if (user && currentRoute){
+        if(!user.username && currentRoute !== 'twitter-signup'){ // if user has no username, confirm they are on the page where they can fill that out
+          Meteor.logout(); // otherwise log them out
+          setTimeout(function(){
+            throw new Meteor.Error('Forcibly logged out user, presumably because they did not finish twitter signup (setting username etc...)');
+          }, 0);
+        }
+      }
+    }
+  }, 100); // this might even be ok when set to 0
+
+  this.next()
+});
+
 Router.route("twitter-signup", {
   path: "twitter-signup",
   template: "signup",

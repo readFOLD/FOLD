@@ -134,18 +134,7 @@ Meteor.startup(function() {
   return $(document).scroll(throttledUpdate);
 });
 
-// handle user bailing in middle of twitter signup, before a username is chosen
-Tracker.autorun(function() {
-  if (!Session.get('signingInWithTwitter')) { // don't forcible logout user if in the middle of twitter signup
-    var user = Meteor.user();
-    var currentRoute = Router.current();
-    if (user && currentRoute){ //
-      if(!user.username && currentRoute.url.substring(currentRoute.url.lastIndexOf('/') + 1) !== 'twitter-signup'){ // if user has no username, confirm they are on the page where they can fill that out
-        Meteor.logout(); // otherwise log them out
-      }
-    }
-  }
-});
+
 
 Template.story_header.onRendered(function() {
   var range, sel, titleDiv;
