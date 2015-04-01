@@ -105,7 +105,7 @@ Router.route("read", {
   },
   data: function() {
     var story;
-    story = Stories.findOne({}, {reactive: false});
+    story = Stories.findOne({shortId: idFromPathSegment(this.params.storyPathSegment)}, {reactive: false});
     if (story) {
       Session.set("story", story);
       Session.set("storyId", story._id);
