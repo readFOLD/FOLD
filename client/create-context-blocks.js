@@ -108,13 +108,6 @@ var createBlockEvents = {
     template.focusResult.set(this);
   },
 
-  "click .add-image-description": function(d, template) {
-    var focusResult = template.focusResult.get();
-    if (focusResult) {
-      addContext(focusResult);
-    }
-  },
-
   "click .add-desc-button": function (d, template) {
     template.addingDescription.set(true);
   },
@@ -126,9 +119,9 @@ var createBlockEvents = {
     var focusResult = template.focusResult.get();
     if (focusResult) {
       var textAreaContent = template.$('textarea[name=content]').val()
-      focusResult.description = textAreaContent;
-      console.log("SAVING, FOCUSRESULT", focusResult);
-      addContext(focusResult);
+      var newFocusResult = focusResult;
+      newFocusResult.description = textAreaContent;
+      addContext(newFocusResult);
     }
   },
   "click .cancel": function() {
@@ -393,13 +386,13 @@ Template.create_twitter_section.events({
 
 Template.create_image_section.events({
   "dblclick li": function (d, template) {
-    addContext(this);
+    template.addingDescription.set(true);
   }
 });
 
 Template.create_gif_section.events({
   "dblclick li": function (d, template) {
-    addContext(this);
+    template.addingDescription.set(true);
   }
 });
 
