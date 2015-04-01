@@ -732,7 +732,6 @@ window.addContext = function(contextBlock) {
   var verticalIndex = Session.get("currentY");
   Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
   Session.set('saveState', 'saving');
-  console.log('herere')
 
   Meteor.call('addContextToStory', storyId, contextBlock, verticalIndex, function(err, contextId){
     if(contextId){
