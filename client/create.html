@@ -275,63 +275,99 @@
 
 <template name="create_image_section">
   <div class="create-section">
-    <div class="tabs">
-      <ul>
-        {{#each dataSources}}
-          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+    <div class="search-section" style="{{#if addingDescription}}display: none;{{/if}}">
+      <div class="tabs">
+        <ul>
+          {{#each dataSources}}
+            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{> search_form}}
+      <ol class="search-results-container">
+        {{#each results}}
+          <li class="tile {{#if isFocused}}focused{{/if}}">
+            <img src="{{thumbnailUrl}}">
+          </li>
         {{/each}}
-      </ul>
+        {{#if loading}}
+          {{> loading_icon}}
+        {{/if}}
+        {{#if noMoreResults}}
+          {{noMoreResults}}
+        {{/if}}
+      </ol>
+      {{#if showAddButton}}
+        <button type="button" class="add-desc-button {{#if isActive}}enabled{{/if}}">
+          Add Description
+        </button>
+      {{/if}}
     </div>
-    {{> search_form}}
-    <ol class="search-results-container">
-      {{#each results}}
-        <li class="tile {{#if isFocused}}focused{{/if}}">
-          <img src="{{thumbnailUrl}}">
-        </li>
-      {{/each}}
-      {{#if loading}}
-        {{> loading_icon}}
-      {{/if}}
-      {{#if noMoreResults}}
-        {{noMoreResults}}
-      {{/if}}
-    </ol>
-    {{#if showAddButton}}
-      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+    <div class="add-desc-section" style="{{#unless addingDescription}}display: none;{{/unless}}">
+      <div class="image-preview">
+        {{#with focusResult}}
+          {{> display_image_section}}
+        {{/with}}
+      </div>
+      <form class="desc-form">
+        <textarea name="content" value={{content}} class="text-input" rows="2" dir="auto" placeholder="Type description here"></textarea>
+      </form>
+      <button type="button" class="back-button {{#if isActive}}enabled{{/if}}">
+        Back
+      </button>
+      <button type="submit" class="add-button">
         Add
       </button>
-    {{/if}}
+    </div>
   </div>
 </template>
 
 <template name="create_gif_section">
   <div class="create-section">
-    <div class="tabs">
-      <ul>
-        {{#each dataSources}}
-          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+    <div class="search-section" style="{{#if addingDescription}}display: none;{{/if}}">
+      <div class="tabs">
+        <ul>
+          {{#each dataSources}}
+            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{> search_form}}
+      <ol class="search-results-container">
+        {{#each results}}
+          <li class="tile {{#if isFocused}}focused{{/if}}">
+            <img src="{{thumbnailUrl}}">
+          </li>
         {{/each}}
-      </ul>
+        {{#if loading}}
+          {{> loading_icon}}
+        {{/if}}
+        {{#if noMoreResults}}
+          {{noMoreResults}}
+        {{/if}}
+      </ol>
+      {{#if showAddButton}}
+        <button type="button" class="add-desc-button {{#if isActive}}enabled{{/if}}">
+          Add Description
+        </button>
+      {{/if}}
     </div>
-    {{> search_form}}
-    <ol class="search-results-container">
-      {{#each results}}
-        <li class="tile {{#if isFocused}}focused{{/if}}">
-          <img src="{{thumbnailUrl}}">
-        </li>
-      {{/each}}
-      {{#if loading}}
-        {{> loading_icon}}
-      {{/if}}
-      {{#if noMoreResults}}
-        {{noMoreResults}}
-      {{/if}}
-    </ol>
-    {{#if showAddButton}}
-      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+    <div class="add-desc-section" style="{{#unless addingDescription}}display: none;{{/unless}}">
+      <div class="image-preview">
+        {{#with focusResult}}
+          {{> display_image_section}}
+        {{/with}}
+      </div>
+      <form class="desc-form">
+        <textarea name="content" value={{content}} class="text-input" rows="2" dir="auto" placeholder="Type description here"></textarea>
+      </form>
+      <button type="button" class="back-button {{#if isActive}}enabled{{/if}}">
+        Back
+      </button>
+      <button type="submit" class="add-button">
         Add
       </button>
-    {{/if}}
+    </div>
   </div>
 </template>
 
@@ -389,6 +425,12 @@
     {{/if}}
   </div>
 </template>
+
+
+<template name="add_description_section">
+  Add description
+</template>
+
 
 <template name="create_twitter_section">
   {{#if twitterUser}}

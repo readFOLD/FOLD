@@ -105,23 +105,28 @@ Router.route("read", {
   },
   data: function() {
     var story;
-    story = Stories.findOne({}, {reactive: false});
-    if (story) {
-      Session.set("story", story);
-      Session.set("storyId", story._id);
-      Session.set("headerImage", story.headerImage);
-      Session.set("horizontalSectionsMap", _.map(_.pluck(story.verticalSections, "contextBlocks"), function(cBlocks, i) {
-        return {
-          verticalIndex: i,
-          horizontal: _.map(_.pluck(cBlocks, '_id'), function(id, i) {
-            return {
-              _id: id,
-              horizontalIndex: i
-            }
-          })
-        };
-      }));
-      return story;
+    if (this.ready()){
+      story = Stories.findOne({shortId: idFromPathSegment(this.params.storyPathSegment)}, {reactive: false});
+      if (story) {
+        Session.set("story", story);
+        Session.set("storyId", story._id);
+        Session.set("headerImage", story.headerImage);
+        Session.set("horizontalSectionsMap", _.map(_.pluck(story.verticalSections, "contextBlocks"), function(cBlocks, i) {
+          return {
+            verticalIndex: i,
+            horizontal: _.map(_.pluck(cBlocks, '_id'), function(id, i) {
+              return {
+                _id: id,
+                horizontalIndex: i
+              }
+            })
+          };
+        }));
+        return story;
+      } else {
+        this.render("story_not_found");
+        // TODO add 404 tags for seo etc...
+      }
     }
   },
   onBeforeAction: function() {
@@ -150,24 +155,29 @@ Router.route("edit", {
   },
   data: function() {
     var story;
-    story = Stories.findOne({shortId: idFromPathSegment(this.params.storyPathSegment)});
-    if (story && story.draftStory) {
-      Session.set("story", story.draftStory);
-      Session.set("storyId", story._id);
-      Session.set("storyPublished", story.published);
-      Session.set("headerImage", story.draftStory.headerImage);
-      Session.set("horizontalSectionsMap", _.map(_.pluck(story.draftStory.verticalSections, "contextBlocks"), function(cBlockIds, i) {
-        return {
-          verticalIndex: i,
-          horizontal: _.map(cBlockIds, function(id, i) {
-            return {
-              _id: id,
-              horizontalIndex: i
-            }
-          })
-        };
-      }));
-      return story;
+    if (this.ready()) {
+      story = Stories.findOne({shortId: idFromPathSegment(this.params.storyPathSegment)});
+      if (story && story.draftStory) {
+        Session.set("story", story.draftStory);
+        Session.set("storyId", story._id);
+        Session.set("storyPublished", story.published);
+        Session.set("headerImage", story.draftStory.headerImage);
+        Session.set("horizontalSectionsMap", _.map(_.pluck(story.draftStory.verticalSections, "contextBlocks"), function (cBlockIds, i) {
+          return {
+            verticalIndex: i,
+            horizontal: _.map(cBlockIds, function (id, i) {
+              return {
+                _id: id,
+                horizontalIndex: i
+              }
+            })
+          };
+        }));
+        return story;
+      } else {
+        this.render("story_not_found");
+        // TODO add 404 tags for seo etc...
+      }
     }
   },
   action: function() {
@@ -182,10 +192,8 @@ Router.route("edit", {
     var user, data;
     if ((user = Meteor.user()) || Meteor.loggingIn()) { // if there is a user
       data = this.data();
-      if (user && data && user._id !== data.authorId) { // if they don't own the story redirect them to read
-        this.redirect("read", data, {
-          replaceState: true
-        });
+      if (user && data && user._id !== data.authorId) { // if they don't own the story take them to story not found
+        return this.render("story_not_found");
       }
       return this.next(); // if they do own the story, let them through to create
     } else {

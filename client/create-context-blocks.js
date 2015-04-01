@@ -51,7 +51,14 @@ var createBlockHelpers = {
   results: function () {
     searchDep.depend();
     return Template.instance().existingSearchResults()
-  }
+  },
+  addingDescription: function() {
+    return Template.instance().addingDescription.get();
+  },
+  focusResult: function() {
+    var focusResult = Template.instance().focusResult.get();
+    if (focusResult) { return focusResult; }
+  },
 };
 
 
@@ -101,9 +108,20 @@ var createBlockEvents = {
     template.focusResult.set(this);
   },
 
+  "click .add-desc-button": function (d, template) {
+    template.addingDescription.set(true);
+  },
+  "click .back-button": function (d, template) {
+    template.addingDescription.set(false);
+  },
+
   "click .add-button": function(d, template) {
     var focusResult = template.focusResult.get();
     if (focusResult) {
+      var textAreaContent = template.$('textarea[name=content]').val()
+      focusResult.description = textAreaContent;
+
+      template.focusResult.set(focusResult);
       addContext(focusResult);
     }
   },
@@ -368,15 +386,15 @@ Template.create_twitter_section.events({
   }
 });
 
-Template.create_image_section.events({ // TODO only allow after preview and caption
+Template.create_image_section.events({
   "dblclick li": function (d, template) {
-    addContext(this);
+    template.addingDescription.set(true);
   }
 });
 
-Template.create_gif_section.events({ // TODO only allow after preview and caption
+Template.create_gif_section.events({
   "dblclick li": function (d, template) {
-    addContext(this);
+    template.addingDescription.set(true);
   }
 });
 
@@ -388,6 +406,8 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
     this.loadingResults = new ReactiveVar();
     this.focusResult = new ReactiveVar();
     this.noMoreResults = new ReactiveVar();
+
+    this.addingDescription = new ReactiveVar(false);
 
     this.search = _.bind(searchAPI, this);
     this.existingSearchResults = _.bind(existingSearchResults, this);
@@ -442,11 +462,8 @@ Template.create_twitter_section.onRendered(searchTemplateRenderedBoilerplate());
 Template.create_image_section.onCreated(searchTemplateCreatedBoilerplate('image', 'flickr'));
 Template.create_image_section.onRendered(searchTemplateRenderedBoilerplate());
 
-
 Template.create_gif_section.onCreated(searchTemplateCreatedBoilerplate('gif', 'giphy'));
 Template.create_gif_section.onRendered(searchTemplateRenderedBoilerplate());
-
-
 
 Template.create_audio_section.onCreated(searchTemplateCreatedBoilerplate('audio', 'soundcloud'));
 Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
