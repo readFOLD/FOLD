@@ -192,10 +192,8 @@ Router.route("edit", {
     var user, data;
     if ((user = Meteor.user()) || Meteor.loggingIn()) { // if there is a user
       data = this.data();
-      if (user && data && user._id !== data.authorId) { // if they don't own the story redirect them to read
-        this.redirect("read", data, {
-          replaceState: true
-        });
+      if (user && data && user._id !== data.authorId) { // if they don't own the story take them to story not found
+        return this.render("story_not_found");
       }
       return this.next(); // if they do own the story, let them through to create
     } else {
