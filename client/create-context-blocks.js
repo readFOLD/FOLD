@@ -51,7 +51,14 @@ var createBlockHelpers = {
   results: function () {
     searchDep.depend();
     return Template.instance().existingSearchResults()
-  }
+  },
+  addingDescription: function() {
+    return Template.instance().addingDescription.get();
+  },
+  focusResult: function() {
+    var focusResult = Template.instance().focusResult.get();
+    if (focusResult) { return focusResult; }
+  },
 };
 
 
@@ -106,6 +113,13 @@ var createBlockEvents = {
     if (focusResult) {
       addContext(focusResult);
     }
+  },
+
+  "click .add-desc-button": function (d, template) {
+    template.addingDescription.set(true);
+  },
+  "click .back-button": function (d, template) {
+    template.addingDescription.set(false);
   },
 
   "click .add-button": function(d, template) {
@@ -377,57 +391,18 @@ Template.create_twitter_section.events({
   }
 });
 
-Template.create_image_section.onCreated(function() {
-  this.addingDescription = new ReactiveVar(false);
-});
-
 Template.create_image_section.events({
-  "click .add-desc-button": function (d, template) {
-    template.addingDescription.set(true);
-  },
-  "click .back-button": function (d, template) {
-    template.addingDescription.set(false);
-  },
   "dblclick li": function (d, template) {
     addContext(this);
   }
-});
-
-Template.create_image_section.helpers({
-  addingDescription: function() {
-    return Template.instance().addingDescription.get();
-  },
-  focusResult: function() {
-    var focusResult = Template.instance().focusResult.get();
-    if (focusResult) { return focusResult; }
-  },
-})
-
-Template.create_gif_section.onCreated(function() {
-  this.addingDescription = new ReactiveVar(false);
 });
 
 Template.create_gif_section.events({
-  "click .add-desc-button": function (d, template) {
-    template.addingDescription.set(true);
-  },
-  "click .back-button": function (d, template) {
-    template.addingDescription.set(false);
-  },
   "dblclick li": function (d, template) {
     addContext(this);
   }
 });
 
-Template.create_gif_section.helpers({
-  addingDescription: function() {
-    return Template.instance().addingDescription.get();
-  },
-  focusResult: function() {
-    var focusResult = Template.instance().focusResult.get();
-    if (focusResult) { return focusResult; }
-  },
-})
 searchTemplateCreatedBoilerplate = function(type, defaultSource) {
   return function() {
     this.type = type;
@@ -436,6 +411,8 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
     this.loadingResults = new ReactiveVar();
     this.focusResult = new ReactiveVar();
     this.noMoreResults = new ReactiveVar();
+
+    this.addingDescription = new ReactiveVar(false);
 
     this.search = _.bind(searchAPI, this);
     this.existingSearchResults = _.bind(existingSearchResults, this);
@@ -490,11 +467,8 @@ Template.create_twitter_section.onRendered(searchTemplateRenderedBoilerplate());
 Template.create_image_section.onCreated(searchTemplateCreatedBoilerplate('image', 'flickr'));
 Template.create_image_section.onRendered(searchTemplateRenderedBoilerplate());
 
-
 Template.create_gif_section.onCreated(searchTemplateCreatedBoilerplate('gif', 'giphy'));
 Template.create_gif_section.onRendered(searchTemplateRenderedBoilerplate());
-
-
 
 Template.create_audio_section.onCreated(searchTemplateCreatedBoilerplate('audio', 'soundcloud'));
 Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
