@@ -423,7 +423,7 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
     }
 
     if (Template.instance().editing.get()) {
-      return '<textarea name="content" class="text-content" value={{content}} rows="2" dir="auto">' + textContent + '</textarea>';      
+      return '<textarea name="content" class="text-content" rows="2" dir="auto">' + textContent + '</textarea>';
     } else {
       return '<div class="text-content" dir="auto">' + textContent + '</div>';
     }
