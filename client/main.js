@@ -445,7 +445,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
     "click div.text-content": function(d, template) {
       var that = this;
       if (!Session.get('read')) {
-        template.editing.set(true);     
+        template.editing.set(true);
 
         var clickHandler = function myself (clickElement) {
           if (!Session.get('read')) {
@@ -465,6 +465,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
         };
 
         setTimeout(function(){
+          template.$('.text-content').focus();
           $(document).on( "click", clickHandler); // turn off editing when click anywhere except the description
         }) 
       }
