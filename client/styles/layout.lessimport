@@ -24,6 +24,7 @@
 
 @remix-bar-height: 40px;
 @horizontal-content-height: 300px;
+@content-font-size: 16.5px;
 
 .standard-icon-colors {
   circle{
@@ -438,7 +439,7 @@ div#overlay {
   div.content {
     line-height: 26px;
     overflow: hidden;
-    font-size: 16.5px;
+    font-size: @content-font-size;
     min-height: @normalContentHeight + @titleHeight + @titleMarginBottom;
     &.minimized {
       height: 0;
@@ -557,7 +558,7 @@ div.text-section {
   height: 100%;
 
   textarea {
-    font-size: 16.5px;
+    font-size: @content-font-size;
   }
 }
 
