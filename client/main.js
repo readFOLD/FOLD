@@ -467,7 +467,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
         setTimeout(function(){
           template.$('.text-content').focus();
           $(document).on( "click", clickHandler); // turn off editing when click anywhere except the description
-        }) 
+        });
       }
     }
   }
