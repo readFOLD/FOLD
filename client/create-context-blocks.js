@@ -551,8 +551,7 @@ Template.create_link_section.onCreated(function() {
   var that = this;
   this.search = function(){
     var url = this.$('input[type="search"]').val();
-    this.loadingResults.set(true);
-    var that = this;
+    that.loadingResults.set(true);
 
     Meteor.call('embedlyEmbedResult', url, function(error, result) {
       that.loadingResults.set(false);
