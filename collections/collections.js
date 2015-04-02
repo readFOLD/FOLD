@@ -675,11 +675,11 @@ LinkBlock = (function(_super) {
   };
 
   LinkBlock.prototype.imageOnLeft = function() {
-    return !this.reference.thumbnailWidth || (this.reference.thumbnailWidth / this.reference.thumbnailHeight) <= 1.25;
+    return !this.reference.thumbnailUrl  || (this.reference.thumbnailWidth / this.reference.thumbnailHeight) <= 1.25;
   };
 
   LinkBlock.prototype.url = function() {
-    return this.reference.url;
+    return this.reference.url || this.reference.originalUrl;
   };
 
   LinkBlock.prototype.providerUrl = function() {
@@ -870,7 +870,8 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   title: { type: String, optional: true },
   thumbnailUrl: { type: String, optional: true },
   url: { type: String, optional: true },  
-  providerName: { type: String, optional: true },  
+  originalUrl: { type: String, optional: true },
+  providerName: { type: String, optional: true },
   providerUrl: { type: String, optional: true },  
   authorUrl: { type: String, optional: true },
   authorName: { type: String, optional: true },
