@@ -220,52 +220,49 @@
 
     {{> search_form placeholderType='links'}}
 
-    {{#if link}}
-      {{#with preview}}
-        <div class="link-section preview-section {{#if isFocused}}focused{{/if}}">
-          <div class="transparent-cover"></div>
-          <a href="{{url}}" target="_blank">
-            <div class="top">
-            {{#if thumbnailUrl}}
-              {{#if imageOnLeft}}
-                <img class="thumbnail left" src="{{thumbnailUrl}}" />
-              {{else}}
-                <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
-              {{/if}}
-              <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
-            {{/if}}
-            </div>
-          </a>
-          <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
-          <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
-        </div>
-      {{/with}}
-    {{else}}
-      {{#if image}}
-      <div class="preview-section image-section">
-        <img class="image" src="{{preview.url}}" />
+    {{#if loading}}
+      <div class="preview-section placeholder">
+        {{> loading_icon}}
       </div>
+    {{else}}
+      {{#if link}}
+        {{#with preview}}
+          <div class="link-section preview-section {{#if isFocused}}focused{{/if}}">
+            <div class="transparent-cover"></div>
+            <a href="{{url}}" target="_blank">
+              <div class="top">
+              {{#if thumbnailUrl}}
+                {{#if imageOnLeft}}
+                  <img class="thumbnail left" src="{{thumbnailUrl}}" />
+                {{else}}
+                  <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
+                {{/if}}
+                <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
+              {{/if}}
+              </div>
+            </a>
+            <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
+            <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+          </div>
+        {{/with}}
       {{else}}
-
-        {{#if video}}
-        <div class="preview-section video-section">
-          <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{preview.url}}" allowfullscreen></iframe>
+        {{#if image}}
+        <div class="preview-section image-section">
+          <img class="image" src="{{preview.url}}" />
         </div>
         {{else}}
-          <div class="preview-section placeholder">
+
+          {{#if video}}
+          <div class="preview-section video-section">
+            <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{preview.url}}" allowfullscreen></iframe>
           </div>
+          {{/if}}
         {{/if}}
       {{/if}}
     {{/if}}
 
-  <!--
-      {{#if loading}}
-        {{> loading_icon}}
-      {{/if}}
-      {{#if noMoreResults}}
-        {{noMoreResults}}
-      {{/if}} -->
-  {{#if showAddButton}}
+
+    {{#if showAddButton}}
     <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
       Add
     </button>

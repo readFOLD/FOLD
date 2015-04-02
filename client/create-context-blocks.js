@@ -551,9 +551,14 @@ Template.create_link_section.onCreated(function() {
   var that = this;
   this.search = function(){
     var url = this.$('input[type="search"]').val();
+    this.loadingResults.set(true);
+    var that = this;
 
     Meteor.call('embedlyEmbedResult', url, function(error, result) {
+      // TODO handle error
       console.log(result)
+      that.loadingResults.set(false);
+
 
       addPropertiesToBaseline = function(obj){
         var newObj = _.extend({}, obj, {
