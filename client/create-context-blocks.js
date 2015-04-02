@@ -377,12 +377,18 @@ Template.create_twitter_section.events({
 Template.create_image_section.events({
   "dblclick li": function (d, template) {
     template.addingDescription.set(true);
+    setTimeout(function(){
+      template.$('textarea').focus();
+    });
   }
 });
 
 Template.create_gif_section.events({
   "dblclick li": function (d, template) {
     template.addingDescription.set(true);
+    setTimeout(function(){
+      template.$('textarea').focus();
+    });
   }
 });
 
@@ -758,6 +764,10 @@ Template.create_map_section.helpers({
 Template.create_text_section.onCreated(function() {
   this.type = 'text';
   this.source = new ReactiveVar('free_text');
+});
+
+Template.create_text_section.onRendered(function() {
+  this.$('textarea').focus();
 });
 
 Template.create_text_section.helpers({
