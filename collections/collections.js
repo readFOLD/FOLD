@@ -667,16 +667,15 @@ LinkBlock = (function(_super) {
   };
 
   LinkBlock.prototype.linkDescription = function() {
-    return this.reference.description;
+    return this.reference.description || '';
   };
 
   LinkBlock.prototype.thumbnailUrl = function() {
-    return this.reference.thumbnailUrl;
-    return this.reference.thumbnailUrl; // TODO OR LINK ICON
+    return this.reference.thumbnailUrl || '/LINK_SQUARE.svg';
   };
 
   LinkBlock.prototype.imageOnLeft = function() {
-    return (this.reference.thumbnailWidth / this.reference.thumbnailHeight) <= 1.25;
+    return !this.reference.thumbnailWidth || (this.reference.thumbnailWidth / this.reference.thumbnailHeight) <= 1.25;
   };
 
   LinkBlock.prototype.url = function() {
@@ -688,7 +687,7 @@ LinkBlock = (function(_super) {
   };
 
   LinkBlock.prototype.providerTruncatedUrl= function() {
-    return this.reference.providerUrl.replace(/.*?:\/\/www./g, "");
+    return this.reference.providerUrl.replace(/(https?:\/\/)?(www\.)?/, "");
   };
   return LinkBlock;
 
