@@ -542,16 +542,96 @@ div.vertical-narrative {
       cursor: default;
       opacity: 1.0;
       background-color: @selected-background-color;
-        p {
-          cursor: text;
-        }
+      p {
+        cursor: text;
       }
+    }
   }
 
 }
 
 div.oec-section {
   background-color: white;
+}
+
+div.link-section {
+  position: relative;
+  height: 300px;
+  border-bottom: 7px solid @action-color;
+
+  div.top {
+    .thumbnail {
+      &.left {
+        float: left;
+        width: 130px;
+        height: 130px;
+      }
+      &.top {
+        background-color: @action-color;
+        background-position: center center;
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        height: 130px;
+      }
+    }
+    div.link-title {
+      font-size: 20px;
+      font-weight: bold;
+      padding-left: 15px;
+      padding-top: 15px;
+      padding-right: 20px;
+      padding-bottom: 7px;
+      line-height: 26px;
+      background-color: @white-color;
+
+      &.image-on-left {
+        display: flex;
+        align-items: center;
+        background-color: @dark-color;
+        float: right;
+        padding-top: 0;
+        width: calc(100% ~"-" 130px);
+        border-bottom: 1px solid @dark-color;
+        background-color: @dark-color;
+        color: white;
+        height: 130px;
+      }
+    }
+  }
+
+  div.link-description {
+    font-size: 14px;
+    width: 100%;
+    overflow: hidden;
+
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 0px;
+    &.image-on-top {
+      max-height: 80px;
+    }
+
+    &.image-on-left {
+      max-height: 110px;
+      padding-top: 15px;
+    }
+  }
+
+  .bottom {
+    position: absolute;
+    left: 15px;
+    bottom: 7px;
+    padding-top: 13px;
+    cursor: pointer;
+    width: calc(100% ~"-" 15px);
+    background-color: @white-color;
+    a {
+      color: @action-color;
+    }
+  }
 }
 
 div.text-section {
@@ -874,7 +954,7 @@ div.inline-block {
 div.hide {
   visibility: hidden !important; // could also use left: -9999px. better than display:none because it still has a non-zero size
 }
+
 div.collapse {
   display: none !important;
 }
-

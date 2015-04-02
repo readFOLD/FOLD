@@ -835,7 +835,6 @@ Template.create_options.events({
       files: files,
       path: "header-images"
     }, function(e, r) {
-      console.log(r)
       var filename = r.file.name;
       Session.set('saveState', 'saving');
       return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);

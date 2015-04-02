@@ -490,10 +490,11 @@ Template.display_twitter_section.helpers(horizontalBlockHelpers);
 
 Template.display_map_section.helpers(horizontalBlockHelpers);
 
+Template.display_link_section.helpers(horizontalBlockHelpers);
+
 Template.display_text_section.onCreated(editableDescriptionCreatedBoilerplate);
 Template.display_text_section.helpers(horizontalBlockHelpers);
 Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
-
 
 
 Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);

@@ -477,10 +477,14 @@ ImageBlock = (function(_super) {
     switch (this.source) {
       case 'local':
         return '/' + this.reference.id;
+      case 'link':
+        return this.reference.url;
       case 'imgur':
         return '//i.imgur.com/' + this.reference.id + '.' + this.reference.fileExtension;
       case 'flickr':
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg'
+      case 'embedly':
+        return this.reference.url;
     }
   };
 
@@ -492,11 +496,13 @@ ImageBlock = (function(_super) {
         return '//i.imgur.com/' + this.reference.id + 't' + '.' + this.reference.fileExtension;
       case 'flickr':
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_t' + '.jpg';
+      case 'embedly':
+        return this.reference.thumbnailUrl;
     }
   };
 
   ImageBlock.prototype.anchorMenuSnippet = function() {
-    return this.title;
+    return this.description || this.reference.title || this.reference.description;
   };
 
   return ImageBlock;
@@ -648,6 +654,48 @@ TextBlock = (function(_super) {
 
 })(ContextBlock);
 
+LinkBlock = (function(_super) {
+  __extends(LinkBlock, _super);
+
+  function LinkBlock(doc) {
+    LinkBlock.__super__.constructor.call(this, doc);
+    this.type = 'link';
+  }
+
+  LinkBlock.prototype.title = function() {
+    return this.reference.title || this.reference.originalUrl;
+  };
+
+  LinkBlock.prototype.linkDescription = function() {
+    return this.reference.description || '';
+  };
+
+  LinkBlock.prototype.thumbnailUrl = function() {
+    return this.reference.thumbnailUrl || '/LINK_SQUARE.svg';
+  };
+
+  LinkBlock.prototype.imageOnLeft = function() {
+    return !this.reference.thumbnailUrl  || (this.reference.thumbnailWidth / this.reference.thumbnailHeight) <= 1.25;
+  };
+
+  LinkBlock.prototype.url = function() {
+    return this.reference.url || this.reference.originalUrl;
+  };
+
+  LinkBlock.prototype.providerUrl = function() {
+    return this.reference.providerUrl;
+  };
+
+  LinkBlock.prototype.providerTruncatedUrl= function() {
+    return this.reference.providerUrl.replace(/(https?:\/\/)?(www\.)?/, "");
+  };
+
+  LinkBlock.prototype.anchorMenuSnippet = function() {
+    return this.title();
+  };
+  return LinkBlock;
+
+})(ContextBlock);
 
 var newTypeSpecificContextBlock =  function(doc) {
   switch (doc.type) {
@@ -667,6 +715,8 @@ var newTypeSpecificContextBlock =  function(doc) {
       return new VizBlock(doc);
     case 'twitter':
       return new TwitterBlock(doc);
+    case 'link':
+      return new LinkBlock(doc);
     default:
       return new ContextBlock(doc);
   }
@@ -681,6 +731,7 @@ if (Meteor.isClient) {
   window.AudioBlock = AudioBlock;
   window.VizBlock = VizBlock;
   window.TwitterBlock = TwitterBlock;
+  window.LinkBlock = LinkBlock;
   window.newTypeSpecificContextBlock = newTypeSpecificContextBlock
 }
 
@@ -815,6 +866,24 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     blackbox: true
   },
 
+  // Link
+  title: { type: String, optional: true },
+  thumbnailUrl: { type: String, optional: true },
+  url: { type: String, optional: true },  
+  originalUrl: { type: String, optional: true },
+  providerName: { type: String, optional: true },
+  providerUrl: { type: String, optional: true },  
+  authorUrl: { type: String, optional: true },
+  authorName: { type: String, optional: true },
+  thumbnailHeight: { type: Number, optional: true },
+  thumbnailWidth: { type: Number, optional: true },
+  embedlyType: { type: String, optional: true },
+  imageOnLeft: { type: Boolean, optional: true },
+
+  // Rich
+  html: { type: String, optional: true },
+
+  // OEC
   oecYear: {
     type: String,
     optional: true
@@ -862,6 +931,11 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
+  fromEmbedly: {
+    type: Boolean,
+    optional: true
+  }
+  ,
   createdAt: {
     type: Date,
     autoValue: function() {

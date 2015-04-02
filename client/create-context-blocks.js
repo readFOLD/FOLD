@@ -346,7 +346,8 @@ var createTemplateNames = [
   'create_twitter_section',
   'create_map_section',
   'create_audio_section',
-  'create_viz_section'
+  'create_viz_section',
+  'create_link_section'
 ];
 
 _.each(createTemplateNames, function(templateName){
@@ -461,7 +462,6 @@ Template.create_gif_section.onRendered(searchTemplateRenderedBoilerplate());
 Template.create_audio_section.onCreated(searchTemplateCreatedBoilerplate('audio', 'soundcloud'));
 Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
 
-
 var dataSourcesByType = {
   'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}],
   'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
@@ -470,7 +470,8 @@ var dataSourcesByType = {
   'audio': [{source: 'soundcloud', display: 'SoundCloud'}],
   'twitter': [{source: 'twitter', display: 'Twitter'}],
   'map': [{source: 'google_maps', display: 'Google Maps'}],
-  'text': [{source: 'free_text', display: 'Free Text'}]
+  'text': [{source: 'free_text', display: 'Free Text'}],
+  'link': [{source: 'link', display: 'Link'}]
 };
 
 
@@ -547,6 +548,186 @@ Template.create_viz_section.events({
   }
 })
 
+Template.create_link_section.onCreated(function() {
+  this.type = 'link';
+  this.source = new ReactiveVar('link');
+  this.loadingResults = new ReactiveVar();
+  this.noMoreResults = new ReactiveVar();
+  this.focusResult = new ReactiveVar();
+
+  var that = this;
+  this.search = function(){
+    var url = this.$('input[type="search"]').val();
+    that.loadingResults.set(true);
+
+    Meteor.call('embedlyEmbedResult', url, function(error, result) {
+      that.loadingResults.set(false);
+
+      if(error){
+        that.noMoreResults.set('No results found');
+        return
+      }
+      that.noMoreResults.set(false);
+      console.log(result)
+
+      addPropertiesToBaseline = function(obj){
+        var newObj = _.extend({}, obj, {
+          fullDetails: result,
+          authorId : Meteor.user()._id,
+          searchQuery: url,
+          fromEmbedly: true
+        });
+
+        if (!newObj.reference){
+          newObj.reference = {};
+        }
+
+        _.extend(newObj.reference, {
+          title: result.title,
+          description: result.description,
+          providerName: result.provider_name,
+          providerUrl: result.provider_url,
+          url: result.url,
+          originalUrl: url,
+          authorUrl: result.author_url,
+          authorName: result.author_name,
+          thumbnailUrl: result.thumbnail_url,
+          thumbnailWidth: result.thumbnail_width,
+          thumbnailHeight: result.thumbnail_height,
+          embedlyType: result.type
+        });
+        return newObj
+      };
+
+      switch(result.type) {
+        case 'rich':
+          // fall through to the link
+        case 'link':
+          that.focusResult.set(new LinkBlock(addPropertiesToBaseline({
+            type: 'link',
+            source: 'embedly'
+          })));
+          break;
+        case 'photo':
+          var source, reference;
+
+          switch(result.provider_name) {
+            case 'Imgur':
+              source = 'imgur';
+              var info = _.chain(result.url.split('/')).compact().last().value().split('.');
+              reference = {
+                id: info[0],
+                fileExtension: info[1]
+              };
+              break;
+            case 'Giphy':
+              source = 'giphy';
+              var info = result.url.match(/\/media\/(.*)?\/giphy/);
+              reference = {
+                id: info[1]
+              };
+              break;
+            case 'Flickr':
+              source = 'flickr';
+              var info = result.url.match(/\/\/farm(.*)?\.staticflickr\.com\/(.*)?\/(.*)?_(.*)?_/);
+              reference = {
+                flickrFarm: info[1],
+                flickrServer: info[2],
+                id: info[3],
+                flickrSecret: info[4]
+              };
+              break;
+            default:
+              source = 'embedly';
+              reference = {};
+          }
+
+          cardModel = source === 'giphy' ? GifBlock : ImageBlock;
+
+          that.focusResult.set(new cardModel(addPropertiesToBaseline({
+            reference: reference,
+            type: 'image',
+            source: source
+          })));
+          break;
+
+        case 'video':
+          switch (result.provider_name){
+            case "YouTube":
+              var id = result.url.split("v=")[1];
+              that.focusResult.set(new VideoBlock(addPropertiesToBaseline({
+                reference:  {
+                  id: id,
+                  username: result.author_name
+                },
+                source: 'youtube'
+              })));
+              break;
+            case "Vimeo":
+              var id = result.html.match(/%2Fvideo%2F(\d*)/)[1];
+              var previewImage = result.thumbnail_url.match(/\/video\/(.*)?_/)[1];
+              that.focusResult.set(new VideoBlock(addPropertiesToBaseline({
+                reference:  {
+                  id: id,
+                  previewImage: previewImage,
+                  username: result.author_name
+                },
+                source: 'vimeo'
+              })));
+              break;
+            case 'Giphy':
+              source = 'giphy';
+              var info = result.url.match(/\/media\/(.*)?\/giphy/);
+              that.focusResult.set(new GifBlock(addPropertiesToBaseline({
+                reference: {
+                  id: info[1]
+                },
+                source: source
+              })));
+              break;
+            default:
+              that.focusResult.set(new LinkBlock(addPropertiesToBaseline({
+                reference: reference,
+                source: 'embedly'
+              })));
+              break;
+
+
+          }
+          break;
+      }
+      console.log(that.focusResult.get())
+
+    });
+  };
+});
+
+
+Template.create_link_section.helpers({
+  preview: function(){
+    return Template.instance().focusResult.get();
+  },
+  link: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return (preview.type === 'link');
+    }
+  },
+  image: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return (preview.type === 'image' || preview.type === 'gif');
+    }
+  },
+  video: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return (preview.type === 'video');
+    }
+  }
+});
+
+
 Template.create_map_section.onCreated(function() {
   this.type = 'map';
   this.source = new ReactiveVar('google_maps');
@@ -555,8 +736,6 @@ Template.create_map_section.onCreated(function() {
 
   var that = this;
   this.search = function(){
-    input = getSearchInput.call(this);
-
     that.focusResult.set(new MapBlock({
       reference: {
         mapQuery: input.query,
@@ -625,6 +804,15 @@ Template.search_form.events({
 Template.search_form.helpers({
   placeholder: function() {
     switch(Template.instance().data.placeholderType){
+      case 'links':
+        return 'e.g. ' +
+          _.sample([
+            'http://readfold.com',
+            'http://twitter.com/readFOLD',
+            'http://nytimes.com',
+            'http://flickr.com'
+          ]);
+        break;
       case 'locations':
         return 'e.g. ' +
           _.sample([
@@ -654,9 +842,6 @@ Template.search_form.helpers({
             'llama training',
           ]);
     }
-
-
-
   }
 });
 
