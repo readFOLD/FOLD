@@ -434,26 +434,35 @@ Template.horizontal_section_block.helpers({
   }
 });
 
-editableDescriptionEventsBoilerplate = { 
+var editableDescriptionEventsBoilerplate = {
   "click div.description-overlay": function(d, template) {
+    var that = this;
     if (!Session.get('read')) {
-      template.editingDescription.set(true);      
-    }
-  },
+      template.editingDescription.set(true);
 
-  "click": function(d, template) {
-    if (!Session.get('read')) {
-      if (!$(d.target).hasClass('description-overlay') && template.editingDescription.get()) {
-        var description = template.$('textarea[name=content]').val()
-        Session.set('saveState', 'saving');
-        Meteor.call('editHorizontalBlockDescription', this._id, description, function(err, numDocs) {
-          saveCallback(err, numDocs);
-        });
-        template.editingDescription.set(false);
-      }
+      var clickHandler = function myself (clickElement) {
+        if (!Session.get('read')) {
+          if (!$(clickElement.target).hasClass('description-overlay') && template.editingDescription.get()) {
+
+            $(document).off( "click", myself);
+
+            template.editingDescription.set(false);
+
+            var description = template.$('textarea[name=content]').val();
+            Session.set('saveState', 'saving');
+            Meteor.call('editHorizontalBlockDescription', that._id, description, function (err, numDocs) {
+              saveCallback(err, numDocs);
+            });
+          }
+        }
+      };
+
+      setTimeout(function(){
+        $(document).on( "click", clickHandler); // turn off editing when click anywhere except the description
+      })
     }
   }
-}
+};
 
 Template.display_viz_section.helpers(horizontalBlockHelpers);
 
