@@ -663,7 +663,7 @@ LinkBlock = (function(_super) {
   }
 
   LinkBlock.prototype.title = function() {
-    return this.reference.title;
+    return this.reference.title || this.reference.originalUrl;
   };
 
   LinkBlock.prototype.linkDescription = function() {
@@ -672,6 +672,7 @@ LinkBlock = (function(_super) {
 
   LinkBlock.prototype.thumbnailUrl = function() {
     return this.reference.thumbnailUrl;
+    return this.reference.thumbnailUrl; // TODO OR LINK ICON
   };
 
   LinkBlock.prototype.imageOnLeft = function() {

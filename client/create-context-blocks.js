@@ -688,7 +688,6 @@ Template.create_link_section.onCreated(function() {
 });
 
 
-// TODO Don't overload this
 Template.create_link_section.helpers({
   preview: function(){
     return Template.instance().focusResult.get();

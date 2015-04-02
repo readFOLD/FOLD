@@ -247,9 +247,7 @@ Meteor.methods({
     } else {
       nextPage = 'end';
     }
-
-    console.log(items)
-
+    
     return {
       'nextPage': nextPage,
       'items': items
