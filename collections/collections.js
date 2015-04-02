@@ -483,6 +483,8 @@ ImageBlock = (function(_super) {
         return '//i.imgur.com/' + this.reference.id + '.' + this.reference.fileExtension;
       case 'flickr':
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg'
+      case 'embedly':
+        return this.reference.url;
     }
   };
 
@@ -494,11 +496,13 @@ ImageBlock = (function(_super) {
         return '//i.imgur.com/' + this.reference.id + 't' + '.' + this.reference.fileExtension;
       case 'flickr':
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_t' + '.jpg';
+      case 'embedly':
+        return this.reference.thumbnailUrl;
     }
   };
 
   ImageBlock.prototype.anchorMenuSnippet = function() {
-    return this.title;
+    return this.description || this.reference.title || this.reference.description;
   };
 
   return ImageBlock;

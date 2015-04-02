@@ -573,6 +573,7 @@ Template.create_link_section.onCreated(function() {
           providerName: result.provider_name,
           providerUrl: result.provider_url,
           url: result.url,
+          originalUrl: url,
           authorUrl: result.author_url,
           authorName: result.author_name,
           thumbnailUrl: result.thumbnail_url,
@@ -665,7 +666,7 @@ Template.create_link_section.onCreated(function() {
             case 'Giphy':
               source = 'giphy';
               var info = result.url.match(/\/media\/(.*)?\/giphy/);
-              that.focusResult.set(new ImageBlock(addPropertiesToBaseline({
+              that.focusResult.set(new GifBlock(addPropertiesToBaseline({
                 reference: {
                   id: info[1]
                 },
@@ -713,7 +714,7 @@ Template.create_link_section.helpers({
   image: function() {
     var preview = Template.instance().focusResult.get();
     if (preview) {
-      return (preview.type === 'image');
+      return (preview.type === 'image' || preview.type === 'gif');
     }
   },
   video: function() {
