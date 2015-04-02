@@ -134,18 +134,7 @@ Meteor.startup(function() {
   return $(document).scroll(throttledUpdate);
 });
 
-// handle user bailing in middle of twitter signup, before a username is chosen
-Tracker.autorun(function() {
-  if (!Session.get('signingInWithTwitter')) { // don't forcible logout user if in the middle of twitter signup
-    var user = Meteor.user();
-    var currentRoute = Router.current();
-    if (user && currentRoute){ //
-      if(!user.username && currentRoute.url.substring(currentRoute.url.lastIndexOf('/') + 1) !== 'twitter-signup'){ // if user has no username, confirm they are on the page where they can fill that out
-        Meteor.logout(); // otherwise log them out
-      }
-    }
-  }
-});
+
 
 Template.story_header.onRendered(function() {
   var range, sel, titleDiv;
@@ -426,10 +415,17 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
     return Session.equals("currentX", this.index) && !Session.get("addingContext");
   },
   textContent: function() {
-    if (Template.instance().editing.get()) {
-      return '<textarea name="content" class="text-content" value={{content}} rows="2" dir="auto">' + this.description + '</textarea>';      
+    var textContent = ''
+    if (this.description) {
+      textContent = this.description;
     } else {
-      return '<div class="text-content" dir="auto">' + this.description + '</div>';
+      textContent = this.content;
+    }
+
+    if (Template.instance().editing.get()) {
+      return '<textarea name="content" class="text-content" value={{content}} rows="2" dir="auto">' + textContent + '</textarea>';      
+    } else {
+      return '<div class="text-content" dir="auto">' + textContent + '</div>';
     }
   }
 });
@@ -447,8 +443,30 @@ Template.horizontal_section_block.helpers({
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 
     "click div.text-content": function(d, template) {
+      var that = this;
       if (!Session.get('read')) {
-        template.editing.set(true);      
+        template.editing.set(true);     
+
+        var clickHandler = function myself (clickElement) {
+          if (!Session.get('read')) {
+            if (!$(clickElement.target).hasClass('text-content') && template.editing.get()) {
+
+              $(document).off( "click", myself);
+
+              template.editing.set(false);
+
+              var textContent = template.$('textarea[name=content]').val();
+              Session.set('saveState', 'saving');
+              Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
+                saveCallback(err, numDocs);
+              });
+            }
+          }
+        };
+
+        setTimeout(function(){
+          $(document).on( "click", clickHandler); // turn off editing when click anywhere except the description
+        }) 
       }
     },
     "click": function(d, template) {
@@ -464,12 +482,12 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
       }
     }
   }
-}
+};
 
 Template.display_viz_section.helpers(horizontalBlockHelpers);
 
-Template.display_image_section.helpers(horizontalBlockHelpers);
 Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
+Template.display_image_section.helpers(horizontalBlockHelpers);
 Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
 Template.display_audio_section.helpers(horizontalBlockHelpers);
@@ -481,17 +499,10 @@ Template.display_twitter_section.helpers(horizontalBlockHelpers);
 Template.display_map_section.helpers(horizontalBlockHelpers);
 
 Template.display_text_section.onCreated(editableDescriptionCreatedBoilerplate);
+Template.display_text_section.helpers(horizontalBlockHelpers);
 Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
 
-Template.display_text_section.helpers({
-  textContent: function() {
-    if (Template.instance().editing.get()) {
-      return '<textarea name="content" class="text-content" value={{content}} rows="5" dir="auto">' + this.content + '</textarea>';      
-    } else {
-      return '<div class="text-content" dir="auto">' + this.content + '</div>';
-    }
- }
-});
+
 
 Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 

@@ -62,6 +62,21 @@ var updateStory = function(selector, modifier, options) {
 };
 
 Meteor.methods({
+  addContextToStory: function(storyId, contextBlock, verticalIndex){
+    // TODO check that user owns story
+    delete contextBlock._id
+    var contextId = ContextBlocks.insert(_.extend({storyId: storyId, authorId: Meteor.user()._id}, contextBlock));
+
+    var pushObject, pushSelectorString;
+    pushSelectorString = 'draftStory.verticalSections.' + verticalIndex + '.contextBlocks';
+    pushObject = {};
+    pushObject[pushSelectorString] = contextId;
+    var numUpdated = Stories.update({ _id: storyId}, { $addToSet: pushObject});
+    if (!numUpdated){
+      throw new Meteor.Error('Story not updated')
+    }
+    return contextId;
+  },
   // TODO PREVENT FROM SAVING OTHER WAYS
   updateStoryTitle: function(storyId, title){
     // TODO DRY
