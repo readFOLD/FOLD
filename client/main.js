@@ -415,10 +415,10 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
     return Session.equals("currentX", this.index) && !Session.get("addingContext");
   },
   textContent: function() {
-    var textContent = ''
+    var textContent = '';
     if (this.description) {
       textContent = this.description;
-    } else {
+    } else if (this.content) {
       textContent = this.content;
     }
 
