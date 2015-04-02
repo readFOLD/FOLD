@@ -555,9 +555,13 @@ Template.create_link_section.onCreated(function() {
     var that = this;
 
     Meteor.call('embedlyEmbedResult', url, function(error, result) {
-      // TODO handle error
-      console.log(result)
       that.loadingResults.set(false);
+
+      // TODO handle error better
+      if(error){
+        return
+      }
+      console.log(result)
 
 
       addPropertiesToBaseline = function(obj){
