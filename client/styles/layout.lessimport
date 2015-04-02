@@ -459,7 +459,15 @@ div.description-overlay {
   .text-align-start;
 }
 
-
+textarea.description-overlay {
+  position: absolute;
+  color: white;
+  padding: 8px;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 0.8;
+}
 
 div.image-section {
   .size-to-fit;
@@ -479,7 +487,7 @@ div.image-section {
     top: 0;
     width: 100%;
     padding: 8px;
-    opacity: 0.0;
+    opacity: 0.8;
     color: white;
   }
   img {

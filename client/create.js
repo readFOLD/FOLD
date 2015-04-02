@@ -250,7 +250,7 @@ Tracker.autorun(function(){
   }
 });
 
-var saveCallback =  function(err, numDocs, cb) {
+window.saveCallback =  function(err, numDocs, cb) {
   var saveUIUpdateDelay = 300;
   setTimeout(function(){
     if (err) {

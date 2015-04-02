@@ -417,9 +417,21 @@ typeHelpers = {
   }
 };
 
+editableDescriptionCreatedBoilerplate = function() {
+  this.editingDescription = new ReactiveVar(false);
+};
+
 horizontalBlockHelpers = _.extend({}, typeHelpers, {
   selected: function() {
     return Session.equals("currentX", this.index) && !Session.get("addingContext");
+  },
+  descriptionOverlay: function() {
+    console.log("DESCRIPTION OVERLAY", this.description);
+    if (Template.instance().editingDescription.get()) {
+      return '<textarea name="content" class="description-overlay" value={{content}} rows="2" dir="auto">' + this.description + '</textarea>';      
+    } else {
+      return '<div class="description-overlay" dir="auto">' + this.description + '</div>';      //'<textarea class="description-overlay">' + this.description + '</textarea>';      
+    }
   }
 });
 
@@ -433,9 +445,32 @@ Template.horizontal_section_block.helpers({
   }
 });
 
+editableDescriptionEventsBoilerplate = { 
+  "click div.description-overlay": function(d, template) {
+    if (!Session.get('read')) {
+      template.editingDescription.set(true);      
+    }
+  },
+
+  "click": function(d, template) {
+    if (!Session.get('read')) {
+      if (!$(d.target).hasClass('description-overlay') && template.editingDescription.get()) {
+        var description = template.$('textarea[name=content]').val()
+        Session.set('saveState', 'saving');
+        Meteor.call('editHorizontalBlockDescription', this._id, description, function(err, numDocs) {
+          saveCallback(err, numDocs);
+        });
+        template.editingDescription.set(false);
+      }
+    }
+  }
+}
+
 Template.display_viz_section.helpers(horizontalBlockHelpers);
 
 Template.display_image_section.helpers(horizontalBlockHelpers);
+Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
+Template.display_image_section.events(editableDescriptionEventsBoilerplate);
 
 Template.display_audio_section.helpers(horizontalBlockHelpers);
 
