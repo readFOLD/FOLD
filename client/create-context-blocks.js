@@ -546,6 +546,7 @@ Template.create_link_section.onCreated(function() {
   this.type = 'link';
   this.source = new ReactiveVar('link');
   this.loadingResults = new ReactiveVar();
+  this.noMoreResults = new ReactiveVar();
   this.focusResult = new ReactiveVar();
 
   var that = this;
@@ -556,12 +557,12 @@ Template.create_link_section.onCreated(function() {
     Meteor.call('embedlyEmbedResult', url, function(error, result) {
       that.loadingResults.set(false);
 
-      // TODO handle error better
       if(error){
+        that.noMoreResults.set('No results found');
         return
       }
+      that.noMoreResults.set(false);
       console.log(result)
-
 
       addPropertiesToBaseline = function(obj){
         var newObj = _.extend({}, obj, {

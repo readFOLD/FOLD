@@ -225,6 +225,9 @@
         {{> loading_icon}}
       </div>
     {{else}}
+      {{#if noMoreResults}}
+        {{noMoreResults}}
+      {{/if}}
       {{#if link}}
         {{#with preview}}
           <div class="link-section preview-section {{#if isFocused}}focused{{/if}}">
