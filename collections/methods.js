@@ -114,11 +114,11 @@ Meteor.methods({
     return changeHasTitle.call(this, storyId, index, false);
   },
   editHorizontalBlockDescription: function(horizontalId, description) {
-    // TODO - Make sure this goes through updateStory()
+    // TODO - Go though some UpdateContextBlock function
     return ContextBlocks.update({"_id": horizontalId, "authorId": this.userId}, {"$set": {"description": description}});
   },
   editTextSection: function(horizontalId, content) {
-    // TODO - Make sure this goes through updateStory()
+    // TODO - Go though some UpdateContextBlock function
     return ContextBlocks.update({"_id": horizontalId, "authorId": this.userId}, {"$set": {"content": content}});
   },
   insertVerticalSection: function(storyId, index, section) {
