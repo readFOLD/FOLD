@@ -325,9 +325,11 @@ Meteor.methods({
     check(query, String);
     this.unblock();
 
-    requestParams = { // TODO add maxheight and maxwidth
+    requestParams = {
       url: query,
-      key: EMBEDLY_KEY
+      key: EMBEDLY_KEY,
+      maxheight: 300,
+      maxwidth: 474
     }
 
     res = HTTP.get('http://api.embed.ly/1/oembed', {
