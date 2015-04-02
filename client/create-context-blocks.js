@@ -614,7 +614,6 @@ Template.create_link_section.onCreated(function() {
               break;
             case 'Flickr':
               source = 'flickr';
-              //https://farm4.staticflickr.com/3197/3881925442_c2f2cacb8f_b.jpg
               var info = result.url.match(/\/\/farm(.*)?\.staticflickr\.com\/(.*)?\/(.*)?_(.*)?_/);
               reference = {
                 flickrFarm: info[1],
@@ -639,7 +638,6 @@ Template.create_link_section.onCreated(function() {
 
         case 'video':
           switch (result.provider_name){
-
             case "YouTube":
               var id = result.url.split("v=")[1];
               that.focusResult.set(new VideoBlock(addPropertiesToBaseline({
@@ -651,7 +649,6 @@ Template.create_link_section.onCreated(function() {
               })));
               break;
             case "Vimeo":
-              //var id = result.url.split("v=")[1];
               var id = result.html.match(/%2Fvideo%2F(\d*)/)[1];
               var previewImage = result.thumbnail_url.match(/\/video\/(.*)?_/)[1];
               that.focusResult.set(new VideoBlock(addPropertiesToBaseline({
@@ -682,15 +679,6 @@ Template.create_link_section.onCreated(function() {
 
 
           }
-          // TODO other providers
-          // thumbnailUrl and all that goodness
-
-          //cardModel = source === 'giphy' ? GifBlock : VideoBlock;
-          //
-          //that.focusResult.set(new cardModel(addPropertiesToBaseline({
-          //  reference: reference,
-          //  source: source
-          //})));
           break;
       }
       console.log(that.focusResult.get())
@@ -721,18 +709,6 @@ Template.create_link_section.helpers({
     var preview = Template.instance().focusResult.get();
     if (preview) {
       return (preview.type === 'video');
-    }
-  },
-  html: function() {
-    var preview = Template.instance().focusResult.get();
-    if (preview) {
-      return preview.html();
-    }
-  },
-  rich: function() {
-    var preview = Template.instance().focusResult.get();
-    if (preview) {
-      return (preview.type === 'rich');
     }
   }
 });
