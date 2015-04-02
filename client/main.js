@@ -406,9 +406,27 @@ typeHelpers = {
   }
 };
 
+editableDescriptionCreatedBoilerplate = function() {
+  this.editing = new ReactiveVar(false);
+};
+
 horizontalBlockHelpers = _.extend({}, typeHelpers, {
   selected: function() {
     return Session.equals("currentX", this.index) && !Session.get("addingContext");
+  },
+  textContent: function() {
+    var textContent = ''
+    if (this.description) {
+      textContent = this.description;
+    } else {
+      textContent = this.content;
+    }
+
+    if (Template.instance().editing.get()) {
+      return '<textarea name="content" class="text-content" value={{content}} rows="2" dir="auto">' + textContent + '</textarea>';      
+    } else {
+      return '<div class="text-content" dir="auto">' + textContent + '</div>';
+    }
   }
 });
 
@@ -422,9 +440,43 @@ Template.horizontal_section_block.helpers({
   }
 });
 
+editableDescriptionEventsBoilerplate = function(meteorMethod) {
+  return { 
+    "click div.text-content": function(d, template) {
+      var that = this;
+      if (!Session.get('read')) {
+        template.editing.set(true);     
+
+        var clickHandler = function myself (clickElement) {
+          if (!Session.get('read')) {
+            if (!$(clickElement.target).hasClass('text-content') && template.editing.get()) {
+
+              $(document).off( "click", myself);
+
+              template.editing.set(false);
+
+              var textContent = template.$('textarea[name=content]').val();
+              Session.set('saveState', 'saving');
+              Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
+                saveCallback(err, numDocs);
+              });
+            }
+          }
+        };
+
+        setTimeout(function(){
+          $(document).on( "click", clickHandler); // turn off editing when click anywhere except the description
+        }) 
+      }
+    }
+  }
+};
+
 Template.display_viz_section.helpers(horizontalBlockHelpers);
 
+Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
 Template.display_image_section.helpers(horizontalBlockHelpers);
+Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
 Template.display_audio_section.helpers(horizontalBlockHelpers);
 
@@ -433,6 +485,12 @@ Template.display_video_section.helpers(horizontalBlockHelpers);
 Template.display_twitter_section.helpers(horizontalBlockHelpers);
 
 Template.display_map_section.helpers(horizontalBlockHelpers);
+
+Template.display_text_section.onCreated(editableDescriptionCreatedBoilerplate);
+Template.display_text_section.helpers(horizontalBlockHelpers);
+Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
+
+
 
 Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 

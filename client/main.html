@@ -225,8 +225,8 @@
 <!-- Display Templates -->
 <template name="display_text_section">
   <div class="text-section" dir="auto">
-      {{content}}
-    </div>
+    {{{textContent}}}
+  </div>
     {{#unless read}}
       {{> horizontal_section_edit_delete}}
     {{/unless}}
@@ -235,11 +235,7 @@
 <template name="display_image_section">
   <div class="image-section">
     <img src="{{url}}" />
-    {{#if description}}
-        <div class="description-overlay" dir="auto">
-          {{description}}
-        </div>
-      {{/if}}
+    {{{textContent}}}
   </div>
   {{#unless read}}
     {{> horizontal_section_edit_delete}}

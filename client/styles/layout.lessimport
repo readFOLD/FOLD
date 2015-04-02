@@ -452,15 +452,6 @@ div#overlay {
   }
 }
 
-div.description-overlay {
-  @font-size: 14px;
-  font-size: @font-size;
-  line-height: 20px;
-  .text-align-start;
-}
-
-
-
 div.image-section {
   .size-to-fit;
   position: relative;
@@ -468,18 +459,37 @@ div.image-section {
   background-color: @black-color;
   text-align: center;
   &:hover{
-    div.description-overlay{
+    div.text-content{
       background-color: rgba(0, 0, 0, 0.8);
       opacity: 0.8;
     }
   }
-  div.description-overlay {
+  
+  div.text-content {
+    @font-size: 14px;
+    font-size: @font-size;
+    background-color: rgba(0, 0, 0, 0.8);
+    line-height: 20px;
+    .text-align-start;
+  }
+
+  textarea.text-content {
+    position: absolute;
+    color: white;
+    padding: 8px;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    opacity: 0.8;
+  }
+
+  div.text-content {
     .opacity-background-transition;
     position: absolute;
     top: 0;
     width: 100%;
     padding: 8px;
-    opacity: 0.0;
+    opacity: 0.8;
     color: white;
   }
   img {
@@ -541,6 +551,14 @@ div.vertical-narrative {
 
 div.oec-section {
   background-color: white;
+}
+
+div.text-section {
+  height: 100%;
+
+  textarea {
+    font-size: 16px;
+  }
 }
 
 div.twitter-section{

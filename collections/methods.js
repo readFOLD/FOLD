@@ -113,6 +113,14 @@ Meteor.methods({
   removeTitle: function(storyId, index) {
     return changeHasTitle.call(this, storyId, index, false);
   },
+  editHorizontalBlockDescription: function(horizontalId, description) {
+    // TODO - Go though some UpdateContextBlock function
+    return ContextBlocks.update({"_id": horizontalId, "authorId": this.userId}, {"$set": {"description": description}});
+  },
+  editTextSection: function(horizontalId, content) {
+    // TODO - Go though some UpdateContextBlock function
+    return ContextBlocks.update({"_id": horizontalId, "authorId": this.userId}, {"$set": {"content": content}});
+  },
   insertVerticalSection: function(storyId, index, section) {
     // TODO - Once Meteor upgrades to use Mongo 2.6
     // This should use the $position operator and work directly there
