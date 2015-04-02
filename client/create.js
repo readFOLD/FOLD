@@ -577,10 +577,6 @@ Template.create_horizontal_section_block.onCreated(function() {
   return this.type = new ReactiveVar('video');
 });
 
-Template.create_horizontal_section_block.onCreated(function() {
-  return this.type = new ReactiveVar('link');
-});
-
 Template.create_horizontal_section_block.helpers({
   type: function() {
     return Template.instance().type.get();
