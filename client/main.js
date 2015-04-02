@@ -468,18 +468,6 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
           $(document).on( "click", clickHandler); // turn off editing when click anywhere except the description
         }) 
       }
-    },
-    "click": function(d, template) {
-      if (!Session.get('read')) {
-        if (!$(d.target).hasClass('text-content') && template.editing.get()) {
-          var textContent = template.$('textarea[name=content]').val()
-          Session.set('saveState', 'saving');
-          Meteor.call(meteorMethod, this._id, textContent, function(err, numDocs) {
-            saveCallback(err, numDocs);
-          });
-          template.editing.set(false);
-        }
-      }
     }
   }
 };
