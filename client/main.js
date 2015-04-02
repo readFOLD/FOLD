@@ -447,9 +447,9 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
       if (!Session.get('read')) {
         template.editing.set(true);
 
-        var clickHandler = function myself (clickElement) {
+        var evtHandler = function myself (e) {
           if (!Session.get('read')) {
-            if (!$(clickElement.target).hasClass('text-content') && template.editing.get()) {
+            if ((e.which === 13 || !$(e.target).hasClass('text-content')) && template.editing.get()) {
 
               $(document).off( "click", myself);
 
@@ -466,7 +466,10 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
 
         setTimeout(function(){
           template.$('.text-content').focus();
-          $(document).on( "click", clickHandler); // turn off editing when click anywhere except the description
+          $(document).on({
+            "click": evtHandler,
+            "keydown": evtHandler
+          }); // turn off editing when click anywhere except the description
         });
       }
     }
