@@ -689,6 +689,10 @@ LinkBlock = (function(_super) {
   LinkBlock.prototype.providerTruncatedUrl= function() {
     return this.reference.providerUrl.replace(/(https?:\/\/)?(www\.)?/, "");
   };
+
+  LinkBlock.prototype.anchorMenuSnippet = function() {
+    return this.title();
+  };
   return LinkBlock;
 
 })(ContextBlock);
