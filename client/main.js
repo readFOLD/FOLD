@@ -468,7 +468,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
           template.$('.text-content').focus();
           $(document).on({
             "click": evtHandler,
-            "keydown": evtHandler
+            "keydown": evtHandler // TODO make this not happen on textarea
           }); // turn off editing when click anywhere except the description
         });
       }

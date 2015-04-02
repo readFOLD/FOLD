@@ -74,7 +74,16 @@ searchScrollFn = function(d, template) {
 
 throttledSearchScrollFn = _.throttle(searchScrollFn, 20);
 
+var addFocusResult = function(d, template) {
+  var focusResult = template.focusResult.get();
+  if (focusResult) {
+    var textAreaContent = template.$('textarea[name=content]').val();
+    focusResult.description = textAreaContent;
 
+    template.focusResult.set(focusResult);
+    addContext(focusResult);
+  }
+};
 
 var createBlockEvents = {
   "click .data-source": function(d, template) {
@@ -103,14 +112,10 @@ var createBlockEvents = {
     template.addingDescription.set(false);
   },
 
-  "click .add-button": function(d, template) {
-    var focusResult = template.focusResult.get();
-    if (focusResult) {
-      var textAreaContent = template.$('textarea[name=content]').val()
-      focusResult.description = textAreaContent;
-
-      template.focusResult.set(focusResult);
-      addContext(focusResult);
+  "click .add-button": addFocusResult,
+  "keydown": function(e, t) {
+    if (e.which === 13){ // TODO make this not happen on textarea
+      addFocusResult.apply(this,arguments);
     }
   },
   "click .cancel": function() {
