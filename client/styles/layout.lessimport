@@ -593,7 +593,7 @@ div.link-section {
         background-color: @dark-color;
         float: right;
         padding-top: 0;
-        width: calc(100% ~ "-" 130px);
+        width: calc(100% ~"-" 130px);
         border-bottom: 1px solid @dark-color;
         background-color: @dark-color;
         color: white;
@@ -626,7 +626,7 @@ div.link-section {
     bottom: 7px;
     padding-top: 13px;
     cursor: pointer;
-    width: calc(100% ~ "-" 15px);
+    width: calc(100% ~"-" 15px);
     background-color: @white-color;
     a {
       color: @action-color;
