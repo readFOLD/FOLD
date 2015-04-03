@@ -240,7 +240,7 @@
 </template>
 
 <template name="display_image_section">
-  <div class="image-section">
+  <div class="image-section {{#unless read}}always-show-caption{{/unless}}">
     <img src="{{url}}" />
     {{{textContent}}}
   </div>

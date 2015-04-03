@@ -465,7 +465,7 @@ div.image-section {
   line-height: @horizontal-content-height;
   background-color: @black-color;
   text-align: center;
-  &:hover{
+  &:hover, &.always-show-caption{
     div.text-content{
       background-color: rgba(0, 0, 0, 0.8);
       opacity: 0.8;
@@ -475,14 +475,12 @@ div.image-section {
   div.text-content {
     @font-size: 14px;
     font-size: @font-size;
-    background-color: rgba(0, 0, 0, 0.8);
     line-height: 20px;
     .text-align-start;
   }
 
   textarea.text-content {
     position: absolute;
-    color: white;
     padding: 8px;
     top: 0;
     left: 0;
@@ -496,8 +494,10 @@ div.image-section {
     top: 0;
     width: 100%;
     padding: 8px;
-    opacity: 0.8;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0);
     color: white;
+
   }
   img {
     width: auto;
