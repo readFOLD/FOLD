@@ -486,6 +486,7 @@ div.image-section {
     left: 0;
     background-color: rgba(0, 0, 0, 0.8);
     opacity: 0.8;
+    color: white;
   }
 
   div.text-content {
