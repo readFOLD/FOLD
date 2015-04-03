@@ -449,7 +449,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 
     "blur .text-content": function(d, template) {
       var that = this;
-      if (!Session.get('read')) {
+      if (!Session.get('read') && !Session.get('addingContext')) {
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
         Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
@@ -459,7 +459,6 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
     },
     "keypress .image-section .text-content": function(e, template) {
       var that = this;
-      if (!Session.get('read') && e.which === 13) {
       if (!Session.get('read') && !Session.get('addingContext') && e.which === 13 ) {
         console.log(4)
 
