@@ -423,9 +423,9 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
     }
 
     if (Template.instance().editing.get()) {
-      return '<textarea name="content" class="text-content" rows="2" dir="auto">' + textContent + '</textarea>';
+      return '<textarea name="content" class="text-content" rows="10" dir="auto">' + textContent + '</textarea>';
     } else {
-      return '<div class="text-content" dir="auto">' + textContent + '</div>';
+      return '<div class="text-content" dir="auto">' + textContent.replace(/\n/g, "<br />") + '</div>';
     }
   }
 });
@@ -449,9 +449,10 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
 
         var evtHandler = function myself (e) {
           if (!Session.get('read')) {
-            if ((e.which === 13 || !$(e.target).hasClass('text-content')) && template.editing.get()) {
+            if (e.which === 13 || (!$(e.target).hasClass('text-content')) && template.editing.get()) {
 
               $(document).off( "click", myself);
+              $('.image-section').off( "keypress", myself);
 
               template.editing.set(false);
 
@@ -467,8 +468,10 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
         setTimeout(function(){
           template.$('.text-content').focus();
           $(document).on({
-            "click": evtHandler,
-            "keydown": evtHandler // TODO make this not happen on textarea
+            "click": evtHandler
+          });
+          $('.image-section').on({
+            "keypress": evtHandler
           }); // turn off editing when click anywhere except the description
         });
       }
