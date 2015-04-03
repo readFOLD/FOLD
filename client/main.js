@@ -428,7 +428,7 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
     if (Session.get('read')) {
       return '<div class="text-content" dir="auto">' + textContent.replace(/\n/g, "<br />") + '</div>';
     } else {
-      return '<textarea name="content" class="text-content" rows="' + rows + '" dir="auto">' + textContent + '</textarea>';
+      return '<textarea name="content" class="text-content editable" rows="' + rows + '" dir="auto">' + textContent + '</textarea>';
     }
   }
 });
