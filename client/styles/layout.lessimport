@@ -644,7 +644,6 @@ div.link-section {
 
 div.text-section {
   height: 100%;
-  overflow-y: scroll;
 
   textarea {
     .content-font;
