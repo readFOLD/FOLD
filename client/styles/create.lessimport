@@ -361,6 +361,7 @@ textarea {
   border: none;
   overflow: auto;
   outline: none;
+  padding: 0px;
 
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
