@@ -144,6 +144,9 @@ Router.route("edit", {
   template: "create",
   onRun: function() {
     Session.set("currentY", null);
+    Session.set("read", false);
+    Session.set("newStory", false);
+    Session.set("showDraft", true);
 
     Session.set("userPathSegment", this.params.userPathSegment);
     $('html, body').scrollTop(0);
@@ -181,9 +184,6 @@ Router.route("edit", {
     }
   },
   action: function() {
-    Session.set("read", false);
-    Session.set("newStory", false);
-    Session.set("showDraft", true);
     if (this.ready()) {
       return this.render();
     }
