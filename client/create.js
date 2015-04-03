@@ -279,7 +279,7 @@ var autoSaveVerticalSectionField = function(template, field, datatype){
   }
   index = template.data.index;
 
-  setField = 'draftStory.verticalSections.' + index + '.' + field
+  setField = 'draftStory.verticalSections.' + index + '.' + field;
   setObject = { $set:{} };
   setObject['$set'][setField] = value;
 
