@@ -580,7 +580,8 @@ Template.create_link_section.onCreated(function() {
           fullDetails: result,
           authorId : Meteor.user()._id,
           searchQuery: url,
-          fromEmbedly: true
+          fromEmbedly: true,
+          version: 'em1'
         });
 
         if (!newObj.reference){

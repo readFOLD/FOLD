@@ -330,7 +330,7 @@ Meteor.methods({
       key: EMBEDLY_KEY,
       maxheight: 300,
       maxwidth: 474
-    }
+    };
 
     res = HTTP.get('http://api.embed.ly/1/oembed', {
       params: requestParams

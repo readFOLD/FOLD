@@ -934,8 +934,11 @@ Schema.ContextBlocks = new SimpleSchema({
   fromEmbedly: {
     type: Boolean,
     optional: true
-  }
-  ,
+  },
+  version: {
+    type: String,
+    optional: true
+  },
   createdAt: {
     type: Date,
     autoValue: function() {
