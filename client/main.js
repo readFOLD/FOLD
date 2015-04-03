@@ -419,16 +419,18 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
     if (this.type === 'text'){
       textContent = this.content || '';
       rows = 10;
+      placeholder = '';
     }
     else{
       textContent = this.description || '';
       rows = 2;
+      placeholder = 'Add a caption'
     }
 
     if (Session.get('read')) {
       return '<div class="text-content" dir="auto">' + textContent.replace(/\n/g, "<br />") + '</div>';
     } else {
-      return '<textarea name="content" class="text-content editable" rows="' + rows + '" dir="auto">' + textContent + '</textarea>';
+      return '<textarea name="content" class="text-content editable" rows="' + rows + '" placeholder="' + placeholder +  '" dir="auto">' + textContent + '</textarea>';
     }
   }
 });
@@ -458,6 +460,9 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
     "keypress .image-section .text-content": function(e, template) {
       var that = this;
       if (!Session.get('read') && e.which === 13) {
+      if (!Session.get('read') && !Session.get('addingContext') && e.which === 13 ) {
+        console.log(4)
+
         e.preventDefault();
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
