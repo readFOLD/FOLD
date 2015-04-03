@@ -425,10 +425,10 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
       rows = 2;
     }
 
-    if (Template.instance().editing.get()) {
-      return '<textarea name="content" class="text-content" rows="' + rows + '" dir="auto">' + textContent + '</textarea>';
-    } else {
+    if (Session.get('read')) {
       return '<div class="text-content" dir="auto">' + textContent.replace(/\n/g, "<br />") + '</div>';
+    } else {
+      return '<textarea name="content" class="text-content" rows="' + rows + '" dir="auto">' + textContent + '</textarea>';
     }
   }
 });
@@ -445,37 +445,24 @@ Template.horizontal_section_block.helpers({
 
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 
-    "click div.text-content": function(d, template) {
+    "blur .text-content": function(d, template) {
       var that = this;
       if (!Session.get('read')) {
-        template.editing.set(true);
-
-        var evtHandler = function myself (e) {
-          if (!Session.get('read')) {
-            if (e.which === 13 || (!$(e.target).hasClass('text-content')) && template.editing.get()) {
-
-              $(document).off( "click", myself);
-              $('.image-section').off( "keypress", myself);
-
-              template.editing.set(false);
-
-              var textContent = template.$('textarea[name=content]').val();
-              Session.set('saveState', 'saving');
-              Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
-                saveCallback(err, numDocs);
-              });
-            }
-          }
-        };
-
-        setTimeout(function(){
-          template.$('.text-content').focus();
-          $(document).on({
-            "click": evtHandler
-          });
-          $('.image-section').on({ // TO-DO it's odd to scope this here
-            "keypress": evtHandler
-          }); // turn off editing when click anywhere except the description
+        var textContent = template.$('textarea[name=content]').val();
+        Session.set('saveState', 'saving');
+        Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
+          saveCallback(err, numDocs);
+        });
+      }
+    },
+    "keypress .image-section .text-content": function(e, template) {
+      var that = this;
+      if (!Session.get('read') && e.which === 13) {
+        e.preventDefault();
+        var textContent = template.$('textarea[name=content]').val();
+        Session.set('saveState', 'saving');
+        Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
+          saveCallback(err, numDocs);
         });
       }
     }

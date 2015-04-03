@@ -472,11 +472,8 @@ div.image-section {
     }
   }
   
-  div.text-content {
-    @font-size: 14px;
-    font-size: @font-size;
-    line-height: 20px;
-    .text-align-start;
+  .text-content {
+    .opacity-background-transition;
   }
 
   textarea.text-content {
@@ -490,7 +487,10 @@ div.image-section {
   }
 
   div.text-content {
-    .opacity-background-transition;
+    @font-size: 14px;
+    font-size: @font-size;
+    line-height: 20px;
+    .text-align-start;
     position: absolute;
     top: 0;
     width: 100%;
