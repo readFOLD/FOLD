@@ -415,15 +415,18 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
     return Session.equals("currentX", this.index) && !Session.get("addingContext");
   },
   textContent: function() {
-    var textContent = '';
-    if (this.description) {
-      textContent = this.description;
-    } else if (this.content) {
-      textContent = this.content;
+    var textContent, rows;
+    if (this.type === 'text'){
+      textContent = this.content || '';
+      rows = 10;
+    }
+    else{
+      textContent = this.description || '';
+      rows = 2;
     }
 
     if (Template.instance().editing.get()) {
-      return '<textarea name="content" class="text-content" rows="10" dir="auto">' + textContent + '</textarea>';
+      return '<textarea name="content" class="text-content" rows="' + rows + '" dir="auto">' + textContent + '</textarea>';
     } else {
       return '<div class="text-content" dir="auto">' + textContent.replace(/\n/g, "<br />") + '</div>';
     }
@@ -470,7 +473,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
           $(document).on({
             "click": evtHandler
           });
-          $('.image-section').on({
+          $('.image-section').on({ // TO-DO it's odd to scope this here
             "keypress": evtHandler
           }); // turn off editing when click anywhere except the description
         });

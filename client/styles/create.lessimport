@@ -376,6 +376,7 @@ textarea {
     border: 1px dashed #e0e1e2;
     margin-top: 10px;
     padding: 18px;
+
     color: @dark-color;
     line-height: 27px;
     font-size: @content-font-size;
@@ -899,8 +900,7 @@ div.horizontal-context {
 }
 
 div.text-section {
-  line-height: 26px;
-  font-size: @content-font-size;
+  .content-font;
   margin-top: 25px;
   margin-left: 30px;
   margin-right: 30px;
