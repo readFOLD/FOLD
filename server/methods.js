@@ -4,10 +4,10 @@ var IMGUR_CLIENT_ID = Meteor.settings.IMGUR_CLIENT_ID;
 var FLICKR_API_KEY = Meteor.settings.FLICKR_API_KEY;
 var TWITTER_API_KEY = process.env.TWITTER_API_KEY || Meteor.settings.TWITTER_API_KEY;
 var TWITTER_API_SECRET = process.env.TWITTER_API_SECRET || Meteor.settings.TWITTER_API_SECRET;
+var EMBEDLY_KEY = Meteor.settings.EMBEDLY_KEY;
 var VIMEO_API_KEY = Meteor.settings.VIMEO_API_KEY;
 var VIMEO_API_SECRET = Meteor.settings.VIMEO_API_SECRET;
 var VIMEO_ACCESS_TOKEN = Meteor.settings.VIMEO_ACCESS_TOKEN;
-
 
 var Twit = Meteor.npmRequire('twit');
 var Vimeo = Meteor.npmRequire('vimeo-api').Vimeo;
@@ -247,7 +247,7 @@ Meteor.methods({
     } else {
       nextPage = 'end';
     }
-
+    
     return {
       'nextPage': nextPage,
       'items': items
@@ -277,7 +277,7 @@ Meteor.methods({
       consumer_key: TWITTER_API_KEY,
       consumer_secret: TWITTER_API_SECRET,
       access_token: Meteor.user().services.twitter.accessToken,
-      access_token_secret: Meteor.user().services.twitter.accessTokenSecret,
+      access_token_secret: Meteor.user().services.twitter.accessTokenSecret
     });
     var twitterResultsSync = Meteor.wrapAsync(client.get, client);
 
@@ -319,6 +319,23 @@ Meteor.methods({
     };
 
     return searchResults;
+  },
+  embedlyEmbedResult: function(query) {
+    var res, requestParams;
+    check(query, String);
+    this.unblock();
+
+    requestParams = {
+      url: query,
+      key: EMBEDLY_KEY,
+      maxheight: 300,
+      maxwidth: 474
+    };
+
+    res = HTTP.get('http://api.embed.ly/1/oembed', {
+      params: requestParams
+    });
+    return res.data;
   },
   vimeoVideoSearchList: function(query, option, page) {
     var items;
@@ -383,7 +400,6 @@ Meteor.methods({
     res = HTTP.get('https://www.googleapis.com/youtube/v3/search', {
       params: requestParams
     });
-
 
     items = _.chain(res.data.items)
       .filter(function(element) {

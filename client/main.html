@@ -139,7 +139,7 @@
 
 <template name="horizontal_section_block">
   <div
-      class="narrative-section horizontal-narrative-section {{#if type}}{{type}}{{/if}} {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}"
+      class="narrative-section horizontal-narrative-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}"
       data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px
   ">
 <section>
@@ -203,6 +203,13 @@
           {{> display_viz_section}}
         {{/if}}
       {{/if}}
+      {{#if link}}
+        {{#if editingThisContext}}
+          {{> create_link_section}}
+        {{else}}
+          {{> display_link_section}}
+        {{/if}}
+      {{/if}}
       {{else}}
         {{> display_broken_section}}
       {{/if}}
@@ -225,21 +232,17 @@
 <!-- Display Templates -->
 <template name="display_text_section">
   <div class="text-section" dir="auto">
-      {{content}}
-    </div>
+    {{{textContent}}}
+  </div>
     {{#unless read}}
       {{> horizontal_section_edit_delete}}
     {{/unless}}
 </template>
 
 <template name="display_image_section">
-  <div class="image-section">
+  <div class="image-section {{#unless read}}always-show-caption{{/unless}}">
     <img src="{{url}}" />
-    {{#if description}}
-        <div class="description-overlay" dir="auto">
-          {{description}}
-        </div>
-      {{/if}}
+    {{{textContent}}}
   </div>
   {{#unless read}}
     {{> horizontal_section_edit_delete}}
@@ -308,6 +311,40 @@
   {{#unless read}}
       {{> horizontal_section_edit_delete}}
     {{/unless}}
+</template>
+
+
+<template name="display_link_section">
+  <div class="link-section {{#if isFocused}}focused{{/if}}">
+    <a href="{{url}}" target="_blank">
+      <div class="top">
+        {{#if thumbnailUrl}}
+          {{#if imageOnLeft}}
+            <img class="thumbnail left" src="{{thumbnailUrl}}" />
+          {{else}}
+            <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
+          {{/if}}
+          <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
+        {{/if}}
+      </div>
+    </a>
+    <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
+    <div class="bottom">
+      <a href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+    </div>
+  </div>
+  {{#unless read}}
+    {{> horizontal_section_edit_delete}}
+  {{/unless}}
+</template>
+
+<template name="display_rich_section">
+  <div class="rich-section {{#if isFocused}}focused{{/if}}">
+    {{{html}}}
+  </div>
+  {{#unless read}}
+    {{> horizontal_section_edit_delete}}
+  {{/unless}}
 </template>
 
 <template name="display_twitter_section">
@@ -431,6 +468,9 @@
   {{/if}}
   {{#if text}}
     {{ > text_icon }}
+  {{/if}}
+  {{#if link}}
+    {{ > link_icon }}
   {{/if}}
   {{#if remix}}
     {{ > remix_icon }}

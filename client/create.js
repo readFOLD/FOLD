@@ -1,4 +1,4 @@
-var autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
+var createBlockEvents, createBlockHelpers, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 window.enclosingAnchorTag = null;
@@ -250,19 +250,19 @@ Tracker.autorun(function(){
   }
 });
 
-var saveCallback =  function(err, numDocs, cb) {
+window.saveCallback =  function(err, success, cb) {
   var saveUIUpdateDelay = 300;
   setTimeout(function(){
     if (err) {
       return Session.set('saveState', 'failed');
     }
-    if (!numDocs) {
+    if (!success) {
       return Session.set('saveState', 'failed');
     }
     Session.set('saveState', 'saved');
   }, saveUIUpdateDelay);
   if(cb){
-    cb(err, numDocs);
+    cb(err, success);
   }
   if (err){
     throw(err);
@@ -279,7 +279,7 @@ var autoSaveVerticalSectionField = function(template, field, datatype){
   }
   index = template.data.index;
 
-  setField = 'draftStory.verticalSections.' + index + '.' + field
+  setField = 'draftStory.verticalSections.' + index + '.' + field;
   setObject = { $set:{} };
   setObject['$set'][setField] = value;
 
@@ -727,29 +727,25 @@ Template.context_anchor_option.events = {
   }
 };
 
-window.addContextToStory = function(storyId, contextId, verticalSectionIndex, cb) {
-  var pushObject, pushSelectorString;
-  pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
-  pushObject = {};
-  pushObject[pushSelectorString] = contextId;
-  return Meteor.call('saveStory', {
-    _id: storyId
-  }, {
-    $addToSet: pushObject
-  }, function(err, numDocs) {
-    if (numDocs) {
+window.addContext = function(contextBlock) {
+  var storyId = Session.get("storyId");
+  var verticalIndex = Session.get("currentY");
+  Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
+  Session.set('saveState', 'saving');
+
+  Meteor.call('addContextToStory', storyId, contextBlock, verticalIndex, function(err, contextId){
+    if(contextId){
       hideNewHorizontalUI();
-      var placeholderAnchorElement = findPlaceholderLink(verticalSectionIndex);
+      var placeholderAnchorElement = findPlaceholderLink(verticalIndex);
       if (placeholderAnchorElement) {
         placeholderAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
-        placeholderAnchorElement.attr('data-context-type', ContextBlocks.findOne(contextId).type);
+        placeholderAnchorElement.attr('data-context-type', contextBlock.type);
         placeholderAnchorElement.removeClass('placeholder'); // add active class because we go to this context and if we're already there it won't get the class
-        saveNarrativeSectionContent(verticalSectionIndex);
+        saveNarrativeSectionContent(verticalIndex);
       }
-
-      return goToContext(contextId);
+      goToContext(contextId);
     }
-    saveCallback(err, numDocs, cb);
+    saveCallback(err, contextId);
   });
 };
 
@@ -769,16 +765,6 @@ window.removeContextFromStory = function(storyId, contextId, verticalSectionInde
     }
     saveCallback(err, numDocs, cb);
   });
-};
-
-autoFormContextAddedHooks = {
-  onSuccess: function(operation, contextId, template) {
-    return window.addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
-  },
-  onError: function(operation, err, template) {
-    throw(err);
-    return alert(err);
-  }
 };
 
 Template.horizontal_section_edit_delete.helpers({
@@ -849,7 +835,6 @@ Template.create_options.events({
       files: files,
       path: "header-images"
     }, function(e, r) {
-      console.log(r)
       var filename = r.file.name;
       Session.set('saveState', 'saving');
       return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);

@@ -25,6 +25,14 @@
 @remix-bar-height: 40px;
 @horizontal-content-height: 300px;
 
+@content-font-size: 16.5px;
+@content-line-height: 26px;
+.content-font{
+  font-size: @content-font-size;
+  line-height: @content-line-height;
+  color: @dark-color;
+}
+
 .standard-icon-colors {
   circle{
     fill: @dark-color;
@@ -296,6 +304,10 @@ input[type="search"]::-webkit-search-results-decoration {
   color: @placeholder-color;
 }
 
+textarea {
+  font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;
+}
+
 body {
   //still like san-serif for headlines and bylines
   font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;
@@ -432,9 +444,8 @@ div#overlay {
   }
 
   div.content {
-    line-height: 26px;
     overflow: hidden;
-    font-size: 16.5px;
+    .content-font;
     min-height: @normalContentHeight + @titleHeight + @titleMarginBottom;
     &.minimized {
       height: 0;
@@ -448,35 +459,47 @@ div#overlay {
   }
 }
 
-div.description-overlay {
-  @font-size: 14px;
-  font-size: @font-size;
-  line-height: 20px;
-  .text-align-start;
-}
-
-
-
 div.image-section {
   .size-to-fit;
   position: relative;
   line-height: @horizontal-content-height;
   background-color: @black-color;
   text-align: center;
-  &:hover{
-    div.description-overlay{
+  &:hover, &.always-show-caption{
+    div.text-content{
       background-color: rgba(0, 0, 0, 0.8);
       opacity: 0.8;
     }
   }
-  div.description-overlay {
+  
+  .text-content {
     .opacity-background-transition;
+  }
+
+  textarea.text-content {
+    position: absolute;
+    padding: 8px;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    opacity: 0.8;
+    color: white;
+  }
+
+  div.text-content {
+    @font-size: 14px;
+    font-size: @font-size;
+    line-height: 20px;
+    .text-align-start;
     position: absolute;
     top: 0;
     width: 100%;
     padding: 8px;
-    opacity: 0.0;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0);
     color: white;
+    min-height: 36px;
+
   }
   img {
     width: auto;
@@ -527,16 +550,104 @@ div.vertical-narrative {
       cursor: default;
       opacity: 1.0;
       background-color: @selected-background-color;
-        p {
-          cursor: text;
-        }
+      p {
+        cursor: text;
       }
+    }
   }
 
 }
 
 div.oec-section {
   background-color: white;
+}
+
+div.link-section {
+  position: relative;
+  height: 300px;
+  border-bottom: 7px solid @action-color;
+
+  div.top {
+    .thumbnail {
+      &.left {
+        float: left;
+        width: 130px;
+        height: 130px;
+      }
+      &.top {
+        background-color: @action-color;
+        background-position: center center;
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        height: 130px;
+      }
+    }
+    div.link-title {
+      font-size: 20px;
+      font-weight: bold;
+      padding-left: 15px;
+      padding-top: 15px;
+      padding-right: 20px;
+      padding-bottom: 7px;
+      line-height: 26px;
+      background-color: @white-color;
+
+      &.image-on-left {
+        display: flex;
+        align-items: center;
+        background-color: @dark-color;
+        float: right;
+        padding-top: 0;
+        width: calc(100% ~"-" 130px);
+        border-bottom: 1px solid @dark-color;
+        background-color: @dark-color;
+        color: white;
+        height: 130px;
+      }
+    }
+  }
+
+  div.link-description {
+    font-size: 14px;
+    width: 100%;
+    overflow: hidden;
+
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 0px;
+    &.image-on-top {
+      max-height: 80px;
+    }
+
+    &.image-on-left {
+      max-height: 110px;
+      padding-top: 15px;
+    }
+  }
+
+  .bottom {
+    position: absolute;
+    left: 15px;
+    bottom: 7px;
+    padding-top: 13px;
+    cursor: pointer;
+    width: calc(100% ~"-" 15px);
+    background-color: @white-color;
+    a {
+      color: @action-color;
+    }
+  }
+}
+
+div.text-section {
+  height: 100%;
+
+  textarea {
+    .content-font;
+  }
 }
 
 div.twitter-section{
@@ -851,7 +962,7 @@ div.inline-block {
 div.hide {
   visibility: hidden !important; // could also use left: -9999px. better than display:none because it still has a non-zero size
 }
+
 div.collapse {
   display: none !important;
 }
-
