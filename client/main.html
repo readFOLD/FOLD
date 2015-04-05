@@ -425,17 +425,17 @@
 
 <template name="metaview">
   <div class="metaview">
-    <ul class="cards sortable-row">
+    <ul class="cards sortable-rows">
       {{#each verticalSectionsWithIndex}}
-        <li class="row">
+        <li class="row" data-original-order="{{index}}">
           <div class="vertical-block">
             {{{content}}}
           </div>
-          <ul class="horizontal-section sortable-block ui-state-default">
+          <ul class="horizontal-section sortable-blocks ui-state-default">
             {{#each horizontalSections}}
-            <li class="horizontal-block ui-state-default">
-              {{> metaview_context_block}}
-            </li>
+              <li class="horizontal-block ui-state-default" data-id="{{_id}}">
+                {{> metaview_context_block}}
+              </li>
             {{/each}}
           </ul>
         </li>
