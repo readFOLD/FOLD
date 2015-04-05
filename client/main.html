@@ -1,3 +1,4 @@
+
 <!--
   Templates used in reading, creating, and editing
 -->
@@ -51,9 +52,12 @@
 
 
     {{#if pastHeader}}
-        {{#if read}}
-            {{> minimap}}
+<!--         {{#if read}} -->
+        {{> minimap}}
+        {{#if metaviewOpen}}
+          {{> metaview}}
         {{/if}}
+<!--         {{/if}} -->
         {{#if horizontalExists}}
             {{#unless addingContext}}
                 <div class="browser-offset">
@@ -417,6 +421,58 @@
       {{ > browse_arrow_right}}
     </div>
   </div>
+</template>
+
+<template name="metaview">
+  <div class="metaview">
+    <ul class="cards sortable-row">
+      {{#each verticalSectionsWithIndex}}
+        <li class="row">
+          <div class="vertical-block">
+            {{{content}}}
+          </div>
+          <ul class="horizontal-section sortable-block ui-state-default">
+            {{#each horizontalSections}}
+            <li class="horizontal-block ui-state-default">
+              {{> metaview_context_block}}
+            </li>
+            {{/each}}
+          </ul>
+        </li>
+      {{/each}}
+    </ul>
+    <button class="close button">
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+</template>
+
+<template name="metaview_context_block">
+  {{#if text}}
+    {{content}}
+  {{/if}}
+  {{#if viz}}
+    {{> viz_icon}}
+  {{/if}}
+  {{#if image}}
+    <img src="{{url}}" />
+  {{/if}}
+  {{#if gif}}
+    <img src="{{url}}" />
+  {{/if}}
+  {{#if video}}
+    <img src="{{previewUrl}}"/>
+  {{/if}}
+  {{#if map}}
+    <img src="{{previewUrl}}"/>
+  {{/if}}
+  {{#if link}}
+    {{#if thumbnailUrl}}
+     <img src="{{thumbnailUrl}}" />
+    {{else}}
+    {{providerTruncatedUrl}}
+    {{/if}}
+  {{/if}}
 </template>
 
 <template name="minimap">
