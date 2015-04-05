@@ -343,19 +343,19 @@ Template.vertical_section_block.events({
 });
 
 Template.metaview.onRendered(function() {
-  console.log("Metaview rendered");
-  this.$(".sortable-row").sortable({
-    stop: function(e, ui) {
-      console.log(ui.item.get(0));
+  $("body").css({ overflow: 'hidden' });
+
+  var that = this;  
+  this.$(".sortable-rows, .sortable-blocks").sortable({
+    stop: function() {
+      var newVerticalSections = $( ".sortable-rows" ).sortable('toArray', {attribute: 'data-original-order'})
+      var newContextBlocks = [];
+      $( ".sortable-blocks" ).each(function(i, e) { 
+        newContextBlocks.push($(e).sortable('toArray', {attribute: 'data-id'} ))
+      });    
+      console.log(newVerticalSections, newContextBlocks);
     }
   });
-  this.$(".sortable-block").sortable({
-    // placeholder: "placeholder-block",
-    stop: function(e, ui) {
-      console.log(ui.item.get(0));
-    }
-  });
-  $("body").css({ overflow: 'hidden' })
 
   this.$(".sortable-rows, .sortable-blocks").disableSelection();
 });
@@ -387,45 +387,7 @@ Template.metaview.helpers({
            _id: id
          }) || {_id: id}; // fallback to just having id if cannot find
        });
-
     return blocks;
-    // return this.verticalSections.map(function(verticalSection, verticalIndex) {
-    //   var sortedContext, unsortedContext;
-
-    //   if (Session.get('showDraft')) { // In CREATE, these need to be looked up from the db
-    //     sortedContext = _.chain(verticalSection.contextBlocks)
-    //       .map(function(id) {
-    //         return ContextBlocks.findOne({ // by finding one at a time, this keeps in broken links. TO-DO maybe should find a better soln that uses $in
-    //           _id: id
-    //         }) || {_id: id}; // fallback to just having id if cannot find
-    //       })
-    //       .map(function (datum, horizontalIndex) {
-    //         return _.extend(datum || {}, {
-    //           index: horizontalIndex,
-    //           verticalIndex: verticalIndex
-    //         });
-    //       })
-    //       .value();
-    //     //sortedContext = _.sortBy(unsortedContext, function (datum) {
-    //     //  return datum.horizontalIndex;
-    //     //});
-    //     return {
-    //       index: verticalIndex,
-    //       data: sortedContext
-    //     };
-    //   } else { // In READ, these are denormalized right on the document
-    //     var data = verticalSection.contextBlocks.map(function (datum, horizontalIndex) {
-    //       return _.extend({}, datum, {
-    //         index: horizontalIndex,
-    //         verticalIndex: verticalIndex
-    //       });
-    //     }).map(window.newTypeSpecificContextBlock);
-    //     return {
-    //       data: data,
-    //       index: verticalIndex
-    //     }
-    //   }
-    // });
   }
 })
 
