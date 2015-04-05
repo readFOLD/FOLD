@@ -15,16 +15,6 @@ Meteor.publish("exploreStoriesPub", function(filter, category, skip) {
   });
 });
 
-Meteor.publish("ownStoriesPub", function() {
-  return Stories.find({
-    authorId: this.userId
-  },{
-    fields : {
-      history: 0
-    }
-  });
-});
-
 Meteor.publish("readStoryPub", function(userPathSegment, shortId) {
   return Stories.find({
     userPathSegment: userPathSegment,
@@ -66,20 +56,65 @@ Meteor.publish("contextBlocksPub", function() {
   });
 });
 
-Meteor.publish("publicUserPub", function(id) {
-  return Meteor.users.find({
-    _id: id
-  }, {
-    fields: {
-      'profile.name': 1
+Meteor.publish("userProfilePub", function(username) {
+  var user = Meteor.users.find({
+    username: username.toLowerCase()
+  });
+  var userId = user.map(function(doc) {
+    return doc._id;
+  });
+
+  if (!userId) {
+    this.ready();
+    return;
+  }
+  if (this.userId == userId[0]) {
+    //return full document
+    return Meteor.users.find(this.userId, {
+      fields: {
+        "profile" : 1,
+        "username" : 1,
+        "emails" : 1
+      }
+    });
+  } else {
+    //return public profile
+    return Meteor.users.find(userId[0], {
+      fields: {
+        "profile" : 1,
+        "username" : 1
+      }
+    });
+  }
+});
+
+Meteor.publish("userStoriesPub", function(username) {
+  var user = Meteor.users.find({
+    username: username.toLowerCase()
+  });
+  var userId = user.map(function(doc) {
+    return doc._id;
+  });
+  if (!userId) {
+    this.ready();
+    return;
+  }
+  return Stories.find({
+    authorId: userId[0]
+  },{
+    fields : {
+      history: 0
     }
   });
 });
 
 Meteor.publish("tempUsernamePub", function() {
   if (this.userId) {
-    return Meteor.users.find({_id: this.userId},
-                            {fields: {'tempUsername': 1}});
+    return Meteor.users.find(this.userId, {
+      fields: {
+        'tempUsername': 1
+      }
+    });
   } else {
     this.ready();
   }

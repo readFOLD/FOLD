@@ -21,7 +21,9 @@
 
 
 <template name="user_profile">
-  <button class="edit_profile">Edit</button>
+  {{#if ownProfile}}
+    <button class="edit_profile">Edit</button>
+  {{/if}}
   {{#if editting}}
     {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
       {{> afQuickField name='profile.name'}}
@@ -40,20 +42,39 @@
   {{/if}}
 </template>
 
-<template name="my_stories">
+<template name="user_stories">
+  <h1>Latest stories</h1>
+  {{#each writtenStories}}
+    {{#linkTo route="read" data=this}}
+      <div class="story" data-story-id="{{_id}}">
+        {{> _story_preview_content}}
+      </div>
+    {{/linkTo}}
+  {{/each}}
+</template>
+
+<template name="user_favorite_stories">
+  <h1>Favorites</h1>
+  {{#each favoriteStories}}
+    {{> story_preview }}
+  {{/each}}
+</template>
+
+
+<template name="my_story_profile">
   {{> top_banner border="remix-border"}}
   <div class="stories">
     <section>
       <div class="story-container">
-        {{> user_stories}}
+        {{> my_stories}}
       </div>
     </section>
   </div>
 </template>
 
-<template name="user_stories">
+<template name="my_stories">
   <h1>My Drafts</h1>
-  {{#each userStories}}
+  {{#each writtenStories}}
     {{#linkTo route="edit" data=this}}
       <div class="story" data-story-id="{{_id}}">
         {{#with draftStory}}
@@ -71,13 +92,5 @@
         <!--</div>-->
       </div>
     {{/linkTo}}
-  {{/each}}
-</template>
-
-
-<template name="user_favorite_stories">
-  <h1>Favorites</h1>
-  {{#each favoriteStories}}
-    {{> story_preview }}
   {{/each}}
 </template>

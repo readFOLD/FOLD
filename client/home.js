@@ -138,17 +138,6 @@ Template._story_preview_content.helpers({
   }
 });
 
-Template.user_stories.events({
-  "click div#delete": function(d) {
-    var srcE, storyId;
-    srcE = d.srcElement ? d.srcElement : d.target;
-    storyId = $(srcE).closest('div.story').data('story-id');
-    return Stories.remove({
-      _id: storyId
-    });
-  }
-});
-
 Template.login_buttons.helpers({
   showUserInfo: function() {
     return Template.instance().showUserInfo.get();
@@ -175,7 +164,8 @@ Template.login_buttons.events({
     Router.go('home');
   },
   "click .profile" : function(e) {
-    Router.go('profile');
+    e.preventDefault();
+    Router.go('profile', {username : Meteor.user().username});
   }
 
 });

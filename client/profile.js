@@ -8,8 +8,9 @@ formatDate = function(date) {
   return weekDays[date.getDay()] + " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
 };
 
-Template.user_stories.helpers({
-  userStories: function() {
+
+Template.my_stories.helpers({
+  writtenStories: function() {
     if (Meteor.user()) {
       return Stories.find({
         authorId: Meteor.user()._id
@@ -22,27 +23,12 @@ Template.user_stories.helpers({
   lastPublishDate: function() {
     return formatDate(this.publishedAt);
   },
-  displayName: function() {
-    if (Meteor.user()) {
-      if (Meteor.user().emails) {
-        return Meteor.user().emails[0].address;
-      } else {
-        return Meteor.user().profile.name;
-      }
-    }
-  },
-  previewContent: function() {
-    return verticalSections[0].content
-  },
-  profileImageExists: function() {
-    return Meteor.user().profile.profile_picture;
-  },
   profileImage: function() {
     return Meteor.user().profile.profile_picture;
   }
 });
 
-Template.user_stories.events({
+Template.my_stories.events({
   "click div#delete": function(d) {
     var srcE, storyId;
     srcE = d.srcElement ? d.srcElement : d.target;
@@ -52,6 +38,47 @@ Template.user_stories.events({
     });
   }
 });
+
+Template.user_profile.onRendered( function() {
+  Template.currentData(this.view); //TODO: will this react to changes in the user profile?
+});
+
+Template.user_profile.onCreated(function(){
+  this.editting = new ReactiveVar(false);
+});
+
+Template.user_profile.helpers({
+  editting : function() {
+    return Template.instance().editting.get()
+  },
+  ownProfile: function() {
+    return Meteor.user().username == Template.currentData().user.username ? true : false
+  },
+  username : function() {
+    return Template.currentData().user.username
+  },
+  bio : function() {
+    return Template.currentData().user.profile.bio
+  },
+  profileImage: function() {
+    return Meteor.user().profile.profile_picture;
+   },
+});
+
+Template.user_profile.events({
+  "click .edit_profile" : function(d, template) {
+    template.editting.set(true);
+  },
+  "click .save-profile-button" : function(d, template) {
+    template.editting.set(false);
+  }
+});
+
+Template.user_stories.helpers({
+  writtenStories: function() {
+    return Template.currentData().stories
+  }
+})
 
 Template.user_favorite_stories.onCreated(function(){
   this.subscribe('readStoriesPub', Meteor.user().profile.favorites);
@@ -68,31 +95,3 @@ Template.user_favorite_stories.helpers({
     }
   }
 });
-
-Template.user_profile.onCreated(function(){
-  this.editting = new ReactiveVar(false);
-});
-
-Template.user_profile.helpers({
-  editting : function() {
-    return Template.instance().editting.get()
-  },
-  username : function() {
-    return Meteor.user().profile.displayUsername
-  },
-  bio : function() {
-    return Meteor.user().profile.bio
-  },
-  profileImage: function() {
-    return Meteor.user().profile.profile_picture;
-   },
-});
-
-Template.user_profile.events({
-  "click .edit_profile" : function(d, template) {
-    template.editting.set(true);
-  },
-  "click .save-profile-button" : function(d, template) {
-    template.editting.set(false);
-  }
-})

@@ -51,29 +51,33 @@ Router.route("terms", {
 });
 
 Router.route("profile", {
-  path: "profile",
+  path: "/profile/:username",
   template: "profile",
-  waitOn: function() {
-    return [Meteor.subscribe('ownStoriesPub')];
-  },
-  onBeforeAction: function() {
-    var user;
-    if ((user = Meteor.user()) || Meteor.loggingIn()) {
-      return this.next();
-    } else {
-      this.redirect("home", {
-        replaceState: true
-      });
-      return alert("You must be logged in view your profile");
+  action: function() {
+    if (this.ready()) {
+      return this.render();
     }
-  }
+  },
+  waitOn: function() {
+    var username = this.params.username;
+    return [Meteor.subscribe('userProfilePub', username),
+           Meteor.subscribe('userStoriesPub', username)];
+  },
+  data: function() {
+    var username = this.params.username;
+    return {
+      user : Meteor.users.findOne({username : username}),
+      stories: Stories.find({userPathSegment : username})
+    }
+  },
 });
 
-Router.route("my_stories", {
+Router.route("my_story_profile", {
   path: "my-stories",
-  template: "my_stories",
+  template: "my_story_profile",
   waitOn: function() {
-    return [Meteor.subscribe('ownStoriesPub')];
+    var username = Meteor.user().username || Meteor.user().tempUsername;
+    return [Meteor.subscribe('userStoriesPub', username)];
   },
   onBeforeAction: function() {
     var user;
@@ -253,4 +257,9 @@ Router.route("login", {
 Router.route("stats", {
   path: "stats",
   template: "stats"
+});
+
+Router.plugin('dataNotFound', {
+  notFoundTemplate : 'not_found',
+  only : ['profile'] //routes we want to run this plugin on
 });
