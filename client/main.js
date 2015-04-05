@@ -134,7 +134,35 @@ Meteor.startup(function() {
   return $(document).scroll(throttledUpdate);
 });
 
-
+typeHelpers = {
+  text: function() {
+    return this.type === "text";
+  },
+  image: function() {
+    return this.type === "image";
+  },
+  gif: function() {
+    return this.type === "gif";
+  },
+  map: function() {
+    return this.type === "map";
+  },
+  video: function() {
+    return this.type === "video";
+  },
+  viz: function() {
+    return this.type === "viz";
+  },
+  twitter: function() {
+    return this.type === "twitter";
+  },
+  audio: function() {
+    return this.type === "audio";
+  },
+  link: function() {
+    return this.type === "link";
+  }
+};
 
 Template.story_header.onRendered(function() {
   var range, sel, titleDiv;
@@ -245,7 +273,10 @@ Template.story.helpers({
   },
   verticalLeft: function () {
     return Session.get("verticalLeft");
-  }
+  },
+  metaviewOpen: function() {
+    return Session.get("metaview")
+  },
 });
 
 Template.story_title.helpers({
@@ -310,6 +341,99 @@ Template.vertical_section_block.events({
     return goToContext(contextId);
   }
 });
+
+Template.metaview.onRendered(function() {
+  console.log("Metaview rendered");
+  this.$(".sortable-row").sortable({
+    stop: function(e, ui) {
+      console.log(ui.item.get(0));
+    }
+  });
+  this.$(".sortable-block").sortable({
+    // placeholder: "placeholder-block",
+    stop: function(e, ui) {
+      console.log(ui.item.get(0));
+    }
+  });
+  $("body").css({ overflow: 'hidden' })
+
+  this.$(".sortable-rows, .sortable-blocks").disableSelection();
+});
+
+Template.metaview.events({
+  "click .close": function(d, t) {
+    Session.set("metaview", false);
+    $("body").css({ overflow: 'auto' })
+  },
+  "click": function(d, t) {
+    d.preventDefault();
+  }
+})
+
+Template.metaview_context_block.helpers(typeHelpers)
+
+Template.metaview.helpers({
+  verticalSectionsWithIndex: function() {
+    return this.verticalSections.map(function(v, i) {
+      return _.extend(v, {
+        index: i
+      });
+    });
+  },
+  horizontalSections: function() {
+    var blocks = this.contextBlocks
+       .map(function(id) {
+         return ContextBlocks.findOne({ // by finding one at a time, this keeps in broken links. TO-DO maybe should find a better soln that uses $in
+           _id: id
+         }) || {_id: id}; // fallback to just having id if cannot find
+       });
+
+    return blocks;
+    // return this.verticalSections.map(function(verticalSection, verticalIndex) {
+    //   var sortedContext, unsortedContext;
+
+    //   if (Session.get('showDraft')) { // In CREATE, these need to be looked up from the db
+    //     sortedContext = _.chain(verticalSection.contextBlocks)
+    //       .map(function(id) {
+    //         return ContextBlocks.findOne({ // by finding one at a time, this keeps in broken links. TO-DO maybe should find a better soln that uses $in
+    //           _id: id
+    //         }) || {_id: id}; // fallback to just having id if cannot find
+    //       })
+    //       .map(function (datum, horizontalIndex) {
+    //         return _.extend(datum || {}, {
+    //           index: horizontalIndex,
+    //           verticalIndex: verticalIndex
+    //         });
+    //       })
+    //       .value();
+    //     //sortedContext = _.sortBy(unsortedContext, function (datum) {
+    //     //  return datum.horizontalIndex;
+    //     //});
+    //     return {
+    //       index: verticalIndex,
+    //       data: sortedContext
+    //     };
+    //   } else { // In READ, these are denormalized right on the document
+    //     var data = verticalSection.contextBlocks.map(function (datum, horizontalIndex) {
+    //       return _.extend({}, datum, {
+    //         index: horizontalIndex,
+    //         verticalIndex: verticalIndex
+    //       });
+    //     }).map(window.newTypeSpecificContextBlock);
+    //     return {
+    //       data: data,
+    //       index: verticalIndex
+    //     }
+    //   }
+    // });
+  }
+})
+
+Template.minimap.events({
+  "click .minimap": function(d, t) {
+    Session.set("metaview", true);
+  }
+})
 
 Template.minimap.helpers({
   horizontalSectionsMap: function() {
@@ -376,35 +500,7 @@ Template.horizontal_context.helpers({
   }
 });
 
-typeHelpers = {
-  text: function() {
-    return this.type === "text";
-  },
-  image: function() {
-    return this.type === "image";
-  },
-  gif: function() {
-    return this.type === "gif";
-  },
-  map: function() {
-    return this.type === "map";
-  },
-  video: function() {
-    return this.type === "video";
-  },
-  viz: function() {
-    return this.type === "viz";
-  },
-  twitter: function() {
-    return this.type === "twitter";
-  },
-  audio: function() {
-    return this.type === "audio";
-  },
-  link: function() {
-    return this.type === "link";
-  }
-};
+
 
 editableDescriptionCreatedBoilerplate = function() {
   this.editing = new ReactiveVar(false);
