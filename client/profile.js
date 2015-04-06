@@ -39,10 +39,6 @@ Template.my_stories.events({
   }
 });
 
-Template.user_profile.onRendered( function() {
-  Template.currentData(this.view); //TODO: will this react to changes in the user profile?
-});
-
 Template.user_profile.onCreated(function(){
   this.editting = new ReactiveVar(false);
 });
@@ -52,13 +48,13 @@ Template.user_profile.helpers({
     return Template.instance().editting.get()
   },
   ownProfile: function() {
-    return Meteor.user().username == Template.currentData().user.username ? true : false
+    return Meteor.user().username == this.user.username ? true : false
   },
-  username : function() {
-    return Template.currentData().user.username
+  name : function() {
+    return this.user.profile.name
   },
   bio : function() {
-    return Template.currentData().user.profile.bio
+    return this.user.profile.bio
   },
   profileImage: function() {
     return Meteor.user().profile.profile_picture;

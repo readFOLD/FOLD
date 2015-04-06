@@ -1008,12 +1008,15 @@ Schema.UserProfile = new SimpleSchema({
     type: String,
     optional: true,
     max: 160,
-    autoform: {
-      afFieldInput: {
-        type: "textarea",
-        rows: 10,
-        "class": "bio"
+    autoValue: function () { // trim off whitespace
+      if (this.isSet && typeof this.value === "string") {
+        return this.value.trim();
+      } else {
+        this.unset()
       }
+    },
+    autoform: {
+      rows:5
     }
   },
   favorites: {

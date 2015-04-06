@@ -2,12 +2,22 @@ h1 {
  font-size: 30px;
 }
 
-div.profile-picture {
-  background-color: @black-color;
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+div.user-profile {
+  padding:20px;
+  padding-top: 150px;
+  background-color: @white-color;
+
+
+  div.profile-picture {
+    background-color: @black-color;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+  } 
+  div.name, div.bio {
+  }
 }
+
 
 img.profile-picture-large {
   @picture-radius: 22px;
@@ -22,4 +32,16 @@ img.profile-picture-large {
   border-radius: @picture-radius;
   width: @picture-radius * 4;
   height: auto;
+}
+
+.bio-form {
+  font-family: Muli;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  height: 110px;
+  border: none;
+  border-bottom: 5px solid @action-color;
+  padding: 10px 18px;
+  font-size: 17px;
+
 }

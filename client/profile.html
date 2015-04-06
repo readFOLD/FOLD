@@ -1,7 +1,7 @@
 <template name="profile">
   {{> top_banner border="remix-border"}}
     <section>
-      <div class="user_profile">
+      <div class="user-profile">
         {{> user_profile}}
       </div>
     </section>
@@ -21,14 +21,10 @@
 
 
 <template name="user_profile">
-  {{#if ownProfile}}
-    <button class="edit_profile">Edit</button>
-  {{/if}}
   {{#if editting}}
     {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
       {{> afQuickField name='profile.name'}}
-      {{> afQuickField name='profile.bio'}}
-      <!-- {{> afQuickField name='emails.0.address'}} -->
+      {{> afQuickField name='profile.bio' class="bio-form"}}
       <button type="submit" class="save-profile-button">Save</button>
     {{/autoForm}}
   {{else}}
@@ -37,19 +33,27 @@
          <img class="profile-picture-large" src="{{profileImage}}"/>
       {{/if}}
     </div>
-    <div class="username">{{username}}</div>
+    <div class="name">{{name}}</div>
     <div class="bio">{{bio}}</div>
+  
+    {{#if ownProfile}}
+      <button class="edit_profile">Edit</button>
+    {{/if}}
   {{/if}}
 </template>
 
 <template name="user_stories">
   <h1>Latest stories</h1>
   {{#each writtenStories}}
-    {{#linkTo route="read" data=this}}
-      <div class="story" data-story-id="{{_id}}">
-        {{> _story_preview_content}}
-      </div>
-    {{/linkTo}}
+    {{#with draftStory}}
+      {{#if published}}
+        {{#linkTo route="read" data=this}}
+          <div class="story" data-story-id="{{_id}}">
+            {{> _story_preview_content}}
+          </div>
+        {{/linkTo}}
+      {{/if}}
+    {{/with}}
   {{/each}}
 </template>
 
