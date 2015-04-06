@@ -742,10 +742,12 @@ Template.create_map_section.onCreated(function() {
 
   var that = this;
   this.search = function(){
+    var inputs = getSearchInput.call(that);
+
     that.focusResult.set(new MapBlock({
       reference: {
-        mapQuery: input.query,
-        mapType: input.option
+        mapQuery: inputs.query,
+        mapType: inputs.option
       },
       authorId : Meteor.user()._id
     }))

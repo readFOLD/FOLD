@@ -84,6 +84,22 @@ Meteor.methods({
     var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
     return updateStory({_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
+  updateVerticalSectionTitle: function(storyId, index, title){
+    // TODO clean title
+
+    setObject = { $set:{} };
+    setObject['$set']['draftStory.verticalSections.' + index + '.title'] = title;
+
+    return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
+  },
+  updateVerticalSectionContent: function(storyId, index, content){
+    // TODO clean content
+
+    setObject = { $set:{} };
+    setObject['$set']['draftStory.verticalSections.' + index + '.content'] = content;
+
+    return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
+  },
   // TODO replace with specific methods
   saveStory: function(selector, modifier, options) {
     console.log('saveStory!');

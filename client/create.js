@@ -269,43 +269,26 @@ window.saveCallback =  function(err, success, cb) {
   }
 };
 
-var autoSaveVerticalSectionField = function(template, field, datatype){
-  storyId = Session.get('storyId');
-
-  if (datatype === 'html') {
-    value = $.trim(template.$('div.' + field).html());
-  } else {
-    value = $.trim(template.$('div.' + field).text());
-  }
-  index = template.data.index;
-
-  setField = 'draftStory.verticalSections.' + index + '.' + field;
-  setObject = { $set:{} };
-  setObject['$set'][setField] = value;
-
-  Session.set('saveState', 'saving');
-
-  return Meteor.call('saveStory', {
-    _id: storyId
-  }, setObject, {removeEmptyStrings: false}, saveCallback)
-};
-
 Template.vertical_section_block.events({
   'mouseup [contenteditable]': window.updateUIBasedOnSelection,
   'blur [contenteditable]': window.updateUIBasedOnSelection,
   'blur .title[contenteditable]' : function(e, template){
-    autoSaveVerticalSectionField(template, 'title');
+    Session.set('saveState', 'saving');
+
+    Meteor.call('updateVerticalSectionTitle', Session.get('storyId'), template.data.index, $.trim(template.$('div.title').text()), saveCallback);
     return true;
   },
   'keydown .title[contenteditable]' : function(e, template){
     if (e.keyCode === 13){ // enter
       e.preventDefault();
-      template.$('.content').focus()
+      template.$('.content').focus();
     }
     return true;
   },
   'blur .content[contenteditable]' : function(e, template){
-    autoSaveVerticalSectionField(template, 'content', 'html');
+    Session.set('saveState', 'saving');
+
+    Meteor.call('updateVerticalSectionContent', Session.get('storyId'), template.data.index, $.trim(template.$('div.content').html()), saveCallback);
     return true;
   },
   // clean up pasting into vertical section content

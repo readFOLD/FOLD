@@ -5,3 +5,11 @@ Meteor.startup(function () {
     Meteor.settings['public'].SEGMENT_WRITE_KEY = process.env.SEGMENT_WRITE_KEY;
   }
 });
+
+if (Meteor.settings.CLOUDINARY_API_SECRET){
+  Cloudinary.config({
+    cloud_name: Meteor.settings['public'].CLOUDINARY_CLOUD_NAME,
+    api_key: Meteor.settings.CLOUDINARY_API_KEY,
+    api_secret: Meteor.settings.CLOUDINARY_API_SECRET
+  });
+};
