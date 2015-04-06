@@ -523,7 +523,7 @@ Template.type_specific_icon.helpers(typeHelpers);
 
 Template.favorite_button.helpers({
   userFavorited: function() {
-    return Meteor.user() && (Meteor.user().profile.favorites.indexOf(this.id) >= 0);
+    return Meteor.user() && (Meteor.user().profile.favorites.indexOf(this._id) >= 0);
   }
 });
 
