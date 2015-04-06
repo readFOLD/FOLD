@@ -498,9 +498,11 @@ Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
 Template.story_browser.helpers({
   first: function() {
+    if (Session.get("wrap")) { return false; }
     return (Session.get("currentX") === 0)
   },
   last: function() {
+    if (Session.get("wrap")) { return false; }
     var horizontalSectionLength = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal.length;
     return (Session.get("currentX") + 1 === horizontalSectionLength)
   }
