@@ -93,10 +93,15 @@ Meteor.methods({
     return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
   },
   updateVerticalSectionContent: function(storyId, index, content){
-    // TODO clean content
+    var cleanedContent = content
+      // cleanup line breaks
+      .replace(new RegExp('<div><br></div>', 'g'), '<br>')
+      .replace(new RegExp('<div>', 'g'), '<br>')
+      .replace(new RegExp('</div>', 'g'), '');
+      // TODO clean rest of html, and remove classes
 
     setObject = { $set:{} };
-    setObject['$set']['draftStory.verticalSections.' + index + '.content'] = content;
+    setObject['$set']['draftStory.verticalSections.' + index + '.content'] = cleanedContent;
 
     return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
   },
