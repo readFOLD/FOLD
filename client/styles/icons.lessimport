@@ -67,7 +67,7 @@ svg.babyburger-icon{
     svg{
     }
     &.favorite{
-      svg{
+      path{
         fill: @light-color;
         &:hover{
           fill: @medium-color;
@@ -75,7 +75,7 @@ svg.babyburger-icon{
       }
     }
     &.unfavorite{
-      svg{
+      path{
         fill: @favorite-color;
         &:hover{
           fill: @dark-favorite-color;
