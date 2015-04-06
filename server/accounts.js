@@ -1,5 +1,5 @@
 checkSignupCode = function(code){
-  if (!code || code.toLowerCase().trim() !== 'begin'){
+  if (!code || ['begin', 'mlmember', 'mlmembers'].indexOf(code.toLowerCase().trim()) === -1){
     throw new Meteor.Error("FOLD is open only to select authors ahead of our launch in early April. If you'd like to write a story, please email us at fold@media.mit.edu and ask for the *secret code*");
   }
 }
