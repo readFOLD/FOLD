@@ -445,14 +445,7 @@ Template.vertical_edit_menu.events({
 
 Template.add_horizontal.helpers({
   left: function() {
-    var cardWidth, halfWidth, width;
-    width = Session.get("windowWidth");
-    if (width < 1024) {
-      width = 1024;
-    }
-    halfWidth = width / 2;
-    cardWidth = Session.get("cardWidth");
-    return halfWidth + (Session.get("separation")) / 2;
+    return Session.get("verticalLeft") + Session.get("cardWidth") + Session.get("separation");
   }
 });
 
