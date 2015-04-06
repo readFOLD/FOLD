@@ -88,7 +88,7 @@ Story = (function() {
 
 
 var cleanHtmlOptions = {
-  allowedTags: ['strong', 'em', 'u', 'a'], // only allow tags used in fold-editor
+  allowedTags: ['strong', 'em', 'u', 'a', 'br'], // only allow tags used in fold-editor and
   format: false,
   removeAttrs: ['class', 'id', 'href'], // strip away hrefs and other undesired attributes that might slip into a paste
   allowedAttributes: [["data-context-id"],["data-context-type"],["data-context-source"]] // data-context-id is used to direct links to context cards
