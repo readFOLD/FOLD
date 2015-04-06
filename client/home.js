@@ -127,6 +127,12 @@ Template.all_stories.helpers({
   }
 });
 
+Template.story_preview.helpers({
+  story: function(){
+    return Stories.findOne(this._id);
+  }
+});
+
 Template._story_preview_content.helpers({
   lastPublishDate: function() {
     if(this.publishedAt) {
