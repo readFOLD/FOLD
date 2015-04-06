@@ -355,12 +355,22 @@ Template.metaview.onRendered(function() {
   var that = this;  
   this.$(".sortable-rows, .sortable-blocks").sortable({
     stop: function() {
-      var newVerticalSections = $( ".sortable-rows" ).sortable('toArray', {attribute: 'data-original-order'})
+      var newVerticalSectionIDs = $( ".sortable-rows" ).sortable('toArray', {attribute: 'data-id'})
+
       var newContextBlocks = [];
       $( ".sortable-blocks" ).each(function(i, e) { 
         newContextBlocks.push($(e).sortable('toArray', {attribute: 'data-id'} ))
-      });    
-      console.log(newVerticalSections, newContextBlocks);
+      });
+
+      var originalVerticalSections = that.data.verticalSections;
+
+      var newVerticalSections = []
+      _.map(newVerticalSectionIDs, function(id, i) {
+        var newVerticalSection = _.findWhere(originalVerticalSections, {_id: id});
+        newVerticalSection.contextBlocks = newContextBlocks[i];
+        newVerticalSections.push(newVerticalSection);
+      });
+      Meteor.call('saveStory', {_id: Session.get("storyId")}, {$set: {'draftStory.verticalSections': newVerticalSections}})
     }
   });
 
