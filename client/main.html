@@ -419,11 +419,11 @@
 
 <template name="story_browser">
   <div class="story-browser">
-    {{#unless first}}
-    <div class="left">
-      {{ > browse_arrow_left}}
-    </div>
-    {{/unless}}
+    {{#if showLeftArrow}}
+      <div class="left">
+        {{ > browse_arrow_left}}
+      </div>
+    {{/if}}
     <div class="right">
       {{ > browse_arrow_right}}
     </div>
