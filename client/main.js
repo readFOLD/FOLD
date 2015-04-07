@@ -505,7 +505,6 @@ Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
 Template.story_browser.helpers({
   showLeftArrow: function() {
-    console.log(Session.get("wrap")[Session.get('currentY')])
     return Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentY')];
   }
 });
