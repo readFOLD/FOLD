@@ -33,24 +33,34 @@ window.getHorizontalLeft = function() {
   if (Session.get("addingContext")) {
     offset += cardWidth + cardSeparation;
   }
+  currentPos = this.index - Session.get("currentX");
+  numCards = currentHorizontal.horizontal.length;
 
-  if (!Session.get("wrap")) {
-    numCards = currentHorizontal.horizontal.length;
-    currentPos = this.index - Session.get("currentX");
+
+
+
+  if (!Session.get("wrap")) { // not wrapping
+
+    if (currentPos === numCards - 1 || currentPos < -1){ // this makes cards appear on the right when they run off the left
+      currentPos = numCards + currentPos;
+    }
 
     if (currentPos >= 0) {
       left = (currentPos * (cardWidth + cardSeparation)) + (verticalRight + cardSeparation + offset);
     } else {
+
       left = ((currentPos + 1) * (cardWidth + cardSeparation)) + (verticalLeft - cardWidth - cardSeparation);
     }
+
+
+
     return left;
-  } else {
-    numCards = currentHorizontal.horizontal.length;
-    currentPos = this.index - Session.get("currentX");
-    if (currentPos < 0) {
+  } else { // wrapping
+
+    if (currentPos < 0) { // makes the first card appear at the end of the last card
       currentPos = numCards + currentPos;
     }
-  
+
     // Default context positioning (all to the right of vertical narrative)
     left = (currentPos * (cardWidth + cardSeparation)) + (verticalRight + cardSeparation + offset);
   
@@ -62,7 +72,7 @@ window.getHorizontalLeft = function() {
     }
     return left;
   }
-}
+};
 
 window.getVerticalHeights = function() {
   var sum, verticalHeights;

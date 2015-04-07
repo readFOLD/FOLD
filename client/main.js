@@ -506,14 +506,19 @@ Template.story_browser.helpers({
     var horizontalSectionLength = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal.length;
     return (Session.get("currentX") + 1 === horizontalSectionLength)
   }
-})
+});
 
 Template.story_browser.events({
   "click .right svg": function(d) {
     var currentX, horizontalSection, newX, path;
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
-    newX = currentX === (horizontalSection.length - 1) ? 0 : currentX + 1;
+    if (currentX === (horizontalSection.length - 1)) { // end of our rope
+      newX = 0;
+      Session.set("wrap", true);
+    } else {
+      newX = currentX + 1;
+    }
     goToX(newX);
     Session.set("currentX", newX);
     path = window.location.pathname.split("/");
