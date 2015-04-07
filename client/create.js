@@ -40,8 +40,8 @@ window.updateUIBasedOnSelection = function(e){
         var selectedTags = [];
         var tagName;
 
-        // only do if selection is inside a narrative block
-        if($(parentNode).parents('.vertical-narrative-section').length) {
+        // only do if selection is inside a fold-editable block
+        if($(parentNode).hasClass('fold-editable') || $(parentNode).parents('.fold-editable').length) {
           while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') {
             tagName = parentNode.tagName.toLowerCase();
             selectedTags.push(tagName);
