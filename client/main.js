@@ -497,14 +497,9 @@ Template.display_text_section.events(editableDescriptionEventsBoilerplate('editT
 Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
 Template.story_browser.helpers({
-  first: function() {
-    if (Session.get("wrap")[Session.get('currentX')]) { return false; }
-    return (Session.get("currentX") === 0)
-  },
-  last: function() {
-    if (Session.get("wrap")[Session.get('currentX')]) { return false; }
-    var horizontalSectionLength = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal.length;
-    return (Session.get("currentX") + 1 === horizontalSectionLength)
+  showLeftArrow: function() {
+    console.log(Session.get("wrap")[Session.get('currentY')])
+    return Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentY')];
   }
 });
 
@@ -513,10 +508,11 @@ Template.story_browser.events({
     var currentX, horizontalSection, newX, path;
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
+    currentY = Session.get("currentY");
     if (currentX === (horizontalSection.length - 1)) { // end of our rope
       newX = 0;
       wrap = Session.get("wrap");
-      wrap[currentX] = true;
+      wrap[currentY] = true;
       Session.set("wrap", wrap);
     } else {
       newX = currentX + 1;
