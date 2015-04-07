@@ -551,7 +551,7 @@ VizBlock = (function(_super) {
   VizBlock.prototype.url = function() {
     switch (this.source) {
       case 'oec':
-        return 'http://atlas.media.mit.edu/explore/embed/tree_map/hs/' + this.reference.oecDirection + '/' + this.reference.oecCountry + '/all/show/' + this.reference.oecYear + '/?controls=false&lang=en'
+        return '//atlas.media.mit.edu/en/explore/embed/tree_map/hs/' + this.reference.oecDirection + '/' + this.reference.oecCountry + '/all/show/' + this.reference.oecYear + '?controls=false&lang=en'
     }
   };
 

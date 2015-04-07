@@ -30,7 +30,7 @@ div.home-top {
 
     div.title {
       float: right;
-      margin-top: 5px;
+      margin-top: 10px;
       width: 164px;
     }
   }
