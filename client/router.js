@@ -105,6 +105,9 @@ Router.route("read", {
   },
   onRun: function() {
     Session.set("wrap", []);
+    Session.set("currentXByRow", []);
+    Session.set("currentY", null);
+
 
     return this.next();
   },
@@ -135,7 +138,6 @@ Router.route("read", {
     }
   },
   onBeforeAction: function() {
-    Session.set("currentY", null);
     Session.set("newStory", false);
     Session.set("read", true);
     Session.set("showDraft", false);

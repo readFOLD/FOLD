@@ -6,7 +6,7 @@ window.constants = {
 
 window.getVerticalLeft = function(width) {
   return 106;
-}
+};
 
 window.getHorizontalLeft = function() {
   var currentPos, currentHorizontal, cardWidth, numCards, left, offset, pageWidth, verticalRight, addContextBlockWidth, cardSeparation;
@@ -102,7 +102,9 @@ window.goToY = function(y) {
 };
 
 window.goToX = function(x) {
-  Session.set("currentX", x);
+  currentXByRow = Session.get("currentXByRow");
+  currentXByRow[Session.get("currentY")] = x;
+  Session.set("currentXByRow", currentXByRow);
 };
 
 window.goToContext = function(id) {

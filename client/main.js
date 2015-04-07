@@ -121,6 +121,13 @@ Tracker.autorun(function(){
   }
 });
 
+Tracker.autorun(function(){
+  var currentY = Session.get("currentY");
+  if (currentY){
+    Session.set("currentX", Session.get("currentXByRow")[currentY] || 0);
+  }
+});
+
 Meteor.startup(function() {
   var throttledUpdate;
   Session.setDefault("filterOpen", false);
@@ -518,7 +525,6 @@ Template.story_browser.events({
       newX = currentX + 1;
     }
     goToX(newX);
-    Session.set("currentX", newX);
     path = window.location.pathname.split("/");
     return path[4] = Session.get("currentX");
   },
@@ -527,7 +533,7 @@ Template.story_browser.events({
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
     newX = currentX ? currentX - 1 : horizontalSection.length - 1;
-    Session.set("currentX", newX);
+    goToX(newX);
     path = window.location.pathname.split("/");
     return path[4] = Session.get("currentX");
   }
