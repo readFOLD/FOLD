@@ -87,21 +87,16 @@ Meteor.methods({
   updateVerticalSectionTitle: function(storyId, index, title){
     // TODO clean title
 
-    setObject = { $set:{} };
+    var setObject = { $set:{} };
     setObject['$set']['draftStory.verticalSections.' + index + '.title'] = title;
 
     return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
   },
   updateVerticalSectionContent: function(storyId, index, content){
-    var cleanedContent = content
-      // cleanup line breaks
-      .replace(new RegExp('<div><br></div>', 'g'), '<br>')
-      .replace(new RegExp('<div>', 'g'), '<br>')
-      .replace(new RegExp('</div>', 'g'), '');
-      // TODO clean rest of html, and remove classes
 
-    setObject = { $set:{} };
-    setObject['$set']['draftStory.verticalSections.' + index + '.content'] = cleanedContent;
+    // TODO Clean html
+    var setObject = { $set:{} };
+    setObject['$set']['draftStory.verticalSections.' + index + '.content'] = content;
 
     return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
   },

@@ -98,8 +98,15 @@ var matchAnchors =  /<a( data-context-id=["|'].*?["|'])?( data-context-type=["|'
 var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match anchors that are left over from above if copied from somewhere else, capture contents so can be kept
 
 cleanVerticalSectionContent = function(html) {
-  
-  return $.htmlClean(html, cleanHtmlOptions)
+
+  var initialClean = $.htmlClean(html, _.omit(cleanHtmlOptions, 'allowedTags')); // do all cleaning except tag removal
+
+  var linebreakClean = initialClean
+    .replace(new RegExp('<div><br></div>', 'g'), '<br>')
+    .replace(new RegExp('<div>', 'g'), '<br>')
+    .replace(new RegExp('</div>', 'g'), '');
+
+  return $.htmlClean(linebreakClean, cleanHtmlOptions)
     .replace(matchAnchors, '<a href="javascript:void(0);"$1$2$3>') // add js void to all anchors and keep all data-context-ids and other data attributes
     .replace(matchBlankAnchors, '$1'); // remove anchors without data-context-ids
 };
