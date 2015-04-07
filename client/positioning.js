@@ -5,12 +5,7 @@ window.constants = {
 };
 
 window.getVerticalLeft = function(width) {
-  if (width <= 1304) {
-    left =  88 + 16;
-  } else {
-    left = (width / 2) - (Session.get("separation") / 2) - Session.get("cardWidth");
-  }
-  return left
+  return 106;
 }
 
 window.getHorizontalLeft = function() {
@@ -27,6 +22,7 @@ window.getHorizontalLeft = function() {
   cardSeparation = Session.get("separation");
   addContextBlockWidth = 75;
   verticalLeft = Session.get("verticalLeft");
+  verticalRight = verticalLeft + cardWidth;
 
   // Offset of first card, different on create page because of (+) button
   if (Session.get("read")) {
@@ -38,23 +34,34 @@ window.getHorizontalLeft = function() {
     offset += cardWidth + cardSeparation;
   }
 
-  numCards = currentHorizontal.horizontal.length;
-  currentPos = this.index - Session.get("currentX");
-  if (currentPos < 0) {
-    currentPos = numCards + currentPos;
-  }
+  if (!Session.get("wrap")) {
+    numCards = currentHorizontal.horizontal.length;
+    currentPos = this.index - Session.get("currentX");
 
-  // Default context positioning (all to the right of vertical narrative)
-  verticalRight = verticalLeft + cardWidth
-  left = (currentPos * (cardWidth + cardSeparation)) + (verticalRight + cardSeparation + offset);
-
-  // Last card positioning if number of cards is greater than 3
-  if (numCards >= 3) {
-    if (currentPos === numCards - 1) {
-      left = verticalLeft - cardWidth - cardSeparation;
+    if (currentPos >= 0) {
+      left = (currentPos * (cardWidth + cardSeparation)) + (verticalRight + cardSeparation + offset);
+    } else {
+      left = ((currentPos + 1) * (cardWidth + cardSeparation)) + (verticalLeft - cardWidth - cardSeparation);
     }
+    return left;
+  } else {
+    numCards = currentHorizontal.horizontal.length;
+    currentPos = this.index - Session.get("currentX");
+    if (currentPos < 0) {
+      currentPos = numCards + currentPos;
+    }
+  
+    // Default context positioning (all to the right of vertical narrative)
+    left = (currentPos * (cardWidth + cardSeparation)) + (verticalRight + cardSeparation + offset);
+  
+    // Last card positioning if number of cards is greater than 3
+    if (numCards >= 3) {
+      if (currentPos === numCards - 1) {
+        left = verticalLeft - cardWidth - cardSeparation;
+      }
+    }
+    return left;
   }
-  return left;
 }
 
 window.getVerticalHeights = function() {
