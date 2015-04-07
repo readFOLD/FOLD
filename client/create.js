@@ -288,7 +288,11 @@ Template.vertical_section_block.events({
   'blur .content[contenteditable]' : function(e, template){
     Session.set('saveState', 'saving');
 
-    Meteor.call('updateVerticalSectionContent', Session.get('storyId'), template.data.index, $.trim(template.$('div.content').html()), saveCallback);
+    Meteor.call('updateVerticalSectionContent',
+      Session.get('storyId'),
+      template.data.index,
+      cleanVerticalSectionContent($.trim(template.$('div.content').html())), // TODO move to method
+      saveCallback);
     return true;
   },
   // clean up pasting into vertical section content
