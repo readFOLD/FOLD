@@ -103,6 +103,11 @@ Router.route("read", {
       return this.render();
     }
   },
+  onRun: function() {
+    Session.set("wrap", []);
+
+    return this.next();
+  },
   data: function() {
     var story;
     if (this.ready()){

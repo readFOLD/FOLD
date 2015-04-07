@@ -498,11 +498,11 @@ Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
 Template.story_browser.helpers({
   first: function() {
-    if (Session.get("wrap")) { return false; }
+    if (Session.get("wrap")[this.index]) { return false; }
     return (Session.get("currentX") === 0)
   },
   last: function() {
-    if (Session.get("wrap")) { return false; }
+    if (Session.get("wrap")[this.index]) { return false; }
     var horizontalSectionLength = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal.length;
     return (Session.get("currentX") + 1 === horizontalSectionLength)
   }
@@ -515,7 +515,9 @@ Template.story_browser.events({
     currentX = Session.get("currentX");
     if (currentX === (horizontalSection.length - 1)) { // end of our rope
       newX = 0;
-      Session.set("wrap", true);
+      wrap = Session.get("wrap");
+      wrap[currentX] = true;
+      Session.set("wrap", wrap);
     } else {
       newX = currentX + 1;
     }
