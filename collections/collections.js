@@ -99,16 +99,20 @@ var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match
 
 cleanVerticalSectionContent = function(html) {
 
-  var initialClean = $.htmlClean(html, _.omit(cleanHtmlOptions, 'allowedTags')); // do all cleaning except tag removal
 
+  var initialClean = $.htmlClean(html, _.omit(cleanHtmlOptions, 'allowedTags')); // do all cleaning except tag removal
+  
   var linebreakClean = initialClean
+    .replace(new RegExp('<br />', 'g'), '<br>')
     .replace(new RegExp('<div><br></div>', 'g'), '<br>')
     .replace(new RegExp('<div>', 'g'), '<br>')
     .replace(new RegExp('</div>', 'g'), '');
 
   return $.htmlClean(linebreakClean, cleanHtmlOptions)
     .replace(matchAnchors, '<a href="javascript:void(0);"$1$2$3>') // add js void to all anchors and keep all data-context-ids and other data attributes
-    .replace(matchBlankAnchors, '$1'); // remove anchors without data-context-ids
+    .replace(matchBlankAnchors, '$1') // remove anchors without data-context-ids
+    .replace(new RegExp('<br />', 'g'), '<br>');
+
 };
 
 if (Meteor.isClient) {
