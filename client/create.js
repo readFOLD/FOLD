@@ -40,8 +40,8 @@ window.updateUIBasedOnSelection = function(e){
         var selectedTags = [];
         var tagName;
 
-        // only do if selection is inside a narrative block
-        if($(parentNode).parents('.vertical-narrative-section').length) {
+        // only do if selection is inside a fold-editable block
+        if($(parentNode).hasClass('fold-editable') || $(parentNode).parents('.fold-editable').length) {
           while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') {
             tagName = parentNode.tagName.toLowerCase();
             selectedTags.push(tagName);
@@ -288,7 +288,11 @@ Template.vertical_section_block.events({
   'blur .content[contenteditable]' : function(e, template){
     Session.set('saveState', 'saving');
 
-    Meteor.call('updateVerticalSectionContent', Session.get('storyId'), template.data.index, $.trim(template.$('div.content').html()), saveCallback);
+    Meteor.call('updateVerticalSectionContent',
+      Session.get('storyId'),
+      template.data.index,
+      cleanVerticalSectionContent($.trim(template.$('div.content').html())), // TODO move to method
+      saveCallback);
     return true;
   },
   // clean up pasting into vertical section content

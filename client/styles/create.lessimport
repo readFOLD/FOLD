@@ -399,7 +399,7 @@ svg{
 
 .new-section {
   &:hover {
-    circle{
+    .bg{
       fill: @action-color;
     }
   }
@@ -474,7 +474,7 @@ div.horizontal-context {
         display: inline-block;
 
         &:hover, &.active {
-          circle{
+          .bg{
             fill: @action-color;
           }
         }
@@ -994,10 +994,10 @@ div.text-section {
   li:nth-child(odd) {background-color: @black-color;}
 
   svg.add-card-icon{
-    path {
+    .fg {
       fill: @light-color;
     }
-    circle {
+    .bg {
       opacity: 0;
     }
 
@@ -1069,7 +1069,7 @@ div#fold-editor{
       font-size: 20pt;
       line-height: @fold-editor-row-height;
       &:hover {
-        circle {
+        .bg {
           fill: @action-color;
         }
         background-color: inherit;
@@ -1122,7 +1122,7 @@ div#fold-link-remover{
     margin-bottom: -2px;
 
     &:hover {
-      circle {
+      .bg {
         fill: @danger-color;
       }
       background-color: inherit;
@@ -1166,7 +1166,7 @@ div.context-anchor-menu {
   width: 100%;
 
   .back-arrow{
-    path{
+    .fg{
       fill: @light-color;
     }
   }

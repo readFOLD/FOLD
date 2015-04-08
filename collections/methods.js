@@ -87,15 +87,15 @@ Meteor.methods({
   updateVerticalSectionTitle: function(storyId, index, title){
     // TODO clean title
 
-    setObject = { $set:{} };
+    var setObject = { $set:{} };
     setObject['$set']['draftStory.verticalSections.' + index + '.title'] = title;
 
     return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
   },
   updateVerticalSectionContent: function(storyId, index, content){
-    // TODO clean content
 
-    setObject = { $set:{} };
+    // TODO Clean html
+    var setObject = { $set:{} };
     setObject['$set']['draftStory.verticalSections.' + index + '.content'] = content;
 
     return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})

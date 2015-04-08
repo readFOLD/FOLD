@@ -815,8 +815,8 @@ Template.search_form.helpers({
       case 'links':
         return 'e.g. ' +
           _.sample([
-            'http://readfold.com',
-            'http://twitter.com/readFOLD',
+            'https://readfold.com',
+            'https://twitter.com/readFOLD',
             'http://nytimes.com',
             'http://flickr.com'
           ]);

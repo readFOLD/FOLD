@@ -121,6 +121,13 @@ Tracker.autorun(function(){
   }
 });
 
+Tracker.autorun(function(){
+  var currentY = Session.get("currentY");
+  if (currentY){
+    Session.set("currentX", Session.get("currentXByRow")[currentY] || 0);
+  }
+});
+
 Meteor.startup(function() {
   var throttledUpdate;
   Session.setDefault("filterOpen", false);
@@ -497,25 +504,26 @@ Template.display_text_section.events(editableDescriptionEventsBoilerplate('editT
 Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
 Template.story_browser.helpers({
-  first: function() {
-    if (Session.get("wrap")) { return false; }
-    return (Session.get("currentX") === 0)
-  },
-  last: function() {
-    if (Session.get("wrap")) { return false; }
-    var horizontalSectionLength = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal.length;
-    return (Session.get("currentX") + 1 === horizontalSectionLength)
+  showLeftArrow: function() {
+    return Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentY')];
   }
-})
+});
 
 Template.story_browser.events({
   "click .right svg": function(d) {
     var currentX, horizontalSection, newX, path;
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
-    newX = currentX === (horizontalSection.length - 1) ? 0 : currentX + 1;
+    currentY = Session.get("currentY");
+    if (currentX === (horizontalSection.length - 1)) { // end of our rope
+      newX = 0;
+      wrap = Session.get("wrap");
+      wrap[currentY] = true;
+      Session.set("wrap", wrap);
+    } else {
+      newX = currentX + 1;
+    }
     goToX(newX);
-    Session.set("currentX", newX);
     path = window.location.pathname.split("/");
     return path[4] = Session.get("currentX");
   },
@@ -524,7 +532,7 @@ Template.story_browser.events({
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
     newX = currentX ? currentX - 1 : horizontalSection.length - 1;
-    Session.set("currentX", newX);
+    goToX(newX);
     path = window.location.pathname.split("/");
     return path[4] = Session.get("currentX");
   }

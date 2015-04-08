@@ -88,7 +88,7 @@ Story = (function() {
 
 
 var cleanHtmlOptions = {
-  allowedTags: ['strong', 'em', 'u', 'a'], // only allow tags used in fold-editor
+  allowedTags: ['strong', 'em', 'u', 'a', 'br'], // only allow tags used in fold-editor and
   format: false,
   removeAttrs: ['class', 'id', 'href'], // strip away hrefs and other undesired attributes that might slip into a paste
   allowedAttributes: [["data-context-id"],["data-context-type"],["data-context-source"]] // data-context-id is used to direct links to context cards
@@ -98,10 +98,21 @@ var matchAnchors =  /<a( data-context-id=["|'].*?["|'])?( data-context-type=["|'
 var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match anchors that are left over from above if copied from somewhere else, capture contents so can be kept
 
 cleanVerticalSectionContent = function(html) {
+
+
+  var initialClean = $.htmlClean(html, _.omit(cleanHtmlOptions, 'allowedTags')); // do all cleaning except tag removal
   
-  return $.htmlClean(html, cleanHtmlOptions)
+  var linebreakClean = initialClean
+    .replace(new RegExp('<br />', 'g'), '<br>')
+    .replace(new RegExp('<div><br></div>', 'g'), '<br>')
+    .replace(new RegExp('<div>', 'g'), '<br>')
+    .replace(new RegExp('</div>', 'g'), '');
+
+  return $.htmlClean(linebreakClean, cleanHtmlOptions)
     .replace(matchAnchors, '<a href="javascript:void(0);"$1$2$3>') // add js void to all anchors and keep all data-context-ids and other data attributes
-    .replace(matchBlankAnchors, '$1'); // remove anchors without data-context-ids
+    .replace(matchBlankAnchors, '$1') // remove anchors without data-context-ids
+    .replace(new RegExp('<br />', 'g'), '<br>');
+
 };
 
 if (Meteor.isClient) {

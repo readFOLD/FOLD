@@ -107,6 +107,14 @@ Router.route("read", {
       return this.render();
     }
   },
+  onRun: function() {
+    Session.set("wrap", []);
+    Session.set("currentXByRow", []);
+    Session.set("currentY", null);
+
+
+    return this.next();
+  },
   data: function() {
     var story;
     if (this.ready()){
@@ -134,7 +142,6 @@ Router.route("read", {
     }
   },
   onBeforeAction: function() {
-    Session.set("currentY", null);
     Session.set("newStory", false);
     Session.set("read", true);
     Session.set("showDraft", false);
@@ -147,6 +154,8 @@ Router.route("edit", {
   path: "create/:userPathSegment/:storyPathSegment",
   template: "create",
   onRun: function() {
+    Session.set("wrap", []);
+    Session.set("currentXByRow", []);
     Session.set("currentY", null);
     Session.set("read", false);
     Session.set("newStory", false);
