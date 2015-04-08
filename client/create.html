@@ -282,14 +282,17 @@
         </ul>
       </div>
       {{#if uploadMode}}
-        {{#c_upload_stream callback="saveCloudinaryUrl"}}
-          <input type="file" accept="image/*">
-        {{/c_upload_stream}}
+        <div class="image-upload">
+          {{#c_upload_stream callback="saveCloudinaryUrl"}}
+            <input type="file" accept="image/*">
+          {{/c_upload_stream}}
 
-        {{#each c.uploading_images}}
-          <p>{{percent_uploaded}}</p>
-        {{/each}}
-        <img width="250" src="{{c.url cloudinaryUploadId secure=true}}">
+          {{#each c.uploading_images}}
+            <p>{{percent_uploaded}}</p>
+          {{/each}}
+          <!--<img width="250" src="{{c.url cloudinaryUploadId secure=true}}">-->
+          <img width="250" src="{{uploadPreview}}">
+        </div>
       {{else}}
         {{> search_form}}
         <ol class="search-results-container">

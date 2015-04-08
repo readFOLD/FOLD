@@ -460,6 +460,7 @@ Template.create_twitter_section.onRendered(searchTemplateRenderedBoilerplate());
 Template.create_image_section.onCreated(function(){
   var that = this;
   this.latestUploadId = new ReactiveVar();
+  this.uploadPreview = new ReactiveVar();
   var query = _cloudinary.find({});
   this.observeCloudinary = query.observeChanges({ // this query stays live until .stop() is called in the onDestroyed hook
     added: function (id) { // start upload
@@ -470,12 +471,28 @@ Template.create_image_section.onCreated(function(){
       if (changes.public_id){ // if upload successful
         console.log('upload successful!');
         console.log(changes);
-        that.latestUploadId.set(changes.public_id);
+        var doc = _cloudinary.findOne(id)
+        //that.latestUploadId.set(doc.public_id);
+        var cardModel = ImageBlock; // TODO should be gif if it's a gif
+        that.focusResult.set(new cardModel({
+          reference: {
+            id: doc.public_id,
+            fileExtension: doc.format,
+            width: doc.width,
+            height: doc.height
+          },
+          source: that.source.get(),
+          authorId : Meteor.user()._id,
+          fullDetails: doc
+        }))
       }
     },
     removed: function (id) {  // upload failed
       console.log('upload failed');
       console.log(id);
+      var input = that.$('input[type=file]');
+      input.val(null);
+      input.change(); // trigger change event
       // TODO set an error
     }
   });
@@ -491,6 +508,24 @@ Template.create_image_section.helpers({
   },
   cloudinaryUploadId: function(){
     return Template.instance().latestUploadId.get();
+  },
+  uploadPreview: function(){
+    return Template.instance().uploadPreview.get();
+  }
+});
+
+Template.create_image_section.events({
+  'change input[type=file]': function(e, t){
+    var file = _.first(event.target.files);
+    if (file){
+      var reader = new FileReader;
+      reader.onload = function(upload){
+        t.uploadPreview.set(upload.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      t.uploadPreview.set(null);
+    }
   }
 });
 

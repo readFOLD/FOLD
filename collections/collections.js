@@ -496,6 +496,9 @@ ImageBlock = (function(_super) {
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg'
       case 'embedly':
         return this.reference.url;
+      case 'cloudinary':
+        // TODO adjust this so it's more specific
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + this.reference.id;
     }
   };
 
@@ -509,6 +512,9 @@ ImageBlock = (function(_super) {
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_t' + '.jpg';
       case 'embedly':
         return this.reference.thumbnailUrl;
+      case 'cloudinary':
+        // TODO adjust this so it's more specific
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + this.reference.id;
     }
   };
 
@@ -818,6 +824,8 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
 
+  // Image
+
 
   flickrFarm: {
     type: String,
@@ -829,6 +837,16 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   },
   flickrServer: {
     type: String,
+    optional: true
+  },
+
+  // Image upload
+  width: {
+    type: Number,
+    optional: true
+  },
+  height: {
+    type: Number,
     optional: true
   },
 
