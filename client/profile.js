@@ -62,7 +62,7 @@ Template.user_profile.helpers({
 });
 
 Template.user_profile.events({
-  "click .edit_profile" : function(d, template) {
+  "click .edit-profile" : function(d, template) {
     template.editting.set(true);
   },
   "click .save-profile-button" : function(d, template) {

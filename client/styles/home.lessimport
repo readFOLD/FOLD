@@ -136,22 +136,38 @@ div.signup, div.login, div.user_profile {
 }
 
 div.stories {
+  @profile-section: 400px;
   padding-top: 150px;
   width: 100%;
   height: 100%;
   background-color: @background-color;
+    &.profile {
+      margin-left: @profile-section;
+      width: calc(100% ~"-" @profile-section);
+      min-width: @profile-section;
+
+      @media (max-width: 800px) {
+        padding-top: 75px;
+        @margin-side: 25px;
+        margin-left: @margin-side;
+        min-width: calc(100% ~"-" @margin-side*2);
+      }
+    }
 
   div.story-browser {
     height: 80px;
   }
 
   div.horizontal-line {
-    width: 100%;
+    width: 96%;
     height: 1px;
     background-color: @medium-color;
-    margin: 0px 0px 4px 4px;
-    position: absolute;
     z-index: 0;
+
+    @media (max-width: 800px) {
+      width: calc(100% ~"-" 4px);
+    }
+
   }
 
   div.overlay-image {
@@ -227,6 +243,7 @@ div.stories {
     overflow: hidden;
   }
 
+
   div.story {
     background-color: @white-color;
     border-bottom: 7px solid @action-color;
@@ -258,6 +275,23 @@ div.stories {
 
     @media (max-width: 800px) {
       width: calc(100% ~"-" @margin-side * 2);
+    }
+
+    &.profile {
+      @margin-side: 2%;
+      margin-right: @margin-side;
+      width: calc(50% ~"-" @margin-side * 2);
+
+      @media (max-width: 1200px){
+        width: calc(100% ~"-" @margin-side * 2);
+      }
+
+      @media (max-width: 800px) {
+        @margin-side: 4px;
+        margin-right: @margin-side;
+      }
+
+
     }
 
     &:hover {

@@ -1,37 +1,69 @@
+@picture-radius: 10em;
+
 h1 {
  font-size: 30px;
+   @media (max-width: 800px) {
+    text-align: center;
+  }
+}
+
+div.profile-section {
+  padding-top: 150px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+
+  @media (max-width: 800px) {
+    position: inherit;
+  } 
 }
 
 div.user-profile {
   padding:20px;
-  padding-top: 150px;
+  margin-top: 30px;
   background-color: @white-color;
+  @profile-width: 340px;
+  width: @profile-width;
+  max-width: 340px;
+  height: 750px;
 
+  @media (max-width: 800px) {
+    @margin-side:15%;
+    margin-left: @margin-side;
+    max-width: 100%;
+    width: calc(100% ~"-" @margin-side*2);
+  }
 
   div.profile-picture {
     background-color: @black-color;
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
+    width: @picture-radius;
+    height: @picture-radius;
+    border-radius: @picture-radius;
+    margin: 50px calc(50% ~"-" @picture-radius*0.5) 35px;
+
   } 
   div.name, div.bio {
+    text-align: center;
+    word-wrap:break-word;
+    margin: 15px 45px;
   }
+  div.name {
+    font-size: 250%;
+    line-height: 110%;
+  }
+  div.bio {
+    font-size: 110%;
+    font-style: italic;
+  }
+
 }
 
-
-img.profile-picture-large {
-  @picture-radius: 22px;
-  // position: absolute;
-  // top: 168px;
-  // left: 30px;
-
-  float: left;
-  margin-right: 10px;
-  z-index: 10;
-
-  border-radius: @picture-radius;
-  width: @picture-radius * 4;
-  height: auto;
+.user-info-form{
+  margin-top: calc(@picture-radius ~"+" 65px);
+}
+.edit-profile{
+  color: @medium-color;
+  position: absolute;
 }
 
 .bio-form {

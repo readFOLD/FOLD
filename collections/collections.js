@@ -1016,7 +1016,7 @@ Schema.UserProfile = new SimpleSchema({
       }
     },
     autoform: {
-      rows:5
+      rows: 7
     }
   },
   favorites: {

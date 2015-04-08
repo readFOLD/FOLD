@@ -1,11 +1,13 @@
 <template name="profile">
   {{> top_banner border="remix-border"}}
+  <div class="profile-section">
     <section>
       <div class="user-profile">
         {{> user_profile}}
       </div>
     </section>
-    <div class="stories">
+  </div>
+    <div class="stories profile">
       <section>
         <div class="story-container">
           {{> user_stories}}
@@ -16,18 +18,24 @@
         </div>
       </section>
     </div>
+
   {{> footer}}
 </template>
 
 
 <template name="user_profile">
   {{#if editting}}
-    {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
-      {{> afQuickField name='profile.name'}}
-      {{> afQuickField name='profile.bio' class="bio-form"}}
-      <button type="submit" class="save-profile-button">Save</button>
-    {{/autoForm}}
+    <div class="user-info-form">
+      {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
+        {{> afQuickField name='profile.name'}}
+        {{> afQuickField name='profile.bio' class="bio-form"}}
+        <button type="submit" class="save-profile-button">Save</button>
+      {{/autoForm}}
+    </div>
   {{else}}
+    {{#if ownProfile}}
+      <button class="edit-profile">Edit</button>
+    {{/if}}
     <div class="profile-picture">
       {{#if profileImage}} 
          <img class="profile-picture-large" src="{{profileImage}}"/>
@@ -35,10 +43,6 @@
     </div>
     <div class="name">{{name}}</div>
     <div class="bio">{{bio}}</div>
-  
-    {{#if ownProfile}}
-      <button class="edit_profile">Edit</button>
-    {{/if}}
   {{/if}}
 </template>
 
@@ -48,7 +52,7 @@
     {{#with draftStory}}
       {{#if published}}
         {{#linkTo route="read" data=this}}
-          <div class="story" data-story-id="{{_id}}">
+          <div class="profile story" data-story-id="{{_id}}">
             {{> _story_preview_content}}
           </div>
         {{/linkTo}}
@@ -60,7 +64,11 @@
 <template name="user_favorite_stories">
   <h1>Favorites</h1>
   {{#each favoriteStories}}
-    {{> story_preview }}
+    {{#linkTo route="read" data=this}}
+      <div class="profile story" data-story-id="{{_id}}">
+        {{> _story_preview_content}}
+      </div>
+    {{/linkTo}}
   {{/each}}
 </template>
 
