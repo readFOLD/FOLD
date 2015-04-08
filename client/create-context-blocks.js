@@ -457,9 +457,46 @@ Template.create_video_section.onRendered(searchTemplateRenderedBoilerplate());
 Template.create_twitter_section.onCreated(searchTemplateCreatedBoilerplate('twitter', 'twitter'));
 Template.create_twitter_section.onRendered(searchTemplateRenderedBoilerplate());
 
-// TODO autosearch when change between sources
+Template.create_image_section.onCreated(function(){
+  var that = this;
+  this.latestUploadId = new ReactiveVar();
+  var query = _cloudinary.find({});
+  this.observeCloudinary = query.observeChanges({ // this query stays live until .stop() is called in the onDestroyed hook
+    added: function (id) { // start upload
+      console.log('begin upload');
+      console.log(id);
+    },
+    changed: function (id, changes) { // upload stream updated
+      if (changes.public_id){ // if upload successful
+        console.log('upload successful!');
+        console.log(changes);
+        that.latestUploadId.set(changes.public_id);
+      }
+    },
+    removed: function (id) {  // upload failed
+      console.log('upload failed');
+      console.log(id);
+      // TODO set an error
+    }
+  });
+});
+
+Template.create_image_section.onDestroyed(function(){
+  this.observeCloudinary.stop();
+});
+
+Template.create_image_section.helpers({
+  uploadMode: function(){
+    return Template.instance().source.get() === 'cloudinary'
+  },
+  cloudinaryUploadId: function(){
+    return Template.instance().latestUploadId.get();
+  }
+});
+
 Template.create_image_section.onCreated(searchTemplateCreatedBoilerplate('image', 'flickr'));
 Template.create_image_section.onRendered(searchTemplateRenderedBoilerplate());
+
 
 Template.create_gif_section.onCreated(searchTemplateCreatedBoilerplate('gif', 'giphy'));
 Template.create_gif_section.onRendered(searchTemplateRenderedBoilerplate());
@@ -468,7 +505,7 @@ Template.create_audio_section.onCreated(searchTemplateCreatedBoilerplate('audio'
 Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
 
 var dataSourcesByType = {
-  'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}],
+  'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}, {source: 'cloudinary', display: 'Upload Your Own'}],
   'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
   'gif': [{source: 'giphy', display: 'Giphy'}],
   'video': [{source: 'youtube', display: 'Youtube'}, {source: 'vimeo', display: 'Vimeo'}],

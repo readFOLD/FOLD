@@ -281,20 +281,31 @@
           {{/each}}
         </ul>
       </div>
-      {{> search_form}}
-      <ol class="search-results-container">
-        {{#each results}}
-          <li class="tile {{#if isFocused}}focused{{/if}}">
-            <img src="{{thumbnailUrl}}">
-          </li>
+      {{#if uploadMode}}
+        {{#c_upload_stream callback="saveCloudinaryUrl"}}
+          <input type="file" accept="image/*">
+        {{/c_upload_stream}}
+
+        {{#each c.uploading_images}}
+          <p>{{percent_uploaded}}</p>
         {{/each}}
-        {{#if loading}}
-          {{> loading_icon}}
-        {{/if}}
-        {{#if noMoreResults}}
-          {{noMoreResults}}
-        {{/if}}
-      </ol>
+        <img width="250" src="{{c.url cloudinaryUploadId secure=true}}">
+      {{else}}
+        {{> search_form}}
+        <ol class="search-results-container">
+          {{#each results}}
+            <li class="tile {{#if isFocused}}focused{{/if}}">
+              <img src="{{thumbnailUrl}}">
+            </li>
+          {{/each}}
+          {{#if loading}}
+            {{> loading_icon}}
+          {{/if}}
+          {{#if noMoreResults}}
+            {{noMoreResults}}
+          {{/if}}
+        </ol>
+      {{/if}}
       {{#if showAddButton}}
         <button type="button" class="add-desc-button {{#if isActive}}enabled{{/if}}">
           Add Description
