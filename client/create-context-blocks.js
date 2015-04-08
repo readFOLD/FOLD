@@ -473,7 +473,8 @@ Template.create_image_section.onCreated(function(){
         console.log(changes);
         var doc = _cloudinary.findOne(id)
         //that.latestUploadId.set(doc.public_id);
-        var cardModel = ImageBlock; // TODO should be gif if it's a gif
+        var cardModel = doc.format === 'gif' ? GifBlock : ImageBlock; // TODO should be gif if it's a gif
+        // TODO consider how to do attribution
         that.focusResult.set(new cardModel({
           reference: {
             id: doc.public_id,

@@ -519,7 +519,7 @@ ImageBlock = (function(_super) {
   };
 
   ImageBlock.prototype.anchorMenuSnippet = function() {
-    return this.description || this.reference.title || this.reference.description;
+    return this.description || this.reference.title || this.reference.description || this.reference.id;
   };
 
   return ImageBlock;
@@ -537,19 +537,25 @@ GifBlock = (function(_super) {
   GifBlock.prototype.url = function() {
     switch (this.source) {
       case 'giphy':
-        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif'
+        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif';
+      case 'cloudinary':
+        // TODO adjust this so it's more specific
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + this.reference.id;
     }
   };
 
   GifBlock.prototype.thumbnailUrl = function() {
     switch (this.source) {
       case 'giphy':
-        return '//media4.giphy.com/media/' + this.reference.id + '/200_d.gif'
+        return '//media4.giphy.com/media/' + this.reference.id + '/200_d.gif';
+      case 'cloudinary':
+        // TODO adjust this so it's more specific
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + this.reference.id;
     }
   };
 
   GifBlock.prototype.anchorMenuSnippet = function() {
-    return this.reference.id;
+    return this.description || this.reference.title || this.reference.description || this.reference.id;
   };
 
   return GifBlock;
