@@ -461,20 +461,19 @@ Template.create_image_section.onCreated(function(){
   var that = this;
   this.latestUploadId = new ReactiveVar();
   this.uploadPreview = new ReactiveVar();
+  this.uploadStatus = new ReactiveVar();
   var query = _cloudinary.find({});
   this.observeCloudinary = query.observeChanges({ // this query stays live until .stop() is called in the onDestroyed hook
     added: function (id) { // start upload
-      console.log('begin upload');
-      console.log(id);
+      that.uploadStatus.set(null);
     },
     changed: function (id, changes) { // upload stream updated
       if (changes.public_id){ // if upload successful
-        console.log('upload successful!');
-        console.log(changes);
         var doc = _cloudinary.findOne(id)
         //that.latestUploadId.set(doc.public_id);
         var cardModel = doc.format === 'gif' ? GifBlock : ImageBlock; // TODO should be gif if it's a gif
         // TODO consider how to do attribution
+        that.uploadStatus.set('Upload successful');
         that.focusResult.set(new cardModel({
           reference: {
             id: doc.public_id,
@@ -489,9 +488,8 @@ Template.create_image_section.onCreated(function(){
       }
     },
     removed: function (id) {  // upload failed
-      console.log('upload failed');
-      console.log(id);
       var input = that.$('input[type=file]');
+      that.uploadStatus.set('Upload failed');
       input.val(null);
       input.change(); // trigger change event
       // TODO set an error
@@ -505,10 +503,13 @@ Template.create_image_section.onDestroyed(function(){
 
 Template.create_image_section.helpers({
   uploadMode: function(){
-    return Template.instance().source.get() === 'cloudinary'
+    return Template.instance().source.get() === 'cloudinary';
   },
   cloudinaryUploadId: function(){
     return Template.instance().latestUploadId.get();
+  },
+  uploadStatus: function(){
+    return Template.instance().uploadStatus.get();
   },
   uploadPreview: function(){
     return Template.instance().uploadPreview.get();

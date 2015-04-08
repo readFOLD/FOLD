@@ -62,10 +62,6 @@ Meteor.methods({
         });
     }
   },
-  saveCloudinaryUrl:function(response){
-    console.log(response)
-    console.log('Add '+response.upload_data+' to the id of '+response.context);
-  },
 
   ///////////////////////////////////
   /////// SEARCH API METHODS ///////

@@ -283,13 +283,16 @@
       </div>
       {{#if uploadMode}}
         <div class="image-upload">
-          {{#c_upload_stream callback="saveCloudinaryUrl"}}
+          {{#c_upload_stream}}
             <input type="file" accept="image/*">
           {{/c_upload_stream}}
 
           {{#each c.uploading_images}}
-            <p>{{percent_uploaded}}</p>
+            <p>Uploading: {{percent_uploaded}}%</p>
           {{/each}}
+          {{#if uploadStatus}}
+            <p>{{uploadStatus}}</p>
+          {{/if}}
           <!--<img width="250" src="{{c.url cloudinaryUploadId secure=true}}">-->
           <img width="250" src="{{uploadPreview}}">
         </div>
