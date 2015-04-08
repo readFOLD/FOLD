@@ -459,7 +459,6 @@ Template.create_twitter_section.onRendered(searchTemplateRenderedBoilerplate());
 
 Template.create_image_section.onCreated(function(){
   var that = this;
-  this.latestUploadId = new ReactiveVar();
   this.uploadPreview = new ReactiveVar();
   this.uploadStatus = new ReactiveVar();
   var query = _cloudinary.find({});
@@ -469,9 +468,8 @@ Template.create_image_section.onCreated(function(){
     },
     changed: function (id, changes) { // upload stream updated
       if (changes.public_id){ // if upload successful
-        var doc = _cloudinary.findOne(id)
-        //that.latestUploadId.set(doc.public_id);
-        var cardModel = doc.format === 'gif' ? GifBlock : ImageBlock; // TODO should be gif if it's a gif
+        var doc = _cloudinary.findOne(id);
+        var cardModel = doc.format === 'gif' ? GifBlock : ImageBlock;
         // TODO consider how to do attribution
         that.uploadStatus.set('Upload successful');
         that.focusResult.set(new cardModel({
@@ -484,7 +482,7 @@ Template.create_image_section.onCreated(function(){
           source: that.source.get(),
           authorId : Meteor.user()._id,
           fullDetails: doc
-        }))
+        }));
       }
     },
     removed: function (id) {  // upload failed
@@ -492,7 +490,6 @@ Template.create_image_section.onCreated(function(){
       that.uploadStatus.set('Upload failed');
       input.val(null);
       input.change(); // trigger change event
-      // TODO set an error
     }
   });
 });
@@ -504,9 +501,6 @@ Template.create_image_section.onDestroyed(function(){
 Template.create_image_section.helpers({
   uploadMode: function(){
     return Template.instance().source.get() === 'cloudinary';
-  },
-  cloudinaryUploadId: function(){
-    return Template.instance().latestUploadId.get();
   },
   uploadStatus: function(){
     return Template.instance().uploadStatus.get();
