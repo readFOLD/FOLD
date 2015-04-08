@@ -8,7 +8,7 @@ input[type=file] {
   width: 165px;
 
   &::-webkit-file-upload-button {
-    visibility: hidden;
+    display:none;
   }
   &::before {
     display: inline-block;
