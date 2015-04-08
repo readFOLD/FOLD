@@ -3,7 +3,7 @@
 @dark-color: #323232;
 @medium-color: #CCCCCB;
 @light-color: #F4F4F4;
-@light-transparent-color: rgba(244,244,244,0.85);
+@light-transparent-color: rgba(244,244,244,0.75);
 @white-color: white;
 
 @background-color: #F8F8F8;
