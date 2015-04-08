@@ -483,6 +483,7 @@ Template.create_image_section.onCreated(function(){
           authorId : Meteor.user()._id,
           fullDetails: doc
         }));
+        that.addingDescription.set(true);
       }
     },
     removed: function (id) {  // upload failed
