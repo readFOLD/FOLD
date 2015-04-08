@@ -72,22 +72,12 @@ Template.user_profile.events({
 
 Template.user_stories.helpers({
   writtenStories: function() {
-    return Template.currentData().stories
+    return this.stories
   }
-})
-
-Template.user_favorite_stories.onCreated(function(){
-  this.subscribe('readStoriesPub', Meteor.user().profile.favorites);
 });
 
 Template.user_favorite_stories.helpers({
   favoriteStories: function() {
-    if (Meteor.user()) {
-      return Stories.find({
-        _id: {
-          $in: Meteor.user().profile.favorites
-        }
-      });
+      return this.favorites
     }
-  }
 });

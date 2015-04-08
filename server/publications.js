@@ -60,17 +60,19 @@ Meteor.publish("userProfilePub", function(username) {
   var user = Meteor.users.find({
     username: username.toLowerCase()
   });
+
   var userId = user.map(function(doc) {
     return doc._id;
   });
 
+  var userCursor;
   if (!userId) {
     this.ready();
     return;
   }
   if (this.userId == userId[0]) {
     //return full document
-    return Meteor.users.find(this.userId, {
+    userCursor = Meteor.users.find(this.userId, {
       fields: {
         "profile" : 1,
         "username" : 1,
@@ -79,13 +81,18 @@ Meteor.publish("userProfilePub", function(username) {
     });
   } else {
     //return public profile
-    return Meteor.users.find(userId[0], {
+    userCursor = Meteor.users.find(userId[0], {
       fields: {
         "profile" : 1,
         "username" : 1
       }
     });
   }
+  var userFavorites = (userCursor.fetch()[0]).profile.favorites;
+  return [userCursor, Stories.find({
+                        _id: {
+                          $in: userFavorites
+                        }})]
 });
 
 Meteor.publish("userStoriesPub", function(username) {

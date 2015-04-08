@@ -241,6 +241,10 @@ div.stories {
     padding-right: @padding-side;
     padding-bottom: 75px;
     overflow: hidden;
+
+    &.profile {
+      min-height: 400px
+    }
   }
 
 

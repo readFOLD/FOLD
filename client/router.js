@@ -65,10 +65,24 @@ Router.route("profile", {
   },
   data: function() {
     var username = this.params.username;
-    return {
-      user : Meteor.users.findOne({username : username}),
-      stories: Stories.find({userPathSegment : username})
-    }
+    var user;
+      if (this.ready()) {
+        user = Meteor.users.findOne({username : username});
+        if (user) {
+          return {
+            user : user,
+            stories: Stories.find({userPathSegment : username}),
+            favorites: Stories.find({
+                        _id: {
+                          $in: user.profile.favorites
+                        }})
+          }
+        } else {
+          this.render("user_not_found");
+          // TODO add 404 tags for seo etc...
+        }
+      }
+
   },
 });
 
@@ -297,9 +311,4 @@ Router.route("login", {
 Router.route("stats", {
   path: "stats",
   template: "stats"
-});
-
-Router.plugin('dataNotFound', {
-  notFoundTemplate : 'not_found',
-  only : ['profile'] //routes we want to run this plugin on
 });
