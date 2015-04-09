@@ -34,6 +34,27 @@ if (!GOOGLE_API_SERVER_KEY) {
   throw new Meteor.Error('Settings must be loaded for apis to work');
 }
 
+var makeTwitterCall = function(apiCall, params) {
+  var res;
+  var client = new Twit({
+    consumer_key: TWITTER_API_KEY,
+    consumer_secret: TWITTER_API_SECRET,
+    access_token: Meteor.user().services.twitter.accessToken,
+    access_token_secret: Meteor.user().services.twitter.accessTokenSecret
+  });
+
+  var twitterResultsSync = Meteor.wrapAsync(client.get, client);
+  try {
+    res = twitterResultsSync(apiCall, params);
+  } 
+  catch (err) {
+    if (err.statusCode !== 404) { 
+      throw err;
+    }  
+    res = {};  
+  }
+  return res;
+};
 
 S3.config = {
   key: Meteor.settings.AWS_ACCESS_KEY,
@@ -47,13 +68,29 @@ Meteor.methods({
       var username = userInfo.username;
       checkSignupCode(userInfo.signupCode);
       checkUsername(username);
+
+      //get twitter info
+      var res;
+      if (Meteor.user().services.twitter) {
+        var twitterParams = {
+            user_id: Meteor.user().services.twitter.id,
+            sceen_name: Meteor.user().services.twitter.screenName
+          };
+        res = makeTwitterCall("users/show", twitterParams);
+        if (res.status) {
+          delete res.status //deletes tweets
+        }
+      }
+
       return Meteor.users.update({
         _id: this.userId
       }, {
           $set: {
             "profile.name": userInfo.name || username,
             "profile.displayUsername": username, // this will keep caps
-            "username": username
+            "username": username,
+            "services.twitter.userInfo": res,
+            "profile.bio": res.description
           },
           $unset: {"tempUsername": ""},
           $push: {
@@ -272,14 +309,6 @@ Meteor.methods({
       'user' : 'statuses/user_timeline',
       'favorites' : 'favorites/list'
     };
-    
-    var client = new Twit({
-      consumer_key: TWITTER_API_KEY,
-      consumer_secret: TWITTER_API_SECRET,
-      access_token: Meteor.user().services.twitter.accessToken,
-      access_token_secret: Meteor.user().services.twitter.accessTokenSecret
-    });
-    var twitterResultsSync = Meteor.wrapAsync(client.get, client);
 
     params = {count: count};
     if (page) {params.max_id = page;}
@@ -292,15 +321,7 @@ Meteor.methods({
       params.screen_name = query;
     }
 
-    try {
-      res = twitterResultsSync(api[option], params);
-    } 
-    catch (err) {
-      if (err.statusCode !== 404) { 
-        throw err;
-      }  
-      res = {};    
-    }
+    res = makeTwitterCall(api[option], params);
 
     if (option === 'all_url') {
       items[0] = res;
@@ -308,7 +329,7 @@ Meteor.methods({
     } else if (option === 'all') {
       items = res.statuses;
       page = res.search_metadata.next_results ? res.search_metadata.next_results.match(/\d+/)[0] : "end";
-    } else {
+    } else if (res.length) {
       items = res;
       page = decrementByOne(items[items.length-1].id_str); 
     }
