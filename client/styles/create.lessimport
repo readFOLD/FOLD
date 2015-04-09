@@ -593,7 +593,7 @@ div.horizontal-context {
     margin-bottom: 15px;
     ul {
       margin: 0;
-      padding-left: 0px;
+      padding-left: 0;
       li {
         &:first-child {
           padding-left: 5px;
