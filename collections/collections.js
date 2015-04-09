@@ -46,29 +46,6 @@ Story = (function() {
     return this.title = "";
   };
 
-  Story.prototype.publish = function() {
-    var dasherizedTitle;
-    if (!this.savedAt) {
-      throw new Meteor.Error('not-yet-saved');
-    }
-    if (this.published) {
-      throw new Meteor.Error('already-published');
-    }
-    dasherizedTitle = _s.slugify(this.title.toLowerCase());
-    alert('TODO actually do this')
-    //if (confirm('Your story will have the url path: /' + dasherizedTitle)) {
-    //  return Stories.update({
-    //    _id: this._id
-    //  }, {
-    //    $set: {
-    //      published: true,
-    //      publishedDate: new Date,
-    //      savedAt: new Date
-    //    }
-    //  });
-    //}
-  };
-
   var sum = function(a,b){ return a+b; };
 
   Story.prototype.contextCountOfType = function(type) {
@@ -124,9 +101,10 @@ this.Stories = new Meteor.Collection("stories", {
   transform: function(doc) {
     if (doc.draftStory){
       _.extend(doc.draftStory, {
-        unpublishedChanges: (!doc.publishedAt || doc.savedAt > doc.publishedAt),
+        unpublishedChanges: (!doc.published || !doc.publishedAt || doc.savedAt > doc.publishedAt),
         savedAt: doc.savedAt,
-        contextCountOfType: function(){} // stub out method for now
+        contextCountOfType: function(){}, // stub out method for now,
+        _id: doc._id
       });
     }
     return new Story(doc);
@@ -145,121 +123,6 @@ this.Stories.deny({
   }
 });
 
-Schema.Stories = new SimpleSchema({
-  draftStory: {
-    type: Object,
-    optional: true,
-    blackbox: true
-  },
-  headerImage: {
-    type: String,
-    optional: true
-  },
-  shortId: {
-    type: String
-  },
-  headerImageAttribution: {
-    type: String,
-    optional: true
-  },
-  savedAt: {
-    type: Date
-  },
-  publishedAt: {
-    type: Date,
-    optional: true
-  },
-  createdAt: {
-    type: Date,
-    autoValue: function() {
-      if (this.isInsert) {
-        return new Date;
-      } else if (this.isUpsert) {
-        return {$setOnInsert: new Date};
-      } else {
-        this.unset();
-      }
-    }
-  },
-  published: {
-    type: Boolean,
-    defaultValue: false
-  },
-  userPathSegment: {
-    type: String
-  },
-  storyPathSegment: {
-    type: String
-  },
-  title: {
-    type: String,
-    defaultValue: ''
-  },
-  authorId: {
-    type: String
-  },
-  authorName: {
-    type: String
-  },
-  keywords:{
-    type: [String],
-    defaultValue: []
-  },
-  deleted: {
-    type: Boolean,
-    defaultValue: false
-  },
-  deletedAt: {
-    type: Date,
-    optional: true
-  },
-  favorited: {
-    type: [String],
-    defaultValue: []
-  },
-  views: {
-    type: Number,
-    defaultValue: 0
-  },
-  shared: {
-    type: Number,
-    defaultValue: 0
-  },
-  contextBlocks: {
-    type: [Object],
-    minCount: 1,
-    maxCount: 1000,
-    blackbox: true // TODO remove this and use contextBlock schema
-  },
-  verticalSections: {
-    type: [Object],
-    minCount: 1,
-    maxCount: 1000,
-    blackbox: true // TODO remove this when stops causing errors! (after Mongo 2.6 and use position operators?)
-  },
-  'verticalSections.$._id': {
-    type: String
-  },
-  'verticalSections.$.title': {
-    type: String,
-    optional: true
-  },
-  'verticalSections.$.hasTitle': {
-    type: Boolean,
-    optional: true,
-    defaultValue: false
-  },
-  'verticalSections.$.content': {
-    type: String
-  },
-  'verticalSections.$.contextBlocks': {
-    type: [Object],
-    defaultValue: [],
-    blackbox: true // TODO actually define schema
-  }
-});
-
-this.Stories.attachSchema(Schema.Stories);
 
 ContextBlock = (function() {
   function ContextBlock(doc) {
@@ -1143,6 +1006,127 @@ Schema.User = new SimpleSchema({
     blackbox: true
   }
 });
+
+
+Schema.Stories = new SimpleSchema({
+  draftStory: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  headerImage: {
+    type: String,
+    optional: true
+  },
+  shortId: {
+    type: String
+  },
+  headerImageAttribution: {
+    type: String,
+    optional: true
+  },
+  savedAt: {
+    type: Date
+  },
+  publishedAt: {
+    type: Date,
+    optional: true
+  },
+  createdAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: new Date};
+      } else {
+        this.unset();
+      }
+    }
+  },
+  published: {
+    type: Boolean,
+    defaultValue: false
+  },
+  everPublished: {
+    type: Boolean,
+    defaultValue: false
+  },
+  userPathSegment: {
+    type: String
+  },
+  storyPathSegment: {
+    type: String
+  },
+  title: {
+    type: String,
+    defaultValue: ''
+  },
+  authorId: {
+    type: String
+  },
+  authorName: {
+    type: String
+  },
+  keywords:{
+    type: [String],
+    defaultValue: []
+  },
+  deleted: {
+    type: Boolean,
+    defaultValue: false
+  },
+  deletedAt: {
+    type: Date,
+    optional: true
+  },
+  favorited: {
+    type: [String],
+    defaultValue: []
+  },
+  views: {
+    type: Number,
+    defaultValue: 0
+  },
+  shared: {
+    type: Number,
+    defaultValue: 0
+  },
+  contextBlocks: {
+    type: [ContextBlock], // TODO this should really be Schema.ContextBlocks, but would need to be converted to a regular object, otherwise simple-schema complains
+    minCount: 0,
+    maxCount: 1000,
+    defaultValue: []
+  },
+  verticalSections: {
+    type: [Object],
+    minCount: 1,
+    maxCount: 1000,
+    blackbox: true // TODO remove this when stops causing errors! (after Mongo 2.6 and use position operators?)
+  },
+  'verticalSections.$._id': {
+    type: String
+  },
+  'verticalSections.$.title': {
+    type: String,
+    optional: true
+  },
+  'verticalSections.$.hasTitle': {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  },
+  'verticalSections.$.content': {
+    type: String
+  },
+  'verticalSections.$.contextBlocks': {
+    type: [String],
+    defaultValue: [],
+    blackbox: true // TODO actually define schema
+  }
+});
+
+this.Stories.attachSchema(Schema.Stories);
 
 Meteor.users.attachSchema(Schema.User);
 

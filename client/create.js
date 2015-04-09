@@ -374,6 +374,19 @@ Template.create.events({
   },
   "click .cancel-publish": function (e, template) {
     template.publishing.set(false);
+  },
+  "click .confirm-publish": function (e, template) {
+    return Meteor.call('publishStory', this._id, function(err, numDocs) {
+      template.publishing.set(false);
+      if (err) {
+        setTimeout(function () {
+          throw(err);
+        });
+      }
+      if (err || !numDocs) {
+        return alert('Publication failed');
+      }
+    });
   }
 });
 

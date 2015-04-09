@@ -81,6 +81,7 @@ Meteor.methods({
   updateStoryTitle: function(storyId, title){
     // TODO DRY
     // TODO Security
+    // TODO don't update story path if ever been published
     var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
     return updateStory({_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
@@ -326,6 +327,68 @@ Meteor.methods({
       }
     })
   },
+  publishStory: function(storyId) {
+    var story = Stories.findOne({_id: storyId, authorId: this.userId});
+
+    if (!story){
+      throw new Meteor.Error('story not found by author to publish. story: ' + storyId + '  userId: ' + this.userId)
+    }
+
+    var draftStory = story.draftStory;
+
+    if (!draftStory){
+      throw new Meteor.Error('story for publishing does not have a draft. story: ' + storyId + '  userId: ' + this.userId)
+    }
+
+    var contextBlockIds =_.chain(draftStory.verticalSections)
+      .pluck('contextBlocks')
+      .flatten()
+      .value();
+
+    var contextBlocks = ContextBlocks.find({_id: {$in: contextBlockIds}}).fetch();
+
+    // TODO
+    // Don't update story path and such unless not yet set.
+    // Tags (keywords).
+    // Update title from publish form
+    // Update header image from publish form
+    // Probably confirm that all the context cards included are by the author!
+    // Maybe a list of all context cards on the story
+    // Maybe a list of which cards are original and which are remixed
+    // Maybe a list of all context types and amounts for better searching
+
+    var fieldsToCopyFromDraft = [
+      'verticalSections',
+      'headerImage',
+      'headerImageAttribution',
+      'title'
+    ];
+    var additionalFieldsToSet = {};
+    //if (story.everPublished){
+    //  additionalFieldsToSet = {};
+    //} else {
+    //  additionalFieldsToSet = {
+    //
+    //  }
+    //}
+
+    var setObject = _.extend({},
+      _.pick(draftStory, fieldsToCopyFromDraft), // copy all safe fields from draftStory.
+      additionalFieldsToSet,
+      {
+        'contextBlocks': contextBlocks,
+        //'draftStory.unpublishedChanges' : false,
+        'storyPathSegment': _s.slugify(draftStory.title.toLowerCase()) + '-' + story.shortId, // TODO DRY and probably get from draft
+        'publishedAt': Date.now(),
+        'published': true,
+        'everPublished': true
+      }
+    );
+
+    return updateStory({ _id: storyId }, {
+      $set: setObject
+    });
+  },
   favoriteStory: function(storyId) {
     return changeFavorite.call(this, storyId, true);
   },
@@ -374,8 +437,6 @@ Meteor.methods({
       storyPathSegment: storyPathSegment
     };
   }
-  // publishStory
-  // 'draftStory.unpublishedChanges' : false
 
 });
 
