@@ -497,8 +497,7 @@ ImageBlock = (function(_super) {
       case 'embedly':
         return this.reference.url;
       case 'cloudinary':
-        // TODO adjust this so it's more specific
-        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + this.reference.id;
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
     }
   };
 
@@ -514,7 +513,7 @@ ImageBlock = (function(_super) {
         return this.reference.thumbnailUrl;
       case 'cloudinary':
         // TODO adjust this so it's more specific
-        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + this.reference.id;
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/f_auto,c_limit,h_150,w_260/' + this.reference.id;
     }
   };
 
@@ -539,8 +538,7 @@ GifBlock = (function(_super) {
       case 'giphy':
         return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif';
       case 'cloudinary':
-        // TODO adjust this so it's more specific
-        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + this.reference.id;
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
     }
   };
 
@@ -550,7 +548,7 @@ GifBlock = (function(_super) {
         return '//media4.giphy.com/media/' + this.reference.id + '/200_d.gif';
       case 'cloudinary':
         // TODO adjust this so it's more specific
-        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + this.reference.id;
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/f_auto,c_limit,h_150,w_260/' + this.reference.id;
     }
   };
 
