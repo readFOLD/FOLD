@@ -225,6 +225,12 @@ Schema.Stories = new SimpleSchema({
     type: Number,
     defaultValue: 0
   },
+  contextBlocks: {
+    type: [Object],
+    minCount: 1,
+    maxCount: 1000,
+    blackbox: true // TODO remove this and use contextBlock schema
+  },
   verticalSections: {
     type: [Object],
     minCount: 1,
