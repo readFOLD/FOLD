@@ -36,6 +36,10 @@ window.getHorizontalLeft = function() {
   currentPos = this.index - Session.get("currentX");
   numCards = currentHorizontal.horizontal.length;
 
+  if (numCards === 1){
+    return verticalRight + offset + cardSeparation;
+  }
+
   if (!Session.get("wrap")[this.verticalIndex]) { // not wrapping
 
     if (currentPos === numCards - 1 || currentPos < -1){ // this makes cards appear on the right when they run off the left

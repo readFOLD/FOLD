@@ -496,6 +496,9 @@ ImageBlock = (function(_super) {
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg'
       case 'embedly':
         return this.reference.url;
+      case 'cloudinary':
+        // TO-DO maybe use jpeg instead of png in certain situations
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
     }
   };
 
@@ -509,11 +512,14 @@ ImageBlock = (function(_super) {
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_t' + '.jpg';
       case 'embedly':
         return this.reference.thumbnailUrl;
+      case 'cloudinary':
+        // f_auto is slightly worse quality but less bandwidth
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/f_auto,c_limit,h_150,w_260/' + this.reference.id;
     }
   };
 
   ImageBlock.prototype.anchorMenuSnippet = function() {
-    return this.description || this.reference.title || this.reference.description;
+    return this.description || this.reference.title || this.reference.description || this.reference.id;
   };
 
   return ImageBlock;
@@ -531,19 +537,24 @@ GifBlock = (function(_super) {
   GifBlock.prototype.url = function() {
     switch (this.source) {
       case 'giphy':
-        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif'
+        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif';
+      case 'cloudinary':
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
     }
   };
 
   GifBlock.prototype.thumbnailUrl = function() {
     switch (this.source) {
       case 'giphy':
-        return '//media4.giphy.com/media/' + this.reference.id + '/200_d.gif'
+        return '//media4.giphy.com/media/' + this.reference.id + '/200_d.gif';
+      case 'cloudinary':
+        // f_auto is slightly worse quality but less bandwidth
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/f_auto,c_limit,h_150,w_260/' + this.reference.id;
     }
   };
 
   GifBlock.prototype.anchorMenuSnippet = function() {
-    return this.reference.id;
+    return this.description || this.reference.title || this.reference.description || this.reference.id;
   };
 
   return GifBlock;
@@ -818,6 +829,8 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
 
+  // Image
+
 
   flickrFarm: {
     type: String,
@@ -829,6 +842,16 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   },
   flickrServer: {
     type: String,
+    optional: true
+  },
+
+  // Image upload
+  width: {
+    type: Number,
+    optional: true
+  },
+  height: {
+    type: Number,
     optional: true
   },
 
