@@ -1,4 +1,4 @@
-var autoFormContextAddedHooks, createBlockEvents, createBlockHelpers, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
+var createBlockEvents, createBlockHelpers, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 window.enclosingAnchorTag = null;
@@ -40,8 +40,8 @@ window.updateUIBasedOnSelection = function(e){
         var selectedTags = [];
         var tagName;
 
-        // only do if selection is inside a narrative block
-        if($(parentNode).parents('.vertical-narrative-section').length) {
+        // only do if selection is inside a fold-editable block
+        if($(parentNode).hasClass('fold-editable') || $(parentNode).parents('.fold-editable').length) {
           while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') {
             tagName = parentNode.tagName.toLowerCase();
             selectedTags.push(tagName);
@@ -254,62 +254,49 @@ Tracker.autorun(function(){
   }
 });
 
-var saveCallback =  function(err, numDocs, cb) {
+window.saveCallback =  function(err, success, cb) {
   var saveUIUpdateDelay = 300;
   setTimeout(function(){
     if (err) {
       return Session.set('saveState', 'failed');
     }
-    if (!numDocs) {
+    if (!success) {
       return Session.set('saveState', 'failed');
     }
     Session.set('saveState', 'saved');
   }, saveUIUpdateDelay);
   if(cb){
-    cb(err, numDocs);
+    cb(err, success);
   }
   if (err){
     throw(err);
   }
 };
 
-var autoSaveVerticalSectionField = function(template, field, datatype){
-  storyId = Session.get('storyId');
-
-  if (datatype === 'html') {
-    value = $.trim(template.$('div.' + field).html());
-  } else {
-    value = $.trim(template.$('div.' + field).text());
-  }
-  index = template.data.index;
-
-  setField = 'draftStory.verticalSections.' + index + '.' + field
-  setObject = { $set:{} };
-  setObject['$set'][setField] = value;
-
-  Session.set('saveState', 'saving');
-
-  return Meteor.call('saveStory', {
-    _id: storyId
-  }, setObject, {removeEmptyStrings: false}, saveCallback)
-};
-
 Template.vertical_section_block.events({
   'mouseup [contenteditable]': window.updateUIBasedOnSelection,
   'blur [contenteditable]': window.updateUIBasedOnSelection,
   'blur .title[contenteditable]' : function(e, template){
-    autoSaveVerticalSectionField(template, 'title');
+    Session.set('saveState', 'saving');
+
+    Meteor.call('updateVerticalSectionTitle', Session.get('storyId'), template.data.index, $.trim(template.$('div.title').text()), saveCallback);
     return true;
   },
   'keydown .title[contenteditable]' : function(e, template){
     if (e.keyCode === 13){ // enter
       e.preventDefault();
-      template.$('.content').focus()
+      template.$('.content').focus();
     }
     return true;
   },
   'blur .content[contenteditable]' : function(e, template){
-    autoSaveVerticalSectionField(template, 'content', 'html');
+    Session.set('saveState', 'saving');
+
+    Meteor.call('updateVerticalSectionContent',
+      Session.get('storyId'),
+      template.data.index,
+      cleanVerticalSectionContent($.trim(template.$('div.content').html())), // TODO move to method
+      saveCallback);
     return true;
   },
   // clean up pasting into vertical section content
@@ -478,14 +465,7 @@ Template.vertical_edit_menu.events({
 
 Template.add_horizontal.helpers({
   left: function() {
-    var cardWidth, halfWidth, width;
-    width = Session.get("windowWidth");
-    if (width < 1024) {
-      width = 1024;
-    }
-    halfWidth = width / 2;
-    cardWidth = Session.get("cardWidth");
-    return halfWidth + (Session.get("separation")) / 2;
+    return Session.get("verticalLeft") + Session.get("cardWidth") + Session.get("separation");
   }
 });
 
@@ -631,14 +611,8 @@ Template.create_horizontal_section_block.helpers({
 
 Template.create_horizontal_section_block.helpers({
   left: function() {
-    var cardWidth, halfWidth, width;
-    width = Session.get("windowWidth");
-    if (width < 1024) {
-      width = 1024;
-    }
-    halfWidth = width / 2;
-    cardWidth = Session.get("cardWidth");
-    return 75 + halfWidth + (Session.get("separation")) * 1.5;
+    var addBlockWidth = 75;
+    return addBlockWidth + Session.get("verticalLeft") + Session.get("cardWidth") + 2 * Session.get("separation");
   }
 });
 
@@ -743,29 +717,25 @@ Template.context_anchor_option.events = {
   }
 };
 
-window.addContextToStory = function(storyId, contextId, verticalSectionIndex, cb) {
-  var pushObject, pushSelectorString;
-  pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
-  pushObject = {};
-  pushObject[pushSelectorString] = contextId;
-  return Meteor.call('saveStory', {
-    _id: storyId
-  }, {
-    $addToSet: pushObject
-  }, function(err, numDocs) {
-    if (numDocs) {
+window.addContext = function(contextBlock) {
+  var storyId = Session.get("storyId");
+  var verticalIndex = Session.get("currentY");
+  Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
+  Session.set('saveState', 'saving');
+
+  Meteor.call('addContextToStory', storyId, contextBlock, verticalIndex, function(err, contextId){
+    if(contextId){
       hideNewHorizontalUI();
-      var placeholderAnchorElement = findPlaceholderLink(verticalSectionIndex);
+      var placeholderAnchorElement = findPlaceholderLink(verticalIndex);
       if (placeholderAnchorElement) {
         placeholderAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
-        placeholderAnchorElement.attr('data-context-type', ContextBlocks.findOne(contextId).type);
+        placeholderAnchorElement.attr('data-context-type', contextBlock.type);
         placeholderAnchorElement.removeClass('placeholder'); // add active class because we go to this context and if we're already there it won't get the class
-        saveNarrativeSectionContent(verticalSectionIndex);
+        saveNarrativeSectionContent(verticalIndex);
       }
-
-      return goToContext(contextId);
+      goToContext(contextId);
     }
-    saveCallback(err, numDocs, cb);
+    saveCallback(err, contextId);
   });
 };
 
@@ -785,16 +755,6 @@ window.removeContextFromStory = function(storyId, contextId, verticalSectionInde
     }
     saveCallback(err, numDocs, cb);
   });
-};
-
-autoFormContextAddedHooks = {
-  onSuccess: function(operation, contextId, template) {
-    return window.addContextToStory(Session.get("storyId"), contextId, Session.get("currentY"));
-  },
-  onError: function(operation, err, template) {
-    throw(err);
-    return alert(err);
-  }
 };
 
 Template.horizontal_section_edit_delete.helpers({
@@ -862,7 +822,6 @@ Template.create_options.events({
       files: files,
       path: "header-images"
     }, function(e, r) {
-      console.log(r)
       var filename = r.file.name;
       Session.set('saveState', 'saving');
       return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);

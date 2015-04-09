@@ -6,13 +6,21 @@ var count = function(){
   return i++;
 };
 
+var getIdFromUrl = function(url){
+  return _.chain(url.split('/')).compact().last().value().match(/[\d]*/)[0]
+};
+
+var parseDate = function(date) {
+  return date.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1");
+};
+
 var createBlockHelpers = {
   startingBlock: function() {
     if (this instanceof ContextBlock) {
       return this;
     }
   },
-  focusResult: function(){
+  showAddButton: function(){
     return Template.instance().focusResult.get() ? true : false;
   },
   isFocused: function () {
@@ -43,7 +51,14 @@ var createBlockHelpers = {
   results: function () {
     searchDep.depend();
     return Template.instance().existingSearchResults()
-  }
+  },
+  addingDescription: function() {
+    return Template.instance().addingDescription.get();
+  },
+  focusResult: function() {
+    var focusResult = Template.instance().focusResult.get();
+    if (focusResult) { return focusResult; }
+  },
 };
 
 
@@ -59,12 +74,15 @@ searchScrollFn = function(d, template) {
 
 throttledSearchScrollFn = _.throttle(searchScrollFn, 20);
 
-// TODO make method
-var addContext = function(contextBlock) {
-  var storyId = Session.get("storyId");
-  Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
-  var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {storyId: storyId, authorId: Meteor.user()._id}));
-  return window.addContextToStory(storyId, contextId, Session.get("currentY"));
+var addFocusResult = function(d, template) {
+  var focusResult = template.focusResult.get();
+  if (focusResult) {
+    var textAreaContent = template.$('textarea[name=content]').val();
+    focusResult.description = textAreaContent;
+
+    template.focusResult.set(focusResult);
+    addContext(focusResult);
+  }
 };
 
 var createBlockEvents = {
@@ -83,14 +101,21 @@ var createBlockEvents = {
 
   "scroll ol.search-results-container": throttledSearchScrollFn,
 
-  "click li": function(d, template) {
+  "click .search-results-container li": function(d, template) {
     template.focusResult.set(this);
   },
 
-  "click .add-button": function(d, template) {
-    var focusResult = template.focusResult.get();
-    if (focusResult) {
-      addContext(focusResult);
+  "click .add-desc-button": function (d, template) {
+    template.addingDescription.set(true);
+  },
+  "click .back-button": function (d, template) {
+    template.addingDescription.set(false);
+  },
+
+  "click .add-button": addFocusResult,
+  "keydown": function(e, t) {
+    if (e.which === 13){ // TODO make this not happen on textarea
+      addFocusResult.apply(this,arguments);
     }
   },
   "click .cancel": function() {
@@ -211,7 +236,22 @@ var searchIntegrations = {
             id: e.videoId,
             username : e.channelTitle,
             userId : e.channelId,
-            creationDate : e.publishedAt.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")
+            creationDate : parseDate(e.publishedAt) 
+          }
+        }
+      }
+    },
+    vimeo: {
+      methodName: 'vimeoVideoSearchList',
+      mapFn: function(e){
+        return {
+          reference: {
+            title: e.name,
+            description: e.description,
+            id: getIdFromUrl(e.uri),
+            username: e.user.name,
+            creationDate: parseDate(e.created_time),
+            previewImage: getIdFromUrl(e.pictures.uri) 
           }
         }
       }
@@ -228,7 +268,7 @@ var searchIntegrations = {
             id: e.id,
             username : e.channelTitle,
             userId : e.user_id,
-            creationDate : e.created_at.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"),
+            creationDate : parseDate(e.created_at),
             artworkUrl: e.artwork_url
           }
         }
@@ -311,7 +351,8 @@ var createTemplateNames = [
   'create_twitter_section',
   'create_map_section',
   'create_audio_section',
-  'create_viz_section'
+  'create_viz_section',
+  'create_link_section'
 ];
 
 _.each(createTemplateNames, function(templateName){
@@ -338,15 +379,21 @@ Template.create_twitter_section.events({
   }
 });
 
-Template.create_image_section.events({ // TODO only allow after preview and caption
+Template.create_image_section.events({
   "dblclick li": function (d, template) {
-    addContext(this);
+    template.addingDescription.set(true);
+    setTimeout(function(){
+      template.$('textarea').focus();
+    });
   }
 });
 
-Template.create_gif_section.events({ // TODO only allow after preview and caption
+Template.create_gif_section.events({
   "dblclick li": function (d, template) {
-    addContext(this);
+    template.addingDescription.set(true);
+    setTimeout(function(){
+      template.$('textarea').focus();
+    });
   }
 });
 
@@ -358,6 +405,8 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
     this.loadingResults = new ReactiveVar();
     this.focusResult = new ReactiveVar();
     this.noMoreResults = new ReactiveVar();
+
+    this.addingDescription = new ReactiveVar(false);
 
     this.search = _.bind(searchAPI, this);
     this.existingSearchResults = _.bind(existingSearchResults, this);
@@ -408,7 +457,75 @@ Template.create_video_section.onRendered(searchTemplateRenderedBoilerplate());
 Template.create_twitter_section.onCreated(searchTemplateCreatedBoilerplate('twitter', 'twitter'));
 Template.create_twitter_section.onRendered(searchTemplateRenderedBoilerplate());
 
-// TODO autosearch when change between sources
+Template.create_image_section.onCreated(function(){
+  var that = this;
+  this.uploadPreview = new ReactiveVar();
+  this.uploadStatus = new ReactiveVar();
+  var query = _cloudinary.find({});
+  this.observeCloudinary = query.observeChanges({ // this query stays live until .stop() is called in the onDestroyed hook
+    added: function (id) { // start upload
+      that.uploadStatus.set(null);
+    },
+    changed: function (id, changes) { // upload stream updated
+      if (changes.public_id){ // if upload successful
+        var doc = _cloudinary.findOne(id);
+        var cardModel = doc.format === 'gif' ? GifBlock : ImageBlock;
+        // TODO consider how to do attribution
+        that.uploadStatus.set('Upload successful');
+        that.focusResult.set(new cardModel({
+          reference: {
+            id: doc.public_id,
+            fileExtension: doc.format,
+            width: doc.width,
+            height: doc.height
+          },
+          source: that.source.get(),
+          authorId : Meteor.user()._id,
+          fullDetails: doc
+        }));
+        that.addingDescription.set(true);
+      }
+    },
+    removed: function (id) {  // upload failed
+      var input = that.$('input[type=file]');
+      that.uploadStatus.set('Upload failed');
+      input.val(null);
+      input.change(); // trigger change event
+    }
+  });
+});
+
+Template.create_image_section.onDestroyed(function(){
+  this.observeCloudinary.stop();
+});
+
+Template.create_image_section.helpers({
+  uploadMode: function(){
+    return Template.instance().source.get() === 'cloudinary';
+  },
+  uploadStatus: function(){
+    return Template.instance().uploadStatus.get();
+  },
+  uploadPreview: function(){
+    return Template.instance().uploadPreview.get();
+  }
+});
+
+Template.create_image_section.events({
+  'change input[type=file]': function(e, t){
+    var file = _.first(event.target.files);
+    if (file){
+      var reader = new FileReader;
+      reader.onload = function(upload){
+        t.uploadPreview.set(upload.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      t.uploadPreview.set(null);
+    }
+  }
+});
+
 Template.create_image_section.onCreated(searchTemplateCreatedBoilerplate('image', 'flickr'));
 Template.create_image_section.onRendered(searchTemplateRenderedBoilerplate());
 
@@ -416,21 +533,19 @@ Template.create_image_section.onRendered(searchTemplateRenderedBoilerplate());
 Template.create_gif_section.onCreated(searchTemplateCreatedBoilerplate('gif', 'giphy'));
 Template.create_gif_section.onRendered(searchTemplateRenderedBoilerplate());
 
-
-
 Template.create_audio_section.onCreated(searchTemplateCreatedBoilerplate('audio', 'soundcloud'));
 Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
 
-
 var dataSourcesByType = {
-  'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}],
+  'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}, {source: 'cloudinary', display: 'Upload Your Own'}],
   'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
   'gif': [{source: 'giphy', display: 'Giphy'}],
-  'video': [{source: 'youtube', display: 'Youtube'}],
+  'video': [{source: 'youtube', display: 'Youtube'}, {source: 'vimeo', display: 'Vimeo'}],
   'audio': [{source: 'soundcloud', display: 'SoundCloud'}],
   'twitter': [{source: 'twitter', display: 'Twitter'}],
   'map': [{source: 'google_maps', display: 'Google Maps'}],
-  'text': [{source: 'free_text', display: 'Free Text'}]
+  'text': [{source: 'free_text', display: 'Free Text'}],
+  'link': [{source: 'link', display: 'Link'}]
 };
 
 
@@ -507,6 +622,187 @@ Template.create_viz_section.events({
   }
 })
 
+Template.create_link_section.onCreated(function() {
+  this.type = 'link';
+  this.source = new ReactiveVar('link');
+  this.loadingResults = new ReactiveVar();
+  this.noMoreResults = new ReactiveVar();
+  this.focusResult = new ReactiveVar();
+
+  var that = this;
+  this.search = function(){
+    var url = this.$('input[type="search"]').val();
+    that.loadingResults.set(true);
+
+    Meteor.call('embedlyEmbedResult', url, function(error, result) {
+      that.loadingResults.set(false);
+
+      if(error){
+        that.noMoreResults.set('No results found');
+        return
+      }
+      that.noMoreResults.set(false);
+      console.log(result)
+
+      addPropertiesToBaseline = function(obj){
+        var newObj = _.extend({}, obj, {
+          fullDetails: result,
+          authorId : Meteor.user()._id,
+          searchQuery: url,
+          fromEmbedly: true,
+          version: 'em1'
+        });
+
+        if (!newObj.reference){
+          newObj.reference = {};
+        }
+
+        _.extend(newObj.reference, {
+          title: result.title,
+          description: result.description,
+          providerName: result.provider_name,
+          providerUrl: result.provider_url,
+          url: result.url,
+          originalUrl: url,
+          authorUrl: result.author_url,
+          authorName: result.author_name,
+          thumbnailUrl: result.thumbnail_url,
+          thumbnailWidth: result.thumbnail_width,
+          thumbnailHeight: result.thumbnail_height,
+          embedlyType: result.type
+        });
+        return newObj
+      };
+
+      switch(result.type) {
+        case 'rich':
+          // fall through to the link
+        case 'link':
+          that.focusResult.set(new LinkBlock(addPropertiesToBaseline({
+            type: 'link',
+            source: 'embedly'
+          })));
+          break;
+        case 'photo':
+          var source, reference;
+
+          switch(result.provider_name) {
+            case 'Imgur':
+              source = 'imgur';
+              var info = _.chain(result.url.split('/')).compact().last().value().split('.');
+              reference = {
+                id: info[0],
+                fileExtension: info[1]
+              };
+              break;
+            case 'Giphy':
+              source = 'giphy';
+              var info = result.url.match(/\/media\/(.*)?\/giphy/);
+              reference = {
+                id: info[1]
+              };
+              break;
+            case 'Flickr':
+              source = 'flickr';
+              var info = result.url.match(/\/\/farm(.*)?\.staticflickr\.com\/(.*)?\/(.*)?_(.*)?_/);
+              reference = {
+                flickrFarm: info[1],
+                flickrServer: info[2],
+                id: info[3],
+                flickrSecret: info[4]
+              };
+              break;
+            default:
+              source = 'embedly';
+              reference = {};
+          }
+
+          cardModel = source === 'giphy' ? GifBlock : ImageBlock;
+
+          that.focusResult.set(new cardModel(addPropertiesToBaseline({
+            reference: reference,
+            type: 'image',
+            source: source
+          })));
+          break;
+
+        case 'video':
+          switch (result.provider_name){
+            case "YouTube":
+              var id = result.url.split("v=")[1];
+              that.focusResult.set(new VideoBlock(addPropertiesToBaseline({
+                reference:  {
+                  id: id,
+                  username: result.author_name
+                },
+                source: 'youtube'
+              })));
+              break;
+            case "Vimeo":
+              var id = result.html.match(/%2Fvideo%2F(\d*)/)[1];
+              var previewImage = result.thumbnail_url.match(/\/video\/(.*)?_/)[1];
+              that.focusResult.set(new VideoBlock(addPropertiesToBaseline({
+                reference:  {
+                  id: id,
+                  previewImage: previewImage,
+                  username: result.author_name
+                },
+                source: 'vimeo'
+              })));
+              break;
+            case 'Giphy':
+              source = 'giphy';
+              var info = result.url.match(/\/media\/(.*)?\/giphy/);
+              that.focusResult.set(new GifBlock(addPropertiesToBaseline({
+                reference: {
+                  id: info[1]
+                },
+                source: source
+              })));
+              break;
+            default:
+              that.focusResult.set(new LinkBlock(addPropertiesToBaseline({
+                reference: reference,
+                source: 'embedly'
+              })));
+              break;
+
+
+          }
+          break;
+      }
+      console.log(that.focusResult.get())
+
+    });
+  };
+});
+
+
+Template.create_link_section.helpers({
+  preview: function(){
+    return Template.instance().focusResult.get();
+  },
+  link: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return (preview.type === 'link');
+    }
+  },
+  image: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return (preview.type === 'image' || preview.type === 'gif');
+    }
+  },
+  video: function() {
+    var preview = Template.instance().focusResult.get();
+    if (preview) {
+      return (preview.type === 'video');
+    }
+  }
+});
+
+
 Template.create_map_section.onCreated(function() {
   this.type = 'map';
   this.source = new ReactiveVar('google_maps');
@@ -515,12 +811,12 @@ Template.create_map_section.onCreated(function() {
 
   var that = this;
   this.search = function(){
-    input = getSearchInput.call(this);
+    var inputs = getSearchInput.call(that);
 
     that.focusResult.set(new MapBlock({
       reference: {
-        mapQuery: input.query,
-        mapType: input.option
+        mapQuery: inputs.query,
+        mapType: inputs.option
       },
       authorId : Meteor.user()._id
     }))
@@ -545,6 +841,10 @@ Template.create_map_section.helpers({
 Template.create_text_section.onCreated(function() {
   this.type = 'text';
   this.source = new ReactiveVar('free_text');
+});
+
+Template.create_text_section.onRendered(function() {
+  this.$('textarea').focus();
 });
 
 Template.create_text_section.helpers({
@@ -581,6 +881,15 @@ Template.search_form.events({
 Template.search_form.helpers({
   placeholder: function() {
     switch(Template.instance().data.placeholderType){
+      case 'links':
+        return 'e.g. ' +
+          _.sample([
+            'https://readfold.com',
+            'https://twitter.com/readFOLD',
+            'http://nytimes.com',
+            'http://flickr.com'
+          ]);
+        break;
       case 'locations':
         return 'e.g. ' +
           _.sample([
@@ -610,9 +919,6 @@ Template.search_form.helpers({
             'llama training',
           ]);
     }
-
-
-
   }
 });
 

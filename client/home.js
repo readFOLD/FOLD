@@ -123,7 +123,13 @@ Template.filters.events({
 
 Template.all_stories.helpers({
   stories: function() {
-    return Stories.find({ published: true }, {reactive: false});
+    return Stories.find({ published: true }, {sort: {'publishedAt': 1}, reactive: false}); // TODO update sort based on dropdown selection
+  }
+});
+
+Template.story_preview.helpers({
+  story: function(){
+    return Stories.findOne(this._id);
   }
 });
 

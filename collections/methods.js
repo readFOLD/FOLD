@@ -62,12 +62,43 @@ var updateStory = function(selector, modifier, options) {
 };
 
 Meteor.methods({
+  addContextToStory: function(storyId, contextBlock, verticalIndex){
+    // TODO check that user owns story
+    delete contextBlock._id
+    var contextId = ContextBlocks.insert(_.extend({storyId: storyId, authorId: Meteor.user()._id}, contextBlock));
+
+    var pushObject, pushSelectorString;
+    pushSelectorString = 'draftStory.verticalSections.' + verticalIndex + '.contextBlocks';
+    pushObject = {};
+    pushObject[pushSelectorString] = contextId;
+    var numUpdated = Stories.update({ _id: storyId}, { $addToSet: pushObject});
+    if (!numUpdated){
+      throw new Meteor.Error('Story not updated')
+    }
+    return contextId;
+  },
   // TODO PREVENT FROM SAVING OTHER WAYS
   updateStoryTitle: function(storyId, title){
     // TODO DRY
     // TODO Security
     var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
     return updateStory({_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
+  },
+  updateVerticalSectionTitle: function(storyId, index, title){
+    // TODO clean title
+
+    var setObject = { $set:{} };
+    setObject['$set']['draftStory.verticalSections.' + index + '.title'] = title;
+
+    return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
+  },
+  updateVerticalSectionContent: function(storyId, index, content){
+
+    // TODO Clean html
+    var setObject = { $set:{} };
+    setObject['$set']['draftStory.verticalSections.' + index + '.content'] = content;
+
+    return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
   },
   // TODO replace with specific methods
   saveStory: function(selector, modifier, options) {
@@ -97,6 +128,14 @@ Meteor.methods({
   },
   removeTitle: function(storyId, index) {
     return changeHasTitle.call(this, storyId, index, false);
+  },
+  editHorizontalBlockDescription: function(horizontalId, description) {
+    // TODO - Go though some UpdateContextBlock function
+    return ContextBlocks.update({"_id": horizontalId, "authorId": this.userId}, {"$set": {"description": description}});
+  },
+  editTextSection: function(horizontalId, content) {
+    // TODO - Go though some UpdateContextBlock function
+    return ContextBlocks.update({"_id": horizontalId, "authorId": this.userId}, {"$set": {"content": content}});
   },
   insertVerticalSection: function(storyId, index, section) {
     // TODO - Once Meteor upgrades to use Mongo 2.6

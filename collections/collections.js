@@ -88,7 +88,7 @@ Story = (function() {
 
 
 var cleanHtmlOptions = {
-  allowedTags: ['strong', 'em', 'u', 'a'], // only allow tags used in fold-editor
+  allowedTags: ['strong', 'em', 'u', 'a', 'br'], // only allow tags used in fold-editor and
   format: false,
   removeAttrs: ['class', 'id', 'href'], // strip away hrefs and other undesired attributes that might slip into a paste
   allowedAttributes: [["data-context-id"],["data-context-type"],["data-context-source"]] // data-context-id is used to direct links to context cards
@@ -98,10 +98,21 @@ var matchAnchors =  /<a( data-context-id=["|'].*?["|'])?( data-context-type=["|'
 var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match anchors that are left over from above if copied from somewhere else, capture contents so can be kept
 
 cleanVerticalSectionContent = function(html) {
+
+
+  var initialClean = $.htmlClean(html, _.omit(cleanHtmlOptions, 'allowedTags')); // do all cleaning except tag removal
   
-  return $.htmlClean(html, cleanHtmlOptions)
+  var linebreakClean = initialClean
+    .replace(new RegExp('<br />', 'g'), '<br>')
+    .replace(new RegExp('<div><br></div>', 'g'), '<br>')
+    .replace(new RegExp('<div>', 'g'), '<br>')
+    .replace(new RegExp('</div>', 'g'), '');
+
+  return $.htmlClean(linebreakClean, cleanHtmlOptions)
     .replace(matchAnchors, '<a href="javascript:void(0);"$1$2$3>') // add js void to all anchors and keep all data-context-ids and other data attributes
-    .replace(matchBlankAnchors, '$1'); // remove anchors without data-context-ids
+    .replace(matchBlankAnchors, '$1') // remove anchors without data-context-ids
+    .replace(new RegExp('<br />', 'g'), '<br>');
+
 };
 
 if (Meteor.isClient) {
@@ -299,12 +310,16 @@ VideoBlock = (function(_super) {
   VideoBlock.prototype.previewUrl = function() {
     if (this.source === 'youtube') {
       return '//img.youtube.com/vi/' + this.reference.id + '/0.jpg';
+    } else if (this.source === 'vimeo') {
+      return '//i.vimeocdn.com/video/' + this.reference.previewImage + '_640x359.jpg'
     }
   };
 
   VideoBlock.prototype.thumbnailUrl = function() {
     if (this.source === 'youtube') {
       return '//i.ytimg.com/vi/' + this.reference.id + '/default.jpg';
+    } else if (this.source === 'vimeo') {
+      return '//i.vimeocdn.com/video/' + this.reference.previewImage + '_100x75.jpg'
     }
   };
 
@@ -473,10 +488,17 @@ ImageBlock = (function(_super) {
     switch (this.source) {
       case 'local':
         return '/' + this.reference.id;
+      case 'link':
+        return this.reference.url;
       case 'imgur':
         return '//i.imgur.com/' + this.reference.id + '.' + this.reference.fileExtension;
       case 'flickr':
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg'
+      case 'embedly':
+        return this.reference.url;
+      case 'cloudinary':
+        // TO-DO maybe use jpeg instead of png in certain situations
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
     }
   };
 
@@ -487,12 +509,17 @@ ImageBlock = (function(_super) {
       case 'imgur':
         return '//i.imgur.com/' + this.reference.id + 't' + '.' + this.reference.fileExtension;
       case 'flickr':
-        return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_t' + '.jpg'
+        return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_t' + '.jpg';
+      case 'embedly':
+        return this.reference.thumbnailUrl;
+      case 'cloudinary':
+        // f_auto is slightly worse quality but less bandwidth
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/f_auto,c_limit,h_150,w_260/' + this.reference.id;
     }
   };
 
   ImageBlock.prototype.anchorMenuSnippet = function() {
-    return this.title;
+    return this.description || this.reference.title || this.reference.description || this.reference.id;
   };
 
   return ImageBlock;
@@ -510,19 +537,24 @@ GifBlock = (function(_super) {
   GifBlock.prototype.url = function() {
     switch (this.source) {
       case 'giphy':
-        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif'
+        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif';
+      case 'cloudinary':
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
     }
   };
 
   GifBlock.prototype.thumbnailUrl = function() {
     switch (this.source) {
       case 'giphy':
-        return '//media4.giphy.com/media/' + this.reference.id + '/200_d.gif'
+        return '//media4.giphy.com/media/' + this.reference.id + '/200_d.gif';
+      case 'cloudinary':
+        // f_auto is slightly worse quality but less bandwidth
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/f_auto,c_limit,h_150,w_260/' + this.reference.id;
     }
   };
 
   GifBlock.prototype.anchorMenuSnippet = function() {
-    return this.reference.id;
+    return this.description || this.reference.title || this.reference.description || this.reference.id;
   };
 
   return GifBlock;
@@ -541,7 +573,7 @@ VizBlock = (function(_super) {
   VizBlock.prototype.url = function() {
     switch (this.source) {
       case 'oec':
-        return 'http://atlas.media.mit.edu/explore/embed/tree_map/hs/' + this.reference.oecDirection + '/' + this.reference.oecCountry + '/all/show/' + this.reference.oecYear + '/?controls=false&lang=en'
+        return '//atlas.media.mit.edu/en/explore/embed/tree_map/hs/' + this.reference.oecDirection + '/' + this.reference.oecCountry + '/all/show/' + this.reference.oecYear + '?controls=false&lang=en'
     }
   };
 
@@ -644,6 +676,48 @@ TextBlock = (function(_super) {
 
 })(ContextBlock);
 
+LinkBlock = (function(_super) {
+  __extends(LinkBlock, _super);
+
+  function LinkBlock(doc) {
+    LinkBlock.__super__.constructor.call(this, doc);
+    this.type = 'link';
+  }
+
+  LinkBlock.prototype.title = function() {
+    return this.reference.title || this.reference.originalUrl;
+  };
+
+  LinkBlock.prototype.linkDescription = function() {
+    return this.reference.description || '';
+  };
+
+  LinkBlock.prototype.thumbnailUrl = function() {
+    return this.reference.thumbnailUrl || '/LINK_SQUARE.svg';
+  };
+
+  LinkBlock.prototype.imageOnLeft = function() {
+    return !this.reference.thumbnailUrl  || (this.reference.thumbnailWidth / this.reference.thumbnailHeight) <= 1.25;
+  };
+
+  LinkBlock.prototype.url = function() {
+    return this.reference.url || this.reference.originalUrl;
+  };
+
+  LinkBlock.prototype.providerUrl = function() {
+    return this.reference.providerUrl;
+  };
+
+  LinkBlock.prototype.providerTruncatedUrl= function() {
+    return this.reference.providerUrl.replace(/(https?:\/\/)?(www\.)?/, "");
+  };
+
+  LinkBlock.prototype.anchorMenuSnippet = function() {
+    return this.title();
+  };
+  return LinkBlock;
+
+})(ContextBlock);
 
 var newTypeSpecificContextBlock =  function(doc) {
   switch (doc.type) {
@@ -663,6 +737,8 @@ var newTypeSpecificContextBlock =  function(doc) {
       return new VizBlock(doc);
     case 'twitter':
       return new TwitterBlock(doc);
+    case 'link':
+      return new LinkBlock(doc);
     default:
       return new ContextBlock(doc);
   }
@@ -677,6 +753,7 @@ if (Meteor.isClient) {
   window.AudioBlock = AudioBlock;
   window.VizBlock = VizBlock;
   window.TwitterBlock = TwitterBlock;
+  window.LinkBlock = LinkBlock;
   window.newTypeSpecificContextBlock = newTypeSpecificContextBlock
 }
 
@@ -731,6 +808,11 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
 
+  previewImage: {
+    type: String,
+    optional: true
+  },
+
   title: {
     type: String,
     optional: true,
@@ -747,6 +829,8 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
 
+  // Image
+
 
   flickrFarm: {
     type: String,
@@ -758,6 +842,16 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   },
   flickrServer: {
     type: String,
+    optional: true
+  },
+
+  // Image upload
+  width: {
+    type: Number,
+    optional: true
+  },
+  height: {
+    type: Number,
     optional: true
   },
 
@@ -806,6 +900,24 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     blackbox: true
   },
 
+  // Link
+  title: { type: String, optional: true },
+  thumbnailUrl: { type: String, optional: true },
+  url: { type: String, optional: true },  
+  originalUrl: { type: String, optional: true },
+  providerName: { type: String, optional: true },
+  providerUrl: { type: String, optional: true },  
+  authorUrl: { type: String, optional: true },
+  authorName: { type: String, optional: true },
+  thumbnailHeight: { type: Number, optional: true },
+  thumbnailWidth: { type: Number, optional: true },
+  embedlyType: { type: String, optional: true },
+  imageOnLeft: { type: Boolean, optional: true },
+
+  // Rich
+  html: { type: String, optional: true },
+
+  // OEC
   oecYear: {
     type: String,
     optional: true
@@ -850,6 +962,14 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String
   },
   source: {
+    type: String,
+    optional: true
+  },
+  fromEmbedly: {
+    type: Boolean,
+    optional: true
+  },
+  version: {
     type: String,
     optional: true
   },

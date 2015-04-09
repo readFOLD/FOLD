@@ -5,13 +5,8 @@ window.constants = {
 };
 
 window.getVerticalLeft = function(width) {
-  if (width <= 1304) {
-    left =  88 + 16;
-  } else {
-    left = (width / 2) - (Session.get("separation") / 2) - Session.get("cardWidth");
-  }
-  return left
-}
+  return 106;
+};
 
 window.getHorizontalLeft = function() {
   var currentPos, currentHorizontal, cardWidth, numCards, left, offset, pageWidth, verticalRight, addContextBlockWidth, cardSeparation;
@@ -27,6 +22,7 @@ window.getHorizontalLeft = function() {
   cardSeparation = Session.get("separation");
   addContextBlockWidth = 75;
   verticalLeft = Session.get("verticalLeft");
+  verticalRight = verticalLeft + cardWidth;
 
   // Offset of first card, different on create page because of (+) button
   if (Session.get("read")) {
@@ -37,25 +33,47 @@ window.getHorizontalLeft = function() {
   if (Session.get("addingContext")) {
     offset += cardWidth + cardSeparation;
   }
-
-  numCards = currentHorizontal.horizontal.length;
   currentPos = this.index - Session.get("currentX");
-  if (currentPos < 0) {
-    currentPos = numCards + currentPos;
+  numCards = currentHorizontal.horizontal.length;
+
+  if (numCards === 1){
+    return verticalRight + offset + cardSeparation;
   }
 
-  // Default context positioning (all to the right of vertical narrative)
-  verticalRight = verticalLeft + cardWidth
-  left = (currentPos * (cardWidth + cardSeparation)) + (verticalRight + cardSeparation + offset);
+  if (!Session.get("wrap")[this.verticalIndex]) { // not wrapping
 
-  // Last card positioning if number of cards is greater than 3
-  if (numCards >= 3) {
-    if (currentPos === numCards - 1) {
-      left = verticalLeft - cardWidth - cardSeparation;
+    if (currentPos === numCards - 1 || currentPos < -1){ // this makes cards appear on the right when they run off the left
+      currentPos = numCards + currentPos;
     }
+
+    if (currentPos >= 0) {
+      left = (currentPos * (cardWidth + cardSeparation)) + (verticalRight + cardSeparation + offset);
+    } else {
+
+      left = ((currentPos + 1) * (cardWidth + cardSeparation)) + (verticalLeft - cardWidth - cardSeparation);
+    }
+
+
+
+    return left;
+  } else { // wrapping
+
+    if (currentPos < 0) { // makes the first card appear at the end of the last card
+      currentPos = numCards + currentPos;
+    }
+
+    // Default context positioning (all to the right of vertical narrative)
+    left = (currentPos * (cardWidth + cardSeparation)) + (verticalRight + cardSeparation + offset);
+  
+    // Last card positioning if number of cards is greater than 3
+    if (numCards >= 3) {
+      if (currentPos === numCards - 1) {
+        left = verticalLeft - cardWidth - cardSeparation;
+      }
+    }
+    return left;
   }
-  return left;
-}
+};
 
 window.getVerticalHeights = function() {
   var sum, verticalHeights;
@@ -88,7 +106,9 @@ window.goToY = function(y) {
 };
 
 window.goToX = function(x) {
-  Session.set("currentX", x);
+  currentXByRow = Session.get("currentXByRow");
+  currentXByRow[Session.get("currentY")] = x;
+  Session.set("currentXByRow", currentXByRow);
 };
 
 window.goToContext = function(id) {

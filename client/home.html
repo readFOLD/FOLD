@@ -159,10 +159,12 @@
 </template>
 
 <template name="story_preview">
-  <div class="story" data-story-id="{{_id}}">
-    {{> _story_preview_content}}
-    {{> edit_or_read_bar}}
-  </div>
+  {{#with story}}
+    <div class="story" data-story-id="{{_id}}">
+      {{> _story_preview_content}}
+      {{> edit_or_read_bar}}
+    </div>
+  {{/with}}
 </template>
 
 <template name="_story_preview_content">

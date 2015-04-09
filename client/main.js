@@ -121,6 +121,13 @@ Tracker.autorun(function(){
   }
 });
 
+Tracker.autorun(function(){
+  var currentY = Session.get("currentY");
+  if (typeof currentY === 'number'){
+    Session.set("currentX", Session.get("currentXByRow")[currentY] || 0);
+  }
+});
+
 Meteor.startup(function() {
   var throttledUpdate;
   Session.setDefault("filterOpen", false);
@@ -134,18 +141,7 @@ Meteor.startup(function() {
   return $(document).scroll(throttledUpdate);
 });
 
-// handle user bailing in middle of twitter signup, before a username is chosen
-Tracker.autorun(function() {
-  if (!Session.get('signingInWithTwitter')) { // don't forcible logout user if in the middle of twitter signup
-    var user = Meteor.user();
-    var currentRoute = Router.current();
-    if (user && currentRoute){ //
-      if(!user.username && currentRoute.url.substring(currentRoute.url.lastIndexOf('/') + 1) !== 'twitter-signup'){ // if user has no username, confirm they are on the page where they can fill that out
-        Meteor.logout(); // otherwise log them out
-      }
-    }
-  }
-});
+
 
 Template.story_header.onRendered(function() {
   var range, sel, titleDiv;
@@ -417,9 +413,32 @@ typeHelpers = {
   }
 };
 
+editableDescriptionCreatedBoilerplate = function() {
+  this.editing = new ReactiveVar(false);
+};
+
 horizontalBlockHelpers = _.extend({}, typeHelpers, {
   selected: function() {
     return Session.equals("currentX", this.index) && !Session.get("addingContext");
+  },
+  textContent: function() {
+    var textContent, rows;
+    if (this.type === 'text'){
+      textContent = this.content || '';
+      rows = 10;
+      placeholder = '';
+    }
+    else{
+      textContent = this.description || '';
+      rows = 2;
+      placeholder = 'Add a caption'
+    }
+
+    if (Session.get('read')) {
+      return '<div class="text-content" dir="auto">' + textContent.replace(/\n/g, "<br />") + '</div>';
+    } else {
+      return '<textarea name="content" class="text-content editable" rows="' + rows + '" placeholder="' + placeholder +  '" dir="auto">' + textContent + '</textarea>';
+    }
   }
 });
 
@@ -433,27 +452,78 @@ Template.horizontal_section_block.helpers({
   }
 });
 
+editableDescriptionEventsBoilerplate = function(meteorMethod) {
+  return { 
+    "blur .text-content": function(d, template) {
+      var that = this;
+      if (!Session.get('read') && !Session.get('addingContext')) {
+        var textContent = template.$('textarea[name=content]').val();
+        Session.set('saveState', 'saving');
+        Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
+          saveCallback(err, numDocs);
+        });
+      }
+    },
+    "keypress .image-section .text-content": function(e, template) {
+      var that = this;
+      if (!Session.get('read') && !Session.get('addingContext') && e.which === 13 ) {
+        console.log(4)
+
+        e.preventDefault();
+        var textContent = template.$('textarea[name=content]').val();
+        Session.set('saveState', 'saving');
+        Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
+          saveCallback(err, numDocs);
+        });
+      }
+    }
+  }
+};
+
 Template.display_viz_section.helpers(horizontalBlockHelpers);
 
+Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
 Template.display_image_section.helpers(horizontalBlockHelpers);
+Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
 Template.display_audio_section.helpers(horizontalBlockHelpers);
 
 Template.display_video_section.helpers(horizontalBlockHelpers);
 
+Template.display_twitter_section.helpers(horizontalBlockHelpers);
+
 Template.display_map_section.helpers(horizontalBlockHelpers);
+
+Template.display_link_section.helpers(horizontalBlockHelpers);
+
+Template.display_text_section.onCreated(editableDescriptionCreatedBoilerplate);
+Template.display_text_section.helpers(horizontalBlockHelpers);
+Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
+
 
 Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
+Template.story_browser.helpers({
+  showLeftArrow: function() {
+    return Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentY')];
+  }
+});
 
 Template.story_browser.events({
   "click .right svg": function(d) {
     var currentX, horizontalSection, newX, path;
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
-    newX = currentX === (horizontalSection.length - 1) ? 0 : currentX + 1;
+    currentY = Session.get("currentY");
+    if (currentX === (horizontalSection.length - 1)) { // end of our rope
+      newX = 0;
+      wrap = Session.get("wrap");
+      wrap[currentY] = true;
+      Session.set("wrap", wrap);
+    } else {
+      newX = currentX + 1;
+    }
     goToX(newX);
-    Session.set("currentX", newX);
     path = window.location.pathname.split("/");
     return path[4] = Session.get("currentX");
   },
@@ -462,7 +532,7 @@ Template.story_browser.events({
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
     newX = currentX ? currentX - 1 : horizontalSection.length - 1;
-    Session.set("currentX", newX);
+    goToX(newX);
     path = window.location.pathname.split("/");
     return path[4] = Session.get("currentX");
   }
@@ -472,7 +542,7 @@ Template.type_specific_icon.helpers(typeHelpers);
 
 Template.favorite_button.helpers({
   userFavorited: function() {
-    return Meteor.user() && (Meteor.user().profile.favorites.indexOf(this.id) >= 0);
+    return Meteor.user() && (Meteor.user().profile.favorites.indexOf(this._id) >= 0);
   }
 });
 
@@ -496,17 +566,23 @@ Template.favorite_button.events({
 });
 
 Template.display_twitter_section.events({
-  "click .show-image" : function() {
-    $('.twitter-text-section').toggleClass('transparent');
+  "click .show-image" : function(e, template) {
+    template.$('.twitter-text-section').toggleClass('transparent');
   },
-  "mouseenter .twitter-section" : function() {
-    $('.twitter-text-section').addClass('show-corner');
+  "click .image-section" : function(e, template) {
+    template.$('.twitter-text-section').removeClass('transparent');
   },
-  "mouseleave .twitter-section" : function() {
-    $('.twitter-text-section').removeClass('show-corner');
+  "mouseenter .twitter-section" : function(e, template) {
+    if (template.data.imgUrl) {
+      template.$('.twitter-text-section').addClass('show-corner');
+      template.$('.flag').addClass('show-corner');
+    }
   },
-  "click .image-section" : function() {
-    $('.twitter-text-section').removeClass('transparent');
+  "mouseleave .twitter-section" : function(e, template) {
+    if (template.data.imgUrl) {
+      template.$('.twitter-text-section').removeClass('show-corner');
+      template.$('.flag').removeClass('show-corner');
+    }
   }
 })
 

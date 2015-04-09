@@ -1,13 +1,13 @@
 .standard-icon-colors;
 
 .active{
-  circle{
+  .bg{
     fill: @action-color;
   }
 }
 
 .back-arrow{
-  path{
+  .fg{
     fill: @light-color;
   }
 }
@@ -20,7 +20,7 @@ svg.add-card-icon{
   width:44px;
 }
 svg.remix-icon{
-  circle{
+  .bg{
     fill: @remix-color;
   }
 }
@@ -32,7 +32,7 @@ svg.remix-icon-square{
 svg.browse-arrow {
   height: 60px;
   width: 60px;
-  path{
+  .fg{
     fill: @dark-color;
   }
 }
@@ -45,7 +45,7 @@ svg.search-icon {
 svg.babyburger-icon{
   .size(20px);
   &:hover {
-    circle{
+    .bg{
       fill: @action-color;
     }
   }
@@ -67,7 +67,7 @@ svg.babyburger-icon{
     svg{
     }
     &.favorite{
-      svg{
+      .fg{
         fill: @light-color;
         &:hover{
           fill: @medium-color;
@@ -75,7 +75,7 @@ svg.babyburger-icon{
       }
     }
     &.unfavorite{
-      svg{
+      .fg{
         fill: @favorite-color;
         &:hover{
           fill: @dark-favorite-color;

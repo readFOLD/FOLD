@@ -3,40 +3,50 @@
   cursor: text;
 }
 
+input[type=file] {
+  height: 40px;
+  width: 165px;
+
+  &::-webkit-file-upload-button {
+    display:none;
+  }
+  &::before {
+    display: inline-block;
+    background: @dark-color;
+    color: @light-color;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    width: 100%;
+    line-height: 30px;
+
+  }
+  &:hover::before {
+    background-color: @action-color;
+    color: @dark-color;
+  }
+
+  &.header-upload{
+    &::before {
+      content: 'Change Header Image';
+    }
+  }
+  &.image-upload{
+    &::before {
+      content: 'Upload Image';
+    }
+  }
+}
+
 div.upload-header-image {
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 100;
-
-  input.file-upload {
-    height: 40px;
-    width: 165px;
-
-    &::-webkit-file-upload-button {
-      visibility: hidden;
-    }
-    &::before {
-      content: 'Change Header Image';
-      display: inline-block;
-      background: @dark-color;
-      color: @light-color;
-      outline: none;
-      white-space: nowrap;
-      -webkit-user-select: none;
-      cursor: pointer;
-      padding: 5px;
-      text-align: center;
-      font-size: 14px;
-      width: 100%;
-      line-height: 30px;
-
-    }
-    &:hover::before {
-      background-color: @action-color;
-      color: @dark-color;
-    }
-  }
 }
 
 
@@ -75,6 +85,10 @@ div.floating-story-buttons {
 
   .publish-story{
     width: 140px;
+  }
+
+  .link-to-edit{
+    width: 126px;
   }
 }
 
@@ -361,6 +375,10 @@ textarea {
   border: none;
   overflow: auto;
   outline: none;
+  &:focus{
+    outline-offset: 0;
+  }
+  padding: 0px;
 
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -376,9 +394,10 @@ textarea {
     border: 1px dashed #e0e1e2;
     margin-top: 10px;
     padding: 18px;
+
     color: @dark-color;
     line-height: 27px;
-    font-size: 16px;
+    font-size: @content-font-size;
   }
 }
 
@@ -394,7 +413,7 @@ svg{
 
 .new-section {
   &:hover {
-    circle{
+    .bg{
       fill: @action-color;
     }
   }
@@ -469,7 +488,7 @@ div.horizontal-context {
         display: inline-block;
 
         &:hover, &.active {
-          circle{
+          .bg{
             fill: @action-color;
           }
         }
@@ -574,7 +593,7 @@ div.horizontal-context {
     margin-bottom: 15px;
     ul {
       margin: 0;
-      padding-left: 0px;
+      padding-left: 0;
       li {
         &:first-child {
           padding-left: 5px;
@@ -703,7 +722,7 @@ div.horizontal-context {
       border-left: none; 
       white-space: normal;
       cursor: pointer;
-    
+
       &:hover {
         background: @light-color; 
       }
@@ -729,6 +748,7 @@ div.horizontal-context {
 
       img {
         height: 116px;
+        max-width: 100%;
       }
 
       &.focused {
@@ -855,7 +875,7 @@ div.horizontal-context {
       }
     }  
   }  
-    button.add-button {
+    button.add-button, button.add-desc-button, button.back-button {
       position: relative;
       left: calc(100%~"-" 90px);
       background-color: @action-color;
@@ -866,7 +886,6 @@ div.horizontal-context {
       text-align: center;
       font-size: 12px;
       line-height: 35px;
-      float: left;
       cursor: pointer;
 
       &:not(:last-child) {
@@ -880,7 +899,16 @@ div.horizontal-context {
       &:hover{
         background-color: @dark-color;
       }
-  }
+    }
+
+    // TODO Factor this nicely
+    button.add-desc-button {
+      left: calc(100%~"-" 120px);
+      width: 120px;
+    }
+    button.back-button {
+      margin-left: -100px;
+    }
 }
 
 .create-map-section{
@@ -890,14 +918,49 @@ div.horizontal-context {
 }
 
 div.text-section {
-  line-height: 26px;
-  font-size: 16.5px;
+  .content-font;
   margin-top: 25px;
   margin-left: 30px;
   margin-right: 30px;
 }
 
+.create-link-section {
+  .preview-section {
+    height: 300px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 
+    &.image-section {
+      background-color: @dark-color;
+    }
+
+    &.link-section {
+      border: 1px solid @medium-color;
+      border-bottom: 7px solid @action-color;      
+    }
+
+    &.placeholder{
+      border: 1px solid @medium-color;
+    }
+
+    img.image {
+      width: auto;
+      max-width: 100%;
+      margin: auto;
+      vertical-align: middle;
+      display: inline-block;
+      max-height: 100%;
+    }
+  }
+  .transparent-cover{
+    opacity: 0;
+    .size-to-fit;
+    position: absolute;
+    left:0;
+    top:0;
+    z-index: 100;
+  }
+}
 
 @fold-editor-row-height: 55px;
 
@@ -945,10 +1008,10 @@ div.text-section {
   li:nth-child(odd) {background-color: @black-color;}
 
   svg.add-card-icon{
-    path {
+    .fg {
       fill: @light-color;
     }
-    circle {
+    .bg {
       opacity: 0;
     }
 
@@ -1020,11 +1083,38 @@ div#fold-editor{
       font-size: 20pt;
       line-height: @fold-editor-row-height;
       &:hover {
-        circle {
+        .bg {
           fill: @action-color;
         }
         background-color: inherit;
       }
+    }
+  }
+}
+
+.create-section {
+  .search-section, .add-desc-section {
+    height: 100%;
+  }
+
+  .image-preview {
+    .image-section {
+      height: 300px;      
+    }
+  }
+
+  form.desc-form {
+    position: relative;
+    top: -300px;
+    textarea {
+      background-color: rgba(0, 0, 0, 0.8);
+      opacity: 0.8;
+      color: white;
+      margin-top: 0px;
+      padding: 8px;
+      font-size: 14px;
+      line-height: 20px;
+      text-align: start;
     }
   }
 }
@@ -1046,7 +1136,7 @@ div#fold-link-remover{
     margin-bottom: -2px;
 
     &:hover {
-      circle {
+      .bg {
         fill: @danger-color;
       }
       background-color: inherit;
@@ -1090,7 +1180,7 @@ div.context-anchor-menu {
   width: 100%;
 
   .back-arrow{
-    path{
+    .fg{
       fill: @light-color;
     }
   }

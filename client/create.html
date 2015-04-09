@@ -45,7 +45,7 @@
 <template name="create_options">
   {{#unless pastHeader}}
   <div class="upload-header-image">
-    <input type="file" class="file-upload">
+    <input type="file" class="header-upload">
   </div>
   {{/unless}}
   <div class="floating-story-buttons">
@@ -103,8 +103,6 @@
   </div>
 </template>
 
-
-
 <template name="create_horizontal_section_block">
   <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <div class="content-icons">
@@ -141,8 +139,8 @@
     </div>
     {{#if addingContext}}
       {{#if type}}
-        {{#if link}}{{> unimplemented_link_section}}{{/if}}
         {{#if remix}}{{> unimplemented_remix_section}}{{/if}}
+        {{#if link}}{{> create_link_section}}{{/if}}
         {{#if text}}{{> create_text_section}}{{/if}}
         {{#if audio}}{{> create_audio_section}}{{/if}}
         {{#if image}}{{> create_image_section}}{{/if}}
@@ -186,11 +184,6 @@
 </template>
 
 <!-- Create Templates -->
-<template name="unimplemented_link_section">
-  <div class="create-section unimplemented">
-    Link Card - a flexible method for pulling outside content into a FOLD story. Coming soon!
-  </div>
-</template>
 
 <template name="unimplemented_remix_section">
   <div class="create-section unimplemented">
@@ -216,8 +209,8 @@
   </div>
 </template>
 
-<template name="create_image_section">
-  <div class="create-section">
+<template name="create_link_section">
+  <div class="create-section create-link-section">
     <div class="tabs">
       <ul>
         {{#each dataSources}}
@@ -225,56 +218,167 @@
         {{/each}}
       </ul>
     </div>
-    {{> search_form}}
-    <ol class="search-results-container">
-      {{#each results}}
-        <li class="tile {{#if isFocused}}focused{{/if}}">
-          <img src="{{thumbnailUrl}}">
-        </li>
-      {{/each}}
-      {{#if loading}}
+
+    {{> search_form placeholderType='links'}}
+
+    {{#if loading}}
+      <div class="preview-section placeholder">
         {{> loading_icon}}
-      {{/if}}
+      </div>
+    {{else}}
       {{#if noMoreResults}}
         {{noMoreResults}}
       {{/if}}
-    </ol>
-    {{#if focusResult}}
-      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      {{#if link}}
+        {{#with preview}}
+          <div class="link-section preview-section {{#if isFocused}}focused{{/if}}">
+            <div class="transparent-cover"></div>
+            <a href="{{url}}" target="_blank">
+              <div class="top">
+              {{#if thumbnailUrl}}
+                {{#if imageOnLeft}}
+                  <img class="thumbnail left" src="{{thumbnailUrl}}" />
+                {{else}}
+                  <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
+                {{/if}}
+                <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
+              {{/if}}
+              </div>
+            </a>
+            <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
+            <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+          </div>
+        {{/with}}
+      {{else}}
+        {{#if image}}
+        <div class="preview-section image-section">
+          <img class="image" src="{{preview.url}}" />
+        </div>
+        {{else}}
+
+          {{#if video}}
+          <div class="preview-section video-section">
+            <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{preview.url}}" allowfullscreen></iframe>
+          </div>
+          {{/if}}
+        {{/if}}
+      {{/if}}
+    {{/if}}
+
+
+    {{#if showAddButton}}
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
+  {{/if}}
+  </div>
+</template>
+
+<template name="create_image_section">
+  <div class="create-section">
+    <div class="search-section" style="{{#if addingDescription}}display: none;{{/if}}">
+      <div class="tabs">
+        <ul>
+          {{#each dataSources}}
+            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{#if uploadMode}}
+        <div class="image-upload">
+          {{#c_upload_stream}}
+            <input type="file" accept="image/*" class="image-upload">
+          {{/c_upload_stream}}
+
+          {{#each c.uploading_images}}
+            <p>Uploading: {{percent_uploaded}}%</p>
+          {{/each}}
+          {{#if uploadStatus}}
+            <p>{{uploadStatus}}</p>
+          {{/if}}
+          <img width="250" src="{{uploadPreview}}">
+        </div>
+      {{else}}
+        {{> search_form}}
+        <ol class="search-results-container">
+          {{#each results}}
+            <li class="tile {{#if isFocused}}focused{{/if}}">
+              <img src="{{thumbnailUrl}}">
+            </li>
+          {{/each}}
+          {{#if loading}}
+            {{> loading_icon}}
+          {{/if}}
+          {{#if noMoreResults}}
+            {{noMoreResults}}
+          {{/if}}
+        </ol>
+      {{/if}}
+      {{#if showAddButton}}
+        <button type="button" class="add-desc-button {{#if isActive}}enabled{{/if}}">
+          Add Description
+        </button>
+      {{/if}}
+    </div>
+    <div class="add-desc-section" style="{{#unless addingDescription}}display: none;{{/unless}}">
+      <div class="image-preview">
+        {{#with focusResult}}
+          {{> display_image_section}}
+        {{/with}}
+      </div>
+      <button type="button" class="back-button {{#if isActive}}enabled{{/if}}">
+        Back
+      </button>
+      <button type="submit" class="add-button">
         Add
       </button>
-    {{/if}}
+    </div>
   </div>
 </template>
 
 <template name="create_gif_section">
   <div class="create-section">
-    <div class="tabs">
-      <ul>
-        {{#each dataSources}}
-          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+    <div class="search-section" style="{{#if addingDescription}}display: none;{{/if}}">
+      <div class="tabs">
+        <ul>
+          {{#each dataSources}}
+            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{> search_form}}
+      <ol class="search-results-container">
+        {{#each results}}
+          <li class="tile {{#if isFocused}}focused{{/if}}">
+            <img src="{{thumbnailUrl}}">
+          </li>
         {{/each}}
-      </ul>
+        {{#if loading}}
+          {{> loading_icon}}
+        {{/if}}
+        {{#if noMoreResults}}
+          {{noMoreResults}}
+        {{/if}}
+      </ol>
+      {{#if showAddButton}}
+        <button type="button" class="add-desc-button {{#if isActive}}enabled{{/if}}">
+          Add Description
+        </button>
+      {{/if}}
     </div>
-    {{> search_form}}
-    <ol class="search-results-container">
-      {{#each results}}
-        <li class="tile {{#if isFocused}}focused{{/if}}">
-          <img src="{{thumbnailUrl}}">
-        </li>
-      {{/each}}
-      {{#if loading}}
-        {{> loading_icon}}
-      {{/if}}
-      {{#if noMoreResults}}
-        {{noMoreResults}}
-      {{/if}}
-    </ol>
-    {{#if focusResult}}
-      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+    <div class="add-desc-section" style="{{#unless addingDescription}}display: none;{{/unless}}">
+      <div class="image-preview">
+        {{#with focusResult}}
+          {{> display_image_section}}
+        {{/with}}
+      </div>
+      <button type="button" class="back-button {{#if isActive}}enabled{{/if}}">
+        Back
+      </button>
+      <button type="submit" class="add-button">
         Add
       </button>
-    {{/if}}
+    </div>
   </div>
 </template>
 
@@ -306,7 +410,7 @@
       <iframe width="{{cardWidth}}" height="315" src="{{url}}" frameborder="0" ></iframe>
     {{/if}}
 
-    {{#if focusResult}}
+    {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
         Add
       </button>
@@ -325,12 +429,17 @@
     </div>
     {{> search_form option1='satellite' label1='Satellite' option2='roadmap' label2='Roadmap' placeholderType='locations'}}
     <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
-    {{#if focusResult}}
+    {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
         Add
       </button>
     {{/if}}
   </div>
+</template>
+
+
+<template name="add_description_section">
+  Add description
 </template>
 
 
@@ -390,7 +499,7 @@
           {{/if}}
         </li>
       </ol>
-      {{#if focusResult}}
+      {{#if showAddButton}}
         <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
           Add
         </button>
@@ -446,7 +555,7 @@
         {{/if}}
       </li>
     </ol>
-    {{#if focusResult}}
+    {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
         Add
       </button>
@@ -499,7 +608,7 @@
         {{/if}}
       </li>
     </ol>
-    {{#if focusResult}}
+    {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
         Add
       </button>
