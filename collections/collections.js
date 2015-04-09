@@ -497,6 +497,7 @@ ImageBlock = (function(_super) {
       case 'embedly':
         return this.reference.url;
       case 'cloudinary':
+        // TO-DO maybe use jpeg instead of png in certain situations
         return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
     }
   };
@@ -512,7 +513,7 @@ ImageBlock = (function(_super) {
       case 'embedly':
         return this.reference.thumbnailUrl;
       case 'cloudinary':
-        // TODO adjust this so it's more specific
+        // f_auto is slightly worse quality but less bandwidth
         return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/f_auto,c_limit,h_150,w_260/' + this.reference.id;
     }
   };
@@ -547,7 +548,7 @@ GifBlock = (function(_super) {
       case 'giphy':
         return '//media4.giphy.com/media/' + this.reference.id + '/200_d.gif';
       case 'cloudinary':
-        // TODO adjust this so it's more specific
+        // f_auto is slightly worse quality but less bandwidth
         return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/f_auto,c_limit,h_150,w_260/' + this.reference.id;
     }
   };
