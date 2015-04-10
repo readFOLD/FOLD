@@ -24,7 +24,7 @@
 
 
 <template name="user_profile">
-  {{#if editting}}
+  {{#if editing}}
     <div class="user-info-form">
       {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
       <button type="submit" class="save-profile-button">Save</button>
@@ -51,13 +51,11 @@
 <template name="user_stories">
   <h1>Latest stories</h1>
   {{#each publishedStories}}
-    {{#with draftStory}}
-      {{#linkTo route="read" data=this}}
-        <div class="profile story" data-story-id="{{_id}}">
-          {{> _story_preview_content}}
-        </div>
-      {{/linkTo}}
-    {{/with}}
+    {{#linkTo route="read" data=this}}
+      <div class="profile story" data-story-id="{{_id}}">
+        {{> _story_preview_content}}
+      </div>
+    {{/linkTo}}
   {{else}}
     <div class="message">{{unpublishedMessage}}</div>
   {{/each}}

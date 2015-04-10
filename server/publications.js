@@ -57,39 +57,17 @@ Meteor.publish("contextBlocksPub", function() {
 });
 
 Meteor.publish("userProfilePub", function(username) {
-  var user = Meteor.users.find({
+
+  userCursor = Meteor.users.find({
     username: username.toLowerCase()
+  }, {
+    fields: {
+      "profile" : 1,
+      "username" : 1,
+      "services.twitter.id": 1
+    }
   });
 
-  var userId = user.map(function(doc) {
-    return doc._id;
-  });
-
-  var userCursor;
-  if (!userId) {
-    this.ready();
-    return;
-  }
-  if (this.userId == userId[0]) {
-    //return full document
-    userCursor = Meteor.users.find(this.userId, {
-      fields: {
-        "profile" : 1,
-        "username" : 1,
-        "emails" : 1,
-        "services": 1
-      }
-    });
-  } else {
-    //return public profile
-    userCursor = Meteor.users.find(userId[0], {
-      fields: {
-        "profile" : 1,
-        "username" : 1,
-        "services": 1
-      }
-    });
-  }
   var userFavorites = (userCursor.fetch()[0]).profile.favorites;
   return [userCursor, Stories.find({
                         _id: {

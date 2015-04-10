@@ -72,13 +72,9 @@ Meteor.methods({
       var res;
       if (Meteor.user().services.twitter) {
         var twitterParams = {
-            user_id: Meteor.user().services.twitter.id,
-            sceen_name: Meteor.user().services.twitter.screenName
+            user_id: Meteor.user().services.twitter.id
           };
         res = makeTwitterCall("users/show", twitterParams);
-        if (res.status) {
-          delete res.status //deletes tweets
-        }
       }
 
       return Meteor.users.update({
@@ -86,9 +82,8 @@ Meteor.methods({
       }, {
           $set: {
             "profile.name": userInfo.name || username,
-            "profile.displayUsername": username, // this will keep caps
+            "profile.displayUsername": username,
             "username": username,
-            "services.twitter.userInfo": res,
             "profile.bio": res.description,
           },
           $unset: {"tempUsername": ""},

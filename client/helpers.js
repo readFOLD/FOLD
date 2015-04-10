@@ -63,7 +63,6 @@ Handlebars.registerHelper("windowHeight", function() {
 });
 
 Handlebars.registerHelper("profileImage", function(user) {
-  Meteor.subscribe('userProfilePub', user.username);
   if (user.profile.profile_picture) {
     return user.profile.profile_picture
   } else if (user.profile.twitterUser) {

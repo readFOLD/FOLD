@@ -37,12 +37,12 @@ Template.my_stories.events({
 });
 
 Template.user_profile.onCreated(function(){
-  this.editting = new ReactiveVar(false);
+  this.editing = new ReactiveVar(false);
 });
 
 Template.user_profile.helpers({
-  editting : function() {
-    return Template.instance().editting.get()
+  editing : function() {
+    return Template.instance().editing.get()
   },
   ownProfile: function() {
     return Meteor.user().username == this.user.username ? true : false
@@ -57,10 +57,10 @@ Template.user_profile.helpers({
 
 Template.user_profile.events({
   "click .edit-profile" : function(d, template) {
-    template.editting.set(true);
+    template.editing.set(true);
   },
   "click .save-profile-button" : function(d, template) {
-    template.editting.set(false);
+    template.editing.set(false);
   }
 });
 

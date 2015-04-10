@@ -165,12 +165,7 @@ Template.login_buttons.events({
     e.preventDefault();
     Meteor.logout();
     Router.go('home');
-  },
-  "click .profile" : function(e) {
-    e.preventDefault();
-    Router.go('profile', {username : Meteor.user().username});
   }
-
 });
 
 var closeSignInOverlay = function(){
