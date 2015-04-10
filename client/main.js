@@ -287,11 +287,11 @@ Template.vertical_section_block.helpers({
   // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
   contentDiv: function() {
     if (Session.get('read')) {
-      return '<div class="content">' + this.content + '</div>';
+      return '<div class="content">' + cleanVerticalSectionContent(this.content) + '</div>';
     } else {
       // nonReactiveContent preserves browser undo functionality across saves
       // this is contenteditable in edit mode
-      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true" dir="auto">' + Template.instance().semiReactiveContent.get() + '</div>';
+      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true" dir="auto">' + cleanVerticalSectionContent(Template.instance().semiReactiveContent.get()) + '</div>';
     }
   }
 });

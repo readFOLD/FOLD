@@ -87,6 +87,7 @@ Story = (function() {
 })();
 
 
+// TODO consider replacing htmlclean with https://github.com/cristo-rabani/meteor-universe-html-purifier/
 var cleanHtmlOptions = {
   allowedTags: ['strong', 'em', 'u', 'a', 'br'], // only allow tags used in fold-editor and
   format: false,
