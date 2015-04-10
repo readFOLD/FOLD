@@ -106,9 +106,9 @@ window.goToY = function(y) {
 };
 
 window.goToX = function(x) {
-  currentXByRow = Session.get("currentXByRow");
-  currentXByRow[Session.get("currentY")] = x;
-  Session.set("currentXByRow", currentXByRow);
+  currentXByYId = Session.get("currentXByYId");
+  currentXByYId[Session.get("currentYId")] = x;
+  Session.set("currentXByYId", currentXByYId);
 };
 
 window.goToContext = function(id) {

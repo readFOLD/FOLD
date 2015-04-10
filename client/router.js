@@ -105,7 +105,7 @@ Router.route("read", {
   },
   onRun: function() {
     Session.set("wrap", []);
-    Session.set("currentXByRow", []);
+    Session.set("currentXByYId", {});
     Session.set("currentY", null);
 
 
@@ -151,7 +151,7 @@ Router.route("edit", {
   template: "create",
   onRun: function() {
     Session.set("wrap", []);
-    Session.set("currentXByRow", []);
+    Session.set("currentXByYId", {});
     Session.set("currentY", null);
     Session.set("read", false);
     Session.set("newStory", false);

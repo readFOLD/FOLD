@@ -122,9 +122,9 @@ Tracker.autorun(function(){
 });
 
 Tracker.autorun(function(){
-  var currentY = Session.get("currentY");
-  if (typeof currentY === 'number'){
-    Session.set("currentX", Session.get("currentXByRow")[currentY] || 0);
+  var currentYId = Session.get("currentYId");
+  if (currentYId){
+    Session.set("currentX", Session.get("currentXByYId")[currentYId] || 0);
   }
 });
 
