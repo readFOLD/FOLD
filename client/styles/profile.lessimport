@@ -43,7 +43,7 @@ div.user-profile {
     position: initial;
   }
 
-  @media (max-height: 700px) {
+  @media (max-height: 640px) {
     position: initial;
 
   }

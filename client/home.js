@@ -38,9 +38,6 @@ loginWithEmail = function() {
 };
 
 Template.home.helpers({
-  profileImage: function() {
-    return Meteor.user().profile.profile_picture;
-  },
   user: function() {
     return Meteor.user();
   },

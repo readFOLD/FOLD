@@ -22,9 +22,6 @@ Template.my_stories.helpers({
   },
   lastPublishDate: function() {
     return formatDate(this.publishedAt);
-  },
-  profileImage: function() {
-    return Meteor.user().profile.profile_picture;
   }
 });
 
@@ -55,10 +52,7 @@ Template.user_profile.helpers({
   },
   bio : function() {
     return this.user.profile.bio
-  },
-  profileImage: function() {
-    return this.user.profile.profile_picture;
-   },
+  }
 });
 
 Template.user_profile.events({

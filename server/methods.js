@@ -61,10 +61,6 @@ S3.config = {
   bucket: Meteor.settings["public"].AWS_BUCKET
 };
 
-var resizeProfilePic = function(user) {
-   return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/c_limit,h_250,w_250/' + user;
-}
-
 Meteor.methods({
   updateUserInfo: function(userInfo) {
     if (Meteor.user().tempUsername) {
@@ -94,7 +90,6 @@ Meteor.methods({
             "username": username,
             "services.twitter.userInfo": res,
             "profile.bio": res.description,
-            "profile.profile_picture" : resizeProfilePic(res.id)
           },
           $unset: {"tempUsername": ""},
           $push: {

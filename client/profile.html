@@ -39,8 +39,8 @@
       <button class="edit-profile">Edit</button>
     {{/if}}
     <div class="picture">
-      {{#if profileImage}} 
-         <img class="profile-picture" src="{{profileImage}}"/>
+      {{#if profileImage user}} 
+         <img class="profile-picture" src="{{profileImage user}}"/>
       {{/if}}
     </div>
     <div class="name">{{name}}</div>

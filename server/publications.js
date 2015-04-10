@@ -76,7 +76,8 @@ Meteor.publish("userProfilePub", function(username) {
       fields: {
         "profile" : 1,
         "username" : 1,
-        "emails" : 1
+        "emails" : 1,
+        "services": 1
       }
     });
   } else {
@@ -84,7 +85,8 @@ Meteor.publish("userProfilePub", function(username) {
     userCursor = Meteor.users.find(userId[0], {
       fields: {
         "profile" : 1,
-        "username" : 1
+        "username" : 1,
+        "services": 1
       }
     });
   }
