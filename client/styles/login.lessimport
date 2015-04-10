@@ -34,7 +34,7 @@ form#signup-form {
 	font-family: Muli;
 }
 
-.login-button, .signup-button {
+.login-button, .signup-button, .save-profile-button {
 	margin-top: 20px;
 	width: 100px;
     background-color: @action-color;

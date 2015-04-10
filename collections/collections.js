@@ -87,7 +87,6 @@ Story = (function() {
 })();
 
 
-// TODO consider replacing htmlclean with https://github.com/cristo-rabani/meteor-universe-html-purifier/
 var cleanHtmlOptions = {
   allowedTags: ['strong', 'em', 'u', 'a', 'br'], // only allow tags used in fold-editor and
   format: false,
@@ -102,6 +101,7 @@ cleanVerticalSectionContent = function(html) {
 
 
   var initialClean = $.htmlClean(html, _.extend({}, _.omit(cleanHtmlOptions, 'allowedTags'), {allowEmpty: ['div']})); // do all cleaning except tag removal. allowEmpty means <div><br></div> turns into <div></div> instead of being deleted entirely
+  
   var linebreakClean = initialClean
     .replace(new RegExp('<br />', 'g'), '<br>')
     .replace(new RegExp('<div><br></div>', 'g'), '<br>')
@@ -1041,13 +1041,16 @@ Schema.UserProfile = new SimpleSchema({
   bio: {
     type: String,
     optional: true,
-    max: 2000,
-    autoform: {
-      afFieldInput: {
-        type: "textarea",
-        rows: 10,
-        "class": "bio"
+    max: 160,
+    autoValue: function () { // trim off whitespace
+      if (this.isSet && typeof this.value === "string") {
+        return this.value.trim();
+      } else {
+        this.unset()
       }
+    },
+    autoform: {
+      rows: 7
     }
   },
   favorites: {
@@ -1065,6 +1068,10 @@ Schema.UserProfile = new SimpleSchema({
         this.unset()
       }
     }
+  },
+  profilePicture: {
+    type: String,
+    optional: true
   },
   twitterUser: {
     type: Boolean,

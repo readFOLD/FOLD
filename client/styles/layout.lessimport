@@ -679,16 +679,6 @@ div.twitter-section{
     .size-to-fit;
     display: table;
 
-    .flag.show-corner.selected {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 30px;
-      height: 30px;
-      .box-shadow(0 1px 1px rgba(0,0,0,0.3), -1px 1px 1px rgba(0,0,0,0.2));
-      .linear-gradient(225deg, transparent 50%, @light-transparent-color 50%);
-    }
-
     &.image{
       background-color: @light-transparent-color;
       position: relative;
@@ -700,6 +690,15 @@ div.twitter-section{
         .linear-gradient(45deg, @light-transparent-color, @light-transparent-color);
         .linear-gradient(135deg, @light-transparent-color, @light-transparent-color);
         .linear-gradient(225deg, transparent 22px, @light-transparent-color 22px);
+      }
+      .flag.show-corner.selected {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 30px;
+        height: 30px;
+        .box-shadow(0 1px 1px rgba(0,0,0,0.3), -1px 1px 1px rgba(0,0,0,0.2));
+        .linear-gradient(225deg, transparent 50%, @light-transparent-color 50%);
       }
     }
     div.tweet-card {

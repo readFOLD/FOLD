@@ -1,70 +1,94 @@
 <template name="profile">
-  <div class="navbar">
-    <i class="fa fa-bars fa-2x"></i>
+  {{> top_banner border="remix-border"}}
+  <div class="profile-section">
+    <section>
+      <div class="user-profile">
+        {{> user_profile}}
+      </div>
+    </section>
   </div>
-  <section class="banner">
-    {{#linkTo route="home"}}
-      <div class="title">
-        <img src="/fold-title.png">
-      </div>
-    {{/linkTo}}
-    <div class="options">
-      <div id="create-story">
-        {{> create_story }}
-      </div>
-      <div id='login-buttons-and-more'>
-        {{> login_buttons}}
-      </div>
+    <div class="stories profile">
+      <section>
+        <div class="story-container profile">
+          {{> user_stories}}
+        </div>
+        <div class="horizontal-line"></div>
+        <div class="story-container profile">
+          {{> user_favorite_stories}}
+        </div>
+      </section>
     </div>
-    <div class="logo">
-      <img src="/FOLD_LOGO.svg">
-    </div>
-  </section>
 
-  {{> user_profile}}
-
-  <section class="stories">
-    <!-- {{> story_browser}} -->
-    <div class="horizontal-line">
-    </div>
-    <div class="story-container">
-      {{> user_stories}}
-    </div>
-    <div class="story-container">
-      {{> user_favorite_stories}}
-    </div>
-  </section>
+  {{> footer}}
 </template>
 
 
 <template name="user_profile">
-  <section class="profile-info">
-
-    {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
-      {{> afQuickField name='profile.name'}}
-      {{> afQuickField name='profile.bio'}}
-      {{> afQuickField name='emails.0.address'}}
-      <div class="profile-picture">
+  {{#if editing}}
+    <div class="user-info-form">
+      {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
+      <button type="submit" class="save-profile-button">Save</button>
+      <div class="user-info">
+        {{> afQuickField name='profile.name'}}
+        {{> afQuickField name='profile.bio' class="bio-form"}}
       </div>
-      <button type="submit" class="btn btn-primary">Save</button>
-    {{/autoForm}}
-  </section>
+      {{/autoForm}}
+    </div>
+  {{else}}
+    {{#if ownProfile}}
+      <button class="edit-profile">Edit</button>
+    {{/if}}
+    <div class="picture">
+      {{#if profileImage user}} 
+         <img class="profile-picture" src="{{profileImage user}}"/>
+      {{/if}}
+    </div>
+    <div class="name">{{name}}</div>
+    <div class="bio">{{bio}}</div>
+  {{/if}}
 </template>
 
-<template name="my_stories">
-  {{> top_banner}}
+<template name="user_stories">
+  <h1>Latest stories</h1>
+  {{#each publishedStories}}
+    {{#linkTo route="read" data=this}}
+      <div class="profile story" data-story-id="{{_id}}">
+        {{> _story_preview_content}}
+      </div>
+    {{/linkTo}}
+  {{else}}
+    <div class="message">{{unpublishedMessage}}</div>
+  {{/each}}
+</template>
+
+<template name="user_favorite_stories">
+  <h1>Favorites</h1>
+  {{#each favoriteStories}}
+    {{#linkTo route="read" data=this}}
+      <div class="profile story" data-story-id="{{_id}}">
+        {{> _story_preview_content}}
+      </div>
+    {{/linkTo}}
+  {{else}}
+    <div class="message">{{noFavoritesMessage}}</div>
+  {{/each}}
+</template>
+
+
+<template name="my_story_profile">
+  {{> top_banner border="remix-border"}}
   <div class="stories">
     <section>
       <div class="story-container">
-        {{> user_stories}}
+        {{> my_stories}}
       </div>
     </section>
   </div>
 </template>
 
-<template name="user_stories">
+<template name="my_stories">
   <h1>My Drafts</h1>
-  {{#each userStories}}
+  {{#each writtenStories}}
     {{#linkTo route="edit" data=this}}
       <div class="story" data-story-id="{{_id}}">
         {{#with draftStory}}
@@ -82,13 +106,5 @@
         <!--</div>-->
       </div>
     {{/linkTo}}
-  {{/each}}
-</template>
-
-
-<template name="user_favorite_stories">
-  <h3>Favorites</h3>
-  {{#each favoriteStories}}
-    {{> story_preview }}
   {{/each}}
 </template>

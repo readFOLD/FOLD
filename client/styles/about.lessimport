@@ -106,10 +106,11 @@ a.green {
 }
 
 div.footer {
+  position: relative;
+  bottom:0;
   height: 50px;
   width: 100%;
   margin-top: 45px;
-  //display: inline-block;
   text-align: center;
   font-size: 12px;
   padding: 15px;

@@ -39,29 +39,47 @@ Router.route("terms", {
 });
 
 Router.route("profile", {
-  path: "profile",
+  path: "/profile/:username",
   template: "profile",
-  waitOn: function() {
-    return [Meteor.subscribe('ownStoriesPub')];
-  },
-  onBeforeAction: function() {
-    var user;
-    if ((user = Meteor.user()) || Meteor.loggingIn()) {
-      return this.next();
-    } else {
-      this.redirect("home", {
-        replaceState: true
-      });
-      return alert("You must be logged in view your profile");
+  action: function() {
+    if (this.ready()) {
+      return this.render();
     }
-  }
+  },
+  waitOn: function() {
+    var username = this.params.username;
+    return [Meteor.subscribe('userProfilePub', username),
+           Meteor.subscribe('userStoriesPub', username)];
+  },
+  data: function() {
+    var username = this.params.username;
+    var user;
+      if (this.ready()) {
+        user = Meteor.users.findOne({username : username});
+        if (user) {
+          return {
+            user : user,
+            stories: Stories.find({userPathSegment : username}),
+            favorites: Stories.find({
+                        _id: {
+                          $in: user.profile.favorites
+                        }})
+          }
+        } else {
+          this.render("user_not_found");
+          // TODO add 404 tags for seo etc...
+        }
+      }
+
+  },
 });
 
-Router.route("my_stories", {
+Router.route("my_story_profile", {
   path: "my-stories",
-  template: "my_stories",
+  template: "my_story_profile",
   waitOn: function() {
-    return [Meteor.subscribe('ownStoriesPub')];
+    var username = Meteor.user().username || Meteor.user().tempUsername;
+    return [Meteor.subscribe('userStoriesPub', username)];
   },
   onBeforeAction: function() {
     var user;
