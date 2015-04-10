@@ -87,8 +87,9 @@ Story = (function() {
 })();
 
 
+// TODO consider replacing htmlclean with https://github.com/cristo-rabani/meteor-universe-html-purifier/
 var cleanHtmlOptions = {
-  allowedTags: ['strong', 'em', 'u', 'a'], // only allow tags used in fold-editor
+  allowedTags: ['strong', 'em', 'u', 'a', 'br'], // only allow tags used in fold-editor and
   format: false,
   removeAttrs: ['class', 'id', 'href'], // strip away hrefs and other undesired attributes that might slip into a paste
   allowedAttributes: [["data-context-id"],["data-context-type"],["data-context-source"]] // data-context-id is used to direct links to context cards
@@ -98,10 +99,20 @@ var matchAnchors =  /<a( data-context-id=["|'].*?["|'])?( data-context-type=["|'
 var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match anchors that are left over from above if copied from somewhere else, capture contents so can be kept
 
 cleanVerticalSectionContent = function(html) {
-  
-  return $.htmlClean(html, cleanHtmlOptions)
+
+
+  var initialClean = $.htmlClean(html, _.extend({}, _.omit(cleanHtmlOptions, 'allowedTags'), {allowEmpty: ['div']})); // do all cleaning except tag removal. allowEmpty means <div><br></div> turns into <div></div> instead of being deleted entirely
+  var linebreakClean = initialClean
+    .replace(new RegExp('<br />', 'g'), '<br>')
+    .replace(new RegExp('<div><br></div>', 'g'), '<br>')
+    .replace(new RegExp('<div>', 'g'), '<br>')
+    .replace(new RegExp('</div>', 'g'), '');
+
+  return $.htmlClean(linebreakClean, cleanHtmlOptions)
     .replace(matchAnchors, '<a href="javascript:void(0);"$1$2$3>') // add js void to all anchors and keep all data-context-ids and other data attributes
-    .replace(matchBlankAnchors, '$1'); // remove anchors without data-context-ids
+    .replace(matchBlankAnchors, '$1') // remove anchors without data-context-ids
+    .replace(new RegExp('<br />', 'g'), '<br>');
+
 };
 
 if (Meteor.isClient) {
@@ -485,6 +496,9 @@ ImageBlock = (function(_super) {
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg'
       case 'embedly':
         return this.reference.url;
+      case 'cloudinary':
+        // TO-DO maybe use jpeg instead of png in certain situations
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
     }
   };
 
@@ -498,11 +512,14 @@ ImageBlock = (function(_super) {
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_t' + '.jpg';
       case 'embedly':
         return this.reference.thumbnailUrl;
+      case 'cloudinary':
+        // f_auto is slightly worse quality but less bandwidth
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/f_auto,c_limit,h_150,w_260/' + this.reference.id;
     }
   };
 
   ImageBlock.prototype.anchorMenuSnippet = function() {
-    return this.description || this.reference.title || this.reference.description;
+    return this.description || this.reference.title || this.reference.description || this.reference.id;
   };
 
   return ImageBlock;
@@ -520,19 +537,24 @@ GifBlock = (function(_super) {
   GifBlock.prototype.url = function() {
     switch (this.source) {
       case 'giphy':
-        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif'
+        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif';
+      case 'cloudinary':
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
     }
   };
 
   GifBlock.prototype.thumbnailUrl = function() {
     switch (this.source) {
       case 'giphy':
-        return '//media4.giphy.com/media/' + this.reference.id + '/200_d.gif'
+        return '//media4.giphy.com/media/' + this.reference.id + '/200_d.gif';
+      case 'cloudinary':
+        // f_auto is slightly worse quality but less bandwidth
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/f_auto,c_limit,h_150,w_260/' + this.reference.id;
     }
   };
 
   GifBlock.prototype.anchorMenuSnippet = function() {
-    return this.reference.id;
+    return this.description || this.reference.title || this.reference.description || this.reference.id;
   };
 
   return GifBlock;
@@ -551,7 +573,7 @@ VizBlock = (function(_super) {
   VizBlock.prototype.url = function() {
     switch (this.source) {
       case 'oec':
-        return 'http://atlas.media.mit.edu/explore/embed/tree_map/hs/' + this.reference.oecDirection + '/' + this.reference.oecCountry + '/all/show/' + this.reference.oecYear + '/?controls=false&lang=en'
+        return '//atlas.media.mit.edu/en/explore/embed/tree_map/hs/' + this.reference.oecDirection + '/' + this.reference.oecCountry + '/all/show/' + this.reference.oecYear + '?controls=false&lang=en'
     }
   };
 
@@ -807,6 +829,8 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
 
+  // Image
+
 
   flickrFarm: {
     type: String,
@@ -818,6 +842,16 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   },
   flickrServer: {
     type: String,
+    optional: true
+  },
+
+  // Image upload
+  width: {
+    type: Number,
+    optional: true
+  },
+  height: {
+    type: Number,
     optional: true
   },
 

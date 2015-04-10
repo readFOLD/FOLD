@@ -457,9 +457,78 @@ Template.create_video_section.onRendered(searchTemplateRenderedBoilerplate());
 Template.create_twitter_section.onCreated(searchTemplateCreatedBoilerplate('twitter', 'twitter'));
 Template.create_twitter_section.onRendered(searchTemplateRenderedBoilerplate());
 
-// TODO autosearch when change between sources
+Template.create_image_section.onCreated(function(){
+  var that = this;
+  this.uploadPreview = new ReactiveVar();
+  this.uploadStatus = new ReactiveVar();
+  var query = _cloudinary.find({});
+  this.observeCloudinary = query.observeChanges({ // this query stays live until .stop() is called in the onDestroyed hook
+    added: function (id) { // start upload
+      that.uploadStatus.set(null);
+    },
+    changed: function (id, changes) { // upload stream updated
+      if (changes.public_id){ // if upload successful
+        var doc = _cloudinary.findOne(id);
+        var cardModel = doc.format === 'gif' ? GifBlock : ImageBlock;
+        // TODO consider how to do attribution
+        that.uploadStatus.set('Upload successful');
+        that.focusResult.set(new cardModel({
+          reference: {
+            id: doc.public_id,
+            fileExtension: doc.format,
+            width: doc.width,
+            height: doc.height
+          },
+          source: that.source.get(),
+          authorId : Meteor.user()._id,
+          fullDetails: doc
+        }));
+        that.addingDescription.set(true);
+      }
+    },
+    removed: function (id) {  // upload failed
+      var input = that.$('input[type=file]');
+      that.uploadStatus.set('Upload failed');
+      input.val(null);
+      input.change(); // trigger change event
+    }
+  });
+});
+
+Template.create_image_section.onDestroyed(function(){
+  this.observeCloudinary.stop();
+});
+
+Template.create_image_section.helpers({
+  uploadMode: function(){
+    return Template.instance().source.get() === 'cloudinary';
+  },
+  uploadStatus: function(){
+    return Template.instance().uploadStatus.get();
+  },
+  uploadPreview: function(){
+    return Template.instance().uploadPreview.get();
+  }
+});
+
+Template.create_image_section.events({
+  'change input[type=file]': function(e, t){
+    var file = _.first(event.target.files);
+    if (file){
+      var reader = new FileReader;
+      reader.onload = function(upload){
+        t.uploadPreview.set(upload.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      t.uploadPreview.set(null);
+    }
+  }
+});
+
 Template.create_image_section.onCreated(searchTemplateCreatedBoilerplate('image', 'flickr'));
 Template.create_image_section.onRendered(searchTemplateRenderedBoilerplate());
+
 
 Template.create_gif_section.onCreated(searchTemplateCreatedBoilerplate('gif', 'giphy'));
 Template.create_gif_section.onRendered(searchTemplateRenderedBoilerplate());
@@ -468,7 +537,7 @@ Template.create_audio_section.onCreated(searchTemplateCreatedBoilerplate('audio'
 Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
 
 var dataSourcesByType = {
-  'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}],
+  'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}, {source: 'cloudinary', display: 'Upload Your Own'}],
   'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
   'gif': [{source: 'giphy', display: 'Giphy'}],
   'video': [{source: 'youtube', display: 'Youtube'}, {source: 'vimeo', display: 'Vimeo'}],
@@ -742,10 +811,12 @@ Template.create_map_section.onCreated(function() {
 
   var that = this;
   this.search = function(){
+    var inputs = getSearchInput.call(that);
+
     that.focusResult.set(new MapBlock({
       reference: {
-        mapQuery: input.query,
-        mapType: input.option
+        mapQuery: inputs.query,
+        mapType: inputs.option
       },
       authorId : Meteor.user()._id
     }))
@@ -813,8 +884,8 @@ Template.search_form.helpers({
       case 'links':
         return 'e.g. ' +
           _.sample([
-            'http://readfold.com',
-            'http://twitter.com/readFOLD',
+            'https://readfold.com',
+            'https://twitter.com/readFOLD',
             'http://nytimes.com',
             'http://flickr.com'
           ]);

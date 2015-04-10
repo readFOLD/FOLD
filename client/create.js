@@ -40,8 +40,8 @@ window.updateUIBasedOnSelection = function(e){
         var selectedTags = [];
         var tagName;
 
-        // only do if selection is inside a narrative block
-        if($(parentNode).parents('.vertical-narrative-section').length) {
+        // only do if selection is inside a fold-editable block
+        if($(parentNode).hasClass('fold-editable') || $(parentNode).parents('.fold-editable').length) {
           while (parentNode.tagName !== undefined && parentNode.tagName.toLowerCase() !== 'div') {
             tagName = parentNode.tagName.toLowerCase();
             selectedTags.push(tagName);
@@ -269,43 +269,30 @@ window.saveCallback =  function(err, success, cb) {
   }
 };
 
-var autoSaveVerticalSectionField = function(template, field, datatype){
-  storyId = Session.get('storyId');
-
-  if (datatype === 'html') {
-    value = $.trim(template.$('div.' + field).html());
-  } else {
-    value = $.trim(template.$('div.' + field).text());
-  }
-  index = template.data.index;
-
-  setField = 'draftStory.verticalSections.' + index + '.' + field
-  setObject = { $set:{} };
-  setObject['$set'][setField] = value;
-
-  Session.set('saveState', 'saving');
-
-  return Meteor.call('saveStory', {
-    _id: storyId
-  }, setObject, {removeEmptyStrings: false}, saveCallback)
-};
-
 Template.vertical_section_block.events({
   'mouseup [contenteditable]': window.updateUIBasedOnSelection,
   'blur [contenteditable]': window.updateUIBasedOnSelection,
   'blur .title[contenteditable]' : function(e, template){
-    autoSaveVerticalSectionField(template, 'title');
+    Session.set('saveState', 'saving');
+
+    Meteor.call('updateVerticalSectionTitle', Session.get('storyId'), template.data.index, $.trim(template.$('div.title').text()), saveCallback);
     return true;
   },
   'keydown .title[contenteditable]' : function(e, template){
     if (e.keyCode === 13){ // enter
       e.preventDefault();
-      template.$('.content').focus()
+      template.$('.content').focus();
     }
     return true;
   },
   'blur .content[contenteditable]' : function(e, template){
-    autoSaveVerticalSectionField(template, 'content', 'html');
+    Session.set('saveState', 'saving');
+
+    Meteor.call('updateVerticalSectionContent',
+      Session.get('storyId'),
+      template.data.index,
+      cleanVerticalSectionContent($.trim(template.$('div.content').html())), // TODO move to method
+      saveCallback);
     return true;
   },
   // clean up pasting into vertical section content
@@ -462,14 +449,7 @@ Template.vertical_edit_menu.events({
 
 Template.add_horizontal.helpers({
   left: function() {
-    var cardWidth, halfWidth, width;
-    width = Session.get("windowWidth");
-    if (width < 1024) {
-      width = 1024;
-    }
-    halfWidth = width / 2;
-    cardWidth = Session.get("cardWidth");
-    return halfWidth + (Session.get("separation")) / 2;
+    return Session.get("verticalLeft") + Session.get("cardWidth") + Session.get("separation");
   }
 });
 
@@ -615,14 +595,8 @@ Template.create_horizontal_section_block.helpers({
 
 Template.create_horizontal_section_block.helpers({
   left: function() {
-    var cardWidth, halfWidth, width;
-    width = Session.get("windowWidth");
-    if (width < 1024) {
-      width = 1024;
-    }
-    halfWidth = width / 2;
-    cardWidth = Session.get("cardWidth");
-    return 75 + halfWidth + (Session.get("separation")) * 1.5;
+    var addBlockWidth = 75;
+    return addBlockWidth + Session.get("verticalLeft") + Session.get("cardWidth") + 2 * Session.get("separation");
   }
 });
 
@@ -717,6 +691,7 @@ Template.context_anchor_option.events = {
     temporaryAnchorElement.attr('href', 'javascript:void(0);'); // get rid of temporary href
     temporaryAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
     temporaryAnchorElement.attr('data-context-type', this.type);
+    temporaryAnchorElement.attr('data-context-source', this.source);
 
     temporaryAnchorElement.addClass('active'); // add active class because we go to this context and if we're already there it won't get the class
 

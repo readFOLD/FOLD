@@ -3,7 +3,7 @@
 @dark-color: #323232;
 @medium-color: #CCCCCB;
 @light-color: #F4F4F4;
-@light-transparent-color: rgba(244,244,244,0.85);
+@light-transparent-color: rgba(244,244,244,0.75);
 @white-color: white;
 
 @background-color: #F8F8F8;
@@ -34,41 +34,51 @@
 }
 
 .standard-icon-colors {
-  circle{
+  .bg{
     fill: @dark-color;
   }
-  path{
+  .fg{
     fill: @light-color;
   }
   .active{
-    circle{
+    .bg{
       fill: @action-color;
+    }
+    .remix-icon{
+      .bg{
+        fill: @action-color;
+      }
     }
   }
 
   .back-arrow{
-    path{
+    .fg{
       fill: @dark-color;
     }
   }
 }
 
 .inverted-icon-colors {
-  circle{
+  .bg{
     fill:  @light-color;
   }
-  path{
+  .fg{
     fill: @dark-color;
   }
 
   .active{
-    circle{
+    .bg{
       fill: @action-color;
+    }
+    .remix-icon{
+      .bg{
+        fill: @action-color;
+      }
     }
   }
 
   .back-arrow{
-    path{
+    .fg{
       fill: @light-color;
     }
   }
@@ -771,7 +781,7 @@ div.horizontal-context {
   top: -0.5 * @size;
   svg{
     margin-left: 7px;
-    circle{
+    .bg{
       fill: @action-color;
     }
     .size(@size);

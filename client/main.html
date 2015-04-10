@@ -342,15 +342,6 @@
   {{/unless}}
 </template>
 
-<template name="display_rich_section">
-  <div class="rich-section {{#if isFocused}}focused{{/if}}">
-    {{{html}}}
-  </div>
-  {{#unless read}}
-    {{> horizontal_section_edit_delete}}
-  {{/unless}}
-</template>
-
 <template name="display_twitter_section">
   <div class="twitter-section">
       <div class="active-display">
@@ -423,9 +414,11 @@
 
 <template name="story_browser">
   <div class="story-browser">
-    <div class="left">
-      {{ > browse_arrow_left}}
-    </div>
+    {{#if showLeftArrow}}
+      <div class="left">
+        {{ > browse_arrow_left}}
+      </div>
+    {{/if}}
     <div class="right">
       {{ > browse_arrow_right}}
     </div>

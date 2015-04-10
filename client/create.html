@@ -42,7 +42,7 @@
 <template name="create_options">
   {{#unless pastHeader}}
   <div class="upload-header-image">
-    <input type="file" class="file-upload">
+    <input type="file" class="header-upload">
   </div>
   {{/unless}}
   <div class="floating-story-buttons">
@@ -282,20 +282,36 @@
           {{/each}}
         </ul>
       </div>
-      {{> search_form}}
-      <ol class="search-results-container">
-        {{#each results}}
-          <li class="tile {{#if isFocused}}focused{{/if}}">
-            <img src="{{thumbnailUrl}}">
-          </li>
-        {{/each}}
-        {{#if loading}}
-          {{> loading_icon}}
-        {{/if}}
-        {{#if noMoreResults}}
-          {{noMoreResults}}
-        {{/if}}
-      </ol>
+      {{#if uploadMode}}
+        <div class="image-upload">
+          {{#c_upload_stream}}
+            <input type="file" accept="image/*" class="image-upload">
+          {{/c_upload_stream}}
+
+          {{#each c.uploading_images}}
+            <p>Uploading: {{percent_uploaded}}%</p>
+          {{/each}}
+          {{#if uploadStatus}}
+            <p>{{uploadStatus}}</p>
+          {{/if}}
+          <img width="250" src="{{uploadPreview}}">
+        </div>
+      {{else}}
+        {{> search_form}}
+        <ol class="search-results-container">
+          {{#each results}}
+            <li class="tile {{#if isFocused}}focused{{/if}}">
+              <img src="{{thumbnailUrl}}">
+            </li>
+          {{/each}}
+          {{#if loading}}
+            {{> loading_icon}}
+          {{/if}}
+          {{#if noMoreResults}}
+            {{noMoreResults}}
+          {{/if}}
+        </ol>
+      {{/if}}
       {{#if showAddButton}}
         <button type="button" class="add-desc-button {{#if isActive}}enabled{{/if}}">
           Add Description
@@ -308,9 +324,6 @@
           {{> display_image_section}}
         {{/with}}
       </div>
-      <form class="desc-form">
-        <textarea name="content" value={{content}} class="text-input" rows="2" dir="auto" placeholder="Type description here"></textarea>
-      </form>
       <button type="button" class="back-button {{#if isActive}}enabled{{/if}}">
         Back
       </button>
@@ -357,9 +370,6 @@
           {{> display_image_section}}
         {{/with}}
       </div>
-      <form class="desc-form">
-        <textarea name="content" value={{content}} class="text-input" rows="2" dir="auto" placeholder="Type description here"></textarea>
-      </form>
       <button type="button" class="back-button {{#if isActive}}enabled{{/if}}">
         Back
       </button>

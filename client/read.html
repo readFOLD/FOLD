@@ -1,4 +1,17 @@
 <template name="read">
   {{> story_header}}
   {{> story}}
+  {{> read_options}}
+</template>
+
+<template name="read_options">
+  <div class="floating-story-buttons">
+    {{#if isAuthor}}
+      {{#linkTo route="edit" data=this}}
+        <button type="button" class="link-to-edit">
+          Edit This Story
+        </button>
+      {{/linkTo}}
+    {{/if}}
+  </div>
 </template>

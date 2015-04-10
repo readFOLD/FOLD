@@ -121,6 +121,13 @@ Tracker.autorun(function(){
   }
 });
 
+Tracker.autorun(function(){
+  var currentYId = Session.get("currentYId");
+  if (currentYId){
+    Session.set("currentX", Session.get("currentXByYId")[currentYId] || 0);
+  }
+});
+
 Meteor.startup(function() {
   var throttledUpdate;
   Session.setDefault("filterOpen", false);
@@ -282,10 +289,10 @@ Template.story.helpers({
 Template.story_title.helpers({
   storyTitleDiv: function(){
     if (Session.get('read')) {
-      return '<div class="story-title">' + this.title + '</div>';
+      return '<div class="story-title">' + _.escape(this.title) + '</div>';
     } else {
       // this is contenteditable in edit mode
-      return '<div class="story-title" placeholder="Title" contenteditable="true" dir="auto">' + this.title + '</div>';
+      return '<div class="story-title" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
     }
   }
 });
@@ -302,20 +309,20 @@ Template.vertical_section_block.helpers({
   },
   titleDiv: function() {
     if (Session.get('read')) {
-      return '<div class="title" dir="auto">' + this.title + '</div>';
+      return '<div class="title" dir="auto">' + _.escape(this.title) + '</div>';
     } else {
       // this is contenteditable in edit mode
-      return '<div class="title editable" placeholder="Title" contenteditable="true" dir="auto">' + this.title + '</div>';
+      return '<div class="title editable" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
     }
   },
   // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
   contentDiv: function() {
     if (Session.get('read')) {
-      return '<div class="content">' + this.content + '</div>';
+      return '<div class="content">' + cleanVerticalSectionContent(this.content) + '</div>';
     } else {
       // nonReactiveContent preserves browser undo functionality across saves
       // this is contenteditable in edit mode
-      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true" dir="auto">' + Template.instance().semiReactiveContent.get() + '</div>';
+      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true" dir="auto">' + cleanVerticalSectionContent(Template.instance().semiReactiveContent.get()) + '</div>';
     }
   }
 });
@@ -437,7 +444,8 @@ Template.horizontal_context.helpers({
           .map(function (datum, horizontalIndex) {
             return _.extend(datum || {}, {
               index: horizontalIndex,
-              verticalIndex: verticalIndex
+              verticalIndex: verticalIndex,
+              verticalId: verticalSection._id
             });
           })
           .value();
@@ -452,7 +460,8 @@ Template.horizontal_context.helpers({
         var data = verticalSection.contextBlocks.map(function (datum, horizontalIndex) {
           return _.extend({}, datum, {
             index: horizontalIndex,
-            verticalIndex: verticalIndex
+            verticalIndex: verticalIndex,
+            verticalId: verticalSection._id
           });
         }).map(window.newTypeSpecificContextBlock);
         return {
@@ -487,16 +496,18 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
     if (this.type === 'text'){
       textContent = this.content || '';
       rows = 10;
+      placeholder = '';
     }
     else{
       textContent = this.description || '';
       rows = 2;
+      placeholder = 'Add a caption'
     }
 
     if (Session.get('read')) {
-      return '<div class="text-content" dir="auto">' + textContent.replace(/\n/g, "<br />") + '</div>';
+      return '<div class="text-content" dir="auto">' + _.escape(textContent).replace(/\n/g, "<br>") + '</div>';
     } else {
-      return '<textarea name="content" class="text-content" rows="' + rows + '" dir="auto">' + textContent + '</textarea>';
+      return '<textarea name="content" class="text-content editable" rows="' + rows + '" placeholder="' + placeholder +  '" dir="auto">' + _.escape(textContent) + '</textarea>';
     }
   }
 });
@@ -515,7 +526,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 
     "blur .text-content": function(d, template) {
       var that = this;
-      if (!Session.get('read')) {
+      if (!Session.get('read') && !Session.get('addingContext')) {
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
         Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
@@ -525,7 +536,9 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
     },
     "keypress .image-section .text-content": function(e, template) {
       var that = this;
-      if (!Session.get('read') && e.which === 13) {
+      if (!Session.get('read') && !Session.get('addingContext') && e.which === 13 ) {
+        console.log(4)
+
         e.preventDefault();
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
@@ -560,15 +573,28 @@ Template.display_text_section.events(editableDescriptionEventsBoilerplate('editT
 
 Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
+Template.story_browser.helpers({
+  showLeftArrow: function() {
+    return Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentYId')];
+  }
+});
 
 Template.story_browser.events({
   "click .right svg": function(d) {
     var currentX, horizontalSection, newX, path;
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
-    newX = currentX === (horizontalSection.length - 1) ? 0 : currentX + 1;
+    currentY = Session.get("currentY");
+    currentYId = Session.get("currentYId");
+    if (currentX === (horizontalSection.length - 1)) { // end of our rope
+      newX = 0;
+      wrap = Session.get("wrap");
+      wrap[currentYId] = true;
+      Session.set("wrap", wrap);
+    } else {
+      newX = currentX + 1;
+    }
     goToX(newX);
-    Session.set("currentX", newX);
     path = window.location.pathname.split("/");
     return path[4] = Session.get("currentX");
   },
@@ -577,7 +603,7 @@ Template.story_browser.events({
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
     newX = currentX ? currentX - 1 : horizontalSection.length - 1;
-    Session.set("currentX", newX);
+    goToX(newX);
     path = window.location.pathname.split("/");
     return path[4] = Session.get("currentX");
   }
@@ -587,7 +613,7 @@ Template.type_specific_icon.helpers(typeHelpers);
 
 Template.favorite_button.helpers({
   userFavorited: function() {
-    return Meteor.user() && (Meteor.user().profile.favorites.indexOf(this.id) >= 0);
+    return Meteor.user() && (Meteor.user().profile.favorites.indexOf(this._id) >= 0);
   }
 });
 
@@ -645,4 +671,43 @@ Template.create_story.events({
      Session.set('signingIn', true)
     }
   }
+});
+
+// ui setup moved from onRun
+Template.about.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.terms.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.home.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.signup.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.login.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.read.onCreated(function(){
+  Session.set("wrap", {});
+  Session.set("currentXByYId", {});
+  Session.set("currentY", null);
+  $('html, body').scrollTop(0);
+});
+
+Template.create.onCreated(function(){
+  Session.set("wrap", {});
+  Session.set("currentXByYId", {});
+  Session.set("currentY", null);
+  Session.set("read", false);
+  Session.set("newStory", false);
+  Session.set("showDraft", true);
+  $('html, body').scrollTop(0);
+
 });
