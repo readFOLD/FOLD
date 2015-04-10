@@ -49,14 +49,12 @@ Story = (function() {
   var sum = function(a,b){ return a+b; };
 
   Story.prototype.contextCountOfType = function(type) {
-    return this.verticalSections.map(function(verticalSection){
-      return verticalSection.contextBlocks.reduce(function(count, contextBlock){
-        if(contextBlock.type === type){
-          count++;
-        }
-        return count;
-      }, 0)
-    }).reduce(sum, 0)
+    return this.contextBlocks.reduce(function(count, contextBlock){
+      if(contextBlock.type === type){
+        count++;
+      }
+      return count;
+    }, 0)
   };
 
   return Story;
