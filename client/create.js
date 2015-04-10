@@ -534,7 +534,7 @@ var showNewHorizontalUI = function() {
 };
 
 var hideNewHorizontalUI = function() {
-  scrollToRelativePosition(350 + 29 - 140);
+  scrollToRelativePosition(350 + 29 - 93);
   return Session.set("addingContext", null);
 };
 
@@ -691,6 +691,7 @@ Template.context_anchor_option.events = {
     temporaryAnchorElement.attr('href', 'javascript:void(0);'); // get rid of temporary href
     temporaryAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
     temporaryAnchorElement.attr('data-context-type', this.type);
+    temporaryAnchorElement.attr('data-context-source', this.source);
 
     temporaryAnchorElement.addClass('active'); // add active class because we go to this context and if we're already there it won't get the class
 

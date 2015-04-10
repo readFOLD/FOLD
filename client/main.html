@@ -35,7 +35,7 @@
     <!-- Mesh Background Overlay -->
     <!-- <div id="overlay"></div> -->
     <article class="content">
-        <div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}"
+        <div class="vertical-narrative"
              style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
             {{> vertical_narrative}}
 
@@ -44,11 +44,9 @@
 
           </footer>
         </div>
-        {{#unless narrativeView}}
-            <div class="horizontal-context" style="{{#unless read}}margin-top: 23px{{/unless}}">
+            <div class="horizontal-context">
                 {{> horizontal_context}}
             </div>
-        {{/unless}}
     </article>
 
 
@@ -332,15 +330,6 @@
     <div class="bottom">
       <a href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
     </div>
-  </div>
-  {{#unless read}}
-    {{> horizontal_section_edit_delete}}
-  {{/unless}}
-</template>
-
-<template name="display_rich_section">
-  <div class="rich-section {{#if isFocused}}focused{{/if}}">
-    {{{html}}}
   </div>
   {{#unless read}}
     {{> horizontal_section_edit_delete}}

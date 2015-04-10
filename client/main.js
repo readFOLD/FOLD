@@ -122,9 +122,9 @@ Tracker.autorun(function(){
 });
 
 Tracker.autorun(function(){
-  var currentY = Session.get("currentY");
-  if (typeof currentY === 'number'){
-    Session.set("currentX", Session.get("currentXByRow")[currentY] || 0);
+  var currentYId = Session.get("currentYId");
+  if (currentYId){
+    Session.set("currentX", Session.get("currentXByYId")[currentYId] || 0);
   }
 });
 
@@ -258,10 +258,10 @@ Template.story.helpers({
 Template.story_title.helpers({
   storyTitleDiv: function(){
     if (Session.get('read')) {
-      return '<div class="story-title">' + this.title + '</div>';
+      return '<div class="story-title">' + _.escape(this.title) + '</div>';
     } else {
       // this is contenteditable in edit mode
-      return '<div class="story-title" placeholder="Title" contenteditable="true" dir="auto">' + this.title + '</div>';
+      return '<div class="story-title" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
     }
   }
 });
@@ -278,20 +278,20 @@ Template.vertical_section_block.helpers({
   },
   titleDiv: function() {
     if (Session.get('read')) {
-      return '<div class="title" dir="auto">' + this.title + '</div>';
+      return '<div class="title" dir="auto">' + _.escape(this.title) + '</div>';
     } else {
       // this is contenteditable in edit mode
-      return '<div class="title editable" placeholder="Title" contenteditable="true" dir="auto">' + this.title + '</div>';
+      return '<div class="title editable" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
     }
   },
   // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
   contentDiv: function() {
     if (Session.get('read')) {
-      return '<div class="content">' + this.content + '</div>';
+      return '<div class="content">' + cleanVerticalSectionContent(this.content) + '</div>';
     } else {
       // nonReactiveContent preserves browser undo functionality across saves
       // this is contenteditable in edit mode
-      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true" dir="auto">' + Template.instance().semiReactiveContent.get() + '</div>';
+      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true" dir="auto">' + cleanVerticalSectionContent(Template.instance().semiReactiveContent.get()) + '</div>';
     }
   }
 });
@@ -348,7 +348,8 @@ Template.horizontal_context.helpers({
           .map(function (datum, horizontalIndex) {
             return _.extend(datum || {}, {
               index: horizontalIndex,
-              verticalIndex: verticalIndex
+              verticalIndex: verticalIndex,
+              verticalId: verticalSection._id
             });
           })
           .value();
@@ -363,7 +364,8 @@ Template.horizontal_context.helpers({
         var data = verticalSection.contextBlocks.map(function (datum, horizontalIndex) {
           return _.extend({}, datum, {
             index: horizontalIndex,
-            verticalIndex: verticalIndex
+            verticalIndex: verticalIndex,
+            verticalId: verticalSection._id
           });
         }).map(window.newTypeSpecificContextBlock);
         return {
@@ -435,9 +437,9 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
     }
 
     if (Session.get('read')) {
-      return '<div class="text-content" dir="auto">' + textContent.replace(/\n/g, "<br />") + '</div>';
+      return '<div class="text-content" dir="auto">' + _.escape(textContent).replace(/\n/g, "<br>") + '</div>';
     } else {
-      return '<textarea name="content" class="text-content editable" rows="' + rows + '" placeholder="' + placeholder +  '" dir="auto">' + textContent + '</textarea>';
+      return '<textarea name="content" class="text-content editable" rows="' + rows + '" placeholder="' + placeholder +  '" dir="auto">' + _.escape(textContent) + '</textarea>';
     }
   }
 });
@@ -505,7 +507,7 @@ Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
 Template.story_browser.helpers({
   showLeftArrow: function() {
-    return Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentY')];
+    return Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentYId')];
   }
 });
 
@@ -515,10 +517,11 @@ Template.story_browser.events({
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
     currentY = Session.get("currentY");
+    currentYId = Session.get("currentYId");
     if (currentX === (horizontalSection.length - 1)) { // end of our rope
       newX = 0;
       wrap = Session.get("wrap");
-      wrap[currentY] = true;
+      wrap[currentYId] = true;
       Session.set("wrap", wrap);
     } else {
       newX = currentX + 1;
@@ -600,4 +603,43 @@ Template.create_story.events({
      Session.set('signingIn', true)
     }
   }
+});
+
+// ui setup moved from onRun
+Template.about.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.terms.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.home.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.signup.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.login.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.read.onCreated(function(){
+  Session.set("wrap", {});
+  Session.set("currentXByYId", {});
+  Session.set("currentY", null);
+  $('html, body').scrollTop(0);
+});
+
+Template.create.onCreated(function(){
+  Session.set("wrap", {});
+  Session.set("currentXByYId", {});
+  Session.set("currentY", null);
+  Session.set("read", false);
+  Session.set("newStory", false);
+  Session.set("showDraft", true);
+  $('html, body').scrollTop(0);
+
 });

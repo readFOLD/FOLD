@@ -34,7 +34,7 @@ div.home-top {
     display: inline-block;
     margin-left: 60px;
     margin-top: 37px;
-    width: 255px;
+    width: 310px;
     div.logo {
       float: left;
       z-index: 10;
@@ -42,8 +42,8 @@ div.home-top {
 
     div.title {
       float: right;
-      margin-top: 10px;
-      width: 164px;
+      //margin-top: 5px;
+      width: 222px;
     }
   }
 
