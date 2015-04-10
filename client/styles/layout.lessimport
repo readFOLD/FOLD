@@ -44,6 +44,11 @@
     .bg{
       fill: @action-color;
     }
+    .remix-icon{
+      .bg{
+        fill: @action-color;
+      }
+    }
   }
 
   .back-arrow{
@@ -64,6 +69,11 @@
   .active{
     .bg{
       fill: @action-color;
+    }
+    .remix-icon{
+      .bg{
+        fill: @action-color;
+      }
     }
   }
 
