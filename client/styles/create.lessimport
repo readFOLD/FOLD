@@ -431,6 +431,8 @@ div.create-section.link-twitter{
   }
 }
 
+@newCardBottomButtonHeight: 35px;
+
 
 div.horizontal-context {
   section {
@@ -874,13 +876,14 @@ div.horizontal-context {
         margin-bottom: 0px;
       }
     }  
-  }  
+  }
+
     button.add-button, button.add-desc-button, button.back-button {
       position: relative;
       left: calc(100%~"-" 90px);
       background-color: @action-color;
+      height: @newCardBottomButtonHeight;
       color: @light-color;
-      height: 35px;
       width: 90px;
       margin-top: 12px;
       text-align: center;
@@ -1098,6 +1101,8 @@ div#fold-editor{
   }
 
   .image-preview {
+    max-height: calc(100% ~"-" @newCardBottomButtonHeight + 10px); // 10 px is effectively the min margin from the botton of window
+
     .image-section {
       height: 300px;      
     }
