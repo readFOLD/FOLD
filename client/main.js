@@ -348,7 +348,8 @@ Template.horizontal_context.helpers({
           .map(function (datum, horizontalIndex) {
             return _.extend(datum || {}, {
               index: horizontalIndex,
-              verticalIndex: verticalIndex
+              verticalIndex: verticalIndex,
+              verticalId: verticalSection._id
             });
           })
           .value();
@@ -363,7 +364,8 @@ Template.horizontal_context.helpers({
         var data = verticalSection.contextBlocks.map(function (datum, horizontalIndex) {
           return _.extend({}, datum, {
             index: horizontalIndex,
-            verticalIndex: verticalIndex
+            verticalIndex: verticalIndex,
+            verticalId: verticalSection._id
           });
         }).map(window.newTypeSpecificContextBlock);
         return {
@@ -505,7 +507,7 @@ Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
 Template.story_browser.helpers({
   showLeftArrow: function() {
-    return Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentY')];
+    return Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentYId')];
   }
 });
 
@@ -515,10 +517,11 @@ Template.story_browser.events({
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
     currentY = Session.get("currentY");
+    currentYId = Session.get("currentYId");
     if (currentX === (horizontalSection.length - 1)) { // end of our rope
       newX = 0;
       wrap = Session.get("wrap");
-      wrap[currentY] = true;
+      wrap[currentYId] = true;
       Session.set("wrap", wrap);
     } else {
       newX = currentX + 1;
@@ -624,14 +627,14 @@ Template.login.onCreated(function(){
 });
 
 Template.read.onCreated(function(){
-  Session.set("wrap", []);
+  Session.set("wrap", {});
   Session.set("currentXByYId", {});
   Session.set("currentY", null);
   $('html, body').scrollTop(0);
 });
 
 Template.create.onCreated(function(){
-  Session.set("wrap", []);
+  Session.set("wrap", {});
   Session.set("currentXByYId", {});
   Session.set("currentY", null);
   Session.set("read", false);

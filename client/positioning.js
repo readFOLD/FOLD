@@ -40,7 +40,7 @@ window.getHorizontalLeft = function() {
     return verticalRight + offset + cardSeparation;
   }
 
-  if (!Session.get("wrap")[this.verticalIndex]) { // not wrapping
+  if (!Session.get("wrap")[this.verticalId]) { // not wrapping
 
     if (currentPos === numCards - 1 || currentPos < -1){ // this makes cards appear on the right when they run off the left
       currentPos = numCards + currentPos;
