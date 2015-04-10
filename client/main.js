@@ -258,10 +258,10 @@ Template.story.helpers({
 Template.story_title.helpers({
   storyTitleDiv: function(){
     if (Session.get('read')) {
-      return '<div class="story-title">' + this.title + '</div>';
+      return '<div class="story-title">' + _.escape(this.title) + '</div>';
     } else {
       // this is contenteditable in edit mode
-      return '<div class="story-title" placeholder="Title" contenteditable="true" dir="auto">' + this.title + '</div>';
+      return '<div class="story-title" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
     }
   }
 });
@@ -278,10 +278,10 @@ Template.vertical_section_block.helpers({
   },
   titleDiv: function() {
     if (Session.get('read')) {
-      return '<div class="title" dir="auto">' + this.title + '</div>';
+      return '<div class="title" dir="auto">' + _.escape(this.title) + '</div>';
     } else {
       // this is contenteditable in edit mode
-      return '<div class="title editable" placeholder="Title" contenteditable="true" dir="auto">' + this.title + '</div>';
+      return '<div class="title editable" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
     }
   },
   // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
