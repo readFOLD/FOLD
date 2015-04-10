@@ -37,7 +37,6 @@ iron:middleware-stack@1.0.7
 iron:router@1.0.7
 iron:url@1.0.7
 jquery@1.11.3_2
-jquery-ui@0.0.0
 json@1.0.3
 launch-screen@1.0.2
 lepozepo:s3@5.1.0
