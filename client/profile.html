@@ -27,18 +27,20 @@
   {{#if editting}}
     <div class="user-info-form">
       {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
+      <button type="submit" class="save-profile-button">Save</button>
+      <div class="user-info">
         {{> afQuickField name='profile.name'}}
         {{> afQuickField name='profile.bio' class="bio-form"}}
-        <button type="submit" class="save-profile-button">Save</button>
+      </div>
       {{/autoForm}}
     </div>
   {{else}}
     {{#if ownProfile}}
       <button class="edit-profile">Edit</button>
     {{/if}}
-    <div class="profile-picture">
+    <div class="picture">
       {{#if profileImage}} 
-         <img class="profile-picture-large" src="{{profileImage}}"/>
+         <img class="profile-picture" src="{{profileImage}}"/>
       {{/if}}
     </div>
     <div class="name">{{name}}</div>
@@ -57,7 +59,7 @@
       {{/linkTo}}
     {{/with}}
   {{else}}
-    <div>{{unpublishedMessage}}</div>
+    <div class="message">{{unpublishedMessage}}</div>
   {{/each}}
 </template>
 
@@ -70,7 +72,7 @@
       </div>
     {{/linkTo}}
   {{else}}
-    <div>{{noFavoritesMessage}}</div>
+    <div class="message">{{noFavoritesMessage}}</div>
   {{/each}}
 </template>
 

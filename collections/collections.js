@@ -1069,6 +1069,10 @@ Schema.UserProfile = new SimpleSchema({
       }
     }
   },
+  profile_picture: {
+    type: String,
+    optional: true
+  },
   twitterUser: {
     type: Boolean,
     optional: true

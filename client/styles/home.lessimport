@@ -287,12 +287,16 @@ div.stories {
       width: calc(50% ~"-" @margin-side * 2);
 
       @media (max-width: 1200px){
-        width: calc(100% ~"-" @margin-side * 2);
+        @margin-side: 2%;
+        margin-right: @margin-side*2;
+        width: calc(100% ~"-" @margin-side * 8);
       }
 
       @media (max-width: 800px) {
-        @margin-side: 4px;
+        @margin-side: 30px;
         margin-right: @margin-side;
+        margin-left: @margin-side;
+        width: calc(100% ~"-" @margin-side * 2);
       }
 
 

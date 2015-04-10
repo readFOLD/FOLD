@@ -1,8 +1,14 @@
-@picture-radius: 10em;
+@picture-radius: 150px;
 
 h1 {
  font-size: 30px;
    @media (max-width: 800px) {
+    text-align: center;
+  }
+}
+
+.message {
+  @media (max-width: 800px) {
     text-align: center;
   }
 }
@@ -25,6 +31,7 @@ div.user-profile {
   @profile-width: 340px;
   width: @profile-width;
   max-width: 340px;
+  min-height: 700px;
   height: 100%;
   z-index: 5;
 
@@ -33,15 +40,24 @@ div.user-profile {
     margin-left: @margin-side;
     max-width: 100%;
     width: calc(100% ~"-" @margin-side*2);
+    position: initial;
   }
 
-  div.profile-picture {
+  @media (max-height: 700px) {
+    position: initial;
+
+  }
+
+  div.picture {
     background-color: @black-color;
     width: @picture-radius;
     height: @picture-radius;
     border-radius: @picture-radius;
     margin: 50px calc(50% ~"-" @picture-radius*0.5) 35px;
-
+    overflow: hidden;
+    img.profile-picture {
+      margin-left: -50%;
+    }
   } 
   div.name, div.bio {
     text-align: center;
@@ -59,7 +75,7 @@ div.user-profile {
 
 }
 
-.user-info-form{
+.user-info{
   margin-top: calc(@picture-radius ~"+" 65px);
 }
 .edit-profile{

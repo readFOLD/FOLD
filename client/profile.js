@@ -57,7 +57,7 @@ Template.user_profile.helpers({
     return this.user.profile.bio
   },
   profileImage: function() {
-    return Meteor.user().profile.profile_picture;
+    return this.user.profile.profile_picture;
    },
 });
 
