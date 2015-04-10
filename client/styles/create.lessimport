@@ -86,6 +86,10 @@ div.floating-story-buttons {
   .publish-story{
     width: 140px;
   }
+
+  .link-to-edit{
+    width: 126px;
+  }
 }
 
 input.background-image-input {
@@ -589,7 +593,7 @@ div.horizontal-context {
     margin-bottom: 15px;
     ul {
       margin: 0;
-      padding-left: 0px;
+      padding-left: 0;
       li {
         &:first-child {
           padding-left: 5px;
