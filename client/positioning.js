@@ -1,6 +1,6 @@
 window.constants = {
   verticalSpacing: 12,
-  readModeOffset: 250,
+  readModeOffset: 298,
   minPageWidth: 1024
 };
 
@@ -40,7 +40,7 @@ window.getHorizontalLeft = function() {
     return verticalRight + offset + cardSeparation;
   }
 
-  if (!Session.get("wrap")[this.verticalIndex]) { // not wrapping
+  if (!Session.get("wrap")[this.verticalId]) { // not wrapping
 
     if (currentPos === numCards - 1 || currentPos < -1){ // this makes cards appear on the right when they run off the left
       currentPos = numCards + currentPos;
@@ -106,9 +106,9 @@ window.goToY = function(y) {
 };
 
 window.goToX = function(x) {
-  currentXByRow = Session.get("currentXByRow");
-  currentXByRow[Session.get("currentY")] = x;
-  Session.set("currentXByRow", currentXByRow);
+  currentXByYId = Session.get("currentXByYId");
+  currentXByYId[Session.get("currentYId")] = x;
+  Session.set("currentXByYId", currentXByYId);
 };
 
 window.goToContext = function(id) {

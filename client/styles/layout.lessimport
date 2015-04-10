@@ -44,6 +44,11 @@
     .bg{
       fill: @action-color;
     }
+    .remix-icon{
+      .bg{
+        fill: @action-color;
+      }
+    }
   }
 
   .back-arrow{
@@ -64,6 +69,11 @@
   .active{
     .bg{
       fill: @action-color;
+    }
+    .remix-icon{
+      .bg{
+        fill: @action-color;
+      }
     }
   }
 
@@ -725,17 +735,31 @@ div.twitter-section{
   }
 }
 
+@fixed-banner-height: 100px;
+div#banner-overlay {
+  width: 100%;
+  height: 350px;
+  background-color: @dark-color;
+  opacity: 0.0;
+  position: absolute;
+
+  &.fixed {
+    height: @fixed-banner-height;
+  }
+}
+
 div.horizontal-context {
   float: right;
   top: 350px;
-  margin-top: 12px;
+  @margin-top: 23px;
+  margin-top: @margin-top;
   margin-bottom: 500px;
   .size-to-fit;
 
   &.fixed {
     .top-transition;
     position: fixed;
-    top: 230px;
+    top: @fixed-banner-height + 106px - @margin-top;
     &.editing {
       top: 90px;
     }
