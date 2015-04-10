@@ -76,6 +76,7 @@ Meteor.publish("userProfilePub", function(username) {
 });
 
 Meteor.publish("userStoriesPub", function(username) {
+  // TODO simplify once stories have author username on them
   var user = Meteor.users.find({
     username: username.toLowerCase()
   });
