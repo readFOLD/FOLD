@@ -258,10 +258,10 @@ Template.story.helpers({
 Template.story_title.helpers({
   storyTitleDiv: function(){
     if (Session.get('read')) {
-      return '<div class="story-title">' + this.title + '</div>';
+      return '<div class="story-title">' + _.escape(this.title) + '</div>';
     } else {
       // this is contenteditable in edit mode
-      return '<div class="story-title" placeholder="Title" contenteditable="true" dir="auto">' + this.title + '</div>';
+      return '<div class="story-title" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
     }
   }
 });
@@ -278,20 +278,20 @@ Template.vertical_section_block.helpers({
   },
   titleDiv: function() {
     if (Session.get('read')) {
-      return '<div class="title" dir="auto">' + this.title + '</div>';
+      return '<div class="title" dir="auto">' + _.escape(this.title) + '</div>';
     } else {
       // this is contenteditable in edit mode
-      return '<div class="title editable" placeholder="Title" contenteditable="true" dir="auto">' + this.title + '</div>';
+      return '<div class="title editable" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
     }
   },
   // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
   contentDiv: function() {
     if (Session.get('read')) {
-      return '<div class="content">' + this.content + '</div>';
+      return '<div class="content">' + cleanVerticalSectionContent(this.content) + '</div>';
     } else {
       // nonReactiveContent preserves browser undo functionality across saves
       // this is contenteditable in edit mode
-      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true" dir="auto">' + Template.instance().semiReactiveContent.get() + '</div>';
+      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true" dir="auto">' + cleanVerticalSectionContent(Template.instance().semiReactiveContent.get()) + '</div>';
     }
   }
 });
@@ -447,9 +447,9 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
     }
 
     if (Session.get('read')) {
-      return '<div class="text-content" dir="auto">' + textContent.replace(/\n/g, "<br />") + '</div>';
+      return '<div class="text-content" dir="auto">' + _.escape(textContent).replace(/\n/g, "<br>") + '</div>';
     } else {
-      return '<textarea name="content" class="text-content editable" rows="' + rows + '" placeholder="' + placeholder +  '" dir="auto">' + textContent + '</textarea>';
+      return '<textarea name="content" class="text-content editable" rows="' + rows + '" placeholder="' + placeholder +  '" dir="auto">' + _.escape(textContent) + '</textarea>';
     }
   }
 });

@@ -338,15 +338,6 @@
   {{/unless}}
 </template>
 
-<template name="display_rich_section">
-  <div class="rich-section {{#if isFocused}}focused{{/if}}">
-    {{{html}}}
-  </div>
-  {{#unless read}}
-    {{> horizontal_section_edit_delete}}
-  {{/unless}}
-</template>
-
 <template name="display_twitter_section">
   <div class="twitter-section">
       <div class="active-display">

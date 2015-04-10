@@ -173,15 +173,26 @@
       {{ > video_icon }}
       <!--{{contextCountOfType 'video'}}-->
     {{/if}}
-    <!--{{ > image_icon }}-->
-    <!--{{ > gif_icon }}-->
+    {{#if contextCountOfType 'image'}}
+      {{ > image_icon }}
+      <!--{{contextCountOfType 'image'}}-->
+    {{/if}}
+    {{#if contextCountOfType 'gif'}}
+      {{ > gif_icon }}
+      <!--{{contextCountOfType 'gif'}}-->
+    {{/if}}
     {{#if contextCountOfType 'map'}}
       {{ > map_icon }}
       <!--{{contextCountOfType 'map'}}-->
     {{/if}}
-    <!--{{ > twitter_icon }}-->
-    <!--{{ > audio_icon }}-->
-
+    {{#if contextCountOfType 'twitter'}}
+      {{ > twitter_icon }}
+      <!--{{contextCountOfType 'twitter'}}-->
+    {{/if}}
+    {{#if contextCountOfType 'audio'}}
+      {{ > audio_icon }}
+      <!--{{contextCountOfType 'audio'}}-->
+    {{/if}}
     {{#if contextCountOfType 'viz'}}
       {{ > viz_icon }}
       <!--{{contextCountOfType 'viz'}}-->
@@ -189,6 +200,10 @@
     {{#if contextCountOfType 'text'}}
       {{ > text_icon }}
       <!--{{contextCountOfType 'text'}}-->
+    {{/if}}
+    {{#if contextCountOfType 'link'}}
+      {{ > link_icon }}
+      <!--{{contextCountOfType 'link'}}-->
     {{/if}}
     <!--TODO - add remix check-->
   </div>

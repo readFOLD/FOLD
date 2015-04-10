@@ -62,6 +62,7 @@ Story = (function() {
 })();
 
 
+// TODO consider replacing htmlclean with https://github.com/cristo-rabani/meteor-universe-html-purifier/
 var cleanHtmlOptions = {
   allowedTags: ['strong', 'em', 'u', 'a', 'br'], // only allow tags used in fold-editor and
   format: false,
@@ -75,8 +76,7 @@ var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match
 cleanVerticalSectionContent = function(html) {
 
 
-  var initialClean = $.htmlClean(html, _.omit(cleanHtmlOptions, 'allowedTags')); // do all cleaning except tag removal
-  
+  var initialClean = $.htmlClean(html, _.extend({}, _.omit(cleanHtmlOptions, 'allowedTags'), {allowEmpty: ['div']})); // do all cleaning except tag removal. allowEmpty means <div><br></div> turns into <div></div> instead of being deleted entirely
   var linebreakClean = initialClean
     .replace(new RegExp('<br />', 'g'), '<br>')
     .replace(new RegExp('<div><br></div>', 'g'), '<br>')
