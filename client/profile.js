@@ -71,13 +71,29 @@ Template.user_profile.events({
 });
 
 Template.user_stories.helpers({
-  writtenStories: function() {
-    return this.stories
+  publishedStories: function() {
+    return _.filter(this.stories.fetch(), function(story) {
+      return story.published ==true
+    })
+  },
+  unpublishedMessage: function () {
+    if (Meteor.user().username == this.user.username) {
+      return "You haven't published any stories yet!"
+    } else {
+      return "This user hasn't written any stories yet"
+    }
   }
 });
 
 Template.user_favorite_stories.helpers({
   favoriteStories: function() {
       return this.favorites
+    },
+  noFavoritesMessage: function () {
+    if (Meteor.user().username == this.user.username) {
+      return "You haven't favorited any stories yet!"
+    } else {
+      return "This user hasn't favorited any stories yet"
     }
+  }
 });

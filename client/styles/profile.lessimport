@@ -19,13 +19,14 @@ div.profile-section {
 }
 
 div.user-profile {
+  position: fixed;
   padding:20px;
-  margin-top: 30px;
   background-color: @white-color;
   @profile-width: 340px;
   width: @profile-width;
   max-width: 340px;
-  height: 750px;
+  height: 100%;
+  z-index: 5;
 
   @media (max-width: 800px) {
     @margin-side:15%;

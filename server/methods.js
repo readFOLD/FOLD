@@ -12,6 +12,10 @@ var VIMEO_ACCESS_TOKEN = Meteor.settings.VIMEO_ACCESS_TOKEN;
 var Twit = Meteor.npmRequire('twit');
 var Vimeo = Meteor.npmRequire('vimeo-api').Vimeo;
 
+if (!GOOGLE_API_SERVER_KEY) {
+  console.error('Settings must be loaded for apis to work');
+  throw new Meteor.Error('Settings must be loaded for apis to work');
+}
 
 var decrementByOne = function(bigInt) {
     var intArr = bigInt.split("");
@@ -28,11 +32,6 @@ var decrementByOne = function(bigInt) {
     }
     return result.join("")
 };
-
-if (!GOOGLE_API_SERVER_KEY) {
-  console.error('Settings must be loaded for apis to work');
-  throw new Meteor.Error('Settings must be loaded for apis to work');
-}
 
 var makeTwitterCall = function(apiCall, params) {
   var res;

@@ -48,16 +48,16 @@
 
 <template name="user_stories">
   <h1>Latest stories</h1>
-  {{#each writtenStories}}
+  {{#each publishedStories}}
     {{#with draftStory}}
-      {{#if published}}
-        {{#linkTo route="read" data=this}}
-          <div class="profile story" data-story-id="{{_id}}">
-            {{> _story_preview_content}}
-          </div>
-        {{/linkTo}}
-      {{/if}}
+      {{#linkTo route="read" data=this}}
+        <div class="profile story" data-story-id="{{_id}}">
+          {{> _story_preview_content}}
+        </div>
+      {{/linkTo}}
     {{/with}}
+  {{else}}
+    <div>{{unpublishedMessage}}</div>
   {{/each}}
 </template>
 
@@ -69,6 +69,8 @@
         {{> _story_preview_content}}
       </div>
     {{/linkTo}}
+  {{else}}
+    <div>{{noFavoritesMessage}}</div>
   {{/each}}
 </template>
 
