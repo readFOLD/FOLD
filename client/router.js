@@ -5,10 +5,6 @@ var idFromPathSegment = function(pathSegment) { // everything after last dash
 Router.route("home", {
   path: "/",
   template: "home",
-  onRun: function() {
-    $('html, body').scrollTop(0);
-    return this.next();
-  },
   waitOn: function() {
     return this.subscribe('exploreStoriesPub', '', '', '').wait();
   },
@@ -23,10 +19,6 @@ Router.route("home", {
 Router.route("about", {
   path: "about",
   template: "about",
-  onRun: function() {
-    $('html, body').scrollTop(0);
-    return this.next();
-  },
   action: function() {
     if (this.ready()) {
       return this.render();
@@ -38,10 +30,6 @@ Router.route("about", {
 Router.route("terms", {
   path: "terms",
   template: "terms",
-  onRun: function() {
-    $('html, body').scrollTop(0);
-    return this.next();
-  },
   action: function() {
     if (this.ready()) {
       return this.render();
@@ -103,14 +91,7 @@ Router.route("read", {
       return this.render();
     }
   },
-  onRun: function() {
-    Session.set("wrap", []);
-    Session.set("currentXByYId", {});
-    Session.set("currentY", null);
 
-
-    return this.next();
-  },
   data: function() {
     var story;
     if (this.ready()){
@@ -149,18 +130,6 @@ Router.route("read", {
 Router.route("edit", {
   path: "create/:userPathSegment/:storyPathSegment",
   template: "create",
-  onRun: function() {
-    Session.set("wrap", []);
-    Session.set("currentXByYId", {});
-    Session.set("currentY", null);
-    Session.set("read", false);
-    Session.set("newStory", false);
-    Session.set("showDraft", true);
-
-    Session.set("userPathSegment", this.params.userPathSegment);
-    $('html, body').scrollTop(0);
-    return this.next();
-  },
   waitOn: function() {
     shortId = idFromPathSegment(this.params.storyPathSegment);
     return [Meteor.subscribe('createStoryPub', this.params.userPathSegment, shortId), Meteor.subscribe('contextBlocksPub')];
@@ -174,6 +143,8 @@ Router.route("edit", {
         Session.set("storyId", story._id);
         Session.set("storyPublished", story.published);
         Session.set("headerImage", story.draftStory.headerImage);
+        Session.set("userPathSegment", this.params.userPathSegment);
+
         Session.set("horizontalSectionsMap", _.map(_.pluck(story.draftStory.verticalSections, "contextBlocks"), function (cBlockIds, i) {
           return {
             verticalIndex: i,
@@ -241,10 +212,6 @@ Router.onBeforeAction(function() {
 Router.route("twitter-signup", {
   path: "twitter-signup",
   template: "signup",
-  onRun: function() {
-    $('html, body').scrollTop(0);
-    return this.next();
-  },
   waitOn: function() {
     if (Meteor.user()) {
      [Meteor.subscribe('tempUsernamePub')];
@@ -263,10 +230,6 @@ Router.route("twitter-signup", {
 Router.route("email-signup", {
   path: "email-signup",
   template: "signup",
-  onRun: function() {
-    $('html, body').scrollTop(0);
-    return this.next();
-  },
   action: function() {
     Session.set("emailUser", true);
     Session.set('signingInWithTwitter', false);
@@ -279,10 +242,6 @@ Router.route("email-signup", {
 Router.route("login", {
   path: "login",
   template: "login",
-  onRun: function() {
-    $('html, body').scrollTop(0);
-    return this.next();
-  },
   action: function() {
     if (this.ready()) {
       return this.render();
