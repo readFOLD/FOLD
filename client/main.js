@@ -406,7 +406,24 @@ Template.metaview.helpers({
        });
     return blocks;
   }
-})
+});
+
+// prevent document scroll while in metaview
+// TODO fix behavior on hot code reload
+Meteor.startup(function() {
+  Tracker.autorun(function () {
+    if (Session.get("metaview")) {
+      if (document.body) {
+        document.body.style.overflow = 'hidden';
+      }
+    } else {
+      if (document.body) {
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+  });
+});
 
 Template.minimap.events({
   "click .minimap": function(d, t) {
