@@ -63,8 +63,9 @@ Story = (function() {
 
 // TODO consider replacing htmlclean with https://github.com/cristo-rabani/meteor-universe-html-purifier/
 var cleanHtmlOptions = {
-  allowedTags: ['strong', 'em', 'u', 'a', 'br'], // only allow tags used in fold-editor and
+  allowedTags: ['strong', 'em', 'u', 'b', 'a', 'br'], // only allow tags used in fold-editor and
   format: false,
+  removeTags: [], // allow u tag
   removeAttrs: ['class', 'id', 'href'], // strip away hrefs and other undesired attributes that might slip into a paste
   allowedAttributes: [["data-context-id"],["data-context-type"],["data-context-source"]] // data-context-id is used to direct links to context cards
 };
