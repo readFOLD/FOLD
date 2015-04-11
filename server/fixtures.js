@@ -302,7 +302,7 @@ if (Stories.find().count() === 0) {
         authorId: authorId,
         _id: '24'
       }
-    ],
+    ].map(function(doc){return new ContextBlock(doc)}),
     draftStory: {
       _id: '548781e397a6427c31384b73', // could remove
       headerImage: "header-image.jpg",
