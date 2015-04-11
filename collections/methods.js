@@ -345,6 +345,18 @@ Meteor.methods({
       .flatten()
       .value();
 
+    // update contextblocks so they are ready for publish
+    var numCBlocksUpdated = ContextBlocks.update({ _id: {$in: contextBlockIds}}, {
+      $set: {
+        'published': true,
+        'everPublished': true
+      },
+    }, {multi: true});
+
+    if (numCBlocksUpdated !== contextBlockIds.length){
+      throw new Meteor.Error('context blocks failed to update on publish ' + storyId + '. Maybe some are missing. Number of ids: ' + contextBlockIds.length + ' Number of blocks updated: ' + numCBlocksUpdated);
+    }
+
     var contextBlocks = ContextBlocks.find({_id: {$in: contextBlockIds}}).fetch();
 
     // TODO
