@@ -382,6 +382,7 @@ Template.create.events({
     template.publishing.set(false);
   },
   "click .confirm-publish": function (e, template) {
+    var that = this;
     return Meteor.call('publishStory', this._id, function(err, numDocs) {
       template.publishing.set(false);
       if (err) {
@@ -391,6 +392,8 @@ Template.create.events({
       }
       if (err || !numDocs) {
         return alert('Publication failed');
+      } else {
+        Router.go('/read/' + that.userPathSegment + '/' + that.storyPathSegment)
       }
     });
   }

@@ -102,6 +102,8 @@ this.Stories = new Meteor.Collection("stories", {
       _.extend(doc.draftStory, {
         unpublishedChanges: (!doc.published || !doc.publishedAt || doc.savedAt > doc.publishedAt),
         savedAt: doc.savedAt,
+        storyPathSegment: doc.storyPathSegment,
+        userPathSegment: doc.userPathSegment,
         contextCountOfType: function(){}, // stub out method for now,
         _id: doc._id
       });
