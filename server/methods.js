@@ -2,6 +2,7 @@ var GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
 var SOUNDCLOUD_CLIENT_ID = Meteor.settings.SOUNDCLOUD_CLIENT_ID;
 var IMGUR_CLIENT_ID = Meteor.settings.IMGUR_CLIENT_ID;
 var FLICKR_API_KEY = Meteor.settings.FLICKR_API_KEY;
+var GIPHY_API_KEY = Meteor.settings.GIPHY_API_KEY;
 var TWITTER_API_KEY = process.env.TWITTER_API_KEY || Meteor.settings.TWITTER_API_KEY;
 var TWITTER_API_SECRET = process.env.TWITTER_API_SECRET || Meteor.settings.TWITTER_API_SECRET;
 var EMBEDLY_KEY = Meteor.settings.EMBEDLY_KEY;
@@ -62,6 +63,9 @@ S3.config = {
 };
 
 Meteor.methods({
+  checkEarlybird: function(){
+    return Meteor.user().earlybird ? true : false;
+  },
   updateUserInfo: function(userInfo) {
     if (Meteor.user().tempUsername) {
       var username = userInfo.username;
@@ -216,7 +220,7 @@ Meteor.methods({
     page = page || 0;
     requestParams = {
       q: query,
-      api_key: 'dc6zaTOxFJmzC',
+      api_key: GIPHY_API_KEY,
       offset: page,
       limit: 50
     };

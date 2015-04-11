@@ -49,6 +49,10 @@ div.upload-header-image {
   z-index: 100;
 }
 
+.confirm-publish{
+  background-color: @dark-color;
+  color: @light-color;
+}
 
 div.floating-story-buttons {
   button {

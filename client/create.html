@@ -4,6 +4,9 @@
     {{> story}}
     {{> fold_editor }}
     {{> fold_link_remover }}
+    {{#if publishing}}
+      {{> publish_overlay }}
+    {{/if}}
   {{/with}}
 
   {{> create_options}}
@@ -709,7 +712,16 @@
   </div>
 </template>
 
+<template name="publish_overlay">
+    <div class="publish-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+      <div class="central-modal">
 
+        <!--<label for="confirm-title">Confirm title</label>-->
+        <!--<input type="text" name="confirm-title" value="{{title}}">-->
+        <button type="button" class="confirm-publish">Publish</button>
+      </div>
+    </div>
+</template>
 
 <template name="context_anchor_option">
   <button type="button">{{> type_specific_icon}}<span class="text">{{anchorMenuSnippet}}</span></button>

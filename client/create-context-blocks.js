@@ -189,6 +189,10 @@ var searchAPI = function(query) {
 
   integrationDetails = searchIntegrations[this.type][source];
 
+  if (integrationDetails.notSearch){ // don't search if it's not a search integration
+    return
+  }
+
   Meteor.call(integrationDetails.methodName, query, option, page, function(err, results) {
     that.loadingResults.set(false);
     if (err) {
@@ -324,6 +328,9 @@ var searchIntegrations = {
           }
         }
       }
+    },
+    cloudinary: {
+      notSearch: true
     }
   },
   gif: {
@@ -362,25 +369,25 @@ _.each(createTemplateNames, function(templateName){
 
 
 Template.create_audio_section.events({
-  "dblclick li": function (d, template) {
+  "dblclick .search-results-container li": function (d, template) {
     addContext(this);
   }
 });
 
 Template.create_video_section.events({
-  "dblclick li": function (d, template) {
+  "dblclick .search-results-container li": function (d, template) {
     addContext(this);
   }
 });
 
 Template.create_twitter_section.events({
-  "dblclick li": function (d, template) {
+  "dblclick .search-results-container li": function (d, template) {
     addContext(this);
   }
 });
 
 Template.create_image_section.events({
-  "dblclick li": function (d, template) {
+  "dblclick .search-results-container li": function (d, template) {
     template.addingDescription.set(true);
     setTimeout(function(){
       template.$('textarea').focus();
@@ -389,7 +396,7 @@ Template.create_image_section.events({
 });
 
 Template.create_gif_section.events({
-  "dblclick li": function (d, template) {
+  "dblclick .search-results-container li": function (d, template) {
     template.addingDescription.set(true);
     setTimeout(function(){
       template.$('textarea').focus();

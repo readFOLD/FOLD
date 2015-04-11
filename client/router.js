@@ -118,10 +118,10 @@ Router.route("read", {
         Session.set("story", story);
         Session.set("storyId", story._id);
         Session.set("headerImage", story.headerImage);
-        Session.set("horizontalSectionsMap", _.map(_.pluck(story.verticalSections, "contextBlocks"), function(cBlocks, i) {
+        Session.set("horizontalSectionsMap", _.map(_.pluck(story.verticalSections, "contextBlocks"), function (cBlockIds, i) {
           return {
             verticalIndex: i,
-            horizontal: _.map(_.pluck(cBlocks, '_id'), function(id, i) {
+            horizontal: _.map(cBlockIds, function (id, i) {
               return {
                 _id: id,
                 horizontalIndex: i

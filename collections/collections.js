@@ -1,4 +1,4 @@
-var ContextBlock, MapBlock, Schema, Story, TextBlock, VideoBlock, ImageBlock, AudioBlock, VizBlock, TwitterBlock, checkOwner,
+var MapBlock, Schema, Story, TextBlock, VideoBlock, ImageBlock, AudioBlock, VizBlock, TwitterBlock, checkOwner,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -46,50 +46,26 @@ Story = (function() {
     return this.title = "";
   };
 
-  Story.prototype.publish = function() {
-    var dasherizedTitle;
-    if (!this.savedAt) {
-      throw new Meteor.Error('not-yet-saved');
-    }
-    if (this.published) {
-      throw new Meteor.Error('already-published');
-    }
-    dasherizedTitle = _s.slugify(this.title.toLowerCase());
-    alert('TODO actually do this')
-    //if (confirm('Your story will have the url path: /' + dasherizedTitle)) {
-    //  return Stories.update({
-    //    _id: this._id
-    //  }, {
-    //    $set: {
-    //      published: true,
-    //      publishedDate: new Date,
-    //      savedAt: new Date
-    //    }
-    //  });
-    //}
-  };
-
   var sum = function(a,b){ return a+b; };
 
   Story.prototype.contextCountOfType = function(type) {
-    return this.verticalSections.map(function(verticalSection){
-      return verticalSection.contextBlocks.reduce(function(count, contextBlock){
-        if(contextBlock.type === type){
-          count++;
-        }
-        return count;
-      }, 0)
-    }).reduce(sum, 0)
+    return this.contextBlocks.reduce(function(count, contextBlock){
+      if(contextBlock.type === type){
+        count++;
+      }
+      return count;
+    }, 0)
   };
 
   return Story;
 
 })();
 
-
+// TODO consider replacing htmlclean with https://github.com/cristo-rabani/meteor-universe-html-purifier/
 var cleanHtmlOptions = {
-  allowedTags: ['strong', 'em', 'u', 'a', 'br'], // only allow tags used in fold-editor and
+  allowedTags: ['strong', 'em', 'u', 'b', 'a', 'br'], // only allow tags used in fold-editor and
   format: false,
+  removeTags: [], // allow u tag
   removeAttrs: ['class', 'id', 'href'], // strip away hrefs and other undesired attributes that might slip into a paste
   allowedAttributes: [["data-context-id"],["data-context-type"],["data-context-source"]] // data-context-id is used to direct links to context cards
 };
@@ -124,9 +100,10 @@ this.Stories = new Meteor.Collection("stories", {
   transform: function(doc) {
     if (doc.draftStory){
       _.extend(doc.draftStory, {
-        unpublishedChanges: (!doc.publishedAt || doc.savedAt > doc.publishedAt),
+        unpublishedChanges: (!doc.published || !doc.publishedAt || doc.savedAt > doc.publishedAt),
         savedAt: doc.savedAt,
-        contextCountOfType: function(){} // stub out method for now
+        contextCountOfType: function(){}, // stub out method for now,
+        _id: doc._id
       });
     }
     return new Story(doc);
@@ -145,115 +122,6 @@ this.Stories.deny({
   }
 });
 
-Schema.Stories = new SimpleSchema({
-  draftStory: {
-    type: Object,
-    optional: true,
-    blackbox: true
-  },
-  headerImage: {
-    type: String,
-    optional: true
-  },
-  shortId: {
-    type: String
-  },
-  headerImageAttribution: {
-    type: String,
-    optional: true
-  },
-  savedAt: {
-    type: Date
-  },
-  publishedAt: {
-    type: Date,
-    optional: true
-  },
-  createdAt: {
-    type: Date,
-    autoValue: function() {
-      if (this.isInsert) {
-        return new Date;
-      } else if (this.isUpsert) {
-        return {$setOnInsert: new Date};
-      } else {
-        this.unset();
-      }
-    }
-  },
-  published: {
-    type: Boolean,
-    defaultValue: false
-  },
-  userPathSegment: {
-    type: String
-  },
-  storyPathSegment: {
-    type: String
-  },
-  title: {
-    type: String,
-    defaultValue: ''
-  },
-  authorId: {
-    type: String
-  },
-  authorName: {
-    type: String
-  },
-  keywords:{
-    type: [String],
-    defaultValue: []
-  },
-  deleted: {
-    type: Boolean,
-    defaultValue: false
-  },
-  deletedAt: {
-    type: Date,
-    optional: true
-  },
-  favorited: {
-    type: [String],
-    defaultValue: []
-  },
-  views: {
-    type: Number,
-    defaultValue: 0
-  },
-  shared: {
-    type: Number,
-    defaultValue: 0
-  },
-  verticalSections: {
-    type: [Object],
-    minCount: 1,
-    maxCount: 1000,
-    blackbox: true // TODO remove this when stops causing errors! (after Mongo 2.6 and use position operators?)
-  },
-  'verticalSections.$._id': {
-    type: String
-  },
-  'verticalSections.$.title': {
-    type: String,
-    optional: true
-  },
-  'verticalSections.$.hasTitle': {
-    type: Boolean,
-    optional: true,
-    defaultValue: false
-  },
-  'verticalSections.$.content': {
-    type: String
-  },
-  'verticalSections.$.contextBlocks': {
-    type: [Object],
-    defaultValue: [],
-    blackbox: true // TODO actually define schema
-  }
-});
-
-this.Stories.attachSchema(Schema.Stories);
 
 ContextBlock = (function() {
   function ContextBlock(doc) {
@@ -1006,7 +874,14 @@ Schema.ContextBlocks = new SimpleSchema({
       }
     }
   },
-
+  published: {
+    type: Boolean,
+    defaultValue: false
+  },
+  everPublished: {
+    type: Boolean,
+    defaultValue: false
+  },
   reference: {
     type: Schema.ContextReferenceProfile,
     optional: true
@@ -1133,6 +1008,10 @@ Schema.User = new SimpleSchema({
       this.unset(); // don't allow to be set from anywhere within the code
     }
   },
+  earlybird: {
+    type: Boolean,
+    optional: true
+  },
   profile: {
     type: Schema.UserProfile,
     optional: true,
@@ -1144,6 +1023,140 @@ Schema.User = new SimpleSchema({
     blackbox: true
   }
 });
+
+
+Schema.Stories = new SimpleSchema({
+  draftStory: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  headerImage: {
+    type: String,
+    optional: true
+  },
+  shortId: {
+    type: String
+  },
+  headerImageAttribution: {
+    type: String,
+    optional: true
+  },
+  savedAt: {
+    type: Date
+  },
+  publishedAt: {
+    type: Date,
+    optional: true
+  },
+  createdAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: new Date};
+      } else {
+        this.unset();
+      }
+    }
+  },
+  published: {
+    type: Boolean,
+    defaultValue: false
+  },
+  everPublished: {
+    type: Boolean,
+    defaultValue: false
+  },
+  userPathSegment: {
+    type: String
+  },
+  storyPathSegment: {
+    type: String
+  },
+  title: {
+    type: String,
+    defaultValue: ''
+  },
+  authorId: {
+    type: String
+  },
+  authorName: {
+    type: String
+  },
+  authorUsername: {
+    type: String,
+    optional: true // TODO remove once migrate existing stories
+  },
+  keywords:{
+    type: [String],
+    defaultValue: []
+  },
+  deleted: {
+    type: Boolean,
+    defaultValue: false
+  },
+  deletedAt: {
+    type: Date,
+    optional: true
+  },
+  favorited: {
+    type: [String],
+    defaultValue: []
+  },
+  views: {
+    type: Number,
+    defaultValue: 0
+  },
+  shared: {
+    type: Number,
+    defaultValue: 0
+  },
+  contextBlocks: {
+    type: [ContextBlock], // TODO this should really be Schema.ContextBlocks, but would need to be converted to a regular object, otherwise simple-schema complains
+    minCount: 0,
+    maxCount: 1000,
+    defaultValue: []
+  },
+  verticalSections: {
+    type: [Object],
+    minCount: 1,
+    maxCount: 1000,
+    blackbox: true // TODO remove this when stops causing errors! (after Mongo 2.6 and use position operators?)
+  },
+  'verticalSections.$._id': {
+    type: String
+  },
+  'verticalSections.$.title': {
+    type: String,
+    optional: true
+  },
+  'verticalSections.$.hasTitle': {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  },
+  'verticalSections.$.content': {
+    type: String
+  },
+  'verticalSections.$.contextBlocks': {
+    type: [String],
+    defaultValue: [],
+    blackbox: true // TODO actually define schema
+  },
+  'history': {
+    type: [Object],
+    defaultValue: [],
+    blackbox: true
+  },
+  'version': {
+    type: String,
+    optional: true
+  }
+});
+
+this.Stories.attachSchema(Schema.Stories);
 
 Meteor.users.attachSchema(Schema.User);
 

@@ -335,6 +335,7 @@ Template.horizontal_context.helpers({
     return Session.get("horizontalSectionsMap").length;
   },
   horizontalSections: function() {
+    var that = this;
     return this.verticalSections.map(function(verticalSection, verticalIndex) {
       var sortedContext, unsortedContext;
 
@@ -360,14 +361,26 @@ Template.horizontal_context.helpers({
           index: verticalIndex,
           data: sortedContext
         };
-      } else { // In READ, these are denormalized right on the document
-        var data = verticalSection.contextBlocks.map(function (datum, horizontalIndex) {
-          return _.extend({}, datum, {
-            index: horizontalIndex,
-            verticalIndex: verticalIndex,
-            verticalId: verticalSection._id
-          });
-        }).map(window.newTypeSpecificContextBlock);
+      } else { // In READ, these are denormalized on the document
+        var data = _.chain(verticalSection.contextBlocks)
+          .map(function(id) {
+            var cBlock = _.findWhere(that.contextBlocks, {_id: id})
+            if (cBlock) {
+              return cBlock;
+            } else {
+              throw new Meteor.Error('context card not found on story ', + that._id);
+            }
+          })
+          .map(window.newTypeSpecificContextBlock)
+          .map(function (datum, horizontalIndex) {
+            return _.extend(datum || {}, {
+              index: horizontalIndex,
+              verticalIndex: verticalIndex,
+              verticalId: verticalSection._id
+
+            });
+          })
+          .value();
         return {
           data: data,
           index: verticalIndex
