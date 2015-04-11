@@ -382,7 +382,8 @@ Meteor.methods({
         'publishedAt': Date.now(),
         'published': true,
         'everPublished': true,
-        'authorUsername': Meteor.user().username
+        'authorUsername': Meteor.user().username,
+        'version': 'earlybird'
       }
     );
 

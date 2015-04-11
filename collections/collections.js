@@ -1144,6 +1144,10 @@ Schema.Stories = new SimpleSchema({
     type: [Object],
     defaultValue: [],
     blackbox: true
+  },
+  'version': {
+    type: String,
+    optional: true
   }
 });
 
