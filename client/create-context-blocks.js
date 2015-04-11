@@ -189,6 +189,10 @@ var searchAPI = function(query) {
 
   integrationDetails = searchIntegrations[this.type][source];
 
+  if (integrationDetails.notSearch){ // don't search if it's not a search integration
+    return
+  }
+
   Meteor.call(integrationDetails.methodName, query, option, page, function(err, results) {
     that.loadingResults.set(false);
     if (err) {
@@ -324,6 +328,9 @@ var searchIntegrations = {
           }
         }
       }
+    },
+    cloudinary: {
+      notSearch: true
     }
   },
   gif: {
