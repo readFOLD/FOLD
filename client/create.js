@@ -370,7 +370,13 @@ Template.create.helpers({
 
 Template.create.events({
   "click .publish-story": function (e, template) {
-    template.publishing.set(true);
+    return Meteor.call('checkEarlybird', function(err, isEarlybird) {
+      if (isEarlybird) {
+        template.publishing.set(true);
+      } else {
+        return alert("Publish will be available soon! You'll be able to use it to submit your story to be featured on our site when we launch in early April.");
+      }
+    });
   },
   "click .cancel-publish": function (e, template) {
     template.publishing.set(false);

@@ -1000,6 +1000,13 @@ Schema.User = new SimpleSchema({
       this.unset(); // don't allow to be set from anywhere within the code
     }
   },
+  earlybird: {
+    type: Boolean,
+    optional: true,
+    autoValue: function(){
+      this.unset(); // don't allow to be set from anywhere within the code
+    }
+  },
   profile: {
     type: Schema.UserProfile,
     optional: true,
