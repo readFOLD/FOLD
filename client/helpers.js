@@ -63,10 +63,12 @@ Handlebars.registerHelper("windowHeight", function() {
 });
 
 Handlebars.registerHelper("profileImage", function(user) {
-  if (user.profile.profilePicture) {
-    return user.profile.profilePicture
-  } else if (user.profile.twitterUser) {
-    return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/c_limit,h_250,w_250/' + user.services.twitter.id
+  if (user && user.profile) { 
+    if ( user.profile.profilePicture) {
+      return user.profile.profilePicture
+    } else if (user.profile.twitterUser) {
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/c_limit,h_250,w_250/' + user.services.twitter.id
+    }
   }
 });
 
