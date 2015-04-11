@@ -122,9 +122,9 @@ Tracker.autorun(function(){
 });
 
 Tracker.autorun(function(){
-  var currentY = Session.get("currentY");
-  if (typeof currentY === 'number'){
-    Session.set("currentX", Session.get("currentXByRow")[currentY] || 0);
+  var currentYId = Session.get("currentYId");
+  if (currentYId){
+    Session.set("currentX", Session.get("currentXByYId")[currentYId] || 0);
   }
 });
 
@@ -349,7 +349,8 @@ Template.horizontal_context.helpers({
           .map(function (datum, horizontalIndex) {
             return _.extend(datum || {}, {
               index: horizontalIndex,
-              verticalIndex: verticalIndex
+              verticalIndex: verticalIndex,
+              verticalId: verticalSection._id
             });
           })
           .value();
@@ -374,7 +375,9 @@ Template.horizontal_context.helpers({
           .map(function (datum, horizontalIndex) {
             return _.extend(datum || {}, {
               index: horizontalIndex,
-              verticalIndex: verticalIndex
+              verticalIndex: verticalIndex,
+              verticalId: verticalSection._id
+
             });
           })
           .value();
@@ -517,7 +520,7 @@ Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
 Template.story_browser.helpers({
   showLeftArrow: function() {
-    return Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentY')];
+    return Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentYId')];
   }
 });
 
@@ -527,10 +530,11 @@ Template.story_browser.events({
     horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
     currentX = Session.get("currentX");
     currentY = Session.get("currentY");
+    currentYId = Session.get("currentYId");
     if (currentX === (horizontalSection.length - 1)) { // end of our rope
       newX = 0;
       wrap = Session.get("wrap");
-      wrap[currentY] = true;
+      wrap[currentYId] = true;
       Session.set("wrap", wrap);
     } else {
       newX = currentX + 1;
@@ -612,4 +616,43 @@ Template.create_story.events({
      Session.set('signingIn', true)
     }
   }
+});
+
+// ui setup moved from onRun
+Template.about.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.terms.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.home.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.signup.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.login.onCreated(function(){
+  $('html, body').scrollTop(0);
+});
+
+Template.read.onCreated(function(){
+  Session.set("wrap", {});
+  Session.set("currentXByYId", {});
+  Session.set("currentY", null);
+  $('html, body').scrollTop(0);
+});
+
+Template.create.onCreated(function(){
+  Session.set("wrap", {});
+  Session.set("currentXByYId", {});
+  Session.set("currentY", null);
+  Session.set("read", false);
+  Session.set("newStory", false);
+  Session.set("showDraft", true);
+  $('html, body').scrollTop(0);
+
 });

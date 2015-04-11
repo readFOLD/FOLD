@@ -35,7 +35,7 @@
     <!-- Mesh Background Overlay -->
     <!-- <div id="overlay"></div> -->
     <article class="content">
-        <div class="vertical-narrative {{#if narrativeView}}narrativeView{{/if}}"
+        <div class="vertical-narrative"
              style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
             {{> vertical_narrative}}
 
@@ -44,11 +44,9 @@
 
           </footer>
         </div>
-        {{#unless narrativeView}}
-            <div class="horizontal-context" style="{{#unless read}}margin-top: 23px{{/unless}}">
+            <div class="horizontal-context">
                 {{> horizontal_context}}
             </div>
-        {{/unless}}
     </article>
 
 
@@ -348,7 +346,7 @@
         <button class="show-image"></button>
       {{/if}}
         <div class="twitter-text-section {{#if selected}} selected {{/if}} {{#if imgUrl}}image{{/if}} ">
-          <div class="flag {{#if selected}} selected {{/if}}"></div>
+          <div class="flag {{#if selected}} selected {{/if}} {{#if imgUrl}}image{{/if}}"></div>
           <div class='tweet-card'>
             <div class='title'>
               <div class='prof_pic'>

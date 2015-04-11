@@ -563,7 +563,7 @@ var showNewHorizontalUI = function() {
 };
 
 var hideNewHorizontalUI = function() {
-  scrollToRelativePosition(350 + 29 - 140);
+  scrollToRelativePosition(350 + 29 - 93);
   return Session.set("addingContext", null);
 };
 

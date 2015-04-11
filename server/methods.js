@@ -2,6 +2,7 @@ var GOOGLE_API_SERVER_KEY = Meteor.settings.GOOGLE_API_SERVER_KEY;
 var SOUNDCLOUD_CLIENT_ID = Meteor.settings.SOUNDCLOUD_CLIENT_ID;
 var IMGUR_CLIENT_ID = Meteor.settings.IMGUR_CLIENT_ID;
 var FLICKR_API_KEY = Meteor.settings.FLICKR_API_KEY;
+var GIPHY_API_KEY = Meteor.settings.GIPHY_API_KEY;
 var TWITTER_API_KEY = process.env.TWITTER_API_KEY || Meteor.settings.TWITTER_API_KEY;
 var TWITTER_API_SECRET = process.env.TWITTER_API_SECRET || Meteor.settings.TWITTER_API_SECRET;
 var EMBEDLY_KEY = Meteor.settings.EMBEDLY_KEY;
@@ -12,6 +13,10 @@ var VIMEO_ACCESS_TOKEN = Meteor.settings.VIMEO_ACCESS_TOKEN;
 var Twit = Meteor.npmRequire('twit');
 var Vimeo = Meteor.npmRequire('vimeo-api').Vimeo;
 
+if (!GOOGLE_API_SERVER_KEY) {
+  console.error('Settings must be loaded for apis to work');
+  throw new Meteor.Error('Settings must be loaded for apis to work');
+}
 
 var decrementByOne = function(bigInt) {
     var intArr = bigInt.split("");
@@ -29,11 +34,27 @@ var decrementByOne = function(bigInt) {
     return result.join("")
 };
 
-if (!GOOGLE_API_SERVER_KEY) {
-  console.error('Settings must be loaded for apis to work');
-  throw new Meteor.Error('Settings must be loaded for apis to work');
-}
+var makeTwitterCall = function(apiCall, params) {
+  var res;
+  var client = new Twit({
+    consumer_key: TWITTER_API_KEY,
+    consumer_secret: TWITTER_API_SECRET,
+    access_token: Meteor.user().services.twitter.accessToken,
+    access_token_secret: Meteor.user().services.twitter.accessTokenSecret
+  });
 
+  var twitterResultsSync = Meteor.wrapAsync(client.get, client);
+  try {
+    res = twitterResultsSync(apiCall, params);
+  } 
+  catch (err) {
+    if (err.statusCode !== 404) { 
+      throw err;
+    }  
+    res = {};  
+  }
+  return res;
+};
 
 S3.config = {
   key: Meteor.settings.AWS_ACCESS_KEY,
@@ -47,13 +68,24 @@ Meteor.methods({
       var username = userInfo.username;
       checkSignupCode(userInfo.signupCode);
       checkUsername(username);
+
+      //get twitter info
+      var res;
+      if (Meteor.user().services.twitter) {
+        var twitterParams = {
+            user_id: Meteor.user().services.twitter.id
+          };
+        res = makeTwitterCall("users/show", twitterParams);
+      }
+
       return Meteor.users.update({
         _id: this.userId
       }, {
           $set: {
             "profile.name": userInfo.name || username,
-            "profile.displayUsername": username, // this will keep caps
-            "username": username
+            "profile.displayUsername": username,
+            "username": username,
+            "profile.bio": res.description,
           },
           $unset: {"tempUsername": ""},
           $push: {
@@ -185,7 +217,7 @@ Meteor.methods({
     page = page || 0;
     requestParams = {
       q: query,
-      api_key: 'dc6zaTOxFJmzC',
+      api_key: GIPHY_API_KEY,
       offset: page,
       limit: 50
     };
@@ -272,14 +304,6 @@ Meteor.methods({
       'user' : 'statuses/user_timeline',
       'favorites' : 'favorites/list'
     };
-    
-    var client = new Twit({
-      consumer_key: TWITTER_API_KEY,
-      consumer_secret: TWITTER_API_SECRET,
-      access_token: Meteor.user().services.twitter.accessToken,
-      access_token_secret: Meteor.user().services.twitter.accessTokenSecret
-    });
-    var twitterResultsSync = Meteor.wrapAsync(client.get, client);
 
     params = {count: count};
     if (page) {params.max_id = page;}
@@ -292,15 +316,7 @@ Meteor.methods({
       params.screen_name = query;
     }
 
-    try {
-      res = twitterResultsSync(api[option], params);
-    } 
-    catch (err) {
-      if (err.statusCode !== 404) { 
-        throw err;
-      }  
-      res = {};    
-    }
+    res = makeTwitterCall(api[option], params);
 
     if (option === 'all_url') {
       items[0] = res;
@@ -308,7 +324,7 @@ Meteor.methods({
     } else if (option === 'all') {
       items = res.statuses;
       page = res.search_metadata.next_results ? res.search_metadata.next_results.match(/\d+/)[0] : "end";
-    } else {
+    } else if (res.length) {
       items = res;
       page = decrementByOne(items[items.length-1].id_str); 
     }

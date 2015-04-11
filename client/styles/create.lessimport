@@ -162,17 +162,7 @@ div.title-overlay {
     border-bottom: 1px dashed grey;
   }
 
-  div#banner-overlay {
-    width: 100%;
-    height: 350px;
-    background-color: @dark-color;
-    opacity: 0.0;
-    position: absolute;
 
-    &.fixed {
-      height: 100px;
-    }
-  }
 
   div.description {
     width: 500px;
@@ -434,6 +424,8 @@ div.create-section.link-twitter{
     background-color: @black-color;
   }
 }
+
+@newCardBottomButtonHeight: 35px;
 
 
 div.horizontal-context {
@@ -878,13 +870,14 @@ div.horizontal-context {
         margin-bottom: 0px;
       }
     }  
-  }  
+  }
+
     button.add-button, button.add-desc-button, button.back-button {
       position: relative;
       left: calc(100%~"-" 90px);
       background-color: @action-color;
+      height: @newCardBottomButtonHeight;
       color: @light-color;
-      height: 35px;
       width: 90px;
       margin-top: 12px;
       text-align: center;
@@ -1102,6 +1095,8 @@ div#fold-editor{
   }
 
   .image-preview {
+    max-height: calc(100% ~"-" @newCardBottomButtonHeight + 10px); // 10 px is effectively the min margin from the botton of window
+
     .image-section {
       height: 300px;      
     }

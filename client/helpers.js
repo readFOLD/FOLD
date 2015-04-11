@@ -62,6 +62,14 @@ Handlebars.registerHelper("windowHeight", function() {
   return Session.get("windowHeight");
 });
 
+Handlebars.registerHelper("profileImage", function(user) {
+  if (user.profile.profilePicture) {
+    return user.profile.profilePicture
+  } else if (user.profile.twitterUser) {
+    return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/c_limit,h_250,w_250/' + user.services.twitter.id
+  }
+});
+
 Handlebars.registerHelper("setTitle", function(title) {
   document.title = title;
 });

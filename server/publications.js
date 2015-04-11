@@ -15,16 +15,6 @@ Meteor.publish("exploreStoriesPub", function(filter, category, skip) {
   });
 });
 
-Meteor.publish("ownStoriesPub", function() {
-  return Stories.find({
-    authorId: this.userId
-  },{
-    fields : {
-      history: 0
-    }
-  });
-});
-
 Meteor.publish("readStoryPub", function(userPathSegment, shortId) {
   return Stories.find({
     userPathSegment: userPathSegment,
@@ -66,20 +56,53 @@ Meteor.publish("contextBlocksPub", function() {
   });
 });
 
-Meteor.publish("publicUserPub", function(id) {
-  return Meteor.users.find({
-    _id: id
+Meteor.publish("userProfilePub", function(username) {
+
+  userCursor = Meteor.users.find({
+    username: username.toLowerCase()
   }, {
     fields: {
-      'profile.name': 1
+      "profile" : 1,
+      "username" : 1,
+      "services.twitter.id": 1
+    }
+  });
+
+  var userFavorites = (userCursor.fetch()[0]).profile.favorites;
+  return [userCursor, Stories.find({
+                        _id: {
+                          $in: userFavorites
+                        }})]
+});
+
+Meteor.publish("userStoriesPub", function(username) {
+  // TODO simplify once stories have author username on them
+  var user = Meteor.users.find({
+    username: username.toLowerCase()
+  });
+  var userId = user.map(function(doc) {
+    return doc._id;
+  });
+  if (!userId) {
+    this.ready();
+    return;
+  }
+  return Stories.find({
+    authorId: userId[0]
+  },{
+    fields : {
+      history: 0
     }
   });
 });
 
 Meteor.publish("tempUsernamePub", function() {
   if (this.userId) {
-    return Meteor.users.find({_id: this.userId},
-                            {fields: {'tempUsername': 1}});
+    return Meteor.users.find(this.userId, {
+      fields: {
+        'tempUsername': 1
+      }
+    });
   } else {
     this.ready();
   }

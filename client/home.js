@@ -38,9 +38,6 @@ loginWithEmail = function() {
 };
 
 Template.home.helpers({
-  profileImage: function() {
-    return Meteor.user().profile.profile_picture;
-  },
   user: function() {
     return Meteor.user();
   },
@@ -144,17 +141,6 @@ Template._story_preview_content.helpers({
   }
 });
 
-Template.user_stories.events({
-  "click div#delete": function(d) {
-    var srcE, storyId;
-    srcE = d.srcElement ? d.srcElement : d.target;
-    storyId = $(srcE).closest('div.story').data('story-id');
-    return Stories.remove({
-      _id: storyId
-    });
-  }
-});
-
 Template.login_buttons.helpers({
   showUserInfo: function() {
     return Template.instance().showUserInfo.get();
@@ -175,7 +161,7 @@ Template.login_buttons.events({
   "click .signin": function(d) {
     Session.set('signingIn', true);
   },
-  'click .logout' : function(e) {
+  "click .logout" : function(e) {
     e.preventDefault();
     Meteor.logout();
     Router.go('home');
