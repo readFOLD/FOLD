@@ -5,36 +5,49 @@ Stories._ensureIndex({
 });
 
 Meteor.publish("exploreStoriesPub", function(filter, category, skip) {
-  return Stories.find({
-    published: true
-  },{
-    fields : {
-      draftStory: 0,
-      history: 0
-    }
-  });
+  if (this.userId) { // TODO launch Remove
+
+    return Stories.find({
+      published: true
+    }, {
+      fields: {
+        draftStory: 0,
+        history: 0
+      }
+    });
+  } else {
+    this.ready()
+  }
 });
 
 Meteor.publish("readStoryPub", function(userPathSegment, shortId) {
-  return Stories.find({
-    userPathSegment: userPathSegment,
-    shortId: shortId,
-    published: true
-  },{
-    fields : {
-      draftStory: 0,
-      history: 0
-    }
-  });
+  if (this.userId) { // TODO launch Remove
+    return Stories.find({
+      userPathSegment: userPathSegment,
+      shortId: shortId,
+      published: true
+    }, {
+      fields: {
+        draftStory: 0,
+        history: 0
+      }
+    });
+  } else {
+    this.ready();
+  }
 });
 
 Meteor.publish("readStoriesPub", function(ids) {
-  return Stories.find({
-    _id: {
-      $in: ids
-    },
-    published: true
-  });
+  if (this.userId) { // TODO launch Remove
+    return Stories.find({
+      _id: {
+        $in: ids
+      },
+      published: true
+    });
+  } else {
+    this.ready();
+  }
 });
 
 Meteor.publish("createStoryPub", function(userPathSegment, shortId) {
