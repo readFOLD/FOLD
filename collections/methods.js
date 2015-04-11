@@ -387,7 +387,8 @@ Meteor.methods({
     );
 
     return updateStory({ _id: storyId }, {
-      $set: setObject
+      $set: setObject,
+      $push: {'history': _.omit(story, ['draftStory', 'history'])} // history has everything except the current published story
     });
   },
   favoriteStory: function(storyId) {

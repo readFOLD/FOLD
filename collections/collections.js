@@ -1139,6 +1139,11 @@ Schema.Stories = new SimpleSchema({
     type: [String],
     defaultValue: [],
     blackbox: true // TODO actually define schema
+  },
+  'history': {
+    type: [Object],
+    defaultValue: [],
+    blackbox: true
   }
 });
 
