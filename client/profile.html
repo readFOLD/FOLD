@@ -28,12 +28,24 @@
     <div class="user-info-form">
       {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
       <button type="submit" class="save-profile-button">Save</button>
+      
+      <div class="picture">
+        <input type="file" accept="image/*" class="overlay">
+        {{#if editPicture}}
+          <!-- <div class="overlay"> -->
+            <div class="prompt">Upload Image</div>
+          <!-- </div> -->
+        {{/if}}
+        {{#if profileImage user}} 
+         <img class="profile-picture" src="{{profileImage user}}"/>
+        {{/if}}
+      </div>
       <div class="user-info">
         {{> afQuickField name='profile.name'}}
         {{> afQuickField name='profile.bio' class="bio-form"}}
       </div>
-      {{/autoForm}}
-    </div>
+    {{/autoForm}}
+  </div>
   {{else}}
     {{#if ownProfile}}
       <button class="edit-profile">Edit</button>

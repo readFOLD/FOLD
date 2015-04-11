@@ -38,6 +38,7 @@ Template.my_stories.events({
 
 Template.user_profile.onCreated(function(){
   this.editing = new ReactiveVar(false);
+  this.editPicture = new ReactiveVar(false);
 });
 
 Template.user_profile.helpers({
@@ -52,6 +53,9 @@ Template.user_profile.helpers({
   },
   bio : function() {
     return this.user.profile.bio
+  },
+  editPicture : function() {
+    return Template.instance().editPicture.get()
   }
 });
 
@@ -61,6 +65,16 @@ Template.user_profile.events({
   },
   "click .save-profile-button" : function(d, template) {
     template.editing.set(false);
+  },
+  "mouseenter .picture" : function(d, template) {
+    if (template.editing.get()) {
+      return template.editPicture.set(true);
+    }
+  },
+  "mouseleave .picture" : function(d, template) {
+    if (template.editing.get()) {
+      // return template.editPicture.set(false);
+    }
   }
 });
 
