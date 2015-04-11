@@ -28,6 +28,10 @@ Accounts.onCreateUser(function(options, user) {
     user.signupCode = options.signupCode;
   }
 
+  if (options.earlybird) {
+    user.earlybird = options.earlybird; // TODO remove
+  }
+
   if (user.services.twitter) { // twitter signup
     user.tempUsername = user.services.twitter.screenName;
     user.profile.twitterUser = true;
