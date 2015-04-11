@@ -362,25 +362,25 @@ _.each(createTemplateNames, function(templateName){
 
 
 Template.create_audio_section.events({
-  "dblclick li": function (d, template) {
+  "dblclick .search-results-container li": function (d, template) {
     addContext(this);
   }
 });
 
 Template.create_video_section.events({
-  "dblclick li": function (d, template) {
+  "dblclick .search-results-container li": function (d, template) {
     addContext(this);
   }
 });
 
 Template.create_twitter_section.events({
-  "dblclick li": function (d, template) {
+  "dblclick .search-results-container li": function (d, template) {
     addContext(this);
   }
 });
 
 Template.create_image_section.events({
-  "dblclick li": function (d, template) {
+  "dblclick .search-results-container li": function (d, template) {
     template.addingDescription.set(true);
     setTimeout(function(){
       template.$('textarea').focus();
@@ -389,7 +389,7 @@ Template.create_image_section.events({
 });
 
 Template.create_gif_section.events({
-  "dblclick li": function (d, template) {
+  "dblclick .search-results-container li": function (d, template) {
     template.addingDescription.set(true);
     setTimeout(function(){
       template.$('textarea').focus();
