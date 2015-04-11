@@ -1,6 +1,6 @@
 window.constants = {
   verticalSpacing: 12,
-  readModeOffset: 298,
+  readModeOffset: 286,
   minPageWidth: 1024
 };
 
@@ -77,10 +77,11 @@ window.getHorizontalLeft = function() {
 
 window.getVerticalHeights = function() {
   var sum, verticalHeights;
-  verticalHeights = [constants.readModeOffset];
-  sum = constants.readModeOffset;
+  var offset = Session.get('read') ? constants.readModeOffset : constants.readModeOffset + constants.verticalSpacing;
+  verticalHeights = [offset];
+  sum = offset;
   $('.vertical-narrative-section').each(function() {
-    sum += $(this).outerHeight() + 12;
+    sum += $(this).outerHeight() + constants.verticalSpacing;
     return verticalHeights.push(sum);
   });
   return verticalHeights;
