@@ -381,7 +381,8 @@ Meteor.methods({
         'storyPathSegment': _s.slugify(draftStory.title.toLowerCase()) + '-' + story.shortId, // TODO DRY and probably get from draft
         'publishedAt': Date.now(),
         'published': true,
-        'everPublished': true
+        'everPublished': true,
+        'authorUsername': Meteor.user().username
       }
     );
 
@@ -422,6 +423,7 @@ Meteor.methods({
       storyPathSegment: storyPathSegment,
       authorId: this.userId,
       authorName: user.profile.name || 'Anonymous',
+      authorUsername: Meteor.user().username,
       shortId: shortId,
       draftStory: {
         authorId: this.userId,

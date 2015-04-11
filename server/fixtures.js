@@ -36,6 +36,7 @@ if (Stories.find().count() === 0) {
     storyPathSegment: "unfolding-the-2014-ebola-outbreak-asdsk20",
     authorId: authorId,
     authorName: authorProfile.name,
+    authorUsername: 'author',
     favorited: [],
     views: 0,
 
