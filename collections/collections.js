@@ -874,7 +874,14 @@ Schema.ContextBlocks = new SimpleSchema({
       }
     }
   },
-
+  published: {
+    type: Boolean,
+    defaultValue: false
+  },
+  everPublished: {
+    type: Boolean,
+    defaultValue: false
+  },
   reference: {
     type: Schema.ContextReferenceProfile,
     optional: true
