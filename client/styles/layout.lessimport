@@ -361,7 +361,7 @@ div.story-browser {
   }
   svg {
     cursor: pointer;
-    margin-top: 275px;
+    margin-top: 245px;
     border-radius: 30px;
     margin-left: 20px;
     margin-right: 20px;

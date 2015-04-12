@@ -102,6 +102,8 @@ this.Stories = new Meteor.Collection("stories", {
       _.extend(doc.draftStory, {
         unpublishedChanges: (!doc.published || !doc.publishedAt || doc.savedAt > doc.publishedAt),
         savedAt: doc.savedAt,
+        storyPathSegment: doc.storyPathSegment,
+        userPathSegment: doc.userPathSegment,
         contextCountOfType: function(){}, // stub out method for now,
         _id: doc._id
       });
@@ -441,7 +443,7 @@ VizBlock = (function(_super) {
   VizBlock.prototype.url = function() {
     switch (this.source) {
       case 'oec':
-        return '//atlas.media.mit.edu/en/explore/embed/tree_map/hs/' + this.reference.oecDirection + '/' + this.reference.oecCountry + '/all/show/' + this.reference.oecYear + '?controls=false&lang=en'
+        return '//atlas.media.mit.edu/en/explore/embed/tree_map/hs/' + this.reference.oecDirection + '/' + this.reference.oecCountry + '/all/show/' + this.reference.oecYear + '/?controls=false&lang=en'
     }
   };
 
