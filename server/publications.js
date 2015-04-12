@@ -44,6 +44,11 @@ Meteor.publish("readStoriesPub", function(ids) {
         $in: ids
       },
       published: true
+    }, {
+      fields: {
+        draftStory: 0,
+        history: 0
+      }
     });
   } else {
     this.ready();
@@ -69,7 +74,7 @@ Meteor.publish("contextBlocksPub", function() {
   });
 });
 
-Meteor.publish("userProfilePub", function(username) {
+Meteor.publish("userProfilePub", function(username) { // includes user profile and published stories
 
   userCursor = Meteor.users.find({
     username: username.toLowerCase()
@@ -88,13 +93,22 @@ Meteor.publish("userProfilePub", function(username) {
   }
 
   var userFavorites = user.profile.favorites;
-  return [userCursor, Stories.find({
-                        _id: {
-                          $in: userFavorites
-                        }})]
+  return [
+    userCursor,
+    Stories.find({
+      _id: {
+        $in: userFavorites
+      },
+      published: true
+    }, {
+      fields : {
+        history: 0,
+        draftStory: 0
+      }
+  })]
 });
 
-Meteor.publish("userStoriesPub", function(username) {
+Meteor.publish("userStoriesPub", function(username) { // only published stories
   // TODO simplify once stories have author username on them
   var user = Meteor.users.findOne({
     username: username.toLowerCase()
@@ -107,12 +121,28 @@ Meteor.publish("userStoriesPub", function(username) {
   var userId = user._id;
 
   return Stories.find({
-    authorId: userId
+    authorId: userId,
+    published: true
   },{
     fields : {
-      history: 0
+      history: 0,
+      draftStory: 0
     }
   });
+});
+
+Meteor.publish("myStoriesPub", function() {
+  if (this.userId) {
+    return Stories.find({
+      authorId: this.userId
+    }, {
+      fields: {
+        history: 0
+      }
+    });
+  } else {
+    return this.ready();
+  }
 });
 
 Meteor.publish("tempUsernamePub", function() {

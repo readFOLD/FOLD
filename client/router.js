@@ -78,8 +78,7 @@ Router.route("my_story_profile", {
   path: "my-stories",
   template: "my_story_profile",
   waitOn: function() {
-    var username = Meteor.user().username || Meteor.user().tempUsername;
-    return [Meteor.subscribe('userStoriesPub', username)];
+    return [Meteor.subscribe('myStoriesPub')];
   },
   onBeforeAction: function() {
     var user;
@@ -92,7 +91,7 @@ Router.route("my_story_profile", {
       this.redirect("home", {
         replaceState: true
       });
-      return alert("You must be logged in view your profile");
+      return alert("You must be logged in view your stories");
     }
   }
 });
