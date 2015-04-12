@@ -114,7 +114,7 @@ div.user-profile {
   .save-profile-button {
     position: absolute; 
     top: 0px;
-    @media (max-width: 800px) {
+    @media (max-width: 800px), (max-height: 640px) {
       top: 150px;
     } 
   }

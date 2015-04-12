@@ -26,6 +26,9 @@
 <template name="user_profile">
   {{#if editing}}
     <div class="user-info-form">
+      {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
+      <button type="submit" class="save-profile-button">Save</button>
+      
       {{#if uploadStatus}}
         <p>{{uploadStatus}}</p>
       {{/if}}
@@ -47,11 +50,6 @@
           {{/if}}
         {{/if}}
      </div>
-      {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
-      <button type="submit" class="save-profile-button">Save</button>
-      
-
-
       <div class="user-info">
         {{> afQuickField name='profile.name'}}
         {{> afQuickField name='profile.bio' class="bio-form"}}
