@@ -471,7 +471,7 @@ Template.create_image_section.onCreated(function(){
   var query = _cloudinary.find({});
   this.observeCloudinary = query.observeChanges({ // this query stays live until .stop() is called in the onDestroyed hook
     added: function (id) { // start upload
-      that.uploadStatus.set(null);
+      that.uploadStatus.set('Uploading...');
     },
     changed: function (id, changes) { // upload stream updated
       if (changes.public_id){ // if upload successful
