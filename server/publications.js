@@ -81,7 +81,13 @@ Meteor.publish("userProfilePub", function(username) {
     }
   });
 
-  var userFavorites = (userCursor.fetch()[0]).profile.favorites;
+  var user = userCursor.fetch()[0];
+
+  if (!user){
+    return this.ready();
+  }
+
+  var userFavorites = user.profile.favorites;
   return [userCursor, Stories.find({
                         _id: {
                           $in: userFavorites
@@ -90,18 +96,18 @@ Meteor.publish("userProfilePub", function(username) {
 
 Meteor.publish("userStoriesPub", function(username) {
   // TODO simplify once stories have author username on them
-  var user = Meteor.users.find({
+  var user = Meteor.users.findOne({
     username: username.toLowerCase()
   });
-  var userId = user.map(function(doc) {
-    return doc._id;
-  });
-  if (!userId) {
-    this.ready();
-    return;
+
+  if (!user) {
+    return this.ready();
   }
+
+  var userId = user._id;
+
   return Stories.find({
-    authorId: userId[0]
+    authorId: userId
   },{
     fields : {
       history: 0
