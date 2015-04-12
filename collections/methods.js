@@ -62,6 +62,19 @@ var updateStory = function(selector, modifier, options) {
 };
 
 Meteor.methods({
+  saveProfilePicture: function(userId, pictureId) {
+    if (Meteor.user()._id === userId) {
+      Meteor.users.update({
+        _id: Meteor.user()._id
+      }, {
+        $set: {
+        "profile.profilePicture": pictureId
+        }
+      });
+    } else {
+      throw new Meteor.Error("Only the account owner may edit this profile")
+    }
+  },
   addContextToStory: function(storyId, contextBlock, verticalIndex){
     // TODO check that user owns story
     delete contextBlock._id

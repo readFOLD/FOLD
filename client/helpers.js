@@ -65,9 +65,9 @@ Handlebars.registerHelper("windowHeight", function() {
 Handlebars.registerHelper("profileImage", function(user) {
   if (user && user.profile) { 
     if ( user.profile.profilePicture) {
-      return user.profile.profilePicture
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_150,h_150,c_fill,g_face/' + user.profile.profilePicture
     } else if (user.profile.twitterUser) {
-      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/c_limit,h_250,w_250/' + user.services.twitter.id
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/w_150,h_150,c_fill,g_face/' + user.services.twitter.id
     }
   }
 });

@@ -3,7 +3,7 @@
   cursor: text;
 }
 
-input[type=file] {
+input[type=file].button {
   height: 40px;
   width: 165px;
 

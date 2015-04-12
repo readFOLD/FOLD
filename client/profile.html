@@ -26,20 +26,32 @@
 <template name="user_profile">
   {{#if editing}}
     <div class="user-info-form">
+      {{#if uploadStatus}}
+        <p>{{uploadStatus}}</p>
+      {{/if}}
+       <div class="picture">
+        {{#if editingPicture}}
+          {{#c_upload_stream}}
+          <!-- Limit this to JPG? cloudinary algorithms lose on other fmts-->
+            <input type="file" accept="image/*" class="overlay">
+          {{/c_upload_stream}}
+        {{/if}}
+        {{#each c.uploading_images}}
+          <p>Uploading: {{percent_uploaded}}%</p>
+        {{/each}}
+        {{#if uploadPreview}} 
+          <img class="profile-picture" src="{{uploadPreview}}">
+        {{else}}
+          {{#if profileImage user}} 
+           <img class="profile-picture" src="{{profileImage user}}"/>
+          {{/if}}
+        {{/if}}
+     </div>
       {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
       <button type="submit" class="save-profile-button">Save</button>
       
-      <div class="picture">
-        <input type="file" accept="image/*" class="overlay">
-        {{#if editPicture}}
-          <!-- <div class="overlay"> -->
-            <div class="prompt">Upload Image</div>
-          <!-- </div> -->
-        {{/if}}
-        {{#if profileImage user}} 
-         <img class="profile-picture" src="{{profileImage user}}"/>
-        {{/if}}
-      </div>
+
+
       <div class="user-info">
         {{> afQuickField name='profile.name'}}
         {{> afQuickField name='profile.bio' class="bio-form"}}
