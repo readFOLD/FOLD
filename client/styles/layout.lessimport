@@ -661,10 +661,13 @@ div.text-section {
 }
 
 
-div.viz-section {
+.viz-section {
   .size-to-fit;
 }
-div.viz-preview {
+.audio-section {
+  .size-to-fit;
+}
+.icon-only-preview {
   .size-to-fit;
   text-align: center;
 

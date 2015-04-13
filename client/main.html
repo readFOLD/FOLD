@@ -272,7 +272,9 @@
     {{#if selected}}
       <iframe width="100%" height="315" src="{{url}}" frameborder="0" ></iframe>
     {{else}}
-      {{> viz_preview}}
+      <div class="icon-only-preview">
+        {{> viz_icon}}
+      </div>
     {{/if}}
   </div>
   {{#unless read}}
@@ -280,18 +282,14 @@
   {{/unless}}
 </template>
 
-<template name="viz_preview">
-  <div class="viz-preview">
-    {{> viz_icon}}
-  </div>
-</template>
+
 
 
 <template name="display_audio_section">
   <div class="audio-section">
     {{#if selected}}
       <div class="active-display">
-      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+        <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
       </div>
     {{/if}}
     <div class="preview">
@@ -307,7 +305,7 @@
   <div class="video-section">
     {{#if selected}}
       <div class="active-display">
-      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+        <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
       </div>
     {{/if}}
     <div class="preview">
