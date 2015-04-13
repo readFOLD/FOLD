@@ -20,25 +20,31 @@ Session.set("separation", 10);
 
 var windowSizeDep = new Tracker.Dependency();
 
-Tracker.autorun(function(){
-  windowSizeDep.depend();
+Meteor.startup(function(){
+  Tracker.autorun(function(){
+    windowSizeDep.depend();
 
-  Session.set("windowHeight", $(window).height());
+    var windowWidth = $(window).width();
 
-  Session.set("windowWidth", window.outerWidth);
+    Session.set("windowHeight", $(window).height());
 
-  Session.set("cardWidth", getCardWidth(window.outerWidth));
+    Session.set("windowWidth", windowWidth);
 
-  Session.set("verticalLeft", getVerticalLeft(window.outerWidth));
+    Session.set("cardWidth", getCardWidth(windowWidth));
+
+    Session.set("verticalLeft", getVerticalLeft(windowWidth));
+  });
+
+  var windowResize = function() {
+    windowSizeDep.changed();
+  };
+
+  throttledResize = _.throttle(windowResize, 20);
+
+  $(window).resize(throttledResize);
+
 });
 
-var windowResize = function() {
-  windowSizeDep.changed();
-};
-
-throttledResize = _.throttle(windowResize, 20);
-
-$(window).resize(throttledResize);
 
 updatecurrentY = function() {
   var actualY, h, i, maxScroll, readMode, scrollTop, stickyBody, stickyTitle, vertTop, _i, _len, _ref;
