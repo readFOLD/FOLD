@@ -795,7 +795,10 @@ Template.horizontal_section_block.events({
         if(err){
           return saveCallback(err);
         }
-        ContextBlocks.remove(id, saveCallback);
+        ContextBlocks.remove(id, function(err, numDocs){
+          goToX(Session.get('currentX'));
+          saveCallback(err, numDocs);
+        });
       });
     }
   },
