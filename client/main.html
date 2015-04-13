@@ -448,29 +448,37 @@
 </template>
 
 <template name="metaview_context_block">
-  {{#if text}}
-    {{content}}
-  {{/if}}
-  {{#if viz}}
-    {{> viz_icon}}
+  {{#if video}}
+    <img src="{{thumbnailUrl}}"/>
   {{/if}}
   {{#if image}}
-    <img src="{{url}}" />
+    <img src="{{thumbnailUrl}}" />
   {{/if}}
   {{#if gif}}
-    <img src="{{url}}" />
-  {{/if}}
-  {{#if video}}
-    <img src="{{previewUrl}}"/>
+    <img src="{{thumbnailUrl}}" />
   {{/if}}
   {{#if map}}
     <img src="{{previewUrl}}"/>
   {{/if}}
+  {{#if twitter}}
+    {{> twitter_icon}}
+  {{/if}}
+  {{#if audio}}
+    {{> audio_icon}}
+  {{/if}}
+  {{#if viz}}
+    {{> viz_icon}}
+  {{/if}}
+  {{#if text}}
+    {{content}}
+  {{/if}}
+
+
   {{#if link}}
     {{#if thumbnailUrl}}
      <img src="{{thumbnailUrl}}" />
     {{else}}
-    {{providerTruncatedUrl}}
+      {{title}}
     {{/if}}
   {{/if}}
 </template>
