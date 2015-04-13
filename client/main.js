@@ -423,7 +423,6 @@ Template.metaview.helpers({
   }
 });
 
-
 Template.minimap.events({
   "click .minimap": function(d, t) {
     if (!Session.get('read')){ // only metaview in create for now
