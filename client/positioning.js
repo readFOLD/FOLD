@@ -40,9 +40,25 @@ window.getHorizontalLeft = function() {
     return verticalRight + offset + cardSeparation;
   }
 
-  if (!Session.get("wrap")[this.verticalId]) { // not wrapping
+  if (Session.get("wrap")[this.verticalId] || numCards === 2) { // wrapping (and always position as if wrapping when two cards)
 
-    if (currentPos === numCards - 1 || currentPos < -1){ // this makes cards appear on the right when they run off the left
+    if (currentPos < 0) { // makes the first card appear at the end of the last card
+      currentPos = numCards + currentPos;
+    }
+
+    // Default context positioning (all to the right of vertical narrative)
+    left = (currentPos * (cardWidth + cardSeparation)) + (verticalRight + cardSeparation + offset);
+
+    // Last card positioning if number of cards is greater than 3
+    if (numCards >= 3) {
+      if (currentPos === numCards - 1) {
+        left = verticalLeft - cardWidth - cardSeparation;
+      }
+    }
+    return left;
+  } else { // not wrapping
+
+    if (currentPos === numCards - 1 || currentPos < -1) { // this makes cards appear on the right when they run off the left
       currentPos = numCards + currentPos;
     }
 
@@ -54,23 +70,6 @@ window.getHorizontalLeft = function() {
     }
 
 
-
-    return left;
-  } else { // wrapping
-
-    if (currentPos < 0) { // makes the first card appear at the end of the last card
-      currentPos = numCards + currentPos;
-    }
-
-    // Default context positioning (all to the right of vertical narrative)
-    left = (currentPos * (cardWidth + cardSeparation)) + (verticalRight + cardSeparation + offset);
-  
-    // Last card positioning if number of cards is greater than 3
-    if (numCards >= 3) {
-      if (currentPos === numCards - 1) {
-        left = verticalLeft - cardWidth - cardSeparation;
-      }
-    }
     return left;
   }
 };
@@ -115,7 +114,6 @@ window.goToX = function(x) {
 window.goToContext = function(id) {
   var contextIndex, currentVertical, currentY, story;
   if (id) {
-    story = Session.get('story');
     currentY = Session.get('currentY');
 
     contextIndex = _.indexOf(_.pluck(Session.get('horizontalSectionsMap')[currentY].horizontal, '_id'), id.toString());
