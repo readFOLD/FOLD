@@ -838,9 +838,9 @@ Template.create_options.events({
       Session.set('read', true);
     }
   },
-  "change input.file-upload": function(){
+  "change input.header-upload": function(){
     var storyId = Session.get('storyId');
-    var files = $("input.file-upload")[0].files
+    var files = $("input.header-upload")[0].files;
     S3.upload({
       files: files,
       path: "header-images"
