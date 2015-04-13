@@ -7,6 +7,8 @@ div#login-buttons-and-more {
   left: 15px;
 }
 
+@topButtonRight: 72px;
+
 div.home-top {
   position: fixed;
   background-color: white;
@@ -51,11 +53,9 @@ div.home-top {
     position: absolute;
     font-size: 15px;
     top: 67px;
-    right: 68px;
+    right: @topButtonRight;
 
-    span.filters {
-      margin-right: 10px;
-    }
+
     span.categories {
       margin-left: 10px;
     }
@@ -65,7 +65,7 @@ div.home-top {
     @height: 45px;
     position: absolute;
     top: -6px;
-    right: 60px;
+    right: @topButtonRight;
     color: @light-color;
     font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
 
@@ -91,11 +91,10 @@ div.home-top {
       height: @height;
       float: left;
       display: inline-block;
-      margin-right: 12px;
-
       position: relative;
-
-
+      &:not(:last-child) {
+        margin-right: 12px;
+      }
     }
 
     .user-action {
