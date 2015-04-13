@@ -284,6 +284,9 @@ Template.story.helpers({
   metaviewOpen: function() {
     return Session.get("metaview")
   },
+  showMinimap: function() {
+    return Session.get("showMinimap")
+  },
 });
 
 Template.story_title.helpers({
@@ -737,6 +740,7 @@ Template.read.onCreated(function(){
   Session.set("wrap", {});
   Session.set("currentXByYId", {});
   Session.set("currentY", null);
+  Session.set("showMinimap", true);
   $('html, body').scrollTop(0);
 });
 
@@ -747,6 +751,7 @@ Template.create.onCreated(function(){
   Session.set("read", false);
   Session.set("newStory", false);
   Session.set("showDraft", true);
+  Session.set("showMinimap", true);
   $('html, body').scrollTop(0);
 
 });

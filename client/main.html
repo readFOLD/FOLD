@@ -52,12 +52,12 @@
 
 
     {{#if pastHeader}}
-<!--         {{#if read}} -->
-        {{> minimap}}
+        {{#if showMinimap}}
+          {{> minimap}}
+        {{/if}}
         {{#if metaviewOpen}}
           {{> metaview}}
         {{/if}}
-<!--         {{/if}} -->
         {{#if horizontalExists}}
             {{#unless addingContext}}
                 <div class="browser-offset">
