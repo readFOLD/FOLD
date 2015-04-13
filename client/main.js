@@ -350,8 +350,7 @@ Template.vertical_section_block.events({
 });
 
 Template.metaview.onRendered(function() {
-  $("body").css({ overflow: 'hidden' });
-
+  document.body.style.overflow = 'hidden'; // prevent document scroll while in metaview
   var that = this;  
   this.$(".sortable-rows, .sortable-blocks").sortable({
     stop: function() {
@@ -390,10 +389,13 @@ Template.metaview.onRendered(function() {
   this.$(".sortable-rows, .sortable-blocks").disableSelection();
 });
 
+Template.metaview.onDestroyed(function() {
+  document.body.style.overflow = 'auto';
+});
+
 Template.metaview.events({
   "click .close": function(d, t) {
     Session.set("metaview", false);
-    $("body").css({ overflow: 'auto' })
   },
   "click": function(d, t) {
     d.preventDefault();
@@ -421,22 +423,6 @@ Template.metaview.helpers({
   }
 });
 
-// prevent document scroll while in metaview
-// TODO fix behavior on hot code reload
-Meteor.startup(function() {
-  Tracker.autorun(function () {
-    if (Session.get("metaview")) {
-      if (document.body) {
-        document.body.style.overflow = 'hidden';
-      }
-    } else {
-      if (document.body) {
-        document.body.style.overflow = 'auto';
-      }
-    }
-
-  });
-});
 
 Template.minimap.events({
   "click .minimap": function(d, t) {
