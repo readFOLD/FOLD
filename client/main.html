@@ -270,13 +270,22 @@
 <template name="display_viz_section">
   <div class="viz-section">
     {{#if selected}}
-    <iframe width="100%" height="315" src="{{url}}" frameborder="0" ></iframe>
+      <iframe width="100%" height="315" src="{{url}}" frameborder="0" ></iframe>
+    {{else}}
+      {{> viz_preview}}
     {{/if}}
   </div>
   {{#unless read}}
     {{> horizontal_section_edit_delete}}
   {{/unless}}
 </template>
+
+<template name="viz_preview">
+  <div class="viz-preview">
+    {{> viz_icon}}
+  </div>
+</template>
+
 
 <template name="display_audio_section">
   <div class="audio-section">

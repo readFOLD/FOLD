@@ -660,6 +660,26 @@ div.text-section {
   }
 }
 
+
+div.viz-section {
+  .size-to-fit;
+}
+div.viz-preview {
+  .size-to-fit;
+  text-align: center;
+
+  background-color: @medium-color;
+
+  svg {
+    iconSize = 100px;
+    height: iconSize ;
+    width: iconSize ;
+    position: relative;
+    top: calc(50% ~"-" iconSize / 2);
+  }
+}
+
+
 div.twitter-section{
   button.show-image {
     width: 80px;
