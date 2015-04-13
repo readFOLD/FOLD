@@ -514,13 +514,9 @@ Tracker.autorun(function() {
   var verticalSection = Session.get('currentVerticalSection');
   var currentX = Session.get('currentX');
   if (verticalSection) {
-    var currentContextBlock = verticalSection.contextBlocks[currentX];
-    if (currentContextBlock) {
-      if (Session.get('showDraft')){
-        return Session.set('currentXId', currentContextBlock);
-      } else {
-        return Session.set('currentXId', currentContextBlock._id);
-      }
+    var currentContextBlockId = verticalSection.contextBlocks[currentX];
+    if (currentContextBlockId) {
+      return Session.set('currentXId', currentContextBlockId);
     }
   }
   return Session.set('currentXId', null);
@@ -528,6 +524,8 @@ Tracker.autorun(function() {
 
 Tracker.autorun(function() {
   if (currentXId = Session.get('currentXId')){
+    console.log('nownownow!')
+    console.log(currentXId)
     $('a[data-context-id="' + currentXId + '"]').addClass('active');
     $('a[data-context-id!="' + currentXId + '"]').removeClass('active');
   }
