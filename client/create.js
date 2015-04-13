@@ -524,8 +524,6 @@ Tracker.autorun(function() {
 
 Tracker.autorun(function() {
   if (currentXId = Session.get('currentXId')){
-    console.log('nownownow!')
-    console.log(currentXId)
     $('a[data-context-id="' + currentXId + '"]').addClass('active');
     $('a[data-context-id!="' + currentXId + '"]').removeClass('active');
   }
