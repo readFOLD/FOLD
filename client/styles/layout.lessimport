@@ -671,9 +671,9 @@ div.viz-preview {
   background-color: @medium-color;
 
   svg {
-    iconSize = 100px;
-    height: iconSize ;
-    width: iconSize ;
+    iconSize: 100px;
+    height: iconSize;
+    width: iconSize;
     position: relative;
     top: calc(50% ~"-" iconSize / 2);
   }
