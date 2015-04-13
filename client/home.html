@@ -72,11 +72,13 @@
         <li class="user-action">
           {{> login_buttons }}
         </li>
-        <li class="about-fold">
-          {{#linkTo route="about"}}
-            About FOLD
-          {{/linkTo}}
-        </li>
+        {{#unless isPhone}}
+          <li class="about-fold">
+            {{#linkTo route="about"}}
+              About FOLD
+            {{/linkTo}}
+          </li>
+        {{/unless}}
       </ol>
     </div>
     <div class="user-image">
