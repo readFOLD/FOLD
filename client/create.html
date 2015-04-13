@@ -286,13 +286,13 @@
       </div>
       {{#if uploadMode}}
         <div class="image-upload">
-          {{#c_upload_stream}}
+          {{#c_upload}}
             <input type="file" accept="image/*" class="button image-upload">
-          {{/c_upload_stream}}
+          {{/c_upload}}
 
-          {{#each c.uploading_images}}
-            <p>Uploading: {{percent_uploaded}}%</p>
-          {{/each}}
+          <!--{{#each c.uploading_images}}-->
+            <!--<p>Uploading: {{percent_uploaded}}%</p>-->
+          <!--{{/each}}-->
           {{#if uploadStatus}}
             <p>{{uploadStatus}}</p>
           {{/if}}

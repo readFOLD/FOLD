@@ -44,6 +44,11 @@ Meteor.publish("readStoriesPub", function(ids) {
         $in: ids
       },
       published: true
+    }, {
+      fields: {
+        draftStory: 0,
+        history: 0
+      }
     });
   } else {
     this.ready();
@@ -69,7 +74,7 @@ Meteor.publish("contextBlocksPub", function() {
   });
 });
 
-Meteor.publish("userProfilePub", function(username) {
+Meteor.publish("userProfilePub", function(username) { // includes user profile and published stories
 
   userCursor = Meteor.users.find({
     username: username.toLowerCase()
@@ -81,32 +86,63 @@ Meteor.publish("userProfilePub", function(username) {
     }
   });
 
-  var userFavorites = (userCursor.fetch()[0]).profile.favorites;
-  return [userCursor, Stories.find({
-                        _id: {
-                          $in: userFavorites
-                        }})]
+  var user = userCursor.fetch()[0];
+
+  if (!user){
+    return this.ready();
+  }
+
+  var userFavorites = user.profile.favorites;
+  return [
+    userCursor,
+    Stories.find({
+      _id: {
+        $in: userFavorites
+      },
+      published: true
+    }, {
+      fields : {
+        history: 0,
+        draftStory: 0
+      }
+  })]
 });
 
-Meteor.publish("userStoriesPub", function(username) {
+Meteor.publish("userStoriesPub", function(username) { // only published stories
   // TODO simplify once stories have author username on them
-  var user = Meteor.users.find({
+  var user = Meteor.users.findOne({
     username: username.toLowerCase()
   });
-  var userId = user.map(function(doc) {
-    return doc._id;
-  });
-  if (!userId) {
-    this.ready();
-    return;
+
+  if (!user) {
+    return this.ready();
   }
+
+  var userId = user._id;
+
   return Stories.find({
-    authorId: userId[0]
+    authorId: userId,
+    published: true
   },{
     fields : {
-      history: 0
+      history: 0,
+      draftStory: 0
     }
   });
+});
+
+Meteor.publish("myStoriesPub", function() {
+  if (this.userId) {
+    return Stories.find({
+      authorId: this.userId
+    }, {
+      fields: {
+        history: 0
+      }
+    });
+  } else {
+    return this.ready();
+  }
 });
 
 Meteor.publish("tempUsernamePub", function() {
