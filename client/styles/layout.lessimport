@@ -976,6 +976,7 @@ div.minimap {
     font-size: 22px;
     margin-right: 10px;
     margin-top: 10px;
+    color: @black-color;
   }
   .signin-buttons{
     margin:auto;
