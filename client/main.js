@@ -399,6 +399,15 @@ Template.metaview.events({
   },
   "click": function(d, t) {
     d.preventDefault();
+  },
+  // these lines below prevent mouseout and mouseover from getting to other dom elements that will release the scroll lock
+  mouseover: function(d){
+    d.preventDefault();
+    d.stopPropagation();
+  },
+  mouseout: function(d){
+    d.preventDefault();
+    d.stopPropagation();
   }
 })
 
