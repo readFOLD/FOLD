@@ -362,15 +362,28 @@ Template.metaview.onRendered(function() {
         newContextBlocks.push($(e).sortable('toArray', {attribute: 'data-id'} ))
       });
 
-      var originalVerticalSections = that.data.verticalSections;
 
-      var newVerticalSections = []
-      _.map(newVerticalSectionIDs, function(id, i) {
-        var newVerticalSection = _.findWhere(originalVerticalSections, {_id: id});
-        newVerticalSection.contextBlocks = newContextBlocks[i];
-        newVerticalSections.push(newVerticalSection);
+      var idMap = _.map(newVerticalSectionIDs, function(id, index){
+        return {
+          verticalId: id,
+          contextBlocks: newContextBlocks[index]
+        }
       });
-      Meteor.call('saveStory', {_id: Session.get("storyId")}, {$set: {'draftStory.verticalSections': newVerticalSections}})
+
+      Session.set('saveState', 'saving');
+
+      Meteor.call('reorderStory', Session.get("storyId"), idMap, saveCallback)
+
+
+      //var originalVerticalSections = that.data.verticalSections;
+
+      //var newVerticalSections = []
+      //_.map(newVerticalSectionIDs, function(id, i) {
+      //  var newVerticalSection = _.findWhere(originalVerticalSections, {_id: id});
+      //  newVerticalSection.contextBlocks = newContextBlocks[i];
+      //  newVerticalSections.push(newVerticalSection);
+      //});
+      //Meteor.call('saveStory', {_id: Session.get("storyId")}, {$set: {'draftStory.verticalSections': newVerticalSections}})
     }
   });
 
@@ -427,9 +440,11 @@ Meteor.startup(function() {
 
 Template.minimap.events({
   "click .minimap": function(d, t) {
-    Session.set("metaview", true);
+    if (!Session.get('read')){ // only metaview in create for now
+      Session.set("metaview", true);
+    }
   }
-})
+});
 
 Template.minimap.helpers({
   horizontalSectionsMap: function() {
