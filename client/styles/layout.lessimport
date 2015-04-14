@@ -1036,6 +1036,15 @@ div.minimap {
   }
 }
 
+.mobile-progress-header{
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  background-color: rgba(50,50,50,0.6);
+  color: @medium-color;
+  z-index: 1000;
+}
+
 .pull-right {
   float: right;
 }
