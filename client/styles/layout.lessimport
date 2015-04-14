@@ -937,11 +937,21 @@ div.minimap {
     height: 17px;
     width: 26px;
     margin-right: 1px;
+    &.small{
+      height: 13px;
+      width: 17px;
+      margin-right: 0.5px;
+
+    }
   }
 
   div.section {
     height: 20px;
     margin-bottom: 2px;
+    &.small{
+      height: 15px;
+      margin-bottom: 1px;
+    }
 
     &.selected-section {
       div.selected-block {
@@ -964,6 +974,20 @@ div.minimap {
       width: 10px;
       content: ""
     }
+
+    &.small{
+      height: 11px;
+      width: 14px;
+      margin-bottom: 1px;
+      margin-left: -0.5px;
+
+      &::before {
+        width: 1px;
+
+        padding-right: 0;
+      }
+    }
+
   }
 
   div.block {

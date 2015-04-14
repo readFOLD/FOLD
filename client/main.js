@@ -466,6 +466,9 @@ Template.minimap.helpers({
   },
   selectedY: function() {
     return Session.equals("currentY", this.verticalIndex);
+  },
+  smallCards: function(){
+    return Session.get("horizontalSectionsMap").length > 7;
   }
 });
 
