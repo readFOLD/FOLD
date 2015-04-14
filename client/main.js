@@ -529,6 +529,25 @@ editableDescriptionCreatedBoilerplate = function() {
   this.editing = new ReactiveVar(false);
 };
 
+//editableDescriptionDestroyedBoilerplate = function(meteorMethod) {
+  //return function(){
+  //  if(document.body){
+  //    document.body.style.overflow = 'auto';
+  //  }
+  //  console.log(this)
+
+
+    //var that = this;
+    //if (!Session.get('read') && !Session.get('addingContext')) {
+    //  var textContent = this.$('textarea[name=content]').val();
+    //  Session.set('saveState', 'saving');
+    //  Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
+    //    saveCallback(err, numDocs);
+    //  });
+    //}
+//  }
+//};
+
 horizontalBlockHelpers = _.extend({}, typeHelpers, {
   selected: function() {
     return Session.equals("currentX", this.index) && !Session.get("addingContext");
@@ -566,7 +585,7 @@ Template.horizontal_section_block.helpers({
 
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 
-    "blur .text-content": function(d, template) {
+    "blur .text-content.editable": function(d, template) {
       var that = this;
       if (!Session.get('read') && !Session.get('addingContext')) {
         var textContent = template.$('textarea[name=content]').val();
@@ -576,11 +595,23 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
         });
       }
     },
-    "keypress .image-section .text-content": function(e, template) {
+    "mouseover .text-content.editable": function(d, template) {
+      document.body.style.overflow = 'hidden';
+    },
+    "mouseout .text-content.editable": function(d, template) { // TODO this seems like way more saving than needed. Fix it. PERFORMANCE.
+      document.body.style.overflow = 'auto';
+      var that = this;
+      if (!Session.get('read') && !Session.get('addingContext')) {
+        var textContent = template.$('textarea[name=content]').val();
+        Session.set('saveState', 'saving');
+        Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
+          saveCallback(err, numDocs);
+        });
+      }
+    },
+    "keypress .image-section .text-content.editable": function(e, template) { // save on Enter
       var that = this;
       if (!Session.get('read') && !Session.get('addingContext') && e.which === 13 ) {
-        console.log(4)
-
         e.preventDefault();
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
@@ -595,6 +626,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
 Template.display_viz_section.helpers(horizontalBlockHelpers);
 
 Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
+//Template.display_image_section.onCreated(editableDescriptionDestroyedBoilerplate('editHorizontalBlockDescription'));
 Template.display_image_section.helpers(horizontalBlockHelpers);
 Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
@@ -609,6 +641,7 @@ Template.display_map_section.helpers(horizontalBlockHelpers);
 Template.display_link_section.helpers(horizontalBlockHelpers);
 
 Template.display_text_section.onCreated(editableDescriptionCreatedBoilerplate);
+//Template.display_text_section.onDestroyed(editableDescriptionDestroyedBoilerplate('editTextSection'));
 Template.display_text_section.helpers(horizontalBlockHelpers);
 Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
 
