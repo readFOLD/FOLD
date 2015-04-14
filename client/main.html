@@ -28,9 +28,11 @@
     </div>
 
     {{#unless isPhone}}
-      <div class="attribution {{#unless pastHeader}}shown{{/unless}}">
+      {{#if headerImageAttribution}}
+        <div class="attribution {{#unless pastHeader}}shown{{/unless}}">
         Header Image Source: {{headerImageAttribution}}
-      </div>
+        </div>
+      {{/if}}
     {{/unless}}
   </div>
 </template>
