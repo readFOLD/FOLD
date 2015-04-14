@@ -250,7 +250,6 @@ div.title-overlay {
       text-overflow: ellipsis;
       white-space: nowrap;
       @media @mobile {
-        text-overflow: ellipsis;
         white-space: normal;
       }
     }
