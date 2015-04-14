@@ -159,6 +159,9 @@ div.title-overlay {
     position: fixed;
     height: 100px;
     width: 100%;
+    @media @mobile {
+      display: none;
+    }
   }
 
   &.read:hover {
