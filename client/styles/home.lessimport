@@ -64,8 +64,7 @@ div.home-top {
       text-align: center;
       margin-top: 60px;
       height: 28px;
-      padding-left: 115px;
-      padding-right: 115px;
+      width: 150px;
       img{
         height: 100%
       }
