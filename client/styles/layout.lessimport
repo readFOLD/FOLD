@@ -545,10 +545,6 @@ div.vertical-narrative {
   z-index: 10;
   float: left;
   width: 400px;
-  min-width: 400px;
-
-  &.fixed {
-  }
 
   .narrative-section {
     position: relative;
