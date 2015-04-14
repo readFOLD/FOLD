@@ -362,9 +362,14 @@ Meteor.methods({
   },
   publishStory: function(storyId) {
     var story = Stories.findOne({_id: storyId, authorId: this.userId});
+    var user = Users.findOne({_id: this.userId});
 
     if (!story){
-      throw new Meteor.Error('story not found by author to publish. story: ' + storyId + '  userId: ' + this.userId)
+      throw new Meteor.Error('story not found by author to publish. story: ' + storyId + '  userId: ' + this.userId);
+    }
+
+    if (!user){
+      throw new Meteor.Error('user not found by author to publish. userId: ' + this.userId);
     }
 
     var draftStory = story.draftStory;
@@ -427,6 +432,7 @@ Meteor.methods({
         'publishedAt': Date.now(),
         'published': true,
         'everPublished': true,
+        'authorName': user.profile.name || 'Anonymous',
         'authorUsername': Meteor.user().username,
         'version': 'earlybird'
       }
