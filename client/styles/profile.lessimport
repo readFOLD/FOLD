@@ -14,7 +14,7 @@ h1 {
 }
 
 div.profile-section {
-  padding-top: 150px;
+  padding-top: 145px;
   width: 100%;
   height: 100%;
   position: absolute;
