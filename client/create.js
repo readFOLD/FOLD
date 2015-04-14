@@ -514,13 +514,9 @@ Tracker.autorun(function() {
   var verticalSection = Session.get('currentVerticalSection');
   var currentX = Session.get('currentX');
   if (verticalSection) {
-    var currentContextBlock = verticalSection.contextBlocks[currentX];
-    if (currentContextBlock) {
-      if (Session.get('showDraft')){
-        return Session.set('currentXId', currentContextBlock);
-      } else {
-        return Session.set('currentXId', currentContextBlock._id);
-      }
+    var currentContextBlockId = verticalSection.contextBlocks[currentX];
+    if (currentContextBlockId) {
+      return Session.set('currentXId', currentContextBlockId);
     }
   }
   return Session.set('currentXId', null);
@@ -541,8 +537,10 @@ Tracker.autorun(function() { // update UI when start and stop adding/editing con
     horizontalContextDiv = $(".horizontal-context");
     horizontalContextDiv.removeClass('editing');
     if (Session.get("addingContext") || (_ref = Session.get("editingContext"), __indexOf.call(currentContextBlocks, _ref) >= 0)) {
+      Session.set("showMinimap", false);
       return horizontalContextDiv.addClass('editing');
     } else {
+      Session.set("showMinimap", true);
       if (document.body){
         document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
         removePlaceholderLinks();
@@ -797,31 +795,12 @@ Template.horizontal_section_block.events({
         if(err){
           return saveCallback(err);
         }
-        ContextBlocks.remove(id, saveCallback);
+        ContextBlocks.remove(id, function(err, numDocs){
+          goToX(Session.get('currentX'));
+          saveCallback(err, numDocs);
+        });
       });
     }
-  },
-  "click .move-card-left": function() {
-    var that = this;
-
-    Session.set('saveState', 'saving');
-    return Meteor.call('moveHorizontalContextLeftOne', Session.get('storyId'), this.verticalIndex, this.index, function(err, numDocs) {
-      if (numDocs) {
-        goToContext(that._id);
-      }
-      saveCallback(err, numDocs);
-    });
-  },
-  "click .move-card-right": function() {
-    var that = this;
-
-    Session.set('saveState', 'saving');
-    return Meteor.call('moveHorizontalContextRightOne', Session.get('storyId'), this.verticalIndex, this.index, function(err, numDocs) {
-      if (numDocs) {
-        goToContext(that._id);
-      }
-      saveCallback(err, numDocs);
-    });
   },
   "click .edit": function(e, t) {
     Session.set('editingContext', this._id);

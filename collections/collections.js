@@ -224,6 +224,12 @@ AudioBlock = (function(_super) {
     }
   };
 
+  AudioBlock.prototype.previewUrl = function() {
+    if (this.source === 'soundcloud') {
+      return this.reference.artworkUrl.replace(/large\.jpg/, "t500x500.jpg");
+    }
+  };
+
   AudioBlock.prototype.anchorMenuSnippet = function() {
     return this.reference.title;
   };

@@ -141,7 +141,35 @@ Meteor.startup(function() {
   return $(document).scroll(throttledUpdate);
 });
 
-
+typeHelpers = {
+  text: function() {
+    return this.type === "text";
+  },
+  image: function() {
+    return this.type === "image";
+  },
+  gif: function() {
+    return this.type === "gif";
+  },
+  map: function() {
+    return this.type === "map";
+  },
+  video: function() {
+    return this.type === "video";
+  },
+  viz: function() {
+    return this.type === "viz";
+  },
+  twitter: function() {
+    return this.type === "twitter";
+  },
+  audio: function() {
+    return this.type === "audio";
+  },
+  link: function() {
+    return this.type === "link";
+  }
+};
 
 Template.story_header.onRendered(function() {
   var range, sel, titleDiv;
@@ -252,7 +280,13 @@ Template.story.helpers({
   },
   verticalLeft: function () {
     return Session.get("verticalLeft");
-  }
+  },
+  metaviewOpen: function() {
+    return Session.get("metaview")
+  },
+  showMinimap: function() {
+    return Session.get("showMinimap")
+  },
 });
 
 Template.story_title.helpers({
@@ -315,6 +349,97 @@ Template.vertical_section_block.events({
     e.preventDefault();
     contextId = $(e.target).data('contextId');
     return goToContext(contextId);
+  }
+});
+
+Template.metaview.onRendered(function() {
+  document.body.style.overflow = 'hidden'; // prevent document scroll while in metaview
+  var that = this;  
+  this.$(".sortable-rows, .sortable-blocks").sortable({
+    stop: function() {
+      var newVerticalSectionIDs = $( ".sortable-rows" ).sortable('toArray', {attribute: 'data-id'})
+
+      var newContextBlocks = [];
+      $( ".sortable-blocks" ).each(function(i, e) { 
+        newContextBlocks.push($(e).sortable('toArray', {attribute: 'data-id'} ))
+      });
+
+
+      var idMap = _.map(newVerticalSectionIDs, function(id, index){
+        return {
+          verticalId: id,
+          contextBlocks: newContextBlocks[index]
+        }
+      });
+
+      Session.set('saveState', 'saving');
+
+      Meteor.call('reorderStory', Session.get("storyId"), idMap, saveCallback)
+
+
+      //var originalVerticalSections = that.data.verticalSections;
+
+      //var newVerticalSections = []
+      //_.map(newVerticalSectionIDs, function(id, i) {
+      //  var newVerticalSection = _.findWhere(originalVerticalSections, {_id: id});
+      //  newVerticalSection.contextBlocks = newContextBlocks[i];
+      //  newVerticalSections.push(newVerticalSection);
+      //});
+      //Meteor.call('saveStory', {_id: Session.get("storyId")}, {$set: {'draftStory.verticalSections': newVerticalSections}})
+    }
+  });
+
+  this.$(".sortable-rows, .sortable-blocks").disableSelection();
+});
+
+Template.metaview.onDestroyed(function() {
+  document.body.style.overflow = 'auto';
+});
+
+Template.metaview.events({
+  "click .close": function(d, t) {
+    Session.set("metaview", false);
+  },
+  "click": function(d, t) {
+    d.preventDefault();
+  },
+  // these lines below prevent mouseout and mouseover from getting to other dom elements that will release the scroll lock
+  mouseover: function(d){
+    d.preventDefault();
+    d.stopPropagation();
+  },
+  mouseout: function(d){
+    d.preventDefault();
+    d.stopPropagation();
+  }
+})
+
+Template.metaview_context_block.helpers(typeHelpers)
+
+Template.metaview.helpers({
+  verticalSectionsWithIndex: function() {
+    return this.verticalSections.map(function(v, i) {
+      return _.extend(v, {
+        index: i
+      });
+    });
+  },
+  horizontalSections: function() {
+    var blocks = this.contextBlocks
+       .map(function(id) {
+         return ContextBlocks.findOne({ // by finding one at a time, this keeps in broken links. TO-DO maybe should find a better soln that uses $in
+           _id: id
+         }) || {_id: id}; // fallback to just having id if cannot find
+       });
+    return blocks;
+  }
+});
+
+Template.minimap.events({
+  "click .minimap": function(d, t) {
+    if (!Session.get('read')){ // only metaview in create for now
+      Session.set("metaview", true);
+    }
   }
 });
 
@@ -398,39 +523,30 @@ Template.horizontal_context.helpers({
   }
 });
 
-typeHelpers = {
-  text: function() {
-    return this.type === "text";
-  },
-  image: function() {
-    return this.type === "image";
-  },
-  gif: function() {
-    return this.type === "gif";
-  },
-  map: function() {
-    return this.type === "map";
-  },
-  video: function() {
-    return this.type === "video";
-  },
-  viz: function() {
-    return this.type === "viz";
-  },
-  twitter: function() {
-    return this.type === "twitter";
-  },
-  audio: function() {
-    return this.type === "audio";
-  },
-  link: function() {
-    return this.type === "link";
-  }
-};
+
 
 editableDescriptionCreatedBoilerplate = function() {
   this.editing = new ReactiveVar(false);
 };
+
+//editableDescriptionDestroyedBoilerplate = function(meteorMethod) {
+  //return function(){
+  //  if(document.body){
+  //    document.body.style.overflow = 'auto';
+  //  }
+  //  console.log(this)
+
+
+    //var that = this;
+    //if (!Session.get('read') && !Session.get('addingContext')) {
+    //  var textContent = this.$('textarea[name=content]').val();
+    //  Session.set('saveState', 'saving');
+    //  Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
+    //    saveCallback(err, numDocs);
+    //  });
+    //}
+//  }
+//};
 
 horizontalBlockHelpers = _.extend({}, typeHelpers, {
   selected: function() {
@@ -469,7 +585,7 @@ Template.horizontal_section_block.helpers({
 
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 
-    "blur .text-content": function(d, template) {
+    "blur .text-content.editable": function(d, template) {
       var that = this;
       if (!Session.get('read') && !Session.get('addingContext')) {
         var textContent = template.$('textarea[name=content]').val();
@@ -479,11 +595,23 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
         });
       }
     },
-    "keypress .image-section .text-content": function(e, template) {
+    "mouseover .text-content.editable": function(d, template) {
+      document.body.style.overflow = 'hidden';
+    },
+    "mouseout .text-content.editable": function(d, template) { // TODO this seems like way more saving than needed. Fix it. PERFORMANCE.
+      document.body.style.overflow = 'auto';
+      var that = this;
+      if (!Session.get('read') && !Session.get('addingContext')) {
+        var textContent = template.$('textarea[name=content]').val();
+        Session.set('saveState', 'saving');
+        Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
+          saveCallback(err, numDocs);
+        });
+      }
+    },
+    "keypress .image-section .text-content.editable": function(e, template) { // save on Enter
       var that = this;
       if (!Session.get('read') && !Session.get('addingContext') && e.which === 13 ) {
-        console.log(4)
-
         e.preventDefault();
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
@@ -498,6 +626,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
 Template.display_viz_section.helpers(horizontalBlockHelpers);
 
 Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
+//Template.display_image_section.onCreated(editableDescriptionDestroyedBoilerplate('editHorizontalBlockDescription'));
 Template.display_image_section.helpers(horizontalBlockHelpers);
 Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
@@ -512,6 +641,7 @@ Template.display_map_section.helpers(horizontalBlockHelpers);
 Template.display_link_section.helpers(horizontalBlockHelpers);
 
 Template.display_text_section.onCreated(editableDescriptionCreatedBoilerplate);
+//Template.display_text_section.onDestroyed(editableDescriptionDestroyedBoilerplate('editTextSection'));
 Template.display_text_section.helpers(horizontalBlockHelpers);
 Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
 
@@ -643,6 +773,7 @@ Template.read.onCreated(function(){
   Session.set("wrap", {});
   Session.set("currentXByYId", {});
   Session.set("currentY", null);
+  Session.set("showMinimap", true);
   $('html, body').scrollTop(0);
 });
 
@@ -653,6 +784,7 @@ Template.create.onCreated(function(){
   Session.set("read", false);
   Session.set("newStory", false);
   Session.set("showDraft", true);
+  Session.set("showMinimap", true);
   $('html, body').scrollTop(0);
 
 });

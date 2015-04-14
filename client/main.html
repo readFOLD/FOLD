@@ -1,3 +1,4 @@
+
 <!--
   Templates used in reading, creating, and editing
 -->
@@ -51,8 +52,11 @@
 
 
     {{#if pastHeader}}
-        {{#if read}}
-            {{> minimap}}
+        {{#if showMinimap}}
+          {{> minimap}}
+        {{/if}}
+        {{#if metaviewOpen}}
+          {{> metaview}}
         {{/if}}
         {{#if horizontalExists}}
             {{#unless addingContext}}
@@ -266,7 +270,11 @@
 <template name="display_viz_section">
   <div class="viz-section">
     {{#if selected}}
-    <iframe width="100%" height="315" src="{{url}}" frameborder="0" ></iframe>
+      <iframe width="100%" height="315" src="{{url}}" frameborder="0" ></iframe>
+    {{else}}
+      <div class="icon-only-preview">
+        {{> viz_icon}}
+      </div>
     {{/if}}
   </div>
   {{#unless read}}
@@ -274,11 +282,14 @@
   {{/unless}}
 </template>
 
+
+
+
 <template name="display_audio_section">
   <div class="audio-section">
     {{#if selected}}
       <div class="active-display">
-      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+        <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
       </div>
     {{/if}}
     <div class="preview">
@@ -294,7 +305,7 @@
   <div class="video-section">
     {{#if selected}}
       <div class="active-display">
-      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+        <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
       </div>
     {{/if}}
     <div class="preview">
@@ -417,6 +428,66 @@
       {{ > browse_arrow_right}}
     </div>
   </div>
+</template>
+
+<template name="metaview">
+  <div class="metaview">
+    <ul class="cards sortable-rows">
+      {{#each verticalSectionsWithIndex}}
+        <li class="row" data-id="{{_id}}">
+          <div class="vertical-block">
+            {{{content}}}
+          </div>
+          <ul class="horizontal-section sortable-blocks ui-state-default">
+            {{#each horizontalSections}}
+              <li class="horizontal-block ui-state-default" data-id="{{_id}}">
+                {{> metaview_context_block}}
+              </li>
+            {{/each}}
+          </ul>
+        </li>
+      {{/each}}
+    </ul>
+    <button class="close button">
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+</template>
+
+<template name="metaview_context_block">
+  {{#if video}}
+    <img src="{{thumbnailUrl}}"/>
+  {{/if}}
+  {{#if image}}
+    <img src="{{thumbnailUrl}}" />
+  {{/if}}
+  {{#if gif}}
+    <img src="{{thumbnailUrl}}" />
+  {{/if}}
+  {{#if map}}
+    <img src="{{previewUrl}}"/>
+  {{/if}}
+  {{#if twitter}}
+    {{> twitter_icon}}
+  {{/if}}
+  {{#if audio}}
+    {{> audio_icon}}
+  {{/if}}
+  {{#if viz}}
+    {{> viz_icon}}
+  {{/if}}
+  {{#if text}}
+    {{content}}
+  {{/if}}
+
+
+  {{#if link}}
+    {{#if thumbnailUrl}}
+     <img src="{{thumbnailUrl}}" />
+    {{else}}
+      {{title}}
+    {{/if}}
+  {{/if}}
 </template>
 
 <template name="minimap">

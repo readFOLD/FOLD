@@ -151,6 +151,39 @@ Meteor.methods({
     // TODO - Go though some UpdateContextBlock function
     return ContextBlocks.update({"_id": horizontalId, "authorId": this.userId}, {"$set": {"content": content}});
   },
+  reorderStory: function(storyId, idMap) {
+
+    var story = Stories.findOne({_id: storyId, authorId: this.userId}, {
+      fields: {
+        'draftStory.verticalSections': 1
+      }
+    });
+
+    if (!story || !story.draftStory){
+      return new Meteor.Error('story not found for reordering: ' + storyId)
+    }
+
+    var draftStory = story.draftStory;
+
+    var originalVerticalSections = draftStory.verticalSections;
+
+
+    var newVerticalSections = _.map(idMap, function(horizontal) {
+      return _.extend(
+        {},
+        _.findWhere(originalVerticalSections, {_id: horizontal.verticalId}),
+        {
+          contextBlocks: horizontal.contextBlocks
+        }
+      );
+    });
+
+    return updateStory({_id: storyId}, {
+      $set: {
+        'draftStory.verticalSections': newVerticalSections
+      }
+    })
+  },
   insertVerticalSection: function(storyId, index, section) {
     // TODO - Once Meteor upgrades to use Mongo 2.6
     // This should use the $position operator and work directly there

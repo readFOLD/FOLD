@@ -103,6 +103,7 @@
   </div>
 </template>
 
+
 <template name="create_horizontal_section_block">
   <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
     <div class="content-icons">
@@ -620,16 +621,6 @@
   {{#unless read}}
     {{#if selected}}
       <div class="button-options edit-delete">
-        {{#if canMoveLeft}}
-          <button class="move-card-left">
-            <i class="fa fa-caret-square-o-left"></i>
-          </button>
-        {{/if}}
-        {{#if canMoveRight}}
-          <button class="move-card-right">
-            <i class="fa fa-caret-square-o-right"></i>
-          </button>
-        {{/if}}
         <button class="delete button">
           <i class="fa fa-times"></i>
         </button>
