@@ -1,15 +1,11 @@
-<head>
-  <title>FOLD</title>
-  <link rel="apple-touch-icon" href="/FOLD-apple-touch-icon.png">
-  <link rel="shortcut icon" href="/favicon.ico" />
-</head>
+
 
 <template name="top_banner">
   <div class="home-top {{#if border}}{{border}}{{/if}}">
     <div class="left">
       <div class="logo-title">
         {{#linkTo route="home"}}
-        <img src="/FOLD_LOGO.svg">
+        <img class="logo" src="/FOLD_LOGO.svg">
         {{/linkTo}}
         {{#linkTo route="home"}}
         <div class="title">
@@ -19,7 +15,8 @@
       </div>
       {{#if showFilters}}
       <div class="filter">
-        {{> filters}} in {{> categories}}
+        {{> filters}}
+        <!--{{> filters}} in {{> categories}}-->
       </div>
       {{/if}}
     </div>
@@ -50,7 +47,7 @@
   <div class="home-top remix-color">
     <div class="left">
       <div class="logo-title">
-          <img src="/FOLD_LOGO.svg">
+          <img class="logo" src="/FOLD_LOGO.svg">
           <div class="title">
             <img src="/FOLD_TITLE.svg">
           </div>
@@ -63,17 +60,21 @@
   <div class="right">
     <div class="action-items">
       <ol>
-        <li class="create-story">
-          {{> create_story}}
-        </li>
+        {{#unless isPhone}}
+          <li class="create-story">
+            {{> create_story}}
+          </li>
+        {{/unless}}
         <li class="user-action">
           {{> login_buttons }}
         </li>
-        <li class="about-fold">
-          {{#linkTo route="about"}}
-            About FOLD
-          {{/linkTo}}
-        </li>
+        {{#unless isPhone}}
+          <li class="about-fold">
+            {{#linkTo route="about"}}
+              About FOLD
+            {{/linkTo}}
+          </li>
+        {{/unless}}
       </ol>
     </div>
     <div class="user-image">
@@ -151,8 +152,8 @@
       {{> story_preview}}
     {{/linkTo}}
   {{else}}
-    <h2 style="text-align: center">Nothing to see here. Please move along.</h2>
-    <h3 style="text-align: center">jk FOLD will launch on April 22nd.</h3>
+    <h2 style="text-align: center">FOLD will launch on April 22nd.</h2>
+    <h3 style="text-align: center">If you have a secret code, please sign up above.</h3>
   {{/each}}
 </template>
 

@@ -7,10 +7,18 @@ div#login-buttons-and-more {
   left: 15px;
 }
 
+@topButtonRight: 72px;
+
 div.home-top {
   position: fixed;
   background-color: white;
   height: 145px;
+  @media @mobile{
+    img{
+      vertical-align: middle;
+    }
+    height: 175px;
+  }
   width: 100%;
   z-index: 10;
   //border-bottom: 1px solid @medium-color;
@@ -31,19 +39,38 @@ div.home-top {
   }
 
   div.logo-title {
-    display: inline-block;
-    margin-left: 60px;
-    margin-top: 37px;
-    width: 310px;
-    div.logo {
+    .logo {
       float: left;
       z-index: 10;
     }
 
     div.title {
       float: right;
-      //margin-top: 5px;
-      width: 222px;
+    }
+
+    @media @not-mobile{
+      display: inline-block;
+      margin-left: 60px;
+      margin-top: 37px;
+      width: 310px;
+      div.title {
+        //margin-top: 5px;
+        width: 222px;
+      }
+
+    }
+    @media @mobile{
+      margin:auto;
+      text-align: center;
+      margin-top: 60px;
+      height: 28px;
+      width: 150px;
+      img{
+        height: 100%
+      }
+      .title {
+        height: 100%;
+      }
     }
   }
 
@@ -51,11 +78,17 @@ div.home-top {
     position: absolute;
     font-size: 15px;
     top: 67px;
-    right: 68px;
 
-    span.filters {
-      margin-right: 10px;
+    @media @not-mobile{
+      right: @topButtonRight;
     }
+    @media @mobile{
+      top: 110px;
+      width: 100%;
+      text-align: center;
+    }
+
+
     span.categories {
       margin-left: 10px;
     }
@@ -65,7 +98,13 @@ div.home-top {
     @height: 45px;
     position: absolute;
     top: -6px;
-    right: 60px;
+    @media @not-mobile{
+      right: @topButtonRight;
+    }
+    @media @mobile{
+      width: 100%;
+      text-align: center;
+    }
     color: @light-color;
     font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
 
@@ -89,13 +128,14 @@ div.home-top {
 
     li {
       height: @height;
-      float: left;
+      @media @not-mobile{
+        float: left;
+      }
       display: inline-block;
-      margin-right: 12px;
-
       position: relative;
-
-
+      &:not(:last-child) {
+        margin-right: 12px;
+      }
     }
 
     .user-action {
@@ -265,6 +305,12 @@ div.stories {
     position: relative;
     margin-top: 8px;
     margin-bottom: 23px;
+
+    @media @mobile {
+      margin-top: 40px;
+      margin-bottom: 0px;
+    }
+
     @margin-side: 4px;
     margin-left: @margin-side;
     margin-right: @margin-side;

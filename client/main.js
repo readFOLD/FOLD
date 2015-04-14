@@ -6,13 +6,14 @@ UI.registerHelper('selectedIf', function(val) {
 });
 
 getCardWidth = function(windowWidth) {
-  var cardWidth;
-  if (windowWidth <= window.constants.minPageWidth) {
-    return cardWidth = 400;
+  if (Meteor.Device.isPhone()){
+    return Session.get("windowWidth") - 2* getVerticalLeft();
+  } else if (windowWidth <= window.constants.minPageWidth) {
+    return 400;
   } else if ((windowWidth > window.constants.minPageWidth) && (windowWidth <= 1304)) {
-    return cardWidth = (windowWidth - (16 * 3) - (88 * 2)) / 2;
+    return (windowWidth - (16 * 3) - (88 * 2)) / 2;
   } else {
-    return cardWidth = 520;
+    return 520;
   }
 };
 
@@ -20,25 +21,36 @@ Session.set("separation", 10);
 
 var windowSizeDep = new Tracker.Dependency();
 
-Tracker.autorun(function(){
-  windowSizeDep.depend();
+Meteor.startup(function(){
+  Tracker.autorun(function(){
+    windowSizeDep.depend();
 
-  Session.set("windowHeight", $(window).height());
+    var windowWidth = $(window).width();
 
-  Session.set("windowWidth", window.outerWidth);
+    Session.set("windowHeight", $(window).height());
 
-  Session.set("cardWidth", getCardWidth(window.outerWidth));
+    Session.set("windowWidth", windowWidth);
 
-  Session.set("verticalLeft", getVerticalLeft(window.outerWidth));
+    Session.set("cardWidth", getCardWidth(windowWidth));
+
+    Session.set("verticalLeft", getVerticalLeft(windowWidth));
+
+    if(Meteor.Device.isPhone()){
+      document.body.style.overflowX = "hidden";
+      $('body').css('max-width', windowWidth);
+    }
+  });
+
+  var windowResize = function() {
+    windowSizeDep.changed();
+  };
+
+  throttledResize = _.throttle(windowResize, 20);
+
+  $(window).resize(throttledResize);
+
 });
 
-var windowResize = function() {
-  windowSizeDep.changed();
-};
-
-throttledResize = _.throttle(windowResize, 20);
-
-$(window).resize(throttledResize);
 
 updatecurrentY = function() {
   var actualY, h, i, maxScroll, readMode, scrollTop, stickyBody, stickyTitle, vertTop, _i, _len, _ref;
@@ -285,7 +297,7 @@ Template.story.helpers({
     return Session.get("metaview")
   },
   showMinimap: function() {
-    return Session.get("showMinimap")
+    return Session.get("showMinimap") && (!Meteor.Device.isPhone());
   },
 });
 
@@ -650,7 +662,10 @@ Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
 Template.story_browser.helpers({
   showLeftArrow: function() {
-    return Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentYId')];
+    return !Meteor.Device.isPhone() && (Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentYId')]);
+  },
+  showRightArrow: function() {
+    return !Meteor.Device.isPhone();
   }
 });
 

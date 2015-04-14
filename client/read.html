@@ -1,4 +1,10 @@
 <template name="read">
+  {{#if isPhone}}
+    <div class="mobile-progress-header" >
+      <h2>Mobile will be ready soon!</h2>
+      <h3>But you can see our progress here</h3>
+    </div>
+  {{/if}}
   {{!hasContext suppresses a firefox error when story not found because page gets rendered without any context, probably right before story not found gets shown, should probably not be necessary}}
   {{#if hasContext}}
     {{> story_header}}
@@ -10,11 +16,13 @@
 <template name="read_options">
   <div class="floating-story-buttons">
     {{#if isAuthor}}
-      {{#linkTo route="edit" data=this}}
-        <button type="button" class="link-to-edit">
-          Edit This Story
-        </button>
-      {{/linkTo}}
+      {{#unless isPhone}}
+        {{#linkTo route="edit" data=this}}
+          <button type="button" class="link-to-edit">
+            Edit This Story
+          </button>
+        {{/linkTo}}
+      {{/unless}}
     {{/if}}
   </div>
 </template>
