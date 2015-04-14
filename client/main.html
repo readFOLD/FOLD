@@ -27,9 +27,11 @@
       {{/linkTo}}
     </div>
 
-    <div class="attribution {{#unless pastHeader}}shown{{/unless}}">
-      Header Image Source: {{headerImageAttribution}}
-    </div>
+    {{#unless isPhone}}
+      <div class="attribution {{#unless pastHeader}}shown{{/unless}}">
+        Header Image Source: {{headerImageAttribution}}
+      </div>
+    {{/unless}}
   </div>
 </template>
 

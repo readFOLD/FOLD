@@ -33,6 +33,11 @@ Meteor.startup(function(){
     Session.set("cardWidth", getCardWidth(windowWidth));
 
     Session.set("verticalLeft", getVerticalLeft(windowWidth));
+
+    if(Meteor.Device.isPhone()){
+      document.body.style.overflowX = "hidden";
+      $('body').css('max-width', windowWidth);
+    }
   });
 
   var windowResize = function() {
@@ -291,7 +296,7 @@ Template.story.helpers({
     return Session.get("metaview")
   },
   showMinimap: function() {
-    return Session.get("showMinimap")
+    return Session.get("showMinimap") && (!Meteor.Device.isPhone());
   },
 });
 

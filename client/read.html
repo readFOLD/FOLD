@@ -10,11 +10,13 @@
 <template name="read_options">
   <div class="floating-story-buttons">
     {{#if isAuthor}}
-      {{#linkTo route="edit" data=this}}
-        <button type="button" class="link-to-edit">
-          Edit This Story
-        </button>
-      {{/linkTo}}
+      {{#unless isPhone}}
+        {{#linkTo route="edit" data=this}}
+          <button type="button" class="link-to-edit">
+            Edit This Story
+          </button>
+        {{/linkTo}}
+      {{/unless}}
     {{/if}}
   </div>
 </template>

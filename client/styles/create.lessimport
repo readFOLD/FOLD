@@ -117,8 +117,11 @@ div.save-background-image {
 }
 
 div.title-overlay {
-  min-width: 1024px;
+  @media @not-mobile {
+    min-width: 1024px;
+  }
   height: 350px;
+
   z-index: 30;
   // background-color: @action-color;
   color: @light-color;
@@ -208,7 +211,7 @@ div.title-overlay {
     padding: 5px 10px;
     opacity: 0.0;
 
-    &.shown {
+    &.shown{
       opacity: 1.0;
     }
   }
@@ -222,6 +225,11 @@ div.title-overlay {
     margin-left: 95px;
     margin-top: 125px;
     max-width: 1300px;
+    @media @mobile {
+      margin-left: 20px;
+      margin-right: 20px;
+      max-width: calc(100% ~"-" 40px);
+    }
     padding: 11px;
     background-color: @dark-color;
     &.fixed {
@@ -238,6 +246,10 @@ div.title-overlay {
       overflow-y: visible;
       text-overflow: ellipsis;
       white-space: nowrap;
+      @media @mobile {
+        text-overflow: ellipsis;
+        white-space: normal;
+      }
     }
     div.author {
       font-size: 18px;
