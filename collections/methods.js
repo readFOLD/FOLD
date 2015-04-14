@@ -362,7 +362,7 @@ Meteor.methods({
   },
   publishStory: function(storyId) {
     var story = Stories.findOne({_id: storyId, authorId: this.userId});
-    var user = Users.findOne({_id: this.userId});
+    var user = Meteor.users.findOne({_id: this.userId});
 
     if (!story){
       throw new Meteor.Error('story not found by author to publish. story: ' + storyId + '  userId: ' + this.userId);
