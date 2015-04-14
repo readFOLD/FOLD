@@ -13,6 +13,12 @@ div.home-top {
   position: fixed;
   background-color: white;
   height: 145px;
+  @media @mobile{
+    img{
+      vertical-align: middle;
+    }
+    height: 175px;
+  }
   width: 100%;
   z-index: 10;
   //border-bottom: 1px solid @medium-color;
@@ -33,19 +39,39 @@ div.home-top {
   }
 
   div.logo-title {
-    display: inline-block;
-    margin-left: 60px;
-    margin-top: 37px;
-    width: 310px;
-    div.logo {
+    .logo {
       float: left;
       z-index: 10;
     }
 
     div.title {
       float: right;
-      //margin-top: 5px;
-      width: 222px;
+    }
+
+    @media @not-mobile{
+      display: inline-block;
+      margin-left: 60px;
+      margin-top: 37px;
+      width: 310px;
+      div.title {
+        //margin-top: 5px;
+        width: 222px;
+      }
+
+    }
+    @media @mobile{
+      margin:auto;
+      text-align: center;
+      margin-top: 60px;
+      height: 28px;
+      padding-left: 115px;
+      padding-right: 115px;
+      img{
+        height: 100%
+      }
+      .title {
+        height: 100%;
+      }
     }
   }
 
@@ -53,7 +79,15 @@ div.home-top {
     position: absolute;
     font-size: 15px;
     top: 67px;
-    right: @topButtonRight;
+
+    @media @not-mobile{
+      right: @topButtonRight;
+    }
+    @media @mobile{
+      top: 110px;
+      width: 100%;
+      text-align: center;
+    }
 
 
     span.categories {
@@ -65,7 +99,13 @@ div.home-top {
     @height: 45px;
     position: absolute;
     top: -6px;
-    right: @topButtonRight;
+    @media @not-mobile{
+      right: @topButtonRight;
+    }
+    @media @mobile{
+      width: 100%;
+      text-align: center;
+    }
     color: @light-color;
     font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
 
@@ -89,7 +129,9 @@ div.home-top {
 
     li {
       height: @height;
-      float: left;
+      @media @not-mobile{
+        float: left;
+      }
       display: inline-block;
       position: relative;
       &:not(:last-child) {
