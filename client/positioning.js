@@ -168,6 +168,8 @@ $(document).keydown(function(e) {
       case '(': // down arrow
         goDownOneCard()
         break;
+      case ' ': // spacebar
+        break;
     }
   }
 });
