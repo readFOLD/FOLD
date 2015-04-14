@@ -5,7 +5,7 @@ window.constants = {
 };
 
 window.getVerticalLeft = function(width) {
-  return Meteor.Device.isPhone ? 10 : 106;
+  return Meteor.Device.isPhone() ? 10 : 106;
 };
 
 window.getHorizontalLeft = function() {
