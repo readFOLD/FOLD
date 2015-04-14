@@ -137,7 +137,9 @@ Template._story_preview_content.helpers({
     }
   },
   headerImageUrl: function() {
-    return '//' + Meteor.settings["public"].AWS_BUCKET + '.s3.amazonaws.com/header-images/' + this.headerImage;
+    if (this.headerImage) {
+      return '//' + Meteor.settings["public"].AWS_BUCKET + '.s3.amazonaws.com/header-images/' + this.headerImage;
+    }
   }
 });
 
