@@ -848,4 +848,7 @@ checkUsername = function(username) {
   if(username && _.indexOf(disallowedUsernames, username.toLowerCase().trim(), true) !== -1){
     throw new Meteor.Error('This username is reserved.')
   }
+  if (Meteor.users.findOne({username: username})) {
+    throw new Meteor.Error('This username is already taken.')
+  }
 };

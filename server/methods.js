@@ -56,6 +56,11 @@ var makeTwitterCall = function(apiCall, params) {
   return res;
 };
 
+var checkEmail = function(email) {
+  if (Meteor.users.findOne({'emails.address': email})) {
+    throw new Meteor.Error('Email already exists.');
+  }
+}
 S3.config = {
   key: Meteor.settings.AWS_ACCESS_KEY,
   secret: Meteor.settings.AWS_SECRET_KEY,
@@ -68,9 +73,11 @@ Meteor.methods({
   },
   updateUserInfo: function(userInfo) {
     if (Meteor.user().tempUsername) {
-      var username = userInfo.username;
+      var username = userInfo.username,
+          email = userInfo.email;
       checkSignupCode(userInfo.signupCode);
       checkUsername(username);
+      checkEmail(email);
 
       //get twitter info
       var res;
