@@ -213,6 +213,7 @@ div.stories {
   div.overlay-image {
     height: 110px;
     overflow: hidden;
+    background-color: @medium-color;
     img {
       max-width: 100%;
     }
@@ -276,6 +277,9 @@ div.stories {
 
   div.story-container {
     padding-top: 15px;
+    @media @mobile{
+      padding-top: 56px;
+    }
     @padding-side: 4px;
     padding-left: @padding-side;
     padding-right: @padding-side;
@@ -307,8 +311,8 @@ div.stories {
     margin-bottom: 23px;
 
     @media @mobile {
-      margin-top: 40px;
-      margin-bottom: 0px;
+      margin-top: 0px;
+      margin-bottom: 40px;
     }
 
     @margin-side: 4px;
