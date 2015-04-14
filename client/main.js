@@ -6,9 +6,8 @@ UI.registerHelper('selectedIf', function(val) {
 });
 
 getCardWidth = function(windowWidth) {
-  var cardWidth;
   if (Meteor.Device.isPhone()){
-    return Session.get("windowWidth") - getVerticalLeft() - 30;
+    return Session.get("windowWidth") - 2* getVerticalLeft();
   } else if (windowWidth <= window.constants.minPageWidth) {
     return 400;
   } else if ((windowWidth > window.constants.minPageWidth) && (windowWidth <= 1304)) {

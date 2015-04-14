@@ -27,10 +27,23 @@
 
 @content-font-size: 16.5px;
 @content-line-height: 26px;
+
+@mobile-content-font-size: 15.5px;
+@mobile-content-line-height: 24px;
+
 .content-font{
   font-size: @content-font-size;
   line-height: @content-line-height;
+  @media @mobile {
+    font-size: @mobile-content-font-size;
+    line-height: @mobile-content-line-height;
+  }
   color: @dark-color;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
 }
 
 .standard-icon-colors {
@@ -408,6 +421,9 @@ div#overlay {
 
 .vertical-narrative-section {
   padding: 30px;
+  @media @mobile {
+    padding: 20px;
+  }
   a {
     .background-transition;
     cursor: pointer;
