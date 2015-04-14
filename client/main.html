@@ -433,9 +433,11 @@
         {{ > browse_arrow_left}}
       </div>
     {{/if}}
-    <div class="right">
-      {{ > browse_arrow_right}}
-    </div>
+    {{#if showRightArrow}}
+      <div class="right">
+        {{ > browse_arrow_right}}
+      </div>
+    {{/if}}
   </div>
 </template>
 
