@@ -97,6 +97,28 @@ Meteor.methods({
         });
     }
   },
+  linkTwitterAccount: function() {
+    if (Meteor.user()) {
+      var res, bio;
+      if (Meteor.user().services.twitter) {
+        var twitterParams = {
+            user_id: Meteor.user().services.twitter.id
+          };
+        res = makeTwitterCall("users/show", twitterParams);
+      }
+
+      bio = Meteor.user().profile.bio ? Meteor.user().profile.bio : res.description;
+      return Meteor.users.update({
+        _id: this.userId
+      }, {
+          $set: {
+            "profile.bio": bio,
+            "profile.twitterUser": true
+          }
+        });
+
+    }
+  },
 
   ///////////////////////////////////
   /////// SEARCH API METHODS ///////
