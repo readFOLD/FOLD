@@ -566,7 +566,7 @@ div.vertical-narrative {
     position: relative;
     .width-transition;
     .height-transition;
-    overflow-y: scroll;
+    overflow-y: hidden;
     width: 100%;
     min-height: @horizontal-content-height + @remix-bar-height;
 //    opacity: 0.25;
