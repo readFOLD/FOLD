@@ -1006,6 +1006,15 @@ div.minimap {
 .mobile-minimap-vertical{
   position: fixed;
   height: 300px;
+  &:after {
+    content:"";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: calc(50% ~"-" 0.5px);
+    border-left: 1px solid @medium-color;
+  }
 }
 .mobile-minimap-vertical-table{
   .size-to-fit;
