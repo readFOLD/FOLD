@@ -522,7 +522,7 @@
 </template>
 
 <template name="mobile_minimap">
-  <div class="mobile-minimap-vertical" style="width: {{verticalLeft}}px; height: {{windowHeight}}px;">
+  <div class="mobile-minimap-vertical" style="width: {{verticalLeft}}px; height: {{verticalHeight}}px;">
     <ol class="mobile-minimap-vertical-table">
       {{#each verticalSelectedArray}}
         <li class="vertical-marker-row">
@@ -532,6 +532,18 @@
         </li>
       {{/each}}
     </ol>
+  </div>
+
+  <div class="mobile-minimap-horizontal" style="width: {{horizontalWidth}}px; height: {{verticalLeft}}px;">
+    <div class="mobile-minimap-horizontal-table">
+      <ol class="horizontal-marker-row">
+        {{#each horizontalSelectedArray}}
+          <li class="horizontal-marker-cell">
+            <div class="horizontal-marker {{#if selected}}selected{{/if}}"></div>
+          </li>
+        {{/each}}
+      </ol>
+    </div>
   </div>
 </template>
 

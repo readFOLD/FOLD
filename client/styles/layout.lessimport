@@ -1006,6 +1006,7 @@ div.minimap {
 .mobile-minimap-vertical{
   position: fixed;
   height: 300px;
+  background-color: @background-color;
   &:after {
     content:"";
     position: absolute;
@@ -1037,10 +1038,58 @@ div.minimap {
   text-align: center;
 }
 
+@marker-width: 9px;
+@marker-height: 5px;
+
 .vertical-marker{
-  width: 45%;
+  width: @marker-width;
   margin: auto;
-  height: 9px;
+  height: @marker-height;
+  background-color: @medium-color;
+  &.selected{
+    background-color: @action-color;
+  }
+}
+
+.mobile-minimap-horizontal{
+  position: fixed;
+  background-color: @background-color;
+  bottom:0;
+  right:0;
+  z-index: 22;
+  &:after {
+    content:"";
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    bottom: 50%;
+    border-bottom: 1px solid @medium-color;
+  }
+}
+.mobile-minimap-horizontal-table{
+  .size-to-fit;
+  display: table;
+  bottom: 0px;
+  right: 0px;
+}
+
+
+.horizontal-marker-row{
+  height: 100%;
+  display: table-row;
+}
+
+.horizontal-marker-cell{
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.horizontal-marker{
+  width: @marker-width;
+  margin: auto;
+  height: @marker-height;
   background-color: @medium-color;
   &.selected{
     background-color: @action-color;

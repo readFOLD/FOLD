@@ -481,6 +481,22 @@ Template.mobile_minimap.helpers({
       return {selected: currentYId === v._id};
     });
   },
+  horizontalSelectedArray: function() {
+    var currentXId = Session.get('currentXId');
+    var currentY = Session.get('currentY');
+    if (typeof currentY === 'number'){
+      return _.map(this.verticalSections[currentY].contextBlocks, function(cId){
+        return {selected: currentXId === cId};
+      });
+    }
+
+  },
+  horizontalWidth: function(){
+    return Session.get('windowWidth') - Session.get('verticalLeft');
+  },
+  verticalHeight: function(){
+    return Session.get('windowHeight') - Session.get('verticalLeft');
+  }
 });
 
 Template.horizontal_context.helpers({
