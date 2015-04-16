@@ -292,15 +292,16 @@ Template.story.helpers({
   pastHeader: function() {
     return Session.get("pastHeader");
   },
-  verticalLeft: function () {
-    return Session.get("verticalLeft");
-  },
+
   metaviewOpen: function() {
     return Session.get("metaview")
   },
   showMinimap: function() {
     return Session.get("showMinimap") && (!Meteor.Device.isPhone());
   },
+  showMobileMinimap: function() {
+    return Session.get("showMinimap") && (Meteor.Device.isPhone());
+  }
 });
 
 Template.story_title.helpers({
@@ -470,6 +471,15 @@ Template.minimap.helpers({
   smallCards: function(){
     return Session.get("horizontalSectionsMap").length > 7;
   }
+});
+
+Template.mobile_minimap.helpers({
+  verticalSelectedArray: function() {
+    var currentYId = Session.get('currentYId')
+    return _.map(this.verticalSections, function(v){
+      return {selected: currentYId === v._id};
+    });
+  },
 });
 
 Template.horizontal_context.helpers({

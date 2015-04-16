@@ -66,6 +66,10 @@ Handlebars.registerHelper("windowHeight", function() {
   return Session.get("windowHeight");
 });
 
+Handlebars.registerHelper("verticalLeft", function() {
+  return Session.get("verticalLeft");
+});
+
 Handlebars.registerHelper("profileImage", function(user) {
   if (user && user.profile) { 
     if ( user.profile.profilePicture) {

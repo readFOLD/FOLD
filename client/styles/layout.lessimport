@@ -1003,6 +1003,41 @@ div.minimap {
   }
 }
 
+.mobile-minimap-vertical{
+  position: fixed;
+  height: 300px;
+}
+.mobile-minimap-vertical-table{
+  .size-to-fit;
+  top: 0px;
+  left: 0px;
+  display:table;
+}
+
+.vertical-marker-row{
+  display:table-row;
+  height: 10px;
+  margin: auto;
+  width: 100%;
+}
+
+.vertical-marker-cell{
+  display: table-cell;
+  width: 100%;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.vertical-marker{
+  width: 45%;
+  margin: auto;
+  height: 9px;
+  background-color: @medium-color;
+  &.selected{
+    background-color: @action-color;
+  }
+}
+
 .publish-overlay {
   position: fixed;
   top: 0;
