@@ -1105,9 +1105,19 @@ div.minimap {
 .mobile-minimap-corner{
   position: fixed;
   background-color: @background-color;
-  bottom:0;
-  left:0;
-  &:after {
+  bottom: 0;
+  left: 0;
+  &:before { // complete vertical line
+    content:"";
+    position: absolute;
+    z-index: -1;
+    left: @border-left;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid @medium-color;
+  }
+  &:after { // complete horizontal line
     content:"";
     position: absolute;
     z-index: -1;
@@ -1115,8 +1125,6 @@ div.minimap {
     right: 0;
     top: 0;
     bottom: @border-bottom;
-    border-left: 1px solid @medium-color;
-
     border-bottom: 1px solid @medium-color;
   }
 }
