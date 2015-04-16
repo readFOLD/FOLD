@@ -1009,8 +1009,8 @@ div.minimap {
 
 .mobile-minimap-vertical{
   position: fixed;
+  z-index: 24;
   height: 300px;
-  background-color: @background-color;
   &:after {
     content:"";
     position: absolute;
@@ -1061,6 +1061,7 @@ div.minimap {
   bottom:0;
   right:0;
   z-index: 22;
+  .box-shadow(0px -3px 8px 0px rgba(0,0,0,0.2));
   &:after {
     content:"";
     position: absolute;
@@ -1104,6 +1105,7 @@ div.minimap {
 
 .mobile-minimap-corner{
   position: fixed;
+  z-index: 24;
   background-color: @background-color;
   bottom: 0;
   left: 0;
