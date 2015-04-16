@@ -804,6 +804,9 @@ div.horizontal-context {
     .top-transition;
     position: fixed;
     top: @fixed-banner-height + 106px - @margin-top;
+    @media @mobile {
+      top: 60px;
+    }
     &.editing {
       top: 90px;
     }
