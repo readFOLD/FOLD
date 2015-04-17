@@ -57,20 +57,18 @@ Meteor.startup(function(){
 Meteor.startup(function(){
   Tracker.autorun(function(){
     if(Session.get('mobileContextView')){
-      console.log('SCROLL OFF!!!')
       document.body.style.overflowY = "hidden";
     } else {
-      console.log('SCROLL ON!!!')
-      document.body.style.overflowY = "auto";
+      document.body.style.overflowY = "auto"; // TODO is this helping?
     }
   })
-})
+});
 
 window.hammerSwipeOptions = {
   pointers:	1,
   threshold:	10,
   velocity:	0.4 // 0.65
-}
+};
 
 
 updatecurrentY = function() {
@@ -391,24 +389,14 @@ Template.vertical_section_block.events({
   }
 });
 
-Template.vertical_section_block.onRendered(function(){
+Template.story.onRendered(function(){
   // TODO destroy bindings later?
-  console.log('aaaa')
   if(Meteor.Device.isPhone()){
-    console.log('bbbb')
-
-    this.$('.narrative-section').hammer(hammerSwipeOptions).bind('swipeleft',function(){
+    this.$('.vertical-narrative').hammer(hammerSwipeOptions).bind('swipeleft',function(){
         // TODO only if selected
-        console.log('show mobile context view!!!!')
-        Session.set('mobileContextView', true)
+        Session.set('mobileContextView', true);
       }
     );
-
-    //this.$('.narrative-section').hammer({}).hammerSwipeOptionsnd('swiperight',function(){
-    //
-    //    console.log('222left left left222')
-    //  }
-    //);
   }
 });
 
