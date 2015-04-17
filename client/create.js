@@ -847,3 +847,7 @@ Template.link_twitter.events({
     });
   }
 });
+
+Template.publish_overlay.onRendered(function(){
+  $('#story-tags-input').tagsInput();
+});

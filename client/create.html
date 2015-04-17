@@ -704,14 +704,18 @@
 </template>
 
 <template name="publish_overlay">
-    <div class="publish-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
-      <div class="central-modal">
+  <div class="publish-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+    <div class="central-publish-modal" style="width: {{cardWidth}}px;">
 
-        <!--<label for="confirm-title">Confirm title</label>-->
-        <!--<input type="text" name="confirm-title" value="{{title}}">-->
-        <button type="button" class="confirm-publish">Publish</button>
-      </div>
+      <label for="confirm-title">Confirm title</label>
+      <input type="text" name="confirm-title" value="{{title}}">
+      <!--header image-->
+      <!--tags-->
+      <input name="tags" id="story-tags-input" value="{{tags}}">
+
+      <button type="button" class="confirm-publish">Publish</button>
     </div>
+  </div>
 </template>
 
 <template name="context_anchor_option">

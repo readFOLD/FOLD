@@ -1159,6 +1159,17 @@ div.minimap {
   left: 0;
   background-color: rgba(255,255,255,0.3);
   z-index: 999999999;
+  vertical-align: middle;
+}
+
+.central-publish-modal{
+  background-color: @medium-color;
+  height: 300px;
+  position: fixed;
+  padding: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .signin-overlay{
@@ -1179,20 +1190,13 @@ div.minimap {
     display:block;
     text-align: center;
     position: absolute;
-    top: 0;
-    bottom: 0;
     height: 20%;
     font-family: Muli, sans-serif;
 
-    @media @not-mobile {
-      padding-left: 43%;
-    }
-    @media @mobile {
-      width: 100%;
-      li {
-        display: inline-block;
-      }
-    }
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
     li{
       background-color: @remix-color;
       &:hover{
