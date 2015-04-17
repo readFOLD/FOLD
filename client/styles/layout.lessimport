@@ -865,7 +865,7 @@ div.horizontal-context {
   // box-shadow: 3px 3px #848484;
   pointer-events: none;
 
-  min-width: 400px;
+  //min-width: 400px;
   width: 32%;
   background-color: @white-color;
   color: @dark-color;

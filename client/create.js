@@ -542,8 +542,10 @@ Tracker.autorun(function() { // update UI when start and stop adding/editing con
     } else {
       Session.set("showMinimap", true);
       if (document.body){
-        document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
-        removePlaceholderLinks();
+        if(!Session.get('read')){
+          document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
+          removePlaceholderLinks();
+        }
       }
     }
   }
