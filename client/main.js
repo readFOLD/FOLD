@@ -43,6 +43,14 @@ Meteor.startup(function(){
     }
   });
 
+  Tracker.autorun(function(){
+    if (Session.get('mobileContextView')){
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "auto"; // TODO is this helping?
+    }
+  });
+
   var windowResize = function() {
     windowSizeDep.changed();
   };
@@ -50,19 +58,8 @@ Meteor.startup(function(){
   throttledResize = _.throttle(windowResize, 20);
 
   $(window).resize(throttledResize);
-
 });
 
-
-Meteor.startup(function(){
-  Tracker.autorun(function(){
-    if(Session.get('mobileContextView')){
-      document.body.style.overflowY = "hidden";
-    } else {
-      document.body.style.overflowY = "auto"; // TODO is this helping?
-    }
-  })
-});
 
 window.hammerSwipeOptions = {
   pointers:	1,
