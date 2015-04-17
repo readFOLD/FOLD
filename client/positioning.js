@@ -144,6 +144,31 @@ window.goUpOneCard = function() {
     return goToXY(0, newY);
 };
 
+window.goRightOneCard = function() {
+  var currentX, horizontalSection, newX;
+  horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
+  currentX = Session.get("currentX");
+  currentY = Session.get("currentY");
+  currentYId = Session.get("currentYId");
+  if (currentX === (horizontalSection.length - 1)) { // end of our rope
+    newX = 0;
+    wrap = Session.get("wrap");
+    wrap[currentYId] = true;
+    Session.set("wrap", wrap);
+  } else {
+    newX = currentX + 1;
+  }
+  goToX(newX);
+};
+
+window.goLeftOneCard = function() {
+  var currentX, horizontalSection, newX;
+  horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
+  currentX = Session.get("currentX");
+  newX = currentX ? currentX - 1 : horizontalSection.length - 1;
+  goToX(newX);
+};
+
 window.moveOneCard = function(d) {
   if (d < 0) {
     return goDownOneCard();

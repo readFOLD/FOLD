@@ -32,15 +32,28 @@ Meteor.startup(function(){
 
     Session.set("windowWidth", windowWidth);
 
-    Session.set("cardWidth", getCardWidth(windowWidth));
+    var cardWidth = getCardWidth(windowWidth);
 
-    Session.set("verticalLeft", getVerticalLeft(windowWidth));
+    Session.set("cardWidth", cardWidth);
+
+    Session.set("verticalLeft", Session.get('mobileContextView') ? getVerticalLeft(windowWidth) - cardWidth : getVerticalLeft(windowWidth));
 
     if (Meteor.Device.isPhone()) {
       document.body.style.overflowX = "hidden";
       $('body').css('max-width', windowWidth);
+      Session.set("mobileMargin", getVerticalLeft(windowWidth));
     }
   });
+
+  Meteor.startup(function(){
+    Tracker.autorun(function(){
+      if(Session.get('mobileContextView')){
+        document.body.style.overflowY = "hidden";
+      } else {
+        document.body.style.overflowY = "auto";
+      }
+    })
+  })
 
   var windowResize = function() {
     windowSizeDep.changed();
@@ -51,6 +64,7 @@ Meteor.startup(function(){
   $(window).resize(throttledResize);
 
 });
+
 
 
 updatecurrentY = function() {
@@ -371,6 +385,24 @@ Template.vertical_section_block.events({
   }
 });
 
+Template.vertical_section_block.onRendered(function(){
+  // TODO destroy bindings later?
+  if(Meteor.Device.isPhone()){
+    this.$('.narrative-section').hammer({}).bind('swipeleft',function(){
+        // TODO only if selected
+        console.log('222right right right222')
+        Session.set('mobileContextView', true)
+      }
+    );
+
+    //this.$('.narrative-section').hammer({}).bind('swiperight',function(){
+    //
+    //    console.log('222left left left222')
+    //  }
+    //);
+  }
+});
+
 Template.metaview.onRendered(function() {
   document.body.style.overflow = 'hidden'; // prevent document scroll while in metaview
   var that = this;  
@@ -495,10 +527,13 @@ Template.mobile_minimap.helpers({
 
   },
   horizontalWidth: function(){
-    return Session.get('windowWidth') - Session.get('verticalLeft');
+    return Session.get('windowWidth') - Session.get('mobileMargin');
   },
   verticalHeight: function(){
-    return Session.get('windowHeight') - Session.get('verticalLeft');
+    return Session.get('windowHeight') - Session.get('mobileMargin');
+  },
+  mobileMargin: function(){
+    return Session.get('mobileMargin');
   }
 });
 
@@ -620,6 +655,22 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
   }
 });
 
+Template.horizontal_section_block.onRendered(function(){
+  // TODO destroy bindings later?
+  if(Meteor.Device.isPhone()){
+    this.$('.horizontal-narrative-section').hammer({}).bind('swipeleft',function(){
+        // TODO only if allowed
+        window.goRightOneCard();
+      }
+    );
+
+    this.$('.horizontal-narrative-section').hammer({}).bind('swiperight',function(){
+        // TODO only if allowed
+        window.goLeftOneCard();
+      }
+    );
+  }
+});
 Template.horizontal_section_block.helpers(horizontalBlockHelpers);
 
 // Magic layout function
@@ -706,31 +757,10 @@ Template.story_browser.helpers({
 
 Template.story_browser.events({
   "click .right svg": function(d) {
-    var currentX, horizontalSection, newX, path;
-    horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
-    currentX = Session.get("currentX");
-    currentY = Session.get("currentY");
-    currentYId = Session.get("currentYId");
-    if (currentX === (horizontalSection.length - 1)) { // end of our rope
-      newX = 0;
-      wrap = Session.get("wrap");
-      wrap[currentYId] = true;
-      Session.set("wrap", wrap);
-    } else {
-      newX = currentX + 1;
-    }
-    goToX(newX);
-    path = window.location.pathname.split("/");
-    return path[4] = Session.get("currentX");
+    window.goRightOneCard();
   },
   "click .left svg": function(d) {
-    var currentX, horizontalSection, newX, path;
-    horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
-    currentX = Session.get("currentX");
-    newX = currentX ? currentX - 1 : horizontalSection.length - 1;
-    goToX(newX);
-    path = window.location.pathname.split("/");
-    return path[4] = Session.get("currentX");
+    window.goLeftOneCard()
   }
 });
 
@@ -780,7 +810,7 @@ Template.display_twitter_section.events({
       template.$('.flag').removeClass('show-corner');
     }
   }
-})
+});
 
 Template.create_story.events({
   'click': function(){
@@ -824,6 +854,7 @@ Template.read.onCreated(function(){
   Session.set("currentXByYId", {});
   Session.set("currentY", null);
   Session.set("showMinimap", true);
+  Session.set("mobileContextView", false);
   $('html, body').scrollTop(0);
 });
 
