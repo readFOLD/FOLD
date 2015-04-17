@@ -564,6 +564,9 @@ div.broken-section {
 
 div.vertical-narrative {
   position: absolute;
+  @media @mobile{
+    .left-transition;
+  }
   top: 427px;
   margin-top: -65px;
   z-index: 10;
