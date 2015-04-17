@@ -874,6 +874,19 @@ div.horizontal-context {
   color: @dark-color;
   // display: none;
   opacity:  @unselected-opacity;
+
+  @media @mobile {
+    visibility: hidden;
+  }
+
+  &.selected {
+    opacity: 1.0;
+    @media @mobile {
+      visibility: visible;
+    }
+    pointer-events: auto;
+  }
+
   &.text {
     opacity: 1;
     background-color: @unselected-background-color;
@@ -914,10 +927,6 @@ div.horizontal-context {
     top: -25px;
   }
 
-  &.selected {
-    opacity: 1.0;
-    pointer-events: auto;
-  }
 
   div.content {
     margin-top: 0px;
