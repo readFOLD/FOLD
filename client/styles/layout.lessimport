@@ -971,7 +971,7 @@ div.minimap {
   }
 
   div.horizontal.block {
-    margin-bottom: 1px
+    margin-bottom: 1px;
     height: 13px;
     width: 20px;
     margin-left: 1px;
