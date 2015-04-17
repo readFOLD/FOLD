@@ -70,9 +70,11 @@
           {{> login_buttons }}
         </li>
         <li class="about-fold">
-          {{#linkTo route="about"}}
-            About FOLD
-          {{/linkTo}}
+          <button>
+            {{#linkTo route="about"}}
+              About FOLD
+            {{/linkTo}}
+          </button>
         </li>
       </ol>
     </div>
@@ -88,11 +90,11 @@
 </template>
 <template name="login_buttons">
     {{#if currentUser}}
-      {{#linkTo route="profile" data=currentUser}}{{currentUser.profile.name}}{{/linkTo}}
+      <button>{{#linkTo route="profile" data=currentUser}}{{currentUser.profile.name}}{{/linkTo}}</button>
       {{#if showUserInfo}}
         <ol class="user-menu">
           <li>
-            {{#linkTo route="my_story_profile"}}My stories{{/linkTo}}
+            <button>{{#linkTo route="my_story_profile"}}My stories{{/linkTo}}</button>
           </li>
           <li>
             <button class="logout">Logout</button>
@@ -105,9 +107,9 @@
 </template>
 
 <template name="create_story">
-  <a class="create-story" href="javascript:void(0);">
+  <button class="create-story" href="javascript:void(0);">
     Make a Story
-  </a>
+  </button>
 </template>
 
 <template name="home">

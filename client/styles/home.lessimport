@@ -71,13 +71,11 @@ div.home-top {
 
     a, button{
       padding: 12px 20px;
+      min-width: 154px;
       .size-to-fit;
       &:hover {
         background-color: @dark-color;
       }
-    }
-    a{
-      line-height: @height;
     }
 
     .create-story {
