@@ -649,22 +649,23 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
   }
 });
 
-Template.horizontal_section_block.onRendered(function(){
-  // TODO destroy bindings later?
-  if(Meteor.Device.isPhone()){
-    this.$('.horizontal-narrative-section').hammer(hammerSwipeOptions).bind('swipeleft',function(){
-        // TODO only if allowed
-        window.goRightOneCard();
-      }
-    );
-
-    this.$('.horizontal-narrative-section').hammer(hammerSwipeOptions).bind('swiperight',function(){
-        // TODO only if allowed
-        window.goLeftOneCard();
-      }
-    );
-  }
-});
+// TODO get swipes on context cards to work
+//Template.horizontal_section_block.onRendered(function(){
+//  //
+//  if(Meteor.Device.isPhone()) {
+//    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swipeleft',function(){
+//        // TODO only if allowed
+//        window.goRightOneCard();
+//      }
+//    );
+//
+//    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swiperight',function(){
+//        // TODO only if allowed
+//        window.goLeftOneCard();
+//      }
+//    );
+//  }
+//});
 
 Template.horizontal_section_block.events({
   'click .mobile-context-back-button': function(e, t){
