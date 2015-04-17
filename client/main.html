@@ -235,7 +235,9 @@
         {{> display_broken_section}}
       {{/if}}
       {{#if read}}
-        {{> remix_bar}}
+        {{#unless isPhone}}
+          {{> remix_bar}}
+        {{/unless}}
       {{/if}}
       </section>
     </div>
