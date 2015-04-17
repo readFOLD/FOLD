@@ -17,7 +17,6 @@ window.getHorizontalLeft = function() {
   }
 
   // Variable definitions (width of page, width of card, offset of cards)
-  pageWidth = Session.get("windowWidth") >= 1024 ? Session.get("windowWidth") : 1024;
   cardWidth = Session.get("cardWidth");
   cardSeparation = Session.get("separation");
   addContextBlockWidth = 75;
@@ -118,6 +117,9 @@ window.goToContext = function(id) {
 
     contextIndex = _.indexOf(_.pluck(Session.get('horizontalSectionsMap')[currentY].horizontal, '_id'), id.toString());
     if (contextIndex >= 0) {
+      if (Meteor.Device.isPhone()){
+        Session.set('mobileContextView', true);
+      }
       return goToX(contextIndex);
     }
   }

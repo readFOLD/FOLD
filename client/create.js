@@ -522,12 +522,14 @@ Tracker.autorun(function() {
   return Session.set('currentXId', null);
 });
 
-Tracker.autorun(function() {
-  if (currentXId = Session.get('currentXId')){
-    $('a[data-context-id="' + currentXId + '"]').addClass('active');
-    $('a[data-context-id!="' + currentXId + '"]').removeClass('active');
-  }
-});
+if (!Meteor.Device.isPhone()){ // highlight active context card link except on mobile
+  Tracker.autorun(function() {
+    if (currentXId = Session.get('currentXId')){
+      $('a[data-context-id="' + currentXId + '"]').addClass('active');
+      $('a[data-context-id!="' + currentXId + '"]').removeClass('active');
+    }
+  });
+}
 
 Tracker.autorun(function() { // update UI when start and stop adding/editing context
   var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
