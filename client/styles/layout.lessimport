@@ -1211,13 +1211,14 @@ div.minimap {
 }
 
 .mobile-context-back-button{
+  @size: 38px;
+  @bottom-margin: 20px;
   float:right;
-  .size(20px);
+  .size(@size);
   padding: 0;
   position: relative;
   margin-right: 0px;
-  margin-top: -25px;
-  z-index: 30;
+  margin-top: -1 * @size - @bottom-margin;
 }
 
 .pull-right {
