@@ -66,8 +66,8 @@ Meteor.startup(function(){
 
 window.hammerSwipeOptions = {
   pointers:	1,
-  threshold:	10,
-  velocity:	0.4 // 0.65
+  threshold: 8,
+  velocity:	0.35 // 0.65
 };
 
 
