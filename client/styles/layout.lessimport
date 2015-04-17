@@ -424,22 +424,30 @@ div#overlay {
   @media @mobile {
     padding: 20px;
   }
+  cursor: default;
+
   a {
-    .background-transition;
-    cursor: pointer;
-    background-color: @unselected-background-color;
-    color: inherit;
-    padding: 0 4px;
-    &:hover {
-      background-color: @medium-color;
-    }
-    &.active {
-      background-color: @action-color;
-      color: white;
-    }
-    &.placeholder {
-      background-color: @panel-color;
-      color: white;
+    cursor: auto;
+  }
+  &.selected {
+    cursor: text;
+    a {
+      .background-transition;
+      cursor: pointer;
+      background-color: @unselected-background-color;
+      color: inherit;
+      padding: 0 4px;
+      &:hover {
+        background-color: @medium-color;
+      }
+      &.active {
+        background-color: @action-color;
+        color: white;
+      }
+      &.placeholder {
+        background-color: @panel-color;
+        color: white;
+      }
     }
   }
 }
@@ -579,7 +587,6 @@ div.vertical-narrative {
 
     &.selected {
       color: @dark-color;
-      cursor: default;
       opacity: 1.0;
       background-color: @selected-background-color;
       p {

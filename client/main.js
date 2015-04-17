@@ -36,7 +36,7 @@ Meteor.startup(function(){
 
     Session.set("verticalLeft", getVerticalLeft(windowWidth));
 
-    if(Meteor.Device.isPhone()){
+    if (Meteor.Device.isPhone()) {
       document.body.style.overflowX = "hidden";
       $('body').css('max-width', windowWidth);
     }
@@ -360,11 +360,14 @@ Template.vertical_section_block.events({
   "click": function(d, t) {
     goToY(t.data.index);
   },
-  "click a": function(e) {
+  "click a": function(e, t) {
     var contextId;
     e.preventDefault();
-    contextId = $(e.target).data('contextId');
-    return goToContext(contextId);
+    if (Session.equals("currentY", t.data.index)){
+      contextId = $(e.target).data('contextId');
+      return goToContext(contextId);
+    }
+
   }
 });
 
