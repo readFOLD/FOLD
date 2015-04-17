@@ -51,6 +51,12 @@ svg.babyburger-icon{
   }
 }
 
+svg.mobile-back-icon{
+  .bg{
+    fill: @action-color;
+  }
+}
+
 .favorite-button{
   @height: 25px;
   display: inline-block;

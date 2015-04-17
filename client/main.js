@@ -10,10 +10,8 @@ getCardWidth = function(windowWidth) {
     return Session.get("windowWidth") - 2* getVerticalLeft();
   } else if (windowWidth <= window.constants.minPageWidth) {
     return 400;
-  } else if ((windowWidth > window.constants.minPageWidth) && (windowWidth <= 1304)) {
-    return (windowWidth - (16 * 3) - (88 * 2)) / 2;
   } else {
-    return 520;
+    return Math.min(520, (windowWidth - (16 * 3) - (88 * 2)) / 2);
   }
 };
 
@@ -45,16 +43,6 @@ Meteor.startup(function(){
     }
   });
 
-  Meteor.startup(function(){
-    Tracker.autorun(function(){
-      if(Session.get('mobileContextView')){
-        document.body.style.overflowY = "hidden";
-      } else {
-        document.body.style.overflowY = "auto";
-      }
-    })
-  })
-
   var windowResize = function() {
     windowSizeDep.changed();
   };
@@ -65,6 +53,24 @@ Meteor.startup(function(){
 
 });
 
+
+Meteor.startup(function(){
+  Tracker.autorun(function(){
+    if(Session.get('mobileContextView')){
+      console.log('SCROLL OFF!!!')
+      document.body.style.overflowY = "hidden";
+    } else {
+      console.log('SCROLL ON!!!')
+      document.body.style.overflowY = "auto";
+    }
+  })
+})
+
+window.hammerSwipeOptions = {
+  pointers:	1,
+  threshold:	10,
+  velocity:	0.4 // 0.65
+}
 
 
 updatecurrentY = function() {
@@ -387,15 +393,18 @@ Template.vertical_section_block.events({
 
 Template.vertical_section_block.onRendered(function(){
   // TODO destroy bindings later?
+  console.log('aaaa')
   if(Meteor.Device.isPhone()){
-    this.$('.narrative-section').hammer({}).bind('swipeleft',function(){
+    console.log('bbbb')
+
+    this.$('.narrative-section').hammer(hammerSwipeOptions).bind('swipeleft',function(){
         // TODO only if selected
-        console.log('222right right right222')
+        console.log('show mobile context view!!!!')
         Session.set('mobileContextView', true)
       }
     );
 
-    //this.$('.narrative-section').hammer({}).bind('swiperight',function(){
+    //this.$('.narrative-section').hammer({}).hammerSwipeOptionsnd('swiperight',function(){
     //
     //    console.log('222left left left222')
     //  }
@@ -658,19 +667,26 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 Template.horizontal_section_block.onRendered(function(){
   // TODO destroy bindings later?
   if(Meteor.Device.isPhone()){
-    this.$('.horizontal-narrative-section').hammer({}).bind('swipeleft',function(){
+    this.$('.horizontal-narrative-section').hammer(hammerSwipeOptions).bind('swipeleft',function(){
         // TODO only if allowed
         window.goRightOneCard();
       }
     );
 
-    this.$('.horizontal-narrative-section').hammer({}).bind('swiperight',function(){
+    this.$('.horizontal-narrative-section').hammer(hammerSwipeOptions).bind('swiperight',function(){
         // TODO only if allowed
         window.goLeftOneCard();
       }
     );
   }
 });
+
+Template.horizontal_section_block.events({
+  'click .mobile-context-back-button': function(e, t){
+    Session.set('mobileContextView', false);
+  }
+});
+
 Template.horizontal_section_block.helpers(horizontalBlockHelpers);
 
 // Magic layout function

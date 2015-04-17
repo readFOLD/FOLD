@@ -1207,6 +1207,16 @@ div.minimap {
   z-index: 1000;
 }
 
+.mobile-context-back-button{
+  float:right;
+  .size(20px);
+  padding: 0;
+  position: relative;
+  margin-right: 0px;
+  margin-top: -25px;
+  z-index: 30;
+}
+
 .pull-right {
   float: right;
 }
