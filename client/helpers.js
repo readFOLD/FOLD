@@ -85,8 +85,3 @@ Handlebars.registerHelper("profileImage", function(user, size) {
     }
   }
 });
-
-Handlebars.registerHelper("setTitle", function(title) {
-  document.title = title;
-});
-

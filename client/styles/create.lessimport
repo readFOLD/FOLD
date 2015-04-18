@@ -30,11 +30,18 @@ input[type=file] {
     color: @dark-color;
   }
 
-  &.header-upload{
+  &.change-header-upload{
     &::before {
       content: 'Change Header Image';
     }
   }
+
+  &.do-header-upload{
+    &::before {
+      content: 'Upload Header Image';
+    }
+  }
+
   &.image-upload{
     &::before {
       content: 'Upload Image';
@@ -126,15 +133,17 @@ div.title-overlay {
   // background-color: @action-color;
   color: @light-color;
   position: relative;
+  overflow-y: hidden;
 
   background-color: @action-color;
-  background-position: center center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+
+  .header-overlay-image{
+    position: absolute;
+    min-width: 100%;
+    @media @mobile {
+      max-height: 100%;
+    }
+  }
 
   div.logo {
     .opacity-transition;
@@ -407,12 +416,6 @@ textarea {
     line-height: 27px;
     font-size: @content-font-size;
   }
-}
-
-input {
-  width: 100%;
-  outline: none;
-  font-size: 14px;
 }
 
 svg{

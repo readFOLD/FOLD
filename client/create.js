@@ -383,7 +383,10 @@ Template.create.events({
   },
   "click .confirm-publish": function (e, template) {
     var that = this;
-    return Meteor.call('publishStory', this._id, function(err, numDocs) {
+    var title = template.$('input[name=confirm-title]').val();
+    var keywords = _.compact(template.$('input[name=keywords]').val().split(','));
+    var narrativeRightsReserved = template.$('input[name=reserve-rights]').is(':checked');
+    return Meteor.call('publishStory', this._id, title, keywords, narrativeRightsReserved, function(err, numDocs) {
       template.publishing.set(false);
       if (err) {
         setTimeout(function () {
@@ -395,6 +398,18 @@ Template.create.events({
       } else {
         Router.go('/read/' + that.userPathSegment + '/' + that.storyPathSegment)
       }
+    });
+  },
+  "change input.header-upload": function(){
+    var storyId = Session.get('storyId');
+    var files = $("input.header-upload")[0].files;
+    S3.upload({
+      files: files,
+      path: "header-images"
+    }, function(e, r) {
+      var filename = r.file.name;
+      Session.set('saveState', 'saving');
+      return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);
     });
   }
 });
@@ -820,19 +835,7 @@ Template.create_options.events({
     } else {
       Session.set('read', true);
     }
-  },
-  "change input.header-upload": function(){
-    var storyId = Session.get('storyId');
-    var files = $("input.header-upload")[0].files;
-    S3.upload({
-      files: files,
-      path: "header-images"
-    }, function(e, r) {
-      var filename = r.file.name;
-      Session.set('saveState', 'saving');
-      return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);
-    });
-  },
+  }
 });
 
 Template.link_twitter.events({
@@ -845,5 +848,32 @@ Template.link_twitter.events({
         throw(err);
       }
     });
+  }
+});
+
+Template.publish_overlay.onRendered(function(){
+  this.$('#story-tags-input').tagsInput({
+    minInputWidth: '80px',
+    width: '100%',
+    height: '83px'
+  });
+});
+
+Template.publish_overlay.helpers({
+  'modalWidth': function() {
+    return 1.25 * Session.get('cardWidth')
+  },
+  'keywordsString': function(){
+    return (this.keywords || []).toString();
+  }
+});
+
+Template.publish_overlay.events({
+  'click .header-upload': function(e, t) {
+    Meteor.setTimeout(function(){
+      $('body,html').animate({
+        scrollTop: 0
+        }, 500, 'easeInExpo')}
+      , 1500)
   }
 });

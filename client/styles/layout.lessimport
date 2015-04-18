@@ -242,7 +242,9 @@ html {
 
 // Universal Link Styling
 a {
-  text-decoration: none !important;
+  &:not(.underline){
+    text-decoration: none !important;
+  }
   color: inherit;
 
   &:hover {
@@ -292,10 +294,13 @@ iframe{
 
 input {
   font-family: inherit;
+  outline: none;
+  font-size: 14px;
 }
 
 
 input[type="text"], input[type="password"], input[type="email"] {
+  width: 100%;
   font-family: Muli;
   margin-top: 5px;
   margin-bottom: 15px;
@@ -419,8 +424,11 @@ div#overlay {
   user-select: none;
 }
 
+@nonMobileNarrativeSectionPadding: 30px;
+
 .vertical-narrative-section {
-  padding: 30px;
+  padding: @nonMobileNarrativeSectionPadding;
+
   @media @mobile {
     padding: 20px;
   }
@@ -1157,8 +1165,68 @@ div.minimap {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: rgba(255,255,255,0.3);
+  background-color: rgba(255,255,255,0.4);
   z-index: 999999999;
+  vertical-align: middle;
+}
+
+.central-publish-modal{
+  background-color: @dark-color;
+  position: fixed;
+  padding: @nonMobileNarrativeSectionPadding;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: @white-color;
+
+  label {
+    font-size: 14px;
+  }
+
+  input[type=text] {
+    font-size: 15px;
+  }
+
+  input[type=file] {
+    &::before {
+      display: inline-block;
+      background: @panel-color;
+      color: @white-color;
+    }
+    &:hover::before {
+      background-color: @action-color;
+      color: @white-color;
+    }
+  }
+  p{
+    font-size: 12px;
+  }
+  input[type=text], input[type=file]{
+    margin-bottom: 15px;
+  }
+  .cancel-publish{
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 20px;
+  }
+  .confirm-publish{
+    float: right;
+    //position: absolute;
+    //bottom: @nonMobileNarrativeSectionPadding;
+    //right: @nonMobileNarrativeSectionPadding;
+    background: @panel-color;
+    color: @white-color;
+    line-height: 35px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 14px;
+    padding-right: 14px;
+    &:hover {
+      background-color: @action-color;
+      color: @white-color;
+    }
+  }
 }
 
 .signin-overlay{
@@ -1179,20 +1247,13 @@ div.minimap {
     display:block;
     text-align: center;
     position: absolute;
-    top: 0;
-    bottom: 0;
     height: 20%;
     font-family: Muli, sans-serif;
 
-    @media @not-mobile {
-      padding-left: 43%;
-    }
-    @media @mobile {
-      width: 100%;
-      li {
-        display: inline-block;
-      }
-    }
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
     li{
       background-color: @remix-color;
       &:hover{
@@ -1229,6 +1290,58 @@ div.minimap {
   margin-right: 0px;
   margin-top: -1 * @size - @bottom-margin;
 }
+
+div.tagsinput {
+  font-family: Muli;
+  font-size: 15px;
+  border:1px solid #CCC;
+  background: #FFF;
+  padding:5px;
+  overflow-y: auto;
+}
+
+div.tagsinput span.tag {
+  display: block;
+  float: left;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-decoration:none;
+  background: @action-color;
+  color: @white-color;
+  margin-right: 8px;
+  margin-bottom:5px;
+}
+
+div.tagsinput span.tag a {
+  opacity: .8;
+}
+
+div.tagsinput input {
+  width:80px;
+  margin:0px;
+  border:1px solid transparent;
+  padding:5px;
+  background: transparent;
+  color: #000;
+  outline:0px;
+  margin-right:5px;
+  margin-bottom:5px;
+}
+
+div.tagsinput div {
+  display:block;
+  float: left;
+}
+
+.tags_clear {
+  clear: both;
+  width: 100%;
+  height: 0px;
+}
+
+.not_valid {background: #FBD8DB !important;
+  color: #90111A !important;}
 
 .pull-right {
   float: right;

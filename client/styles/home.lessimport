@@ -216,6 +216,7 @@ div.stories {
     background-color: @medium-color;
     img {
       max-width: 100%;
+      min-height: 100%;
     }
   }
 

@@ -360,7 +360,7 @@ Meteor.methods({
       }
     })
   },
-  publishStory: function(storyId) {
+  publishStory: function(storyId, title, keywords, narrativeRightsReserved) {
     var story = Stories.findOne({_id: storyId, authorId: this.userId});
     var user = Meteor.users.findOne({_id: this.userId});
 
@@ -399,9 +399,6 @@ Meteor.methods({
 
     // TODO
     // Don't update story path and such unless not yet set.
-    // Tags (keywords).
-    // Update title from publish form
-    // Update header image from publish form
     // Probably confirm that all the context cards included are by the author!
     // Maybe a list of all context cards on the story
     // Maybe a list of which cards are original and which are remixed
@@ -410,26 +407,27 @@ Meteor.methods({
     var fieldsToCopyFromDraft = [
       'verticalSections',
       'headerImage',
-      'headerImageAttribution',
-      'title'
+      'headerImageAttribution'
+      //'title'
     ];
-    var additionalFieldsToSet = {};
-    //if (story.everPublished){
-    //  additionalFieldsToSet = {};
-    //} else {
-    //  additionalFieldsToSet = {
-    //
-    //  }
-    //}
+
+    var fieldsToSetFromArguments = {
+      'title': title,
+      'draftStory.title': title,
+      'keywords': keywords,
+      'draftStory.keywords': keywords,
+      'narrativeRightsReserved': narrativeRightsReserved,
+      'draftStory.narrativeRightsReserved': narrativeRightsReserved,
+    };
+
 
     var setObject = _.extend({},
       _.pick(draftStory, fieldsToCopyFromDraft), // copy all safe fields from draftStory.
-      additionalFieldsToSet,
+      fieldsToSetFromArguments,
       {
         'contextBlocks': contextBlocks,
-        //'draftStory.unpublishedChanges' : false,
         'storyPathSegment': _s.slugify(draftStory.title.toLowerCase()) + '-' + story.shortId, // TODO DRY and probably get from draft
-        'publishedAt': Date.now(),
+        'publishedAt': new Date(),
         'published': true,
         'everPublished': true,
         'authorName': user.profile.name || 'Anonymous',

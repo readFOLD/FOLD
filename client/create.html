@@ -44,9 +44,9 @@
 
 <template name="create_options">
   {{#unless pastHeader}}
-  <div class="upload-header-image">
-    <input type="file" class="header-upload">
-  </div>
+    <div class="upload-header-image">
+      <input type="file" class="header-upload change-header-upload">
+    </div>
   {{/unless}}
   <div class="floating-story-buttons">
     {{#unless addingContext}}
@@ -704,14 +704,22 @@
 </template>
 
 <template name="publish_overlay">
-    <div class="publish-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
-      <div class="central-modal">
+  <div class="publish-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+    <div class="central-publish-modal" style="width: {{modalWidth}}px;">
+      <button class="cancel-publish">✕</button>
 
-        <!--<label for="confirm-title">Confirm title</label>-->
-        <!--<input type="text" name="confirm-title" value="{{title}}">-->
-        <button type="button" class="confirm-publish">Publish</button>
-      </div>
+      <label for="confirm-title">Confirm title</label>
+      <input type="text" name="confirm-title" value="{{title}}">
+      {{#unless headerImage}}
+        <input type="file" class="header-upload do-header-upload">
+      {{/unless}}
+      <input name="keywords" id="story-tags-input" value="{{keywordsString}}">
+      <p>By default, stories are published under a <a class="green underline" href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC-BY license</a>. If you would like to opt-out, please check this box
+        <input type="checkbox" name="reserve-rights" checked="{{narrativeRightsReserved}}">  (Note that context cards are a shared resource and will remain CC-BY)</p>
+
+      <button type="submit" class="confirm-publish">Publish</button>
     </div>
+  </div>
 </template>
 
 <template name="context_anchor_option">
