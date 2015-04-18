@@ -2,6 +2,18 @@ var idFromPathSegment = function(pathSegment) { // everything after last dash
   return pathSegment.substring(pathSegment.lastIndexOf('-') + 1);
 };
 
+var setTitle = function(pageName){
+  var title;
+  if(pageName) {
+    title = pageName + ' - FOLD';
+  } else {
+    title = 'FOLD';
+  }
+  document.title = title;
+  $('meta[property="og:title"]').attr('content', title);
+};
+
+
 Router.route("home", {
   path: "/",
   template: "home",
@@ -10,6 +22,7 @@ Router.route("home", {
   },
   action: function() {
     if (this.ready()) {
+      setTitle();
       return this.render();
     }
   },
@@ -21,6 +34,7 @@ Router.route("about", {
   template: "about",
   action: function() {
     if (this.ready()) {
+      setTitle('About');
       return this.render();
     }
   },
@@ -32,6 +46,7 @@ Router.route("terms", {
   template: "terms",
   action: function() {
     if (this.ready()) {
+      setTitle('Terms');
       return this.render();
     }
   },
@@ -43,6 +58,7 @@ Router.route("profile", {
   template: "profile",
   action: function() {
     if (this.ready()) {
+      setTitle(this.params.username + "'s Profile");
       return this.render();
     }
   },
@@ -80,6 +96,12 @@ Router.route("my_story_profile", {
   waitOn: function() {
     return [Meteor.subscribe('myStoriesPub')];
   },
+  action: function() {
+    if (this.ready()) {
+      setTitle('My Stories');
+      return this.render();
+    }
+  },
   onBeforeAction: function() {
     var user;
     if ((user = Meteor.user()) || Meteor.loggingIn()) {
@@ -105,6 +127,7 @@ Router.route("read", {
   },
   action: function() {
     if (this.ready()) {
+      setTitle(this.data().title);
       return this.render();
     }
   },
@@ -182,6 +205,7 @@ Router.route("edit", {
   },
   action: function() {
     if (this.ready()) {
+      setTitle('Editing: ' + this.data().title || 'a new story');
       return this.render();
     }
   },
@@ -239,6 +263,7 @@ Router.route("twitter-signup", {
     Session.set("emailUser", false);
     Session.set('signingInWithTwitter', false);
     if (this.ready()) {
+      setTitle('Signup');
       return this.render();
     }
   }
@@ -251,6 +276,7 @@ Router.route("email-signup", {
     Session.set("emailUser", true);
     Session.set('signingInWithTwitter', false);
     if (this.ready()) {
+      setTitle('Signup');
       return this.render();
     }
   }
@@ -261,6 +287,7 @@ Router.route("login", {
   template: "login",
   action: function() {
     if (this.ready()) {
+      setTitle('Login');
       return this.render();
     }
   }
