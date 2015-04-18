@@ -2,18 +2,15 @@
 var reservedUsernames = _.sortBy([
   // us
   'joe',
-  'joegoldbeck',
   'goldbeck',
   'joseph',
   'alexis',
   'hope',
-  'alexishope',
   'kevin',
   'kevinhu',
   'nathalie',
   'huynh',
   'nathaliehuynh',
-  'fold',
   'readfold',
   'civic',
   'civicmedia',
