@@ -231,8 +231,7 @@ Router.route("twitter-signup", {
   template: "signup",
   waitOn: function() {
     if (Meteor.user()) {
-     [Meteor.subscribe('tempUsernamePub')];
-      return this.next();
+     return [Meteor.subscribe('tempUsernamePub')];
     }
   },
   action: function() {

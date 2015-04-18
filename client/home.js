@@ -118,6 +118,13 @@ Template.filters.events({
   }
 });
 
+Template.all_stories.onCreated(function(){
+  var that = this;
+  this.autorun(function(){
+    that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}}).map(function(story){return story.authorId}));
+  });
+});
+
 Template.all_stories.helpers({
   stories: function() {
     return Stories.find({ published: true }, {sort: {'publishedAt': 1}, reactive: false}); // TODO update sort based on dropdown selection
@@ -140,6 +147,9 @@ Template._story_preview_content.helpers({
     if (this.headerImage) {
       return '//' + Meteor.settings["public"].AWS_BUCKET + '.s3.amazonaws.com/header-images/' + this.headerImage;
     }
+  },
+  author: function(){
+    return Meteor.users.findOne(this.authorId)
   }
 });
 
