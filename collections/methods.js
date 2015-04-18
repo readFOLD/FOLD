@@ -427,7 +427,7 @@ Meteor.methods({
       {
         'contextBlocks': contextBlocks,
         'storyPathSegment': _s.slugify(draftStory.title.toLowerCase()) + '-' + story.shortId, // TODO DRY and probably get from draft
-        'publishedAt': Date.now(),
+        'publishedAt': new Date(),
         'published': true,
         'everPublished': true,
         'authorName': user.profile.name || 'Anonymous',
