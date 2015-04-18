@@ -396,6 +396,18 @@ Template.create.events({
         Router.go('/read/' + that.userPathSegment + '/' + that.storyPathSegment)
       }
     });
+  },
+  "change input.header-upload": function(){
+    var storyId = Session.get('storyId');
+    var files = $("input.header-upload")[0].files;
+    S3.upload({
+      files: files,
+      path: "header-images"
+    }, function(e, r) {
+      var filename = r.file.name;
+      Session.set('saveState', 'saving');
+      return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);
+    });
   }
 });
 
@@ -820,19 +832,7 @@ Template.create_options.events({
     } else {
       Session.set('read', true);
     }
-  },
-  "change input.header-upload": function(){
-    var storyId = Session.get('storyId');
-    var files = $("input.header-upload")[0].files;
-    S3.upload({
-      files: files,
-      path: "header-images"
-    }, function(e, r) {
-      var filename = r.file.name;
-      Session.set('saveState', 'saving');
-      return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);
-    });
-  },
+  }
 });
 
 Template.link_twitter.events({
@@ -850,4 +850,14 @@ Template.link_twitter.events({
 
 Template.publish_overlay.onRendered(function(){
   $('#story-tags-input').tagsInput();
+});
+
+Template.publish_overlay.events({
+  'click .header-upload': function(e, t) {
+    setTimeout(function(){
+      $('body,html').animate({
+        scrollTop: 0
+        }, 500, 'easeInExpo')}
+      , 1500)
+  }
 });

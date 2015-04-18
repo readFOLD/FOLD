@@ -44,9 +44,9 @@
 
 <template name="create_options">
   {{#unless pastHeader}}
-  <div class="upload-header-image">
-    <input type="file" class="header-upload">
-  </div>
+    <div class="upload-header-image">
+      <input type="file" class="header-upload change-header-upload">
+    </div>
   {{/unless}}
   <div class="floating-story-buttons">
     {{#unless addingContext}}
@@ -710,8 +710,7 @@
 
       <label for="confirm-title">Confirm title</label>
       <input type="text" name="confirm-title" value="{{title}}">
-      <!--header image-->
-      <!--tags-->
+      <input type="file" class="header-upload {{#if headerImage}}change-header-upload{{else}}do-header-upload{{/if}}">
       <input name="tags" id="story-tags-input" value="{{tags}}">
 
       <button type="button" class="confirm-publish">Publish</button>
