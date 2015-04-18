@@ -126,14 +126,17 @@ div.title-overlay {
   // background-color: @action-color;
   color: @light-color;
   position: relative;
+  overflow-y: hidden;
 
   background-color: @action-color;
-  background-position: center center;
-  background-repeat: no-repeat;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+
+  .header-overlay-image{
+    position: absolute;
+    min-width: 100%;
+    @media @mobile {
+      max-height: 100%;
+    }
+  }
 
   div.logo {
     .opacity-transition;

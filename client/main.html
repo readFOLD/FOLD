@@ -12,7 +12,8 @@
 
 <template name="story_header">
   {{setTitle title}}
-  <div class="title-overlay {{#unless read}}write{{/unless}}" style='background-image: url("{{headerImageUrl}}")'>
+  <div class="title-overlay {{#unless read}}write{{/unless}}">
+    <img class="header-overlay-image" src={{headerImageUrl}}>
     <div id="banner-overlay">
     </div>
     <div class="title-author">
