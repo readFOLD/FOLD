@@ -418,12 +418,6 @@ textarea {
   }
 }
 
-input {
-  width: 100%;
-  outline: none;
-  font-size: 14px;
-}
-
 svg{
     transition: fill 0.25s ease;
 }

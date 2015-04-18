@@ -242,7 +242,9 @@ html {
 
 // Universal Link Styling
 a {
-  text-decoration: none !important;
+  &:not(.underline){
+    text-decoration: none !important;
+  }
   color: inherit;
 
   &:hover {
@@ -292,10 +294,13 @@ iframe{
 
 input {
   font-family: inherit;
+  outline: none;
+  font-size: 14px;
 }
 
 
 input[type="text"], input[type="password"], input[type="email"] {
+  width: 100%;
   font-family: Muli;
   margin-top: 5px;
   margin-bottom: 15px;
@@ -419,8 +424,11 @@ div#overlay {
   user-select: none;
 }
 
+@nonMobileNarrativeSectionPadding: 30px;
+
 .vertical-narrative-section {
-  padding: 30px;
+  padding: @nonMobileNarrativeSectionPadding;
+
   @media @mobile {
     padding: 20px;
   }
@@ -1157,25 +1165,67 @@ div.minimap {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: rgba(255,255,255,0.3);
+  background-color: rgba(255,255,255,0.4);
   z-index: 999999999;
   vertical-align: middle;
 }
 
 .central-publish-modal{
-  background-color: @medium-color;
-  height: 300px;
+  background-color: @dark-color;
   position: fixed;
-  padding: 20px;
+  padding: @nonMobileNarrativeSectionPadding;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  color: @white-color;
+
+  label {
+    font-size: 14px;
+  }
+
+  input[type=text] {
+    font-size: 15px;
+  }
+
+  input[type=file] {
+    &::before {
+      display: inline-block;
+      background: @panel-color;
+      color: @white-color;
+    }
+    &:hover::before {
+      background-color: @action-color;
+      color: @white-color;
+    }
+  }
+  p{
+    font-size: 12px;
+  }
+  input[type=text], input[type=file]{
+    margin-bottom: 15px;
+  }
   .cancel-publish{
     position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 22px;
-    color: @black-color;
+    top: 4px;
+    right: 4px;
+    font-size: 20px;
+  }
+  .confirm-publish{
+    float: right;
+    //position: absolute;
+    //bottom: @nonMobileNarrativeSectionPadding;
+    //right: @nonMobileNarrativeSectionPadding;
+    background: @panel-color;
+    color: @white-color;
+    line-height: 35px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 14px;
+    padding-right: 14px;
+    &:hover {
+      background-color: @action-color;
+      color: @white-color;
+    }
   }
 }
 
@@ -1243,6 +1293,7 @@ div.minimap {
 
 div.tagsinput {
   font-family: Muli;
+  font-size: 15px;
   border:1px solid #CCC;
   background: #FFF;
   padding:5px;

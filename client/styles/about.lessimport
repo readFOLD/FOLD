@@ -105,6 +105,10 @@ a.green {
     }
 }
 
+a.underline{
+  text-decoration: underline;
+}
+
 div.footer {
   position: relative;
   bottom:0;

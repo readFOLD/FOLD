@@ -849,7 +849,17 @@ Template.link_twitter.events({
 });
 
 Template.publish_overlay.onRendered(function(){
-  $('#story-tags-input').tagsInput();
+  $('#story-tags-input').tagsInput({
+    minInputWidth: '80px',
+    width: '100%',
+    height: '83px'
+  });
+});
+
+Template.publish_overlay.helpers({
+  'modalWidth': function() {
+    return 1.25 * Session.get('cardWidth')
+  }
 });
 
 Template.publish_overlay.events({
