@@ -13,6 +13,13 @@ var setTitle = function(pageName){
   $('meta[property="og:title"]').attr('content', title);
 };
 
+var setOGImage = function(imageUrl){
+  if (imageUrl){
+    $('meta[property="og:image"]').attr('content', imageUrl.replace(/^\/\//, "https://")); // replace protocol-less url with https
+  } else {
+    $('meta[property="og:image"]').attr('content', "https://readfold.com/FOLD_LOGO.svg");
+  }
+};
 
 Router.route("home", {
   path: "/",
@@ -23,6 +30,7 @@ Router.route("home", {
   action: function() {
     if (this.ready()) {
       setTitle();
+      setOGImage();
       return this.render();
     }
   },
@@ -35,6 +43,7 @@ Router.route("about", {
   action: function() {
     if (this.ready()) {
       setTitle('About');
+      setOGImage();
       return this.render();
     }
   },
@@ -47,6 +56,7 @@ Router.route("terms", {
   action: function() {
     if (this.ready()) {
       setTitle('Terms');
+      setOGImage();
       return this.render();
     }
   },
@@ -59,6 +69,7 @@ Router.route("profile", {
   action: function() {
     if (this.ready()) {
       setTitle(this.params.username + "'s Profile");
+      setOGImage();
       return this.render();
     }
   },
@@ -99,6 +110,7 @@ Router.route("my_story_profile", {
   action: function() {
     if (this.ready()) {
       setTitle('My Stories');
+      setOGImage();
       return this.render();
     }
   },
@@ -128,6 +140,7 @@ Router.route("read", {
   action: function() {
     if (this.ready()) {
       setTitle(this.data().title);
+      setOGImage(headerImageUrl(this.data().headerImage));
       return this.render();
     }
   },
@@ -206,6 +219,7 @@ Router.route("edit", {
   action: function() {
     if (this.ready()) {
       setTitle('Editing: ' + this.data().title || 'a new story');
+      setOGImage();
       return this.render();
     }
   },
@@ -263,6 +277,7 @@ Router.route("twitter-signup", {
     Session.set('signingInWithTwitter', false);
     if (this.ready()) {
       setTitle('Signup');
+      setOGImage();
       return this.render();
     }
   }
@@ -276,6 +291,7 @@ Router.route("email-signup", {
     Session.set('signingInWithTwitter', false);
     if (this.ready()) {
       setTitle('Signup');
+      setOGImage();
       return this.render();
     }
   }
@@ -287,6 +303,7 @@ Router.route("login", {
   action: function() {
     if (this.ready()) {
       setTitle('Login');
+      setOGImage();
       return this.render();
     }
   }

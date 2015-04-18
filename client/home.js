@@ -3,6 +3,20 @@ var formatDate, weekDays, formatDateNice, monthNames;
 weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
+window.headerImageUrl = function(headerImage){
+  var image;
+
+  if (headerImage){
+    image = headerImage;
+  } else {
+    image = this.headerImage;
+  }
+
+  if (image) {
+    return '//' + Meteor.settings["public"].AWS_BUCKET + '.s3.amazonaws.com/header-images/' + image;
+  }
+}
+
 // Friday 2/20/2015 20:29:22
 formatDate = function(date) {
   var hms;
@@ -143,11 +157,7 @@ Template._story_preview_content.helpers({
       return formatDateNice(this.publishedAt);
     }
   },
-  headerImageUrl: function() {
-    if (this.headerImage) {
-      return '//' + Meteor.settings["public"].AWS_BUCKET + '.s3.amazonaws.com/header-images/' + this.headerImage;
-    }
-  },
+  headerImageUrl: headerImageUrl,
   author: function(){
     return Meteor.users.findOne(this.authorId)
   }
