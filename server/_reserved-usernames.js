@@ -14,6 +14,7 @@ var reservedUsernames = _.sortBy([
   'readfold',
   'civic',
   'civicmedia',
+  'joi',
 
   // famous ppl
   'whitehouse',
@@ -27,8 +28,11 @@ var reservedUsernames = _.sortBy([
   'thepope',
   'obama',
   'barackobama',
+  'hillaryclinton',
+  'michelleobama',
   'pontifex',
   'usa',
+  'beyonce',
 
   // companies
   'github',
@@ -37,7 +41,11 @@ var reservedUsernames = _.sortBy([
   'google',
   'apple',
   'vox',
-  'medium'
+  'medium',
+  'nytimes',
+  'newyorker',
+  'theeconomist',
+  'lineusa'
 ], _.identity);
 
 var disallowedUsernames = _.sortBy([
