@@ -383,7 +383,10 @@ Template.create.events({
   },
   "click .confirm-publish": function (e, template) {
     var that = this;
-    return Meteor.call('publishStory', this._id, function(err, numDocs) {
+    var title = template.$('input[name=confirm-title]').val();
+    var keywords = _.compact(template.$('input[name=keywords]').val().split(','));
+    var narrativeRightsReserved = template.$('input[name=reserve-rights]').is(':checked');
+    return Meteor.call('publishStory', this._id, title, keywords, narrativeRightsReserved, function(err, numDocs) {
       template.publishing.set(false);
       if (err) {
         setTimeout(function () {
@@ -849,7 +852,7 @@ Template.link_twitter.events({
 });
 
 Template.publish_overlay.onRendered(function(){
-  $('#story-tags-input').tagsInput({
+  this.$('#story-tags-input').tagsInput({
     minInputWidth: '80px',
     width: '100%',
     height: '83px'
@@ -859,12 +862,15 @@ Template.publish_overlay.onRendered(function(){
 Template.publish_overlay.helpers({
   'modalWidth': function() {
     return 1.25 * Session.get('cardWidth')
+  },
+  'keywordsString': function(){
+    return (this.keywords || []).toString();
   }
 });
 
 Template.publish_overlay.events({
   'click .header-upload': function(e, t) {
-    setTimeout(function(){
+    Meteor.setTimeout(function(){
       $('body,html').animate({
         scrollTop: 0
         }, 500, 'easeInExpo')}

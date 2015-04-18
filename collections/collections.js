@@ -1109,6 +1109,10 @@ Schema.Stories = new SimpleSchema({
     type: Date,
     optional: true
   },
+  narrativeRightsReserved: {
+    type: Boolean,
+    optional: true
+  },
   favorited: {
     type: [String],
     defaultValue: []
