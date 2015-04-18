@@ -70,12 +70,18 @@ Handlebars.registerHelper("verticalLeft", function() {
   return Session.get("verticalLeft");
 });
 
-Handlebars.registerHelper("profileImage", function(user) {
+Handlebars.registerHelper("profileImage", function(user, size) {
+  var diameter;
+  if (size === 'large'){
+    diameter = 150;
+  } else {
+    diameter = 60;
+  }
   if (user && user.profile) { 
     if ( user.profile.profilePicture) {
       return user.profile.profilePicture
     } else if (user.services && user.services.twitter) {
-      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/c_limit,h_250,w_250/' + user.services.twitter.id
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/w_' + diameter + ',h_' + diameter + ',c_fill,g_face,dpr_auto/' + user.services.twitter.id
     }
   }
 });

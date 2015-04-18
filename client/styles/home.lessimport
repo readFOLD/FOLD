@@ -231,6 +231,9 @@ div.stories {
     padding: 20px 30px 0px 30px;
   }
 
+  @profile-picture-size: 60px;
+
+
   div.byline {
     //padding: 33px 25px;
     padding-top: calc(9% ~"-" 27px);
@@ -241,9 +244,10 @@ div.stories {
         display: inline-block;
         float: left;
         background-color: @black-color;
-        width: 50px;
-        height: 50px;
-        border-radius: 25px;
+        .size(@profile-picture-size);
+        border-radius: @profile-picture-size/2;
+        text-align: center;
+        vertical-align: middle;
       }
       div.author-name-date {
         font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
@@ -265,6 +269,16 @@ div.stories {
         }
       }
     }
+  }
+
+  img.profile-picture {
+
+    margin:auto;
+    z-index: 10;
+
+    border-radius: @profile-picture-size/2;
+    width: @profile-picture-size;
+    height: auto;
   }
 
   div.content {
@@ -356,20 +370,6 @@ div.stories {
       //box-shadow: 0 0 5px rgba(0,0,0,.2);
     }
 
-    img.profile-picture {
-      @picture-radius: 22px;
-      // position: absolute;
-      // top: 168px;
-      // left: 30px;
-
-      float: left;
-      margin-right: 10px;
-      z-index: 10;
-
-      border-radius: @picture-radius;
-      width: @picture-radius * 2;
-      height: auto;
-    }
 
     div.favorite-button {
       font-size: 14px;

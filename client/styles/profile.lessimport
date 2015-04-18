@@ -55,9 +55,6 @@ div.user-profile {
     border-radius: @picture-radius;
     margin: 50px calc(50% ~"-" @picture-radius*0.5) 35px;
     overflow: hidden;
-    img.profile-picture {
-      margin-left: -50%;
-    }
   } 
   div.name, div.bio {
     text-align: center;
