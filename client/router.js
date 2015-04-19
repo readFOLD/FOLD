@@ -2,6 +2,29 @@ var idFromPathSegment = function(pathSegment) { // everything after last dash
   return pathSegment.substring(pathSegment.lastIndexOf('-') + 1);
 };
 
+var setTitle = function(pageName){
+  var title;
+  if(pageName) {
+    title = pageName + ' - FOLD';
+  } else {
+    title = 'FOLD';
+  }
+  document.title = title;
+  $('meta[property="og:title"]').attr('content', title);
+};
+
+var setOGImage = function(imageUrl){
+  if (imageUrl){
+    $('meta[property="og:image"]').attr('content', imageUrl.replace(/^\/\//, "https://")); // replace protocol-less url with https
+  } else {
+    $('meta[property="og:image"]').attr('content', "https://readfold.com/FOLD_LOGO.svg");
+  }
+};
+
+Meteor.startup(function(){
+  Meteor.subscribe('userData');
+})
+
 Router.route("home", {
   path: "/",
   template: "home",
@@ -10,6 +33,8 @@ Router.route("home", {
   },
   action: function() {
     if (this.ready()) {
+      setTitle();
+      setOGImage();
       return this.render();
     }
   },
@@ -21,6 +46,8 @@ Router.route("about", {
   template: "about",
   action: function() {
     if (this.ready()) {
+      setTitle('About');
+      setOGImage();
       return this.render();
     }
   },
@@ -32,6 +59,8 @@ Router.route("terms", {
   template: "terms",
   action: function() {
     if (this.ready()) {
+      setTitle('Terms');
+      setOGImage();
       return this.render();
     }
   },
@@ -43,6 +72,8 @@ Router.route("profile", {
   template: "profile",
   action: function() {
     if (this.ready()) {
+      setTitle(this.params.username + "'s Profile");
+      setOGImage();
       return this.render();
     }
   },
@@ -75,6 +106,13 @@ Router.route("my_story_profile", {
   template: "my_story_profile",
   waitOn: function() {
     return [Meteor.subscribe('myStoriesPub')];
+  },
+  action: function() {
+    if (this.ready()) {
+      setTitle('My Stories');
+      setOGImage();
+      return this.render();
+    }
   },
   onBeforeAction: function() {
     var user;
@@ -125,8 +163,12 @@ Router.route("read", {
             })
           };
         }));
+        setTitle(story.title);
+        setOGImage(headerImageUrl(story.headerImage));
         return story;
       } else {
+        setTitle("Story not found");
+        setOGImage();
         this.render("story_not_found");
         // TODO add 404 tags for seo etc...
       }
@@ -170,8 +212,10 @@ Router.route("edit", {
             })
           };
         }));
+        setTitle('Editing: ' + story.draftStory.title || 'a new story');
         return story;
       } else {
+        setTitle('Story not found');
         this.render("story_not_found");
         // TODO add 404 tags for seo etc...
       }
@@ -179,6 +223,7 @@ Router.route("edit", {
   },
   action: function() {
     if (this.ready()) {
+      setOGImage();
       return this.render();
     }
   },
@@ -188,6 +233,13 @@ Router.route("edit", {
       data = this.data();
       if (user && data && user._id !== data.authorId) { // if they don't own the story take them to story not found
         return this.render("story_not_found");
+      }
+      var accessPriority = Meteor.user().accessPriority;
+      if (!accessPriority || accessPriority > window.createAccessLevel){
+        this.redirect("home", {
+          replaceState: true
+        });
+        alert("Creating and editing stories is temporarily disabled, possibly because things blew up (in a good way). Sorry about that! We'll have everything back up as soon as we can. Until then, why not check out some of the other great content authors in the community have written?")
       }
       return this.next(); // if they do own the story, let them through to create
     } else {
@@ -228,14 +280,15 @@ Router.route("twitter-signup", {
   template: "signup",
   waitOn: function() {
     if (Meteor.user()) {
-     [Meteor.subscribe('tempUsernamePub')];
-      return this.next();
+     return [Meteor.subscribe('tempUsernamePub')];
     }
   },
   action: function() {
     Session.set("emailUser", false);
     Session.set('signingInWithTwitter', false);
     if (this.ready()) {
+      setTitle('Signup');
+      setOGImage();
       return this.render();
     }
   }
@@ -248,6 +301,8 @@ Router.route("email-signup", {
     Session.set("emailUser", true);
     Session.set('signingInWithTwitter', false);
     if (this.ready()) {
+      setTitle('Signup');
+      setOGImage();
       return this.render();
     }
   }
@@ -258,6 +313,8 @@ Router.route("login", {
   template: "login",
   action: function() {
     if (this.ready()) {
+      setTitle('Login');
+      setOGImage();
       return this.render();
     }
   }

@@ -3,6 +3,20 @@ var formatDate, weekDays, formatDateNice, monthNames;
 weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
+window.headerImageUrl = function(headerImage){
+  var image;
+
+  if (headerImage){
+    image = headerImage;
+  } else {
+    image = this.headerImage;
+  }
+
+  if (image) {
+    return '//' + Meteor.settings["public"].AWS_BUCKET + '.s3.amazonaws.com/header-images/' + image;
+  }
+}
+
 // Friday 2/20/2015 20:29:22
 formatDate = function(date) {
   var hms;
@@ -118,6 +132,13 @@ Template.filters.events({
   }
 });
 
+Template.all_stories.onCreated(function(){
+  var that = this;
+  this.autorun(function(){
+    that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}}).map(function(story){return story.authorId}));
+  });
+});
+
 Template.all_stories.helpers({
   stories: function() {
     return Stories.find({ published: true }, {sort: {'publishedAt': 1}, reactive: false}); // TODO update sort based on dropdown selection
@@ -141,6 +162,19 @@ Template._story_preview_content.helpers({
   },
   authorUsername: function() {
     return this.userPathSegment
+  },
+  author: function(){
+    return Meteor.users.findOne(this.authorId)
+  }
+});
+
+Template.banner_buttons.helpers({
+  showCreateStory: function() {
+    if (!Meteor.user()){
+      return true
+    }
+    var accessPriority = Meteor.user().accessPriority;
+    return accessPriority && accessPriority <= window.createAccessLevel;
   }
 });
 

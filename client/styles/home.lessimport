@@ -7,10 +7,18 @@ div#login-buttons-and-more {
   left: 15px;
 }
 
+@topButtonRight: 72px;
+
 div.home-top {
   position: fixed;
   background-color: white;
   height: 145px;
+  @media @mobile{
+    img{
+      vertical-align: middle;
+    }
+    height: 175px;
+  }
   width: 100%;
   z-index: 10;
   //border-bottom: 1px solid @medium-color;
@@ -31,19 +39,38 @@ div.home-top {
   }
 
   div.logo-title {
-    display: inline-block;
-    margin-left: 60px;
-    margin-top: 37px;
-    width: 310px;
-    div.logo {
+    .logo {
       float: left;
       z-index: 10;
     }
 
     div.title {
       float: right;
-      //margin-top: 5px;
-      width: 222px;
+    }
+
+    @media @not-mobile{
+      display: inline-block;
+      margin-left: 60px;
+      margin-top: 37px;
+      width: 310px;
+      div.title {
+        //margin-top: 5px;
+        width: 222px;
+      }
+
+    }
+    @media @mobile{
+      margin:auto;
+      text-align: center;
+      margin-top: 60px;
+      height: 28px;
+      width: 150px;
+      img{
+        height: 100%
+      }
+      .title {
+        height: 100%;
+      }
     }
   }
 
@@ -51,11 +78,17 @@ div.home-top {
     position: absolute;
     font-size: 15px;
     top: 67px;
-    right: 68px;
 
-    span.filters {
-      margin-right: 10px;
+    @media @not-mobile{
+      right: @topButtonRight;
     }
+    @media @mobile{
+      top: 110px;
+      width: 100%;
+      text-align: center;
+    }
+
+
     span.categories {
       margin-left: 10px;
     }
@@ -65,7 +98,13 @@ div.home-top {
     @height: 45px;
     position: absolute;
     top: -6px;
-    right: 60px;
+    @media @not-mobile{
+      right: @topButtonRight;
+    }
+    @media @mobile{
+      width: 100%;
+      text-align: center;
+    }
     color: @light-color;
     font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
 
@@ -87,13 +126,14 @@ div.home-top {
 
     li {
       height: @height;
-      float: left;
+      @media @not-mobile{
+        float: left;
+      }
       display: inline-block;
-      margin-right: 12px;
-
       position: relative;
-
-
+      &:not(:last-child) {
+        margin-right: 12px;
+      }
     }
 
     .user-action {
@@ -171,8 +211,10 @@ div.stories {
   div.overlay-image {
     height: 110px;
     overflow: hidden;
+    background-color: @medium-color;
     img {
       max-width: 100%;
+      min-height: 100%;
     }
   }
 
@@ -188,41 +230,46 @@ div.stories {
     padding: 20px 30px 0px 30px;
   }
 
+  @profile-picture-size: 60px;
+
+
   div.byline {
     //padding: 33px 25px;
     padding-top: calc(9% ~"-" 27px);
     padding-left: 25px;
-    div.author-image {
-      display: inline-block;
-      float: left;
-      background-color: @black-color;
-      width: 50px;
-      height: 50px;
-      border-radius: 25px;
-    }
-    div.author-name-date {
-      font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
-      display: inline-block;
-      margin-left: 20px;
-      margin-top: -9px;
-      & > div {
-        line-height: 24px;
-        font-size: 14px;
+    div.pull-left {
+      div.author-image {
+          display: inline-block;
+          float: left;
+          background-color: @black-color;
+          .size(@profile-picture-size);
+          border-radius: @profile-picture-size/2;
+          text-align: center;
+          vertical-align: middle;
       }
-      div.author-name {
-        margin-top: 12px;
-        font-size: 15px;
-        span {
-          text-decoration: underline;
+      div.author-name-date {
+        font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+        display: inline-block;
+        margin-left: 20px;
+        margin-top: -9px;
+        & > div {
+          line-height: 24px;
+          font-size: 14px;
+        }
+        div.author-name {
+          margin-top: 12px;
+          font-size: 15px;
+          span {
+            text-decoration: underline;
+          }
+        }
+        div.publish-date {
+          //font-style: italic;
+          text-transform: uppercase;
+          font-size: 12px;
         }
       }
-      div.publish-date {
-        //font-style: italic;
-        text-transform: uppercase;
-        font-size: 12px;
-      }
     }
-  
   }
 
   div.story-card {
@@ -230,6 +277,16 @@ div.stories {
     width:100%;
     height: calc(100% ~"-" 110px);
     z-index: -1;
+  }
+
+  img.profile-picture {
+
+    margin:auto;
+    z-index: 10;
+
+    border-radius: @profile-picture-size/2;
+    width: @profile-picture-size;
+    height: auto;
   }
 
   div.content {
@@ -242,6 +299,9 @@ div.stories {
 
   div.story-container {
     padding-top: 15px;
+    @media @mobile{
+      padding-top: 56px;
+    }
     @padding-side: 4px;
     padding-left: @padding-side;
     padding-right: @padding-side;
@@ -271,6 +331,12 @@ div.stories {
     position: relative;
     margin-top: 8px;
     margin-bottom: 23px;
+
+    @media @mobile {
+      margin-top: 0px;
+      margin-bottom: 40px;
+    }
+
     @margin-side: 4px;
     margin-left: @margin-side;
     margin-right: @margin-side;
@@ -312,20 +378,6 @@ div.stories {
       //box-shadow: 0 0 5px rgba(0,0,0,.2);
     }
 
-    img.profile-picture {
-      @picture-radius: 22px;
-      // position: absolute;
-      // top: 168px;
-      // left: 30px;
-
-      float: left;
-      margin-right: 10px;
-      z-index: 10;
-
-      border-radius: @picture-radius;
-      width: @picture-radius * 2;
-      height: auto;
-    }
 
     div.favorite-button {
       font-size: 14px;

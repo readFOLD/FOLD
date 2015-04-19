@@ -5,7 +5,8 @@ analytics.load(Meteor.settings["public"].SEGMENT_WRITE_KEY); // TODO check serve
 Router.onRun(function() {
   var that = this;
 
-  setTimeout(function(){
+  Meteor.setTimeout(function(){
+    $('meta[property="og:url"]').attr('content', window.location.href);
     analytics.page(that.route.getName()); // maybe should be more page info here
   }, 100); // this might even be ok when set to 0
 

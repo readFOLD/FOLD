@@ -30,11 +30,18 @@ input[type=file].button {
     color: @dark-color;
   }
 
-  &.header-upload{
+  &.change-header-upload{
     &::before {
       content: 'Change Header Image';
     }
   }
+
+  &.do-header-upload{
+    &::before {
+      content: 'Upload Header Image';
+    }
+  }
+
   &.image-upload{
     &::before {
       content: 'Upload Image';
@@ -117,21 +124,26 @@ div.save-background-image {
 }
 
 div.title-overlay {
-  min-width: 1024px;
+  @media @not-mobile {
+    min-width: 1024px;
+  }
   height: 350px;
+
   z-index: 30;
   // background-color: @action-color;
   color: @light-color;
   position: relative;
+  overflow-y: hidden;
 
   background-color: @action-color;
-  background-position: center center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+
+  .header-overlay-image{
+    position: absolute;
+    min-width: 100%;
+    @media @mobile {
+      max-height: 100%;
+    }
+  }
 
   div.logo {
     .opacity-transition;
@@ -156,6 +168,9 @@ div.title-overlay {
     position: fixed;
     height: 100px;
     width: 100%;
+    @media @mobile {
+      display: none;
+    }
   }
 
   &.read:hover {
@@ -208,7 +223,7 @@ div.title-overlay {
     padding: 5px 10px;
     opacity: 0.0;
 
-    &.shown {
+    &.shown{
       opacity: 1.0;
     }
   }
@@ -222,6 +237,11 @@ div.title-overlay {
     margin-left: 95px;
     margin-top: 125px;
     max-width: 1300px;
+    @media @mobile {
+      margin-left: 20px;
+      margin-right: 20px;
+      max-width: calc(100% ~"-" 40px);
+    }
     padding: 11px;
     background-color: @dark-color;
     &.fixed {
@@ -238,6 +258,9 @@ div.title-overlay {
       overflow-y: visible;
       text-overflow: ellipsis;
       white-space: nowrap;
+      @media @mobile {
+        white-space: normal;
+      }
     }
     div.author {
       font-size: 18px;
@@ -393,12 +416,6 @@ textarea {
     line-height: 27px;
     font-size: @content-font-size;
   }
-}
-
-input {
-  width: 100%;
-  outline: none;
-  font-size: 14px;
 }
 
 svg{

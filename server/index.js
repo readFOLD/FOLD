@@ -10,3 +10,7 @@ WebApp.connectHandlers.use(function(req, res, next) {
 });
 
 robots.addLine('User-agent: *\nDisallow: /');
+
+if (process.env.PRERENDER_TOKEN) {
+  prerenderio.set('prerenderToken', process.env.PRERENDER_TOKEN);
+}

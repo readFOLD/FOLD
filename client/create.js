@@ -57,17 +57,19 @@ window.updateUIBasedOnSelection = function(e){
 
           // TO-DO actually get this from selection
           if (e) {
-            boundary = range.getBoundingClientRect();
-            boundaryMiddle = (boundary.left + boundary.right) / 2;
-            pageYOffset = $(e.target).offset().top;
             if (selectionType === 'Range') {
               showFoldEditor();
-              $('#fold-editor').css('left', e.pageX - 100);
-              return $('#fold-editor').css('top', e.pageY - 70);
+              boundary = range.getBoundingClientRect();
+              boundaryMiddle = (boundary.left + boundary.right) / 2;
+              $('#fold-editor').css('left', boundaryMiddle - 205/2 + $(window).scrollLeft());
+              return $('#fold-editor').css('top', boundary.top - 70 + $(window).scrollTop());
             } else if (window.enclosingAnchorTag) {
               showFoldLinkRemover();
-              $('#fold-link-remover').css('left', e.pageX - 25);
-              return $('#fold-link-remover').css('top', e.pageY - 45);
+              var offset = $(window.selectedNode).offset();
+              var posY = offset.top;
+              var posX = offset.left + $(window.selectedNode).width();
+              $('#fold-link-remover').css('left', posX - 8);
+              return $('#fold-link-remover').css('top', posY - 35);
             } else {
               return hideFoldAll();
             }
@@ -276,6 +278,7 @@ window.saveCallback =  function(err, success, cb) {
 Template.vertical_section_block.events({
   'mouseup [contenteditable]': window.updateUIBasedOnSelection,
   'blur [contenteditable]': window.updateUIBasedOnSelection,
+  'keyup [contenteditable]': window.updateUIBasedOnSelection,
   'blur .title[contenteditable]' : function(e, template){
     Session.set('saveState', 'saving');
 
@@ -370,8 +373,8 @@ Template.create.helpers({
 
 Template.create.events({
   "click .publish-story": function (e, template) {
-    return Meteor.call('checkEarlybird', function(err, isEarlybird) {
-      if (isEarlybird) {
+    return Meteor.call('checkPublishAccess', function(err, hasAccess) {
+      if (hasAccess) {
         template.publishing.set(true);
       } else {
         return alert("Publish will be available soon! You'll be able to use it to submit your story to be featured on our site when we launch in early April.");
@@ -383,7 +386,10 @@ Template.create.events({
   },
   "click .confirm-publish": function (e, template) {
     var that = this;
-    return Meteor.call('publishStory', this._id, function(err, numDocs) {
+    var title = template.$('input[name=confirm-title]').val();
+    var keywords = _.compact(template.$('input[name=keywords]').val().split(','));
+    var narrativeRightsReserved = template.$('input[name=reserve-rights]').is(':checked');
+    return Meteor.call('publishStory', this._id, title, keywords, narrativeRightsReserved, function(err, numDocs) {
       template.publishing.set(false);
       if (err) {
         setTimeout(function () {
@@ -395,6 +401,18 @@ Template.create.events({
       } else {
         Router.go('/read/' + that.userPathSegment + '/' + that.storyPathSegment)
       }
+    });
+  },
+  "change input.header-upload": function(){
+    var storyId = Session.get('storyId');
+    var files = $("input.header-upload")[0].files;
+    S3.upload({
+      files: files,
+      path: "header-images"
+    }, function(e, r) {
+      var filename = r.file.name;
+      Session.set('saveState', 'saving');
+      return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);
     });
   }
 });
@@ -522,12 +540,14 @@ Tracker.autorun(function() {
   return Session.set('currentXId', null);
 });
 
-Tracker.autorun(function() {
-  if (currentXId = Session.get('currentXId')){
-    $('a[data-context-id="' + currentXId + '"]').addClass('active');
-    $('a[data-context-id!="' + currentXId + '"]').removeClass('active');
-  }
-});
+if (!Meteor.Device.isPhone()){ // highlight active context card link except on mobile
+  Tracker.autorun(function() {
+    if (currentXId = Session.get('currentXId')){
+      $('a[data-context-id="' + currentXId + '"]').addClass('active');
+      $('a[data-context-id!="' + currentXId + '"]').removeClass('active');
+    }
+  });
+}
 
 Tracker.autorun(function() { // update UI when start and stop adding/editing context
   var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
@@ -542,8 +562,10 @@ Tracker.autorun(function() { // update UI when start and stop adding/editing con
     } else {
       Session.set("showMinimap", true);
       if (document.body){
-        document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
-        removePlaceholderLinks();
+        if(!Session.get('read')){
+          document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
+          removePlaceholderLinks();
+        }
       }
     }
   }
@@ -760,24 +782,6 @@ window.addContext = function(contextBlock) {
   });
 };
 
-window.removeContextFromStory = function(storyId, contextId, verticalSectionIndex, cb) {
-  var pushObject, pushSelectorString;
-  pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
-  pullObject = {};
-  pullObject[pushSelectorString] = contextId;
-  return Meteor.call('saveStory', {
-    _id: storyId
-  }, {
-    $pull: pullObject
-  }, function(err, numDocs) {
-    if (numDocs) {
-      Session.set("addingContext", null);
-      Session.set("editingContext", null);
-    }
-    saveCallback(err, numDocs, cb);
-  });
-};
-
 Template.horizontal_section_edit_delete.helpers({
   canMoveLeft: function () {
     return this.index;
@@ -791,14 +795,16 @@ Template.horizontal_section_block.events({
     if(confirm("Permanently delete this card?")){
       Session.set('saveState', 'saving');
       id = this._id;
-      window.removeContextFromStory(Session.get("storyId"), id, Session.get("currentY"), function(err){
+      Meteor.call('removeContextFromStory', Session.get("storyId"), id, Session.get("currentY"), function(err, numDocs){
         if(err){
           return saveCallback(err);
-        }
-        ContextBlocks.remove(id, function(err, numDocs){
-          goToX(Session.get('currentX'));
+        } else {
+          Session.set("addingContext", null);
+          Session.set("editingContext", null);
+          var currentX = Session.get('currentX');
+          goToX(currentX ? currentX - 1 : 0);
           saveCallback(err, numDocs);
-        });
+        }
       });
     }
   },
@@ -816,19 +822,7 @@ Template.create_options.events({
     } else {
       Session.set('read', true);
     }
-  },
-  "change input.header-upload": function(){
-    var storyId = Session.get('storyId');
-    var files = $("input.header-upload")[0].files;
-    S3.upload({
-      files: files,
-      path: "header-images"
-    }, function(e, r) {
-      var filename = r.file.name;
-      Session.set('saveState', 'saving');
-      return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);
-    });
-  },
+  }
 });
 
 Template.link_twitter.events({
@@ -843,5 +837,29 @@ Template.link_twitter.events({
         Meteor.call('linkTwitterAccount')    
       }
     });
+  }
+});
+
+Template.publish_overlay.onRendered(function(){
+  this.$('#story-tags-input').tagsInput({
+    minInputWidth: '80px',
+    width: '100%',
+    height: '83px'
+  });
+});
+
+Template.publish_overlay.helpers({
+  'keywordsString': function(){
+    return (this.keywords || []).toString();
+  }
+});
+
+Template.publish_overlay.events({
+  'click .header-upload': function(e, t) {
+    Meteor.setTimeout(function(){
+      $('body,html').animate({
+        scrollTop: 0
+        }, 500, 'easeInExpo')}
+      , 1500)
   }
 });

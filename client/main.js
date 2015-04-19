@@ -6,13 +6,12 @@ UI.registerHelper('selectedIf', function(val) {
 });
 
 getCardWidth = function(windowWidth) {
-  var cardWidth;
-  if (windowWidth <= window.constants.minPageWidth) {
-    return cardWidth = 400;
-  } else if ((windowWidth > window.constants.minPageWidth) && (windowWidth <= 1304)) {
-    return cardWidth = (windowWidth - (16 * 3) - (88 * 2)) / 2;
+  if (Meteor.Device.isPhone()){
+    return Session.get("windowWidth") - 2* getVerticalLeft();
+  } else if (windowWidth <= window.constants.minPageWidth) {
+    return 400;
   } else {
-    return cardWidth = 520;
+    return Math.min(520, (windowWidth - (16 * 3) - (88 * 2)) / 2);
   }
 };
 
@@ -20,25 +19,54 @@ Session.set("separation", 10);
 
 var windowSizeDep = new Tracker.Dependency();
 
-Tracker.autorun(function(){
-  windowSizeDep.depend();
+Meteor.startup(function(){
+  Tracker.autorun(function(){
+    windowSizeDep.depend();
 
-  Session.set("windowHeight", $(window).height());
+    var windowWidth = $(window).width();
 
-  Session.set("windowWidth", window.outerWidth);
+    // Safari changes window size in a weird way that jquery doesn't register correctly when scroll up vs down
+    Session.set("windowHeight", Meteor.Device.isPhone() && !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/) ? window.innerHeight : $(window).height());
 
-  Session.set("cardWidth", getCardWidth(window.outerWidth));
+    Session.set("windowWidth", windowWidth);
 
-  Session.set("verticalLeft", getVerticalLeft(window.outerWidth));
+    var cardWidth = getCardWidth(windowWidth);
+
+    Session.set("cardWidth", cardWidth);
+
+    Session.set("verticalLeft", Session.get('mobileContextView') ? getVerticalLeft(windowWidth) - cardWidth : getVerticalLeft(windowWidth));
+
+    if (Meteor.Device.isPhone()) {
+      document.body.style.overflowX = "hidden";
+      $('body').css('max-width', windowWidth);
+      Session.set("mobileMargin", getVerticalLeft(windowWidth));
+    }
+  });
+
+  Tracker.autorun(function(){
+    if (Session.get('mobileContextView')){
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "auto"; // TODO is this helping?
+    }
+  });
+
+  var windowResize = function() {
+    windowSizeDep.changed();
+  };
+
+  throttledResize = _.throttle(windowResize, 20);
+
+  $(window).resize(throttledResize);
 });
 
-var windowResize = function() {
-  windowSizeDep.changed();
+
+window.hammerSwipeOptions = {
+  pointers:	1,
+  threshold: 8,
+  velocity:	0.35 // 0.65
 };
 
-throttledResize = _.throttle(windowResize, 20);
-
-$(window).resize(throttledResize);
 
 updatecurrentY = function() {
   var actualY, h, i, maxScroll, readMode, scrollTop, stickyBody, stickyTitle, vertTop, _i, _len, _ref;
@@ -200,9 +228,7 @@ Template.story_header.helpers({
   headerImageAttribution: function() {
     return this.headerImageAttribution;
   },
-  headerImageUrl: function() {
-    return '//' + Meteor.settings["public"].AWS_BUCKET + '.s3.amazonaws.com/header-images/' + this.headerImage;
-  },
+  headerImageUrl: headerImageUrl,
   "files": function(){
     return S3.collection.find();
   }
@@ -278,15 +304,16 @@ Template.story.helpers({
   pastHeader: function() {
     return Session.get("pastHeader");
   },
-  verticalLeft: function () {
-    return Session.get("verticalLeft");
-  },
+
   metaviewOpen: function() {
     return Session.get("metaview")
   },
   showMinimap: function() {
-    return Session.get("showMinimap")
+    return Session.get("showMinimap") && (!Meteor.Device.isPhone());
   },
+  showMobileMinimap: function() {
+    return Session.get("showMinimap") && (Meteor.Device.isPhone());
+  }
 });
 
 Template.story_title.helpers({
@@ -344,11 +371,25 @@ Template.vertical_section_block.events({
   "click": function(d, t) {
     goToY(t.data.index);
   },
-  "click a": function(e) {
+  "click a": function(e, t) {
     var contextId;
     e.preventDefault();
-    contextId = $(e.target).data('contextId');
-    return goToContext(contextId);
+    if (Session.equals("currentY", t.data.index)){
+      contextId = $(e.target).data('contextId');
+      return goToContext(contextId);
+    }
+
+  }
+});
+
+Template.story.onRendered(function(){
+  // TODO destroy bindings later?
+  if(Meteor.Device.isPhone()){
+    this.$('.vertical-narrative').hammer(hammerSwipeOptions).bind('swipeleft',function(){
+        // TODO only if selected
+        Session.set('mobileContextView', true);
+      }
+    );
   }
 });
 
@@ -452,6 +493,37 @@ Template.minimap.helpers({
   },
   selectedY: function() {
     return Session.equals("currentY", this.verticalIndex);
+  },
+  smallCards: function(){
+    return Session.get("horizontalSectionsMap").length > 7;
+  }
+});
+
+Template.mobile_minimap.helpers({
+  verticalSelectedArray: function() {
+    var currentYId = Session.get('currentYId')
+    return _.map(this.verticalSections, function(v){
+      return {selected: currentYId === v._id};
+    });
+  },
+  horizontalSelectedArray: function() {
+    var currentXId = Session.get('currentXId');
+    var currentY = Session.get('currentY');
+    if (typeof currentY === 'number'){
+      return _.map(this.verticalSections[currentY].contextBlocks, function(cId){
+        return {selected: currentXId === cId};
+      });
+    }
+
+  },
+  horizontalWidth: function(){
+    return Session.get('windowWidth') - Session.get('mobileMargin');
+  },
+  verticalHeight: function(){
+    return Session.get('windowHeight') - Session.get('mobileMargin');
+  },
+  mobileMargin: function(){
+    return Session.get('mobileMargin');
   }
 });
 
@@ -573,6 +645,30 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
   }
 });
 
+// TODO get swipes on context cards to work
+//Template.horizontal_section_block.onRendered(function(){
+//  //
+//  if(Meteor.Device.isPhone()) {
+//    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swipeleft',function(){
+//        // TODO only if allowed
+//        window.goRightOneCard();
+//      }
+//    );
+//
+//    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swiperight',function(){
+//        // TODO only if allowed
+//        window.goLeftOneCard();
+//      }
+//    );
+//  }
+//});
+
+Template.horizontal_section_block.events({
+  'click .mobile-context-back-button': function(e, t){
+    Session.set('mobileContextView', false);
+  }
+});
+
 Template.horizontal_section_block.helpers(horizontalBlockHelpers);
 
 // Magic layout function
@@ -650,37 +746,19 @@ Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
 Template.story_browser.helpers({
   showLeftArrow: function() {
-    return Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentYId')];
+    return !Meteor.Device.isPhone() && (Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentYId')]);
+  },
+  showRightArrow: function() {
+    return !Meteor.Device.isPhone();
   }
 });
 
 Template.story_browser.events({
   "click .right svg": function(d) {
-    var currentX, horizontalSection, newX, path;
-    horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
-    currentX = Session.get("currentX");
-    currentY = Session.get("currentY");
-    currentYId = Session.get("currentYId");
-    if (currentX === (horizontalSection.length - 1)) { // end of our rope
-      newX = 0;
-      wrap = Session.get("wrap");
-      wrap[currentYId] = true;
-      Session.set("wrap", wrap);
-    } else {
-      newX = currentX + 1;
-    }
-    goToX(newX);
-    path = window.location.pathname.split("/");
-    return path[4] = Session.get("currentX");
+    window.goRightOneCard();
   },
   "click .left svg": function(d) {
-    var currentX, horizontalSection, newX, path;
-    horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
-    currentX = Session.get("currentX");
-    newX = currentX ? currentX - 1 : horizontalSection.length - 1;
-    goToX(newX);
-    path = window.location.pathname.split("/");
-    return path[4] = Session.get("currentX");
+    window.goLeftOneCard()
   }
 });
 
@@ -730,7 +808,7 @@ Template.display_twitter_section.events({
       template.$('.flag').removeClass('show-corner');
     }
   }
-})
+});
 
 Template.create_story.events({
   'click': function(){
@@ -774,6 +852,7 @@ Template.read.onCreated(function(){
   Session.set("currentXByYId", {});
   Session.set("currentY", null);
   Session.set("showMinimap", true);
+  Session.set("mobileContextView", false);
   $('html, body').scrollTop(0);
 });
 

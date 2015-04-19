@@ -1,11 +1,24 @@
+<head>
+  <title>FOLD</title>
+  <link rel="apple-touch-icon" href="/FOLD-apple-touch-icon.png">
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+  <meta name="fragment" content="!">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://readfold.com">
+  <meta property="og:image" content="https://readfold.com/FOLD_LOGO.svg">
+  <meta property="og:title" content="FOLD">
+  <meta property="og:description" content="A reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.">
+</head>
+
 
 <!--
   Templates used in reading, creating, and editing
 -->
 
 <template name="story_header">
-  {{setTitle title}}
-  <div class="title-overlay {{#unless read}}write{{/unless}}" style='background-image: url("{{headerImageUrl}}")'>
+  <div class="title-overlay {{#unless read}}write{{/unless}}">
+    <img class="header-overlay-image" src={{headerImageUrl}}>
     <div id="banner-overlay">
     </div>
     <div class="title-author">
@@ -20,9 +33,13 @@
       {{/linkTo}}
     </div>
 
-    <div class="attribution {{#unless pastHeader}}shown{{/unless}}">
-      Header Image Source: {{headerImageAttribution}}
-    </div>
+    {{#unless isPhone}}
+      {{#if headerImageAttribution}}
+        <div class="attribution {{#unless pastHeader}}shown{{/unless}}">
+        Header Image Source: {{headerImageAttribution}}
+        </div>
+      {{/if}}
+    {{/unless}}
   </div>
 </template>
 
@@ -54,6 +71,9 @@
     {{#if pastHeader}}
         {{#if showMinimap}}
           {{> minimap}}
+        {{/if}}
+      {{#if showMobileMinimap}}
+          {{> mobile_minimap}}
         {{/if}}
         {{#if metaviewOpen}}
           {{> metaview}}
@@ -119,7 +139,7 @@
         {{/if}}
       {{/each}}
       <div style="display: {{#if addingContext}}inherit{{else}}none{{/if}}">
-        {{ > create_horizontal_section_block}}
+        {{> create_horizontal_section_block}}
       </div>
     {{/if}}
   {{/unless}}
@@ -141,13 +161,18 @@
 
 <template name="horizontal_section_block">
   <div
-      class="narrative-section horizontal-narrative-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}"
-      data-index={{index}} style="width: {{cardWidth}}px; left: {{left}}px
-  ">
+      class="narrative-section horizontal-narrative-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}" data-index="{{index}}" style="width: {{cardWidth}}px; left: {{left}}px;">
 <section>
   <!--    <div id="index">
       {{index}}
     </div> -->
+    {{#if isPhone}}
+      {{#if selected}}
+        <button class="mobile-context-back-button">
+          {{> mobile_back_icon }}
+        </button>
+      {{/if}}
+    {{/if}}
     {{#if type}}
       {{#if text}}
         {{#if editingThisContext}}
@@ -216,7 +241,9 @@
         {{> display_broken_section}}
       {{/if}}
       {{#if read}}
-        {{> remix_bar}}
+        {{#unless isPhone}}
+          {{> remix_bar}}
+        {{/unless}}
       {{/if}}
       </section>
     </div>
@@ -243,7 +270,20 @@
 
 <template name="display_image_section">
   <div class="image-section {{#unless read}}always-show-caption{{/unless}}">
-    <img src="{{url}}" />
+    {{#if showVideo}}
+      <video autoplay loop muted="muted"
+             poster="{{previewUrl}}">
+
+        <source type="video/mp4"
+                src="{{mp4Url}}">
+
+        <source type="video/webm"
+                src="{{webMUrl}}">
+        Your browser does not support the HTML5 video tag.
+      </video>
+    {{else}}
+      <img src="{{url}}" />
+    {{/if}}
     {{{textContent}}}
   </div>
   {{#unless read}}
@@ -421,12 +461,14 @@
   <div class="story-browser">
     {{#if showLeftArrow}}
       <div class="left">
-        {{ > browse_arrow_left}}
+        {{> browse_arrow_left}}
       </div>
     {{/if}}
-    <div class="right">
-      {{ > browse_arrow_right}}
-    </div>
+    {{#if showRightArrow}}
+      <div class="right">
+        {{> browse_arrow_right}}
+      </div>
+    {{/if}}
   </div>
 </template>
 
@@ -493,11 +535,11 @@
 <template name="minimap">
   <div class="minimap">
     {{#each horizontalSectionsMap}}
-    <div class="section {{#if selectedY}}selected-section{{/if}}">
-      <div class="vertical block {{#if selectedY}}selected-block{{/if}}">
+    <div class="section {{#if selectedY}}selected-section{{/if}} {{#if smallCards}}small{{/if}}">
+      <div class="vertical block {{#if selectedY}}selected-block{{/if}} {{#if smallCards}}small{{/if}}">
       </div>
       {{#each horizontal}}
-          <div class="horizontal block {{#if selectedX}}selected-block{{/if}}">
+          <div class="horizontal block {{#if selectedX}}selected-block{{/if}} {{#if smallCards}}small{{/if}}">
           </div>
       {{/each}}
     </div>
@@ -505,37 +547,65 @@
   </div>
 </template>
 
+<template name="mobile_minimap">
+  <div class="mobile-minimap-vertical" style="width: {{mobileMargin}}px; height: {{verticalHeight}}px;">
+    <ol class="mobile-minimap-vertical-table">
+      {{#each verticalSelectedArray}}
+        <li class="vertical-marker-row">
+          <div class="vertical-marker-cell">
+            <div class="vertical-marker {{#if selected}}selected{{/if}}"></div>
+          </div>
+        </li>
+      {{/each}}
+    </ol>
+  </div>
+
+  <div class="mobile-minimap-horizontal" style="width: {{horizontalWidth}}px; height: {{mobileMargin}}px;">
+    <div class="mobile-minimap-horizontal-table">
+      <ol class="horizontal-marker-row">
+        {{#each horizontalSelectedArray}}
+          <li class="horizontal-marker-cell">
+            <div class="horizontal-marker {{#if selected}}selected{{/if}}"></div>
+          </li>
+        {{/each}}
+      </ol>
+    </div>
+  </div>
+
+  <div class="mobile-minimap-corner" style="width: {{mobileMargin}}px; height: {{mobileMargin}}px;"></div>
+</template>
+
 
 <template name="type_specific_icon">
   {{#if twitter}}
-    {{ > twitter_icon }}
+    {{> twitter_icon }}
   {{/if}}
   {{#if video}}
-    {{ > video_icon }}
+    {{> video_icon }}
   {{/if}}
   {{#if map}}
-    {{ > map_icon }}
+    {{> map_icon }}
   {{/if}}
   {{#if image}}
-    {{ > image_icon }}
+    {{> image_icon }}
   {{/if}}
   {{#if viz}}
-    {{ > viz_icon }}
+    {{> viz_icon }}
   {{/if}}
   {{#if gif}}
-    {{ > gif_icon }}
+    {{> gif_icon }}
   {{/if}}
   {{#if audio}}
-    {{ > audio_icon }}
+    {{> audio_icon }}
   {{/if}}
   {{#if text}}
-    {{ > text_icon }}
+    {{> text_icon }}
   {{/if}}
   {{#if link}}
-    {{ > link_icon }}
+    {{> link_icon }}
   {{/if}}
   {{#if remix}}
-    {{ > remix_icon }}
+    {{> remix_icon }}
   {{/if}}
 </template>
 

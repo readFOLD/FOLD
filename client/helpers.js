@@ -66,17 +66,22 @@ Handlebars.registerHelper("windowHeight", function() {
   return Session.get("windowHeight");
 });
 
-Handlebars.registerHelper("profileImage", function(user) {
+Handlebars.registerHelper("verticalLeft", function() {
+  return Session.get("verticalLeft");
+});
+
+Handlebars.registerHelper("profileImage", function(user, size) {
+  var diameter;
+  if (size === 'large'){
+    diameter = 150;
+  } else {
+    diameter = 60;
+  }
   if (user && user.profile) { 
     if ( user.profile.profilePicture) {
       return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_150,h_150,c_fill,g_face/' + user.profile.profilePicture
-    } else if (user.profile.twitterUser) {
-      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/w_150,h_150,c_fill,g_face/' + user.services.twitter.id
+    } else if (user.services && user.services.twitter) {
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/w_' + diameter + ',h_' + diameter + ',c_fill,g_face,dpr_auto/' + user.services.twitter.id
     }
   }
 });
-
-Handlebars.registerHelper("setTitle", function(title) {
-  document.title = title;
-});
-

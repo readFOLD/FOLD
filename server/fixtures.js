@@ -5,7 +5,7 @@ if (Meteor.users.find().count() === 0) {
     email: 'author@example.com',
     username: 'author',
     password: 'password',
-    earlybird: true,
+    accessPriority: 1,
     profile: {
       name: 'Cynthia Fold'
     },

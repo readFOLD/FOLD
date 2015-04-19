@@ -5,7 +5,7 @@ window.constants = {
 };
 
 window.getVerticalLeft = function(width) {
-  return 106;
+  return Meteor.Device.isPhone() ? (Session.get('windowWidth') > 340 ? 30 : 20) : 106;
 };
 
 window.getHorizontalLeft = function() {
@@ -17,7 +17,6 @@ window.getHorizontalLeft = function() {
   }
 
   // Variable definitions (width of page, width of card, offset of cards)
-  pageWidth = Session.get("windowWidth") >= 1024 ? Session.get("windowWidth") : 1024;
   cardWidth = Session.get("cardWidth");
   cardSeparation = Session.get("separation");
   addContextBlockWidth = 75;
@@ -118,6 +117,9 @@ window.goToContext = function(id) {
 
     contextIndex = _.indexOf(_.pluck(Session.get('horizontalSectionsMap')[currentY].horizontal, '_id'), id.toString());
     if (contextIndex >= 0) {
+      if (Meteor.Device.isPhone()){
+        Session.set('mobileContextView', true);
+      }
       return goToX(contextIndex);
     }
   }
@@ -144,6 +146,31 @@ window.goUpOneCard = function() {
     return goToXY(0, newY);
 };
 
+window.goRightOneCard = function() {
+  var currentX, horizontalSection, newX;
+  horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
+  currentX = Session.get("currentX");
+  currentY = Session.get("currentY");
+  currentYId = Session.get("currentYId");
+  if (currentX === (horizontalSection.length - 1)) { // end of our rope
+    newX = 0;
+    wrap = Session.get("wrap");
+    wrap[currentYId] = true;
+    Session.set("wrap", wrap);
+  } else {
+    newX = currentX + 1;
+  }
+  goToX(newX);
+};
+
+window.goLeftOneCard = function() {
+  var currentX, horizontalSection, newX;
+  horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
+  currentX = Session.get("currentX");
+  newX = currentX ? currentX - 1 : horizontalSection.length - 1;
+  goToX(newX);
+};
+
 window.moveOneCard = function(d) {
   if (d < 0) {
     return goDownOneCard();
@@ -167,6 +194,8 @@ $(document).keydown(function(e) {
         break;
       case '(': // down arrow
         goDownOneCard()
+        break;
+      case ' ': // spacebar
         break;
     }
   }

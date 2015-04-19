@@ -5,6 +5,7 @@ Stories._ensureIndex({
 });
 
 Meteor.publish("exploreStoriesPub", function(filter, category, skip) {
+
   if (this.userId) { // TODO launch Remove
 
     return Stories.find({
@@ -13,7 +14,8 @@ Meteor.publish("exploreStoriesPub", function(filter, category, skip) {
       fields: {
         draftStory: 0,
         history: 0
-      }
+      },
+      reactive: false
     });
   } else {
     this.ready()
@@ -30,7 +32,8 @@ Meteor.publish("readStoryPub", function(userPathSegment, shortId) {
       fields: {
         draftStory: 0,
         history: 0
-      }
+      },
+      reactive: false
     });
   } else {
     this.ready();
@@ -48,7 +51,8 @@ Meteor.publish("readStoriesPub", function(ids) {
       fields: {
         draftStory: 0,
         history: 0
-      }
+      },
+      reactive: false
     });
   } else {
     this.ready();
@@ -62,15 +66,24 @@ Meteor.publish("createStoryPub", function(userPathSegment, shortId) {
   });
 });
 
-Meteor.publish("storiesPub", function() {
-  return Stories.find();
-});
-
 Meteor.publish("contextBlocksPub", function() {
   return ContextBlocks.find({},{
     fields : {
       fullDetails: 0
     }
+  });
+});
+
+Meteor.publish("minimalUsersPub", function(userIds) { // includes user profile and published stories
+  return Meteor.users.find({_id: {
+    $in: userIds
+  }}, {
+    fields: {
+      "profile.profilePicture": 1,
+      "username": 1,
+      "services.twitter.id": 1
+    },
+    reactive: false
   });
 });
 
@@ -127,7 +140,8 @@ Meteor.publish("userStoriesPub", function(username) { // only published stories
     fields : {
       history: 0,
       draftStory: 0
-    }
+    },
+    reactive: false
   });
 });
 
@@ -144,6 +158,19 @@ Meteor.publish("myStoriesPub", function() {
     return this.ready();
   }
 });
+
+Meteor.publish("userData", function () {
+  if (this.userId) {
+    return Meteor.users.find({_id: this.userId},
+      {fields: {
+        'accessPriority': 1,
+        "services.twitter.id": 1
+      }});
+  } else {
+    this.ready();
+  }
+});
+
 
 Meteor.publish("tempUsernamePub", function() {
   if (this.userId) {

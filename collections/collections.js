@@ -358,7 +358,23 @@ ImageBlock = (function(_super) {
     if (!this.source) { // TO-DO Remove
       this.source = 'imgur';
     }
-  }
+  };
+
+  ImageBlock.prototype.showVideo = function() {
+    return this.webMUrl() || this.mp4Url();
+  },
+
+  ImageBlock.prototype.webMUrl = function() {
+    if (this.source === 'imgur' && this.reference.hasWebM) {
+      return '//i.imgur.com/' + this.reference.id + '.webm';
+    }
+  };
+
+  ImageBlock.prototype.mp4Url = function(){
+    if (this.source === 'imgur' && this.reference.hasMP4) {
+      return '//i.imgur.com/' + this.reference.id + '.mp4';
+    }
+  };
 
   ImageBlock.prototype.url = function() {
     switch (this.source) {
@@ -374,6 +390,27 @@ ImageBlock = (function(_super) {
         return this.reference.url;
       case 'cloudinary':
         // TO-DO maybe use jpeg instead of png in certain situations
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
+    }
+  };
+
+  ImageBlock.prototype.previewUrl = function() {
+    switch (this.source) {
+      case 'local':
+        return '/' + this.reference.id;
+      case 'link':
+        return this.reference.url;
+      case 'imgur':
+        if (this.reference.fileExtension === 'gif'){
+          return '//i.imgur.com/' + this.reference.id + 'l' + '.' + this.reference.fileExtension;
+        } else {
+          return '//i.imgur.com/' + this.reference.id + '.' + this.reference.fileExtension;
+        }
+      case 'flickr':
+        return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg'
+      case 'embedly':
+        return this.reference.url;
+      case 'cloudinary':
         return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
     }
   };
@@ -410,12 +447,37 @@ GifBlock = (function(_super) {
     this.type = 'gif';
   }
 
+  GifBlock.prototype.showVideo = function() {
+    return this.webMUrl() || this.mp4Url();
+  };
+
+  GifBlock.prototype.webMUrl = function() {
+    if (this.source === 'cloudinary') {
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id + '.webm';
+    }
+  };
+
+  GifBlock.prototype.mp4Url = function(){
+    if (this.source === 'cloudinary') {
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id + '.mp4';
+    }
+  };
+
   GifBlock.prototype.url = function() {
     switch (this.source) {
       case 'giphy':
         return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif';
       case 'cloudinary':
         return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
+    }
+  };
+
+  GifBlock.prototype.previewUrl = function() {
+    switch (this.source) {
+      case 'giphy':
+        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif';
+      case 'cloudinary':
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id + '.jpg';
     }
   };
 
@@ -638,20 +700,18 @@ this.ContextBlocks = new Meteor.Collection("context_blocks", {
   transform: newTypeSpecificContextBlock
 });
 
-this.ContextBlocks.allow({
-  insert: function(userId, doc) {
-    return checkOwner(userId, doc);
+this.ContextBlocks.deny({
+  insert: function() {
+    return true;
   },
-  update: function(userId, doc) {
-    if (_.contains(fieldNames, 'authorId')) {
-      return false;
-    }
-    return checkOwner(userId, doc);
+  update: function() {
+    return true
   },
-  remove: function(userId, doc) {
-    return checkOwner(userId, doc);
+  remove: function() {
+    return true
   }
 });
+
 
 Schema.ContextReferenceProfile = new SimpleSchema({
   id: {
@@ -720,6 +780,17 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     type: String,
     optional: true
   },
+  hasWebM: {
+    type: Boolean,
+    optional: true
+  },
+
+  hasMP4: {
+    type: Boolean,
+    optional: true
+  },
+
+
 
   // Image upload
   width: {
@@ -1016,8 +1087,8 @@ Schema.User = new SimpleSchema({
       this.unset(); // don't allow to be set from anywhere within the code
     }
   },
-  earlybird: {
-    type: Boolean,
+  accessPriority: {
+    type: Number,
     optional: true
   },
   profile: {
@@ -1109,6 +1180,10 @@ Schema.Stories = new SimpleSchema({
     type: Date,
     optional: true
   },
+  narrativeRightsReserved: {
+    type: Boolean,
+    optional: true
+  },
   favorited: {
     type: [String],
     defaultValue: []
@@ -1123,6 +1198,12 @@ Schema.Stories = new SimpleSchema({
   },
   contextBlocks: {
     type: [ContextBlock], // TODO this should really be Schema.ContextBlocks, but would need to be converted to a regular object, otherwise simple-schema complains
+    minCount: 0,
+    maxCount: 1000,
+    defaultValue: []
+  },
+  contextBlockIds: {
+    type: [String],
     minCount: 0,
     maxCount: 1000,
     defaultValue: []

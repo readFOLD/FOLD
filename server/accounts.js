@@ -12,6 +12,10 @@ Accounts.validateNewUser(function(user) {
   return true
 });
 
+if (!Meteor.settings.NEW_USER_ACCESS_PRIORITY) {
+  throw new Meteor.Error('Meteor.settings.NEW_USER_ACCESS_PRIORITY is required')
+}
+
 Accounts.onCreateUser(function(options, user) {
  if(!options || !user) {
     throw new Meteor.Error('Error creating user');
@@ -28,8 +32,10 @@ Accounts.onCreateUser(function(options, user) {
     user.signupCode = options.signupCode;
   }
 
-  if (options.earlybird) {
-    user.earlybird = options.earlybird; // TODO remove
+  if (user.username === 'author') {
+    user.accessPriority = options.accessPriority; // TODO remove
+  } else {
+    user.accessPriority = parseInt(Meteor.settings.NEW_USER_ACCESS_PRIORITY);
   }
 
   if (user.services.twitter) { // twitter signup

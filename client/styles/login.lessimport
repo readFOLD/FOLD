@@ -1,17 +1,30 @@
 @button-height: 45px;
 
 div.login {
-	width: 100%;
-	padding-top: 240px;
-    height: auto;
-    margin-bottom: 45px;
+  width: 100%;
+  padding-top: 240px;
+  height: auto;
+  margin-bottom: 45px;
+  @media @mobile {
+    padding-top: 200px;
+  }
 }
 
-div.login-left {
-	position: relative;
-	float: left;
-	width: 45%;
+@media @not-mobile{
+  div.login-left {
+    position: relative;
+    float: left;
+    width: 45%;
+  }
+
+  div.login-right {
+    position: relative;
+    float: left;
+    width: 45%;
+  }
 }
+
+
 
 form#login-form {
 	width: 350px;
@@ -60,12 +73,13 @@ div.divider {
   font-size: @font-size;
   text-align: center;
   margin-top: @vertical-center - @font-size/2;
-}
 
-div.login-right {
-	position: relative;
-	float: left;
-	width: 45%;
+  @media @mobile {
+    width: 100%;
+    margin-top: @font-size;
+    margin-bottom: @font-size;
+    visibility: hidden;
+  }
 }
 
 div.sign-up-options {

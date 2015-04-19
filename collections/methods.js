@@ -1,3 +1,11 @@
+var publishAccessLevel = parseInt(Meteor.settings['public'].PUBLISH_ACCESS_LEVEL || 0);
+var createAccessLevel = parseInt(Meteor.settings['public'].CREATE_ACCESS_LEVEL || 0);
+
+if (Meteor.isClient) {
+  window.publishAccessLevel = publishAccessLevel;
+  window.createAccessLevel = createAccessLevel;
+}
+
 var changeFavorite;
 
 changeFavorite = function(storyId, toFavorite) {
@@ -52,6 +60,8 @@ var swapArrayElements = function(arr, x, y){
   arr[x] = b;
 };
 
+
+// TODO add authorId to selector query, will need to get `this` to match or call it via apply
 var updateStory = function(selector, modifier, options) {
   if (_.isEmpty(modifier)){
     return
@@ -84,13 +94,29 @@ Meteor.methods({
     pushSelectorString = 'draftStory.verticalSections.' + verticalIndex + '.contextBlocks';
     pushObject = {};
     pushObject[pushSelectorString] = contextId;
-    var numUpdated = Stories.update({ _id: storyId}, { $addToSet: pushObject});
+    var numUpdated = Stories.update({ _id: storyId, authorId: this.userId }, { $addToSet: pushObject});
     if (!numUpdated){
       throw new Meteor.Error('Story not updated')
     }
     return contextId;
   },
-  // TODO PREVENT FROM SAVING OTHER WAYS
+  removeContextFromStory: function(storyId, contextId, verticalSectionIndex) {
+    var pushObject, pushSelectorString;
+    pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
+    pullObject = {};
+    pullObject[pushSelectorString] = contextId;
+    var numUpdated = Stories.update({
+      _id: storyId,
+      authorId: this.userId
+    }, {
+      $pull: pullObject
+    });
+    if (!numUpdated){
+      throw new Meteor.Error('Story not updated')
+    }
+    // TODO Don't actually delete if has ever been remixed (or maybe if ever published)
+    return ContextBlocks.remove({_id: contextId, authorId: this.userId});
+  },
   updateStoryTitle: function(storyId, title){
     // TODO DRY
     // TODO Security
@@ -107,30 +133,11 @@ Meteor.methods({
     return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
   },
   updateVerticalSectionContent: function(storyId, index, content){
-
-    // TODO Clean html
+    // html is cleaned client-side on both save and display
     var setObject = { $set:{} };
     setObject['$set']['draftStory.verticalSections.' + index + '.content'] = content;
 
     return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
-  },
-  // TODO replace with specific methods
-  saveStory: function(selector, modifier, options) {
-    console.log('saveStory!');
-    //update: function(userId, doc, fieldNames) {
-    //  var disallowedFields;
-    //  disallowedFields = ['authorId', 'storyPathSegment', 'userPathSegment', 'favorited'];
-    //  if (_.intersection(fieldNames, disallowedFields).length) {
-    //    return false;
-    //  }
-    //  return checkOwner(userId, doc);
-    //}
-  //  if (titleField.isSet){
-  //  return _s.slugify(titleField.value.toLowerCase())+ '-' + this.docId;
-  //} else {
-  //}
-
-    return updateStory(selector, modifier, options);
   },
   updateHeaderImage: function(storyId, filename) {
     return updateStory({_id: storyId, authorId: this.userId}, {
@@ -279,68 +286,6 @@ Meteor.methods({
       }
     })
   },
-  moveHorizontalContextLeftOne: function(storyId, verticalIndex, horizontalIndex) {
-    if (!horizontalIndex){
-      throw new Meteor.Error('Must have a positive horizontal index')
-    }
-    var selector = { _id: storyId };
-    var story = Stories.findOne(selector, {fields:
-      {
-        'draftStory.verticalSections': 1,
-        'authorId': 1
-      }
-    });
-
-    assertOwner(this.userId, story);
-
-    var verticalSection = story.draftStory.verticalSections[verticalIndex];
-
-    if (!verticalSection){
-      throw new Meteor.Error('Vertical index too high')
-    }
-
-    swapArrayElements(verticalSection.contextBlocks, horizontalIndex, horizontalIndex - 1);
-
-    setObject = {};
-
-    setObject['draftStory.verticalSections.' + verticalIndex + '.contextBlocks'] = verticalSection.contextBlocks;
-
-    return updateStory({ _id: storyId }, {
-      $set: setObject
-    })
-  },
-  moveHorizontalContextRightOne: function(storyId, verticalIndex, horizontalIndex) {
-    var selector = { _id: storyId };
-    var story = Stories.findOne(selector, {fields:
-      {
-        'draftStory.verticalSections': 1,
-        'authorId': 1
-      }
-    });
-
-    assertOwner(this.userId, story);
-
-    var verticalSection = story.draftStory.verticalSections[verticalIndex];
-
-    if (!verticalSection){
-      throw new Meteor.Error('Vertical index too high')
-    }
-
-
-    if ((horizontalIndex + 1) >= verticalSection.contextBlocks.length){
-      throw new Meteor.Error('Horizontal index too high')
-    }
-
-    swapArrayElements(verticalSection.contextBlocks, horizontalIndex, horizontalIndex + 1);
-
-    setObject = {};
-
-    setObject['draftStory.verticalSections.' + verticalIndex + '.contextBlocks'] = verticalSection.contextBlocks;
-
-    return updateStory({ _id: storyId }, {
-      $set: setObject
-    })
-  },
   deleteVerticalSection: function(storyId, index) {
 
     check(index, Number);
@@ -373,11 +318,33 @@ Meteor.methods({
       }
     })
   },
-  publishStory: function(storyId) {
+  checkPublishAccess: function() {
+    var accessPriority = Meteor.user().accessPriority;
+    if (!accessPriority || accessPriority > publishAccessLevel) {
+      return false;
+    } else {
+      return true;
+    }
+  },
+  publishStory: function(storyId, title, keywords, narrativeRightsReserved) {
+    if (!this.userId) {
+      throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to publish a story');
+    }
+
+    var accessPriority = Meteor.user().accessPriority;
+    if(!accessPriority || accessPriority > publishAccessLevel){
+      throw new Meteor.Error('user does not have publish access. userId: ' + this.userId);
+    }
+
     var story = Stories.findOne({_id: storyId, authorId: this.userId});
+    var user = Meteor.users.findOne({_id: this.userId});
 
     if (!story){
-      throw new Meteor.Error('story not found by author to publish. story: ' + storyId + '  userId: ' + this.userId)
+      throw new Meteor.Error('story not found by author to publish. story: ' + storyId + '  userId: ' + this.userId);
+    }
+
+    if (!user){
+      throw new Meteor.Error('user not found by author to publish. userId: ' + this.userId);
     }
 
     var draftStory = story.draftStory;
@@ -386,13 +353,13 @@ Meteor.methods({
       throw new Meteor.Error('story for publishing does not have a draft. story: ' + storyId + '  userId: ' + this.userId)
     }
 
-    var contextBlockIds =_.chain(draftStory.verticalSections)
+    var contextBlockIds = _.chain(draftStory.verticalSections)
       .pluck('contextBlocks')
       .flatten()
       .value();
 
     // update contextblocks so they are ready for publish
-    var numCBlocksUpdated = ContextBlocks.update({ _id: {$in: contextBlockIds}}, {
+    var numCBlocksUpdated = ContextBlocks.update({ _id: {$in: contextBlockIds}, authorId: this.userId}, {
       $set: {
         'published': true,
         'everPublished': true
@@ -400,46 +367,44 @@ Meteor.methods({
     }, {multi: true});
 
     if (numCBlocksUpdated !== contextBlockIds.length){
-      throw new Meteor.Error('context blocks failed to update on publish ' + storyId + '. Maybe some are missing. Number of ids: ' + contextBlockIds.length + ' Number of blocks updated: ' + numCBlocksUpdated);
+      throw new Meteor.Error('context blocks failed to update on publish ' + storyId + '. Maybe some are missing. Or are not by author. Number of ids: ' + contextBlockIds.length + ' Number of blocks updated: ' + numCBlocksUpdated);
     }
 
     var contextBlocks = ContextBlocks.find({_id: {$in: contextBlockIds}}).fetch();
 
-    // TODO
-    // Don't update story path and such unless not yet set.
-    // Tags (keywords).
-    // Update title from publish form
-    // Update header image from publish form
+    // TO-DO
     // Probably confirm that all the context cards included are by the author!
-    // Maybe a list of all context cards on the story
     // Maybe a list of which cards are original and which are remixed
     // Maybe a list of all context types and amounts for better searching
 
     var fieldsToCopyFromDraft = [
       'verticalSections',
       'headerImage',
-      'headerImageAttribution',
-      'title'
+      'headerImageAttribution'
+      //'title'
     ];
-    var additionalFieldsToSet = {};
-    //if (story.everPublished){
-    //  additionalFieldsToSet = {};
-    //} else {
-    //  additionalFieldsToSet = {
-    //
-    //  }
-    //}
+
+    var fieldsToSetFromArguments = {
+      'title': title,
+      'draftStory.title': title,
+      'keywords': keywords,
+      'draftStory.keywords': keywords,
+      'narrativeRightsReserved': narrativeRightsReserved,
+      'draftStory.narrativeRightsReserved': narrativeRightsReserved,
+    };
+
 
     var setObject = _.extend({},
       _.pick(draftStory, fieldsToCopyFromDraft), // copy all safe fields from draftStory.
-      additionalFieldsToSet,
+      fieldsToSetFromArguments,
       {
         'contextBlocks': contextBlocks,
-        //'draftStory.unpublishedChanges' : false,
+        'contextBlockIds': contextBlockIds,
         'storyPathSegment': _s.slugify(draftStory.title.toLowerCase()) + '-' + story.shortId, // TODO DRY and probably get from draft
-        'publishedAt': Date.now(),
+        'publishedAt': new Date(),
         'published': true,
         'everPublished': true,
+        'authorName': user.profile.name || 'Anonymous',
         'authorUsername': Meteor.user().username,
         'version': 'earlybird'
       }
@@ -459,6 +424,10 @@ Meteor.methods({
   createStory: function() {
     if (!this.userId) {
       throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to create a story');
+    }
+    var accessPriority = Meteor.user().accessPriority;
+    if(!accessPriority || accessPriority > createAccessLevel){
+      throw new Meteor.Error('user does not have create access. userId: ' + this.userId);
     }
     var user = Meteor.users.findOne({ _id : this.userId });
 

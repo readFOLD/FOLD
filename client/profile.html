@@ -73,11 +73,9 @@
 <template name="user_stories">
   <h1>Latest stories</h1>
   {{#each publishedStories}}
-    <!-- {{#linkTo route="read" data=this}} -->
       <div class="profile story" data-story-id="{{_id}}">
         {{> _story_preview_content}}
       </div>
-    <!-- {{/linkTo}} -->
   {{else}}
     <div class="message">{{unpublishedMessage}}</div>
   {{/each}}
@@ -86,7 +84,6 @@
 <template name="user_favorite_stories">
   <h1>Favorites</h1>
   {{#each favoriteStories}}
-    <!-- {{#linkTo route="read" data=this}} -->
       <div class="profile story" data-story-id="{{_id}}">
         {{> _story_preview_content}}
       </div>

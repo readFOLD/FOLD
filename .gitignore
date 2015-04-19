@@ -1,4 +1,6 @@
+# demeteorizer
 .demeteorized
+.build*
 
 *.sublime-workspace
 
