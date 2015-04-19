@@ -57,17 +57,19 @@ window.updateUIBasedOnSelection = function(e){
 
           // TO-DO actually get this from selection
           if (e) {
-            boundary = range.getBoundingClientRect();
-            boundaryMiddle = (boundary.left + boundary.right) / 2;
-            pageYOffset = $(e.target).offset().top;
             if (selectionType === 'Range') {
               showFoldEditor();
-              $('#fold-editor').css('left', e.pageX - 100);
-              return $('#fold-editor').css('top', e.pageY - 70);
+              boundary = range.getBoundingClientRect();
+              boundaryMiddle = (boundary.left + boundary.right) / 2;
+              $('#fold-editor').css('left', boundaryMiddle - 205/2 + $(window).scrollLeft());
+              return $('#fold-editor').css('top', boundary.top - 70 + $(window).scrollTop());
             } else if (window.enclosingAnchorTag) {
               showFoldLinkRemover();
-              $('#fold-link-remover').css('left', e.pageX - 25);
-              return $('#fold-link-remover').css('top', e.pageY - 45);
+              var offset = $(window.selectedNode).offset();
+              var posY = offset.top;
+              var posX = offset.left + $(window.selectedNode).width();
+              $('#fold-link-remover').css('left', posX - 8);
+              return $('#fold-link-remover').css('top', posY - 35);
             } else {
               return hideFoldAll();
             }
