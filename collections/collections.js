@@ -360,11 +360,9 @@ ImageBlock = (function(_super) {
     }
   };
 
-  ImageBlock.prototype.showVideo = function(){
-    if (this.source === 'imgur' && this.reference.fileExtension === 'gif'){
-      return this.webMUrl() || this.mp4Url();
-    }
-  };
+  ImageBlock.prototype.showVideo = function() {
+    return this.webMUrl() || this.mp4Url();
+  },
 
   ImageBlock.prototype.webMUrl = function() {
     if (this.source === 'imgur' && this.reference.hasWebM) {
@@ -413,7 +411,6 @@ ImageBlock = (function(_super) {
       case 'embedly':
         return this.reference.url;
       case 'cloudinary':
-        // TO-DO maybe use jpeg instead of png in certain situations
         return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
     }
   };
@@ -450,12 +447,37 @@ GifBlock = (function(_super) {
     this.type = 'gif';
   }
 
+  GifBlock.prototype.showVideo = function() {
+    return this.webMUrl() || this.mp4Url();
+  };
+
+  GifBlock.prototype.webMUrl = function() {
+    if (this.source === 'cloudinary') {
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id + '.webm';
+    }
+  };
+
+  GifBlock.prototype.mp4Url = function(){
+    if (this.source === 'cloudinary') {
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id + '.mp4';
+    }
+  };
+
   GifBlock.prototype.url = function() {
     switch (this.source) {
       case 'giphy':
         return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif';
       case 'cloudinary':
         return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
+    }
+  };
+
+  GifBlock.prototype.previewUrl = function() {
+    switch (this.source) {
+      case 'giphy':
+        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif';
+      case 'cloudinary':
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id + '.jpg';
     }
   };
 
