@@ -139,8 +139,6 @@ Router.route("read", {
   },
   action: function() {
     if (this.ready()) {
-      setTitle(this.data().title);
-      setOGImage(headerImageUrl(this.data().headerImage));
       return this.render();
     }
   },
@@ -164,8 +162,12 @@ Router.route("read", {
             })
           };
         }));
+        setTitle(story.title);
+        setOGImage(headerImageUrl(story.headerImage));
         return story;
       } else {
+        setTitle("Story not found");
+        setOGImage();
         this.render("story_not_found");
         // TODO add 404 tags for seo etc...
       }
@@ -209,8 +211,10 @@ Router.route("edit", {
             })
           };
         }));
+        setTitle('Editing: ' + story.draftStory.title || 'a new story');
         return story;
       } else {
+        setTitle('Story not found');
         this.render("story_not_found");
         // TODO add 404 tags for seo etc...
       }
@@ -218,7 +222,6 @@ Router.route("edit", {
   },
   action: function() {
     if (this.ready()) {
-      setTitle('Editing: ' + this.data().title || 'a new story');
       setOGImage();
       return this.render();
     }
