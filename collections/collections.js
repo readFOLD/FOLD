@@ -638,20 +638,18 @@ this.ContextBlocks = new Meteor.Collection("context_blocks", {
   transform: newTypeSpecificContextBlock
 });
 
-this.ContextBlocks.allow({
-  insert: function(userId, doc) {
-    return checkOwner(userId, doc);
+this.ContextBlocks.deny({
+  insert: function() {
+    return true;
   },
-  update: function(userId, doc) {
-    if (_.contains(fieldNames, 'authorId')) {
-      return false;
-    }
-    return checkOwner(userId, doc);
+  update: function() {
+    return true
   },
-  remove: function(userId, doc) {
-    return checkOwner(userId, doc);
+  remove: function() {
+    return true
   }
 });
+
 
 Schema.ContextReferenceProfile = new SimpleSchema({
   id: {

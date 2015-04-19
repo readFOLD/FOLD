@@ -779,24 +779,6 @@ window.addContext = function(contextBlock) {
   });
 };
 
-window.removeContextFromStory = function(storyId, contextId, verticalSectionIndex, cb) {
-  var pushObject, pushSelectorString;
-  pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
-  pullObject = {};
-  pullObject[pushSelectorString] = contextId;
-  return Meteor.call('saveStory', {
-    _id: storyId
-  }, {
-    $pull: pullObject
-  }, function(err, numDocs) {
-    if (numDocs) {
-      Session.set("addingContext", null);
-      Session.set("editingContext", null);
-    }
-    saveCallback(err, numDocs, cb);
-  });
-};
-
 Template.horizontal_section_edit_delete.helpers({
   canMoveLeft: function () {
     return this.index;
@@ -810,14 +792,15 @@ Template.horizontal_section_block.events({
     if(confirm("Permanently delete this card?")){
       Session.set('saveState', 'saving');
       id = this._id;
-      window.removeContextFromStory(Session.get("storyId"), id, Session.get("currentY"), function(err){
+      Meteor.call('removeContextFromStory', Session.get("storyId"), id, Session.get("currentY"), function(err){
         if(err){
           return saveCallback(err);
-        }
-        ContextBlocks.remove(id, function(err, numDocs){
+        } else {
+          Session.set("addingContext", null);
+          Session.set("editingContext", null);
           goToX(Session.get('currentX'));
           saveCallback(err, numDocs);
-        });
+        }
       });
     }
   },
