@@ -1,4 +1,10 @@
 var publishAccessLevel = parseInt(Meteor.settings['public'].PUBLISH_ACCESS_LEVEL || 0);
+var createAccessLevel = parseInt(Meteor.settings['public'].CREATE_ACCESS_LEVEL || 0);
+
+if (Meteor.isClient) {
+  window.publishAccessLevel = publishAccessLevel;
+  window.createAccessLevel = createAccessLevel;
+}
 
 var changeFavorite;
 
@@ -308,10 +314,13 @@ Meteor.methods({
     }
   },
   publishStory: function(storyId, title, keywords, narrativeRightsReserved) {
+    if (!this.userId) {
+      throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to publish a story');
+    }
 
     var accessPriority = Meteor.user().accessPriority;
     if(!accessPriority || accessPriority > publishAccessLevel){
-      return;
+      throw new Meteor.Error('user does not have publish access. userId: ' + this.userId);
     }
 
     var story = Stories.findOne({_id: storyId, authorId: this.userId});
@@ -402,6 +411,10 @@ Meteor.methods({
   createStory: function() {
     if (!this.userId) {
       throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to create a story');
+    }
+    var accessPriority = Meteor.user().accessPriority;
+    if(!accessPriority || accessPriority > createAccessLevel){
+      throw new Meteor.Error('user does not have create access. userId: ' + this.userId);
     }
     var user = Meteor.users.findOne({ _id : this.userId });
 

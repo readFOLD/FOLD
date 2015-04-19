@@ -159,6 +159,19 @@ Meteor.publish("myStoriesPub", function() {
   }
 });
 
+Meteor.publish("userData", function () {
+  if (this.userId) {
+    return Meteor.users.find({_id: this.userId},
+      {fields: {
+        'accessPriority': 1,
+        "services.twitter.id": 1
+      }});
+  } else {
+    this.ready();
+  }
+});
+
+
 Meteor.publish("tempUsernamePub", function() {
   if (this.userId) {
     return Meteor.users.find(this.userId, {

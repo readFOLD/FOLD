@@ -61,9 +61,11 @@
     <div class="action-items">
       <ol>
         {{#unless isPhone}}
-          <li class="create-story">
-            {{> create_story}}
-          </li>
+          {{#if showCreateStory}}
+            <li class="create-story">
+              {{> create_story}}
+            </li>
+          {{/if}}
         {{/unless}}
         <li class="user-action">
           {{> login_buttons }}

@@ -21,6 +21,10 @@ var setOGImage = function(imageUrl){
   }
 };
 
+Meteor.startup(function(){
+  Meteor.subscribe('userData');
+})
+
 Router.route("home", {
   path: "/",
   template: "home",
@@ -232,6 +236,13 @@ Router.route("edit", {
       data = this.data();
       if (user && data && user._id !== data.authorId) { // if they don't own the story take them to story not found
         return this.render("story_not_found");
+      }
+      var accessPriority = Meteor.user().accessPriority;
+      if (!accessPriority || accessPriority > window.createAccessLevel){
+        this.redirect("home", {
+          replaceState: true
+        });
+        alert("Creating and editing stories is temporarily disabled, possibly because things blew up (in a good way). Sorry about that! We'll have everything back up as soon as we can. Until then, why not check out some of the other great content authors in the community have written?")
       }
       return this.next(); // if they do own the story, let them through to create
     } else {
