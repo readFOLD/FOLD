@@ -111,8 +111,7 @@
 <template name="my_stories">
   <h1>My Drafts</h1>
   {{#each writtenStories}}
-    {{#linkTo route="edit" data=this}}
-      <div class="story" data-story-id="{{_id}}">
+    <div class="story" data-story-id="{{_id}}">
         {{#with draftStory}}
           {{> _story_preview_content}}
         {{/with}}
@@ -127,6 +126,5 @@
           <!--</p>-->
         <!--</div>-->
       </div>
-    {{/linkTo}}
   {{/each}}
 </template>
