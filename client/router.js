@@ -78,7 +78,6 @@ Router.route("profile", {
     }
   },
   waitOn: function() {
-    console.log(this.params)
     var username = this.params.username ? this.params.username : this.params.userPathSegment;
     return [Meteor.subscribe('userProfilePub', username),
            Meteor.subscribe('userStoriesPub', username)];
