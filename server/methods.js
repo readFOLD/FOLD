@@ -76,7 +76,12 @@ Meteor.methods({
         var twitterParams = {
             user_id: Meteor.user().services.twitter.id
           };
-        res = makeTwitterCall("users/show", twitterParams);
+        try {
+          res = makeTwitterCall("users/show", twitterParams);
+        }
+        catch (err) {
+          res = {};  
+        }
       }
 
       var bio = (res && res.description) ? res.description : "";
@@ -104,7 +109,7 @@ Meteor.methods({
         var twitterParams = {
             user_id: Meteor.user().services.twitter.id
           };
-        res = makeTwitterCall("users/show", twitterParams);
+          res = makeTwitterCall("users/show", twitterParams);
       }
 
       var bio = (res && res.description) ? res.description : "";
