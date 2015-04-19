@@ -798,7 +798,8 @@ Template.horizontal_section_block.events({
         } else {
           Session.set("addingContext", null);
           Session.set("editingContext", null);
-          goToX(Session.get('currentX'));
+          var currentX = Session.get('currentX');
+          goToX(currentX ? currentX - 1 : 0);
           saveCallback(err, numDocs);
         }
       });
