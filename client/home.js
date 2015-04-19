@@ -158,7 +158,6 @@ Template._story_preview_content.helpers({
     }
   },
   headerImageUrl: headerImageUrl,
-  },
   author: function(){
     return Meteor.users.findOne(this.authorId)
   }
