@@ -378,6 +378,15 @@ div.stories {
         width: calc(100% ~"-" @margin-side * 2);
       }
 
+      @media (min-width: 1700px) {
+        width: calc(33.33% ~"-" @margin-side * 2);
+      }
+
+      @media (min-width: 2300px) {
+        width: calc(25% ~"-" @margin-side * 2);
+      }
+
+
 
     }
 
