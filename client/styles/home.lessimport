@@ -259,7 +259,7 @@ div.stories {
         div.author-name {
           margin-top: 12px;
           font-size: 15px;
-          span {
+          span:hover {
             text-decoration: underline;
           }
         }

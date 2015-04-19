@@ -89,7 +89,6 @@ Meteor.methods({
             "profile.displayUsername": username,
             "username": username,
             "profile.bio": bio,
-            "profile.twitterUser": true
           },
           $unset: {"tempUsername": ""},
           $push: {
@@ -98,8 +97,8 @@ Meteor.methods({
         });
     }
   },
-  linkTwitterAccount: function() {
-    if (Meteor.user() && Meteor.user().profile && !Meteor.user().profile.bio) {
+  setBioFromTwitter: function() {
+    if (Meteor.user() && Meteor.user().profile) {
       var res, bio;
       if (Meteor.user().services.twitter) {
         var twitterParams = {
@@ -115,7 +114,6 @@ Meteor.methods({
       }, {
           $set: {
             "profile.bio": bio,
-            "profile.twitterUser": true
           }
         });
     }

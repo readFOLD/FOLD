@@ -78,12 +78,12 @@ Router.route("profile", {
     }
   },
   waitOn: function() {
-    var username = this.params.username ? this.params.username : this.params.userPathSegment;
+    var username = this.params.username;
     return [Meteor.subscribe('userProfilePub', username),
            Meteor.subscribe('userStoriesPub', username)];
   },
   data: function() {
-    var username = this.params.username ? this.params.username : this.params.userPathSegment;
+    var username = this.params.username;
     var user;
       if (this.ready()) {
         user = Meteor.users.findOne({username : username});

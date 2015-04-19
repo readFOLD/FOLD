@@ -833,8 +833,8 @@ Template.link_twitter.events({
       if (err) {
         alert("Twitter login failed");
         throw(err);
-      } else {
-        Meteor.call('linkTwitterAccount')    
+      } else if (!Meteor.user().profile.bio){
+        Meteor.call('setBioFromTwitter')    
       }
     });
   }

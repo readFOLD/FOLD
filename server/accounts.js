@@ -7,7 +7,7 @@ checkSignupCode = function(code){
 Accounts.validateNewUser(function(user) {
   if (user.username){ // only if an email user. if twitter user will do this later
     checkSignupCode(user.signupCode);
-    checkUserSignup(user.username);
+    checkUserSignup(user.username, user.emails);
   }
   return true
 });
