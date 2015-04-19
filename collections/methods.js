@@ -1,7 +1,4 @@
-var publishAccessLevel = 1;
-if (Meteor.isClient){
-  window.publishAccessLevel = publishAccessLevel;
-}
+var publishAccessLevel = parseInt(Meteor.settings['public'].PUBLISH_ACCESS_LEVEL || 0);
 
 var changeFavorite;
 
