@@ -94,11 +94,11 @@
 </template>
 <template name="login_buttons">
     {{#if currentUser}}
-      <button>{{#linkTo route="profile" data=currentUser}}{{currentUser.profile.name}}{{/linkTo}}</button>
+      {{#linkTo route="profile" data=currentUser}}<button>{{currentUser.profile.name}}</button>{{/linkTo}}
       {{#if showUserInfo}}
         <ol class="user-menu">
           <li>
-            <button>{{#linkTo route="my_story_profile"}}My stories{{/linkTo}}</button>
+            {{#linkTo route="my_story_profile"}}<button>My stories</button>{{/linkTo}}
           </li>
           <li>
             <button class="logout">Logout</button>
