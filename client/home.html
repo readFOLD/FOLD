@@ -149,9 +149,7 @@
 
 <template name="all_stories">
   {{#each stories}}
-    {{#linkTo route="read" data=this}}
       {{> story_preview}}
-    {{/linkTo}}
   {{else}}
     <h2 style="text-align: center">Nothing to see here. Please move along.</h2>
     <h3 style="text-align: center">jk FOLD will launch on April 22nd.</h3>
@@ -207,32 +205,45 @@
     {{/if}}
     <!--TODO - add remix check-->
   </div>
+  {{#linkTo route="read" data=this}}
+    <div class="overlay-image">
+      <img src="{{headerImageUrl}}" />
+    </div>
+  {{/linkTo}}
 
-  <div class="overlay-image">
-    <img src="{{headerImageUrl}}" />
-  </div>
-  <div class="headline">
-    {{title}}
-  </div>
+  {{#linkTo route="read" data=this}}
+    <div class="story-card">
+    </div>
+  {{/linkTo}}
+  
+  {{#linkTo route="read" data=this}}
+    <div class="headline">
+      {{title}}
+    </div>
+  {{/linkTo}}
 
   <div class="byline">
     <div class="pull-left">
-      <div class="author-image">
-        {{#if profileImage}} 
-         <img class="profile-picture" src="{{profileImage}}"/>
-         <!-- TODO, CHANGE AUTHORPIC -->
-        {{/if}}
-      </div>
-
+      <a href="/profile/{{authorUsername}}" >
+        <div class="author-image">
+          {{#if profileImage}} 
+           <img class="profile-picture" src="{{profileImage}}"/>
+           <!-- TODO, CHANGE AUTHORPIC -->
+          {{/if}}
+        </div>
+      </a>
       <div class="author-name-date">
-        <div class="author-name">By {{authorName}}</div>
+        <a href="/profile/{{authorUsername}}" >
+          <div class="author-name">By <span>{{authorName}}</span></div>
+        </a>
         <div class="publish-date">{{lastPublishDate}}</div>
       </div>
     </div>
-<!--     <div class="pull-right">
+    <div class="pull-right">
       {{ > favorite_button }}
-    </div> -->
+    </div>
   </div>
+
 </template>
 
 <template name="edit_or_read_bar">

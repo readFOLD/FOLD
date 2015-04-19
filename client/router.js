@@ -47,12 +47,13 @@ Router.route("profile", {
     }
   },
   waitOn: function() {
-    var username = this.params.username;
+    console.log(this.params)
+    var username = this.params.username ? this.params.username : this.params.userPathSegment;
     return [Meteor.subscribe('userProfilePub', username),
            Meteor.subscribe('userStoriesPub', username)];
   },
   data: function() {
-    var username = this.params.username;
+    var username = this.params.username ? this.params.username : this.params.userPathSegment;
     var user;
       if (this.ready()) {
         user = Meteor.users.findOne({username : username});
@@ -95,6 +96,7 @@ Router.route("read", {
   path: "read/:userPathSegment/:storyPathSegment",
   template: "read",
   waitOn: function() {
+    console.log(this.params)
     shortId = idFromPathSegment(this.params.storyPathSegment);
     return [Meteor.subscribe('readStoryPub', this.params.userPathSegment, shortId)];
   },
