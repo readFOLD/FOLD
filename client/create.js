@@ -792,7 +792,7 @@ Template.horizontal_section_block.events({
     if(confirm("Permanently delete this card?")){
       Session.set('saveState', 'saving');
       id = this._id;
-      Meteor.call('removeContextFromStory', Session.get("storyId"), id, Session.get("currentY"), function(err){
+      Meteor.call('removeContextFromStory', Session.get("storyId"), id, Session.get("currentY"), function(err, numDocs){
         if(err){
           return saveCallback(err);
         } else {
