@@ -28,12 +28,27 @@
     <div class="user-info-form">
       {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
       <button type="submit" class="save-profile-button">Save</button>
+      
+       <div class="picture">
+        {{#if editingPicture}}
+          {{#c_upload}}
+            <input type="file" accept="image/*" class="overlay">
+          {{/c_upload}}
+        {{/if}}
+        {{#if uploadPreview}} 
+          <img class="profile-picture" src="{{uploadPreview}}">
+        {{else}}
+          {{#if profileImage user}} 
+           <img class="profile-picture" src="{{profileImage user}}"/>
+          {{/if}}
+        {{/if}}
+     </div>
       <div class="user-info">
         {{> afQuickField name='profile.name'}}
         {{> afQuickField name='profile.bio' class="bio-form"}}
       </div>
-      {{/autoForm}}
-    </div>
+    {{/autoForm}}
+  </div>
   {{else}}
     {{#if ownProfile}}
       <button class="edit-profile">Edit</button>
@@ -51,11 +66,9 @@
 <template name="user_stories">
   <h1>Latest stories</h1>
   {{#each publishedStories}}
-    {{#linkTo route="read" data=this}}
       <div class="profile story" data-story-id="{{_id}}">
         {{> _story_preview_content}}
       </div>
-    {{/linkTo}}
   {{else}}
     <div class="message">{{unpublishedMessage}}</div>
   {{/each}}
@@ -64,11 +77,10 @@
 <template name="user_favorite_stories">
   <h1>Favorites</h1>
   {{#each favoriteStories}}
-    {{#linkTo route="read" data=this}}
       <div class="profile story" data-story-id="{{_id}}">
         {{> _story_preview_content}}
       </div>
-    {{/linkTo}}
+    <!-- {{/linkTo}} -->
   {{else}}
     <div class="message">{{noFavoritesMessage}}</div>
   {{/each}}

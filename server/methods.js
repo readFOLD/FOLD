@@ -65,9 +65,10 @@ S3.config = {
 Meteor.methods({
   updateUserInfo: function(userInfo) {
     if (Meteor.user().tempUsername) {
-      var username = userInfo.username;
+      var username = userInfo.username,
+          email = userInfo.email;
       checkSignupCode(userInfo.signupCode);
-      checkUsername(username);
+      checkUserSignup(username, email);
 
       //get twitter info
       var res;
@@ -75,8 +76,15 @@ Meteor.methods({
         var twitterParams = {
             user_id: Meteor.user().services.twitter.id
           };
-        res = makeTwitterCall("users/show", twitterParams);
+        try {
+          res = makeTwitterCall("users/show", twitterParams);
+        }
+        catch (err) {
+          res = {};  
+        }
       }
+
+      var bio = (res && res.description) ? res.description : "";
 
       return Meteor.users.update({
         _id: this.userId
@@ -85,12 +93,33 @@ Meteor.methods({
             "profile.name": userInfo.name || username,
             "profile.displayUsername": username,
             "username": username,
-            "profile.bio": res.description,
+            "profile.bio": bio,
           },
           $unset: {"tempUsername": ""},
           $push: {
             "emails": {  "address" : userInfo.email,  "verified" : false }
            }
+        });
+    }
+  },
+  setBioFromTwitter: function() {
+    if (Meteor.user() && Meteor.user().profile) {
+      var res, bio;
+      if (Meteor.user().services.twitter) {
+        var twitterParams = {
+            user_id: Meteor.user().services.twitter.id
+          };
+          res = makeTwitterCall("users/show", twitterParams);
+      }
+
+      var bio = (res && res.description) ? res.description : "";
+
+      return Meteor.users.update({
+        _id: this.userId
+      }, {
+          $set: {
+            "profile.bio": bio,
+          }
         });
     }
   },

@@ -70,11 +70,14 @@
         <li class="user-action">
           {{> login_buttons }}
         </li>
+
         {{#unless isPhone}}
           <li class="about-fold">
-            {{#linkTo route="about"}}
-              About FOLD
-            {{/linkTo}}
+            <button>
+              {{#linkTo route="about"}}
+                About FOLD
+              {{/linkTo}}
+            </button>
           </li>
         {{/unless}}
       </ol>
@@ -91,11 +94,11 @@
 </template>
 <template name="login_buttons">
     {{#if currentUser}}
-      {{#linkTo route="profile" data=currentUser}}{{currentUser.profile.name}}{{/linkTo}}
+      <button>{{#linkTo route="profile" data=currentUser}}{{currentUser.profile.name}}{{/linkTo}}</button>
       {{#if showUserInfo}}
         <ol class="user-menu">
           <li>
-            {{#linkTo route="my_story_profile"}}My stories{{/linkTo}}
+            <button>{{#linkTo route="my_story_profile"}}My stories{{/linkTo}}</button>
           </li>
           <li>
             <button class="logout">Logout</button>
@@ -108,9 +111,9 @@
 </template>
 
 <template name="create_story">
-  <a class="create-story" href="javascript:void(0);">
+  <button class="create-story" href="javascript:void(0);">
     Make a Story
-  </a>
+  </button>
 </template>
 
 <template name="home">
@@ -150,9 +153,7 @@
 
 <template name="all_stories">
   {{#each stories}}
-    {{#linkTo route="read" data=this}}
       {{> story_preview}}
-    {{/linkTo}}
   {{else}}
     <h2 style="text-align: center">FOLD will launch on April 22nd.</h2>
     <h3 style="text-align: center">If you have a secret code, please sign up above.</h3>
@@ -208,28 +209,43 @@
     {{/if}}
     <!--TODO - add remix check-->
   </div>
-  <div class="overlay-image">
-    <img src="{{headerImageUrl}}" />
-  </div>
-  <div class="headline">
-    {{title}}
-  </div>
+  {{#linkTo route="read" data=this}}
+    <div class="overlay-image">
+      <img src="{{headerImageUrl}}" />
+    </div>
+  {{/linkTo}}
+
+  {{#linkTo route="read" data=this}}
+    <div class="story-card">
+    </div>
+  {{/linkTo}}
+  
+  {{#linkTo route="read" data=this}}
+    <div class="headline">
+      {{title}}
+    </div>
+  {{/linkTo}}
 
   <div class="byline">
     <div class="pull-left">
-      <div class="author-image">
-         <img class="profile-picture" src="{{profileImage author}}"/>
-      </div>
+      <a href="/profile/{{authorUsername}}" >
+        <div class="author-image">
+           <img class="profile-picture" src="{{profileImage author}}"/>
+        </div>
+      </a>
 
       <div class="author-name-date">
-        <div class="author-name">By {{authorName}}</div>
+        <a href="/profile/{{authorUsername}}" >
+          <div class="author-name">By <span>{{authorName}}</span></div>
+        </a>
         <div class="publish-date">{{lastPublishDate}}</div>
       </div>
     </div>
-<!--     <div class="pull-right">
+    <div class="pull-right">
       {{ > favorite_button }}
-    </div> -->
+    </div>
   </div>
+
 </template>
 
 <template name="edit_or_read_bar">

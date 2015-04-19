@@ -37,7 +37,33 @@ Template.my_stories.events({
 });
 
 Template.user_profile.onCreated(function(){
+  var that = this;
   this.editing = new ReactiveVar(false);
+  this.editPicturePrompt = new ReactiveVar(false);
+  this.editingPicture = new ReactiveVar(false);
+  this.uploadPreview = new ReactiveVar();
+  this.pictureId = new ReactiveVar();
+  
+  var query = _cloudinary.find({});
+  this.observeCloudinary = query.observeChanges({ 
+    changed: function (id, changes) { 
+      if (changes.public_id){ 
+        var doc = _cloudinary.findOne(id);
+        that.uploadPreview.set('//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_150,h_150,c_fill,g_face/' + doc.public_id);
+        that.pictureId.set(doc.public_id);
+      }
+    },
+    removed: function (id) {  
+      var input = that.$('input[type=file]');
+      input.val(null);
+      input.change(); 
+    }
+  });
+
+});
+
+Template.user_profile.onDestroyed(function(){
+  this.observeCloudinary.stop();
 });
 
 Template.user_profile.helpers({
@@ -52,6 +78,15 @@ Template.user_profile.helpers({
   },
   bio : function() {
     return this.user.profile.bio
+  },
+  editPicturePrompt : function() {
+    return Template.instance().editPicturePrompt.get()
+  },
+  editingPicture : function() {
+    return Template.instance().editingPicture.get() || Template.instance().editPicturePrompt.get()
+  },
+  uploadPreview: function(){
+    return Template.instance().uploadPreview.get();
   }
 });
 
@@ -61,14 +96,35 @@ Template.user_profile.events({
   },
   "click .save-profile-button" : function(d, template) {
     template.editing.set(false);
+    if (template.pictureId.get()) {
+      Meteor.call('saveProfilePicture', this.user._id, template.pictureId.get());
+    }
+  },
+  "mouseenter .picture" : function(d, template) {
+    if (template.editing.get()) {
+      return template.editPicturePrompt.set(true);
+    }
+  },
+  "mouseleave .picture" : function(d, template) {
+    if (template.editing.get()) {
+      return template.editPicturePrompt.set(false);
+    }
+  },
+  "click input[type=file]": function(d, template) {
+    return template.editingPicture.set(true);
+  },
+  "change input[type=file]": function(d, template){
+    var file = _.first(event.target.files);
+    if (!file){
+      template.uploadPreview.set(null);
+    } 
+    return template.editingPicture.set(false);
   }
 });
 
 Template.user_stories.helpers({
   publishedStories: function() {
-    return _.filter(this.stories.fetch(), function(story) {
-      return story.published ==true
-    })
+    return Stories.find({authorUsername : this.user.username, published : true}).fetch()
   },
   unpublishedMessage: function () {
     if (Meteor.user().username == this.user.username) {
@@ -81,7 +137,10 @@ Template.user_stories.helpers({
 
 Template.user_favorite_stories.helpers({
   favoriteStories: function() {
-      return this.favorites
+      return Stories.find({
+                        _id: {
+                          $in: this.user.profile.favorites
+                        }})
     },
   noFavoritesMessage: function () {
     if (Meteor.user().username == this.user.username) {

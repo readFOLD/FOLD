@@ -7,7 +7,7 @@ checkSignupCode = function(code){
 Accounts.validateNewUser(function(user) {
   if (user.username){ // only if an email user. if twitter user will do this later
     checkSignupCode(user.signupCode);
-    checkUsername(user.username);
+    checkUserSignup(user.username, user.emails);
   }
   return true
 });
@@ -46,11 +46,4 @@ Accounts.onCreateUser(function(options, user) {
   }
 
   return user;
-});
-
-Accounts.onLogin(function(arg){
-  var user = arg.user;
-  if (user.services && user.services.twitter && user.profile && !user.profile.twitterUser) { // twitter signin when link accounts
-    Meteor.users.update({_id: user._id}, {$set: {'profile.twitterUser': true }});
-  }
 });

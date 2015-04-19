@@ -110,13 +110,11 @@ div.home-top {
 
     a, button{
       padding: 12px 20px;
+      min-width: 154px;
       .size-to-fit;
       &:hover {
         background-color: @dark-color;
       }
-    }
-    a{
-      line-height: @height;
     }
 
     .create-story {
@@ -240,15 +238,14 @@ div.stories {
     padding-top: calc(9% ~"-" 27px);
     padding-left: 25px;
     div.pull-left {
-      width: 420px;
       div.author-image {
-        display: inline-block;
-        float: left;
-        background-color: @black-color;
-        .size(@profile-picture-size);
-        border-radius: @profile-picture-size/2;
-        text-align: center;
-        vertical-align: middle;
+          display: inline-block;
+          float: left;
+          background-color: @black-color;
+          .size(@profile-picture-size);
+          border-radius: @profile-picture-size/2;
+          text-align: center;
+          vertical-align: middle;
       }
       div.author-name-date {
         font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
@@ -262,6 +259,9 @@ div.stories {
         div.author-name {
           margin-top: 12px;
           font-size: 15px;
+          span:hover {
+            text-decoration: underline;
+          }
         }
         div.publish-date {
           //font-style: italic;
@@ -270,6 +270,13 @@ div.stories {
         }
       }
     }
+  }
+
+  div.story-card {
+    position: absolute;
+    width:100%;
+    height: calc(100% ~"-" 110px);
+    z-index: -1;
   }
 
   img.profile-picture {
@@ -336,7 +343,6 @@ div.stories {
     width: calc(33.33% ~"-" @margin-side * 2);
     float: left;
 
-
     /*for screens up to 1200px width - 2 stories up*/
     @media (max-width: 1200px) {
       width: calc(50% ~"-" @margin-side * 2);
@@ -344,6 +350,14 @@ div.stories {
 
     @media (max-width: 800px) {
       width: calc(100% ~"-" @margin-side * 2);
+    }
+
+    @media (min-width: 1700px) {
+      width: calc(25% ~"-" @margin-side * 2);
+    }
+
+    @media (min-width: 2300px) {
+      width: calc(20% ~"-" @margin-side * 2);
     }
 
     &.profile {

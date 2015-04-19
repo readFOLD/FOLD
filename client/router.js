@@ -89,12 +89,7 @@ Router.route("profile", {
         user = Meteor.users.findOne({username : username});
         if (user) {
           return {
-            user : user,
-            stories: Stories.find({userPathSegment : username}),
-            favorites: Stories.find({
-                        _id: {
-                          $in: user.profile.favorites
-                        }})
+            user : user          
           }
         } else {
           this.render("user_not_found");
@@ -138,6 +133,7 @@ Router.route("read", {
   path: "read/:userPathSegment/:storyPathSegment",
   template: "read",
   waitOn: function() {
+    console.log(this.params)
     shortId = idFromPathSegment(this.params.storyPathSegment);
     return [Meteor.subscribe('readStoryPub', this.params.userPathSegment, shortId)];
   },

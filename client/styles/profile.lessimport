@@ -14,7 +14,7 @@ h1 {
 }
 
 div.profile-section {
-  padding-top: 150px;
+  padding-top: 145px;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -55,7 +55,33 @@ div.user-profile {
     border-radius: @picture-radius;
     margin: 50px calc(50% ~"-" @picture-radius*0.5) 35px;
     overflow: hidden;
+    position: relative;
+    input[type=file].overlay{
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      z-index: 10;
+      background-color: @black-color;
+      opacity: 0.7;
+
+      &::-webkit-file-upload-button {
+        display:none;
+      }
+      &::before {
+        display: inline-block;
+        color: @light-color;
+        outline: none;
+        -webkit-user-select: none;
+        cursor: pointer;
+        padding: 85px 15px;
+        text-align: center;
+        font-size: 14px;
+        width: 100%;;
+        content: 'Upload Image';
+      }
+    }
   } 
+
   div.name, div.bio {
     text-align: center;
     word-wrap:break-word;
@@ -69,25 +95,26 @@ div.user-profile {
     font-size: 110%;
     font-style: italic;
   }
-
+  .edit-profile {
+    color: @action-color;
+    position: absolute;
+  }
+  .save-profile-button {
+    position: absolute; 
+    top: 0px;
+    @media (max-width: 800px), (max-height: 640px) {
+      top: 150px;
+    } 
+  }
+  .bio-form {
+    font-family: Muli;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    height: 110px;
+    border: none;
+    border-bottom: 5px solid @action-color;
+    padding: 10px 18px;
+    font-size: 17px;
+  }
 }
 
-.user-info{
-  margin-top: calc(@picture-radius ~"+" 65px);
-}
-.edit-profile{
-  color: @medium-color;
-  position: absolute;
-}
-
-.bio-form {
-  font-family: Muli;
-  margin-top: 5px;
-  margin-bottom: 15px;
-  height: 110px;
-  border: none;
-  border-bottom: 5px solid @action-color;
-  padding: 10px 18px;
-  font-size: 17px;
-
-}
