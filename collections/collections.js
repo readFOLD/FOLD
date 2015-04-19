@@ -402,7 +402,7 @@ ImageBlock = (function(_super) {
         return this.reference.url;
       case 'imgur':
         if (this.reference.fileExtension === 'gif'){
-          return '//i.imgur.com/' + this.reference.id + 'm' + '.' + this.reference.fileExtension;
+          return '//i.imgur.com/' + this.reference.id + 'l' + '.' + this.reference.fileExtension;
         } else {
           return '//i.imgur.com/' + this.reference.id + '.' + this.reference.fileExtension;
         }
