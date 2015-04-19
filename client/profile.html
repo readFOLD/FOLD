@@ -72,6 +72,11 @@
   {{else}}
     <div class="message">{{unpublishedMessage}}</div>
   {{/each}}
+  {{#unless unpublishedMessage}}
+    <button class="toggle-published">
+      See {{#if seeAllPublished}}fewer{{else}}all{{/if}} stories
+    </button>
+  {{/unless}}
 </template>
 
 <template name="user_favorite_stories">
@@ -80,10 +85,15 @@
       <div class="profile story" data-story-id="{{_id}}">
         {{> _story_preview_content}}
       </div>
-    <!-- {{/linkTo}} -->
   {{else}}
     <div class="message">{{noFavoritesMessage}}</div>
   {{/each}}
+  {{#unless noFavoritesMessage}}
+  <button class="toggle-favorites">
+    See {{#if seeAllFavorites}}fewer{{else}}all{{/if}} favorites
+  </button>
+  {{/unless}}
+
 </template>
 
 

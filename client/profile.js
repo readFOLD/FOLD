@@ -122,9 +122,28 @@ Template.user_profile.events({
   }
 });
 
+Template.user_stories.onCreated(function(){
+  this.seeAllPublished = new ReactiveVar(false);
+});
+
+Template.user_stories.events({
+  "click .toggle-published": function(d, template) {
+    return template.seeAllPublished.set(!template.seeAllPublished.get())
+  }
+});
+
 Template.user_stories.helpers({
+  seeAllPublished : function() {
+    return Template.instance().seeAllPublished.get()
+  },
   publishedStories: function() {
-    return Stories.find({authorUsername : this.user.username, published : true}).fetch()
+    var limit = Template.instance().seeAllPublished.get() ? 0 : 12; //limit(0) -> no limit
+    return Stories.find({authorUsername : this.user.username, published : true}, {
+      sort: {
+        publishedAt: -1
+      }, 
+      limit: limit
+    })
   },
   unpublishedMessage: function () {
     if (Meteor.user().username == this.user.username) {
@@ -135,12 +154,31 @@ Template.user_stories.helpers({
   }
 });
 
+Template.user_favorite_stories.onCreated(function(){
+  this.seeAllFavorites = new ReactiveVar(false);
+});
+
+Template.user_favorite_stories.events({
+  "click .toggle-favorites": function(d, template) {
+    return template.seeAllFavorites.set(!template.seeAllFavorites.get())
+  }
+});
+
 Template.user_favorite_stories.helpers({
+  seeAllFavorites: function() {
+    return Template.instance().seeAllFavorites.get()
+  },
   favoriteStories: function() {
+    var limit = Template.instance().seeAllFavorites.get() ? 0 : 12; 
       return Stories.find({
-                        _id: {
-                          $in: this.user.profile.favorites
-                        }})
+              _id: {
+                $in: this.user.profile.favorites
+              }}, {
+                sort: {
+                  publishedAt: -1
+                }, 
+                limit: limit
+              })
     },
   noFavoritesMessage: function () {
     if (Meteor.user().username == this.user.username) {

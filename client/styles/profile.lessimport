@@ -1,4 +1,6 @@
 @picture-radius: 150px;
+@profile-width: 340px;
+
 
 h1 {
  font-size: 30px;
@@ -28,7 +30,6 @@ div.user-profile {
   position: fixed;
   padding:20px;
   background-color: @white-color;
-  @profile-width: 340px;
   width: @profile-width;
   max-width: 340px;
   min-height: 700px;
@@ -116,5 +117,17 @@ div.user-profile {
     padding: 10px 18px;
     font-size: 17px;
   }
+}
+
+.toggle-published, .toggle-favorites {
+  z-index: 3;
+  position: relative;
+  padding: 0; 
+  color: @dark-color;
+  &:hover {
+    text-decoration: underline;
+    color: @action-color;
+  }
+
 }
 
