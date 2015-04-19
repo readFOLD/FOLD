@@ -343,7 +343,6 @@ div.stories {
     width: calc(33.33% ~"-" @margin-side * 2);
     float: left;
 
-
     /*for screens up to 1200px width - 2 stories up*/
     @media (max-width: 1200px) {
       width: calc(50% ~"-" @margin-side * 2);
@@ -351,6 +350,14 @@ div.stories {
 
     @media (max-width: 800px) {
       width: calc(100% ~"-" @margin-side * 2);
+    }
+
+    @media (min-width: 1700px) {
+      width: calc(25% ~"-" @margin-side * 2);
+    }
+
+    @media (min-width: 2300px) {
+      width: calc(20% ~"-" @margin-side * 2);
     }
 
     &.profile {
