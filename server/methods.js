@@ -56,11 +56,6 @@ var makeTwitterCall = function(apiCall, params) {
   return res;
 };
 
-var checkEmail = function(email) {
-  if (Meteor.users.findOne({'emails.address': email})) {
-    throw new Meteor.Error('Email already exists.');
-  }
-}
 S3.config = {
   key: Meteor.settings.AWS_ACCESS_KEY,
   secret: Meteor.settings.AWS_SECRET_KEY,
@@ -73,8 +68,7 @@ Meteor.methods({
       var username = userInfo.username,
           email = userInfo.email;
       checkSignupCode(userInfo.signupCode);
-      checkUsername(username);
-      checkEmail(email);
+      checkUserSignup(username, email);
 
       //get twitter info
       var res;
@@ -85,6 +79,8 @@ Meteor.methods({
         res = makeTwitterCall("users/show", twitterParams);
       }
 
+      var bio = (res && res.description) ? res.description : "";
+
       return Meteor.users.update({
         _id: this.userId
       }, {
@@ -92,7 +88,8 @@ Meteor.methods({
             "profile.name": userInfo.name || username,
             "profile.displayUsername": username,
             "username": username,
-            "profile.bio": res.description,
+            "profile.bio": bio,
+            "profile.twitterUser": true
           },
           $unset: {"tempUsername": ""},
           $push: {
@@ -102,7 +99,7 @@ Meteor.methods({
     }
   },
   linkTwitterAccount: function() {
-    if (Meteor.user()) {
+    if (Meteor.user() && Meteor.user().profile && !Meteor.user().profile.bio) {
       var res, bio;
       if (Meteor.user().services.twitter) {
         var twitterParams = {
@@ -111,7 +108,8 @@ Meteor.methods({
         res = makeTwitterCall("users/show", twitterParams);
       }
 
-      bio = Meteor.user().profile.bio ? Meteor.user().profile.bio : res.description;
+      var bio = (res && res.description) ? res.description : "";
+
       return Meteor.users.update({
         _id: this.userId
       }, {
@@ -120,7 +118,6 @@ Meteor.methods({
             "profile.twitterUser": true
           }
         });
-
     }
   },
 

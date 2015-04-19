@@ -42,25 +42,19 @@ Template.user_profile.onCreated(function(){
   this.editPicturePrompt = new ReactiveVar(false);
   this.editingPicture = new ReactiveVar(false);
   this.uploadPreview = new ReactiveVar();
-  this.uploadStatus = new ReactiveVar();
   this.pictureId = new ReactiveVar();
   
   var query = _cloudinary.find({});
   this.observeCloudinary = query.observeChanges({ 
-    added: function (id) { 
-      that.uploadStatus.set(null);
-    },
     changed: function (id, changes) { 
       if (changes.public_id){ 
         var doc = _cloudinary.findOne(id);
-        that.uploadStatus.set('Upload successful');
         that.uploadPreview.set('//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_150,h_150,c_fill,g_face/' + doc.public_id);
         that.pictureId.set(doc.public_id);
       }
     },
     removed: function (id) {  
       var input = that.$('input[type=file]');
-      that.uploadStatus.set('Upload failed');
       input.val(null);
       input.change(); 
     }
@@ -90,9 +84,6 @@ Template.user_profile.helpers({
   },
   editingPicture : function() {
     return Template.instance().editingPicture.get() || Template.instance().editPicturePrompt.get()
-  },
-  uploadStatus: function() {
-    Template.instance().uploadStatus.get();
   },
   uploadPreview: function(){
     return Template.instance().uploadPreview.get();
@@ -133,10 +124,7 @@ Template.user_profile.events({
 
 Template.user_stories.helpers({
   publishedStories: function() {
-    var stories = Stories.find({userPathSegment : this.user.username}).fetch();
-    return _.filter(stories, function(story) {
-      return story.published ==true
-    })
+    return Stories.find({userPathSegment : this.user.username, published : true}).fetch()
   },
   unpublishedMessage: function () {
     if (Meteor.user().username == this.user.username) {

@@ -29,19 +29,12 @@
       {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
       <button type="submit" class="save-profile-button">Save</button>
       
-      {{#if uploadStatus}}
-        <p>{{uploadStatus}}</p>
-      {{/if}}
        <div class="picture">
         {{#if editingPicture}}
-          {{#c_upload_stream}}
-          <!-- Limit this to JPG? cloudinary algorithms lose on other fmts-->
+          {{#c_upload}}
             <input type="file" accept="image/*" class="overlay">
-          {{/c_upload_stream}}
+          {{/c_upload}}
         {{/if}}
-        {{#each c.uploading_images}}
-          <p>Uploading: {{percent_uploaded}}%</p>
-        {{/each}}
         {{#if uploadPreview}} 
           <img class="profile-picture" src="{{uploadPreview}}">
         {{else}}

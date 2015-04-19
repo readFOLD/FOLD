@@ -73,9 +73,9 @@ var updateStory = function(selector, modifier, options) {
 
 Meteor.methods({
   saveProfilePicture: function(userId, pictureId) {
-    if (Meteor.user()._id === userId) {
+    if (this.userId === userId) {
       Meteor.users.update({
-        _id: Meteor.user()._id
+        _id: this.userId
       }, {
         $set: {
         "profile.profilePicture": pictureId
