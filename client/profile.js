@@ -124,7 +124,7 @@ Template.user_profile.events({
 
 Template.user_stories.helpers({
   publishedStories: function() {
-    return Stories.find({userPathSegment : this.user.username, published : true}).fetch()
+    return Stories.find({authorUsername : this.user.username, published : true}).fetch()
   },
   unpublishedMessage: function () {
     if (Meteor.user().username == this.user.username) {

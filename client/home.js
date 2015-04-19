@@ -161,7 +161,7 @@ Template._story_preview_content.helpers({
     return '//' + Meteor.settings["public"].AWS_BUCKET + '.s3.amazonaws.com/header-images/' + this.headerImage;
   },
   authorUsername: function() {
-    return this.userPathSegment
+    return this.authorUsername
   },
   author: function(){
     return Meteor.users.findOne(this.authorId)
