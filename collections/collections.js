@@ -1087,8 +1087,8 @@ Schema.User = new SimpleSchema({
       this.unset(); // don't allow to be set from anywhere within the code
     }
   },
-  earlybird: {
-    type: Boolean,
+  accessPriority: {
+    type: Number,
     optional: true
   },
   profile: {

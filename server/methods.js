@@ -63,9 +63,6 @@ S3.config = {
 };
 
 Meteor.methods({
-  checkEarlybird: function(){
-    return Meteor.user().earlybird ? true : false;
-  },
   updateUserInfo: function(userInfo) {
     if (Meteor.user().tempUsername) {
       var username = userInfo.username;

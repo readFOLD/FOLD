@@ -1,3 +1,8 @@
+var publishAccessLevel = 1;
+if (Meteor.isClient){
+  window.publishAccessLevel = publishAccessLevel;
+}
+
 var changeFavorite;
 
 changeFavorite = function(storyId, toFavorite) {
@@ -297,7 +302,21 @@ Meteor.methods({
       }
     })
   },
+  checkPublishAccess: function() {
+    var accessPriority = Meteor.user().accessPriority;
+    if (!accessPriority || accessPriority > publishAccessLevel) {
+      return false;
+    } else {
+      return true;
+    }
+  },
   publishStory: function(storyId, title, keywords, narrativeRightsReserved) {
+
+    var accessPriority = Meteor.user().accessPriority;
+    if(!accessPriority || accessPriority > publishAccessLevel){
+      return;
+    }
+
     var story = Stories.findOne({_id: storyId, authorId: this.userId});
     var user = Meteor.users.findOne({_id: this.userId});
 

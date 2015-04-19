@@ -28,8 +28,10 @@ Accounts.onCreateUser(function(options, user) {
     user.signupCode = options.signupCode;
   }
 
-  if (options.earlybird) {
-    user.earlybird = options.earlybird; // TODO remove
+  if (user.username === 'author') {
+    user.accessPriority = options.accessPriority; // TODO remove
+  } else {
+    user.accessPriority = 2; // current access priority for new users
   }
 
   if (user.services.twitter) { // twitter signup
