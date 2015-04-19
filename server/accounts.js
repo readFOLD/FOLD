@@ -12,6 +12,10 @@ Accounts.validateNewUser(function(user) {
   return true
 });
 
+if (!Meteor.settings.NEW_USER_ACCESS_PRIORITY) {
+  throw new Meteor.Error('Meteor.settings.NEW_USER_ACCESS_PRIORITY is required')
+}
+
 Accounts.onCreateUser(function(options, user) {
  if(!options || !user) {
     throw new Meteor.Error('Error creating user');
@@ -31,7 +35,7 @@ Accounts.onCreateUser(function(options, user) {
   if (user.username === 'author') {
     user.accessPriority = options.accessPriority; // TODO remove
   } else {
-    user.accessPriority = 2; // current access priority for new users
+    user.accessPriority = parseInt(Meteor.settings.NEW_USER_ACCESS_PRIORITY);
   }
 
   if (user.services.twitter) { // twitter signup
