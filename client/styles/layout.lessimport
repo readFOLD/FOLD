@@ -553,7 +553,7 @@ div.image-section {
     min-height: 36px;
 
   }
-  img {
+  img, video {
     width: auto;
     max-width: 100%;
     margin: auto;

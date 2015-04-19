@@ -358,7 +358,25 @@ ImageBlock = (function(_super) {
     if (!this.source) { // TO-DO Remove
       this.source = 'imgur';
     }
-  }
+  };
+
+  ImageBlock.prototype.showVideo = function(){
+    if (this.source === 'imgur' && this.reference.fileExtension === 'gif'){
+      return this.webMUrl() || this.mp4Url();
+    }
+  };
+
+  ImageBlock.prototype.webMUrl = function() {
+    if (this.source === 'imgur' && this.reference.hasWebM) {
+      return '//i.imgur.com/' + this.reference.id + '.webm';
+    }
+  };
+
+  ImageBlock.prototype.mp4Url = function(){
+    if (this.source === 'imgur' && this.reference.hasMP4) {
+      return '//i.imgur.com/' + this.reference.id + '.mp4';
+    }
+  };
 
   ImageBlock.prototype.url = function() {
     switch (this.source) {
@@ -368,6 +386,28 @@ ImageBlock = (function(_super) {
         return this.reference.url;
       case 'imgur':
         return '//i.imgur.com/' + this.reference.id + '.' + this.reference.fileExtension;
+      case 'flickr':
+        return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg'
+      case 'embedly':
+        return this.reference.url;
+      case 'cloudinary':
+        // TO-DO maybe use jpeg instead of png in certain situations
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
+    }
+  };
+
+  ImageBlock.prototype.previewUrl = function() {
+    switch (this.source) {
+      case 'local':
+        return '/' + this.reference.id;
+      case 'link':
+        return this.reference.url;
+      case 'imgur':
+        if (this.reference.fileExtension === 'gif'){
+          return '//i.imgur.com/' + this.reference.id + 'm' + '.' + this.reference.fileExtension;
+        } else {
+          return '//i.imgur.com/' + this.reference.id + '.' + this.reference.fileExtension;
+        }
       case 'flickr':
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg'
       case 'embedly':
@@ -718,6 +758,17 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     type: String,
     optional: true
   },
+  hasWebM: {
+    type: Boolean,
+    optional: true
+  },
+
+  hasMP4: {
+    type: Boolean,
+    optional: true
+  },
+
+
 
   // Image upload
   width: {

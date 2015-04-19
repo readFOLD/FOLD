@@ -310,7 +310,9 @@ var searchIntegrations = {
             username : e.account_url,
             userId : e.account_id,
             fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
-            title : e.title
+            title : e.title,
+            hasMP4: e.mp4 ? true : false,
+            hasWebM: e.webm ? true : false,
           }
         }
       }

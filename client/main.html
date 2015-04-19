@@ -270,7 +270,20 @@
 
 <template name="display_image_section">
   <div class="image-section {{#unless read}}always-show-caption{{/unless}}">
-    <img src="{{url}}" />
+    {{#if showVideo}}
+      <video autoplay loop muted="muted"
+             poster="{{previewUrl}}">
+
+        <source type="video/mp4"
+                src="{{mp4Url}}">
+
+        <source type="video/webm"
+                src="{{webMUrl}}">
+        Your browser does not support the HTML5 video tag.
+      </video>
+    {{else}}
+      <img src="{{url}}" />
+    {{/if}}
     {{{textContent}}}
   </div>
   {{#unless read}}
