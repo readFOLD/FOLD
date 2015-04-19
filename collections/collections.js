@@ -1131,6 +1131,12 @@ Schema.Stories = new SimpleSchema({
     maxCount: 1000,
     defaultValue: []
   },
+  contextBlockIds: {
+    type: [String],
+    minCount: 0,
+    maxCount: 1000,
+    defaultValue: []
+  },
   verticalSections: {
     type: [Object],
     minCount: 1,

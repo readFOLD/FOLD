@@ -397,8 +397,7 @@ Meteor.methods({
 
     var contextBlocks = ContextBlocks.find({_id: {$in: contextBlockIds}}).fetch();
 
-    // TODO
-    // Don't update story path and such unless not yet set.
+    // TO-DO
     // Probably confirm that all the context cards included are by the author!
     // Maybe a list of all context cards on the story
     // Maybe a list of which cards are original and which are remixed
@@ -426,6 +425,7 @@ Meteor.methods({
       fieldsToSetFromArguments,
       {
         'contextBlocks': contextBlocks,
+        'contextBlockIds': contextBlockIds,
         'storyPathSegment': _s.slugify(draftStory.title.toLowerCase()) + '-' + story.shortId, // TODO DRY and probably get from draft
         'publishedAt': new Date(),
         'published': true,
