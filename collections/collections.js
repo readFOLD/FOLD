@@ -1165,8 +1165,7 @@ Schema.Stories = new SimpleSchema({
     type: String
   },
   authorUsername: {
-    type: String,
-    optional: true // TODO remove once migrate existing stories
+    type: String
   },
   keywords:{
     type: [String],
