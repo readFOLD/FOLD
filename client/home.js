@@ -3,17 +3,19 @@ var formatDate, weekDays, formatDateNice, monthNames;
 weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
-window.headerImageUrl = function(headerImage){
-  var image;
+window.headerImageUrl = function(headerImage, headerImageFormat){
+  var image, imageFormat;
 
   if (headerImage){
     image = headerImage;
+    imageFormat = headerImageFormat;
   } else {
     image = this.headerImage;
+    imageFormat = this.headerImageFormat;
   }
 
   if (image) {
-    return '//' + Meteor.settings["public"].AWS_BUCKET + '.s3.amazonaws.com/header-images/' + image;
+    return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + image
   }
 }
 

@@ -404,15 +404,15 @@ Template.create.events({
     });
   },
   "change input.header-upload": function(){
-    var storyId = Session.get('storyId');
+    var that = this;
     var files = $("input.header-upload")[0].files;
-    S3.upload({
-      files: files,
-      path: "header-images"
-    }, function(e, r) {
-      var filename = r.file.name;
-      Session.set('saveState', 'saving');
-      return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);
+    Session.set('saveState', 'saving');
+    // TODO use cloudinary upload methods as used elsewhere
+    C.upload(files, function(r) { // callback does not respect typical error behavior and currently just doesn't call callback
+      if (r.error){ // this can't get hit at the moment
+        return saveCallback(r)
+      }
+      return Meteor.call('updateHeaderImage', that._id, r.public_id, r.format, saveCallback);
     });
   }
 });

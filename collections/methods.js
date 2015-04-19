@@ -139,9 +139,12 @@ Meteor.methods({
 
     return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
   },
-  updateHeaderImage: function(storyId, filename) {
+  updateHeaderImage: function(storyId, filePublicId, fileFormat) {
     return updateStory({_id: storyId, authorId: this.userId}, {
-      $set: {'draftStory.headerImage': filename}
+      $set: {
+        'draftStory.headerImage': filePublicId,
+        'draftStory.headerImageFormat': fileFormat
+      }
     })
   },
   addTitle: function(storyId, index) {
@@ -380,6 +383,7 @@ Meteor.methods({
     var fieldsToCopyFromDraft = [
       'verticalSections',
       'headerImage',
+      'headerImageFormat',
       'headerImageAttribution'
       //'title'
     ];
