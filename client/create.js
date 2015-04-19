@@ -276,6 +276,7 @@ window.saveCallback =  function(err, success, cb) {
 Template.vertical_section_block.events({
   'mouseup [contenteditable]': window.updateUIBasedOnSelection,
   'blur [contenteditable]': window.updateUIBasedOnSelection,
+  'keyup [contenteditable]': window.updateUIBasedOnSelection,
   'blur .title[contenteditable]' : function(e, template){
     Session.set('saveState', 'saving');
 
