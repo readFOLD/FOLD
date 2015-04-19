@@ -22,10 +22,10 @@ Meteor.publish("exploreStoriesPub", function(filter, category, skip) {
   }
 });
 
-Meteor.publish("readStoryPub", function(authorUsername, shortId) {
+Meteor.publish("readStoryPub", function(userPathSegment, shortId) {
   if (this.userId) { // TODO launch Remove
     return Stories.find({
-      authorUsername: authorUsername,
+      userPathSegment: userPathSegment,
       shortId: shortId,
       published: true
     }, {
@@ -59,9 +59,9 @@ Meteor.publish("readStoriesPub", function(ids) {
   }
 });
 
-Meteor.publish("createStoryPub", function(authorUsername, shortId) {
+Meteor.publish("createStoryPub", function(userPathSegment, shortId) {
   return Stories.find({
-    authorUsername: authorUsername,
+    userPathSegment: userPathSegment,
     shortId: shortId
   });
 });

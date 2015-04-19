@@ -133,7 +133,6 @@ Router.route("read", {
   path: "read/:userPathSegment/:storyPathSegment",
   template: "read",
   waitOn: function() {
-    console.log(this.params)
     shortId = idFromPathSegment(this.params.storyPathSegment);
     return [Meteor.subscribe('readStoryPub', this.params.userPathSegment, shortId)];
   },

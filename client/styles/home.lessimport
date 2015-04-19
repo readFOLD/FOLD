@@ -228,6 +228,7 @@ div.stories {
     font-size: 21px;
     font-weight: bold;
     padding: 20px 30px 0px 30px;
+    margin-bottom: calc(9% ~"-" 27px);
   }
 
   @profile-picture-size: 60px;
@@ -235,7 +236,6 @@ div.stories {
 
   div.byline {
     //padding: 33px 25px;
-    padding-top: calc(9% ~"-" 27px);
     padding-left: 25px;
     div.pull-left {
       div.author-image {
@@ -259,15 +259,17 @@ div.stories {
         div.author-name {
           margin-top: 12px;
           font-size: 15px;
-          span:hover {
-            text-decoration: underline;
-          }
         }
         div.publish-date {
           //font-style: italic;
           text-transform: uppercase;
           font-size: 12px;
         }
+      }
+    }
+    a.author-profile-link:hover {
+      span{
+        text-decoration: underline;
       }
     }
   }
