@@ -79,7 +79,7 @@ Handlebars.registerHelper("profileImage", function(user, size) {
   }
   if (user && user.profile) { 
     if ( user.profile.profilePicture) {
-      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_150,h_150,c_fill,g_face/' + user.profile.profilePicture
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + diameter + ',h_' + diameter + ',c_fill,g_face,dpr_auto/' + user.profile.profilePicture
     } else if (user.services && user.services.twitter) {
       return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/w_' + diameter + ',h_' + diameter + ',c_fill,g_face,dpr_auto/' + user.services.twitter.id
     }

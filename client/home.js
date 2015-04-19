@@ -157,12 +157,7 @@ Template._story_preview_content.helpers({
       return formatDateNice(this.publishedAt);
     }
   },
-  headerImageUrl: function() {
-    return '//' + Meteor.settings["public"].AWS_BUCKET + '.s3.amazonaws.com/header-images/' + this.headerImage;
-  },
-  authorUsername: function() {
-    return this.authorUsername
-  },
+  headerImageUrl: headerImageUrl,
   author: function(){
     return Meteor.users.findOne(this.authorId)
   }

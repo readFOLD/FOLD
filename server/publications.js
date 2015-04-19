@@ -14,26 +14,24 @@ Meteor.publish("exploreStoriesPub", function(filter, category, skip) {
       fields: {
         draftStory: 0,
         history: 0
-      },
-      reactive: false
+      }
     });
   } else {
     this.ready()
   }
 });
 
-Meteor.publish("readStoryPub", function(authorUsername, shortId) {
+Meteor.publish("readStoryPub", function(userPathSegment, shortId) {
   if (this.userId) { // TODO launch Remove
     return Stories.find({
-      authorUsername: authorUsername,
+      userPathSegment: userPathSegment,
       shortId: shortId,
       published: true
     }, {
       fields: {
         draftStory: 0,
         history: 0
-      },
-      reactive: false
+      }
     });
   } else {
     this.ready();
@@ -51,17 +49,16 @@ Meteor.publish("readStoriesPub", function(ids) {
       fields: {
         draftStory: 0,
         history: 0
-      },
-      reactive: false
+      }
     });
   } else {
     this.ready();
   }
 });
 
-Meteor.publish("createStoryPub", function(authorUsername, shortId) {
+Meteor.publish("createStoryPub", function(userPathSegment, shortId) {
   return Stories.find({
-    authorUsername: authorUsername,
+    userPathSegment: userPathSegment,
     shortId: shortId
   });
 });
@@ -82,8 +79,7 @@ Meteor.publish("minimalUsersPub", function(userIds) { // includes user profile a
       "profile.profilePicture": 1,
       "username": 1,
       "services.twitter.id": 1
-    },
-    reactive: false
+    }
   });
 });
 
@@ -140,8 +136,7 @@ Meteor.publish("userStoriesPub", function(username) { // only published stories
     fields : {
       history: 0,
       draftStory: 0
-    },
-    reactive: false
+    }
   });
 });
 
