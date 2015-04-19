@@ -843,9 +843,6 @@ Template.publish_overlay.onRendered(function(){
 });
 
 Template.publish_overlay.helpers({
-  'modalWidth': function() {
-    return 1.25 * Session.get('cardWidth')
-  },
   'keywordsString': function(){
     return (this.keywords || []).toString();
   }
