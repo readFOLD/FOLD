@@ -193,12 +193,8 @@ Meteor.methods({
       }
     })
   },
-  insertVerticalSection: function(storyId, index, section) {
-    // TODO - Once Meteor upgrades to use Mongo 2.6
-    // This should use the $position operator and work directly there
-    // Also, can probably get rid of the blackbox: true on verticalSections in the schema!
-
-    section = section || {
+  insertVerticalSection: function(storyId, index) {
+    var newSection = {
       _id: Random.id(8),
       contextBlocks: [],
       title: "",
@@ -206,31 +202,12 @@ Meteor.methods({
       hasTitle: false
     };
 
-    var selector = {_id: storyId};
-
-    var story = Stories.findOne(selector, {
-      fields: {
-        'draftStory.verticalSections': 1,
-        'authorId': 1
-      }
-    });
-
-    assertOwner(this.userId, story);
-
-
-    var verticalSections = story.draftStory.verticalSections;
-
-    verticalSections.splice(index, 0, {
-      _id: Random.id(8),
-      contextBlocks: [],
-      title: "",
-      content: "",
-      hasTitle: false
-    });
-
-    return updateStory({_id: storyId}, {
-      $set: {
-        'draftStory.verticalSections': verticalSections
+    return updateStory({_id: storyId, authorId: this.userId}, {
+      $push: {
+        'draftStory.verticalSections': {
+          $position: index,
+          $each: [newSection]
+        }
       }
     })
   },
