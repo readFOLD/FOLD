@@ -104,6 +104,7 @@ this.Stories = new Meteor.Collection("stories", {
         savedAt: doc.savedAt,
         storyPathSegment: doc.storyPathSegment,
         userPathSegment: doc.userPathSegment,
+        authorUsername: doc.authorUsername,
         contextCountOfType: function(){}, // stub out method for now,
         _id: doc._id
       });

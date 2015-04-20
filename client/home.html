@@ -170,85 +170,88 @@
 </template>
 
 <template name="_story_preview_content">
-  <div class="content-count">
-    {{#if contextCountOfType 'video'}}
-      {{ > video_icon }}
-      <!--{{contextCountOfType 'video'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'image'}}
-      {{ > image_icon }}
-      <!--{{contextCountOfType 'image'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'gif'}}
-      {{ > gif_icon }}
-      <!--{{contextCountOfType 'gif'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'map'}}
-      {{ > map_icon }}
-      <!--{{contextCountOfType 'map'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'twitter'}}
-      {{ > twitter_icon }}
-      <!--{{contextCountOfType 'twitter'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'audio'}}
-      {{ > audio_icon }}
-      <!--{{contextCountOfType 'audio'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'viz'}}
-      {{ > viz_icon }}
-      <!--{{contextCountOfType 'viz'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'text'}}
-      {{ > text_icon }}
-      <!--{{contextCountOfType 'text'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'link'}}
-      {{ > link_icon }}
-      <!--{{contextCountOfType 'link'}}-->
-    {{/if}}
-    <!--TODO - add remix check-->
-  </div>
-  {{#linkTo route="read" data=this}}
-    <div class="overlay-image">
-      <img src="{{headerImageUrl}}" />
+  {{#with story}}
+    <div class="content-count">
+      {{#if contextCountOfType 'video'}}
+        {{ > video_icon }}
+        <!--{{contextCountOfType 'video'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'image'}}
+        {{ > image_icon }}
+        <!--{{contextCountOfType 'image'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'gif'}}
+        {{ > gif_icon }}
+        <!--{{contextCountOfType 'gif'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'map'}}
+        {{ > map_icon }}
+        <!--{{contextCountOfType 'map'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'twitter'}}
+        {{ > twitter_icon }}
+        <!--{{contextCountOfType 'twitter'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'audio'}}
+        {{ > audio_icon }}
+        <!--{{contextCountOfType 'audio'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'viz'}}
+        {{ > viz_icon }}
+        <!--{{contextCountOfType 'viz'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'text'}}
+        {{ > text_icon }}
+        <!--{{contextCountOfType 'text'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'link'}}
+        {{ > link_icon }}
+        <!--{{contextCountOfType 'link'}}-->
+      {{/if}}
+      <!--TODO - add remix check-->
     </div>
-  {{/linkTo}}
 
-  {{#linkTo route="read" data=this}}
-    <div class="story-card">
-    </div>
-  {{/linkTo}}
-  
-  {{#linkTo route="read" data=this}}
-    <div class="headline">
-      {{title}}
-    </div>
-  {{/linkTo}}
+    {{#linkTo route=linkRoute data=this}}
+      <div class="overlay-image">
+        <img src="{{headerImageUrl}}" />
+      </div>
+    {{/linkTo}}
 
-  <div class="byline">
-    <div class="pull-left">
-      <a href="/profile/{{authorUsername}}" >
-        <div class="author-image">
-          {{#if profileImage author}}
-           <img class="profile-picture" src="{{profileImage author}}"/>
-          {{else}}
-            <div class="author-image-placeholder"></div>
-          {{/if}}
-        </div>
-      </a>
+    {{#linkTo route=linkRoute data=this}}
+      <div class="story-card">
+      </div>
+    {{/linkTo}}
 
-      <div class="author-name-date">
-        <a class="author-profile-link" href="/profile/{{authorUsername}}" >
-          <div class="author-name">By <span>{{authorName}}</span></div>
+    {{#linkTo route=linkRoute data=this}}
+      <div class="headline">
+        {{title}}
+      </div>
+    {{/linkTo}}
+
+    <div class="byline">
+      <div class="pull-left">
+        <a href="/profile/{{authorUsername}}" >
+          <div class="author-image">
+            {{#if profileImage author}}
+             <img class="profile-picture" src="{{profileImage author}}"/>
+            {{else}}
+              <div class="author-image-placeholder"></div>
+            {{/if}}
+          </div>
         </a>
-        <div class="publish-date">{{lastPublishDate}}</div>
+
+        <div class="author-name-date">
+          <a class="author-profile-link" href="/profile/{{authorUsername}}" >
+            <div class="author-name">By <span>{{authorName}}</span></div>
+          </a>
+          <div class="publish-date">{{lastPublishDate}}</div>
+        </div>
+      </div>
+      <div class="pull-right">
+        {{ > favorite_button }}
       </div>
     </div>
-    <div class="pull-right">
-      {{ > favorite_button }}
-    </div>
-  </div>
+  {{/with}}
 
 </template>
 

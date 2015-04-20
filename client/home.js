@@ -160,6 +160,16 @@ Template._story_preview_content.helpers({
     }
   },
   headerImageUrl: headerImageUrl,
+  story: function(){
+    if (Template.instance().data.useDraftStory){
+      return this.draftStory;
+    } else {
+      return this;
+    }
+  },
+  linkRoute: function(){
+    return Template.instance().data.useDraftStory ? 'edit' : 'read';
+  },
   author: function(){
     return Meteor.users.findOne(this.authorId)
   }
