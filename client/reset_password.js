@@ -38,6 +38,9 @@ Template.reset_password_form.events({
         t.message.set('We are sorry but something went wrong.');
       } else {
         t.message.set('Your password has been successfully changed. Welcome back!');
+        Meteor.setTimeout( function(){
+            Router.go('home')
+        }, 1500);
       }
     });
   }
