@@ -1221,8 +1221,7 @@ Schema.Stories = new SimpleSchema({
   verticalSections: {
     type: [Object],
     minCount: 1,
-    maxCount: 1000,
-    blackbox: true // TODO remove this when stops causing errors!
+    maxCount: 1000
   },
   'verticalSections.$._id': {
     type: String
