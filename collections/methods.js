@@ -123,8 +123,6 @@ Meteor.methods({
     return updateStory({_id: storyId, authorId: this.userId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
   updateVerticalSectionTitle: function(storyId, index, title){
-    // TODO clean title
-
     var setObject = { $set:{} };
     setObject['$set']['draftStory.verticalSections.' + index + '.title'] = title;
 

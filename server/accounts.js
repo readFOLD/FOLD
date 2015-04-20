@@ -37,7 +37,7 @@ Accounts.onCreateUser(function(options, user) {
   }
 
   if (user.username === 'author') {
-    user.accessPriority = options.accessPriority; // TODO remove
+    user.accessPriority = options.accessPriority;
   } else {
     user.accessPriority = parseInt(Meteor.settings.NEW_USER_ACCESS_PRIORITY);
   }
