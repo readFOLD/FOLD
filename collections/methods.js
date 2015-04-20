@@ -375,6 +375,8 @@ Meteor.methods({
 
     var contextBlocks = ContextBlocks.find({_id: {$in: contextBlockIds}}).fetch();
 
+    var contextBlockTypeCount = _.chain(contextBlocks).pluck('type').countBy(_.identity).value();
+
     // TO-DO
     // Probably confirm that all the context cards included are by the author!
     // Maybe a list of which cards are original and which are remixed
@@ -404,6 +406,7 @@ Meteor.methods({
       {
         'contextBlocks': contextBlocks,
         'contextBlockIds': contextBlockIds,
+        'contextBlockTypeCount': contextBlockTypeCount,
         'storyPathSegment': _s.slugify(draftStory.title.toLowerCase()) + '-' + story.shortId, // TODO DRY and probably get from draft
         'publishedAt': new Date(),
         'published': true,
