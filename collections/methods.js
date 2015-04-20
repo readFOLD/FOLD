@@ -354,9 +354,7 @@ Meteor.methods({
     var contextBlockTypeCount = _.chain(contextBlocks).pluck('type').countBy(_.identity).value();
 
     // TO-DO
-    // Probably confirm that all the context cards included are by the author!
     // Maybe a list of which cards are original and which are remixed
-    // Maybe a list of all context types and amounts for better searching
 
     var fieldsToCopyFromDraft = [
       'verticalSections',
