@@ -61,7 +61,7 @@ Story = (function() {
 
 })();
 
-// TODO consider replacing htmlclean with https://github.com/cristo-rabani/meteor-universe-html-purifier/
+// TO-DO consider replacing htmlclean with https://github.com/cristo-rabani/meteor-universe-html-purifier/
 var cleanHtmlOptions = {
   allowedTags: ['strong', 'em', 'u', 'b', 'a', 'br'], // only allow tags used in fold-editor and
   format: false,
@@ -104,6 +104,8 @@ this.Stories = new Meteor.Collection("stories", {
         savedAt: doc.savedAt,
         storyPathSegment: doc.storyPathSegment,
         userPathSegment: doc.userPathSegment,
+        authorUsername: doc.authorUsername,
+        authorDisplayUsername: doc.authorDisplayUsername,
         contextCountOfType: function(){}, // stub out method for now,
         _id: doc._id
       });
@@ -902,8 +904,10 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String
   },
   storyId: {
-    type: String,
-    optional: true // TODO migrate and make non-optional
+    type: String
+  },
+  storyShortId: {
+    type: String
   },
   type: {
     type: String
@@ -1117,6 +1121,10 @@ Schema.Stories = new SimpleSchema({
   shortId: {
     type: String
   },
+  headerImageFormat: {
+    type: String,
+    optional: true
+  },
   headerImageAttribution: {
     type: String,
     optional: true
@@ -1167,6 +1175,10 @@ Schema.Stories = new SimpleSchema({
   authorUsername: {
     type: String
   },
+  authorDisplayUsername: {
+    type: String,
+    optional: true
+  },
   keywords:{
     type: [String],
     defaultValue: []
@@ -1207,11 +1219,15 @@ Schema.Stories = new SimpleSchema({
     maxCount: 1000,
     defaultValue: []
   },
+  contextBlockTypeCount:{
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
   verticalSections: {
     type: [Object],
     minCount: 1,
-    maxCount: 1000,
-    blackbox: true // TODO remove this when stops causing errors! (after Mongo 2.6 and use position operators?)
+    maxCount: 1000
   },
   'verticalSections.$._id': {
     type: String
@@ -1230,8 +1246,7 @@ Schema.Stories = new SimpleSchema({
   },
   'verticalSections.$.contextBlocks': {
     type: [String],
-    defaultValue: [],
-    blackbox: true // TODO actually define schema
+    defaultValue: []
   },
   'history': {
     type: [Object],

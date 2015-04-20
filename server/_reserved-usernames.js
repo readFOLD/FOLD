@@ -857,7 +857,7 @@ checkUserSignup = function(username, email) {
   if(username && _.indexOf(disallowedUsernames, username.toLowerCase().trim(), true) !== -1){
     throw new Meteor.Error('This username is reserved.')
   }
-  var existingUser = Meteor.users.findOne( { $or: [{username: username}, {'emails.address': email[0].address}]});
+  var existingUser = Meteor.users.findOne( { $or: [{username: username}, {'emails.address': email}]});
   if (existingUser) {
     var match = existingUser.username === username ? 'username' : 'email';
     throw new Meteor.Error('This ' + match + ' is already taken.')

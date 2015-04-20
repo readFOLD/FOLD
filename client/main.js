@@ -228,23 +228,10 @@ Template.story_header.helpers({
   headerImageAttribution: function() {
     return this.headerImageAttribution;
   },
-  headerImageUrl: headerImageUrl,
-  "files": function(){
-    return S3.collection.find();
-  }
+  headerImageUrl: headerImageUrl
 });
 
 Template.story_header.events = {
-  "mouseover #banner-overlay, mouseover #to-header": function() {
-    if (Session.get('pastHeader')) {
-      return $("#to-header").addClass('shown');
-    }
-  },
-  "mouseout #banner-overlay": function() {
-    if (Session.get('pastHeader')) {
-      return $("#to-header").removeClass('shown');
-    }
-  },
   "click #to-story": function() {
     $('#to-story, .attribution').fadeOut();
     goToX(0);
@@ -253,7 +240,6 @@ Template.story_header.events = {
   "click #banner-overlay": function() {
     var path;
     if (Session.get("pastHeader")) {
-      $("#to-header").removeClass("shown");
       $("html, body").animate({
         scrollTop: 0
       }, function() {
@@ -278,20 +264,6 @@ Template.story_header.events = {
       goToX(0);
       return goToY(0);
     }
-  },
-  "click #to-header": function() {
-    var path;
-    $("#to-header").removeClass("shown");
-    $("html, body").animate({
-      scrollTop: 0
-    }, function() {
-      return $('#to-story, .attribution').fadeIn();
-    });
-    Session.set("currentX", void 0);
-    Session.set("currentY", void 0);
-    path = window.location.pathname.split("/");
-    path.pop();
-    return path.pop();
   }
 };
 
@@ -650,13 +622,11 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 //  //
 //  if(Meteor.Device.isPhone()) {
 //    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swipeleft',function(){
-//        // TODO only if allowed
 //        window.goRightOneCard();
 //      }
 //    );
 //
 //    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swiperight',function(){
-//        // TODO only if allowed
 //        window.goLeftOneCard();
 //      }
 //    );
@@ -691,10 +661,10 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
         });
       }
     },
-    "mouseover .text-content.editable": function(d, template) {
+    "mouseenter .text-content.editable": function(d, template) {
       document.body.style.overflow = 'hidden';
     },
-    "mouseout .text-content.editable": function(d, template) { // TODO this seems like way more saving than needed. Fix it. PERFORMANCE.
+    "mouseleave .text-content.editable": function(d, template) { // TODO this seems like way more saving than needed. Fix it. PERFORMANCE.
       document.body.style.overflow = 'auto';
       var that = this;
       if (!Session.get('read') && !Session.get('addingContext')) {

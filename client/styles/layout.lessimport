@@ -436,24 +436,27 @@ div#overlay {
 
   a {
     cursor: auto;
+    padding: 0 4px;
   }
   &.selected {
     cursor: text;
     a {
-      .background-transition;
+      // moved background-transition to specific cases so everything doesn't need to animate when a new card becomes selected
       cursor: pointer;
       background-color: @unselected-background-color;
       color: inherit;
-      padding: 0 4px;
       &:hover {
         background-color: @medium-color;
+        .background-transition;
       }
       &.active {
         background-color: @action-color;
+        .background-transition;
         color: white;
       }
       &.placeholder {
         background-color: @panel-color;
+        .background-transition;
         color: white;
       }
     }

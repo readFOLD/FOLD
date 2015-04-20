@@ -7,7 +7,11 @@ checkSignupCode = function(code){
 Accounts.validateNewUser(function(user) {
   if (user.username){ // only if an email user. if twitter user will do this later
     checkSignupCode(user.signupCode);
-    checkUserSignup(user.username, user.emails);
+    if (user.emails && user.emails[0]){
+      checkUserSignup(user.username, user.emails[0].address);
+    } else {
+      throw new Meteor.Error('Please enter your email')
+    }
   }
   return true
 });
@@ -33,7 +37,7 @@ Accounts.onCreateUser(function(options, user) {
   }
 
   if (user.username === 'author') {
-    user.accessPriority = options.accessPriority; // TODO remove
+    user.accessPriority = options.accessPriority;
   } else {
     user.accessPriority = parseInt(Meteor.settings.NEW_USER_ACCESS_PRIORITY);
   }

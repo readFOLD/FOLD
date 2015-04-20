@@ -196,7 +196,7 @@ var searchAPI = function(query) {
   Meteor.call(integrationDetails.methodName, query, option, page, function(err, results) {
     that.loadingResults.set(false);
     if (err) {
-      that.noMoreResults.set('No more results'); // TODO - surface error to user?
+      that.noMoreResults.set('No more results'); // TO-DO - surface error to user?
       throw(err);
       return;
     }
@@ -479,7 +479,7 @@ Template.create_image_section.onCreated(function(){
       if (changes.public_id){ // if upload successful
         var doc = _cloudinary.findOne(id);
         var cardModel = doc.format === 'gif' ? GifBlock : ImageBlock;
-        // TODO consider how to do attribution
+        // TO-DO consider how to do attribution
         that.uploadStatus.set('Upload successful');
         that.focusResult.set(new cardModel({
           reference: {
