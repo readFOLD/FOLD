@@ -1,4 +1,4 @@
-isValidPassword = function(p) {
+window.isValidPassword = function(p) {
   if (p.length >= 6) {
     return true;
   } else {

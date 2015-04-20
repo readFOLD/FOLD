@@ -15,36 +15,30 @@ Template.reset_password_form.events({
   'submit #reset-password-form': function(e, t) {
     e.preventDefault();
     
-    var inputs = $(e.currentTarget).serializeArray();
-    var userInfo = {};
-    _.each(inputs, function(input) {
-      key = input['name'];
-      value = input['value'];
-      userInfo[key] = value;
-    });
+    var password = t.$('#reset-password-password').val();
+    var passwordConfirm = t.$('#reset-password-password-confirm').val();
 
-    if (!isNotEmpty(userInfo.password)) {
+    if (_.isEmpty(password)) {
       t.message.set('Please fill in all required fields.');
-      return false;
+      return;
     }
 
-    if (!isValidPassword(userInfo.password)) {
+    if (!isValidPassword(password)) {
       t.message.set('Please enter a valid password.');
-      return false;
+      return;
     }
 
-    if (userInfo.password !== userInfo.passwordConfirm) {
+    if (password !== passwordConfirm) {
       t.message.set('Your two passwords are not equivalent.');
-      return false;
+      return;
     }
  
-    Accounts.resetPassword(Session.get('resetPasswordToken'), userInfo.password, function(err) {
+    Accounts.resetPassword(Session.get('resetPasswordToken'), password, function(err) {
       if (err) {
         t.message.set('We are sorry but something went wrong.');
       } else {
         t.message.set('Your password has been successfully changed. Welcome back!');
       }
     });
-    return false;
   }
 });

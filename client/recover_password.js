@@ -1,18 +1,3 @@
-isNotEmpty = function(value) {
-    if (value && value !== ''){
-        return true;
-    }
-    return false;
-};
-
-isEmail = function(value) {
-    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    if (filter.test(value)) {
-        return true;
-    }
-    return false;
-};
-
 Template.recover_password_form.onCreated(function() {
   this.message = new ReactiveVar('');
 })
@@ -28,16 +13,16 @@ Template.recover_password_form.events({
     e.preventDefault();
 
     var forgotPasswordForm = $(e.currentTarget);
-    var email = forgotPasswordForm.find('#recover-password-email').val().toLowerCase();
+    var email = t.$('#recover-password-email').val().toLowerCase();
 
-    if(!isEmail(email)) {
-      t.message.set('Please enter a valid email address.');
-      return false;
+    if(_.isEmpty(email)) {
+      t.message.set('Please fill in all required fields.');
+      return;
     }
 
-    if(!isNotEmpty(email)) {
-      t.message.set('Please fill in all required fields.');
-      return false;
+    if(!SimpleSchema.RegEx.Email.test(email)) {
+      t.message.set('Please enter a valid email address.');
+      return;
     }
 
     Accounts.forgotPassword({email: email}, function(err) {
