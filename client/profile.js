@@ -145,6 +145,9 @@ Template.user_stories.helpers({
       limit: limit
     })
   },
+  ifPublished: function() {
+    return Stories.findOne({authorUsername : this.user.username, published : true})
+  },
   unpublishedMessage: function () {
     if (Meteor.user().username == this.user.username) {
       return "You haven't published any stories yet!"
@@ -179,7 +182,13 @@ Template.user_favorite_stories.helpers({
                 }, 
                 limit: limit
               })
-    },
+  },
+  ifFavorites: function() {
+      return Stories.findOne({
+          _id: {
+            $in: this.user.profile.favorites
+          }})
+  },
   noFavoritesMessage: function () {
     if (Meteor.user().username == this.user.username) {
       return "You haven't favorited any stories yet!"

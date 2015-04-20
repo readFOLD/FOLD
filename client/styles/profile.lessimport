@@ -124,6 +124,15 @@ div.user-profile {
   position: relative;
   padding: 0; 
   color: @dark-color;
+  top: -41px;
+  left: calc(92% ~"-" 96px);
+
+  @media (max-width: 800px) {
+    top: -14px;
+    left: 0px;
+    margin: 0 auto;
+    width: 100%;
+  }
   &:hover {
     text-decoration: underline;
     color: @action-color;

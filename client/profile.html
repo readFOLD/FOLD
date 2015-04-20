@@ -65,35 +65,34 @@
 
 <template name="user_stories">
   <h1>Latest stories</h1>
-  {{#each publishedStories}}
-      <div class="profile story" data-story-id="{{_id}}">
-        {{> _story_preview_content}}
-      </div>
-  {{else}}
-    <div class="message">{{unpublishedMessage}}</div>
-  {{/each}}
-  {{#unless unpublishedMessage}}
+  {{#if ifPublished}}
     <button class="toggle-published">
       See {{#if seeAllPublished}}fewer{{else}}all{{/if}} stories
     </button>
-  {{/unless}}
+    {{#each publishedStories}}
+        <div class="profile story" data-story-id="{{_id}}">
+          {{> _story_preview_content}}
+        </div>
+    {{/each}}
+  {{else}}
+    <div class="message">{{unpublishedMessage}}</div>
+  {{/if}}
 </template>
 
 <template name="user_favorite_stories">
   <h1>Favorites</h1>
-  {{#each favoriteStories}}
-      <div class="profile story" data-story-id="{{_id}}">
-        {{> _story_preview_content}}
-      </div>
+  {{#if ifFavorites}}
+    <button class="toggle-favorites">
+      See {{#if seeAllFavorites}}fewer{{else}}all{{/if}} favorites
+    </button>
+    {{#each favoriteStories}}
+        <div class="profile story" data-story-id="{{_id}}">
+          {{> _story_preview_content}}
+        </div>
+    {{/each}}
   {{else}}
     <div class="message">{{noFavoritesMessage}}</div>
-  {{/each}}
-  {{#unless noFavoritesMessage}}
-  <button class="toggle-favorites">
-    See {{#if seeAllFavorites}}fewer{{else}}all{{/if}} favorites
-  </button>
-  {{/unless}}
-
+  {{/if}}
 </template>
 
 
