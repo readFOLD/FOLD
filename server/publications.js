@@ -14,7 +14,8 @@ Meteor.publish("exploreStoriesPub", function(filter, category, skip) {
       fields: {
         draftStory: 0,
         history: 0
-      }
+      },
+      limit: 200 // initial limit
     });
   } else {
     this.ready()
@@ -38,28 +39,14 @@ Meteor.publish("readStoryPub", function(userPathSegment, shortId) {
   }
 });
 
-Meteor.publish("readStoriesPub", function(ids) {
-  if (this.userId) { // TODO launch Remove
-    return Stories.find({
-      _id: {
-        $in: ids
-      },
-      published: true
-    }, {
-      fields: {
-        draftStory: 0,
-        history: 0
-      }
-    });
-  } else {
-    this.ready();
-  }
-});
-
 Meteor.publish("createStoryPub", function(userPathSegment, shortId) {
   return Stories.find({
     userPathSegment: userPathSegment,
     shortId: shortId
+  }, {
+    fields: {
+      history: 0
+    }
   });
 });
 
@@ -73,11 +60,15 @@ Meteor.publish("contextBlocksPub", function(storyShortId) {
   },{
     fields : {
       fullDetails: 0
-    }
+    },
+    limit: 1000
   });
 });
 
 Meteor.publish("minimalUsersPub", function(userIds) { // includes user profile and published stories
+  if (!userIds || !userIds.length || userIds.length > 1000) {
+    return this.ready();
+  }
   return Meteor.users.find({_id: {
     $in: userIds
   }}, {
@@ -119,7 +110,8 @@ Meteor.publish("userProfilePub", function(username) { // includes user profile a
       fields : {
         history: 0,
         draftStory: 0
-      }
+      },
+      limit: 100 // initial limit
   })]
 });
 
@@ -142,7 +134,8 @@ Meteor.publish("userStoriesPub", function(username) { // only published stories
     fields : {
       history: 0,
       draftStory: 0
-    }
+    },
+    limit: 100 // initial limit
   });
 });
 
@@ -153,7 +146,8 @@ Meteor.publish("myStoriesPub", function() {
     }, {
       fields: {
         history: 0
-      }
+      },
+      limit: 1000 // initial limit
     });
   } else {
     return this.ready();
