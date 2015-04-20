@@ -302,12 +302,10 @@ Template.vertical_section_block.events({
     Meteor.call('updateVerticalSectionContent',
       Session.get('storyId'),
       template.data.index,
-      cleanVerticalSectionContent($.trim(template.$('div.content').html())), // TODO move to method
+      cleanVerticalSectionContent($.trim(template.$('div.content').html())),
       saveCallback);
     return true;
   },
-  // clean up pasting into vertical section content
-  // TODO do this in save as well
   'paste .fold-editable': function(e) {
     var clipboardData, html;
     e.preventDefault();
@@ -411,7 +409,6 @@ Template.create.events({
     var that = this;
     var files = $("input.header-upload")[0].files;
     Session.set('saveState', 'saving');
-    // TODO use cloudinary upload methods as used elsewhere
     C.upload(files, function(r) { // callback does not respect typical error behavior and currently just doesn't call callback
       if (r.error){ // this can't get hit at the moment
         return saveCallback(r)

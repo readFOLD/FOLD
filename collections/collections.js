@@ -61,7 +61,7 @@ Story = (function() {
 
 })();
 
-// TODO consider replacing htmlclean with https://github.com/cristo-rabani/meteor-universe-html-purifier/
+// TO-DO consider replacing htmlclean with https://github.com/cristo-rabani/meteor-universe-html-purifier/
 var cleanHtmlOptions = {
   allowedTags: ['strong', 'em', 'u', 'b', 'a', 'br'], // only allow tags used in fold-editor and
   format: false,
@@ -1222,7 +1222,7 @@ Schema.Stories = new SimpleSchema({
     type: [Object],
     minCount: 1,
     maxCount: 1000,
-    blackbox: true // TODO remove this when stops causing errors! (after Mongo 2.6 and use position operators?)
+    blackbox: true // TODO remove this when stops causing errors!
   },
   'verticalSections.$._id': {
     type: String

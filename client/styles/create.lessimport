@@ -944,7 +944,6 @@ div.horizontal-context {
       }
     }
 
-    // TODO Factor this nicely
     button.add-desc-button {
       left: calc(100%~"-" 120px);
       width: 120px;

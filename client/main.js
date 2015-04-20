@@ -650,13 +650,11 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 //  //
 //  if(Meteor.Device.isPhone()) {
 //    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swipeleft',function(){
-//        // TODO only if allowed
 //        window.goRightOneCard();
 //      }
 //    );
 //
 //    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swiperight',function(){
-//        // TODO only if allowed
 //        window.goLeftOneCard();
 //      }
 //    );

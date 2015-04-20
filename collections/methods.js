@@ -119,8 +119,6 @@ Meteor.methods({
   },
   updateStoryTitle: function(storyId, title){
     // TODO DRY
-    // TODO Security
-    // TODO don't update story path if ever been published
     var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
     return updateStory({_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
