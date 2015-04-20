@@ -86,8 +86,11 @@ Meteor.methods({
     }
   },
   addContextToStory: function(storyId, storyShortId, contextBlock, verticalIndex){
-    // TODO check that user owns story
-    delete contextBlock._id
+    if (!Stories.find({_id: storyId, authorId: this.userId},{ fields:{ _id: 1 }}).count()){
+      throw new Meteor.Error("User doesn't own story")
+    }
+    delete contextBlock._id;
+
     var contextId = ContextBlocks.insert(_.extend({storyId: storyId, storyShortId: storyShortId, authorId: Meteor.user()._id}, contextBlock));
 
     var pushObject, pushSelectorString;
