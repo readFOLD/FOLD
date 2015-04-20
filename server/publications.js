@@ -63,8 +63,14 @@ Meteor.publish("createStoryPub", function(userPathSegment, shortId) {
   });
 });
 
-Meteor.publish("contextBlocksPub", function() {
-  return ContextBlocks.find({},{
+Meteor.publish("contextBlocksPub", function(storyShortId) {
+  if(!storyShortId || !this.userId){
+    return this.ready();
+  }
+  return ContextBlocks.find({
+    storyShortId: storyShortId,
+    authorId: this.userId
+  },{
     fields : {
       fullDetails: 0
     }

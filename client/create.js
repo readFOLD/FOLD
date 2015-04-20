@@ -766,7 +766,7 @@ window.addContext = function(contextBlock) {
   Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
   Session.set('saveState', 'saving');
 
-  Meteor.call('addContextToStory', storyId, contextBlock, verticalIndex, function(err, contextId){
+  Meteor.call('addContextToStory', storyId, Session.get("storyShortId"), contextBlock, verticalIndex, function(err, contextId){
     if(contextId){
       hideNewHorizontalUI();
       var placeholderAnchorElement = findPlaceholderLink(verticalIndex);

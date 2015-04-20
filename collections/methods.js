@@ -85,10 +85,10 @@ Meteor.methods({
       throw new Meteor.Error("Only the account owner may edit this profile")
     }
   },
-  addContextToStory: function(storyId, contextBlock, verticalIndex){
+  addContextToStory: function(storyId, storyShortId, contextBlock, verticalIndex){
     // TODO check that user owns story
     delete contextBlock._id
-    var contextId = ContextBlocks.insert(_.extend({storyId: storyId, authorId: Meteor.user()._id}, contextBlock));
+    var contextId = ContextBlocks.insert(_.extend({storyId: storyId, storyShortId: storyShortId, authorId: Meteor.user()._id}, contextBlock));
 
     var pushObject, pushSelectorString;
     pushSelectorString = 'draftStory.verticalSections.' + verticalIndex + '.contextBlocks';

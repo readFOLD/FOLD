@@ -145,10 +145,12 @@ Router.route("read", {
   data: function() {
     var story;
     if (this.ready()){
-      story = Stories.findOne({shortId: idFromPathSegment(this.params.storyPathSegment)}, {reactive: false});
+      var shortId = idFromPathSegment(this.params.storyPathSegment);
+      story = Stories.findOne({shortId: shortId}, {reactive: false});
       if (story) {
         Session.set("story", story);
         Session.set("storyId", story._id);
+        Session.set("storyShortId", shortId);
         Session.set("headerImage", story.headerImage);
         Session.set("horizontalSectionsMap", _.map(_.pluck(story.verticalSections, "contextBlocks"), function (cBlockIds, i) {
           return {
@@ -186,15 +188,17 @@ Router.route("edit", {
   template: "create",
   waitOn: function() {
     shortId = idFromPathSegment(this.params.storyPathSegment);
-    return [Meteor.subscribe('createStoryPub', this.params.userPathSegment, shortId), Meteor.subscribe('contextBlocksPub')];
+    return [Meteor.subscribe('createStoryPub', this.params.userPathSegment, shortId), Meteor.subscribe('contextBlocksPub', shortId)];
   },
   data: function() {
     var story;
     if (this.ready()) {
-      story = Stories.findOne({shortId: idFromPathSegment(this.params.storyPathSegment)});
+      var shortId = idFromPathSegment(this.params.storyPathSegment);
+      story = Stories.findOne({shortId: shortId});
       if (story && story.draftStory) {
         Session.set("story", story.draftStory);
         Session.set("storyId", story._id);
+        Session.set("storyShortId", shortId);
         Session.set("storyPublished", story.published);
         Session.set("headerImage", story.draftStory.headerImage);
         Session.set("userPathSegment", this.params.userPathSegment);
