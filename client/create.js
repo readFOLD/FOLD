@@ -320,10 +320,10 @@ Template.vertical_section_block.events({
     return false;
   },
   'paste .title.editable': window.plainTextPaste,   // only allow plaintext in title
-  'mouseover .narrative-babyburger-and-menu': function(e, template){
+  'mouseenter .narrative-babyburger-and-menu': function(e, template){
     template.babyburgerOpen.set(true);
   },
-  'mouseout .narrative-babyburger-and-menu': function(e, template){
+  'mouseleave .narrative-babyburger-and-menu': function(e, template){
     template.babyburgerOpen.set(false);
   }
 });

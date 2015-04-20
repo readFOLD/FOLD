@@ -196,10 +196,10 @@ Template.login_buttons.onCreated(function() {
 });
 
 Template.login_buttons.events({
-  "mouseover": function(d) {
+  "mouseenter": function(d) {
     Template.instance().showUserInfo.set(true);
   },
-  "mouseout": function(d) {
+  "mouseleave": function(d) {
     Template.instance().showUserInfo.set(false);
   },
   "click .signin": function(d) {
