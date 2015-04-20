@@ -48,6 +48,7 @@ Accounts.onCreateUser(function(options, user) {
   return user;
 });
 
+console.log(Accounts.config)
 
 // Password Reset E-mail
 Accounts.emailTemplates.from = 'FOLD Accounts <fold@media.mit.edu>';
@@ -58,7 +59,6 @@ Accounts.emailTemplates.resetPassword.subject = function(user, url) {
 };
 
 Accounts.emailTemplates.resetPassword.text = function(user, url) {
-  console.log(user, url);
   url = url.replace('#/', '')
   return "To reset your password, simply click the link below:\n\n" + url + "\n\n" + "Happy FOLDing!\nFOLD Team\nhttp://readFOLD.com"
   ;

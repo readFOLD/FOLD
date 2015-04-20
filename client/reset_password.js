@@ -1,13 +1,15 @@
-// if (Accounts._resetPasswordToken) {
-//   Session.set('resetPassword', Accounts._resetPasswordToken);
-// }
+Template.reset_password_form.onCreated(function() {
+  this.message = new ReactiveVar('');
+})
 
 Template.reset_password_form.helpers({
+  message: function() {
+    return Template.instance().message.get();
+  },
   resetPassword: function(){
-    console.log(Accounts, Accounts._resetPasswordToken);
     return Session.get('resetPasswordToken');
   }
-});
+})
 
 Template.reset_password_form.events({
   'submit #reset-password-form': function(e, t) {
@@ -21,20 +23,28 @@ Template.reset_password_form.events({
       userInfo[key] = value;
     });
 
-    // console.log(password, passwordConfirm);
- 
-    if (isNotEmpty(userInfo.password) && areValidPasswords(userInfo.password, userInfo.passwordConfirm)) {
-      Accounts.resetPassword(Session.get('resetPasswordToken'), userInfo.password, function(err) {
-        console.log(err);
-        if (err) {
-          console.log('We are sorry but something went wrong.');
-        } else {
-          console.log('Your password has been changed. Welcome back!');
-          Session.set('resetPasswordToken', null);
-          Router.go("/login")
-        }
-      });
+    if (!isNotEmpty(userInfo.password)) {
+      t.message.set('Please fill in all required fields.');
+      return false;
     }
+
+    if (!isValidPassword(userInfo.password)) {
+      t.message.set('Please enter a valid password.');
+      return false;
+    }
+
+    if (userInfo.password !== userInfo.passwordConfirm) {
+      t.message.set('Your two passwords are not equivalent.');
+      return false;
+    }
+ 
+    Accounts.resetPassword(Session.get('resetPasswordToken'), userInfo.password, function(err) {
+      if (err) {
+        t.message.set('We are sorry but something went wrong.');
+      } else {
+        t.message.set('Your password has been successfully changed. Welcome back!');
+      }
+    });
     return false;
   }
 });
