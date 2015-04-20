@@ -445,6 +445,9 @@ Template.metaview.helpers({
          }) || {_id: id}; // fallback to just having id if cannot find
        });
     return blocks;
+  },
+  textContent: function(){
+    return $($.parseHTML(this.content)).text();
   }
 });
 
