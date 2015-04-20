@@ -209,6 +209,15 @@ Template.fold_editor.events({
   }
 });
 
+Template.context_anchor_menu_contents.events({
+  'mouseenter .context-anchor-menu-contents': function() {
+    document.body.style.overflow = 'hidden';
+  },
+  'mouseleave .context-anchor-menu-contents': function(){
+    document.body.style.overflow='auto';
+  }
+});
+
 Template.context_anchor_go_back.events({
   'mouseup': function(e) {
     e.preventDefault();
@@ -689,6 +698,12 @@ Template.create_horizontal_section_block.events({
   },
   'click .remix-button': function(d, t) {
     return t.type.set('remix');
+  },
+  'mouseenter .horizontal-narrative-section': function() {
+    document.body.style.overflow = 'hidden';
+  },
+  'mouseleave .horizontal-narrative-section': function(){
+    document.body.style.overflow='auto';
   }
 });
 

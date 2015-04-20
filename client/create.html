@@ -105,7 +105,7 @@
 
 
 <template name="create_horizontal_section_block">
-  <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
+  <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px">
     <div class="content-icons">
       <button class='video-button {{#if video}}active{{/if}}'>
         {{> video_icon }}
@@ -645,7 +645,13 @@
 </template>
 
 <template name="context_anchor_menu">
-  <div class="context-anchor-menu" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
+  <div class="context-anchor-menu">
+    {{> context_anchor_menu_contents}}
+  </div>
+</template>
+
+<template name="context_anchor_menu_contents">
+  <div class="context-anchor-menu-contents">
     <div class="context-anchor-list">
       <ol>
         {{> context_anchor_go_back}}
@@ -657,12 +663,10 @@
           {{/if}}
         {{/each}}
       </ol>
-
     </div>
     <div class="bottom-bar"></div>
   </div>
 </template>
-
 
 <template name="vertical_edit_menu">
   <div class="vertical-edit-menu">
