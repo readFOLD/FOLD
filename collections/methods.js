@@ -120,7 +120,7 @@ Meteor.methods({
   updateStoryTitle: function(storyId, title){
     // TODO DRY
     var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
-    return updateStory({_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
+    return updateStory({_id: storyId, authorId: this.userId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
   updateVerticalSectionTitle: function(storyId, index, title){
     // TODO clean title
