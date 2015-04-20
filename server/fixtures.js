@@ -7,7 +7,8 @@ if (Meteor.users.find().count() === 0) {
     password: 'password',
     accessPriority: 1,
     profile: {
-      name: 'Cynthia Fold'
+      name: 'Cynthia Fold',
+      displayUsername: 'authOr'
     },
     signupCode: 'begin'
   });
@@ -39,6 +40,7 @@ if (Stories.find().count() === 0) {
     authorId: authorId,
     authorName: authorProfile.name,
     authorUsername: 'author',
+    authorDisplayUsername: 'authOr',
     favorited: [],
     views: 0,
 
@@ -364,7 +366,6 @@ if (Stories.find().count() === 0) {
       savedAt: new Date(1406524368561),  // could remove
       publishedAt: new Date(1406524369993),  // could remove
       published: true,  // could remove
-      userPathSegment: "author",  // could remove
       storyPathSegment: "unfolding-the-2014-ebola-outbreak-548781e397a6427c31384b73",  // could remove
       title: "Unfolding the 2014 Ebola Outbreak (Example Story)",
       authorId: authorId,  // could remove

@@ -381,12 +381,14 @@ Meteor.methods({
         'contextBlocks': contextBlocks,
         'contextBlockIds': contextBlockIds,
         'contextBlockTypeCount': contextBlockTypeCount,
-        'storyPathSegment': _s.slugify(draftStory.title.toLowerCase()) + '-' + story.shortId, // TODO DRY and probably get from draft
+        'userPathSegment': user.profile.displayUsername,
+        'storyPathSegment': _s.slugify(draftStory.title.toLowerCase()) + '-' + story.shortId, // TODO DRY
         'publishedAt': new Date(),
         'published': true,
         'everPublished': true,
         'authorName': user.profile.name || 'Anonymous',
-        'authorUsername': Meteor.user().username,
+        'authorUsername': user.username,
+        'authorDisplayUsername': user.profile.displayUsername,
         'version': 'earlybird'
       }
     );
@@ -415,7 +417,7 @@ Meteor.methods({
     var shortId = Random.id(8);
 
     var storyPathSegment = _s.slugify('new-story') + '-' + shortId;  // TODO DRY
-    var userPathSegment= user.username;
+    var userPathSegment= user.profile.displayUsername;
 
     initialVerticalSection = {
       _id: Random.id(8),
@@ -433,15 +435,14 @@ Meteor.methods({
       storyPathSegment: storyPathSegment,
       authorId: this.userId,
       authorName: user.profile.name || 'Anonymous',
-      authorUsername: Meteor.user().username,
+      authorUsername: user.username,
+      authorDisplayUsername: user.profile.displayUsername,
       shortId: shortId,
       draftStory: {
         authorId: this.userId,
         authorName: user.profile.name || 'Anonymous',
         verticalSections: [initialVerticalSection],
-        title: '',
-        userPathSegment: userPathSegment,
-        storyPathSegment: storyPathSegment
+        title: ''
       }
   }, {removeEmptyStrings: false});
     return {

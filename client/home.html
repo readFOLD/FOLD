@@ -94,7 +94,7 @@
 </template>
 <template name="login_buttons">
     {{#if currentUser}}
-      <button>{{#linkTo route="profile" data=currentUser}}{{currentUser.profile.name}}{{/linkTo}}</button>
+      <button><a href="/profile/{{currentUser.profile.displayUsername}}">{{currentUser.profile.name}}</a></button>
       {{#if showUserInfo}}
         <ol class="user-menu">
           <li>
@@ -229,7 +229,7 @@
     {{/linkTo}}
 
     <div class="byline">
-      <a class="author-profile-link" href="/profile/{{authorUsername}}" >
+      <a class="author-profile-link" href="{{profileUrl}}" >
         <div class="pull-left">
           <div class="author-image">
             {{#if profileImage author}}

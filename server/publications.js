@@ -65,7 +65,7 @@ Meteor.publish("contextBlocksPub", function(storyShortId) {
   });
 });
 
-Meteor.publish("minimalUsersPub", function(userIds) { // includes user profile and published stories
+Meteor.publish("minimalUsersPub", function(userIds) {
   if (!userIds || !userIds.length || userIds.length > 1000) {
     return this.ready();
   }

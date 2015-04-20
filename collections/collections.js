@@ -105,6 +105,7 @@ this.Stories = new Meteor.Collection("stories", {
         storyPathSegment: doc.storyPathSegment,
         userPathSegment: doc.userPathSegment,
         authorUsername: doc.authorUsername,
+        authorDisplayUsername: doc.authorDisplayUsername,
         contextCountOfType: function(){}, // stub out method for now,
         _id: doc._id
       });
@@ -1173,6 +1174,10 @@ Schema.Stories = new SimpleSchema({
   },
   authorUsername: {
     type: String
+  },
+  authorDisplayUsername: {
+    type: String,
+    optional: true
   },
   keywords:{
     type: [String],

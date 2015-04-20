@@ -172,6 +172,9 @@ Template._story_preview_content.helpers({
   },
   author: function(){
     return Meteor.users.findOne(this.authorId)
+  },
+  profileUrl: function(){
+    return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate and only use authorDisplayUsername
   }
 });
 

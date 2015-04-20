@@ -68,7 +68,7 @@ Router.route("terms", {
 });
 
 Router.route("profile", {
-  path: "/profile/:username",
+  path: "/profile/:username", // can put in display username
   template: "profile",
   action: function() {
     if (this.ready()) {
@@ -78,12 +78,12 @@ Router.route("profile", {
     }
   },
   waitOn: function() {
-    var username = this.params.username;
+    var username = this.params.username.toLowerCase();
     return [Meteor.subscribe('userProfilePub', username),
            Meteor.subscribe('userStoriesPub', username)];
   },
   data: function() {
-    var username = this.params.username;
+    var username = this.params.username.toLowerCase();
     var user;
       if (this.ready()) {
         user = Meteor.users.findOne({username : username});
