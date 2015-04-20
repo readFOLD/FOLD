@@ -116,19 +116,12 @@ Meteor.publish("userProfilePub", function(username) { // includes user profile a
 });
 
 Meteor.publish("userStoriesPub", function(username) { // only published stories
-  // TODO simplify once stories have author username on them
-  var user = Meteor.users.findOne({
-    username: username.toLowerCase()
-  });
-
-  if (!user) {
+  if (!username) {
     return this.ready();
   }
 
-  var userId = user._id;
-
   return Stories.find({
-    authorId: userId,
+    authorUsername: username,
     published: true
   },{
     fields : {
