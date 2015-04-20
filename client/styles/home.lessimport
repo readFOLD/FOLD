@@ -239,14 +239,19 @@ div.stories {
     padding-left: 25px;
     div.pull-left {
       div.author-image {
-          display: inline-block;
-          float: left;
-          background-color: @black-color;
-          .size(@profile-picture-size);
-          border-radius: @profile-picture-size/2;
-          text-align: center;
-          vertical-align: middle;
+        display: inline-block;
+        float: left;
+        .size(@profile-picture-size);
+        border-radius: @profile-picture-size/2;
+        text-align: center;
+        vertical-align: middle;
       }
+      div.author-image-placeholder {
+        background-color: @black-color;
+        .size(@profile-picture-size);
+        border-radius: @profile-picture-size/2;
+      }
+
       div.author-name-date {
         font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
         display: inline-block;

@@ -230,7 +230,11 @@
     <div class="pull-left">
       <a href="/profile/{{authorUsername}}" >
         <div class="author-image">
+          {{#if profileImage author}}
            <img class="profile-picture" src="{{profileImage author}}"/>
+          {{else}}
+            <div class="author-image-placeholder"></div>
+          {{/if}}
         </div>
       </a>
 
