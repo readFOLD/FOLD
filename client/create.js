@@ -401,7 +401,7 @@ Template.create.events({
       if (err || !numDocs) {
         return alert('Publication failed');
       } else {
-        Router.go('/read/' + that.userPathSegment + '/' + that.storyPathSegment)
+        Router.go('/profile/' + Meteor.user().username);
       }
     });
   },
