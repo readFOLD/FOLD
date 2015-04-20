@@ -8,7 +8,6 @@ Template.login_form.helpers({
   } 
 });
 
-
 Template.login_form.events({
   'submit #login-form' : function(e, template) {
     e.preventDefault();
@@ -30,4 +29,3 @@ Template.login_form.events({
     })
   }
 });
-

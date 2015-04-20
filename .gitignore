@@ -1,6 +1,7 @@
 # demeteorizer
 .demeteorized
 .build*
+.DS_Store
 
 *.sublime-workspace
 

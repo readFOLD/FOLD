@@ -1,5 +1,5 @@
 <template name="login">
-  {{> top_banner_simple}}
+  {{> top_banner_simple_no_links}}
   <div class="login">
     <section>
       {{> login_form}}
@@ -27,7 +27,9 @@
       <input name="username" type="text" placeholder="username or email" autofocus="autofocus">
       <label for="password"> Password </label>
       <input name="password" type="password" placeholder="password">
+
       <button type="submit" class="login-button">Log in</button>
+      <a href="/recover-password" class="recover-password-link">Lost password?</a>
       {{#if loginFailed}}
         <div class="log-in-error">
           Invalid username or password
@@ -36,4 +38,3 @@
     </form>
   </div>
 </template>
-
