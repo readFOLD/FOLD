@@ -6,7 +6,6 @@ Meteor.startup(function () {
   }
 
   // SMTP Config
-  // TODO Move to settings.json
   smtp = {
     username: Meteor.settings.SMTP_USERNAME,
     password: Meteor.settings.SMTP_API_KEY,

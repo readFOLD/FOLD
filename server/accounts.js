@@ -49,8 +49,19 @@ Accounts.onCreateUser(function(options, user) {
 });
 
 
-Accounts.emailTemplates.resetPassword.text = function (user, url) {
-  url = url.replace('#/', '')
-  return " To reset your password, simply click the link below:\n\n"
-  + url;
+// Password Reset E-mail
+Accounts.emailTemplates.from = 'FOLD Accounts <fold@media.mit.edu>';
+Accounts.emailTemplates.siteName = 'readfold.com',
+
+Accounts.emailTemplates.resetPassword.subject = function(user, url) {
+  return 'FOLD Password Reset';
 };
+
+Accounts.emailTemplates.resetPassword.text = function(user, url) {
+  console.log(user, url);
+  url = url.replace('#/', '')
+  return "To reset your password, simply click the link below:\n\n" + url + "\n\n" + "Happy FOLDing!\nFOLD Team\nhttp://readFOLD.com"
+  ;
+};
+
+console.log(Accounts.emailTemplates);
