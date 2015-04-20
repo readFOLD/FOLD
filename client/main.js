@@ -228,10 +228,7 @@ Template.story_header.helpers({
   headerImageAttribution: function() {
     return this.headerImageAttribution;
   },
-  headerImageUrl: headerImageUrl,
-  "files": function(){
-    return S3.collection.find();
-  }
+  headerImageUrl: headerImageUrl
 });
 
 Template.story_header.events = {
