@@ -287,8 +287,8 @@ Meteor.methods({
 
     var contextBlocks = verticalSections[index].contextBlocks;
 
-    if (contextBlocks){ // TODO check owner and if remixed etc..
-      ContextBlocks.remove({_id: {$in: contextBlocks}})
+    if (contextBlocks){ // TO-DO check if remixed etc..
+      ContextBlocks.remove({_id: {$in: contextBlocks}, authorId: this.userId})
     }
 
     return updateStory({ _id: storyId }, {
