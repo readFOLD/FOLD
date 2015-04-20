@@ -229,8 +229,8 @@
     {{/linkTo}}
 
     <div class="byline">
-      <div class="pull-left">
-        <a href="/profile/{{authorUsername}}" >
+      <a class="author-profile-link" href="/profile/{{authorUsername}}" >
+        <div class="pull-left">
           <div class="author-image">
             {{#if profileImage author}}
              <img class="profile-picture" src="{{profileImage author}}"/>
@@ -238,15 +238,14 @@
               <div class="author-image-placeholder"></div>
             {{/if}}
           </div>
-        </a>
 
-        <div class="author-name-date">
-          <a class="author-profile-link" href="/profile/{{authorUsername}}" >
+          <div class="author-name-date">
             <div class="author-name">By <span>{{authorName}}</span></div>
-          </a>
-          <div class="publish-date">{{lastPublishDate}}</div>
+            <div class="publish-date">{{lastPublishDate}}</div>
+          </div>
         </div>
-      </div>
+      </a>
+
       <div class="pull-right">
         {{ > favorite_button }}
       </div>
