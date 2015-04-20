@@ -1241,8 +1241,7 @@ Schema.Stories = new SimpleSchema({
   },
   'verticalSections.$.contextBlocks': {
     type: [String],
-    defaultValue: [],
-    blackbox: true // TODO actually define schema
+    defaultValue: []
   },
   'history': {
     type: [Object],
