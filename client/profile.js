@@ -137,10 +137,16 @@ Template.user_stories.helpers({
 
 Template.user_favorite_stories.helpers({
   favoriteStories: function() {
+    var favorites = this.user.profile.favorites;
+    if (favorites && favorites.length) {
       return Stories.find({
-                        _id: {
-                          $in: this.user.profile.favorites
-                        }})
+        _id: {
+          $in: this.user.profile.favorites
+        }
+      })
+    } else {
+      return [];
+    }
     },
   noFavoritesMessage: function () {
     if (Meteor.user().username == this.user.username) {
