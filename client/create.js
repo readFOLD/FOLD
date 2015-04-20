@@ -8,6 +8,12 @@ var saveUpdatedSelection = function () {
   $(window.selectedNode).closest('.content').blur();
 };
 
+var removeAnchorTag = function(tag){
+  parentDiv = $(tag).closest('.content');
+  $(tag).contents().unwrap();
+  parentDiv.blur();
+};
+
 var saveNarrativeSectionContent = function (verticalIndex) {
   $('.vertical-narrative-section[data-vertical-index="' + verticalIndex + '"]').find('.content').blur();
 };
@@ -225,9 +231,7 @@ Template.anchor_menu.events({
 Template.fold_link_remover.events({
   'mouseup button': function(e) {
     e.preventDefault();
-    parentDiv = ($(window.enclosingAnchorTag).closest('.content'));
-    $(window.enclosingAnchorTag).contents().unwrap();
-    parentDiv.blur();
+    removeAnchorTag(window.enclosingAnchorTag);
     hideFoldAll();
   }
 });
@@ -793,9 +797,11 @@ Template.horizontal_section_edit_delete.helpers({
 Template.horizontal_section_block.events({
   "click .delete": function(d) {
     if(confirm("Permanently delete this card?")){
+      var currentY = Session.get("currentY");
       Session.set('saveState', 'saving');
       id = this._id;
-      Meteor.call('removeContextFromStory', Session.get("storyId"), id, Session.get("currentY"), function(err, numDocs){
+      removeAnchorTag($('.vertical-narrative-section[data-vertical-index="'+ currentY +'"] .content a[data-context-id="' + id + '"]'));
+      Meteor.call('removeContextFromStory', Session.get("storyId"), id, currentY, function(err, numDocs){
         if(err){
           return saveCallback(err);
         } else {
