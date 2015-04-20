@@ -374,6 +374,7 @@ Template.create.helpers({
 });
 
 Template.create.events({
+  'mouseleave': window.updateUIBasedOnSelection, // this is here so that it fires when mouse goes off to the side of vertical section or even window when selecting
   "click .publish-story": function (e, template) {
     return Meteor.call('checkPublishAccess', function(err, hasAccess) {
       if (hasAccess) {
