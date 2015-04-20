@@ -280,7 +280,6 @@ window.saveCallback =  function(err, success, cb) {
 };
 
 Template.vertical_section_block.events({
-  'mouseup [contenteditable]': window.updateUIBasedOnSelection,
   'blur [contenteditable]': window.updateUIBasedOnSelection,
   'keyup [contenteditable]': window.updateUIBasedOnSelection,
   'blur .title[contenteditable]' : function(e, template){
@@ -374,7 +373,7 @@ Template.create.helpers({
 });
 
 Template.create.events({
-  'mouseleave': window.updateUIBasedOnSelection, // this is here so that it fires when mouse goes off to the side of vertical section or even window when selecting
+  'mouseup': window.updateUIBasedOnSelection, // this is here so that it fires when mouse goes off to the side of vertical section
   "click .publish-story": function (e, template) {
     return Meteor.call('checkPublishAccess', function(err, hasAccess) {
       if (hasAccess) {
