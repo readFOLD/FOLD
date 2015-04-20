@@ -28,6 +28,8 @@ Meteor.startup(function(){
     // Safari changes window size in a weird way that jquery doesn't register correctly when scroll up vs down
     Session.set("windowHeight", Meteor.Device.isPhone() && !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/) ? window.innerHeight : $(window).height());
 
+    Session.set("minimapMaxHeight", Session.get("windowHeight") - 553);
+
     Session.set("windowWidth", windowWidth);
 
     var cardWidth = getCardWidth(windowWidth);
@@ -456,6 +458,8 @@ Template.minimap.events({
   }
 });
 
+Session.set("windowHeight")
+
 Template.minimap.helpers({
   horizontalSectionsMap: function() {
     return Session.get("horizontalSectionsMap");
@@ -466,8 +470,34 @@ Template.minimap.helpers({
   selectedY: function() {
     return Session.equals("currentY", this.verticalIndex);
   },
-  smallCards: function(){
-    return Session.get("horizontalSectionsMap").length > 7;
+  minimapShown: function() {
+    // Ensure minimap height is greater than 0 and blocks are at least 5 pixels
+    if (Session.get("minimapMaxHeight") <= 0 || (Session.get("minimapMaxHeight") / Session.get("horizontalSectionsMap").length < 5)) {
+      return false;
+    } else {
+      return true;
+    }
+  },
+  responsive: function() {
+    var maxHeight = Session.get("minimapMaxHeight");
+    var defaultSectionHeight = 17 + 5;
+    return (Session.get("horizontalSectionsMap").length * defaultSectionHeight >= maxHeight)
+  },
+  sectionHeight: function() {
+    var maxHeight = Session.get("minimapMaxHeight");
+    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75;
+  },
+  verticalCardWidth: function() {
+    var maxHeight = Session.get("minimapMaxHeight");
+    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 1.53333;
+  },
+  horizontalCardWidth: function() {
+    var maxHeight = Session.get("minimapMaxHeight");
+    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 0.7645 * 1.53333;
+  },
+  sectionMargin: function() {
+    var maxHeight = Session.get("minimapMaxHeight");
+    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.25;
   }
 });
 

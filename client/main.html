@@ -533,18 +533,20 @@
 </template>
 
 <template name="minimap">
+  {{#if minimapShown}}
   <div class="minimap">
     {{#each horizontalSectionsMap}}
-    <div class="section {{#if selectedY}}selected-section{{/if}} {{#if smallCards}}small{{/if}}">
-      <div class="vertical block {{#if selectedY}}selected-block{{/if}} {{#if smallCards}}small{{/if}}">
+    <div class="section {{#if selectedY}}selected-section{{/if}}" style="{{#if responsive}}height: {{sectionHeight}}px; margin-bottom: {{sectionMargin}}px;{{/if}}">
+      <div class="vertical block {{#if selectedY}}selected-block{{/if}}" style="{{#if responsive}}width: {{verticalCardWidth}}px;{{/if}}">
       </div>
       {{#each horizontal}}
-          <div class="horizontal block {{#if selectedX}}selected-block{{/if}} {{#if smallCards}}small{{/if}}">
+          <div class="horizontal block {{#if selectedX}}selected-block{{/if}}" style="{{#if responsive}}width: {{horizontalCardWidth}}px;{{/if}}">
           </div>
       {{/each}}
     </div>
     {{/each}}
   </div>
+  {{/if}}
 </template>
 
 <template name="mobile_minimap">
