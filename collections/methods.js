@@ -38,7 +38,7 @@ var changeHasTitle = function(storyId, index, newValue){
   key = 'draftStory.verticalSections.' + index + '.hasTitle'
   setObject[key] = newValue;
 
-  return updateStory({_id: storyId, authorId: this.userId}, {
+  return updateStory.call(this, {_id: storyId }, {
     $set: setObject
   })
 }
@@ -60,13 +60,13 @@ var swapArrayElements = function(arr, x, y){
   arr[x] = b;
 };
 
-
-// TODO add authorId to selector query, will need to get `this` to match or call it via apply
+// only the author may update the story
 var updateStory = function(selector, modifier, options) {
   if (_.isEmpty(modifier)){
     return
   }
   modifier.$set = _.extend(modifier.$set || {}, {savedAt: new Date});
+  selector.authorId = this.userId; // this.userId must be the user (use via .call or .apply)
 
   return Stories.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
 };
@@ -97,7 +97,7 @@ Meteor.methods({
     pushSelectorString = 'draftStory.verticalSections.' + verticalIndex + '.contextBlocks';
     pushObject = {};
     pushObject[pushSelectorString] = contextId;
-    var numUpdated = Stories.update({ _id: storyId, authorId: this.userId }, { $addToSet: pushObject});
+    var numUpdated = updateStory.call(this, { _id: storyId }, { $addToSet: pushObject});
     if (!numUpdated){
       throw new Meteor.Error('Story not updated')
     }
@@ -108,9 +108,8 @@ Meteor.methods({
     pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
     pullObject = {};
     pullObject[pushSelectorString] = contextId;
-    var numUpdated = Stories.update({
-      _id: storyId,
-      authorId: this.userId
+    var numUpdated = updateStory.call(this, {
+      _id: storyId
     }, {
       $pull: pullObject
     });
@@ -123,23 +122,23 @@ Meteor.methods({
   updateStoryTitle: function(storyId, title){
     // TODO DRY
     var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
-    return updateStory({_id: storyId, authorId: this.userId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
+    return updateStory.call(this, {_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
   updateVerticalSectionTitle: function(storyId, index, title){
     var setObject = { $set:{} };
     setObject['$set']['draftStory.verticalSections.' + index + '.title'] = title;
 
-    return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
+    return updateStory.call(this, {_id: storyId}, setObject, {removeEmptyStrings: false})
   },
   updateVerticalSectionContent: function(storyId, index, content){
     // html is cleaned client-side on both save and display
     var setObject = { $set:{} };
     setObject['$set']['draftStory.verticalSections.' + index + '.content'] = content;
 
-    return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
+    return updateStory.call(this, {_id: storyId}, setObject, {removeEmptyStrings: false})
   },
   updateHeaderImage: function(storyId, filePublicId, fileFormat) {
-    return updateStory({_id: storyId, authorId: this.userId}, {
+    return updateStory.call(this, {_id: storyId}, {
       $set: {
         'draftStory.headerImage': filePublicId,
         'draftStory.headerImageFormat': fileFormat
@@ -187,7 +186,7 @@ Meteor.methods({
       );
     });
 
-    return updateStory({_id: storyId}, {
+    return updateStory.call(this, {_id: storyId}, {
       $set: {
         'draftStory.verticalSections': newVerticalSections
       }
@@ -202,7 +201,7 @@ Meteor.methods({
       hasTitle: false
     };
 
-    return updateStory({_id: storyId, authorId: this.userId}, {
+    return updateStory.call(this, {_id: storyId }, {
       $push: {
         'draftStory.verticalSections': {
           $position: index,
@@ -231,7 +230,7 @@ Meteor.methods({
 
     swapArrayElements(verticalSections, index, index - 1);
 
-    return updateStory({ _id: storyId }, {
+    return updateStory.call(this, { _id: storyId }, {
       $set: {
         'draftStory.verticalSections': verticalSections
       }
@@ -259,7 +258,7 @@ Meteor.methods({
 
     swapArrayElements(verticalSections, index, index + 1);
 
-    return updateStory({ _id: storyId }, {
+    return updateStory.call(this, { _id: storyId }, {
       $set: {
         'draftStory.verticalSections': verticalSections
       }
@@ -291,7 +290,7 @@ Meteor.methods({
       ContextBlocks.remove({_id: {$in: contextBlocks}, authorId: this.userId})
     }
 
-    return updateStory({ _id: storyId }, {
+    return updateStory.call(this, { _id: storyId }, {
       $pull: {
         'draftStory.verticalSections': {_id: verticalSections[index]._id}
       }
@@ -393,7 +392,7 @@ Meteor.methods({
       }
     );
 
-    return updateStory({ _id: storyId }, {
+    return updateStory.call(this, { _id: storyId }, {
       $set: setObject,
       $push: {'history': _.omit(story, ['draftStory', 'history'])} // history has everything except the current published story
     });
