@@ -3,7 +3,7 @@
   cursor: text;
 }
 
-input[type=file].button {
+input[type=file] {
   height: 40px;
   width: 165px;
 
@@ -45,6 +45,35 @@ input[type=file].button {
   &.image-upload{
     &::before {
       content: 'Upload Image';
+    }
+  }
+
+  &.overlay{
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    z-index: 10;
+    background-color: @black-color;
+    opacity: 0.7;
+
+    &::-webkit-file-upload-button {
+      display:none;
+    }
+    &::before {
+      display: inline-block;
+      color: @light-color;
+      outline: none;
+      -webkit-user-select: none;
+      cursor: pointer;
+      padding: 85px 15px;
+      text-align: center;
+      font-size: 14px;
+      width: 100%;;
+      content: 'Upload Image';
+    }
+    &:hover::before {
+      background-color: @dark-color;
+      color: @light-color;
     }
   }
 }

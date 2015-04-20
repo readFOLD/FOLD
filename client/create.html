@@ -45,7 +45,7 @@
 <template name="create_options">
   {{#unless pastHeader}}
   <div class="upload-header-image">
-    <input type="file" class="button header-upload change-header-upload">
+    <input type="file" class="header-upload change-header-upload">
   </div>
   {{/unless}}
   <div class="floating-story-buttons">
@@ -288,7 +288,7 @@
       {{#if uploadMode}}
         <div class="image-upload">
           {{#c_upload}}
-            <input type="file" accept="image/*" class="button image-upload">
+            <input type="file" accept="image/*" class="image-upload">
           {{/c_upload}}
 
           <!--{{#each c.uploading_images}}-->
