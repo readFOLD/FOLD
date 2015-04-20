@@ -4,6 +4,18 @@ Meteor.startup(function () {
   if (process.env.SEGMENT_WRITE_KEY){
     Meteor.settings['public'].SEGMENT_WRITE_KEY = process.env.SEGMENT_WRITE_KEY;
   }
+
+  // SMTP Config
+  // TODO Move to settings.json
+  smtp = {
+    username: Meteor.settings.SMTP_USERNAME,
+    password: Meteor.settings.SMTP_API_KEY,
+    server: Meteor.settings.SMTP_SERVER,
+    port: Meteor.settings.SMTP_PORT
+  }
+
+  process.env.MAIL_URL = 'smtp://' + encodeURIComponent(smtp.username) + ':' + encodeURIComponent(smtp.password) + '@' + encodeURIComponent(smtp.server) + ':' + smtp.port;
+
 });
 
 if (Meteor.settings.CLOUDINARY_API_SECRET){

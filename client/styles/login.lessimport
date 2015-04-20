@@ -1,6 +1,6 @@
 @button-height: 45px;
 
-div.login {
+div.login, div.reset-password, div.recover-password {
   width: 100%;
   padding-top: 240px;
   height: auto;
@@ -39,7 +39,6 @@ h1.login-header {
   font-size: 23px;
 }
 
-
 form#signup-form {
 	width: 350px;
 	margin-left: 75px;
@@ -47,7 +46,7 @@ form#signup-form {
 	font-family: Muli;
 }
 
-.login-button, .signup-button, .save-profile-button {
+.login-button, .signup-button, .save-profile-button, .reset-button {
 	margin-top: 20px;
 	width: 100px;
     background-color: @action-color;
@@ -57,6 +56,14 @@ form#signup-form {
     &:hover {
     	background-color: @dark-color;
     }
+}
+
+a.recover-password-link {
+  margin-left: 100px;
+
+  &:hover {
+    color: @action-color;
+  }
 }
 
 div.log-in-error {

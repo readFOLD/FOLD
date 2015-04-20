@@ -100,6 +100,33 @@ Router.route("profile", {
   },
 });
 
+Router.route("recover_password", {
+  path: "recover-password",
+  template: "recover_password",
+  action: function() {
+    if (this.ready()) {
+      setTitle('Recover Password');
+      setOGImage();
+      return this.render();
+    }
+  }
+})
+
+Router.route("reset_password", {
+  path: "reset-password/:resetPasswordToken",
+  template: "reset_password",
+  data: function() {
+    Session.set("resetPasswordToken", this.params.resetPasswordToken);
+  },
+  action: function() {
+    if (this.ready()) {
+      setTitle('Reset Password');
+      setOGImage();
+      return this.render();
+    }
+  }
+})
+
 Router.route("my_story_profile", {
   path: "my-stories",
   template: "my_story_profile",
