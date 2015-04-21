@@ -102,7 +102,6 @@ this.Stories = new Meteor.Collection("stories", {
       _.extend(doc.draftStory, {
         unpublishedChanges: (!doc.published || !doc.publishedAt || doc.savedAt > doc.publishedAt),
         savedAt: doc.savedAt,
-        storyPathSegment: doc.storyPathSegment,
         userPathSegment: doc.userPathSegment,
         authorUsername: doc.authorUsername,
         authorDisplayUsername: doc.authorDisplayUsername,

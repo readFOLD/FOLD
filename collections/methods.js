@@ -399,7 +399,7 @@ Meteor.methods({
         'contextBlockIds': contextBlockIds,
         'contextBlockTypeCount': contextBlockTypeCount,
         'userPathSegment': user.displayUsername,
-        'storyPathSegment': _s.slugify(draftStory.title.toLowerCase()) + '-' + story.shortId, // TODO DRY
+        'storyPathSegment': _s.slugify(title.toLowerCase()) + '-' + story.shortId, // TODO DRY
         'publishedAt': new Date(),
         'published': true,
         'everPublished': true,
@@ -457,6 +457,7 @@ Meteor.methods({
       shortId: shortId,
       draftStory: {
         verticalSections: [initialVerticalSection],
+        storyPathSegment: storyPathSegment,
         title: ''
       }
   }, {removeEmptyStrings: false});

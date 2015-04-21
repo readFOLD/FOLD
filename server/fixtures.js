@@ -359,18 +359,10 @@ if (Stories.find().count() === 0) {
       }
     ].map(function(doc){return new ContextBlock(doc)}),
     draftStory: {
-      _id: storyId, // could remove
       headerImage: "header-image.jpg",
       headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-      savedAt: new Date(1406524368561),  // could remove
-      publishedAt: new Date(1406524369993),  // could remove
-      published: true,  // could remove
       storyPathSegment: "unfolding-the-2014-ebola-outbreak-548781e397a6427c31384b73",  // could remove
       title: "Unfolding the 2014 Ebola Outbreak (Example Story)",
-      authorId: authorId,  // could remove
-      authorName: authorProfile.name,  // could remove
-      favorited: [],
-      views: 0,
       verticalSections: [
         {
           _id: '93',
