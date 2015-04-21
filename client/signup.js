@@ -62,7 +62,7 @@ Template.signup_form.helpers({
 });
 
 Template.signup_form.events({
-  'keyup input#signup-email': function(e, t) {
+  'blur input#signup-email': function(e, t) {
     var val = $(e.currentTarget).val();
     if (!SimpleSchema.RegEx.Email.test(val) && val !== '') {
       t.emailError.set('Invalid e-mail address');
@@ -74,9 +74,8 @@ Template.signup_form.events({
       return;
     }
   },
-  'keyup input#signup-password, keyup input#signup-password2': function(e, t) {
+  'blur input#signup-password': function(e, t) {
     var p1 = $("#signup-password").val();
-    var p2 = $("#signup-password2").val();
 
     if (p1 === '') {
       t.passwordError.set('');
@@ -87,6 +86,11 @@ Template.signup_form.events({
       t.passwordError.set('Password too short')
       return;
     }
+
+  },
+  'keyup input#signup-password2': function(e, t) {
+    var p1 = $("#signup-password").val();
+    var p2 = $("#signup-password2").val();
 
     if (p1 !== p2) {
       t.passwordError.set('Passwords do not match')
