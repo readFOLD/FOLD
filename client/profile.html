@@ -65,10 +65,12 @@
 
 <template name="user_stories">
   <h1>Latest stories</h1>
-  {{#if ifPublished}}
-    <button class="toggle-published">
-      See {{#if seeAllPublished}}fewer{{else}}all{{/if}} stories
-    </button>
+  {{#if hasPublished}}
+    {{#if publishedToShow}}
+      <button class="toggle-published">
+        See {{#if seeAllPublished}}fewer{{else}}all{{/if}} stories
+      </button>
+    {{/if}}
     {{#each publishedStories}}
         <div class="profile story" data-story-id="{{_id}}">
           {{> _story_preview_content}}
