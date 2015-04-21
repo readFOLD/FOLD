@@ -81,10 +81,12 @@
 
 <template name="user_favorite_stories">
   <h1>Favorites</h1>
-  {{#if ifFavorites}}
-    <button class="toggle-favorites">
-      See {{#if seeAllFavorites}}fewer{{else}}all{{/if}} favorites
-    </button>
+  {{#if hasFavorites}}
+    {{#if favoritesToShow}}
+      <button class="toggle-favorites">
+        See {{#if seeAllFavorites}}fewer{{else}}all{{/if}} favorites
+      </button>
+    {{/if}}
     {{#each favoriteStories}}
         <div class="profile story" data-story-id="{{_id}}">
           {{> _story_preview_content}}

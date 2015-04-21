@@ -188,11 +188,14 @@ Template.user_favorite_stories.helpers({
       return [];
     }
   },
-  ifFavorites: function() {
-      return Stories.findOne({
-          _id: {
-            $in: this.user.profile.favorites
-          }})
+  favoritesToShow: function() {
+    var favorites = this.user.profile.favorites;
+    if (favorites && favorites.length) {
+      return favorites.length > 5
+    }
+  },
+  hasFavorites: function() {
+    return this.user.profile.favorites;
   },
   noFavoritesMessage: function () {
     if (Meteor.user().username == this.user.username) {
