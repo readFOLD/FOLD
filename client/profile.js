@@ -148,7 +148,7 @@ Template.user_stories.helpers({
       limit: limit
     })
   },
-  publishedStoriesToShow: function() {
+  showAllPublishedButton: function() {
     return Stories.find({authorUsername : this.user.username, published : true}).count() > numStoriesToDisplay
   },
   hasPublished: function() {
@@ -192,10 +192,10 @@ Template.user_favorite_stories.helpers({
           limit: limit
       })
     } else {
-      return [];
+      return favorites.length;
     }
   },
-  favoritesToShow: function() {
+  showAllFavoritesButton: function() {
     var favorites = this.user.profile.favorites;
     if (favorites && favorites.length) {
       return favorites.length > numStoriesToDisplay

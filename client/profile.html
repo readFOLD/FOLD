@@ -66,7 +66,7 @@
 <template name="user_stories">
   <h1>Latest stories</h1>
   {{#if hasPublished}}
-    {{#if publishedStoriesToShow}}
+    {{#if showAllPublishedButton}}
       <button class="toggle-published">
         See {{#if seeAllPublished}}fewer{{else}}all{{/if}} stories
       </button>
@@ -84,7 +84,7 @@
 <template name="user_favorite_stories">
   <h1>Favorites</h1>
   {{#if hasFavorites}}
-    {{#if favoritesToShow}}
+    {{#if showAllFavoritesButton}}
       <button class="toggle-favorites">
         See {{#if seeAllFavorites}}fewer{{else}}all{{/if}} favorites
       </button>
