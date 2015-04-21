@@ -3,12 +3,11 @@ var authorId, authorProfile;
 if (Meteor.users.find().count() === 0) {
   authorId = Accounts.createUser({
     email: 'author@example.com',
-    username: 'author',
+    username: 'authOr',
     password: 'password',
     accessPriority: 1,
     profile: {
-      name: 'Cynthia Fold',
-      displayUsername: 'authOr'
+      name: 'Cynthia Fold'
     },
     signupCode: 'begin'
   });
