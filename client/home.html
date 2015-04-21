@@ -111,9 +111,9 @@
 </template>
 <template name="login_buttons">
     {{#if currentUser}}
-      {{#linkTo route="profile" data=currentUser}}
+      <a href="/profile/{{currentUser.displayUsername}}">
         <button>{{currentUser.profile.name}}</button>
-      {{/linkTo}}
+      </a>
       {{#if showUserInfo}}
         <ol class="user-menu">
           <li>

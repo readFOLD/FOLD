@@ -1,6 +1,6 @@
-var formatDate, weekDays, numStoriesToDisplay;
+var formatDate, weekDays;
 
-numStoriesToDisplay = 12;
+var numStoriesToDisplay = 12;
 
 weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -73,7 +73,8 @@ Template.user_profile.helpers({
     return Template.instance().editing.get()
   },
   ownProfile: function() {
-    return (Meteor.user() && (Meteor.user().username == this.user.username)) ? true : false
+    var user = Meteor.user();
+    return (user && (user.username == this.user.username)) ? true : false
   },
   name : function() {
     return this.user.profile.name
@@ -147,14 +148,15 @@ Template.user_stories.helpers({
       limit: limit
     })
   },
-  publishedToShow: function() {
+  publishedStoriesToShow: function() {
     return Stories.find({authorUsername : this.user.username, published : true}).count() > numStoriesToDisplay
   },
   hasPublished: function() {
     return Stories.findOne({authorUsername : this.user.username, published : true})
   },
   unpublishedMessage: function () {
-    if (Meteor.user() && (Meteor.user().username == this.user.username)) {
+    var user = Meteor.user();
+    if (user && (user.username == this.user.username)) {
       return "You haven't published any stories yet!"
     } else {
       return "This user hasn't written any stories yet"
@@ -203,7 +205,8 @@ Template.user_favorite_stories.helpers({
     return this.user.profile.favorites;
   },
   noFavoritesMessage: function () {
-    if (Meteor.user() && (Meteor.user().username == this.user.username)) {
+    var user = Meteor.user();
+    if (user && (user.username == this.user.username)) {
       return "You haven't favorited any stories yet!"
     } else {
       return "This user hasn't favorited any stories yet"
