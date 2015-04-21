@@ -29,15 +29,19 @@ input.error, input.required {
 }
 
 form {
-  label {
-    span.error {
-      float: right;
-      color: red;
-    }
+  span.error {
+    float: right;
+    color: red;
+  }
+
+  div.error {
+    color: red;
+  }
+
+  input.error {
+    border-bottom: 5px solid red;
   }
 }
-
-
 
 form#login-form {
 	width: 350px;
