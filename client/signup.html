@@ -11,32 +11,22 @@
 <template name="signup_form">
     <form id="signup-form" action="action">
       <label for="email"> What's your e-mail? </label>
-      <input name="email" type="email" placeholder="email@fold.com" autofocus="autofocus">
+      {{#if emailError}}<span class="error">{{emailError}}</span>{{/if}}
+      <input id="signup-email" name="email" type="email" placeholder="email@fold.com" autofocus="autofocus" class="{{#if emailError}}error{{/if}}">
       <label for="name"> What's your name? </label>
-      <input name="name" type="text" placeholder="Full Name" dir="auto" value="{{#if currentUser.profile.name}}{{currentUser.profile.name}}{{/if}}">
+      <input id="signup-name" name="name" type="text" placeholder="Full Name" dir="auto" value="{{#if currentUser.profile.name}}{{currentUser.profile.name}}{{/if}}">
       <label for="username"> What username would you like? </label>
       <input name="username" type="text" placeholder="Username" value="{{#if currentUser.tempUsername}}{{currentUser.tempUsername}}{{/if}}">
       {{#if emailUser}}
-        <label for="password"> 
-          Choose a password 
-          {{#if invalidPassword}}
-            <span class="invalid-inp error">Invalid password</span>
-          {{/if}}
-        </label>
-        
-        <input name="password" type="password" placeholder="password" class="{{#if passwordError}}error{{/if}}">
+        <label for="password"> Choose a password </label>
+        {{#if passwordError}}<span class="error">{{passwordError}}</span>{{/if}}
+        <input id="signup-password" name="password" type="password" placeholder="password" class="{{#if passwordError}}error{{/if}}">
         <label for="password2"> Reenter your password </label>
-        <input name="password2" type="password" placeholder="password">
+        <input id="signup-password2" name="password2" type="password" placeholder="password">
         <!-- profile image here -->
       {{/if}}
-      <label for="signupCode"> Signup code </label>
-      <input name="signupCode" type="text" placeholder="Secret code for Beta">
+      {{#if signupError}}<div class="error">{{signupError}}</div>{{/if}}
       <p>By creating an account, I accept FOLD’s {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}} and {{#linkTo route="privacy" target='_blank' class='green'}}Privacy Policy{{/linkTo}}.</p>
       <button type="submit" class="signup-button">Sign up</button>
-      {{#if signupError}}
-        <div class="error">
-          {{signupError}}
-        </div>
-      {{/if}}
     </form>
 </template>
