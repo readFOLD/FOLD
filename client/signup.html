@@ -31,7 +31,7 @@
       {{/if}}
       <label for="signupCode"> Signup code </label>
       <input name="signupCode" type="text" placeholder="Secret code for Beta">
-      <p>By creating an account, I accept FOLD’s {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}}</p>
+      <p>By creating an account, I accept FOLD’s {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}} and {{#linkTo route="privacy" target='_blank' class='green'}}Privacy Policy{{/linkTo}}.</p>
       <button type="submit" class="signup-button">Sign up</button>
       {{#if signupError}}
         <div class="error">
