@@ -839,12 +839,9 @@ Template.read.onCreated(function(){
   Session.set("showMinimap", true);
   Session.set("mobileContextView", false);
   $('html, body').scrollTop(0);
-  console.log('aaaa')
-  var id = this.data._id;
 
+  var id = this.data._id;
   if (storyViewed !== id){
-    console.log(id)
-    console.log('yauauauayay')
     storyViewed = id;
     Meteor.call('countStoryView', id);
   }

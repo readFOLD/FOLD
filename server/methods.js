@@ -133,7 +133,7 @@ Meteor.methods({
   countStoryView: function(storyId) {
     this.unblock();
     check(storyId, String);
-    
+
     var connectionId = this.connection.id;
     var clientIP = this.connection.httpHeaders['x-forwarded-for'] || this.connection.clientAddress;
 
