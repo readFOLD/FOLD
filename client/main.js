@@ -28,6 +28,8 @@ Meteor.startup(function(){
     // Safari changes window size in a weird way that jquery doesn't register correctly when scroll up vs down
     Session.set("windowHeight", Meteor.Device.isPhone() && !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/) ? window.innerHeight : $(window).height());
 
+    Session.set("minimapMaxHeight", Session.get("windowHeight") - 592);
+
     Session.set("windowWidth", windowWidth);
 
     var cardWidth = getCardWidth(windowWidth);
@@ -468,8 +470,34 @@ Template.minimap.helpers({
   selectedY: function() {
     return Session.equals("currentY", this.verticalIndex);
   },
-  smallCards: function(){
-    return Session.get("horizontalSectionsMap").length > 7;
+  minimapLargeEnough: function() {
+    // Ensure minimap height is greater than 0 and sections are at least 5 pixels tall
+    if (Session.get("minimapMaxHeight") <= 0 || (Session.get("minimapMaxHeight") / Session.get("horizontalSectionsMap").length < 5)) {
+      return false;
+    } else {
+      return true;
+    }
+  },
+  responsive: function() {
+    var maxHeight = Session.get("minimapMaxHeight");
+    var defaultSectionHeight = 17 + 5;  // Section height + margin-bottom
+    return (Session.get("horizontalSectionsMap").length * defaultSectionHeight >= maxHeight)
+  },
+  sectionHeight: function() {
+    var maxHeight = Session.get("minimapMaxHeight");
+    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75;  // 75% of available space
+  },
+  verticalCardWidth: function() {
+    var maxHeight = Session.get("minimapMaxHeight");
+    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 1.53333;  //  1.53333 aspect ratio
+  },
+  horizontalCardWidth: function() {
+    var maxHeight = Session.get("minimapMaxHeight");
+    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 0.7645 * 1.53333;  // Horizontal block is 76.45% of section
+  },
+  sectionMargin: function() {
+    var maxHeight = Session.get("minimapMaxHeight");
+    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.25;  // 25% of available space (33% of section)
   }
 });
 

@@ -21,7 +21,6 @@
 
 @selected-background-color: white;
 
-
 @remix-bar-height: 40px;
 @horizontal-content-height: 300px;
 
@@ -815,18 +814,20 @@ div#banner-overlay {
   }
 }
 
+@horizontal-context-margin-top: 23px;
+@horizontal-context-top: @fixed-banner-height + 106px - @horizontal-context-margin-top;
 div.horizontal-context {
   float: right;
   top: 350px;
-  @margin-top: 23px;
-  margin-top: @margin-top;
+  
+  margin-top: @horizontal-context-margin-top;
   margin-bottom: 500px;
   .size-to-fit;
 
   &.fixed {
     .top-transition;
     position: fixed;
-    top: @fixed-banner-height + 106px - @margin-top;
+    top: @horizontal-context-top;
     @media @mobile {
       top: 60px;
     }
@@ -961,80 +962,87 @@ div.horizontal-context {
   }
 }
 
+
+@minimap-right-buffer: 6px;
+@minimap-bottom-buffer: 6px;
+@minimap-top-buffer: 20px;
+@minimap-padding: 6px;
+@minimap-max-height: calc(100% ~"-" @horizontal-context-top ~"-" @horizontal-context-margin-top ~"-" @horizontal-content-height ~"-" @remix-bar-height ~"-" @minimap-bottom-buffer ~"-" @minimap-top-buffer ~"-" 2*@minimap-padding);
+
 div.minimap {
-  padding: 10px;
-  padding-bottom: 4px;
+  .background-transition;
+  cursor: pointer;
   position: fixed;
-  bottom: 6px;
-  right: 6px;
+  overflow: hidden;
+  right: @minimap-right-buffer;
+  bottom: @minimap-bottom-buffer;
+  max-height: @minimap-max-height;
+  padding: @minimap-padding;
 
-  div.vertical.block {
-    height: 17px;
-    width: 26px;
-    margin-right: 1px;
-    &.small{
-      height: 13px;
-      width: 17px;
-      margin-right: 0.5px;
+  .expand {
+    .opacity-transition;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    opacity: 1.0;
+    background-color: #323232;
+    width: 30px;
+    height: 30px;
+    font-size: 21px;
+    border-radius: 3px;
+    padding-top: 5px;
+    padding-left: 6px;
+    opacity: 0.0;
+    color: white;
+  }
 
+  &:hover {
+    background-color: white;
+    .expand {
+      opacity: 1.0;
     }
   }
 
-  div.section {
-    height: 20px;
-    margin-bottom: 2px;
-    &.small{
-      height: 15px;
-      margin-bottom: 1px;
+  .section {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    align-items: center;
+
+    @section-height: 17px;
+    height: @section-height;
+    margin-bottom: @section-height * 0.33333;
+
+    &:last-child {
+      margin-bottom: 0px !important;
     }
 
     &.selected-section {
-      div.selected-block {
+      .selected-block {
         background-color: @action-color;
       }
-    }
+    }    
   }
 
-  div.horizontal.block {
-    margin-bottom: 1px;
-    height: 13px;
-    width: 20px;
-    margin-left: 1px;
-
-    &::before {
-      position: relative;
-      padding-right: 5px;
-      left: -5px;
-      top: 7px;
-      width: 10px;
-      content: ""
-    }
-
-    &.small{
-      height: 11px;
-      width: 14px;
-      margin-bottom: 1px;
-      margin-left: -0.5px;
-
-      &::before {
-        width: 1px;
-
-        padding-right: 0;
-      }
-    }
-
-  }
-
-  div.block {
+  .block {
     .background-transition;
-    height: 15px;
-    width: 20px;
-    background-color: @medium-color;
     display: inline-block;
+    background-color: @medium-color;
+  }
 
-    &.selected {
+  .vertical.block {
+    height: 100%;
+    width: 17px * 1.53333;
+  }
 
-    }
+  .horizontal.block {
+    height: 76.47%;
+    width: 17px * 0.7647 * 1.53333;
+    margin-left: 3px;
   }
 }
 
