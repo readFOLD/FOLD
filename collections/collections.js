@@ -1350,6 +1350,10 @@ var deepAnalyticsSchema = new SimpleSchema({
   uniqueViewersByUserId: {
     type: [String],
     defaultValue: []
+  },
+  all: {
+    type: [Object],
+    blackbox: true
   }
 });
 

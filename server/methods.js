@@ -133,11 +133,7 @@ Meteor.methods({
   countStoryView: function(storyId) {
     this.unblock();
     check(storyId, String);
-    console.log(storyId)
-    console.log(this.connection)
-    console.log(this.connection.httpHeaders['x-forwarded-for'])
-    console.log(this.connection.clientAddress)
-    console.log(this.userId)
+    
     var connectionId = this.connection.id;
     var clientIP = this.connection.httpHeaders['x-forwarded-for'] || this.connection.clientAddress;
 
@@ -147,7 +143,7 @@ Meteor.methods({
       throw new Meteor.error('Story not found for count view ' + storyId); // this mostly confirms the story has been published
     }
 
-    var stats = StoryStats.findOne({storyId: storyId});
+    var stats = StoryStats.findOne({storyId: storyId}, {fields: {all: 0}});
 
     if(!stats){
       stats = {};
@@ -179,8 +175,17 @@ Meteor.methods({
       _.extend(inc, {'analytics.views.byId': 1});
     }
 
+    var fullData =  _.extend({}, _.omit(this.connection, ['close', 'onClose']), {date: new Date});
+
+    if (this.userId){
+      _.extend(fullData, {
+        userId: this.userId,
+        username: Meteor.user().username
+      });
+    }
+
     Stories.update( {_id: storyId}, {$inc: inc });
-    StoryStats.upsert( {storyId: storyId} , {$inc: inc, $addToSet: addToSet } );
+    StoryStats.upsert( {storyId: storyId} , {$inc: inc, $addToSet: addToSet, $push: {'deepAnalytics.views.all': fullData} } );
   },
 
   ///////////////////////////////////
