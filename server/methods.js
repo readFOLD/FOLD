@@ -92,7 +92,7 @@ Meteor.methods({
     }, {
         $set: {
           "profile.name": userInfo.name || username,
-          "profile.displayUsername": username,
+          "displayUsername": username,
           "username": username,
           "profile.bio": bio
         },

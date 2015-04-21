@@ -88,6 +88,7 @@ Meteor.publish("userProfilePub", function(username) { // includes user profile a
     fields: {
       "profile" : 1,
       "username" : 1,
+      "displayUsername" : 1,
       "services.twitter.id": 1
     }
   });
@@ -152,7 +153,8 @@ Meteor.publish("userData", function () {
     return Meteor.users.find({_id: this.userId},
       {fields: {
         'accessPriority': 1,
-        "services.twitter.id": 1
+        "services.twitter.id": 1,
+        "displayUsername": 1
       }});
   } else {
     this.ready();

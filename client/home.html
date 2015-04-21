@@ -111,7 +111,7 @@
 </template>
 <template name="login_buttons">
     {{#if currentUser}}
-      <button><a href="/profile/{{currentUser.profile.displayUsername}}">{{currentUser.profile.name}}</a></button>
+      <button><a href="/profile/{{currentUser.displayUsername}}">{{currentUser.profile.name}}</a></button>
       {{#if showUserInfo}}
         <ol class="user-menu">
           <li>

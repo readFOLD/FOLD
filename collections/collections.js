@@ -1016,17 +1016,6 @@ Schema.UserProfile = new SimpleSchema({
     optional: true,
     defaultValue: []
   },
-  displayUsername: { // allows for caps
-    type: String,
-    optional: true,
-    autoValue: function () { // TODO ensure this matches username except for capitalization
-      if (this.isSet && typeof this.value === "string") {
-        return this.value.trim();
-      } else {
-        this.unset()
-      }
-    }
-  },
   profilePicture: {
     type: String,
     optional: true
@@ -1043,6 +1032,17 @@ Schema.User = new SimpleSchema({
     autoValue: function () {
       if (this.isSet && typeof this.value === "string") {
         return this.value.toLowerCase().trim();
+      } else {
+        this.unset()
+      }
+    }
+  },
+  displayUsername: { // allows for caps
+    type: String,
+    optional: true,
+    autoValue: function () { // TODO ensure this matches username except for capitalization
+      if (this.isSet && typeof this.value === "string") {
+        return this.value.trim();
       } else {
         this.unset()
       }
