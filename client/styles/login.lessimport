@@ -24,7 +24,20 @@ div.login, div.reset-password, div.recover-password {
   }
 }
 
+form {
+  span.error {
+    float: right;
+    color: red;
+  }
 
+  div.error {
+    color: red;
+  }
+
+  input.error {
+    border-bottom: 5px solid red;
+  }
+}
 
 form#login-form {
 	width: 350px;
