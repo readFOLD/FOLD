@@ -754,6 +754,25 @@ Template.favorite_button.events({
   }
 });
 
+Template.editors_pick_button.events({
+  "click .pick": function() {
+    return Meteor.call('designateEditorsPick', this._id, function(err) {
+      if (err) {
+        throw(err);
+        return alert(err);
+      }
+    });
+  },
+  "click .unpick": function() {
+    return Meteor.call('stripEditorsPick', this._id, function(err) {
+      if (err) {
+        throw(err);
+        return alert(err);
+      }
+    });
+  }
+});
+
 Template.display_twitter_section.events({
   "click .show-image" : function(e, template) {
     template.$('.twitter-text-section').toggleClass('transparent');

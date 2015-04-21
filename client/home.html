@@ -211,39 +211,39 @@
   {{#with story}}
     <div class="content-count">
       {{#if contextCountOfType 'video'}}
-        {{ > video_icon }}
+        {{> video_icon }}
         <!--{{contextCountOfType 'video'}}-->
       {{/if}}
       {{#if contextCountOfType 'image'}}
-        {{ > image_icon }}
+        {{> image_icon }}
         <!--{{contextCountOfType 'image'}}-->
       {{/if}}
       {{#if contextCountOfType 'gif'}}
-        {{ > gif_icon }}
+        {{> gif_icon }}
         <!--{{contextCountOfType 'gif'}}-->
       {{/if}}
       {{#if contextCountOfType 'map'}}
-        {{ > map_icon }}
+        {{> map_icon }}
         <!--{{contextCountOfType 'map'}}-->
       {{/if}}
       {{#if contextCountOfType 'twitter'}}
-        {{ > twitter_icon }}
+        {{> twitter_icon }}
         <!--{{contextCountOfType 'twitter'}}-->
       {{/if}}
       {{#if contextCountOfType 'audio'}}
-        {{ > audio_icon }}
+        {{> audio_icon }}
         <!--{{contextCountOfType 'audio'}}-->
       {{/if}}
       {{#if contextCountOfType 'viz'}}
-        {{ > viz_icon }}
+        {{> viz_icon }}
         <!--{{contextCountOfType 'viz'}}-->
       {{/if}}
       {{#if contextCountOfType 'text'}}
-        {{ > text_icon }}
+        {{> text_icon }}
         <!--{{contextCountOfType 'text'}}-->
       {{/if}}
       {{#if contextCountOfType 'link'}}
-        {{ > link_icon }}
+        {{> link_icon }}
         <!--{{contextCountOfType 'link'}}-->
       {{/if}}
       <!--TODO - add remix check-->
@@ -267,7 +267,7 @@
     {{/linkTo}}
 
     <div class="byline">
-      <a class="author-profile-link" href="{{profileUrl}}" >
+      <a class="author-profile-link" href="{{profileUrl}}">
         <div class="pull-left">
           <div class="author-image">
             {{#if profileImage author}}
@@ -285,7 +285,10 @@
       </a>
 
       <div class="pull-right">
-        {{ > favorite_button }}
+        {{> favorite_button }}
+        {{#if currentUser.admin}}
+          {{> editors_pick_button }}
+        {{/if}}
       </div>
     </div>
   {{/with}}

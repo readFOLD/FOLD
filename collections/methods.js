@@ -32,6 +32,23 @@ changeFavorite = function(storyId, toFavorite) {
   }, userOperation);
 };
 
+var changeEditorsPick = function(storyId, isPick) {
+
+  this.unblock();
+  if (!Meteor.user().admin) {
+    throw new Meteor.Error('not-admin-in', 'Sorry, you must be an admin to designate an editors pick');
+  }
+
+  Stories.update({
+    _id: storyId
+  }, {
+    $set: {
+      editorsPick: isPick,
+      editorsPickAt: new Date
+    }
+  });
+};
+
 var changeHasTitle = function(storyId, index, newValue){
 
   var selector = {_id: storyId};
@@ -438,7 +455,8 @@ Meteor.methods({
         'contextBlockTypeCount': contextBlockTypeCount,
         'userPathSegment': user.displayUsername,
         'storyPathSegment': _s.slugify(title.toLowerCase()) + '-' + story.shortId, // TODO DRY
-        'publishedAt': new Date(),
+        'publishedAt': new Date,
+        'firstPublishedAt': story.firstPublishedAt || new Date, // only change if not set TODO cleanup and actually don't set if already set
         'published': true,
         'everPublished': true,
         'authorName': user.profile.name || 'Anonymous',
@@ -460,6 +478,14 @@ Meteor.methods({
   unfavoriteStory: function(storyId) {
     check(storyId, String);
     return changeFavorite.call(this, storyId, false);
+  },
+  designateEditorsPick: function(storyId) {
+    check(storyId, String);
+    return changeEditorsPick.call(this, storyId, true);
+  },
+  stripEditorsPick: function(storyId) {
+    check(storyId, String);
+    return changeEditorsPick.call(this, storyId, false);
   },
   createStory: function() {
     var user = Meteor.user();

@@ -623,6 +623,16 @@
     </div>
 </template>
 
+<template name="editors_pick_button">
+    <div class="editors-pick-button">
+        {{#if editorsPick}}
+            <button type='button' class='unpick'>{{> favorite_icon }}</button>
+        {{else}}
+            <button type='button' class='pick'>{{> favorite_icon }}</button>
+        {{/if}}
+    </div>
+</template>
+
 <template name="stats">
   {{> serverFacts}}
 </template>

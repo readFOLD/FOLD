@@ -235,7 +235,8 @@ Meteor.publish("userData", function () {
       {fields: {
         'accessPriority': 1,
         "services.twitter.id": 1,
-        "displayUsername": 1
+        "displayUsername": 1,
+        "admin": 1
       }});
   } else {
     this.ready();

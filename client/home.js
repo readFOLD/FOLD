@@ -144,20 +144,18 @@ Template.all_stories.onCreated(function(){ // TODO reconcile with the below
 });
 
 var commonHomeSubscriptions = [];
-var subscribedToFavoritesPublication = false;
-
 
 Template.all_stories.onCreated(function(){
   if (!commonHomeSubscriptions.length ){ // subscribe to these the first time, and then keep them open so homepage loads right quick
     commonHomeSubscriptions = [Meteor.subscribe("curatedStoriesPub"), Meteor.subscribe("newestStoriesPub"), Meteor.subscribe("trendingStoriesPub")];
   }
 
-  this.subscriptionsReady = new ReactiveVar();
+  this.subscriptionsReady = new ReactiveVar([]);
 
   var that = this;
   this.autorun(function(){
     that.subscriptionsReady.set(_.chain(commonHomeSubscriptions)
-        .filter(function(pub) { pub.ready() })
+        .filter(function(pub) { return pub.ready() })
         .value()
     );
   });
@@ -183,24 +181,28 @@ Template.all_stories.onCreated(function(){
 
 });
 
-Template.all_stories.helpers({
+Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   newestStories: function() {
-    Template.instance().subscriptionsReady.get();
-    return Stories.find({ published: true }, {sort: {'publishedAt': -1}, limit: 40}, {reactive: false});
+    if (Template.instance().subscriptionsReady.get().length) {
+      return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: 40, reactive: false});
+    }
   },
   curatedStories: function() {
-    Template.instance().subscriptionsReady.get();
-    return Stories.find({ published: true, editorsPicks: true}, {sort: {'editorsPickAt': -1}, limit: 40}, {reactive: false});
+    if (Template.instance().subscriptionsReady.get().length){
+      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 40, reactive: false});
+    }
   },
   trendingStories: function() {
-    Template.instance().subscriptionsReady.get();
-    return Stories.find({ published: true}, {sort: {'views': -1}, limit: 40}, {reactive: false});
+    if (Template.instance().subscriptionsReady.get().length) {
+      return Stories.find({published: true}, {sort: {'views': -1}, limit: 40, reactive: false});
+    }
   },
   starredStories: function() {
-    Template.instance().starredStoriesSubReady.get();
-    var user = Meteor.user();
-    if (user && user.profile.favorites.length){
-      return Stories.find({ published: true, _id: {$in: user.profile.favorites } }, {sort: {'publishedAt': -1} }, {reactive: false});
+    if(Template.instance().starredStoriesSubReady.get()){
+      var user = Meteor.user();
+      if (user && user.profile.favorites.length){
+        return Stories.find({ published: true, _id: {$in: user.profile.favorites } }, {sort: {'publishedAt': -1}, reactive: true});
+      }
     }
   },
   showNewestStories: function(){
@@ -226,7 +228,7 @@ Template.all_stories.helpers({
 
 Template.story_preview.helpers({
   story: function(){
-    return this;
+    return Stories.findOne(this._id);
   }
 });
 
