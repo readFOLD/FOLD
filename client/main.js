@@ -347,10 +347,9 @@ Template.vertical_section_block.events({
     var contextId;
     e.preventDefault();
     if (Session.equals("currentY", t.data.index)){
-      contextId = $(e.target).data('contextId');
+      contextId = $(e.currentTarget).data('contextId');
       return goToContext(contextId);
     }
-
   }
 });
 
