@@ -130,6 +130,67 @@ Meteor.methods({
       }
     }
   },
+  countStoryView: function(storyId) {
+    this.unblock();
+    check(storyId, String);
+    console.log(storyId)
+    console.log(this.connection)
+    console.log(this.connection.httpHeaders['x-forwarded-for'])
+    console.log(this.connection.clientAddress)
+    console.log(this.userId)
+    var connectionId = this.connection.id;
+    var clientIP = this.connection.httpHeaders['x-forwarded-for'] || this.connection.clientAddress;
+
+    var story = Stories.findOne({_id: storyId, published: true});
+
+    if (!story){
+      throw new Meteor.error('Story not found for count view ' + storyId)
+    }
+
+
+    if (!story.deepAnalytics){
+      story.deepAnalytics= {};
+    }
+
+    if (!story.deepAnalytics.views){
+      story.deepAnalytics.views= {};
+    }
+
+    var connectionUpdateObj;
+
+    if(!_.contains(story.deepAnalytics.views.uniqueViewersByConnection, connectionId)){
+      connectionUpdateObj = {
+        $addToSet: { 'deepAnalytics.views.uniqueViewersByConnection': connectionId },
+        $inc: {'analytics.views.byConnection': 1 }
+      }
+    } else {
+      connectionUpdateObj = {}
+    }
+
+    var ipUpdateObj;
+
+    if(!_.contains(story.deepAnalytics.views.uniqueViewersByIP, clientIP)){
+      ipUpdateObj = {
+        $addToSet: { 'deepAnalytics.views.uniqueViewersByIP': clientIP },
+        $inc: {'analytics.views.byIP': 1 }
+      }
+    } else {
+      ipUpdateObj = {}
+    }
+
+    var userUpdateObj;
+    if (this.userId && !_.contains(story.deepAnalytics.views.uniqueViewersByUserId, this.userId)){
+      userUpdateObj = {
+        $addToSet: { 'deepAnalytics.views.uniqueViewersByUserId': this.userId },
+        $inc: {'analytics.views.byId': 1
+        }
+      };
+    } else {
+      userUpdateObj = {}
+    }
+
+    Stories.update({_id: storyId}, _.extend({}, {$inc: {'analytics.views.total': 1}}, ipUpdateObj, userUpdateObj, connectionUpdateObj ));
+  },
 
   ///////////////////////////////////
   /////// SEARCH API METHODS ///////

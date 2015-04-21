@@ -1181,6 +1181,36 @@ var sharedStorySchemaObject = {
 
 var draftStorySchema = new SimpleSchema(sharedStorySchemaObject);
 
+var deepAnalyticsSchema = new SimpleSchema({
+  uniqueViewersByConnection: {
+    type: [String],
+    defaultValue: []
+  },
+  uniqueViewersByIP: {
+    type: [String],
+    defaultValue: []
+  },
+  uniqueViewersByUserId: {
+    type: [String],
+    defaultValue: []
+  }
+});
+
+var analyticsSchema = new SimpleSchema({
+  byConnection: {
+    type: Number,
+    defaultValue: 0
+  },
+  byIP: {
+    type: Number,
+    defaultValue: 0
+  },
+  byId: {
+    type: Number,
+    defaultValue: 0
+  }
+});
+
 Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
     shortId: {
       type: String
@@ -1254,13 +1284,17 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
       type: Date,
       optional: true
     },
-    views: {
-      type: Number,
-      defaultValue: 0
+    deepAnalytics: {
+      type: Object
     },
-    shared: {
-      type: Number,
-      defaultValue: 0
+    'deepAnalytics.views': {
+      type: deepAnalyticsSchema
+    },
+    analytics: {
+      type: Object
+    },
+    'analytics.views': {
+      type: analyticsSchema
     },
     contextBlocks: {
       type: [ContextBlock], // TODO this should really be Schema.ContextBlocks, but would need to be converted to a regular object, otherwise simple-schema complains
