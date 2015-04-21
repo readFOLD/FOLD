@@ -137,7 +137,7 @@ Template.user_stories.helpers({
     return Template.instance().seeAllPublished.get()
   },
   publishedStories: function() {
-    var limit = Template.instance().seeAllPublished.get() ? 0 : 12; //limit(0) -> no limit
+    var limit = Template.instance().seeAllPublished.get() ? 0 : 5; //when limit=0 -> no limit on stories
     return Stories.find({authorUsername : this.user.username, published : true}, {
       sort: {
         publishedAt: -1
@@ -172,7 +172,7 @@ Template.user_favorite_stories.helpers({
     return Template.instance().seeAllFavorites.get()
   },
   favoriteStories: function() {
-    var limit = Template.instance().seeAllFavorites.get() ? 0 : 12; 
+    var limit = Template.instance().seeAllFavorites.get() ? 0 : 5; 
     var favorites = this.user.profile.favorites;
     if (favorites && favorites.length) {
       return Stories.find({

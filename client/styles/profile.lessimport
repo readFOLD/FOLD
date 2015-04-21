@@ -103,6 +103,7 @@ div.user-profile {
   color: @dark-color;
   top: -41px;
   left: calc(92% ~"-" 96px);
+  display: block;
 
   @media (max-width: 800px) {
     top: -14px;
