@@ -106,6 +106,8 @@ this.Stories = new Meteor.Collection("stories", {
         userPathSegment: doc.userPathSegment,
         authorUsername: doc.authorUsername,
         authorDisplayUsername: doc.authorDisplayUsername,
+        authorId: doc.authorId,
+        authorName: doc.authorName,
         contextCountOfType: function(){}, // stub out method for now,
         _id: doc._id
       });
@@ -924,6 +926,14 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
+  savedAt: {
+    type: Date,
+    optional: true
+  },
+  publishedAt: {
+    type: Date,
+    optional: true
+  },
   createdAt: {
     type: Date,
     autoValue: function() {
@@ -934,7 +944,8 @@ Schema.ContextBlocks = new SimpleSchema({
       } else {
         this.unset();
       }
-    }
+    },
+    optional: true // optional because only added this fieldjust before launch
   },
   fullDetails: {
     type: Object,
@@ -1078,7 +1089,16 @@ Schema.User = new SimpleSchema({
     type: Boolean
   },
   createdAt: {
-    type: Date
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: new Date};
+      } else {
+        this.unset();
+      }
+    }
   },
   admin: {
     type: Boolean,
@@ -1103,20 +1123,29 @@ Schema.User = new SimpleSchema({
   }
 });
 
-
-Schema.Stories = new SimpleSchema({
-  draftStory: {
-    type: Object,
-    optional: true,
-    blackbox: true
+var verticalSectionSchema = new SimpleSchema({
+  '_id': {
+    type: String
   },
-  headerImage: {
+  'title': {
     type: String,
     optional: true
   },
-  shortId: {
+  'hasTitle': {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  },
+  'content': {
     type: String
   },
+  'contextBlocks': {
+    type: [String],
+    defaultValue: []
+  }
+});
+
+var sharedStorySchemaObject = {
   headerImageFormat: {
     type: String,
     optional: true
@@ -1125,35 +1154,9 @@ Schema.Stories = new SimpleSchema({
     type: String,
     optional: true
   },
-  savedAt: {
-    type: Date
-  },
-  publishedAt: {
-    type: Date,
+  headerImage: {
+    type: String,
     optional: true
-  },
-  createdAt: {
-    type: Date,
-    autoValue: function() {
-      if (this.isInsert) {
-        return new Date;
-      } else if (this.isUpsert) {
-        return {$setOnInsert: new Date};
-      } else {
-        this.unset();
-      }
-    }
-  },
-  published: {
-    type: Boolean,
-    defaultValue: false
-  },
-  everPublished: {
-    type: Boolean,
-    defaultValue: false
-  },
-  userPathSegment: {
-    type: String
   },
   storyPathSegment: {
     type: String
@@ -1162,98 +1165,123 @@ Schema.Stories = new SimpleSchema({
     type: String,
     defaultValue: ''
   },
-  authorId: {
-    type: String
-  },
-  authorName: {
-    type: String
-  },
-  authorUsername: {
-    type: String
-  },
-  authorDisplayUsername: {
-    type: String,
-    optional: true
-  },
   keywords:{
     type: [String],
     defaultValue: []
-  },
-  deleted: {
-    type: Boolean,
-    defaultValue: false
-  },
-  deletedAt: {
-    type: Date,
-    optional: true
   },
   narrativeRightsReserved: {
     type: Boolean,
     optional: true
   },
-  favorited: {
-    type: [String],
-    defaultValue: []
-  },
-  views: {
-    type: Number,
-    defaultValue: 0
-  },
-  shared: {
-    type: Number,
-    defaultValue: 0
-  },
-  contextBlocks: {
-    type: [ContextBlock], // TODO this should really be Schema.ContextBlocks, but would need to be converted to a regular object, otherwise simple-schema complains
-    minCount: 0,
-    maxCount: 1000,
-    defaultValue: []
-  },
-  contextBlockIds: {
-    type: [String],
-    minCount: 0,
-    maxCount: 1000,
-    defaultValue: []
-  },
-  contextBlockTypeCount:{
-    type: Object,
-    optional: true,
-    blackbox: true
-  },
   verticalSections: {
-    type: [Object],
+    type: [verticalSectionSchema],
     minCount: 1,
     maxCount: 1000
-  },
-  'verticalSections.$._id': {
-    type: String
-  },
-  'verticalSections.$.title': {
-    type: String,
-    optional: true
-  },
-  'verticalSections.$.hasTitle': {
-    type: Boolean,
-    optional: true,
-    defaultValue: false
-  },
-  'verticalSections.$.content': {
-    type: String
-  },
-  'verticalSections.$.contextBlocks': {
-    type: [String],
-    defaultValue: []
-  },
-  'history': {
-    type: [Object],
-    defaultValue: [],
-    blackbox: true
-  },
-  'version': {
-    type: String,
-    optional: true
   }
-});
+};
+
+var draftStorySchema = new SimpleSchema(sharedStorySchemaObject);
+
+Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
+    shortId: {
+      type: String
+    },
+    savedAt: {
+      type: Date
+    },
+    publishedAt: {
+      type: Date,
+      optional: true
+    },
+    createdAt: {
+      type: Date,
+      autoValue: function() {
+        if (this.isInsert) {
+          return new Date;
+        } else if (this.isUpsert) {
+          return {$setOnInsert: new Date};
+        } else {
+          this.unset();
+        }
+      }
+    },
+    published: {
+      type: Boolean,
+      defaultValue: false
+    },
+    everPublished: {
+      type: Boolean,
+      defaultValue: false
+    },
+    userPathSegment: {
+      type: String
+    },
+    authorId: {
+      type: String
+    },
+    authorName: {
+      type: String
+    },
+    authorUsername: {
+      type: String
+    },
+    authorDisplayUsername: {
+      type: String,
+      optional: true
+    },
+
+    deleted: {
+      type: Boolean,
+      defaultValue: false
+    },
+    deletedAt: {
+      type: Date,
+      optional: true
+    },
+
+    favorited: {
+      type: [String],
+      defaultValue: []
+    },
+    views: {
+      type: Number,
+      defaultValue: 0
+    },
+    shared: {
+      type: Number,
+      defaultValue: 0
+    },
+    contextBlocks: {
+      type: [ContextBlock], // TODO this should really be Schema.ContextBlocks, but would need to be converted to a regular object, otherwise simple-schema complains
+      minCount: 0,
+      maxCount: 1000,
+      defaultValue: []
+    },
+    contextBlockIds: {
+      type: [String],
+      minCount: 0,
+      maxCount: 1000,
+      defaultValue: []
+    },
+    contextBlockTypeCount:{
+      type: Object,
+      optional: true,
+      blackbox: true
+    },
+    draftStory: {
+      type: draftStorySchema
+    },
+    'history': {
+      type: [Object],
+      defaultValue: [],
+      blackbox: true
+    },
+    'version': {
+      type: String,
+      optional: true
+    }
+  })
+);
 
 this.Stories.attachSchema(Schema.Stories);
 
