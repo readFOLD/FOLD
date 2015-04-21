@@ -160,24 +160,14 @@ Template.all_stories.onCreated(function(){
     );
   });
 
-  this.starredStoriesSubReady = new ReactiveVar();
+  var starredSubscription;
 
-  var user = Meteor.user();
-  if (user && user.profile.favorites.length ){
-
-    var starredSubscription;
-
-    this.autorun(function(){
-      var user = Meteor.user();
-      if (user && user.profile.favorites.length){
-        starredSubscription = Meteor.subscribe("favoriteStoriesPub", user.profile.favorites)
-      }
-    });
-
-    this.autorun(function(){
-      that.starredStoriesSubReady.set(starredSubscription.ready());
-    });
-  }
+  this.autorun(function(){
+    var user = Meteor.user();
+    if (user && user.profile.favorites.length){
+      starredSubscription = Meteor.subscribe("favoriteStoriesPub", user.profile.favorites)
+    }
+  });
 
 });
 
@@ -198,11 +188,9 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
     }
   },
   starredStories: function() {
-    if(Template.instance().starredStoriesSubReady.get()){
-      var user = Meteor.user();
-      if (user && user.profile.favorites.length){
-        return Stories.find({ published: true, _id: {$in: user.profile.favorites } }, {sort: {'publishedAt': -1}, reactive: true});
-      }
+    var user = Meteor.user();
+    if (user && user.profile.favorites){
+      return Stories.find({ published: true, _id: {$in: user.profile.favorites } }, {sort: {'publishedAt': -1}, reactive: true});
     }
   },
   showNewestStories: function(){
