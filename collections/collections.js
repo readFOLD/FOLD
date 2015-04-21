@@ -96,7 +96,7 @@ if (Meteor.isClient) {
   window.cleanVerticalSectionContent = cleanVerticalSectionContent;
 }
 
-this.Stories = new Meteor.Collection("stories", {
+this.Stories = new Mongo.Collection("stories", {
   transform: function(doc) {
     if (doc.draftStory){
       _.extend(doc.draftStory, {
@@ -699,7 +699,7 @@ if (Meteor.isClient) {
 }
 
 
-this.ContextBlocks = new Meteor.Collection("context_blocks", {
+this.ContextBlocks = new Mongo.Collection("context_blocks", {
   transform: newTypeSpecificContextBlock
 });
 
@@ -1181,20 +1181,7 @@ var sharedStorySchemaObject = {
 
 var draftStorySchema = new SimpleSchema(sharedStorySchemaObject);
 
-var deepAnalyticsSchema = new SimpleSchema({
-  uniqueViewersByConnection: {
-    type: [String],
-    defaultValue: []
-  },
-  uniqueViewersByIP: {
-    type: [String],
-    defaultValue: []
-  },
-  uniqueViewersByUserId: {
-    type: [String],
-    defaultValue: []
-  }
-});
+
 
 var analyticsSchema = new SimpleSchema({
   byConnection: {
@@ -1284,12 +1271,7 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
       type: Date,
       optional: true
     },
-    deepAnalytics: {
-      type: Object
-    },
-    'deepAnalytics.views': {
-      type: deepAnalyticsSchema
-    },
+
     analytics: {
       type: Object
     },
@@ -1335,3 +1317,56 @@ Meteor.users.attachSchema(Schema.User);
 SimpleSchema.messages({
   "regEx username": "Username may only contain letters, numbers, and underscores"
 });
+
+
+this.StoryStats = new Mongo.Collection("story_stats");
+
+
+this.StoryStats.deny({
+  insert: function() {
+    return true;
+  },
+  update: function() {
+    return true
+  },
+  remove: function() {
+    return true
+  }
+});
+
+var deepAnalyticsSchema = new SimpleSchema({
+  uniqueViewersByConnection: {
+    type: [String],
+    defaultValue: []
+  },
+  uniqueViewersByIP: {
+    type: [String],
+    defaultValue: []
+  },
+  uniqueViewersByUserId: {
+    type: [String],
+    defaultValue: []
+  }
+});
+
+Schema.StoryStats = new SimpleSchema({
+  storyId: {
+    type: String
+  },
+  deepAnalytics: {
+    type: Object
+  },
+  'deepAnalytics.views': {
+    type: deepAnalyticsSchema
+  },
+  analytics: {
+    type: Object
+  },
+  'analytics.views': {
+    type: analyticsSchema
+  }
+});
+
+this.StoryStats.attachSchema(Schema.StoryStats);
+
+

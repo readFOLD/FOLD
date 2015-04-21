@@ -144,52 +144,43 @@ Meteor.methods({
     var story = Stories.findOne({_id: storyId, published: true});
 
     if (!story){
-      throw new Meteor.error('Story not found for count view ' + storyId)
+      throw new Meteor.error('Story not found for count view ' + storyId); // this mostly confirms the story has been published
     }
 
+    var stats = StoryStats.findOne({storyId: storyId});
 
-    if (!story.deepAnalytics){
-      story.deepAnalytics= {};
+    if(!stats){
+      stats = {};
     }
 
-    if (!story.deepAnalytics.views){
-      story.deepAnalytics.views= {};
+    if (!stats.deepAnalytics){
+      stats.deepAnalytics= {};
     }
 
-    var connectionUpdateObj;
-
-    if(!_.contains(story.deepAnalytics.views.uniqueViewersByConnection, connectionId)){
-      connectionUpdateObj = {
-        $addToSet: { 'deepAnalytics.views.uniqueViewersByConnection': connectionId },
-        $inc: {'analytics.views.byConnection': 1 }
-      }
-    } else {
-      connectionUpdateObj = {}
+    if (!stats.deepAnalytics.views){
+      stats.deepAnalytics.views= {};
     }
 
-    var ipUpdateObj;
+    var addToSet = {};
+    var inc = {'analytics.views.total': 1};
 
-    if(!_.contains(story.deepAnalytics.views.uniqueViewersByIP, clientIP)){
-      ipUpdateObj = {
-        $addToSet: { 'deepAnalytics.views.uniqueViewersByIP': clientIP },
-        $inc: {'analytics.views.byIP': 1 }
-      }
-    } else {
-      ipUpdateObj = {}
+    if(!_.contains(stats.deepAnalytics.views.uniqueViewersByConnection, connectionId)){
+      _.extend(addToSet, { 'deepAnalytics.views.uniqueViewersByConnection': connectionId });
+      _.extend(inc, {'analytics.views.byConnection': 1 });
     }
 
-    var userUpdateObj;
-    if (this.userId && !_.contains(story.deepAnalytics.views.uniqueViewersByUserId, this.userId)){
-      userUpdateObj = {
-        $addToSet: { 'deepAnalytics.views.uniqueViewersByUserId': this.userId },
-        $inc: {'analytics.views.byId': 1
-        }
-      };
-    } else {
-      userUpdateObj = {}
+    if(!_.contains(stats.deepAnalytics.views.uniqueViewersByIP, clientIP)){
+      _.extend(addToSet, { 'deepAnalytics.views.uniqueViewersByIP': clientIP });
+      _.extend(inc, {'analytics.views.byIP': 1 });
     }
 
-    Stories.update({_id: storyId}, _.extend({}, {$inc: {'analytics.views.total': 1}}, ipUpdateObj, userUpdateObj, connectionUpdateObj ));
+    if (this.userId && !_.contains(stats.deepAnalytics.views.uniqueViewersByUserId, this.userId)){
+      _.extend(addToSet, { 'deepAnalytics.views.uniqueViewersByUserId': this.userId });
+      _.extend(inc, {'analytics.views.byId': 1});
+    }
+
+    Stories.update( {_id: storyId}, {$inc: inc });
+    StoryStats.upsert( {storyId: storyId} , {$inc: inc, $addToSet: addToSet } );
   },
 
   ///////////////////////////////////
