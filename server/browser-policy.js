@@ -23,6 +23,7 @@ BrowserPolicy.content.allowFontOrigin('*.bootstrapcdn.com');
 // allow scripts from specific sources only (why not)
 BrowserPolicy.content.allowScriptOrigin('*.segment.com');
 BrowserPolicy.content.allowScriptOrigin('*.google-analytics.com');
+BrowserPolicy.content.allowScriptOrigin('*.cloudfront.net');
 
 // allow styles from specific sources only
 BrowserPolicy.content.allowStyleOrigin('*.bootstrapcdn.com');
