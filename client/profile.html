@@ -26,7 +26,7 @@
 <template name="user_profile">
   {{#if editing}}
     <div class="user-info-form">
-      {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
+      {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="method-update" meteormethod="updateProfile" validation="keyup"}}
       <button type="submit" class="save-profile-button">Save</button>
       
        <div class="picture">
