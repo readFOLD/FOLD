@@ -730,7 +730,7 @@ Template.type_specific_icon.helpers(typeHelpers);
 
 Template.favorite_button.helpers({
   userFavorited: function() {
-    return Meteor.user() && (Meteor.user().profile.favorites.indexOf(this._id) >= 0);
+    return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
   }
 });
 

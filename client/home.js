@@ -164,7 +164,7 @@ Template.all_stories.onCreated(function(){
 
   this.autorun(function(){
     var user = Meteor.user();
-    if (user && user.profile.favorites.length){
+    if (user && !_.isEmpty(user.profile.favorites)){
       starredSubscription = Meteor.subscribe("favoriteStoriesPub", user.profile.favorites)
     }
   });
