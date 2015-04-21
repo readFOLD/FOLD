@@ -111,11 +111,13 @@
 </template>
 <template name="login_buttons">
     {{#if currentUser}}
-      <button><a href="/profile/{{currentUser.displayUsername}}">{{currentUser.profile.name}}</a></button>
+      <a href="/profile/{{currentUser.displayUsername}}">
+        <button>{{currentUser.profile.name}}</button>
+      </a>
       {{#if showUserInfo}}
         <ol class="user-menu">
           <li>
-            <button>{{#linkTo route="my_story_profile"}}My stories{{/linkTo}}</button>
+            {{#linkTo route="my_story_profile"}}<button>My stories</button>{{/linkTo}}
           </li>
           <li>
             <button class="logout">Logout</button>
