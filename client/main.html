@@ -533,7 +533,7 @@
 </template>
 
 <template name="minimap">
-  {{#if minimapShown}}
+  {{#if minimapLargeEnough}}
   <div class="minimap">
     {{#each horizontalSectionsMap}}
     <div class="section {{#if selectedY}}selected-section{{/if}}" style="{{#if responsive}}height: {{sectionHeight}}px; margin-bottom: {{sectionMargin}}px;{{/if}}">

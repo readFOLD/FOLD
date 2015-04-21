@@ -458,8 +458,6 @@ Template.minimap.events({
   }
 });
 
-Session.set("windowHeight")
-
 Template.minimap.helpers({
   horizontalSectionsMap: function() {
     return Session.get("horizontalSectionsMap");
@@ -470,8 +468,8 @@ Template.minimap.helpers({
   selectedY: function() {
     return Session.equals("currentY", this.verticalIndex);
   },
-  minimapShown: function() {
-    // Ensure minimap height is greater than 0 and blocks are at least 5 pixels
+  minimapLargeEnough: function() {
+    // Ensure minimap height is greater than 0 and sections are at least 5 pixels tall
     if (Session.get("minimapMaxHeight") <= 0 || (Session.get("minimapMaxHeight") / Session.get("horizontalSectionsMap").length < 5)) {
       return false;
     } else {
@@ -480,24 +478,24 @@ Template.minimap.helpers({
   },
   responsive: function() {
     var maxHeight = Session.get("minimapMaxHeight");
-    var defaultSectionHeight = 17 + 5;
+    var defaultSectionHeight = 17 + 5;  // Section height + margin-bottom
     return (Session.get("horizontalSectionsMap").length * defaultSectionHeight >= maxHeight)
   },
   sectionHeight: function() {
     var maxHeight = Session.get("minimapMaxHeight");
-    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75;
+    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75;  // 75% of available space
   },
   verticalCardWidth: function() {
     var maxHeight = Session.get("minimapMaxHeight");
-    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 1.53333;
+    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 1.53333;  //  1.53333 aspect ratio
   },
   horizontalCardWidth: function() {
     var maxHeight = Session.get("minimapMaxHeight");
-    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 0.7645 * 1.53333;
+    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 0.7645 * 1.53333;  // Horizontal block is 76.45% of section
   },
   sectionMargin: function() {
     var maxHeight = Session.get("minimapMaxHeight");
-    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.25;
+    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.25;  // 25% of available space (33% of section)
   }
 });
 

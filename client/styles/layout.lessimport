@@ -973,7 +973,7 @@ div.minimap {
   right: @minimap-right-buffer;
   bottom: @minimap-bottom-buffer;
   max-height: @minimap-max-height;
-  overflow: auto;
+  overflow: hidden;
 
   .section {
     display: -ms-flexbox;
@@ -987,10 +987,10 @@ div.minimap {
 
     @section-height: 17px;
     height: @section-height;
-    margin-bottom: @section-height * 0.333333;
+    margin-bottom: @section-height * 0.33333;
 
     &:last-child {
-      margin-bottom: 0px;
+      margin-bottom: 0px !important;
     }
 
     &.selected-section {
