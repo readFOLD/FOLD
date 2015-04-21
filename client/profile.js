@@ -1,5 +1,7 @@
 var formatDate, weekDays;
 
+var numStoriesToDisplay = 12;
+
 weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 formatDate = function(date) {
@@ -71,7 +73,8 @@ Template.user_profile.helpers({
     return Template.instance().editing.get()
   },
   ownProfile: function() {
-    return Meteor.user().username == this.user.username ? true : false
+    var user = Meteor.user();
+    return (user && (user.username == this.user.username)) ? true : false
   },
   name : function() {
     return this.user.profile.name
@@ -122,12 +125,38 @@ Template.user_profile.events({
   }
 });
 
+Template.user_stories.onCreated(function(){
+  this.seeAllPublished = new ReactiveVar(false);
+});
+
+Template.user_stories.events({
+  "click .toggle-published": function(d, template) {
+    return template.seeAllPublished.set(!template.seeAllPublished.get())
+  }
+});
+
 Template.user_stories.helpers({
+  seeAllPublished : function() {
+    return Template.instance().seeAllPublished.get()
+  },
   publishedStories: function() {
-    return Stories.find({authorUsername : this.user.username, published : true})
+    var limit = Template.instance().seeAllPublished.get() ? 0 : numStoriesToDisplay; //when limit=0 -> no limit on stories
+    return Stories.find({authorUsername : this.user.username, published : true}, {
+      sort: {
+        publishedAt: -1
+      }, 
+      limit: limit
+    })
+  },
+  showAllPublishedButton: function() {
+    return Stories.find({authorUsername : this.user.username, published : true}).count() > numStoriesToDisplay
+  },
+  hasPublished: function() {
+    return Stories.findOne({authorUsername : this.user.username, published : true})
   },
   unpublishedMessage: function () {
-    if (Meteor.user().username == this.user.username) {
+    var user = Meteor.user();
+    if (user && (user.username == this.user.username)) {
       return "You haven't published any stories yet!"
     } else {
       return "This user hasn't written any stories yet"
@@ -135,21 +164,49 @@ Template.user_stories.helpers({
   }
 });
 
+Template.user_favorite_stories.onCreated(function(){
+  this.seeAllFavorites = new ReactiveVar(false);
+});
+
+Template.user_favorite_stories.events({
+  "click .toggle-favorites": function(d, template) {
+    return template.seeAllFavorites.set(!template.seeAllFavorites.get())
+  }
+});
+
 Template.user_favorite_stories.helpers({
+  seeAllFavorites: function() {
+    return Template.instance().seeAllFavorites.get()
+  },
   favoriteStories: function() {
+    var limit = Template.instance().seeAllFavorites.get() ? 0 : numStoriesToDisplay; 
     var favorites = this.user.profile.favorites;
     if (favorites && favorites.length) {
       return Stories.find({
         _id: {
           $in: this.user.profile.favorites
-        }
+        }}, {
+          sort: {
+            publishedAt: -1
+            }, 
+          limit: limit
       })
     } else {
       return [];
     }
-    },
+  },
+  showAllFavoritesButton: function() {
+    var favorites = this.user.profile.favorites;
+    if (favorites && favorites.length) {
+      return favorites.length > numStoriesToDisplay
+    }
+  },
+  hasFavorites: function() {
+    return this.user.profile.favorites.length;
+  },
   noFavoritesMessage: function () {
-    if (Meteor.user().username == this.user.username) {
+    var user = Meteor.user();
+    if (user && (user.username == this.user.username)) {
       return "You haven't favorited any stories yet!"
     } else {
       return "This user hasn't favorited any stories yet"

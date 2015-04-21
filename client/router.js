@@ -145,7 +145,7 @@ Router.route("my_story_profile", {
       this.redirect("home", {
         replaceState: true
       });
-      return alert("You must be logged in view your stories");
+      return alert("You must be logged in to view your stories");
     }
   }
 });
