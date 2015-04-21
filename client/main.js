@@ -128,7 +128,7 @@ updatecurrentY = function() {
 
   }
   if (scrollTop >= readMode) {
-    var selectOffset = - 40;
+    var selectOffset = - 90;
     _ref = _.map(window.getVerticalHeights(), function(height){ return height + selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
@@ -349,10 +349,9 @@ Template.vertical_section_block.events({
     var contextId;
     e.preventDefault();
     if (Session.equals("currentY", t.data.index)){
-      contextId = $(e.target).data('contextId');
+      contextId = $(e.currentTarget).data('contextId');
       return goToContext(contextId);
     }
-
   }
 });
 
@@ -447,6 +446,9 @@ Template.metaview.helpers({
          }) || {_id: id}; // fallback to just having id if cannot find
        });
     return blocks;
+  },
+  textContent: function(){
+    return $($.parseHTML(this.content)).text();
   }
 });
 
@@ -692,16 +694,8 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
     "mouseenter .text-content.editable": function(d, template) {
       document.body.style.overflow = 'hidden';
     },
-    "mouseleave .text-content.editable": function(d, template) { // TODO this seems like way more saving than needed. Fix it. PERFORMANCE.
+    "mouseleave .text-content.editable": function(d, template) {
       document.body.style.overflow = 'auto';
-      var that = this;
-      if (!Session.get('read') && !Session.get('addingContext')) {
-        var textContent = template.$('textarea[name=content]').val();
-        Session.set('saveState', 'saving');
-        Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
-          saveCallback(err, numDocs);
-        });
-      }
     },
     "keypress .image-section .text-content.editable": function(e, template) { // save on Enter
       var that = this;
@@ -764,7 +758,7 @@ Template.type_specific_icon.helpers(typeHelpers);
 
 Template.favorite_button.helpers({
   userFavorited: function() {
-    return Meteor.user() && (Meteor.user().profile.favorites.indexOf(this._id) >= 0);
+    return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
   }
 });
 
@@ -779,6 +773,25 @@ Template.favorite_button.events({
   },
   "click .unfavorite": function() {
     return Meteor.call('unfavoriteStory', this._id, function(err) {
+      if (err) {
+        throw(err);
+        return alert(err);
+      }
+    });
+  }
+});
+
+Template.editors_pick_button.events({
+  "click .pick": function() {
+    return Meteor.call('designateEditorsPick', this._id, function(err) {
+      if (err) {
+        throw(err);
+        return alert(err);
+      }
+    });
+  },
+  "click .unpick": function() {
+    return Meteor.call('stripEditorsPick', this._id, function(err) {
       if (err) {
         throw(err);
         return alert(err);
@@ -837,6 +850,7 @@ Template.home.onCreated(function(){
   $('html, body').scrollTop(0);
 });
 
+
 Template.signup.onCreated(function(){
   $('html, body').scrollTop(0);
 });
@@ -863,5 +877,4 @@ Template.create.onCreated(function(){
   Session.set("showDraft", true);
   Session.set("showMinimap", true);
   $('html, body').scrollTop(0);
-
 });

@@ -57,39 +57,61 @@ svg.mobile-back-icon{
   }
 }
 
-.favorite-button{
+.star-button{
   @height: 25px;
   display: inline-block;
   margin-left: 5px;
   font-size: 18px;
   height: @height;
   line-height: @height;
-  button{
+  button {
     height: @height;
     width: @height;
     padding: 0;
     background-color: transparent;
     border: none;
-    svg{
-    }
-    &.favorite{
-      .fg{
-        fill: @light-color;
-        &:hover{
-          fill: @medium-color;
-        }
+  }
+}
+
+.favorite-button{
+  .star-button;
+  .favorite {
+    .fg {
+      fill: @light-color;
+      &:hover {
+        fill: @medium-color;
       }
     }
-    &.unfavorite{
-      .fg{
-        fill: @favorite-color;
-        &:hover{
-          fill: @dark-favorite-color;
-        }
+  }
+  .unfavorite{
+    .fg{
+      fill: @favorite-color;
+      &:hover{
+        fill: @dark-favorite-color;
       }
     }
   }
 
+}
+
+.editors-pick-button{
+  .star-button;
+  .pick{
+    .fg{
+      fill: @light-color;
+      &:hover{
+        fill: fade(@remix-color, 80%);;
+      }
+    }
+  }
+  .unpick{
+    .fg{
+      fill: @remix-color;
+      &:hover{
+        fill: saturate(@remix-color, 80%);
+      }
+    }
+  }
 }
 
 i.loading-icon{

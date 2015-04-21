@@ -28,9 +28,6 @@ Meteor.startup(function(){
 Router.route("home", {
   path: "/",
   template: "home",
-  waitOn: function() {
-    return this.subscribe('exploreStoriesPub', '', '', '').wait();
-  },
   action: function() {
     if (this.ready()) {
       setTitle();
@@ -148,7 +145,7 @@ Router.route("my_story_profile", {
       this.redirect("home", {
         replaceState: true
       });
-      return alert("You must be logged in view your stories");
+      return alert("You must be logged in to view your stories");
     }
   }
 });
@@ -156,9 +153,13 @@ Router.route("my_story_profile", {
 Router.route("read", {
   path: "read/:userPathSegment/:storyPathSegment",
   template: "read",
-  waitOn: function() {
-    shortId = idFromPathSegment(this.params.storyPathSegment);
-    return [Meteor.subscribe('readStoryPub', this.params.userPathSegment, shortId)];
+  waitOn: function() { // subscribe and wait for story if don't have it yet
+    var shortId = idFromPathSegment(this.params.storyPathSegment);
+    if (Stories.findOne({shortId: shortId}, {reactive: false})) {
+      return [];
+    } else {
+      return [Meteor.subscribe('readStoryPub', this.params.userPathSegment, shortId)];
+    }
   },
   action: function() {
     if (this.ready()) {

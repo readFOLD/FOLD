@@ -3,12 +3,11 @@ var authorId, authorProfile;
 if (Meteor.users.find().count() === 0) {
   authorId = Accounts.createUser({
     email: 'author@example.com',
-    username: 'author',
+    username: 'authOr',
     password: 'password',
     accessPriority: 1,
     profile: {
-      name: 'Cynthia Fold',
-      displayUsername: 'authOr'
+      name: 'Cynthia Fold'
     },
     signupCode: 'begin'
   });
@@ -29,11 +28,14 @@ if (Stories.find().count() === 0) {
   Stories.insert({
     _id: storyId,
     shortId: shortId,
+    editorsPick: true,
+    editorsPickAt: new Date,
     headerImage: "header-image.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     title: "Unfolding the 2014 Ebola Outbreak (Example Story)",
     savedAt: new Date(1406524368561),
     publishedAt: new Date(1406524369993),
+    firstPublishedAt: new Date(1406524369993),
     published: true,
     userPathSegment: "author",
     storyPathSegment: "unfolding-the-2014-ebola-outbreak-asdsk20",
@@ -360,18 +362,10 @@ if (Stories.find().count() === 0) {
       }
     ].map(function(doc){return new ContextBlock(doc)}),
     draftStory: {
-      _id: storyId, // could remove
       headerImage: "header-image.jpg",
       headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-      savedAt: new Date(1406524368561),  // could remove
-      publishedAt: new Date(1406524369993),  // could remove
-      published: true,  // could remove
-      storyPathSegment: "unfolding-the-2014-ebola-outbreak-548781e397a6427c31384b73",  // could remove
+      storyPathSegment: "unfolding-the-2014-ebola-outbreak-asdsk20",
       title: "Unfolding the 2014 Ebola Outbreak (Example Story)",
-      authorId: authorId,  // could remove
-      authorName: authorProfile.name,  // could remove
-      favorited: [],
-      views: 0,
       verticalSections: [
         {
           _id: '93',

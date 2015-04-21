@@ -852,7 +852,7 @@ Template.link_twitter.events({
         alert("Twitter login failed");
         throw(err);
       } else if (!Meteor.user().profile.bio){
-        Meteor.call('setBioFromTwitter')    
+        Meteor.call('setBioFromTwitter')
       }
     });
   }

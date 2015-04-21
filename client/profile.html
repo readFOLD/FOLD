@@ -26,7 +26,7 @@
 <template name="user_profile">
   {{#if editing}}
     <div class="user-info-form">
-      {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="update" validation="keyup"}}
+      {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="method-update" meteormethod="updateProfile" validation="keyup"}}
       <button type="submit" class="save-profile-button">Save</button>
       
        <div class="picture">
@@ -39,7 +39,7 @@
           <img class="profile-picture" src="{{uploadPreview}}">
         {{else}}
           {{#if profileImage user}} 
-           <img class="profile-picture" src="{{profileImage user}}"/>
+           <img class="profile-picture" src="{{profileImage user 'large'}}"/>
           {{/if}}
         {{/if}}
      </div>
@@ -65,25 +65,38 @@
 
 <template name="user_stories">
   <h1>Latest stories</h1>
-  {{#each publishedStories}}
-      <div class="profile story" data-story-id="{{_id}}">
-        {{> _story_preview_content}}
-      </div>
+  {{#if hasPublished}}
+    {{#if showAllPublishedButton}}
+      <button class="toggle-published">
+        See {{#if seeAllPublished}}fewer{{else}}all{{/if}} stories
+      </button>
+    {{/if}}
+    {{#each publishedStories}}
+        <div class="profile story" data-story-id="{{_id}}">
+          {{> _story_preview_content}}
+        </div>
+    {{/each}}
   {{else}}
     <div class="message">{{unpublishedMessage}}</div>
-  {{/each}}
+  {{/if}}
 </template>
 
 <template name="user_favorite_stories">
   <h1>Favorites</h1>
-  {{#each favoriteStories}}
-      <div class="profile story" data-story-id="{{_id}}">
-        {{> _story_preview_content}}
-      </div>
-    <!-- {{/linkTo}} -->
+  {{#if hasFavorites}}
+    {{#if showAllFavoritesButton}}
+      <button class="toggle-favorites">
+        See {{#if seeAllFavorites}}fewer{{else}}all{{/if}} favorites
+      </button>
+    {{/if}}
+    {{#each favoriteStories}}
+        <div class="profile story" data-story-id="{{_id}}">
+          {{> _story_preview_content}}
+        </div>
+    {{/each}}
   {{else}}
     <div class="message">{{noFavoritesMessage}}</div>
-  {{/each}}
+  {{/if}}
 </template>
 
 

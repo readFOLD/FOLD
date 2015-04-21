@@ -10,6 +10,10 @@ div.login, div.reset-password, div.recover-password {
   }
 }
 
+input.error, input.required {
+  border-bottom: 5px solid red;
+}
+
 @media @not-mobile{
   div.login-left {
     position: relative;
@@ -21,6 +25,15 @@ div.login, div.reset-password, div.recover-password {
     position: relative;
     float: left;
     width: 45%;
+  }
+}
+
+form {
+  label {
+    span.error {
+      float: right;
+      color: red;
+    }
   }
 }
 
@@ -99,6 +112,8 @@ div.sign-up-options {
     color: @white-color;
     text-align: center;
     line-height: @button-height;
-
+    &:hover {
+      background-color: @dark-color;
+    }
   }
 }

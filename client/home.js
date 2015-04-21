@@ -71,11 +71,6 @@ Template.home.helpers({
   }
 });
 
-Template.home.onRendered(function() {
-  $("select").selectOrDie({
-
-  });
-});
 
 Template.home.events({
   "click div#expand-filter": function(d) {
@@ -117,35 +112,107 @@ Template.categories.events({
   }
 });
 
+Template.filters.onRendered(function() {
+  $("select").selectOrDie({
+
+  });
+});
+
+var filters = ['curated', 'trending', 'starred', 'newest'];
+Session.set('filterValue', filters[0]); // this must correspond to the first thingin the dropdown
+
 Template.filters.helpers({
   filters: function() {
-    return ['curated', 'trending', 'starred', 'newest'];
+    return filters
   },
-  selected: function() {
-    return Session.equals("filter", this.toString());
+  conditionallySelected: function(){
+    return Session.equals('filterValue', this.toString()) ? 'selected' : '';
   }
 });
 
 Template.filters.events({
-  "click li": function(d) {
-    var srcE;
-    srcE = d.srcElement ? d.srcElement : d.target;
-    return Session.set('filter', $(srcE).data('filter'));
+  "change select": function(e, t) {
+    Session.set('filterValue', ($(e.target).val()));
   }
 });
 
-Template.all_stories.onCreated(function(){
+Template.all_stories.onCreated(function(){ // TODO reconcile with the below
   var that = this;
   this.autorun(function(){
     that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}}).map(function(story){return story.authorId}));
   });
 });
 
-Template.all_stories.helpers({
-  stories: function() {
-    return Stories.find({ published: true }, {sort: {'publishedAt': 1}, reactive: false}); // TODO update sort based on dropdown selection
+var commonHomeSubscriptions = [];
+
+Template.all_stories.onCreated(function(){
+  if (!commonHomeSubscriptions.length ){ // subscribe to these the first time, and then keep them open so homepage loads right quick
+    commonHomeSubscriptions = [Meteor.subscribe("curatedStoriesPub"), Meteor.subscribe("newestStoriesPub"), Meteor.subscribe("trendingStoriesPub")];
+  }
+
+  this.subscriptionsReady = new ReactiveVar([]);
+
+  var that = this;
+  this.autorun(function(){
+    that.subscriptionsReady.set(_.chain(commonHomeSubscriptions)
+        .filter(function(pub) { return pub.ready() })
+        .value()
+    );
+  });
+
+  var starredSubscription;
+
+  this.autorun(function(){
+    var user = Meteor.user();
+    if (user && !_.isEmpty(user.profile.favorites)){
+      starredSubscription = Meteor.subscribe("favoriteStoriesPub", user.profile.favorites)
+    }
+  });
+
+});
+
+Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
+  newestStories: function() {
+    if (Template.instance().subscriptionsReady.get().length) {
+      return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: 40, reactive: false});
+    }
+  },
+  curatedStories: function() {
+    if (Template.instance().subscriptionsReady.get().length){
+      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 40, reactive: false});
+    }
+  },
+  trendingStories: function() {
+    if (Template.instance().subscriptionsReady.get().length) {
+      return Stories.find({published: true}, {sort: {'views': -1}, limit: 40, reactive: false});
+    }
+  },
+  starredStories: function() {
+    var user = Meteor.user();
+    if (user && user.profile.favorites){
+      return Stories.find({ published: true, _id: {$in: user.profile.favorites } }, {sort: {'publishedAt': -1}, reactive: true});
+    }
+  },
+  showNewestStories: function(){
+    return Session.equals('filterValue', 'newest')
+  },
+  showCuratedStories: function(){
+    return Session.equals('filterValue', 'curated')
+  },
+  showTrendingStories: function(){
+    return Session.equals('filterValue', 'trending')
+  },
+  showStarredStories: function(){
+    return Session.equals('filterValue', 'starred')
+  },
+  storiesLoading: function(){
+    return !Stories.find({}).count();
+  },
+  noStoriesForYou: function(){
+    return !Meteor.user();
   }
 });
+
 
 Template.story_preview.helpers({
   story: function(){

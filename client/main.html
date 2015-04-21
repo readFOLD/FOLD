@@ -478,7 +478,10 @@
       {{#each verticalSectionsWithIndex}}
         <li class="row" data-id="{{_id}}">
           <div class="vertical-block">
-            {{{content}}}
+            {{#if hasTitle}}
+              <h4>{{title}}</h4>
+            {{/if}}
+            <p>{{textContent}}</p>
           </div>
           <ul class="horizontal-section sortable-blocks ui-state-default">
             {{#each horizontalSections}}
@@ -620,6 +623,16 @@
             <button type='button' class='favorite'>{{> favorite_icon }}</button>
         {{/if}}
         {{favorited.length}}
+    </div>
+</template>
+
+<template name="editors_pick_button">
+    <div class="editors-pick-button">
+        {{#if editorsPick}}
+            <button type='button' class='unpick'>{{> favorite_icon }}</button>
+        {{else}}
+            <button type='button' class='pick'>{{> favorite_icon }}</button>
+        {{/if}}
     </div>
 </template>
 
