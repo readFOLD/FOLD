@@ -535,6 +535,7 @@
 <template name="minimap">
   {{#if minimapLargeEnough}}
   <div class="minimap">
+    <div class="expand"><i class="fa fa-expand"></i></div>
     {{#each horizontalSectionsMap}}
     <div class="section {{#if selectedY}}selected-section{{/if}}" style="{{#if responsive}}height: {{sectionHeight}}px; margin-bottom: {{sectionMargin}}px;{{/if}}">
       <div class="vertical block {{#if selectedY}}selected-block{{/if}}" style="{{#if responsive}}width: {{verticalCardWidth}}px;{{/if}}">

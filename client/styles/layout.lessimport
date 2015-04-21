@@ -21,7 +21,6 @@
 
 @selected-background-color: white;
 
-
 @remix-bar-height: 40px;
 @horizontal-content-height: 300px;
 
@@ -966,14 +965,43 @@ div.horizontal-context {
 
 @minimap-right-buffer: 6px;
 @minimap-bottom-buffer: 6px;
-@minimap-top-buffer: 6px;
-@minimap-max-height: calc(100% ~"-" @horizontal-context-top ~"-" @horizontal-context-margin-top ~"-" @horizontal-content-height ~"-" @remix-bar-height ~"-" @minimap-bottom-buffer ~"-" @minimap-top-buffer);
+@minimap-top-buffer: 20px;
+@minimap-padding: 6px;
+@minimap-max-height: calc(100% ~"-" @horizontal-context-top ~"-" @horizontal-context-margin-top ~"-" @horizontal-content-height ~"-" @remix-bar-height ~"-" @minimap-bottom-buffer ~"-" @minimap-top-buffer ~"-" 2*@minimap-padding);
+
 div.minimap {
+  .background-transition;
+  cursor: pointer;
   position: fixed;
+  overflow: hidden;
   right: @minimap-right-buffer;
   bottom: @minimap-bottom-buffer;
   max-height: @minimap-max-height;
-  overflow: hidden;
+  padding: @minimap-padding;
+
+  .expand {
+    .opacity-transition;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    opacity: 1.0;
+    background-color: #323232;
+    width: 30px;
+    height: 30px;
+    font-size: 21px;
+    border-radius: 3px;
+    padding-top: 5px;
+    padding-left: 6px;
+    opacity: 0.0;
+    color: white;
+  }
+
+  &:hover {
+    background-color: white;
+    .expand {
+      opacity: 1.0;
+    }
+  }
 
   .section {
     display: -ms-flexbox;
