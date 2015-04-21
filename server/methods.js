@@ -59,6 +59,8 @@ var makeTwitterCall = function(apiCall, params) {
 
 Meteor.methods({
   updateInitialTwitterUserInfo: function(userInfo) {
+    check(userInfo, Object);
+
     var user = Meteor.user();
     if (!user.tempUsername) {
       return
@@ -69,6 +71,10 @@ Meteor.methods({
     if (!email){
       throw new Meteor.Error('Please enter your email');
     }
+    check(username, String);
+    check(email, String);
+
+
     checkUserSignup(username, email);
 
     //get twitter info

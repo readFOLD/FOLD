@@ -10,7 +10,7 @@ var changeFavorite;
 
 changeFavorite = function(storyId, toFavorite) {
   var operator, storyOperation, userOperation;
-  check(storyId, String);
+
   this.unblock();
   if (!this.userId) {
     throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to favorite a story');
@@ -33,6 +33,7 @@ changeFavorite = function(storyId, toFavorite) {
 };
 
 var changeHasTitle = function(storyId, index, newValue){
+
   var selector = {_id: storyId};
   setObject = {};
   key = 'draftStory.verticalSections.' + index + '.hasTitle'
@@ -84,6 +85,8 @@ var updateContextBlocks = function(selector, modifier, options) {
 
 Meteor.methods({
   saveProfilePicture: function(userId, pictureId) {
+    check(userId, String);
+    check(pictureId, String);
     if (this.userId === userId) {
       Meteor.users.update({
         _id: this.userId
@@ -97,6 +100,10 @@ Meteor.methods({
     }
   },
   addContextToStory: function(storyId, storyShortId, contextBlock, verticalIndex){
+    check(storyId, String);
+    check(storyShortId, String);
+    check(contextBlock, Object);
+    check(verticalIndex, Number);
     if (!Stories.find({_id: storyId, authorId: this.userId},{ fields:{ _id: 1 }}).count()){
       throw new Meteor.Error("User doesn't own story")
     }
@@ -121,9 +128,11 @@ Meteor.methods({
     return contextId;
   },
   removeContextFromStory: function(storyId, contextId, verticalSectionIndex) {
-    var pushObject, pushSelectorString;
-    pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
-    pullObject = {};
+    check(storyId, String);
+    check(contextId, String);
+    check(verticalSectionIndex, Number);
+    var pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
+    var pullObject = {};
     pullObject[pushSelectorString] = contextId;
     var numUpdated = updateStory.call(this, {
       _id: storyId
@@ -137,17 +146,25 @@ Meteor.methods({
     return ContextBlocks.remove({_id: contextId, authorId: this.userId});
   },
   updateStoryTitle: function(storyId, title){
+    check(storyId, String);
+    check(title, String);
     // TODO DRY
     var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
     return updateStory.call(this, {_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
-  updateVerticalSectionTitle: function(storyId, index, title){
+  updateVerticalSectionTitle: function(storyId, index, title){ // TO-DO switch to using id instead of index
+    check(storyId, String);
+    check(index, Number);
+    check(title, String);
     var setObject = { $set:{} };
     setObject['$set']['draftStory.verticalSections.' + index + '.title'] = title;
 
     return updateStory.call(this, {_id: storyId}, setObject, {removeEmptyStrings: false})
   },
-  updateVerticalSectionContent: function(storyId, index, content){
+  updateVerticalSectionContent: function(storyId, index, content){ // TO-DO switch to using id instead of index
+    check(storyId, String);
+    check(index, Number);
+    check(content, String);
     // html is cleaned client-side on both save and display
     var setObject = { $set:{} };
     setObject['$set']['draftStory.verticalSections.' + index + '.content'] = content;
@@ -155,6 +172,9 @@ Meteor.methods({
     return updateStory.call(this, {_id: storyId}, setObject, {removeEmptyStrings: false})
   },
   updateHeaderImage: function(storyId, filePublicId, fileFormat) {
+    check(storyId, String);
+    check(filePublicId, String);
+    check(fileFormat, String);
     return updateStory.call(this, {_id: storyId}, {
       $set: {
         'draftStory.headerImage': filePublicId,
@@ -163,18 +183,28 @@ Meteor.methods({
     })
   },
   addTitle: function(storyId, index) {
+    check(storyId, String);
+    check(index, Number);
     return changeHasTitle.call(this, storyId, index, true);
   },
   removeTitle: function(storyId, index) {
+    check(storyId, String);
+    check(index, Number);
     return changeHasTitle.call(this, storyId, index, false);
   },
   editHorizontalBlockDescription: function(horizontalId, description) {
+    check(horizontalId, String);
+    check(description, String);
     return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"description": description}});
   },
   editTextSection: function(horizontalId, content) {
+    check(horizontalId, String);
+    check(content, String);
     return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"content": content}});
   },
   reorderStory: function(storyId, idMap) {
+    check(storyId, String);
+    check(idMap, [Object]);
 
     var story = Stories.findOne({_id: storyId, authorId: this.userId}, {
       fields: {
@@ -208,6 +238,8 @@ Meteor.methods({
     })
   },
   insertVerticalSection: function(storyId, index) {
+    check(storyId, String);
+    check(index, Number);
     var newSection = {
       _id: Random.id(8),
       contextBlocks: [],
@@ -226,7 +258,8 @@ Meteor.methods({
     })
   },
   moveVerticalSectionUpOne: function(storyId, index) {
-
+    check(storyId, String);
+    check(index, Number);
     if (!index){
       throw new Meteor.Error('Must have a positive index')
     }
@@ -252,7 +285,8 @@ Meteor.methods({
     })
   },
   moveVerticalSectionDownOne: function(storyId, index) {
-
+    check(storyId, String);
+    check(index, Number);
 
     var selector = { _id: storyId };
     var story = Stories.findOne(selector, {fields:
@@ -280,7 +314,7 @@ Meteor.methods({
     })
   },
   deleteVerticalSection: function(storyId, index) {
-
+    check(storyId, String);
     check(index, Number);
 
     var selector = { _id: storyId };
@@ -320,6 +354,10 @@ Meteor.methods({
     }
   },
   publishStory: function(storyId, title, keywords, narrativeRightsReserved) {
+    check(storyId, String);
+    check(title, String);
+    check(keywords, [String]);
+    check(narrativeRightsReserved, Boolean);
     if (!this.userId) {
       throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to publish a story');
     }
@@ -416,9 +454,11 @@ Meteor.methods({
     });
   },
   favoriteStory: function(storyId) {
+    check(storyId, String);
     return changeFavorite.call(this, storyId, true);
   },
   unfavoriteStory: function(storyId) {
+    check(storyId, String);
     return changeFavorite.call(this, storyId, false);
   },
   createStory: function() {
