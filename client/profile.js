@@ -192,7 +192,7 @@ Template.user_favorite_stories.helpers({
           limit: limit
       })
     } else {
-      return favorites.length;
+      return [];
     }
   },
   showAllFavoritesButton: function() {
@@ -202,7 +202,7 @@ Template.user_favorite_stories.helpers({
     }
   },
   hasFavorites: function() {
-    return this.user.profile.favorites;
+    return this.user.profile.favorites.length;
   },
   noFavoritesMessage: function () {
     var user = Meteor.user();
