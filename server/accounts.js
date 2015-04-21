@@ -44,7 +44,6 @@ Accounts.onCreateUser(function(options, user) {
 
   if (user.services.twitter) { // twitter signup
     user.tempUsername = user.services.twitter.screenName;
-    user.profile.twitterUser = true;
   } else { // email signup
     user.profile.displayUsername = options.username;
   }

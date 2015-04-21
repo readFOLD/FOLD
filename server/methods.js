@@ -36,11 +36,12 @@ var decrementByOne = function(bigInt) {
 
 var makeTwitterCall = function(apiCall, params) {
   var res;
+  var user = Meteor.user();
   var client = new Twit({
     consumer_key: TWITTER_API_KEY,
     consumer_secret: TWITTER_API_SECRET,
-    access_token: Meteor.user().services.twitter.accessToken,
-    access_token_secret: Meteor.user().services.twitter.accessTokenSecret
+    access_token: user.services.twitter.accessToken,
+    access_token_secret: user.services.twitter.accessTokenSecret
   });
 
   var twitterResultsSync = Meteor.wrapAsync(client.get, client);
@@ -57,67 +58,70 @@ var makeTwitterCall = function(apiCall, params) {
 };
 
 Meteor.methods({
-  updateUserInfo: function(userInfo) {
-    if (Meteor.user().tempUsername) {
-      var username = userInfo.username,
-          email = userInfo.email;
-      checkSignupCode(userInfo.signupCode);
-      if (!email){
-        throw new Meteor.Error('Please enter your email')
-      }
-      checkUserSignup(username, email);
-
-      //get twitter info
-      var res;
-      if (Meteor.user().services.twitter) {
-        var twitterParams = {
-            user_id: Meteor.user().services.twitter.id
-          };
-        try {
-          res = makeTwitterCall("users/show", twitterParams);
-        }
-        catch (err) {
-          res = {};  
-        }
-      }
-
-      var bio = (res && res.description) ? res.description : "";
-
-      return Meteor.users.update({
-        _id: this.userId
-      }, {
-          $set: {
-            "profile.name": userInfo.name || username,
-            "profile.displayUsername": username,
-            "username": username,
-            "profile.bio": bio,
-          },
-          $unset: {"tempUsername": ""},
-          $push: {
-            "emails": {  "address" : userInfo.email,  "verified" : false }
-           }
-        });
+  updateInitialTwitterUserInfo: function(userInfo) {
+    var user = Meteor.user();
+    if (!user.tempUsername) {
+      return
     }
+    var username = userInfo.username,
+        email = userInfo.email;
+    checkSignupCode(userInfo.signupCode);
+    if (!email){
+      throw new Meteor.Error('Please enter your email');
+    }
+    checkUserSignup(username, email);
+
+    //get twitter info
+    var res;
+    if (user.services.twitter) {
+      var twitterParams = {
+          user_id: user.services.twitter.id
+        };
+      try {
+        res = makeTwitterCall("users/show", twitterParams);
+      }
+      catch (err) {
+        res = {};
+      }
+    }
+
+    var bio = (res && res.description) ? res.description : "";
+
+    return Meteor.users.update({
+      _id: this.userId
+    }, {
+        $set: {
+          "profile.name": userInfo.name || username,
+          "profile.displayUsername": username,
+          "username": username,
+          "profile.bio": bio
+        },
+        $unset: {"tempUsername": ""},
+        $push: {
+          "emails": {  "address" : userInfo.email,  "verified" : false }
+         }
+      });
   },
   setBioFromTwitter: function() {
-    if (Meteor.user() && Meteor.user().profile) {
-      var res, bio;
-      if (Meteor.user().services.twitter) {
-        var twitterParams = {
-            user_id: Meteor.user().services.twitter.id
-          };
-          res = makeTwitterCall("users/show", twitterParams);
-      }
+    var user = Meteor.user();
+    if (user && user.profile && user.services.twitter) {
+      var res;
+      var twitterParams = {
+          user_id: user.services.twitter.id
+        };
+      res = makeTwitterCall("users/show", twitterParams);
 
-      var bio = (res && res.description) ? res.description : "";
+      var bio = res.description;
 
-      return Meteor.users.update({
-        _id: this.userId
-      }, {
+      if (bio){
+        return Meteor.users.update({
+          _id: this.userId
+        }, {
           $set: {
-            "profile.bio": bio,
+            "profile.bio": bio
           }
         });
+      }
     }
   },
 
