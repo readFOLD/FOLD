@@ -1188,10 +1188,6 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
     savedAt: {
       type: Date
     },
-    publishedAt: {
-      type: Date,
-      optional: true
-    },
     createdAt: {
       type: Date,
       autoValue: function() {
@@ -1203,6 +1199,14 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
           this.unset();
         }
       }
+    },
+    publishedAt: {
+      type: Date,
+      optional: true
+    },
+    firstPublishedAt: {
+      type: Date,
+      optional: true
     },
     published: {
       type: Boolean,
@@ -1241,6 +1245,14 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
     favorited: {
       type: [String],
       defaultValue: []
+    },
+    editorsPick: {
+      type: Boolean,
+      optional: true
+    },
+    editorsPickAt: {
+      type: Date,
+      optional: true
     },
     views: {
       type: Number,
