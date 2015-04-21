@@ -361,7 +361,7 @@ if (Stories.find().count() === 0) {
     draftStory: {
       headerImage: "header-image.jpg",
       headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-      storyPathSegment: "unfolding-the-2014-ebola-outbreak-548781e397a6427c31384b73",  // could remove
+      storyPathSegment: "unfolding-the-2014-ebola-outbreak-asdsk20",
       title: "Unfolding the 2014 Ebola Outbreak (Example Story)",
       verticalSections: [
         {

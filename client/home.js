@@ -71,11 +71,6 @@ Template.home.helpers({
   }
 });
 
-Template.home.onRendered(function() {
-  $("select").selectOrDie({
-
-  });
-});
 
 Template.home.events({
   "click div#expand-filter": function(d) {
@@ -117,39 +112,121 @@ Template.categories.events({
   }
 });
 
+Template.filters.onRendered(function() {
+  $("select").selectOrDie({
+
+  });
+});
+
+var filters = ['curated', 'trending', 'starred', 'newest'];
+Session.set('filterValue', filters[0]); // this must correspond to the first thingin the dropdown
+
 Template.filters.helpers({
   filters: function() {
-    return ['curated', 'trending', 'starred', 'newest'];
+    return filters
   },
-  selected: function() {
-    return Session.equals("filter", this.toString());
+  conditionallySelected: function(){
+    return Session.equals('filterValue', this.toString()) ? 'selected' : '';
   }
 });
 
 Template.filters.events({
-  "click li": function(d) {
-    var srcE;
-    srcE = d.srcElement ? d.srcElement : d.target;
-    return Session.set('filter', $(srcE).data('filter'));
+  "change select": function(e, t) {
+    Session.set('filterValue', ($(e.target).val()));
   }
 });
 
-Template.all_stories.onCreated(function(){
+Template.all_stories.onCreated(function(){ // TODO reconcile with the below
   var that = this;
   this.autorun(function(){
     that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}}).map(function(story){return story.authorId}));
   });
 });
 
+var commonHomeSubscriptions = [];
+var subscribedToFavoritesPublication = false;
+
+
+Template.all_stories.onCreated(function(){
+  if (!commonHomeSubscriptions.length ){ // subscribe to these the first time, and then keep them open so homepage loads right quick
+    commonHomeSubscriptions = [Meteor.subscribe("curatedStoriesPub"), Meteor.subscribe("newestStoriesPub"), Meteor.subscribe("trendingStoriesPub")];
+  }
+
+  this.subscriptionsReady = new ReactiveVar();
+
+  var that = this;
+  this.autorun(function(){
+    that.subscriptionsReady.set(_.chain(commonHomeSubscriptions)
+        .filter(function(pub) { pub.ready() })
+        .value()
+    );
+  });
+
+  this.starredStoriesSubReady = new ReactiveVar();
+
+  var user = Meteor.user();
+  if (user && user.profile.favorites.length ){
+
+    var starredSubscription;
+
+    this.autorun(function(){
+      var user = Meteor.user();
+      if (user && user.profile.favorites.length){
+        starredSubscription = Meteor.subscribe("favoriteStoriesPub", user.profile.favorites)
+      }
+    });
+
+    this.autorun(function(){
+      that.starredStoriesSubReady.set(starredSubscription.ready());
+    });
+  }
+
+});
+
 Template.all_stories.helpers({
-  stories: function() {
-    return Stories.find({ published: true }, {sort: {'publishedAt': 1}, reactive: false}); // TODO update sort based on dropdown selection
+  newestStories: function() {
+    Template.instance().subscriptionsReady.get();
+    return Stories.find({ published: true }, {sort: {'publishedAt': -1}, limit: 40}, {reactive: false});
+  },
+  curatedStories: function() {
+    Template.instance().subscriptionsReady.get();
+    return Stories.find({ published: true, editorsPicks: true}, {sort: {'editorsPickAt': -1}, limit: 40}, {reactive: false});
+  },
+  trendingStories: function() {
+    Template.instance().subscriptionsReady.get();
+    return Stories.find({ published: true}, {sort: {'views': -1}, limit: 40}, {reactive: false});
+  },
+  starredStories: function() {
+    Template.instance().starredStoriesSubReady.get();
+    var user = Meteor.user();
+    if (user && user.profile.favorites.length){
+      return Stories.find({ published: true, _id: {$in: user.profile.favorites } }, {sort: {'publishedAt': -1} }, {reactive: false});
+    }
+  },
+  showNewestStories: function(){
+    return Session.equals('filterValue', 'newest')
+  },
+  showCuratedStories: function(){
+    return Session.equals('filterValue', 'curated')
+  },
+  showTrendingStories: function(){
+    return Session.equals('filterValue', 'trending')
+  },
+  showStarredStories: function(){
+    return Session.equals('filterValue', 'starred')
+  },
+  storiesLoading: function(){
+    return !Stories.find({}).count();
+  },
+  noStoriesForYou: function(){
+    return !Meteor.user();
   }
 });
 
+
 Template.story_preview.helpers({
   story: function(){
-    return Stories.findOne(this._id);
+    return this;
   }
 });
 

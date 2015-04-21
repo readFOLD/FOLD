@@ -804,6 +804,7 @@ Template.home.onCreated(function(){
   $('html, body').scrollTop(0);
 });
 
+
 Template.signup.onCreated(function(){
   $('html, body').scrollTop(0);
 });
@@ -830,5 +831,4 @@ Template.create.onCreated(function(){
   Session.set("showDraft", true);
   Session.set("showMinimap", true);
   $('html, body').scrollTop(0);
-
 });

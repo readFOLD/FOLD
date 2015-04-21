@@ -28,9 +28,6 @@ Meteor.startup(function(){
 Router.route("home", {
   path: "/",
   template: "home",
-  waitOn: function() {
-    return this.subscribe('exploreStoriesPub', '', '', '').wait();
-  },
   action: function() {
     if (this.ready()) {
       setTitle();

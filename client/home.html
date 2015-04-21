@@ -134,7 +134,7 @@
 </template>
 
 <template name="home">
-  {{> top_banner  showFilters="true" border="active-border"}}
+  {{> top_banner showFilters="true" border="active-border"}}
   <div class="stories"> 
     <section>
       <div class="story-container">
@@ -146,9 +146,9 @@
 
 <template name="filters">
   <span class="filters">
-    <select data-custom-id="custom" data-custom-class="custom">
+    <select data-custom-id="custom" data-custom-class="custom" value="{{initialFilterValue}}">
       {{#each filters}}
-        <option value="{{this}}">
+        <option value="{{this}}" {{conditionallySelected}}>
           {{this}}
         </option>
       {{/each}}
@@ -169,12 +169,33 @@
 </template>
 
 <template name="all_stories">
-  {{#each stories}}
-      {{> story_preview}}
-  {{else}}
+  {{#if showNewestStories}}
+    {{#each newestStories}}
+      {{> story_preview }}
+    {{/each}}
+  {{/if}}
+  {{#if showCuratedStories}}
+    {{#each curatedStories}}
+      {{> story_preview }}
+    {{/each}}
+  {{/if}}
+  {{#if showTrendingStories}}
+    {{#each trendingStories}}
+      {{> story_preview }}
+    {{/each}}
+  {{/if}}
+  {{#if showStarredStories}}
+    {{#each starredStories}}
+      {{> story_preview }}
+    {{/each}}
+  {{/if}}
+  {{#if storiesLoading}}
+    {{> loading_icon}}
+  {{/if}}
+  {{#if noStoriesForYou}}
     <h2 style="text-align: center">FOLD will launch on April 22nd.</h2>
     <h3 style="text-align: center">If you have a secret code, please sign up above.</h3>
-  {{/each}}
+  {{/if}}
 </template>
 
 <template name="story_preview">
