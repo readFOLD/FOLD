@@ -4,6 +4,7 @@
 
 h1 {
  font-size: 30px;
+ margin-bottom: 45px;
    @media (max-width: 800px) {
     text-align: center;
   }
@@ -63,14 +64,15 @@ div.user-profile {
   div.name, div.bio {
     text-align: center;
     word-wrap:break-word;
-    margin: 15px 45px;
+    margin: 5px 45px;
   }
   div.name {
     font-size: 250%;
-    line-height: 110%;
+    line-height: 135%;
   }
   div.bio {
     font-size: 110%;
+    line-height: 170%;
     font-style: italic;
   }
   .edit-profile {

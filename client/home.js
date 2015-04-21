@@ -23,14 +23,14 @@ window.headerImageUrl = function(headerImage, headerImageFormat){
 formatDate = function(date) {
   var hms;
   hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-  return weekDays[date.getDay()] + " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
+  return weekDays[date.getDay()] + " " + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
 };
 
 // February 7th, 2015
 formatDateNice = function(date) {
   var hms;
   hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-  return monthNames[(date.getMonth() + 1)] + " " + date.getDate() + ", " + date.getFullYear();
+  return monthNames[(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear();
 };
 
 loginWithTwitter = function() {
@@ -164,7 +164,7 @@ Template.all_stories.onCreated(function(){
 
   this.autorun(function(){
     var user = Meteor.user();
-    if (user && user.profile.favorites.length){
+    if (user && !_.isEmpty(user.profile.favorites)){
       starredSubscription = Meteor.subscribe("favoriteStoriesPub", user.profile.favorites)
     }
   });

@@ -64,6 +64,19 @@ Router.route("terms", {
   data: function() {}
 });
 
+Router.route("privacy", {
+  path: "privacy",
+  template: "privacy",
+  action: function() {
+    if (this.ready()) {
+      setTitle('Privacy Policy');
+      setOGImage();
+      return this.render();
+    }
+  },
+  data: function() {}
+});
+
 Router.route("profile", {
   path: "/profile/:username", // can put in display username
   template: "profile",

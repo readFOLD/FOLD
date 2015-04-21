@@ -28,14 +28,30 @@
         <div class="section">
             <h1>Frequently asked questions</h1>
             <ul>
+                <li class="question">What is FOLD?</li>
+                <div class="answer"> FOLD is an authoring and publishing platform for creating modular, multimedia stories. Authors can search for and add “context cards” to their stories directly within the platform. Context cards can contain everything from videos, maps, tweets, music, interactive visualizations, and more.</div>
                 <li class="question">Can I write a story?</li>
                 <div class="answer"> Absolutely! Sign up for an account with Twitter or e-mail to get started writing your own story.  It can be about any topic — something in the news, video games, beekeeping, whatever you want!</div>
                 <li class="question">What is a "narrative card"?</li>
                 <div class="answer"> Narrative cards form the backbone of a FOLD story. Narrative cards can have a title, or they can simply be free text. Context cards are associated with individual narrative cards.</div>
                 <li class="question">What is a "context card"?</li>
                 <div class="answer"> Context cards surround narrative cards. They can be explored with the left and right arrows, or linked directly to words and phrases in a narrative card. Context cards bring in multimedia elements, including videos, maps, photos, gifs, tweets, interactive data visualizations, text, and more. With the FOLD authoring platform, writers provide “curated tangents” to readers by adding context cards or remixing context blocks that other writers have created.</div>
-                <li class="question">What does "remixing cards" mean?</li>
-                <div class="answer"> Any context card can be remixed by another author. If it is remixed, the new card will link back to the original story and provide attribution to the author who first created it. While you're reading, if you see a card you'd like to use in your own stories, click on the pink icon underneath the context card. The card will appear in the context card builder the next time you write a story!</div>
+                <li class="question"> Can I take a photo or context card from another FOLD story and add it to my own?</li>
+                <div class="answer"> This feature is coming soon! Any context card can be remixed by another author. If it is remixed, the new card will link back to the original story and provide attribution to the author who first created it. While you're reading, if you see a card you'd like to use in your own stories, click on the pink "remix" icon underneath the context card. The card will appear in the context card builder the next time you write a story!</div>
+                <li class="question">Is FOLD open-source?</li>
+                <div class="answer"> FOLD is open source, under the <a href="http://opensource.org/licenses/MIT" class ="green" target="_blank">MIT license</a>.</div>
+                <li class="question">What browsers are supported?</li>
+                <div class="answer"> The FOLD authoring platform works best in Chrome, but stories can be read in any browser.</div>
+                <li class="question">Can I use FOLD from my smartphone or tablet?</li>
+                <div class="answer"> The mobile version is in development, and will be ready soon.</div>
+                <li class="question">Is everything on FOLD public or is there an option to publish pieces privately, or to a select group of people?</li>
+                <div class="answer"> Currently, FOLD stories are public by default once published, though we are exploring ways to enable private and small group publishing.</div>
+                <li class="question">If I publish a piece on FOLD, can I submit it to a newspaper or other publication? Who owns the rights?</li>
+                <div class="answer"> By default, content on FOLD is Creative Commons BY, but we're making it possible for writers to keep copyright on their core story. Context cards are shareable by design, thus are always CC-BY. Multimedia elements that you include (e.g. YouTube videos) are subject to the ownership agreements between the original content creator and hosting platform.</div>
+                <li class="question">Can I use FOLD in a language other than English?</li>
+                <div class="answer"> You can write a FOLD story in whatever language you choose. </div>
+                <li class="question">I’m having trouble using FOLD. Who do I contact for troubleshooting?</li>
+                <div class="answer"> If you’re having trouble, please let us know at <a href="mailto:fold@media.mit.edu" class="green">fold@media.mit.edu</a>.</div>
             </ul>
         </div>
         <hr/>
@@ -76,6 +92,6 @@
 
 <template name="footer">
     <div class ="footer">
-        Follow us at <a href="https://twitter.com/readFOLD" target="_blank">@readFOLD</a> or e-mail us at <a href="mailto:fold@media.mit.edu">fold@media.mit.edu</a>. Read our {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}}.
+        Follow us at <a href="https://twitter.com/readFOLD" target="_blank">@readFOLD</a> or e-mail us at <a href="mailto:fold@media.mit.edu">fold@media.mit.edu</a>. Read our {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}} and {{#linkTo route="privacy" target='_blank' class='green'}}Privacy Policy{{/linkTo}}.
     </div>
 </template>

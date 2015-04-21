@@ -202,7 +202,7 @@ Template.user_favorite_stories.helpers({
     }
   },
   hasFavorites: function() {
-    return this.user.profile.favorites.length;
+    return !_.isEmpty(this.user.profile.favorites);
   },
   noFavoritesMessage: function () {
     var user = Meteor.user();

@@ -19,7 +19,6 @@ var createUser = function(user, template) {
     email: user.email,
     password: user.password,
     username: user.username,
-    signupCode: user.signupCode,
     profile : {
       "name" : user.name
       }
@@ -34,6 +33,8 @@ var createUser = function(user, template) {
 Template.signup_form.onCreated(function() {
   this.invalidPassword = new ReactiveVar(false);
   this.signupError = new ReactiveVar();
+  this.emailError = new ReactiveVar();
+  this.passwordError = new ReactiveVar();
 });
 
 Template.signup_form.helpers({
@@ -51,11 +52,56 @@ Template.signup_form.helpers({
   },
   signupError: function() {
     return Template.instance().signupError.get();
+  },
+  emailError: function () { 
+    return Template.instance().emailError.get();
+  },
+  passwordError: function () { 
+    return Template.instance().passwordError.get();
   }
-
 });
 
 Template.signup_form.events({
+  'blur input#signup-email': function(e, t) {
+    var val = $(e.currentTarget).val();
+    if (!SimpleSchema.RegEx.Email.test(val) && val !== '') {
+      t.emailError.set('Invalid e-mail address');
+      return;
+    }
+
+    if (SimpleSchema.RegEx.Email.test(val) && val !== '') {
+      t.emailError.set('');
+      return;
+    }
+  },
+  'blur input#signup-password': function(e, t) {
+    var p1 = $("#signup-password").val();
+
+    if (p1 === '') {
+      t.passwordError.set('');
+      return;
+    }
+
+    if (!isValidPassword(p1)) {
+      t.passwordError.set('Password too short')
+      return;
+    }
+
+  },
+  'keyup input#signup-password2': function(e, t) {
+    var p1 = $("#signup-password").val();
+    var p2 = $("#signup-password2").val();
+
+    if (p1 !== p2) {
+      t.passwordError.set('Passwords do not match')
+      return;
+    }
+
+    if (p1 === p2) {
+      t.passwordError.set('')
+      return;
+    }
+  },
   'submit #signup-form': function (e, template) {
     e.preventDefault();
 

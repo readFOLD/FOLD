@@ -201,12 +201,12 @@
         {{/each}}
       </ul>
     </div>
-    <form>
+    <div class="text-result-container">
       <textarea name="content" value={{content}} class="text-input" rows="10" dir="auto"></textarea>
-      <button type="submit" class="add-button">
-        Add
-      </button>
-    </form>
+    </div>
+    <button  class="add-button">
+      Add
+    </button>
   </div>
 </template>
 
@@ -408,7 +408,9 @@
     </select>
 
     {{#if addingContext}}
+    <div class="viz-result-container">
       <iframe width="{{cardWidth}}" height="315" src="{{url}}" frameborder="0" ></iframe>
+    </div>
     {{/if}}
 
     {{#if showAddButton}}
@@ -429,11 +431,13 @@
       </ul>
     </div>
     {{> search_form option1='satellite' label1='Satellite' option2='roadmap' label2='Roadmap' placeholderType='locations'}}
-    <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
+    <div class="map-result-container">
+      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
+    </div>
     {{#if showAddButton}}
-      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-        Add
-      </button>
+    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+      Add
+    </button>
     {{/if}}
   </div>
 </template>

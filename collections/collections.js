@@ -1023,8 +1023,7 @@ Schema.UserProfile = new SimpleSchema({
   },
   favorites: {
     type: [String],
-    optional: true,
-    defaultValue: []
+    optional: true
   },
   profilePicture: {
     type: String,

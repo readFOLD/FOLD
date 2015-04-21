@@ -90,11 +90,12 @@
 
         {{#unless isPhone}}
           <li class="about-fold">
+            {{#linkTo route="about"}}
             <button>
-              {{#linkTo route="about"}}
                 About FOLD
-              {{/linkTo}}
+
             </button>
+            {{/linkTo}}
           </li>
         {{/unless}}
       </ol>

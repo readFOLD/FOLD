@@ -110,7 +110,7 @@ div.home-top {
 
     button{
       padding: 12px 20px;
-      min-width: 154px;
+      min-width: 152px;
       .size-to-fit;
       &:hover {
         background-color: @dark-color;
