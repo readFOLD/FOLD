@@ -1195,6 +1195,10 @@ var analyticsSchema = new SimpleSchema({
   byId: {
     type: Number,
     defaultValue: 0
+  },
+  total: {
+    type: Number,
+    defaultValue: 0
   }
 });
 
@@ -1354,13 +1358,15 @@ Schema.StoryStats = new SimpleSchema({
     type: String
   },
   deepAnalytics: {
-    type: Object
+    type: Object,
+    optional: true
   },
   'deepAnalytics.views': {
     type: deepAnalyticsSchema
   },
   analytics: {
-    type: Object
+    type: analyticsSchema,
+    optional: true
   },
   'analytics.views': {
     type: analyticsSchema
