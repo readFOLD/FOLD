@@ -68,7 +68,7 @@ Router.route("terms", {
 });
 
 Router.route("profile", {
-  path: "/profile/:username",
+  path: "/profile/:username", // can put in display username
   template: "profile",
   action: function() {
     if (this.ready()) {
@@ -78,12 +78,12 @@ Router.route("profile", {
     }
   },
   waitOn: function() {
-    var username = this.params.username;
+    var username = this.params.username.toLowerCase();
     return [Meteor.subscribe('userProfilePub', username),
            Meteor.subscribe('userStoriesPub', username)];
   },
   data: function() {
-    var username = this.params.username;
+    var username = this.params.username.toLowerCase();
     var user;
       if (this.ready()) {
         user = Meteor.users.findOne({username : username});
@@ -99,6 +99,33 @@ Router.route("profile", {
 
   },
 });
+
+Router.route("recover_password", {
+  path: "recover-password",
+  template: "recover_password",
+  action: function() {
+    if (this.ready()) {
+      setTitle('Recover Password');
+      setOGImage();
+      return this.render();
+    }
+  }
+})
+
+Router.route("reset_password", {
+  path: "reset-password/:resetPasswordToken",
+  template: "reset_password",
+  data: function() {
+    Session.set("resetPasswordToken", this.params.resetPasswordToken);
+  },
+  action: function() {
+    if (this.ready()) {
+      setTitle('Reset Password');
+      setOGImage();
+      return this.render();
+    }
+  }
+})
 
 Router.route("my_story_profile", {
   path: "my-stories",
@@ -116,9 +143,6 @@ Router.route("my_story_profile", {
   onBeforeAction: function() {
     var user;
     if ((user = Meteor.user()) || Meteor.loggingIn()) {
-      //if (user) {
-      //  this.subscribe('readStoriesPub', user.profile.favorites);
-      //}
       return this.next();
     } else {
       this.redirect("home", {
@@ -145,10 +169,12 @@ Router.route("read", {
   data: function() {
     var story;
     if (this.ready()){
-      story = Stories.findOne({shortId: idFromPathSegment(this.params.storyPathSegment)}, {reactive: false});
+      var shortId = idFromPathSegment(this.params.storyPathSegment);
+      story = Stories.findOne({shortId: shortId}, {reactive: false});
       if (story) {
         Session.set("story", story);
         Session.set("storyId", story._id);
+        Session.set("storyShortId", shortId);
         Session.set("headerImage", story.headerImage);
         Session.set("horizontalSectionsMap", _.map(_.pluck(story.verticalSections, "contextBlocks"), function (cBlockIds, i) {
           return {
@@ -186,15 +212,17 @@ Router.route("edit", {
   template: "create",
   waitOn: function() {
     shortId = idFromPathSegment(this.params.storyPathSegment);
-    return [Meteor.subscribe('createStoryPub', this.params.userPathSegment, shortId), Meteor.subscribe('contextBlocksPub')];
+    return [Meteor.subscribe('createStoryPub', this.params.userPathSegment, shortId), Meteor.subscribe('contextBlocksPub', shortId)];
   },
   data: function() {
     var story;
     if (this.ready()) {
-      story = Stories.findOne({shortId: idFromPathSegment(this.params.storyPathSegment)});
+      var shortId = idFromPathSegment(this.params.storyPathSegment);
+      story = Stories.findOne({shortId: shortId});
       if (story && story.draftStory) {
         Session.set("story", story.draftStory);
         Session.set("storyId", story._id);
+        Session.set("storyShortId", shortId);
         Session.set("storyPublished", story.published);
         Session.set("headerImage", story.draftStory.headerImage);
         Session.set("userPathSegment", this.params.userPathSegment);

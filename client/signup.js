@@ -1,5 +1,13 @@
+window.isValidPassword = function(p) {
+  if (p.length >= 6) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 var checkPassword = function(p1,p2) {
-  if (!(p1.length >= 6) || !(p1===p2)) {
+  if (!isValidPassword(p1) || !(p1===p2)) {
     return Template.instance().invalidPassword.set(true);
   } else {
     return Template.instance().invalidPassword.set(false);
@@ -60,7 +68,7 @@ Template.signup_form.events({
     });
 
     if (Meteor.user()) { // if just finishing signup and already created a user via twitter
-      Meteor.call('updateUserInfo', userInfo, function (err) {
+      Meteor.call('updateInitialTwitterUserInfo', userInfo, function (err) {
         if (err) {
           template.signupError.set(err.reason || err.error);
         } else {

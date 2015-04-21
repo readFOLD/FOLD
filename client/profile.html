@@ -110,10 +110,8 @@
 <template name="my_stories">
   <h1>My Drafts</h1>
   {{#each writtenStories}}
-    <div class="story" data-story-id="{{_id}}">
-        {{#with draftStory}}
-          {{> _story_preview_content}}
-        {{/with}}
+      <div class="story" data-story-id="{{_id}}">
+        {{> _story_preview_content useDraftStory=true draftStory=draftStory}}
         <!--<div class="dates">-->
           <!--<p>Last Edited: {{lastEditDate}}</p>-->
           <!--<p>-->

@@ -1,5 +1,5 @@
 
-analytics.load(Meteor.settings["public"].SEGMENT_WRITE_KEY); // TODO check server for env var via meteor method
+analytics.load(Meteor.settings["public"].SEGMENT_WRITE_KEY);
 
 // NOTE this stops running after hot code reload https://github.com/iron-meteor/iron-router/issues/1219
 Router.onRun(function() {

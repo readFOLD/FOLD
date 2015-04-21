@@ -478,7 +478,10 @@
       {{#each verticalSectionsWithIndex}}
         <li class="row" data-id="{{_id}}">
           <div class="vertical-block">
-            {{{content}}}
+            {{#if hasTitle}}
+              <h4>{{title}}</h4>
+            {{/if}}
+            <p>{{textContent}}</p>
           </div>
           <ul class="horizontal-section sortable-blocks ui-state-default">
             {{#each horizontalSections}}

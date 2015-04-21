@@ -7,7 +7,8 @@ if (Meteor.users.find().count() === 0) {
     password: 'password',
     accessPriority: 1,
     profile: {
-      name: 'Cynthia Fold'
+      name: 'Cynthia Fold',
+      displayUsername: 'authOr'
     },
     signupCode: 'begin'
   });
@@ -20,12 +21,14 @@ if (Meteor.users.find().count() === 0) {
 }
 
 if (Stories.find().count() === 0) {
-  author = Meteor.users.findOne({username: "author"});
+  var author = Meteor.users.findOne({username: "author"});
   authorId = author._id;
   authorProfile = author.profile;
+  var shortId = 'asdsk20';
+  var storyId = '548781e397a6427c31384b73';
   Stories.insert({
-    _id: '548781e397a6427c31384b73',
-    shortId: 'asdsk20',
+    _id: storyId,
+    shortId: shortId,
     headerImage: "header-image.jpg",
     headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
     title: "Unfolding the 2014 Ebola Outbreak (Example Story)",
@@ -37,6 +40,7 @@ if (Stories.find().count() === 0) {
     authorId: authorId,
     authorName: authorProfile.name,
     authorUsername: 'author',
+    authorDisplayUsername: 'authOr',
     favorited: [],
     views: 0,
 
@@ -94,11 +98,15 @@ if (Stories.find().count() === 0) {
           mapType: 'roadmap'
         },
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '35259309fdfs'
       }, {
         type: "text",
         content: "From the Centers for Disease Control and Prevention: “On July 25, 2014, the Nigerian Ministry of Health confirmed that a man in Lagos, Nigeria, died from Ebola. The man had been in a Lagos hospital since arriving at the Lagos airport from Liberia. Currently, a small number of Ebola cases linked to this patient have been reported in Lagos and Port Harcourt. The Nigerian government has taken actions to contain further spread, but it is not yet known if these actions will be successful.",
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '1'
       }, {
         type: "image",
@@ -108,6 +116,8 @@ if (Stories.find().count() === 0) {
         },
         description: "Situation map of the outbreak. Source: Wikipedia.",
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '2'
       }, {
         type: "image",
@@ -117,6 +127,8 @@ if (Stories.find().count() === 0) {
         },
         description: "Electron Micrograph image of Virus",
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '3'
       }, {
         type: "video",
@@ -126,11 +138,15 @@ if (Stories.find().count() === 0) {
           description: "How did ebola evolve to affect humans?"
         },
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '4'
       }, {
         type: "text",
         content: "Symptoms can progress to include vomiting, diarrhea, and external bleeding, which facilitate the spread of the disease. This can become especially problematic at funerals, as infected bodies can be a vector for disease.",
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '5'
       }, {
         type: "image",
@@ -140,6 +156,8 @@ if (Stories.find().count() === 0) {
         },
         description: "Isolation Chamber",
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '6'
       }, {
         type: "image",
@@ -149,6 +167,8 @@ if (Stories.find().count() === 0) {
         },
         description: "Ebola Cycle",
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '7'
       }, {
         type: "image",
@@ -158,6 +178,8 @@ if (Stories.find().count() === 0) {
         },
         description: "Red Cross communications materials teach people how Ebola is transmitted. Tommy Trenchard / Al Jazeera",
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '8'
       },
       {
@@ -168,6 +190,8 @@ if (Stories.find().count() === 0) {
           description: "Sierra Leone Lockdown"
         },
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '9'
       }, {
         type: "video",
@@ -177,6 +201,8 @@ if (Stories.find().count() === 0) {
           description: "WHO response"
         },
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '10'
       }, {
         type: "video",
@@ -186,6 +212,8 @@ if (Stories.find().count() === 0) {
           description: "Obama response"
         },
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '11'
       }, {
         type: "video",
@@ -195,11 +223,15 @@ if (Stories.find().count() === 0) {
           description: "Global community"
         },
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '12'
       }, {
         type: "text",
         content: "In July, two Americans who worked for an aid organization were infected with Ebola in Liberia. They were given an experimental treatment, known as ZMapp, and recovered. A Spanish missionary priest was also infected and treated similarly. ZMapp is an experimental drug that is not in production nor has it been tested in humans. Many bioethicists expressed outrage that Westerners were given the treatment and not Africans.",
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '13'
       }, {
         type: "map",
@@ -209,6 +241,8 @@ if (Stories.find().count() === 0) {
           mapType: 'roadmap'
         },
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '14'
       }, {
         type: "image",
@@ -218,6 +252,8 @@ if (Stories.find().count() === 0) {
         },
         description: "A doctor wearing protective equipment discards blood specimens during the 1976 Ebola outbreak in Zaire, 1976. Source: CDC",
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '15'
       }, {
         type: "image",
@@ -227,6 +263,8 @@ if (Stories.find().count() === 0) {
         },
         description: "Ebola isolation chamber from the 1970s.",
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '16'
       }, {
         type: "image",
@@ -236,6 +274,8 @@ if (Stories.find().count() === 0) {
         },
         description: "Nurses treat patient in 1976 Ebola outbreak.",
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '17'
       }, {
         type: "viz",
@@ -246,6 +286,8 @@ if (Stories.find().count() === 0) {
           oecYear: '2012'
         },
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '18'
       }, {
         type: "viz",
@@ -256,6 +298,8 @@ if (Stories.find().count() === 0) {
           oecYear: '2012'
         },
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '19'
       }, {
         type: "viz",
@@ -266,6 +310,8 @@ if (Stories.find().count() === 0) {
           oecYear: '2012'
         },
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '20'
       }, {
         type: "video",
@@ -275,6 +321,8 @@ if (Stories.find().count() === 0) {
           description: "Economic Cost"
         },
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '21'
       }, {
         type: "image",
@@ -284,6 +332,8 @@ if (Stories.find().count() === 0) {
         },
         description: "Deaths/cases over time",
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '22'
       }, {
         type: "video",
@@ -293,6 +343,8 @@ if (Stories.find().count() === 0) {
           description: "Dying of Ebola at the Hospital Door"
         },
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '23'
       }, {
         type: "video",
@@ -302,17 +354,18 @@ if (Stories.find().count() === 0) {
           description: "Economic Cost"
         },
         authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
         _id: '24'
       }
     ].map(function(doc){return new ContextBlock(doc)}),
     draftStory: {
-      _id: '548781e397a6427c31384b73', // could remove
+      _id: storyId, // could remove
       headerImage: "header-image.jpg",
       headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
       savedAt: new Date(1406524368561),  // could remove
       publishedAt: new Date(1406524369993),  // could remove
       published: true,  // could remove
-      userPathSegment: "author",  // could remove
       storyPathSegment: "unfolding-the-2014-ebola-outbreak-548781e397a6427c31384b73",  // could remove
       title: "Unfolding the 2014 Ebola Outbreak (Example Story)",
       authorId: authorId,  // could remove
@@ -366,243 +419,7 @@ if (Stories.find().count() === 0) {
       ]
     }
   });
-  //Stories.insert({
-  //  headerImage: "art.jpg",
-  //  headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-  //  savedAt: new Date(),
-  //  publishedAt: new Date(),
-  //  published: true,
-  //  userPathSegment: "author",
-  //  shortId: 'fdfdf3c3',
-  //  storyPathSegment: "leonard-nimoy-fdfdf3c3",
-  //  title: "Star Trek is great, and Leonard Nimoy's Spock was the greatest thing about it",
-  //  authorId: authorId,
-  //  authorName: authorProfile.name,
-  //  favorited: [],
-  //  views: 0,
-  //  verticalSections: [
-  //    {
-  //      _id: '931',
-  //      contextBlocks: [],
-  //      title: "First block",
-  //      hasTitle: true,
-  //      content: "Here is a great story."
-  //    }
-  //  ],
-  //  draftStory:{
-  //    headerImage: "art.jpg",
-  //    headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-  //    savedAt: new Date(),
-  //    publishedAt: new Date(),
-  //    published: true,
-  //    userPathSegment: "author",
-  //    shortId: 'fdfdf3c3',
-  //    storyPathSegment: "leonard-nimoy-fdfdf3c3",
-  //    title: "Star Trek is great, and Leonard Nimoy's Spock was the greatest thing about it",
-  //    authorId: authorId,
-  //    authorName: authorProfile.name,
-  //    verticalSections: [
-  //      {
-  //        _id: '931',
-  //        contextBlocks: [],
-  //        title: "First block",
-  //        hasTitle: true,
-  //        content: "Here is a great story."
-  //      }
-  //    ]
-  //  }
-  //});
-  //Stories.insert({
-  //  headerImage: "banksy.jpg",
-  //  _id: '548781e397a6427c31384b79',
-  //  shortId: 'djksad20',
-  //  headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-  //  savedAt: new Date(),
-  //  publishedAt: new Date(),
-  //  published: true,
-  //  userPathSegment: "author",
-  //  storyPathSegment: "banksy-djksad20",
-  //  title: "Banksy Spraypaints New Thing",
-  //  authorId: authorId,
-  //  authorName: authorProfile.name,
-  //  favorited: [],
-  //  views: 0,
-  //  verticalSections: [
-  //    {
-  //      _id: '931',
-  //      contextBlocks: [],
-  //      title: "First block",
-  //      hasTitle: true,
-  //      content: "Here is a great story."
-  //    }
-  //  ],
-  //  draftStory:{
-  //    headerImage: "banksy.jpg",
-  //    _id: '548781e397a6427c31384b79',
-  //    shortId: 'djksad20',
-  //    headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-  //    savedAt: new Date(),
-  //    publishedAt: new Date(),
-  //    published: true,
-  //    userPathSegment: "author",
-  //    storyPathSegment: "banksy-djksad20",
-  //    title: "Banksy Spraypaints New Thing",
-  //    authorId: authorId,
-  //    authorName: authorProfile.name,
-  //    verticalSections: [
-  //      {
-  //        _id: '931',
-  //        contextBlocks: [],
-  //        title: "First block",
-  //        hasTitle: true,
-  //        content: "Here is a great story."
-  //      }
-  //    ]
-  //  }
-  //});
-  //Stories.insert({
-  //  headerImage: "canoe.jpg",
-  //  headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-  //  savedAt: new Date(),
-  //  publishedAt: new Date(),
-  //  published: true,
-  //  userPathSegment: "author",
-  //  storyPathSegment: "wolf-alice-djkscsad20",
-  //  shortId: 'djkscsad20',
-  //  title: "5 songs from alt-rock band Wolf Alice you need to hear",
-  //  authorId: authorId,
-  //  authorName: authorProfile.name,
-  //  favorited: [],
-  //  views: 0,
-  //  verticalSections: [
-  //    {
-  //      _id: '931',
-  //      contextBlocks: [],
-  //      title: "First block",
-  //      hasTitle: true,
-  //      content: "Here is a great story."
-  //    }
-  //  ],
-  //  draftStory:{
-  //    headerImage: "canoe.jpg",
-  //    headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-  //    savedAt: new Date(),
-  //    publishedAt: new Date(),
-  //    published: true,
-  //    userPathSegment: "author",
-  //    storyPathSegment: "wolf-alice-djkscsad20",
-  //    shortId: 'djkscsad20',
-  //    title: "5 songs from alt-rock band Wolf Alice you need to hear",
-  //    authorId: authorId,
-  //    authorName: authorProfile.name,
-  //    verticalSections: [
-  //      {
-  //        _id: '931',
-  //        contextBlocks: [],
-  //        title: "First block",
-  //        hasTitle: true,
-  //        content: "Here is a great story."
-  //      }
-  //    ]
-  //  }
-  //});
-  //Stories.insert({
-  //  headerImage: "dothething.png",
-  //  _id: '23bb79',
-  //  shortId: 'djdcak20',
-  //  headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-  //  savedAt: new Date(),
-  //  publishedAt: new Date(),
-  //  published: true,
-  //  userPathSegment: "author",
-  //  storyPathSegment: "art-heist-djdcak20",
-  //  title: "25 Years Later, an Art Heist Is Still Unsolved",
-  //  authorId: authorId,
-  //  authorName: authorProfile.name,
-  //  favorited: [],
-  //  views: 0,
-  //  verticalSections: [
-  //    {
-  //      _id: '931',
-  //      contextBlocks: [],
-  //      title: "In the beginning",
-  //      hasTitle: true,
-  //      content: "Wow so good!"
-  //    }
-  //  ],
-  //  draftStory:{
-  //    headerImage: "dothething.png",
-  //    _id: '23bb79',
-  //    shortId: 'djdcak20',
-  //    headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-  //    savedAt: new Date(),
-  //    publishedAt: new Date(),
-  //    published: true,
-  //    userPathSegment: "author",
-  //    storyPathSegment: "art-heist-djdcak20",
-  //    title: "25 Years Later, an Art Heist Is Still Unsolved",
-  //    authorId: authorId,
-  //    authorName: authorProfile.name,
-  //    verticalSections: [
-  //      {
-  //        _id: '931',
-  //        contextBlocks: [],
-  //        title: "In the beginning",
-  //        hasTitle: true,
-  //        content: "Wow so good!"
-  //      }
-  //    ]
-  //  }
-  //});
-  //
-  //Stories.insert({
-  //  headerImage: "stones.jpg",
-  //  _id: '23bbv',
-  //  shortId: 'djkdcsq20',
-  //  headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-  //  savedAt: new Date(),
-  //  publishedAt: new Date(),
-  //  published: true,
-  //  userPathSegment: "author",
-  //  storyPathSegment: "charlottes-web-djkdcsq20",
-  //  title: "Charlotte's Web",
-  //  authorId: authorId,
-  //  authorName: authorProfile.name,
-  //  favorited: [],
-  //  views: 0,
-  //  verticalSections: [
-  //    {
-  //      _id: '931',
-  //      contextBlocks: [],
-  //      title: "A story about a pig",
-  //      hasTitle: true,
-  //      content: "Bacon ipsum dolor amet et pork chop fugiat drumstick qui sirloin. Kevin cillum ex, in t-bone cupim pastrami excepteur ball tip tongue et kielbasa. Pork belly ut et, incididunt deserunt sed irure kevin quis culpa commodo adipisicing sunt pariatur. Anim beef kielbasa cillum sed veniam ut reprehenderit tempor. Alcatra ground round sausage, do pig lorem jowl."
-  //    }
-  //  ],
-  //  draftStory:{
-  //    headerImage: "stones.jpg",
-  //    _id: '23bbv',
-  //    shortId: 'djkdcsq20',
-  //    headerImageAttribution: "HEALTHJASAREVIC / REUTERS",
-  //    savedAt: new Date(),
-  //    publishedAt: new Date(),
-  //    published: true,
-  //    userPathSegment: "author",
-  //    storyPathSegment: "charlottes-web-djkdcsq20",
-  //    title: "Charlotte's Web",
-  //    authorId: authorId,
-  //    authorName: authorProfile.name,
-  //    verticalSections: [
-  //      {
-  //        _id: '931',
-  //        contextBlocks: [],
-  //        title: "A story about a pig",
-  //        hasTitle: true,
-  //        content: "Bacon ipsum dolor amet et pork chop fugiat drumstick qui sirloin. Kevin cillum ex, in t-bone cupim pastrami excepteur ball tip tongue et kielbasa. Pork belly ut et, incididunt deserunt sed irure kevin quis culpa commodo adipisicing sunt pariatur. Anim beef kielbasa cillum sed veniam ut reprehenderit tempor. Alcatra ground round sausage, do pig lorem jowl."
-  //      }
-  //    ]
-  //  }
-  //});
+
 }
 
 if (ContextBlocks.find().count() === 0) {
@@ -615,11 +432,15 @@ if (ContextBlocks.find().count() === 0) {
         mapType: 'roadmap'
       },
       authorId: authorId,
+        storyShortId: shortId,
+        storyId: storyId,
       _id: '35259309fdfs'
     }, {
       type: "text",
       content: "From the Centers for Disease Control and Prevention: “On July 25, 2014, the Nigerian Ministry of Health confirmed that a man in Lagos, Nigeria, died from Ebola. The man had been in a Lagos hospital since arriving at the Lagos airport from Liberia. Currently, a small number of Ebola cases linked to this patient have been reported in Lagos and Port Harcourt. The Nigerian government has taken actions to contain further spread, but it is not yet known if these actions will be successful.",
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '1'
     }, {
       type: "image",
@@ -629,6 +450,8 @@ if (ContextBlocks.find().count() === 0) {
       },
       description: "Situation map of the outbreak. Source: Wikipedia.",
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '2'
     }, {
       type: "image",
@@ -638,6 +461,8 @@ if (ContextBlocks.find().count() === 0) {
       },
       description: "Electron Micrograph image of Virus",
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '3'
     }, {
       type: "video",
@@ -647,11 +472,15 @@ if (ContextBlocks.find().count() === 0) {
         description: "How did ebola evolve to affect humans?"
       },
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '4'
     }, {
       type: "text",
       content: "Symptoms can progress to include vomiting, diarrhea, and external bleeding, which facilitate the spread of the disease. This can become especially problematic at funerals, as infected bodies can be a vector for disease.",
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '5'
     }, {
       type: "image",
@@ -661,6 +490,8 @@ if (ContextBlocks.find().count() === 0) {
       },
       description: "Isolation Chamber",
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '6'
     }, {
       type: "image",
@@ -670,6 +501,8 @@ if (ContextBlocks.find().count() === 0) {
       },
       description: "Ebola Cycle",
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '7'
     }, {
       type: "image",
@@ -679,6 +512,8 @@ if (ContextBlocks.find().count() === 0) {
       },
       description: "Red Cross communications materials teach people how Ebola is transmitted. Tommy Trenchard / Al Jazeera",
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '8'
     }, {
       type: "video",
@@ -688,6 +523,8 @@ if (ContextBlocks.find().count() === 0) {
         description: "Sierra Leone Lockdown"
       },
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '9'
     }, {
       type: "video",
@@ -697,6 +534,8 @@ if (ContextBlocks.find().count() === 0) {
         description: "WHO response"
       },
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '10'
     }, {
       type: "video",
@@ -706,6 +545,8 @@ if (ContextBlocks.find().count() === 0) {
         description: "Obama response"
       },
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '11'
     }, {
       type: "video",
@@ -715,11 +556,15 @@ if (ContextBlocks.find().count() === 0) {
         description: "Global community"
       },
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '12'
     }, {
       type: "text",
       content: "In July, two Americans who worked for an aid organization were infected with Ebola in Liberia. They were given an experimental treatment, known as ZMapp, and recovered. A Spanish missionary priest was also infected and treated similarly. ZMapp is an experimental drug that is not in production nor has it been tested in humans. Many bioethicists expressed outrage that Westerners were given the treatment and not Africans.",
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '13'
     }, {
       type: "map",
@@ -729,6 +574,8 @@ if (ContextBlocks.find().count() === 0) {
         mapType: 'roadmap'
       },
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '14'
     }, {
       type: "image",
@@ -738,6 +585,8 @@ if (ContextBlocks.find().count() === 0) {
       },
       description: "A doctor wearing protective equipment discards blood specimens during the 1976 Ebola outbreak in Zaire, 1976. Source: CDC",
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '15'
     }, {
       type: "image",
@@ -747,6 +596,8 @@ if (ContextBlocks.find().count() === 0) {
       },
       description: "Ebola isolation chamber from the 1970s.",
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '16'
     }, {
       type: "image",
@@ -756,6 +607,8 @@ if (ContextBlocks.find().count() === 0) {
       },
       description: "Nurses treat patient in 1976 Ebola outbreak.",
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '17'
     }, {
       type: "viz",
@@ -766,6 +619,8 @@ if (ContextBlocks.find().count() === 0) {
         oecYear: '2012'
       },
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '18'
     }, {
       type: "viz",
@@ -776,6 +631,8 @@ if (ContextBlocks.find().count() === 0) {
         oecYear: '2012'
       },
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '19'
     }, {
       type: "viz",
@@ -786,6 +643,8 @@ if (ContextBlocks.find().count() === 0) {
         oecYear: '2012'
       },
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '20'
     }, {
       type: "video",
@@ -795,6 +654,8 @@ if (ContextBlocks.find().count() === 0) {
         description: "Economic Cost"
       },
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '21'
     }, {
       type: "image",
@@ -804,6 +665,8 @@ if (ContextBlocks.find().count() === 0) {
       },
       description: "Deaths/cases over time",
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '22'
     }, {
       type: "video",
@@ -813,6 +676,8 @@ if (ContextBlocks.find().count() === 0) {
         description: "Dying of Ebola at the Hospital Door"
       },
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '23'
     }, {
       type: "video",
@@ -822,6 +687,8 @@ if (ContextBlocks.find().count() === 0) {
         description: "Economic Cost"
       },
       authorId: authorId,
+      storyShortId: shortId,
+      storyId: storyId,
       _id: '24'
     }
   ].forEach(function(block) {

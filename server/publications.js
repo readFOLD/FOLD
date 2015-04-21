@@ -14,7 +14,8 @@ Meteor.publish("exploreStoriesPub", function(filter, category, skip) {
       fields: {
         draftStory: 0,
         history: 0
-      }
+      },
+      limit: 200 // initial limit
     });
   } else {
     this.ready()
@@ -38,40 +39,36 @@ Meteor.publish("readStoryPub", function(userPathSegment, shortId) {
   }
 });
 
-Meteor.publish("readStoriesPub", function(ids) {
-  if (this.userId) { // TODO launch Remove
-    return Stories.find({
-      _id: {
-        $in: ids
-      },
-      published: true
-    }, {
-      fields: {
-        draftStory: 0,
-        history: 0
-      }
-    });
-  } else {
-    this.ready();
-  }
-});
-
 Meteor.publish("createStoryPub", function(userPathSegment, shortId) {
   return Stories.find({
     userPathSegment: userPathSegment,
     shortId: shortId
-  });
-});
-
-Meteor.publish("contextBlocksPub", function() {
-  return ContextBlocks.find({},{
-    fields : {
-      fullDetails: 0
+  }, {
+    fields: {
+      history: 0
     }
   });
 });
 
-Meteor.publish("minimalUsersPub", function(userIds) { // includes user profile and published stories
+Meteor.publish("contextBlocksPub", function(storyShortId) {
+  if(!storyShortId || !this.userId){
+    return this.ready();
+  }
+  return ContextBlocks.find({
+    storyShortId: storyShortId,
+    authorId: this.userId
+  },{
+    fields : {
+      fullDetails: 0
+    },
+    limit: 1000
+  });
+});
+
+Meteor.publish("minimalUsersPub", function(userIds) {
+  if (!userIds || !userIds.length || userIds.length > 1000) {
+    return this.ready();
+  }
   return Meteor.users.find({_id: {
     $in: userIds
   }}, {
@@ -113,30 +110,25 @@ Meteor.publish("userProfilePub", function(username) { // includes user profile a
       fields : {
         history: 0,
         draftStory: 0
-      }
+      },
+      limit: 100 // initial limit
   })]
 });
 
 Meteor.publish("userStoriesPub", function(username) { // only published stories
-  // TODO simplify once stories have author username on them
-  var user = Meteor.users.findOne({
-    username: username.toLowerCase()
-  });
-
-  if (!user) {
+  if (!username) {
     return this.ready();
   }
 
-  var userId = user._id;
-
   return Stories.find({
-    authorId: userId,
+    authorUsername: username,
     published: true
   },{
     fields : {
       history: 0,
       draftStory: 0
-    }
+    },
+    limit: 100 // initial limit
   });
 });
 
@@ -147,7 +139,8 @@ Meteor.publish("myStoriesPub", function() {
     }, {
       fields: {
         history: 0
-      }
+      },
+      limit: 1000 // initial limit
     });
   } else {
     return this.ready();

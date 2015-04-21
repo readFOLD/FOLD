@@ -8,6 +8,12 @@ var saveUpdatedSelection = function () {
   $(window.selectedNode).closest('.content').blur();
 };
 
+var removeAnchorTag = function(tag){
+  parentDiv = $(tag).closest('.content');
+  $(tag).contents().unwrap();
+  parentDiv.blur();
+};
+
 var saveNarrativeSectionContent = function (verticalIndex) {
   $('.vertical-narrative-section[data-vertical-index="' + verticalIndex + '"]').find('.content').blur();
 };
@@ -203,6 +209,15 @@ Template.fold_editor.events({
   }
 });
 
+Template.context_anchor_menu_contents.events({
+  'mouseenter .context-anchor-menu-contents': function() {
+    document.body.style.overflow = 'hidden';
+  },
+  'mouseleave .context-anchor-menu-contents': function(){
+    document.body.style.overflow='auto';
+  }
+});
+
 Template.context_anchor_go_back.events({
   'mouseup': function(e) {
     e.preventDefault();
@@ -225,9 +240,7 @@ Template.anchor_menu.events({
 Template.fold_link_remover.events({
   'mouseup button': function(e) {
     e.preventDefault();
-    parentDiv = ($(window.enclosingAnchorTag).closest('.content'));
-    $(window.enclosingAnchorTag).contents().unwrap();
-    parentDiv.blur();
+    removeAnchorTag(window.enclosingAnchorTag);
     hideFoldAll();
   }
 });
@@ -276,7 +289,6 @@ window.saveCallback =  function(err, success, cb) {
 };
 
 Template.vertical_section_block.events({
-  'mouseup [contenteditable]': window.updateUIBasedOnSelection,
   'blur [contenteditable]': window.updateUIBasedOnSelection,
   'keyup [contenteditable]': window.updateUIBasedOnSelection,
   'blur .title[contenteditable]' : function(e, template){
@@ -298,12 +310,10 @@ Template.vertical_section_block.events({
     Meteor.call('updateVerticalSectionContent',
       Session.get('storyId'),
       template.data.index,
-      cleanVerticalSectionContent($.trim(template.$('div.content').html())), // TODO move to method
+      cleanVerticalSectionContent($.trim(template.$('div.content').html())),
       saveCallback);
     return true;
   },
-  // clean up pasting into vertical section content
-  // TODO do this in save as well
   'paste .fold-editable': function(e) {
     var clipboardData, html;
     e.preventDefault();
@@ -318,10 +328,10 @@ Template.vertical_section_block.events({
     return false;
   },
   'paste .title.editable': window.plainTextPaste,   // only allow plaintext in title
-  'mouseover .narrative-babyburger-and-menu': function(e, template){
+  'mouseenter .narrative-babyburger-and-menu': function(e, template){
     template.babyburgerOpen.set(true);
   },
-  'mouseout .narrative-babyburger-and-menu': function(e, template){
+  'mouseleave .narrative-babyburger-and-menu': function(e, template){
     template.babyburgerOpen.set(false);
   }
 });
@@ -372,6 +382,7 @@ Template.create.helpers({
 });
 
 Template.create.events({
+  'mouseup': window.updateUIBasedOnSelection, // this is here so that it fires when mouse goes off to the side of vertical section
   "click .publish-story": function (e, template) {
     return Meteor.call('checkPublishAccess', function(err, hasAccess) {
       if (hasAccess) {
@@ -399,20 +410,19 @@ Template.create.events({
       if (err || !numDocs) {
         return alert('Publication failed');
       } else {
-        Router.go('/read/' + that.userPathSegment + '/' + that.storyPathSegment)
+        Router.go('/profile/' + Meteor.user().username);
       }
     });
   },
   "change input.header-upload": function(){
-    var storyId = Session.get('storyId');
+    var that = this;
     var files = $("input.header-upload")[0].files;
-    S3.upload({
-      files: files,
-      path: "header-images"
-    }, function(e, r) {
-      var filename = r.file.name;
-      Session.set('saveState', 'saving');
-      return Meteor.call('updateHeaderImage', storyId, filename, saveCallback);
+    Session.set('saveState', 'saving');
+    C.upload(files, function(r) { // callback does not respect typical error behavior and currently just doesn't call callback
+      if (r.error){ // this can't get hit at the moment
+        return saveCallback(r)
+      }
+      return Meteor.call('updateHeaderImage', that._id, r.public_id, r.format, saveCallback);
     });
   }
 });
@@ -688,6 +698,12 @@ Template.create_horizontal_section_block.events({
   },
   'click .remix-button': function(d, t) {
     return t.type.set('remix');
+  },
+  'mouseenter .horizontal-narrative-section': function() {
+    document.body.style.overflow = 'hidden';
+  },
+  'mouseleave .horizontal-narrative-section': function(){
+    document.body.style.overflow='auto';
   }
 });
 
@@ -766,7 +782,7 @@ window.addContext = function(contextBlock) {
   Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
   Session.set('saveState', 'saving');
 
-  Meteor.call('addContextToStory', storyId, contextBlock, verticalIndex, function(err, contextId){
+  Meteor.call('addContextToStory', storyId, Session.get("storyShortId"), contextBlock, verticalIndex, function(err, contextId){
     if(contextId){
       hideNewHorizontalUI();
       var placeholderAnchorElement = findPlaceholderLink(verticalIndex);
@@ -793,9 +809,11 @@ Template.horizontal_section_edit_delete.helpers({
 Template.horizontal_section_block.events({
   "click .delete": function(d) {
     if(confirm("Permanently delete this card?")){
+      var currentY = Session.get("currentY");
       Session.set('saveState', 'saving');
       id = this._id;
-      Meteor.call('removeContextFromStory', Session.get("storyId"), id, Session.get("currentY"), function(err, numDocs){
+      removeAnchorTag($('.vertical-narrative-section[data-vertical-index="'+ currentY +'"] .content a[data-context-id="' + id + '"]'));
+      Meteor.call('removeContextFromStory', Session.get("storyId"), id, currentY, function(err, numDocs){
         if(err){
           return saveCallback(err);
         } else {
@@ -834,7 +852,7 @@ Template.link_twitter.events({
         alert("Twitter login failed");
         throw(err);
       } else if (!Meteor.user().profile.bio){
-        Meteor.call('setBioFromTwitter')    
+        Meteor.call('setBioFromTwitter')
       }
     });
   }

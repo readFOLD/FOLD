@@ -3,17 +3,19 @@ var formatDate, weekDays, formatDateNice, monthNames;
 weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
-window.headerImageUrl = function(headerImage){
-  var image;
+window.headerImageUrl = function(headerImage, headerImageFormat){
+  var image, imageFormat;
 
   if (headerImage){
     image = headerImage;
+    imageFormat = headerImageFormat;
   } else {
     image = this.headerImage;
+    imageFormat = this.headerImageFormat;
   }
 
   if (image) {
-    return '//' + Meteor.settings["public"].AWS_BUCKET + '.s3.amazonaws.com/header-images/' + image;
+    return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + image
   }
 }
 
@@ -158,11 +160,21 @@ Template._story_preview_content.helpers({
     }
   },
   headerImageUrl: headerImageUrl,
+  story: function(){
+    if (Template.instance().data.useDraftStory){
+      return this.draftStory;
+    } else {
+      return this;
+    }
+  },
+  linkRoute: function(){
+    return Template.instance().data.useDraftStory ? 'edit' : 'read';
+  },
   author: function(){
     return Meteor.users.findOne(this.authorId)
   },
-  authorUsername: function() {
-    return this.authorUsername || this.userPathSegment
+  profileUrl: function(){
+    return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate and only use authorDisplayUsername
   }
 });
 
@@ -187,10 +199,10 @@ Template.login_buttons.onCreated(function() {
 });
 
 Template.login_buttons.events({
-  "mouseover": function(d) {
+  "mouseenter": function(d) {
     Template.instance().showUserInfo.set(true);
   },
-  "mouseout": function(d) {
+  "mouseleave": function(d) {
     Template.instance().showUserInfo.set(false);
   },
   "click .signin": function(d) {

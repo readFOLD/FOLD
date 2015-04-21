@@ -173,15 +173,20 @@ Template.user_favorite_stories.helpers({
   },
   favoriteStories: function() {
     var limit = Template.instance().seeAllFavorites.get() ? 0 : 12; 
+    var favorites = this.user.profile.favorites;
+    if (favorites && favorites.length) {
       return Stories.find({
-              _id: {
-                $in: this.user.profile.favorites
-              }}, {
-                sort: {
-                  publishedAt: -1
-                }, 
-                limit: limit
-              })
+        _id: {
+          $in: this.user.profile.favorites
+        }}, {
+          sort: {
+            publishedAt: -1
+            }, 
+          limit: limit
+      })
+    } else {
+      return [];
+    }
   },
   ifFavorites: function() {
       return Stories.findOne({

@@ -38,7 +38,7 @@ var changeHasTitle = function(storyId, index, newValue){
   key = 'draftStory.verticalSections.' + index + '.hasTitle'
   setObject[key] = newValue;
 
-  return updateStory({_id: storyId, authorId: this.userId}, {
+  return updateStory.call(this, {_id: storyId }, {
     $set: setObject
   })
 }
@@ -60,13 +60,13 @@ var swapArrayElements = function(arr, x, y){
   arr[x] = b;
 };
 
-
-// TODO add authorId to selector query, will need to get `this` to match or call it via apply
+// only the author may update the story
 var updateStory = function(selector, modifier, options) {
   if (_.isEmpty(modifier)){
     return
   }
   modifier.$set = _.extend(modifier.$set || {}, {savedAt: new Date});
+  selector.authorId = this.userId; // this.userId must be the user (use via .call or .apply)
 
   return Stories.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
 };
@@ -85,16 +85,19 @@ Meteor.methods({
       throw new Meteor.Error("Only the account owner may edit this profile")
     }
   },
-  addContextToStory: function(storyId, contextBlock, verticalIndex){
-    // TODO check that user owns story
-    delete contextBlock._id
-    var contextId = ContextBlocks.insert(_.extend({storyId: storyId, authorId: Meteor.user()._id}, contextBlock));
+  addContextToStory: function(storyId, storyShortId, contextBlock, verticalIndex){
+    if (!Stories.find({_id: storyId, authorId: this.userId},{ fields:{ _id: 1 }}).count()){
+      throw new Meteor.Error("User doesn't own story")
+    }
+    delete contextBlock._id;
+
+    var contextId = ContextBlocks.insert(_.extend({storyId: storyId, storyShortId: storyShortId, authorId: Meteor.user()._id}, contextBlock));
 
     var pushObject, pushSelectorString;
     pushSelectorString = 'draftStory.verticalSections.' + verticalIndex + '.contextBlocks';
     pushObject = {};
     pushObject[pushSelectorString] = contextId;
-    var numUpdated = Stories.update({ _id: storyId, authorId: this.userId }, { $addToSet: pushObject});
+    var numUpdated = updateStory.call(this, { _id: storyId }, { $addToSet: pushObject});
     if (!numUpdated){
       throw new Meteor.Error('Story not updated')
     }
@@ -105,9 +108,8 @@ Meteor.methods({
     pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
     pullObject = {};
     pullObject[pushSelectorString] = contextId;
-    var numUpdated = Stories.update({
-      _id: storyId,
-      authorId: this.userId
+    var numUpdated = updateStory.call(this, {
+      _id: storyId
     }, {
       $pull: pullObject
     });
@@ -119,29 +121,28 @@ Meteor.methods({
   },
   updateStoryTitle: function(storyId, title){
     // TODO DRY
-    // TODO Security
-    // TODO don't update story path if ever been published
     var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
-    return updateStory({_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
+    return updateStory.call(this, {_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
   updateVerticalSectionTitle: function(storyId, index, title){
-    // TODO clean title
-
     var setObject = { $set:{} };
     setObject['$set']['draftStory.verticalSections.' + index + '.title'] = title;
 
-    return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
+    return updateStory.call(this, {_id: storyId}, setObject, {removeEmptyStrings: false})
   },
   updateVerticalSectionContent: function(storyId, index, content){
     // html is cleaned client-side on both save and display
     var setObject = { $set:{} };
     setObject['$set']['draftStory.verticalSections.' + index + '.content'] = content;
 
-    return updateStory({_id: storyId}, setObject, {removeEmptyStrings: false})
+    return updateStory.call(this, {_id: storyId}, setObject, {removeEmptyStrings: false})
   },
-  updateHeaderImage: function(storyId, filename) {
-    return updateStory({_id: storyId, authorId: this.userId}, {
-      $set: {'draftStory.headerImage': filename}
+  updateHeaderImage: function(storyId, filePublicId, fileFormat) {
+    return updateStory.call(this, {_id: storyId}, {
+      $set: {
+        'draftStory.headerImage': filePublicId,
+        'draftStory.headerImageFormat': fileFormat
+      }
     })
   },
   addTitle: function(storyId, index) {
@@ -185,18 +186,14 @@ Meteor.methods({
       );
     });
 
-    return updateStory({_id: storyId}, {
+    return updateStory.call(this, {_id: storyId}, {
       $set: {
         'draftStory.verticalSections': newVerticalSections
       }
     })
   },
-  insertVerticalSection: function(storyId, index, section) {
-    // TODO - Once Meteor upgrades to use Mongo 2.6
-    // This should use the $position operator and work directly there
-    // Also, can probably get rid of the blackbox: true on verticalSections in the schema!
-
-    section = section || {
+  insertVerticalSection: function(storyId, index) {
+    var newSection = {
       _id: Random.id(8),
       contextBlocks: [],
       title: "",
@@ -204,31 +201,12 @@ Meteor.methods({
       hasTitle: false
     };
 
-    var selector = {_id: storyId};
-
-    var story = Stories.findOne(selector, {
-      fields: {
-        'draftStory.verticalSections': 1,
-        'authorId': 1
-      }
-    });
-
-    assertOwner(this.userId, story);
-
-
-    var verticalSections = story.draftStory.verticalSections;
-
-    verticalSections.splice(index, 0, {
-      _id: Random.id(8),
-      contextBlocks: [],
-      title: "",
-      content: "",
-      hasTitle: false
-    });
-
-    return updateStory({_id: storyId}, {
-      $set: {
-        'draftStory.verticalSections': verticalSections
+    return updateStory.call(this, {_id: storyId }, {
+      $push: {
+        'draftStory.verticalSections': {
+          $position: index,
+          $each: [newSection]
+        }
       }
     })
   },
@@ -252,7 +230,7 @@ Meteor.methods({
 
     swapArrayElements(verticalSections, index, index - 1);
 
-    return updateStory({ _id: storyId }, {
+    return updateStory.call(this, { _id: storyId }, {
       $set: {
         'draftStory.verticalSections': verticalSections
       }
@@ -280,7 +258,7 @@ Meteor.methods({
 
     swapArrayElements(verticalSections, index, index + 1);
 
-    return updateStory({ _id: storyId }, {
+    return updateStory.call(this, { _id: storyId }, {
       $set: {
         'draftStory.verticalSections': verticalSections
       }
@@ -308,11 +286,11 @@ Meteor.methods({
 
     var contextBlocks = verticalSections[index].contextBlocks;
 
-    if (contextBlocks){ // TODO check owner and if remixed etc..
-      ContextBlocks.remove({_id: {$in: contextBlocks}})
+    if (contextBlocks){ // TO-DO check if remixed etc..
+      ContextBlocks.remove({_id: {$in: contextBlocks}, authorId: this.userId})
     }
 
-    return updateStory({ _id: storyId }, {
+    return updateStory.call(this, { _id: storyId }, {
       $pull: {
         'draftStory.verticalSections': {_id: verticalSections[index]._id}
       }
@@ -372,14 +350,15 @@ Meteor.methods({
 
     var contextBlocks = ContextBlocks.find({_id: {$in: contextBlockIds}}).fetch();
 
+    var contextBlockTypeCount = _.chain(contextBlocks).pluck('type').countBy(_.identity).value();
+
     // TO-DO
-    // Probably confirm that all the context cards included are by the author!
     // Maybe a list of which cards are original and which are remixed
-    // Maybe a list of all context types and amounts for better searching
 
     var fieldsToCopyFromDraft = [
       'verticalSections',
       'headerImage',
+      'headerImageFormat',
       'headerImageAttribution'
       //'title'
     ];
@@ -400,17 +379,20 @@ Meteor.methods({
       {
         'contextBlocks': contextBlocks,
         'contextBlockIds': contextBlockIds,
-        'storyPathSegment': _s.slugify(draftStory.title.toLowerCase()) + '-' + story.shortId, // TODO DRY and probably get from draft
+        'contextBlockTypeCount': contextBlockTypeCount,
+        'userPathSegment': user.profile.displayUsername,
+        'storyPathSegment': _s.slugify(draftStory.title.toLowerCase()) + '-' + story.shortId, // TODO DRY
         'publishedAt': new Date(),
         'published': true,
         'everPublished': true,
         'authorName': user.profile.name || 'Anonymous',
-        'authorUsername': Meteor.user().username,
+        'authorUsername': user.username,
+        'authorDisplayUsername': user.profile.displayUsername,
         'version': 'earlybird'
       }
     );
 
-    return updateStory({ _id: storyId }, {
+    return updateStory.call(this, { _id: storyId }, {
       $set: setObject,
       $push: {'history': _.omit(story, ['draftStory', 'history'])} // history has everything except the current published story
     });
@@ -434,7 +416,7 @@ Meteor.methods({
     var shortId = Random.id(8);
 
     var storyPathSegment = _s.slugify('new-story') + '-' + shortId;  // TODO DRY
-    var userPathSegment= user.username;
+    var userPathSegment= user.profile.displayUsername;
 
     initialVerticalSection = {
       _id: Random.id(8),
@@ -452,15 +434,14 @@ Meteor.methods({
       storyPathSegment: storyPathSegment,
       authorId: this.userId,
       authorName: user.profile.name || 'Anonymous',
-      authorUsername: Meteor.user().username,
+      authorUsername: user.username,
+      authorDisplayUsername: user.profile.displayUsername,
       shortId: shortId,
       draftStory: {
         authorId: this.userId,
         authorName: user.profile.name || 'Anonymous',
         verticalSections: [initialVerticalSection],
-        title: '',
-        userPathSegment: userPathSegment,
-        storyPathSegment: storyPathSegment
+        title: ''
       }
   }, {removeEmptyStrings: false});
     return {

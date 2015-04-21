@@ -43,7 +43,7 @@
   {{/if}}
 </template>
 
-<template name="top_banner_simple">
+<template name="top_banner_simple_no_links">
   <div class="home-top remix-color">
     <div class="left">
       <div class="logo-title">
@@ -51,6 +51,23 @@
           <div class="title">
             <img src="/FOLD_TITLE.svg">
           </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="top_banner_simple">
+  <div class="home-top remix-color">
+    <div class="left">
+      <div class="logo-title">
+          {{#linkTo route="home"}}
+          <img class="logo" src="/FOLD_LOGO.svg">
+          {{/linkTo}}
+          {{#linkTo route="home"}}
+          <div class="title">
+            <img src="/FOLD_TITLE.svg">
+          </div>
+          {{/linkTo}}
       </div>
     </div>
   </div>
@@ -94,7 +111,9 @@
 </template>
 <template name="login_buttons">
     {{#if currentUser}}
-      {{#linkTo route="profile" data=currentUser}}<button>{{currentUser.profile.name}}</button>{{/linkTo}}
+      {{#linkTo route="profile" data=currentUser}}
+        <button>{{currentUser.profile.name}}</button>
+      {{/linkTo}}
       {{#if showUserInfo}}
         <ol class="user-menu">
           <li>
@@ -170,81 +189,87 @@
 </template>
 
 <template name="_story_preview_content">
-  <div class="content-count">
-    {{#if contextCountOfType 'video'}}
-      {{ > video_icon }}
-      <!--{{contextCountOfType 'video'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'image'}}
-      {{ > image_icon }}
-      <!--{{contextCountOfType 'image'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'gif'}}
-      {{ > gif_icon }}
-      <!--{{contextCountOfType 'gif'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'map'}}
-      {{ > map_icon }}
-      <!--{{contextCountOfType 'map'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'twitter'}}
-      {{ > twitter_icon }}
-      <!--{{contextCountOfType 'twitter'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'audio'}}
-      {{ > audio_icon }}
-      <!--{{contextCountOfType 'audio'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'viz'}}
-      {{ > viz_icon }}
-      <!--{{contextCountOfType 'viz'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'text'}}
-      {{ > text_icon }}
-      <!--{{contextCountOfType 'text'}}-->
-    {{/if}}
-    {{#if contextCountOfType 'link'}}
-      {{ > link_icon }}
-      <!--{{contextCountOfType 'link'}}-->
-    {{/if}}
-    <!--TODO - add remix check-->
-  </div>
-  {{#linkTo route="read" data=this}}
-    <div class="overlay-image">
-      <img src="{{headerImageUrl}}" />
+  {{#with story}}
+    <div class="content-count">
+      {{#if contextCountOfType 'video'}}
+        {{ > video_icon }}
+        <!--{{contextCountOfType 'video'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'image'}}
+        {{ > image_icon }}
+        <!--{{contextCountOfType 'image'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'gif'}}
+        {{ > gif_icon }}
+        <!--{{contextCountOfType 'gif'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'map'}}
+        {{ > map_icon }}
+        <!--{{contextCountOfType 'map'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'twitter'}}
+        {{ > twitter_icon }}
+        <!--{{contextCountOfType 'twitter'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'audio'}}
+        {{ > audio_icon }}
+        <!--{{contextCountOfType 'audio'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'viz'}}
+        {{ > viz_icon }}
+        <!--{{contextCountOfType 'viz'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'text'}}
+        {{ > text_icon }}
+        <!--{{contextCountOfType 'text'}}-->
+      {{/if}}
+      {{#if contextCountOfType 'link'}}
+        {{ > link_icon }}
+        <!--{{contextCountOfType 'link'}}-->
+      {{/if}}
+      <!--TODO - add remix check-->
     </div>
-  {{/linkTo}}
 
-  {{#linkTo route="read" data=this}}
-    <div class="story-card">
-    </div>
-  {{/linkTo}}
-  
-  {{#linkTo route="read" data=this}}
-    <div class="headline">
-      {{title}}
-    </div>
-  {{/linkTo}}
+    {{#linkTo route=linkRoute data=this}}
+      <div class="overlay-image">
+        <img src="{{headerImageUrl}}" />
+      </div>
+    {{/linkTo}}
 
-  <div class="byline">
-    <div class="pull-left">
-      <a href="/profile/{{authorUsername}}" >
-        <div class="author-image">
-           <img class="profile-picture" src="{{profileImage author}}"/>
+    {{#linkTo route=linkRoute data=this}}
+      <div class="story-card">
+      </div>
+    {{/linkTo}}
+
+    {{#linkTo route=linkRoute data=this}}
+      <div class="headline">
+        {{title}}
+      </div>
+    {{/linkTo}}
+
+    <div class="byline">
+      <a class="author-profile-link" href="{{profileUrl}}" >
+        <div class="pull-left">
+          <div class="author-image">
+            {{#if profileImage author}}
+             <img class="profile-picture" src="{{profileImage author}}"/>
+            {{else}}
+              <div class="author-image-placeholder"></div>
+            {{/if}}
+          </div>
+
+          <div class="author-name-date">
+            <div class="author-name">By <span>{{authorName}}</span></div>
+            <div class="publish-date">{{lastPublishDate}}</div>
+          </div>
         </div>
       </a>
 
-      <div class="author-name-date">
-        <a class="author-profile-link" href="/profile/{{authorUsername}}" >
-          <div class="author-name">By <span>{{authorName}}</span></div>
-        </a>
-        <div class="publish-date">{{lastPublishDate}}</div>
+      <div class="pull-right">
+        {{ > favorite_button }}
       </div>
     </div>
-    <div class="pull-right">
-      {{ > favorite_button }}
-    </div>
-  </div>
+  {{/with}}
 
 </template>
 
