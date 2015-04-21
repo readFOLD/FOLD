@@ -73,7 +73,7 @@ Template.user_profile.helpers({
     return Template.instance().editing.get()
   },
   ownProfile: function() {
-    return Meteor.user().username == this.user.username ? true : false
+    return (Meteor.user() && (Meteor.user().username == this.user.username)) ? true : false
   },
   name : function() {
     return this.user.profile.name
@@ -154,7 +154,7 @@ Template.user_stories.helpers({
     return Stories.findOne({authorUsername : this.user.username, published : true})
   },
   unpublishedMessage: function () {
-    if (Meteor.user().username == this.user.username) {
+    if (Meteor.user() && (Meteor.user().username == this.user.username)) {
       return "You haven't published any stories yet!"
     } else {
       return "This user hasn't written any stories yet"
@@ -203,7 +203,7 @@ Template.user_favorite_stories.helpers({
     return this.user.profile.favorites;
   },
   noFavoritesMessage: function () {
-    if (Meteor.user().username == this.user.username) {
+    if (Meteor.user() && (Meteor.user().username == this.user.username)) {
       return "You haven't favorited any stories yet!"
     } else {
       return "This user hasn't favorited any stories yet"
