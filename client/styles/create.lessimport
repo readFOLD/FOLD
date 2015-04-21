@@ -646,7 +646,7 @@ div.horizontal-context {
         font-weight: bold;
         text-transform: uppercase;
         display: inline-block;
-        min-width: 140px;
+        min-width: 100px;
         border-bottom: 2px solid white;
 
         &.selected, &:hover {
@@ -742,6 +742,23 @@ div.horizontal-context {
 
   .twitter .search-results-container {
     height: calc(100% ~"-" @searchFormHeight ~"-" 126px);
+  }
+
+  div.map-result-container {
+    max-height: calc(100% ~"-" @searchFormHeight ~"-" 125px);
+    margin-top: -20px;
+    overflow-y: scroll;
+  }
+
+  div.text-result-container {
+    max-height: calc(100% ~"-" @searchFormHeight ~"-" 40px);
+    overflow-y: scroll;
+  }
+
+  div.viz-result-container {
+    max-height: calc(100% ~"-" @searchFormHeight ~"-" 75px);
+    margin-top: 20px;
+    overflow-y: scroll;
   }
 
   ol.search-results-container {   
@@ -926,6 +943,7 @@ div.horizontal-context {
       color: @light-color;
       width: 90px;
       margin-top: 12px;
+      margin-bottom: 15px;
       text-align: center;
       font-size: 12px;
       line-height: 35px;
@@ -955,7 +973,7 @@ div.horizontal-context {
 
 .create-map-section{
   iframe{
-    outline: 1px solid #e0e1e2;
+    // outline: 1px solid #e0e1e2;
   }
 }
 

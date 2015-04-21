@@ -865,7 +865,7 @@ Template.create_text_section.helpers({
 });
 
 Template.create_text_section.events({
-  'submit form': function(e, template){
+  'click .add-button': function(e, template){
     e.preventDefault()
     addContext(new TextBlock({
       content: template.$('textarea[name=content]').val(),
