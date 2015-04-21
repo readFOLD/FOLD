@@ -667,16 +667,8 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
     "mouseenter .text-content.editable": function(d, template) {
       document.body.style.overflow = 'hidden';
     },
-    "mouseleave .text-content.editable": function(d, template) { // TODO this seems like way more saving than needed. Fix it. PERFORMANCE.
+    "mouseleave .text-content.editable": function(d, template) {
       document.body.style.overflow = 'auto';
-      var that = this;
-      if (!Session.get('read') && !Session.get('addingContext')) {
-        var textContent = template.$('textarea[name=content]').val();
-        Session.set('saveState', 'saving');
-        Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
-          saveCallback(err, numDocs);
-        });
-      }
     },
     "keypress .image-section .text-content.editable": function(e, template) { // save on Enter
       var that = this;
