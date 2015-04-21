@@ -24,6 +24,7 @@ BrowserPolicy.content.allowFontOrigin('*.bootstrapcdn.com');
 BrowserPolicy.content.allowScriptOrigin('*.segment.com');
 BrowserPolicy.content.allowScriptOrigin('*.google-analytics.com');
 BrowserPolicy.content.allowScriptOrigin('*.cloudfront.net');
+BrowserPolicy.content.allowScriptOrigin('*.keen.io');
 
 // allow styles from specific sources only
 BrowserPolicy.content.allowStyleOrigin('*.bootstrapcdn.com');
