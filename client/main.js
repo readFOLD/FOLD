@@ -126,7 +126,7 @@ updatecurrentY = function() {
 
   }
   if (scrollTop >= readMode) {
-    var selectOffset = - 40;
+    var selectOffset = - 90;
     _ref = _.map(window.getVerticalHeights(), function(height){ return height + selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
