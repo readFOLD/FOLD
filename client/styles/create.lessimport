@@ -91,14 +91,44 @@ div.upload-header-image {
 }
 
 div.floating-story-buttons {
-  button {
+  vertical-align: middle;
+  button{
+    float: left;
+    text-align: center;
+  }
+  .favorite-button{
+    float: left;
+    font-size: 0;
+  }
+  .share-button{
+    float: left;
+    margin-right: 8px;
+  }
+  .favorite{
+    .fg {
+      fill: @medium-color;
+      &:hover {
+        fill: @dark-color;
+      }
+    }
+  }
+  .share-button {
+    .fg {
+      fill: @dark-color;
+    }
+
+    &:hover{
+      .fg{
+        fill: @action-color;
+      }
+    }
+  }
+  button.button {
     background-color: @dark-color;
     color: @light-color;
     cursor: pointer;
     padding: 5px;
-    text-align: center;
     font-size: 14px;
-    float: left;
     &:not(:last-child) {
       margin-right: 13px;
     }

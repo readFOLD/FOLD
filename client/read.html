@@ -15,10 +15,16 @@
 
 <template name="read_options">
   <div class="floating-story-buttons">
+    {{> share_button}}
+    {{> favorite_button}}
+    {{#if currentUser.admin}}
+      {{> editors_pick_button}}
+    {{/if}}
+
     {{#if isAuthor}}
       {{#unless isPhone}}
         {{#linkTo route="edit" data=this}}
-          <button type="button" class="link-to-edit">
+          <button type="button" class="link-to-edit button">
             Edit This Story
           </button>
         {{/linkTo}}

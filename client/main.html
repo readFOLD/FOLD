@@ -615,6 +615,12 @@
   {{/if}}
 </template>
 
+<template name="share_button">
+  <div class="share-button">
+    <button type='button' class='share'>{{> share_icon }}</button>
+  </div>
+</template>
+
 <template name="favorite_button">
     <div class="favorite-button">
         {{#if userFavorited}}

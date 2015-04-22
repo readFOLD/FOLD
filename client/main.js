@@ -793,6 +793,12 @@ Template.story_browser.events({
 
 Template.type_specific_icon.helpers(typeHelpers);
 
+Template.share_button.events({
+  'click': function(e, t) {
+    console.log('share')
+  }
+});
+
 Template.favorite_button.helpers({
   userFavorited: function() {
     return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
