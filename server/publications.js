@@ -79,6 +79,9 @@ Meteor.publish("favoriteStoriesPub", function(ids) { // requires ids to be passe
       draftStory: 0,
       history: 0
     },
+    sort: {
+      publishedAt: -1
+    },
     limit: 100 // initial limit
   });
 });
