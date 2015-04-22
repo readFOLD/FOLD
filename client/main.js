@@ -846,6 +846,9 @@ Template.favorite_button.helpers({
 
 Template.favorite_button.events({
   "click .favorite": function() {
+    if(!Meteor.user()){
+      return alert('Please sign up or log in to favorite stories');
+    }
     return Meteor.call('favoriteStory', this._id, function(err) {
       if (err) {
         throw(err);
