@@ -14,8 +14,8 @@ window.headerImageUrl = function(headerImage, headerImageFormat, size){
     imageFormat = this.headerImageFormat;
   }
 
-  var maxWidth = (size === 'small') ? 600 : 2048;
-  var maxHeight = (size === 'small') ? 1000 : 2048;
+  var maxWidth = (size === 'small') ? 800 : 2048;
+  var maxHeight = (size === 'small') ? 1400 : 2048;
 
   if (image) {
     return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + maxWidth + ',h_' + maxHeight + ',c_limit/' + image
