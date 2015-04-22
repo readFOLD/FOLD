@@ -25,86 +25,82 @@ Meteor.users._ensureIndex({
 });
 
 Meteor.publish("curatedStoriesPub", function() {
-
-  if (this.userId) { // TODO launch Remove
-
-    return Stories.find({
-      published: true,
-      editorsPick: true
-    }, {
-      fields: {
-        draftStory: 0,
-        history: 0
-      },
-      sort: {
-        editorsPickAt: -1
-      },
-      limit: 40 // initial limit
-    });
-  } else {
-    this.ready()
-  }
+  return Stories.find({
+    published: true,
+    editorsPick: true
+  }, {
+    fields: {
+      draftStory: 0,
+      history: 0
+    },
+    sort: {
+      editorsPickAt: -1
+    },
+    limit: 30 // initial limit
+  });
 });
 
 Meteor.publish("newestStoriesPub", function() { // for now, it's just publishedAt (later should maybe be firstPublishedAt)
-
-  if (this.userId) { // TODO launch Remove
-
-    return Stories.find({
-      published: true
-    }, {
-      fields: {
-        draftStory: 0,
-        history: 0
-      },
-      sort: {
-        publishedAt: -1
-      },
-      limit: 40 // initial limit
-    });
-  } else {
-    this.ready()
-  }
+  return Stories.find({
+    published: true
+  }, {
+    fields: {
+      draftStory: 0,
+      history: 0
+    },
+    sort: {
+      publishedAt: -1
+    },
+    limit: 30 // initial limit
+  });
 });
 
 Meteor.publish("trendingStoriesPub", function() { // for now, it's just the most views
+  return Stories.find({
+    published: true
+  }, {
+    fields: {
+      draftStory: 0,
+      history: 0
+    },
+    sort: {
+      views: -1
+    },
+    limit: 30 // initial limit
+  });
+});
 
-  if (this.userId) { // TODO launch Remove
+Meteor.publish("starredStoriesPub", function() { // TODO migrate current favorited and make this work!
 
-    return Stories.find({
-      published: true
-    }, {
-      fields: {
-        draftStory: 0,
-        history: 0
-      },
-      sort: {
-        views: -1
-      },
-      limit: 40 // initial limit
-    });
-  } else {
-    this.ready();
-  }
+  return this.ready();
+
+  return Stories.find({
+    published: true,
+    fields: {
+      draftStory: 0,
+      history: 0
+    },
+    sort: {
+      'favoritedTotal': -1
+    },
+    limit: 30 // initial limit
+  });
 });
 
 Meteor.publish("favoriteStoriesPub", function(ids) { // requires ids to be passed in
-
-  if (this.userId) { // TODO launch Remove
-
-    return Stories.find({
-      published: true,
-      _id: { $in : ids }
-    }, {
-      fields: {
-        draftStory: 0,
-        history: 0
-      },
-      limit: 100 // initial limit
-    });
-  } else {
-    this.ready()
-  }
+  return Stories.find({
+    published: true,
+    _id: { $in : ids }
+  }, {
+    fields: {
+      draftStory: 0,
+      history: 0
+    },
+    sort: {
+      publishedAt: -1
+    },
+    limit: 30 // initial limit
+  });
 });
 
 Meteor.publish("readStoryPub", function(userPathSegment, shortId) {

@@ -181,19 +181,31 @@ window.moveOneCard = function(d) {
 
 $(document).keydown(function(e) {
   if (Session.get('read')){
-    letter = String.fromCharCode(e.keyCode)
+    letter = String.fromCharCode(e.keyCode);
     switch(letter){
       case 'J':
-        goUpOneCard()
+        goDownOneCard();
         break;
       case 'K':
-        goDownOneCard()
+        goUpOneCard();
+        break;
+      case 'H':
+        goLeftOneCard();
+        break;
+      case 'L':
+        goRightOneCard();
         break;
       case '&': // up arrow
-        goUpOneCard()
+        goUpOneCard();
         break;
       case '(': // down arrow
-        goDownOneCard()
+        goDownOneCard();
+        break;
+      case '%': // left arrow
+        goLeftOneCard();
+        break;
+      case '\'': // right arrow
+        goRightOneCard();
         break;
       case ' ': // spacebar
         break;

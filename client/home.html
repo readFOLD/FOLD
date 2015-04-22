@@ -193,11 +193,9 @@
     {{/each}}
   {{/if}}
   {{#if storiesLoading}}
+  <div class="loading-container">
     {{> loading_icon}}
-  {{/if}}
-  {{#if noStoriesForYou}}
-    <h2 style="text-align: center">FOLD will launch on April 22nd.</h2>
-    <h3 style="text-align: center">If you have a secret code, please sign up above.</h3>
+  </div>
   {{/if}}
 </template>
 
@@ -212,42 +210,78 @@
 
 <template name="_story_preview_content">
   {{#with story}}
-    <div class="content-count">
+    <div class="context-count">
       {{#if contextCountOfType 'video'}}
-        {{> video_icon }}
-        <!--{{contextCountOfType 'video'}}-->
+        <div class="context-count-icon">
+          {{> video_icon }}
+          <div class="context-count-text">
+            {{contextCountOfType 'video'}}
+          </div>
+        </div>
       {{/if}}
       {{#if contextCountOfType 'image'}}
-        {{> image_icon }}
-        <!--{{contextCountOfType 'image'}}-->
+        <div class="context-count-icon">
+          {{> image_icon }}
+          <div class="context-count-text">
+            {{contextCountOfType 'image'}}
+          </div>
+        </div>
       {{/if}}
       {{#if contextCountOfType 'gif'}}
-        {{> gif_icon }}
-        <!--{{contextCountOfType 'gif'}}-->
+        <div class="context-count-icon">
+          {{> gif_icon }}
+          <div class="context-count-text">
+            {{contextCountOfType 'gif'}}
+          </div>
+        </div>
       {{/if}}
       {{#if contextCountOfType 'map'}}
-        {{> map_icon }}
-        <!--{{contextCountOfType 'map'}}-->
+        <div class="context-count-icon">
+          {{> map_icon }}
+          <div class="context-count-text">
+            {{contextCountOfType 'map'}}
+          </div>
+        </div>
       {{/if}}
       {{#if contextCountOfType 'twitter'}}
-        {{> twitter_icon }}
-        <!--{{contextCountOfType 'twitter'}}-->
+        <div class="context-count-icon">
+          {{> twitter_icon }}
+          <div class="context-count-text">
+            {{contextCountOfType 'twitter'}}
+          </div>
+        </div>
       {{/if}}
       {{#if contextCountOfType 'audio'}}
-        {{> audio_icon }}
-        <!--{{contextCountOfType 'audio'}}-->
+        <div class="context-count-icon">
+          {{> audio_icon }}
+          <div class="context-count-text">
+            {{contextCountOfType 'audio'}}
+          </div>
+        </div>
       {{/if}}
       {{#if contextCountOfType 'viz'}}
-        {{> viz_icon }}
-        <!--{{contextCountOfType 'viz'}}-->
+        <div class="context-count-icon">
+          {{> viz_icon }}
+          <div class="context-count-text">
+            {{contextCountOfType 'viz'}}
+          </div>
+        </div>
       {{/if}}
       {{#if contextCountOfType 'text'}}
-        {{> text_icon }}
-        <!--{{contextCountOfType 'text'}}-->
+        <div class="context-count-icon">
+          {{> text_icon }}
+          <div class="context-count-text">
+            {{contextCountOfType 'text'}}
+          </div>
+        </div>
       {{/if}}
       {{#if contextCountOfType 'link'}}
-        {{> link_icon }}
-        <!--{{contextCountOfType 'link'}}-->
+        <div class="context-count-icon">
+          {{> link_icon }}
+          <div class="context-count-text">
+            {{contextCountOfType 'link'}}
+          </div>
+        </div>
       {{/if}}
       <!--TODO - add remix check-->
     </div>
@@ -276,7 +310,7 @@
             {{#if profileImage author}}
              <img class="profile-picture" src="{{profileImage author}}"/>
             {{else}}
-              <div class="author-image-placeholder"></div>
+              <img class="profile-picture" src="/images/placeholder_image.png"/>
             {{/if}}
           </div>
 

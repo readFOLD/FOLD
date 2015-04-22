@@ -401,6 +401,37 @@ ImageBlock = (function(_super) {
     }
   };
 
+  ImageBlock.prototype.isFlickr = function() {
+    return (this.source === 'flickr');
+  }
+
+  ImageBlock.prototype.webUrl = function() {
+    switch (this.source) {
+      case 'flickr':
+        if(this.reference.ownerName){
+          return '//www.flickr.com/photos/' + this.reference.ownerName + '/' + this.reference.id;
+        } else {
+          return encodeFlickrUrl(this.reference.id)
+        }
+    }
+  }
+
+  ImageBlock.prototype.ownerName = function() {
+    switch (this.source) {
+      case 'flickr':
+        return this.reference.ownerName;
+    }
+  };
+
+  ImageBlock.prototype.uploadDate = function() {
+    switch (this.source) {
+      case 'flickr':
+        if(this.reference.uploadDate){
+          return this.reference.uploadDate.toDateString();
+        }
+    }
+  };
+
   ImageBlock.prototype.previewUrl = function() {
     switch (this.source) {
       case 'local':
@@ -452,6 +483,11 @@ GifBlock = (function(_super) {
   function GifBlock(doc) {
     GifBlock.__super__.constructor.call(this, doc);
     this.type = 'gif';
+  }
+
+
+  GifBlock.prototype.isGiphy = function() {
+    return (this.source === 'giphy');
   }
 
   GifBlock.prototype.showVideo = function() {
@@ -787,6 +823,15 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     type: String,
     optional: true
   },
+  uploadDate: {
+    type: Date,
+    optional: true
+  },
+  ownerName: {
+    type: String,
+    optional: true
+  },
+
   hasWebM: {
     type: Boolean,
     optional: true
@@ -1285,6 +1330,9 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
     'analytics.views': {
       type: analyticsSchema
     },
+    'analytics.shares': {
+      type: analyticsSchema
+    },
     contextBlocks: {
       type: [ContextBlock], // TODO this should really be Schema.ContextBlocks, but would need to be converted to a regular object, otherwise simple-schema complains
       minCount: 0,
@@ -1371,11 +1419,17 @@ Schema.StoryStats = new SimpleSchema({
   'deepAnalytics.views': {
     type: deepAnalyticsSchema
   },
+  'deepAnalytics.shares': {
+    type: deepAnalyticsSchema
+  },
   analytics: {
     type: analyticsSchema,
     optional: true
   },
   'analytics.views': {
+    type: analyticsSchema
+  },
+  'analytics.shares': {
     type: analyticsSchema
   }
 });

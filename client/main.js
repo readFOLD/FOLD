@@ -793,11 +793,50 @@ Template.story_browser.events({
 
 Template.type_specific_icon.helpers(typeHelpers);
 
+Template.share_button.onCreated(function() {
+  this.tooltipShown = new ReactiveVar(false);
+})
+
 Template.share_button.events({
   'click': function(e, t) {
-    console.log('share')
+    t.tooltipShown.set(!t.tooltipShown.get());
+  },
+  'click .share-facebook': function(e, t) {
+    var width  = 575;
+    var height = 400;
+    var left   = ($(window).width()  - width)  / 2;
+    var top    = ($(window).height() - height) / 2;
+    var url    = "//facebook.com/sharer/sharer.php?u=" + encodeURIComponent(location.href);
+    var opts   = 'status=1' +
+      ',width='  + width  +
+      ',height=' + height +
+      ',top='    + top    +
+      ',left='   + left
+    window.open(url, 'facebook', opts);
+    Meteor.call('countStoryShare', this._id, 'facebook');
+  },
+  'click .share-twitter': function(e, t) {
+    var title = $(".story-title").text();
+    var width  = 575;
+    var height = 400;
+    var left   = ($(window).width()  - width)  / 2;
+    var top    = ($(window).height() - height) / 2;
+    var url    = '//twitter.com/intent/tweet?text=Read "' + title + '" on @readFOLD&url=' + encodeURIComponent(location.href);
+    var opts   = 'status=1' +
+      ',width='  + width  +
+      ',height=' + height +
+      ',top='    + top    +
+      ',left='   + left
+    window.open(url, 'twitter', opts);
+    Meteor.call('countStoryShare', this._id, 'twitter');
   }
 });
+
+Template.share_button.helpers({
+  "tooltipShown": function() {
+    return Template.instance().tooltipShown.get();
+  }
+})
 
 Template.favorite_button.helpers({
   userFavorited: function() {
@@ -807,6 +846,9 @@ Template.favorite_button.helpers({
 
 Template.favorite_button.events({
   "click .favorite": function() {
+    if(!Meteor.user()){
+      return alert('Please sign up or log in to favorite stories');
+    }
     return Meteor.call('favoriteStory', this._id, function(err) {
       if (err) {
         throw(err);

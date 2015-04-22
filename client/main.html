@@ -3,12 +3,25 @@
   <link rel="apple-touch-icon" href="/FOLD-apple-touch-icon.png">
   <link rel="shortcut icon" href="/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+
+  <meta name="description" content="A reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories." />
+
+  <!-- Twitter Card data -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@readFOLD">
+  <meta name="twitter:title" content="FOLD">
+  <meta name="twitter:description" content="Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.">
+  <meta name="twitter:creator" content="@readFOLD">
+  <meta name="twitter:image" content="https://readfold.com/FOLD_twitter_image.png">
+
+  <!-- Open Graph data -->
   <meta name="fragment" content="!">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://readfold.com">
-  <meta property="og:image" content="https://readfold.com/FOLD_LOGO.svg">
+  <meta property="og:image" content="http://readfold.com/FOLD_fb_image.png">
+  <meta property="og:image:secure_url" content="https://readfold.com/FOLD_fb_image.png">
   <meta property="og:title" content="FOLD">
-  <meta property="og:description" content="A reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.">
+  <meta property="og:description" content="Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.">
 </head>
 
 
@@ -283,6 +296,13 @@
       </video>
     {{else}}
       <img src="{{url}}" />
+      {{#if isGiphy}}<img class="giphy-logo" src="/images/giphy_logo.png" />{{/if}}
+      {{#if isFlickr}}
+        <div class="attribution">
+          <i class="fa fa-flickr"></i>
+          {{#if ownerName}}<a href="//flickr.com/{{ownerName}}" target="_blank">{{ownerName}}</a><span class="separator">·</span>{{/if}}<a href="{{webUrl}}" target="_blank">{{#if uploadDate}}{{uploadDate}}{{else}}source{{/if}}</a>
+        </div>
+      {{/if}}
     {{/if}}
     {{{textContent}}}
   </div>
@@ -537,7 +557,7 @@
 
 <template name="minimap">
   {{#if minimapLargeEnough}}
-  <div class="minimap">
+  <div class="minimap {{#unless read}}hoverable{{/unless}}">
     <div class="expand"><i class="fa fa-expand"></i></div>
     {{#each horizontalSectionsMap}}
     <div class="section {{#if selectedY}}selected-section{{/if}}" style="{{#if responsive}}height: {{sectionHeight}}px; margin-bottom: {{sectionMargin}}px;{{/if}}">
@@ -616,7 +636,21 @@
 </template>
 
 <template name="share_button">
-  <div class="share-button">
+  {{#if tooltipShown}}
+  <div class="sharing-tooltip">
+    <ul>
+      <li class="share-facebook">
+        <i class="fa fa-facebook"></i>
+        <span>Share on Facebook</span>
+      </li>
+      <li class="share-twitter">
+        <i class="fa fa-twitter"></i>
+        <span>Share on Twitter</span>
+      </li>
+    </ul>
+  </div>
+  {{/if}}
+  <div class="share-button {{#if tooltipShown}}active{{/if}}">
     <button type='button' class='share'>{{> share_icon }}</button>
   </div>
 </template>

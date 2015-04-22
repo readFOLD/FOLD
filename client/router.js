@@ -10,15 +10,40 @@ var setTitle = function(pageName){
     title = 'FOLD';
   }
   document.title = title;
-  $('meta[property="og:title"]').attr('content', title);
+  $('meta[property="og:title"]').attr('content', pageName);
+  $('meta[name="twitter:title"]').attr('content', pageName);
 };
 
-var setOGImage = function(imageUrl){
+var setMetaImage = function(imageUrl){
   if (imageUrl){
     $('meta[property="og:image"]').attr('content', imageUrl.replace(/^\/\//, "https://")); // replace protocol-less url with https
+    $('meta[property="og:image:secure_url"]').attr('content', imageUrl.replace(/^\/\//, "https://")); // replace protocol-less url with https
+    $('meta[name="twitter:image"]').attr('content', imageUrl.replace(/^\/\//, "https://")); // replace protocol-less url with https
   } else {
-    $('meta[property="og:image"]').attr('content', "https://readfold.com/FOLD_LOGO.svg");
+    $('meta[property="og:image"]').attr('content', "https://readfold.com/FOLD_fb_image.png");
+    $('meta[property="og:image:secure_url"]').attr('content', "https://readfold.com/FOLD_fb_image.png");
+    $('meta[name="twitter:image"]').attr('content', "https://readfold.com/FOLD_twitter_image.png");
   }
+};
+
+var setMetaDescription = function(desc){
+  if (desc){
+    $('meta[name="description"]').attr('content', desc);
+    $('meta[property="og:description"]').attr('content', desc);
+    $('meta[name="twitter:description"]').attr('content', desc);
+  } else {
+    $('meta[name="description"]').attr('content', 'Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.');
+    $('meta[property="og:description"]').attr('content', 'Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.');
+    $('meta[name="twitter:description"]').attr('content', 'Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.');
+  }
+};
+
+var setStatusCode = function(statusCode){
+  if(!statusCode){
+    statusCode = '200';
+  }
+  $('meta[name=prerender-status-code]').remove();
+  $('head').append('<meta name="prerender-status-code" content="' + statusCode + '">');
 };
 
 Meteor.startup(function(){
@@ -31,7 +56,9 @@ Router.route("home", {
   action: function() {
     if (this.ready()) {
       setTitle();
-      setOGImage();
+      setMetaImage();
+      setMetaDescription();
+      setStatusCode();
       return this.render();
     }
   },
@@ -44,7 +71,9 @@ Router.route("about", {
   action: function() {
     if (this.ready()) {
       setTitle('About');
-      setOGImage();
+      setMetaImage();
+      setMetaDescription();
+      setStatusCode();
       return this.render();
     }
   },
@@ -57,7 +86,9 @@ Router.route("terms", {
   action: function() {
     if (this.ready()) {
       setTitle('Terms');
-      setOGImage();
+      setMetaImage();
+      setMetaDescription();
+      setStatusCode();
       return this.render();
     }
   },
@@ -70,7 +101,9 @@ Router.route("privacy", {
   action: function() {
     if (this.ready()) {
       setTitle('Privacy Policy');
-      setOGImage();
+      setMetaImage();
+      setMetaDescription();
+      setStatusCode();
       return this.render();
     }
   },
@@ -83,7 +116,8 @@ Router.route("profile", {
   action: function() {
     if (this.ready()) {
       setTitle(this.params.username + "'s Profile");
-      setOGImage();
+      setMetaImage();
+      setMetaDescription();
       return this.render();
     }
   },
@@ -98,10 +132,12 @@ Router.route("profile", {
       if (this.ready()) {
         user = Meteor.users.findOne({username : username});
         if (user) {
+          setStatusCode();
           return {
             user : user          
           }
         } else {
+          setStatusCode("404");
           this.render("user_not_found");
           // TODO add 404 tags for seo etc...
         }
@@ -116,7 +152,9 @@ Router.route("recover_password", {
   action: function() {
     if (this.ready()) {
       setTitle('Recover Password');
-      setOGImage();
+      setMetaImage();
+      setMetaDescription();
+      setStatusCode();
       return this.render();
     }
   }
@@ -131,7 +169,9 @@ Router.route("reset_password", {
   action: function() {
     if (this.ready()) {
       setTitle('Reset Password');
-      setOGImage();
+      setMetaImage();
+      setMetaDescription();
+      setStatusCode();
       return this.render();
     }
   }
@@ -146,7 +186,9 @@ Router.route("my_story_profile", {
   action: function() {
     if (this.ready()) {
       setTitle('My Stories');
-      setOGImage();
+      setMetaImage();
+      setMetaDescription();
+      setStatusCode();
       return this.render();
     }
   },
@@ -202,11 +244,15 @@ Router.route("read", {
           };
         }));
         setTitle(story.title);
-        setOGImage(headerImageUrl(story.headerImage));
+        setMetaImage(headerImageUrl(story.headerImage, story.headerImageFormat));
+        setMetaDescription(story.verticalSections[0].content);
+        setStatusCode();
         return story;
       } else {
         setTitle("Story not found");
-        setOGImage();
+        setMetaImage();
+        setMetaDescription();
+        setStatusCode("404");
         this.render("story_not_found");
         // TODO add 404 tags for seo etc...
       }
@@ -253,9 +299,11 @@ Router.route("edit", {
           };
         }));
         setTitle('Editing: ' + story.draftStory.title || 'a new story');
+        setStatusCode();
         return story;
       } else {
         setTitle('Story not found');
+        setStatusCode('404');
         this.render("story_not_found");
         // TODO add 404 tags for seo etc...
       }
@@ -263,7 +311,9 @@ Router.route("edit", {
   },
   action: function() {
     if (this.ready()) {
-      setOGImage();
+      setMetaImage();
+      setMetaDescription();
+      setStatusCode();
       return this.render();
     }
   },
@@ -328,7 +378,9 @@ Router.route("twitter-signup", {
     Session.set('signingInWithTwitter', false);
     if (this.ready()) {
       setTitle('Signup');
-      setOGImage();
+      setMetaImage();
+      setMetaDescription();
+      setStatusCode();
       return this.render();
     }
   }
@@ -342,7 +394,9 @@ Router.route("email-signup", {
     Session.set('signingInWithTwitter', false);
     if (this.ready()) {
       setTitle('Signup');
-      setOGImage();
+      setMetaImage();
+      setMetaDescription();
+      setStatusCode();
       return this.render();
     }
   }
@@ -354,7 +408,9 @@ Router.route("login", {
   action: function() {
     if (this.ready()) {
       setTitle('Login');
-      setOGImage();
+      setMetaImage();
+      setMetaDescription();
+      setStatusCode();
       return this.render();
     }
   }

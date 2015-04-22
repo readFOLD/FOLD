@@ -3,10 +3,10 @@ var formatDate, weekDays, formatDateNice, monthNames;
 weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
-window.headerImageUrl = function(headerImage, headerImageFormat){
+window.headerImageUrl = function(headerImage, headerImageFormat, size){
   var image, imageFormat;
 
-  if (headerImage){
+  if (typeof headerImage === 'string'){
     image = headerImage;
     imageFormat = headerImageFormat;
   } else {
@@ -14,8 +14,11 @@ window.headerImageUrl = function(headerImage, headerImageFormat){
     imageFormat = this.headerImageFormat;
   }
 
+  var maxWidth = (size === 'small') ? 800 : 2048;
+  var maxHeight = (size === 'small') ? 1400 : 2048;
+
   if (image) {
-    return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + image
+    return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + maxWidth + ',h_' + maxHeight + ',c_limit/' + image
   }
 }
 
@@ -143,53 +146,102 @@ Template.all_stories.onCreated(function(){ // TODO reconcile with the below
   });
 });
 
-var commonHomeSubscriptions = [];
+var curatedStoriesSub,
+  trendingStoriesSub,
+  newestStoriesSub,
+  starredStoriesSub;
+
+var subscriptionsReady = new ReactiveDict();
+
+
+// these methods all keep the subscription open for the lifetime of the window, but can be called again safely
+var subscribeToCuratedStories = function(cb){
+  if(!curatedStoriesSub){
+    curatedStoriesSub = Meteor.subscribe("curatedStoriesPub", function(){
+      subscriptionsReady.set('curatedStories', true);
+      if(cb){
+        cb();
+      }
+    })
+  } else {
+    if(cb){
+      cb();
+    }
+  }
+};
+var subscribeToTrendingStories = function(cb){
+  if(!trendingStoriesSub){
+    trendingStoriesSub = Meteor.subscribe("trendingStoriesPub", function(){
+      subscriptionsReady.set('trendingStories', true);
+      if(cb){
+        cb();
+      }
+    })
+  } else {
+    if(cb){
+      cb();
+    }
+  }
+};
+var subscribeToNewestStories = function(cb){
+  if(!newestStoriesSub){
+    newestStoriesSub = Meteor.subscribe("newestStoriesPub", function(){
+      subscriptionsReady.set('newestStories', true);
+      if(cb){
+        cb();
+      }
+    })
+  } else {
+    if(cb){
+      cb();
+    }
+  }
+};
+
+var subscribeToStarredStories = function(cb){
+  if(!starredStoriesSub){
+    starredStoriesSub = Meteor.subscribe("starredStoriesPub", function(){
+      subscriptionsReady.set('starredStories', true);
+      if(cb){
+        cb();
+      }
+    })
+  } else {
+    if(cb){
+      cb();
+    }
+  }
+};
 
 Template.all_stories.onCreated(function(){
-  if (!commonHomeSubscriptions.length ){ // subscribe to these the first time, and then keep them open so homepage loads right quick
-    commonHomeSubscriptions = [Meteor.subscribe("curatedStoriesPub"), Meteor.subscribe("newestStoriesPub"), Meteor.subscribe("trendingStoriesPub")];
-  }
-
-  this.subscriptionsReady = new ReactiveVar([]);
-
-  var that = this;
-  this.autorun(function(){
-    that.subscriptionsReady.set(_.chain(commonHomeSubscriptions)
-        .filter(function(pub) { return pub.ready() })
-        .value()
-    );
-  });
-
-  var starredSubscription;
-
-  this.autorun(function(){
-    var user = Meteor.user();
-    if (user && !_.isEmpty(user.profile.favorites)){
-      starredSubscription = Meteor.subscribe("favoriteStoriesPub", user.profile.favorites)
-    }
+  subscribeToCuratedStories(function(){
+    subscribeToTrendingStories(function() {
+      subscribeToNewestStories(function(){
+        subscribeToStarredStories()
+      })
+    });
   });
 });
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
-  newestStories: function() {
-    if (Template.instance().subscriptionsReady.get().length) {
-      return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: 40, reactive: false});
-    }
-  },
   curatedStories: function() {
-    if (Template.instance().subscriptionsReady.get().length){
-      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 40, reactive: false});
+    if (subscriptionsReady.get('curatedStories')) {
+      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 30, reactive: false});
     }
   },
   trendingStories: function() {
-    if (Template.instance().subscriptionsReady.get().length) {
-      return Stories.find({published: true}, {sort: {'views': -1}, limit: 40, reactive: false});
+    if (subscriptionsReady.get('trendingStories')) {
+      return Stories.find({published: true}, {sort: {'views': -1}, limit: 30, reactive: false});
+    }
+  },
+  newestStories: function() {
+    if (subscriptionsReady.get('newestStories')) {
+      return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: 30, reactive: false});
     }
   },
   starredStories: function() {
-    var user = Meteor.user();
-    if (user && user.profile.favorites){
-      return Stories.find({ published: true, _id: {$in: user.profile.favorites } }, {sort: {'publishedAt': -1}, reactive: true});
+    if (subscriptionsReady.get('starredStories')) { // TODO remove the sort after the publication works
+      return _.sortBy(Stories.find({published: true}, {sort: {'favoritedTotal': -1}, limit: 30, reactive: false}).fetch(), function(e){return -1 * e.favorited.length});
     }
   },
   showNewestStories: function(){
@@ -205,10 +257,7 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
     return Session.equals('filterValue', 'starred')
   },
   storiesLoading: function(){
-    return !Stories.find({}).count();
-  },
-  noStoriesForYou: function(){
-    return !Meteor.user();
+    return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')))
   }
 });
 
@@ -225,7 +274,7 @@ Template._story_preview_content.helpers({
       return formatDateNice(this.publishedAt);
     }
   },
-  headerImageUrl: headerImageUrl,
+  headerImageUrl: _.partial(headerImageUrl, _, _, 'small'),
   story: function(){
     if (Template.instance().data.useDraftStory){
       return this.draftStory;
