@@ -591,9 +591,12 @@ Tracker.autorun(function() {
 });
 
 var scrollToRelativePosition = function(offset) {
-  $('body,html').animate({
-    scrollTop: $('.vertical-narrative-section.selected').position().top + offset
-  }, 200, 'easeInCubic');
+  var selectedNarrative = $('.vertical-narrative-section.selected');
+  if (selectedNarrative){
+    $('body,html').animate({
+      scrollTop: $('.vertical-narrative-section.selected').position().top + offset
+    }, 200, 'easeInCubic');
+  }
 };
 
 var showNewHorizontalUI = function() {
