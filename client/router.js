@@ -17,7 +17,15 @@ var setOGImage = function(imageUrl){
   if (imageUrl){
     $('meta[property="og:image"]').attr('content', imageUrl.replace(/^\/\//, "https://")); // replace protocol-less url with https
   } else {
-    $('meta[property="og:image"]').attr('content', "https://readfold.com/FOLD_LOGO.svg");
+    $('meta[property="og:image"]').attr('content', "https://readfold.com/FOLD_fb_image.png");
+  }
+};
+
+var setTwitterImage = function(imageUrl){
+  if (imageUrl){
+    $('meta[name="twitter:image"]').attr('content', imageUrl.replace(/^\/\//, "https://")); // replace protocol-less url with https
+  } else {
+    $('meta[name="twitter:image"]').attr('content', "https://readfold.com/FOLD_twitter_image.png");
   }
 };
 
@@ -40,6 +48,7 @@ Router.route("home", {
     if (this.ready()) {
       setTitle();
       setOGImage();
+      setTwitterImage();
       setStatusCode();
       return this.render();
     }
@@ -54,6 +63,7 @@ Router.route("about", {
     if (this.ready()) {
       setTitle('About');
       setOGImage();
+      setTwitterImage();
       setStatusCode();
       return this.render();
     }
@@ -68,6 +78,7 @@ Router.route("terms", {
     if (this.ready()) {
       setTitle('Terms');
       setOGImage();
+      setTwitterImage();
       setStatusCode();
       return this.render();
     }
@@ -82,6 +93,7 @@ Router.route("privacy", {
     if (this.ready()) {
       setTitle('Privacy Policy');
       setOGImage();
+      setTwitterImage();
       setStatusCode();
       return this.render();
     }
@@ -96,6 +108,7 @@ Router.route("profile", {
     if (this.ready()) {
       setTitle(this.params.username + "'s Profile");
       setOGImage();
+      setTwitterImage();
       return this.render();
     }
   },
@@ -131,6 +144,7 @@ Router.route("recover_password", {
     if (this.ready()) {
       setTitle('Recover Password');
       setOGImage();
+      setTwitterImage();
       setStatusCode();
       return this.render();
     }
@@ -147,6 +161,7 @@ Router.route("reset_password", {
     if (this.ready()) {
       setTitle('Reset Password');
       setOGImage();
+      setTwitterImage();
       setStatusCode();
       return this.render();
     }
@@ -163,6 +178,7 @@ Router.route("my_story_profile", {
     if (this.ready()) {
       setTitle('My Stories');
       setOGImage();
+      setTwitterImage();
       setStatusCode();
       return this.render();
     }
@@ -220,11 +236,13 @@ Router.route("read", {
         }));
         setTitle(story.title);
         setOGImage(headerImageUrl(story.headerImage, story.headerImageFormat));
+        setTwitterImage(headerImageUrl(story.headerImage, story.headerImageFormat));
         setStatusCode();
         return story;
       } else {
         setTitle("Story not found");
         setOGImage();
+        setTwitterImage();
         setStatusCode("404");
         this.render("story_not_found");
         // TODO add 404 tags for seo etc...
@@ -285,6 +303,7 @@ Router.route("edit", {
   action: function() {
     if (this.ready()) {
       setOGImage();
+      setTwitterImage();
       setStatusCode();
       return this.render();
     }
@@ -351,6 +370,7 @@ Router.route("twitter-signup", {
     if (this.ready()) {
       setTitle('Signup');
       setOGImage();
+      setTwitterImage();
       setStatusCode();
       return this.render();
     }
@@ -366,6 +386,7 @@ Router.route("email-signup", {
     if (this.ready()) {
       setTitle('Signup');
       setOGImage();
+      setTwitterImage();
       setStatusCode();
       return this.render();
     }
@@ -379,6 +400,7 @@ Router.route("login", {
     if (this.ready()) {
       setTitle('Login');
       setOGImage();
+      setTwitterImage();
       setStatusCode();
       return this.render();
     }
