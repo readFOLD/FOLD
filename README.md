@@ -1,12 +1,15 @@
 FOLD
 =============
 
+
 FOLD is a context creation platform for journalists and storytellers, allowing them to structure and craft complex stories.
 
-To start, run: `./start`
-To reset the database, run: `./reset`
+**FOLD is live at [readfold.com](https://readfold.com)**
 
-To run the FOLD server, API keys are needed for the various search integrations. They can be put in a settings.json file (along with a few other settings variables) containing the following values
+If you have bug reports, please file issues [here](https://github.com/readFOLD/FOLD/issues).
+If you have feature requests, please post them on [our trello board](https://trello.com/b/ImxWYbBy/fold-roadmap)
+
+To run the FOLD server, API keys are needed for the various search integrations. They can be put in a settings.json file (along with a few other settings variables) containing the following values.
 ```
 "VIMEO_API_KEY"
 "VIMEO_API_SECRET"
@@ -39,3 +42,6 @@ To run the FOLD server, API keys are needed for the various search integrations.
   "CREATE_ACCESS_LEVEL"
 }
 ```
+
+To start, run: `./start`
+To reset the database, run: `./reset`
