@@ -198,7 +198,7 @@ window.trackingInfoFromStory = function(story){
       'numberofKeywords': story.keywords.length,
       'titleLength': story.title.length
     })
-    .extend(story.countContextTypes())
+    .extend(story.countContextTypes ? story.countContextTypes() : {} )
     .value();
 };
 

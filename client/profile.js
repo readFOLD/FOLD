@@ -60,7 +60,7 @@ Template.user_profile.onCreated(function(){
         that.pictureId.set(doc.public_id);
       }
     },
-    removed: function (id) {  
+    removed: function (id) {
       var input = that.$('input[type=file]');
       input.val(null);
       input.change(); 
