@@ -548,12 +548,13 @@ Template.mobile_minimap.helpers({
   horizontalSelectedArray: function() {
     var currentXId = Session.get('currentXId');
     var currentY = Session.get('currentY');
-    if (typeof currentY === 'number'){
+    if (this.verticalSections[currentY]){
       return _.map(this.verticalSections[currentY].contextBlocks, function(cId){
         return {selected: currentXId === cId};
       });
+    } else {
+      return [];
     }
-
   },
   horizontalWidth: function(){
     return Session.get('windowWidth') - Session.get('mobileMargin');
