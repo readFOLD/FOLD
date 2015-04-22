@@ -150,24 +150,34 @@ var curatedStoriesSub,
   trendingStoriesSub,
   newestStoriesSub;
 
+
 // these methods all keep the subscription open for the lifetime of the window, but can be called again safely
 var subscribeToCuratedStories = function(cb){
   if(!curatedStoriesSub){
-    curatedStoriesSub = Meteor.subscribe("curatedStoriesPub", cb)
+    curatedStoriesSub = Meteor.subscribe("curatedStoriesPub", function(){
+      Session.set('curatedStoriesPubReady', true);
+      cb();
+    })
   } else {
     cb();
   }
 };
 var subscribeToTrendingStories = function(cb){
   if(!trendingStoriesSub){
-    trendingStoriesSub = Meteor.subscribe("trendingStoriesPub", cb)
+    trendingStoriesSub = Meteor.subscribe("trendingStoriesPub", function(){
+      Session.set('trendingStoriesPubReady', true);
+      cb();
+    })
   } else {
     cb();
   }
 };
 var subscribeToNewestStories = function(cb){
   if(!newestStoriesSub){
-    newestStoriesSub = Meteor.subscribe("newestStoriesPub", cb)
+    newestStoriesSub = Meteor.subscribe("newestStoriesPub", function(){
+      Session.set('newestStoriesPubReady', true);
+      cb();
+    })
   } else {
     cb();
   }
@@ -175,14 +185,20 @@ var subscribeToNewestStories = function(cb){
 
 Template.all_stories.onCreated(function(){
   var that = this;
+  Session.set('starredStoriesPubReady', false);
 
   subscribeToCuratedStories(function(){
     subscribeToTrendingStories(function() {
       subscribeToNewestStories(function(){
         that.autorun(function(){
+          Session.set('starredStoriesPubReady', false);
           var user = Meteor.user();
           if (user && !_.isEmpty(user.profile.favorites)){
-            Meteor.subscribe("favoriteStoriesPub", user.profile.favorites)
+            Meteor.subscribe("favoriteStoriesPub", user.profile.favorites, function(){
+              Session.set('starredStoriesPubReady', true);
+            })
+          } else {
+            Session.set('starredStoriesPubReady', true);
           }
         });
       })
@@ -191,14 +207,20 @@ Template.all_stories.onCreated(function(){
 });
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
-  newestStories: function() {
-    return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: 20});
-  },
   curatedStories: function() {
-    return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 20});
+    if (Session.get('curatedStoriesPubReady')) {
+      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 20, reactive: false});
+    }
   },
   trendingStories: function() {
-    return Stories.find({published: true}, {sort: {'views': -1}, limit: 20});
+    if (Session.get('trendingStoriesPubReady')) {
+      return Stories.find({published: true}, {sort: {'views': -1}, limit: 20, reactive: false});
+    }
+  },
+  newestStories: function() {
+    if (Session.get('newestStoriesPubReady')) {
+      return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: 20, reactive: false});
+    }
   },
   starredStories: function() {
     var user = Meteor.user();
@@ -219,8 +241,8 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
     return Session.equals('filterValue', 'starred')
   },
   storiesLoading: function(){
-    return(!Stories.find({}).count())
-  },
+    return(!(Session.get(Session.get('filterValue') + 'StoriesPubReady')))
+  }
 });
 
 
