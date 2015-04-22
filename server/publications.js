@@ -108,20 +108,16 @@ Meteor.publish("favoriteStoriesPub", function(ids) { // requires ids to be passe
 });
 
 Meteor.publish("readStoryPub", function(userPathSegment, shortId) {
-  if (this.userId) { // TODO launch Remove
-    return Stories.find({
-      userPathSegment: userPathSegment,
-      shortId: shortId,
-      published: true
-    }, {
-      fields: {
-        draftStory: 0,
-        history: 0
-      }
-    });
-  } else {
-    this.ready();
-  }
+  return Stories.find({
+    userPathSegment: userPathSegment,
+    shortId: shortId,
+    published: true
+  }, {
+    fields: {
+      draftStory: 0,
+      history: 0
+    }
+  });
 });
 
 Meteor.publish("createStoryPub", function(userPathSegment, shortId) {
