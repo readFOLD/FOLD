@@ -57,7 +57,7 @@ var makeTwitterCall = function(apiCall, params) {
   return res;
 };
 
-var countStat = function(storyId, stat) {
+var countStat = function(storyId, stat, details) {
 
   var connectionId = this.connection.id;
   var clientIP = this.connection.httpHeaders['x-forwarded-for'] || this.connection.clientAddress;
@@ -110,6 +110,9 @@ var countStat = function(storyId, stat) {
       userId: this.userId,
       username: Meteor.user().username
     });
+  };
+  if (details){
+    _.extend(fullData, details);
   };
 
   push['deepAnalytics.' + stat + '.all'] = fullData;
@@ -196,10 +199,10 @@ Meteor.methods({
     check(storyId, String);
     countStat.call(this, storyId, 'views');
   },
-  countStoryShare: function(storyId) {
+  countStoryShare: function(storyId, service) {
     this.unblock();
     check(storyId, String);
-    countStat.call(this, storyId, 'shares');
+    countStat.call(this, storyId, 'shares', {service: service});
   },
 
   ///////////////////////////////////
