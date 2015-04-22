@@ -413,6 +413,7 @@ Template.create.events({
       } else {
         analytics.track('Publish story', window.trackingInfoFromStory(Stories.findOne(that._id))); // TODO add info about author
         Router.go('/profile/' + Meteor.user().username);
+        notifySuccess('You story has been published!')
       }
     });
   },
