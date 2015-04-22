@@ -1027,7 +1027,6 @@ div.horizontal-context {
 
 div.minimap {
   .background-transition;
-  cursor: pointer;
   position: fixed;
   overflow: hidden;
   right: @minimap-right-buffer;
@@ -1052,10 +1051,13 @@ div.minimap {
     color: white;
   }
 
-  &:hover {
-    background-color: white;
-    .expand {
-      opacity: 1.0;
+  &.hoverable {
+    cursor: pointer;
+    &:hover {
+      background-color: white;
+      .expand {
+        opacity: 1.0;
+      }
     }
   }
 
