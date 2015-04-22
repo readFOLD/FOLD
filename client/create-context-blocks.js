@@ -320,7 +320,6 @@ var searchIntegrations = {
     flickr: {
       methodName: 'flickrImageSearchList',
       mapFn: function(e) {
-        console.log(e);
         return {
           reference: {
             ownerName: e.ownername,
@@ -654,7 +653,6 @@ Template.create_link_section.onCreated(function() {
         return
       }
       that.noMoreResults.set(false);
-      console.log(result)
 
       addPropertiesToBaseline = function(obj){
         var newObj = _.extend({}, obj, {
@@ -717,7 +715,6 @@ Template.create_link_section.onCreated(function() {
             case 'Flickr':
               source = 'flickr';
               var info = result.url.match(/\/\/farm(.*)?\.staticflickr\.com\/(.*)?\/(.*)?_(.*)?_/);
-              console.log("INFO", info)
               reference = {
                 flickrFarm: info[1],
                 flickrServer: info[2],
@@ -784,8 +781,6 @@ Template.create_link_section.onCreated(function() {
           }
           break;
       }
-      console.log(that.focusResult.get())
-
     });
   };
 });
