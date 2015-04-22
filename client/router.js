@@ -21,6 +21,14 @@ var setOGImage = function(imageUrl){
   }
 };
 
+var setStatusCode = function(statusCode){
+  if(!statusCode){
+    statusCode = '200';
+  }
+  $('meta[name=prerender-status-code]').remove();
+  $('head').append('<meta name="prerender-status-code" content="' + statusCode + '">');
+};
+
 Meteor.startup(function(){
   Meteor.subscribe('userData');
 });
@@ -32,6 +40,7 @@ Router.route("home", {
     if (this.ready()) {
       setTitle();
       setOGImage();
+      setStatusCode();
       return this.render();
     }
   },
@@ -45,6 +54,7 @@ Router.route("about", {
     if (this.ready()) {
       setTitle('About');
       setOGImage();
+      setStatusCode();
       return this.render();
     }
   },
@@ -58,6 +68,7 @@ Router.route("terms", {
     if (this.ready()) {
       setTitle('Terms');
       setOGImage();
+      setStatusCode();
       return this.render();
     }
   },
@@ -71,6 +82,7 @@ Router.route("privacy", {
     if (this.ready()) {
       setTitle('Privacy Policy');
       setOGImage();
+      setStatusCode();
       return this.render();
     }
   },
@@ -98,10 +110,12 @@ Router.route("profile", {
       if (this.ready()) {
         user = Meteor.users.findOne({username : username});
         if (user) {
+          setStatusCode();
           return {
             user : user          
           }
         } else {
+          setStatusCode("404");
           this.render("user_not_found");
           // TODO add 404 tags for seo etc...
         }
@@ -117,6 +131,7 @@ Router.route("recover_password", {
     if (this.ready()) {
       setTitle('Recover Password');
       setOGImage();
+      setStatusCode();
       return this.render();
     }
   }
@@ -132,6 +147,7 @@ Router.route("reset_password", {
     if (this.ready()) {
       setTitle('Reset Password');
       setOGImage();
+      setStatusCode();
       return this.render();
     }
   }
@@ -147,6 +163,7 @@ Router.route("my_story_profile", {
     if (this.ready()) {
       setTitle('My Stories');
       setOGImage();
+      setStatusCode();
       return this.render();
     }
   },
@@ -203,10 +220,12 @@ Router.route("read", {
         }));
         setTitle(story.title);
         setOGImage(headerImageUrl(story.headerImage));
+        setStatusCode();
         return story;
       } else {
         setTitle("Story not found");
         setOGImage();
+        setStatusCode("404");
         this.render("story_not_found");
         // TODO add 404 tags for seo etc...
       }
@@ -253,9 +272,11 @@ Router.route("edit", {
           };
         }));
         setTitle('Editing: ' + story.draftStory.title || 'a new story');
+        setStatusCode();
         return story;
       } else {
         setTitle('Story not found');
+        setStatusCode('404');
         this.render("story_not_found");
         // TODO add 404 tags for seo etc...
       }
@@ -264,6 +285,7 @@ Router.route("edit", {
   action: function() {
     if (this.ready()) {
       setOGImage();
+      setStatusCode();
       return this.render();
     }
   },
@@ -329,6 +351,7 @@ Router.route("twitter-signup", {
     if (this.ready()) {
       setTitle('Signup');
       setOGImage();
+      setStatusCode();
       return this.render();
     }
   }
@@ -343,6 +366,7 @@ Router.route("email-signup", {
     if (this.ready()) {
       setTitle('Signup');
       setOGImage();
+      setStatusCode();
       return this.render();
     }
   }
@@ -355,6 +379,7 @@ Router.route("login", {
     if (this.ready()) {
       setTitle('Login');
       setOGImage();
+      setStatusCode();
       return this.render();
     }
   }
