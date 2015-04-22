@@ -499,6 +499,7 @@ div#overlay {
 
   div.content {
     overflow: hidden;
+    word-wrap: break-word;
     .content-font;
     min-height: @normalContentHeight + @titleHeight + @titleMarginBottom;
     &.minimized {
