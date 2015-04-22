@@ -110,20 +110,21 @@ div.floating-story-buttons {
     }
   }
   .favorite-button{
+    button{
+      .size-to-fit;
+      margin: auto;
+      svg{
+        width: 20px;
+        height: 20px;
+      }
+    }
     float: left;
     font-size: 0;
-    padding-top: 9px;
-    padding-left: 10px;
     margin-right: 10px;
     .favorite{
       .fg {
         fill: @medium-color;
       }
-    }
-
-    button {
-      width: 20px;
-      height: 20px;
     }
   }
   .share-button{
