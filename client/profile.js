@@ -61,7 +61,10 @@ Template.user_profile.onCreated(function(){
       input.change(); 
     }
   });
-
+  
+  this.autorun(function(){
+    that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}}).map(function(story){return story.authorId}));
+  });
 });
 
 Template.user_profile.onDestroyed(function(){
