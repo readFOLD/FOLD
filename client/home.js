@@ -146,52 +146,59 @@ Template.all_stories.onCreated(function(){ // TODO reconcile with the below
   });
 });
 
-var commonHomeSubscriptions = [];
+var curatedStoriesSub,
+  trendingStoriesSub,
+  newestStoriesSub;
 
+// these methods all keep the subscription open for the lifetime of the window, but can be called again safely
+var subscribeToCuratedStories = function(cb){
+  if(!curatedStoriesSub){
+    curatedStoriesSub = Meteor.subscribe("curatedStoriesPub", cb)
+  } else {
+    cb();
+  }
+};
+var subscribeToTrendingStories = function(cb){
+  if(!trendingStoriesSub){
+    trendingStoriesSub = Meteor.subscribe("trendingStoriesPub", cb)
+  } else {
+    cb();
+  }
+};
+var subscribeToNewestStories = function(cb){
+  if(!newestStoriesSub){
+    newestStoriesSub = Meteor.subscribe("newestStoriesPub", cb)
+  } else {
+    cb();
+  }
+};
 
 Template.all_stories.onCreated(function(){
-  if (!commonHomeSubscriptions.length ){ // subscribe to these the first time, and then keep them open so homepage loads right quick
-    this.curatedStoriesSub = Meteor.subscribe("curatedStoriesPub");
-    this.newestStoriesSub = Meteor.subscribe("newestStoriesPub");
-    this.trendingStoriesSub = Meteor.subscribe("trendingStoriesPub");
-    commonHomeSubscriptions = [this.curatedStoriesSub, this.newestStoriesSub, this.trendingStoriesSub];
-  }
-
-  this.subscriptionsReady = new ReactiveVar([]);
-
   var that = this;
-  this.autorun(function(){
-    that.subscriptionsReady.set(_.chain(commonHomeSubscriptions)
-        .filter(function(pub) { return pub.ready() })
-        .value()
-    );
-  });
 
-  this.autorun(function(){
-    var user = Meteor.user();
-    if (user && !_.isEmpty(user.profile.favorites)){
-      that.starredStoriesSub = Meteor.subscribe("favoriteStoriesPub", user.profile.favorites)
-    } else {
-      that.starredStoriesSub = Meteor.subscribe("favoriteStoriesPub", [])
-    }
+  subscribeToCuratedStories(function(){
+    subscribeToTrendingStories(function() {
+      subscribeToNewestStories(function(){
+        that.autorun(function(){
+          var user = Meteor.user();
+          if (user && !_.isEmpty(user.profile.favorites)){
+            Meteor.subscribe("favoriteStoriesPub", user.profile.favorites)
+          }
+        });
+      })
+    });
   });
 });
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   newestStories: function() {
-    if (Template.instance().newestStoriesSub.ready()) {
-      return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: 40, reactive: false});
-    }
+    return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: 20});
   },
   curatedStories: function() {
-    if (Template.instance().curatedStoriesSub.ready()){
-      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 40, reactive: false});
-    }
+    return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 20});
   },
   trendingStories: function() {
-    if (Template.instance().trendingStoriesSub.ready()) {
-      return Stories.find({published: true}, {sort: {'views': -1}, limit: 40, reactive: false});
-    }
+    return Stories.find({published: true}, {sort: {'views': -1}, limit: 20});
   },
   starredStories: function() {
     var user = Meteor.user();
@@ -212,8 +219,7 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
     return Session.equals('filterValue', 'starred')
   },
   storiesLoading: function(){
-    var sub = Template.instance()[(Session.get('filterValue')) + 'StoriesSub'];
-    return !sub || !sub.ready();
+    return(!Stories.find({}).count())
   },
 });
 
