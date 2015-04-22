@@ -23,7 +23,7 @@ var setOGImage = function(imageUrl){
 
 Meteor.startup(function(){
   Meteor.subscribe('userData');
-})
+});
 
 Router.route("home", {
   path: "/",
