@@ -221,7 +221,7 @@ div.stories {
     overflow: hidden;
     background-color: @medium-color;
     img {
-      max-width: 100%;
+      width: 100%;
       min-height: 100%;
     }
   }
