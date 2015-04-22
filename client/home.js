@@ -226,22 +226,22 @@ Template.all_stories.onCreated(function(){
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   curatedStories: function() {
     if (subscriptionsReady.get('curatedStories')) {
-      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 20, reactive: false});
+      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 30, reactive: false});
     }
   },
   trendingStories: function() {
     if (subscriptionsReady.get('trendingStories')) {
-      return Stories.find({published: true}, {sort: {'views': -1}, limit: 20, reactive: false});
+      return Stories.find({published: true}, {sort: {'views': -1}, limit: 30, reactive: false});
     }
   },
   newestStories: function() {
     if (subscriptionsReady.get('newestStories')) {
-      return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: 20, reactive: false});
+      return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: 30, reactive: false});
     }
   },
   starredStories: function() {
     if (subscriptionsReady.get('starredStories')) { // TODO remove the sort after the publication works
-      return _.sortBy(Stories.find({published: true}, {sort: {'favoritedTotal': -1}, limit: 20, reactive: false}).fetch(), function(e){return -1 * e.favorited.length});
+      return _.sortBy(Stories.find({published: true}, {sort: {'favoritedTotal': -1}, limit: 30, reactive: false}).fetch(), function(e){return -1 * e.favorited.length});
     }
   },
   showNewestStories: function(){
