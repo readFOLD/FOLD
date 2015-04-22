@@ -859,6 +859,7 @@ Template.login.onCreated(function(){
   $('html, body').scrollTop(0);
 });
 
+var storyViewed = '';
 Template.read.onCreated(function(){
   Session.set("wrap", {});
   Session.set("currentXByYId", {});
@@ -866,6 +867,12 @@ Template.read.onCreated(function(){
   Session.set("showMinimap", true);
   Session.set("mobileContextView", false);
   $('html, body').scrollTop(0);
+
+  var id = this.data._id;
+  if (storyViewed !== id){
+    storyViewed = id;
+    Meteor.call('countStoryView', id);
+  }
 });
 
 Template.create.onCreated(function(){

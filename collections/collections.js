@@ -96,7 +96,7 @@ if (Meteor.isClient) {
   window.cleanVerticalSectionContent = cleanVerticalSectionContent;
 }
 
-this.Stories = new Meteor.Collection("stories", {
+this.Stories = new Mongo.Collection("stories", {
   transform: function(doc) {
     if (doc.draftStory){
       _.extend(doc.draftStory, {
@@ -699,7 +699,7 @@ if (Meteor.isClient) {
 }
 
 
-this.ContextBlocks = new Meteor.Collection("context_blocks", {
+this.ContextBlocks = new Mongo.Collection("context_blocks", {
   transform: newTypeSpecificContextBlock
 });
 
@@ -1180,6 +1180,27 @@ var sharedStorySchemaObject = {
 
 var draftStorySchema = new SimpleSchema(sharedStorySchemaObject);
 
+
+
+var analyticsSchema = new SimpleSchema({
+  byConnection: {
+    type: Number,
+    defaultValue: 0
+  },
+  byIP: {
+    type: Number,
+    defaultValue: 0
+  },
+  byId: {
+    type: Number,
+    defaultValue: 0
+  },
+  total: {
+    type: Number,
+    defaultValue: 0
+  }
+});
+
 Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
     shortId: {
       type: String
@@ -1253,13 +1274,12 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
       type: Date,
       optional: true
     },
-    views: {
-      type: Number,
-      defaultValue: 0
+
+    analytics: {
+      type: Object
     },
-    shared: {
-      type: Number,
-      defaultValue: 0
+    'analytics.views': {
+      type: analyticsSchema
     },
     contextBlocks: {
       type: [ContextBlock], // TODO this should really be Schema.ContextBlocks, but would need to be converted to a regular object, otherwise simple-schema complains
@@ -1300,3 +1320,62 @@ Meteor.users.attachSchema(Schema.User);
 SimpleSchema.messages({
   "regEx username": "Username may only contain letters, numbers, and underscores"
 });
+
+
+this.StoryStats = new Mongo.Collection("story_stats");
+
+
+this.StoryStats.deny({
+  insert: function() {
+    return true;
+  },
+  update: function() {
+    return true
+  },
+  remove: function() {
+    return true
+  }
+});
+
+var deepAnalyticsSchema = new SimpleSchema({
+  uniqueViewersByConnection: {
+    type: [String],
+    defaultValue: []
+  },
+  uniqueViewersByIP: {
+    type: [String],
+    defaultValue: []
+  },
+  uniqueViewersByUserId: {
+    type: [String],
+    defaultValue: []
+  },
+  all: {
+    type: [Object],
+    blackbox: true
+  }
+});
+
+Schema.StoryStats = new SimpleSchema({
+  storyId: {
+    type: String
+  },
+  deepAnalytics: {
+    type: Object,
+    optional: true
+  },
+  'deepAnalytics.views': {
+    type: deepAnalyticsSchema
+  },
+  analytics: {
+    type: analyticsSchema,
+    optional: true
+  },
+  'analytics.views': {
+    type: analyticsSchema
+  }
+});
+
+this.StoryStats.attachSchema(Schema.StoryStats);
+
+

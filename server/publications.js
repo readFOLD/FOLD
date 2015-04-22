@@ -16,6 +16,10 @@ ContextBlocks._ensureIndex({
   authorId: 1
 });
 
+StoryStats._ensureIndex({
+  storyId: 1
+});
+
 Meteor.users._ensureIndex({
   username: 1
 });
