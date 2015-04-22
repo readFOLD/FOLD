@@ -36,7 +36,7 @@ Meteor.publish("curatedStoriesPub", function() {
     sort: {
       editorsPickAt: -1
     },
-    limit: 40 // initial limit
+    limit: 20 // initial limit
   });
 });
 
@@ -51,7 +51,7 @@ Meteor.publish("newestStoriesPub", function() { // for now, it's just publishedA
     sort: {
       publishedAt: -1
     },
-    limit: 40 // initial limit
+    limit: 20 // initial limit
   });
 });
 
@@ -66,7 +66,7 @@ Meteor.publish("trendingStoriesPub", function() { // for now, it's just the most
     sort: {
       views: -1
     },
-    limit: 40 // initial limit
+    limit: 20 // initial limit
   });
 });
 
@@ -82,7 +82,7 @@ Meteor.publish("favoriteStoriesPub", function(ids) { // requires ids to be passe
     sort: {
       publishedAt: -1
     },
-    limit: 100 // initial limit
+    limit: 40 // initial limit
   });
 });
 
