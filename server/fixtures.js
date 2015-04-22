@@ -8,14 +8,12 @@ if (Meteor.users.find().count() === 0) {
     accessPriority: 1,
     profile: {
       name: 'Cynthia Fold'
-    },
-    signupCode: 'begin'
+    }
   });
   Accounts.createUser({
     email: 'test@example.com',
     username: 'testuser',
-    password: 'password',
-    signupCode: 'begin'
+    password: 'password'
   });
 }
 

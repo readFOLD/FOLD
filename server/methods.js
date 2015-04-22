@@ -128,7 +128,7 @@ Meteor.methods({
     }
     var username = userInfo.username,
         email = userInfo.email;
-    checkSignupCode(userInfo.signupCode);
+
     if (!email){
       throw new Meteor.Error('Please enter your email');
     }
