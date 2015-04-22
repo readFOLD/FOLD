@@ -843,7 +843,7 @@ Template.favorite_button.helpers({
 });
 
 Template.favorite_button.events({
-  "click .favorite-button": function() {
+  "click .favorite": function() {
     return Meteor.call('favoriteStory', this._id, function(err) {
       if (err) {
         throw(err);
@@ -851,7 +851,7 @@ Template.favorite_button.events({
       }
     });
   },
-  "click .unfavorite-button": function() {
+  "click .unfavorite": function() {
     return Meteor.call('unfavoriteStory', this._id, function(err) {
       if (err) {
         throw(err);

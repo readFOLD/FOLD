@@ -636,8 +636,8 @@
 </template>
 
 <template name="favorite_button">
-    <div class="{{#unless userFavorited}}favorite-button{{else}}unfavorite-button{{/if}}">
-        
+    <div class="favorite-button">
+        {{#if userFavorited}}
             <button type='button' class='unfavorite'>{{> favorite_icon }}</button>
         {{else}}
             <button type='button' class='favorite'>{{> favorite_icon }}</button>

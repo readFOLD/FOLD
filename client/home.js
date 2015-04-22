@@ -207,9 +207,6 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
   storiesLoading: function(){
     return !Stories.find({}).count();
   },
-  noStoriesForYou: function(){
-    return !Meteor.user();
-  }
 });
 
 
