@@ -706,6 +706,7 @@ div.link-section {
     }
 
     &.image-on-left {
+      clear: both;
       max-height: 110px;
       padding-top: 15px;
     }
