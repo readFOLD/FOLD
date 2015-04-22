@@ -540,6 +540,30 @@ div.image-section {
     color: white;
   }
 
+  div.attribution {
+    margin-top: -30px;
+    line-height: 30px;
+    padding-right: 8px;
+    text-shadow: 1px 1px @dark-color;
+    text-align: right;
+    color: white;
+
+    i.fa-flickr {
+      margin-right: 2px;
+    }
+
+    a {
+      &:hover {
+        color: @action-color;
+      }
+    }
+
+    span.separator {
+      margin-left: 3px;
+      margin-right: 6px;
+    }
+  }
+
   div.text-content {
     @font-size: 14px;
     font-size: @font-size;

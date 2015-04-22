@@ -320,8 +320,11 @@ var searchIntegrations = {
     flickr: {
       methodName: 'flickrImageSearchList',
       mapFn: function(e) {
+        console.log(e);
         return {
           reference: {
+            ownerName: e.ownername,
+            uploadDate: new Date(parseInt(e.dateupload) * 1000),
             flickrFarm: e.farm,
             flickrSecret: e.secret,
             id: e.id,
@@ -714,6 +717,7 @@ Template.create_link_section.onCreated(function() {
             case 'Flickr':
               source = 'flickr';
               var info = result.url.match(/\/\/farm(.*)?\.staticflickr\.com\/(.*)?\/(.*)?_(.*)?_/);
+              console.log("INFO", info)
               reference = {
                 flickrFarm: info[1],
                 flickrServer: info[2],

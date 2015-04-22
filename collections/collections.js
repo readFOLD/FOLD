@@ -397,6 +397,27 @@ ImageBlock = (function(_super) {
     }
   };
 
+  ImageBlock.prototype.webUrl = function() {
+    switch (this.source) {
+      case 'flickr':
+        return '//www.flickr.com/photos/' + this.reference.ownerName + '/' + this.reference.id;
+    }
+  }
+
+  ImageBlock.prototype.ownerName = function() {
+    switch (this.source) {
+      case 'flickr':
+        return this.reference.ownerName;
+    }
+  };
+
+  ImageBlock.prototype.uploadDate = function() {
+    switch (this.source) {
+      case 'flickr':
+        return this.reference.uploadDate.toDateString();
+    }
+  };
+
   ImageBlock.prototype.previewUrl = function() {
     switch (this.source) {
       case 'local':
@@ -783,6 +804,15 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     type: String,
     optional: true
   },
+  uploadDate: {
+    type: Date,
+    optional: true
+  },
+  ownerName: {
+    type: String,
+    optional: true
+  },
+
   hasWebM: {
     type: Boolean,
     optional: true

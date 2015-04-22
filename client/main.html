@@ -283,6 +283,14 @@
       </video>
     {{else}}
       <img src="{{url}}" />
+      {{#if ownerName}}
+      {{#if uploadDate}}
+      <div class="attribution">
+        <i class="fa fa-flickr"></i>
+        <a href="//flickr.com/{{ownerName}}" target="_blank">{{ownerName}}</a> <span class="separator">·</span><a href="{{webUrl}}" target="_blank">{{uploadDate}}</a>
+      </div>
+      {{/if}}
+      {{/if}}
     {{/if}}
     {{{textContent}}}
   </div>
