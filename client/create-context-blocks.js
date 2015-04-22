@@ -322,6 +322,8 @@ var searchIntegrations = {
       mapFn: function(e) {
         return {
           reference: {
+            ownerName: e.ownername,
+            uploadDate: new Date(parseInt(e.dateupload) * 1000),
             flickrFarm: e.farm,
             flickrSecret: e.secret,
             id: e.id,
@@ -651,7 +653,6 @@ Template.create_link_section.onCreated(function() {
         return
       }
       that.noMoreResults.set(false);
-      console.log(result)
 
       addPropertiesToBaseline = function(obj){
         var newObj = _.extend({}, obj, {

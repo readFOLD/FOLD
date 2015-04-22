@@ -525,6 +525,12 @@ div.image-section {
       opacity: 0.8;
     }
   }
+
+  img.giphy-logo {
+    position: absolute;
+    bottom: 10px;
+    right: 0px;
+  }
   
   .text-content {
     .opacity-background-transition;
@@ -538,6 +544,30 @@ div.image-section {
     background-color: rgba(0, 0, 0, 0.8);
     opacity: 0.8;
     color: white;
+  }
+
+  div.attribution {
+    margin-top: -30px;
+    line-height: 30px;
+    padding-right: 8px;
+    text-shadow: 1px 1px @dark-color;
+    text-align: right;
+    color: white;
+
+    i.fa-flickr {
+      margin-right: 2px;
+    }
+
+    a {
+      &:hover {
+        color: @action-color;
+      }
+    }
+
+    span.separator {
+      margin-left: 3px;
+      margin-right: 6px;
+    }
   }
 
   div.text-content {
