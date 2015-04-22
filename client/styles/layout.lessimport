@@ -646,6 +646,7 @@ div.link-section {
       padding-bottom: 7px;
       line-height: 26px;
       background-color: @white-color;
+      overflow:hidden;
 
       &.image-on-left {
         display: flex;
