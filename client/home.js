@@ -139,13 +139,6 @@ Template.filters.events({
   }
 });
 
-Template.all_stories.onCreated(function(){ // TODO reconcile with the below
-  var that = this;
-  this.autorun(function(){
-    that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}}).map(function(story){return story.authorId}));
-  });
-});
-
 var curatedStoriesSub,
   trendingStoriesSub,
   newestStoriesSub,
@@ -214,10 +207,15 @@ var subscribeToStarredStories = function(cb){
 };
 
 Template.all_stories.onCreated(function(){
+  var that = this;
   subscribeToCuratedStories(function(){
     subscribeToTrendingStories(function() {
       subscribeToNewestStories(function(){
-        subscribeToStarredStories()
+        subscribeToStarredStories(function(){
+          that.autorun(function(){
+            that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}}).map(function(story){return story.authorId}));
+          });
+        })
       })
     });
   });
