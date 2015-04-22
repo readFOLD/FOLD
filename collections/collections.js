@@ -404,7 +404,11 @@ ImageBlock = (function(_super) {
   ImageBlock.prototype.webUrl = function() {
     switch (this.source) {
       case 'flickr':
-        return '//www.flickr.com/photos/' + this.reference.ownerName + '/' + this.reference.id;
+        if(this.reference.ownerName){
+          return '//www.flickr.com/photos/' + this.reference.ownerName + '/' + this.reference.id;
+        } else {
+          return encodeFlickrUrl(this.reference.id)
+        }
     }
   }
 
@@ -418,7 +422,9 @@ ImageBlock = (function(_super) {
   ImageBlock.prototype.uploadDate = function() {
     switch (this.source) {
       case 'flickr':
-        return this.reference.uploadDate.toDateString();
+        if(this.reference.uploadDate){
+          return this.reference.uploadDate.toDateString();
+        }
     }
   };
 
