@@ -1400,3 +1400,10 @@ div.hide {
 div.collapse {
   display: none !important;
 }
+
+div.loading-container {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -820,7 +820,7 @@ Template.share_button.events({
     var height = 400;
     var left   = ($(window).width()  - width)  / 2;
     var top    = ($(window).height() - height) / 2;
-    var url    = '//www.twitter.com/intent/tweet?text=Read "' + title + '" on @readFOLD&url=' + encodeURIComponent(location.href);
+    var url    = '//twitter.com/intent/tweet?text=Read "' + title + '" on @readFOLD&url=' + encodeURIComponent(location.href);
     var opts   = 'status=1' +
       ',width='  + width  +
       ',height=' + height +
