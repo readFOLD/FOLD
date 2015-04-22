@@ -28,9 +28,11 @@ var setMetaImage = function(imageUrl){
 
 var setMetaDescription = function(desc){
   if (desc){
+    $('meta[name="description"]').attr('content', desc);
     $('meta[property="og:description"]').attr('content', desc);
     $('meta[name="twitter:description"]').attr('content', desc);
   } else {
+    $('meta[name="description"]').attr('content', 'Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.');
     $('meta[property="og:description"]').attr('content', 'Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.');
     $('meta[name="twitter:description"]').attr('content', 'Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.');
   }
