@@ -40,6 +40,11 @@ Template.my_stories.events({
 
 Template.user_profile.onCreated(function(){
   var that = this;
+
+  this.autorun(function(){
+    that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}}).map(function(story){return story.authorId}));
+  });
+  
   this.editing = new ReactiveVar(false);
   this.editPicturePrompt = new ReactiveVar(false);
   this.editingPicture = new ReactiveVar(false);
@@ -60,10 +65,6 @@ Template.user_profile.onCreated(function(){
       input.val(null);
       input.change(); 
     }
-  });
-  
-  this.autorun(function(){
-    that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}}).map(function(story){return story.authorId}));
   });
 });
 
