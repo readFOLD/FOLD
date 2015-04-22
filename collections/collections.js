@@ -401,6 +401,10 @@ ImageBlock = (function(_super) {
     }
   };
 
+  ImageBlock.prototype.isFlickr = function() {
+    return (this.source === 'flickr');
+  }
+
   ImageBlock.prototype.webUrl = function() {
     switch (this.source) {
       case 'flickr':

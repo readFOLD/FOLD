@@ -284,10 +284,12 @@
     {{else}}
       <img src="{{url}}" />
       {{#if isGiphy}}<img class="giphy-logo" src="/images/giphy_logo.png" />{{/if}}
-      <div class="attribution">
-        <i class="fa fa-flickr"></i>
-        {{#if ownerName}}<a href="//flickr.com/{{ownerName}}" target="_blank">{{ownerName}}</a><span class="separator">·</span>{{/if}}<a href="{{webUrl}}" target="_blank">{{#if uploadDate}}{{uploadDate}}{{else}}source{{/if}}</a>
-      </div>
+      {{#if isFlickr}}
+        <div class="attribution">
+          <i class="fa fa-flickr"></i>
+          {{#if ownerName}}<a href="//flickr.com/{{ownerName}}" target="_blank">{{ownerName}}</a><span class="separator">·</span>{{/if}}<a href="{{webUrl}}" target="_blank">{{#if uploadDate}}{{uploadDate}}{{else}}source{{/if}}</a>
+        </div>
+      {{/if}}
     {{/if}}
     {{{textContent}}}
   </div>
