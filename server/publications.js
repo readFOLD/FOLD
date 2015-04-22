@@ -184,7 +184,7 @@ Meteor.publish("userProfilePub", function(username) { // includes user profile a
     return this.ready();
   }
 
-  var userFavorites = user.profile.favorites;
+  var userFavorites = user.profile.favorites || [];
   return [
     userCursor,
     Stories.find({

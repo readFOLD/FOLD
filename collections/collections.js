@@ -57,6 +57,10 @@ Story = (function() {
     }, 0)
   };
 
+  Story.prototype.countContextTypes = function(){
+    return _.chain(this.contextBlocks).pluck('type').countBy(_.identity).value()
+  };
+
   return Story;
 
 })();

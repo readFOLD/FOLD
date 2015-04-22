@@ -800,6 +800,25 @@ Template.editors_pick_button.events({
   }
 });
 
+
+
+Template.remix_bar.events({
+  'click .remix-button': function(){
+    analytics.track('Remix context card click', _.pick(this, [
+      "_id",
+      "authorId",
+      "index",
+      "source",
+      "storyId",
+      "storyShortId",
+      "type",
+      "verticalId",
+      "verticalIndex"
+    ]));
+    alert('Remixing cards: coming soon!');
+  }
+});
+
 Template.display_twitter_section.events({
   "click .show-image" : function(e, template) {
     template.$('.twitter-text-section').toggleClass('transparent');
@@ -859,6 +878,37 @@ Template.login.onCreated(function(){
   $('html, body').scrollTop(0);
 });
 
+window.trackingInfoFromStory = function(story){
+  return _.chain(story)
+    .pick([
+      '_id',
+      'authorDisplayUsername',
+      'authorId',
+      'authorName',
+      'authorUsername',
+      'createdAt',
+      'editorsPick',
+      'editorsPickAt',
+      'firstPublishedAt',
+      'headerImageFormat',
+      'keywords',
+      'narrativeRightsReserved',
+      'publishedAt',
+      'savedAt',
+      'shortId',
+      'storyPathSegment',
+      'title'])
+    .extend({
+      'numberOfContextBlocks': story.contextBlockIds.length,
+      'numberOfVerticalSections': story.verticalSections.length,
+      'favorites': story.favorited.length,
+      'numberofKeywords': story.keywords.length,
+      'titleLength': story.title.length
+      })
+    .extend(story.countContextTypes())
+    .value();
+};
+
 var storyViewed = '';
 Template.read.onCreated(function(){
   Session.set("wrap", {});
@@ -872,6 +922,7 @@ Template.read.onCreated(function(){
   if (storyViewed !== id){
     storyViewed = id;
     Meteor.call('countStoryView', id);
+    analytics.track('View story', trackingInfoFromStory(this.data));
   }
 });
 
