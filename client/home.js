@@ -168,7 +168,6 @@ Template.all_stories.onCreated(function(){
       starredSubscription = Meteor.subscribe("favoriteStoriesPub", user.profile.favorites)
     }
   });
-
 });
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
@@ -208,9 +207,6 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
   storiesLoading: function(){
     return !Stories.find({}).count();
   },
-  noStoriesForYou: function(){
-    return !Meteor.user();
-  }
 });
 
 

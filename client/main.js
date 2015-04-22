@@ -171,6 +171,37 @@ Meteor.startup(function() {
   return $(document).scroll(throttledUpdate);
 });
 
+
+window.trackingInfoFromStory = function(story){
+  return _.chain(story)
+    .pick([
+      '_id',
+      'authorDisplayUsername',
+      'authorId',
+      'authorName',
+      'authorUsername',
+      'createdAt',
+      'editorsPick',
+      'editorsPickAt',
+      'firstPublishedAt',
+      'headerImageFormat',
+      'keywords',
+      'narrativeRightsReserved',
+      'publishedAt',
+      'savedAt',
+      'shortId',
+      'title'])
+    .extend({
+      'numberOfContextBlocks': story.contextBlockIds.length,
+      'numberOfVerticalSections': story.verticalSections.length,
+      'favorites': story.favorited.length,
+      'numberofKeywords': story.keywords.length,
+      'titleLength': story.title.length
+    })
+    .extend(story.countContextTypes())
+    .value();
+};
+
 typeHelpers = {
   text: function() {
     return this.type === "text";
@@ -352,6 +383,12 @@ Template.vertical_section_block.events({
       contextId = $(e.currentTarget).data('contextId');
       return goToContext(contextId);
     }
+    analytics.track('Click anchor', _.extend(window.trackingInfoFromStory(Session.get('story'), {
+      verticalIndex: this.index,
+      contextType: $(e.currentTarget).data('contextType'),
+      contextSource: $(e.currentTarget).data('contextSource'),
+      numberOfContextCardsOnVertical: this.contextBlocks.length
+    })));
   }
 });
 
@@ -756,6 +793,49 @@ Template.story_browser.events({
 
 Template.type_specific_icon.helpers(typeHelpers);
 
+Template.share_button.onCreated(function() {
+  this.tooltipShown = new ReactiveVar(false);
+})
+
+Template.share_button.events({
+  'click': function(e, t) {
+    t.tooltipShown.set(!t.tooltipShown.get());
+  },
+  'click .share-facebook': function(e, t) {
+    var width  = 575;
+    var height = 400;
+    var left   = ($(window).width()  - width)  / 2;
+    var top    = ($(window).height() - height) / 2;
+    var url    = "//facebook.com/sharer/sharer.php?u=" + encodeURIComponent(location.href);
+    var opts   = 'status=1' +
+      ',width='  + width  +
+      ',height=' + height +
+      ',top='    + top    +
+      ',left='   + left
+    window.open(url, 'facebook', opts);
+  },
+  'click .share-twitter': function(e, t) {
+    var title = $(".story-title").text();
+    var width  = 575;
+    var height = 400;
+    var left   = ($(window).width()  - width)  / 2;
+    var top    = ($(window).height() - height) / 2;
+    var url    = '//twitter.com/intent/tweet?text=Read "' + title + '" on @readFOLD&url=' + encodeURIComponent(location.href);
+    var opts   = 'status=1' +
+      ',width='  + width  +
+      ',height=' + height +
+      ',top='    + top    +
+      ',left='   + left
+    window.open(url, 'twitter', opts);
+  }
+});
+
+Template.share_button.helpers({
+  "tooltipShown": function() {
+    return Template.instance().tooltipShown.get();
+  }
+})
+
 Template.favorite_button.helpers({
   userFavorited: function() {
     return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
@@ -797,6 +877,25 @@ Template.editors_pick_button.events({
         return alert(err);
       }
     });
+  }
+});
+
+
+
+Template.remix_bar.events({
+  'click .remix-button': function(){
+    analytics.track('Remix context card click', _.pick(this, [
+      "_id",
+      "authorId",
+      "index",
+      "source",
+      "storyId",
+      "storyShortId",
+      "type",
+      "verticalId",
+      "verticalIndex"
+    ]));
+    alert('Remixing cards: coming soon!');
   }
 });
 
@@ -859,6 +958,8 @@ Template.login.onCreated(function(){
   $('html, body').scrollTop(0);
 });
 
+
+var storyViewed = '';
 Template.read.onCreated(function(){
   Session.set("wrap", {});
   Session.set("currentXByYId", {});
@@ -866,6 +967,13 @@ Template.read.onCreated(function(){
   Session.set("showMinimap", true);
   Session.set("mobileContextView", false);
   $('html, body').scrollTop(0);
+
+  var id = this.data._id;
+  if (storyViewed !== id){
+    storyViewed = id;
+    Meteor.call('countStoryView', id);
+    analytics.track('View story', trackingInfoFromStory(this.data));
+  }
 });
 
 Template.create.onCreated(function(){

@@ -410,6 +410,7 @@ Template.create.events({
       if (err || !numDocs) {
         return alert('Publication failed');
       } else {
+        analytics.track('Publish story', window.trackingInfoFromStory(Stories.findOne(that._id))); // TODO add info about author
         Router.go('/profile/' + Meteor.user().username);
       }
     });
@@ -789,6 +790,8 @@ window.addContext = function(contextBlock) {
       if (placeholderAnchorElement) {
         placeholderAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
         placeholderAnchorElement.attr('data-context-type', contextBlock.type);
+        placeholderAnchorElement.attr('data-context-source', contextBlock.source);
+
         placeholderAnchorElement.removeClass('placeholder'); // add active class because we go to this context and if we're already there it won't get the class
         saveNarrativeSectionContent(verticalIndex);
       }
