@@ -196,6 +196,11 @@ Meteor.methods({
     check(storyId, String);
     countStat.call(this, storyId, 'views');
   },
+  countStoryShare: function(storyId) {
+    this.unblock();
+    check(storyId, String);
+    countStat.call(this, storyId, 'shares');
+  },
 
   ///////////////////////////////////
   /////// SEARCH API METHODS ///////

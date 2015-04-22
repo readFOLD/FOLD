@@ -1330,6 +1330,9 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
     'analytics.views': {
       type: analyticsSchema
     },
+    'analytics.shares': {
+      type: analyticsSchema
+    },
     contextBlocks: {
       type: [ContextBlock], // TODO this should really be Schema.ContextBlocks, but would need to be converted to a regular object, otherwise simple-schema complains
       minCount: 0,
@@ -1416,11 +1419,17 @@ Schema.StoryStats = new SimpleSchema({
   'deepAnalytics.views': {
     type: deepAnalyticsSchema
   },
+  'deepAnalytics.shares': {
+    type: deepAnalyticsSchema
+  },
   analytics: {
     type: analyticsSchema,
     optional: true
   },
   'analytics.views': {
+    type: analyticsSchema
+  },
+  'analytics.shares': {
     type: analyticsSchema
   }
 });

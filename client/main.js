@@ -813,6 +813,7 @@ Template.share_button.events({
       ',top='    + top    +
       ',left='   + left
     window.open(url, 'facebook', opts);
+    Meteor.call('countStoryShare', this._id);
   },
   'click .share-twitter': function(e, t) {
     var title = $(".story-title").text();
@@ -827,6 +828,7 @@ Template.share_button.events({
       ',top='    + top    +
       ',left='   + left
     window.open(url, 'twitter', opts);
+    Meteor.call('countStoryShare', this._id);
   }
 });
 
