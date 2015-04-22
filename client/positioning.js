@@ -181,7 +181,7 @@ window.moveOneCard = function(d) {
 
 $(document).keydown(function(e) {
   if (Session.get('read')){
-    letter = String.fromCharCode(e.keyCode)
+    letter = String.fromCharCode(e.keyCode);
     switch(letter){
       case 'J':
         goUpOneCard()
@@ -194,6 +194,12 @@ $(document).keydown(function(e) {
         break;
       case '(': // down arrow
         goDownOneCard()
+        break;
+      case '%': // left arrow
+        goLeftOneCard();
+        break;
+      case '\'': // right arrow
+        goRightOneCard();
         break;
       case ' ': // spacebar
         break;
