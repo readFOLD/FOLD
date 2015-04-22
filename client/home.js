@@ -214,7 +214,6 @@ var subscribeToStarredStories = function(cb){
 };
 
 Template.all_stories.onCreated(function(){
-  var that = this;
   subscribeToCuratedStories(function(){
     subscribeToTrendingStories(function() {
       subscribeToNewestStories(function(){
