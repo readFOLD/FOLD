@@ -217,6 +217,7 @@ div.floating-story-buttons {
 
   .saved-text{
     float: left;
+    color: @black-color;
     text-transform: uppercase;
     margin-right: 15px;
     margin-top: 23px;
