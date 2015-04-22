@@ -15,11 +15,13 @@
 
 <template name="read_options">
   <div class="floating-story-buttons">
-    {{> share_button}}
-    {{> favorite_button}}
-    {{#if currentUser.admin}}
-      {{> editors_pick_button}}
-    {{/if}}
+    {{#unless isPhone}}
+      {{> share_button}}
+      {{> favorite_button}}
+      {{#if currentUser.admin}}
+        {{> editors_pick_button}}
+      {{/if}}
+    {{/unless}}
 
     {{#if isAuthor}}
       {{#unless isPhone}}
