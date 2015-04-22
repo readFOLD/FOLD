@@ -70,6 +70,23 @@ Meteor.publish("trendingStoriesPub", function() { // for now, it's just the most
   });
 });
 
+Meteor.publish("starredStoriesPub", function() { // TODO migrate current favorited and make this work!
+
+  return this.ready();
+
+  return Stories.find({
+    published: true,
+    fields: {
+      draftStory: 0,
+      history: 0
+    },
+    sort: {
+      'favoritedTotal': -1
+    },
+    limit: 40 // initial limit
+  });
+});
+
 Meteor.publish("favoriteStoriesPub", function(ids) { // requires ids to be passed in
   return Stories.find({
     published: true,
