@@ -848,20 +848,20 @@ Template.favorite_button.helpers({
 Template.favorite_button.events({
   "click .favorite": function() {
     if(!Meteor.user()){
-      return alert('Please sign up or log in to favorite stories');
+      return notifyInfo('Please sign up or log in to favorite stories');
     }
     return Meteor.call('favoriteStory', this._id, function(err) {
       if (err) {
+        notifyError(err);
         throw(err);
-        return alert(err);
       }
     });
   },
   "click .unfavorite": function() {
     return Meteor.call('unfavoriteStory', this._id, function(err) {
       if (err) {
+        notifyError(err);
         throw(err);
-        return alert(err);
       }
     });
   }
@@ -871,16 +871,16 @@ Template.editors_pick_button.events({
   "click .pick": function() {
     return Meteor.call('designateEditorsPick', this._id, function(err) {
       if (err) {
+        notifyError(err);
         throw(err);
-        return alert(err);
       }
     });
   },
   "click .unpick": function() {
     return Meteor.call('stripEditorsPick', this._id, function(err) {
       if (err) {
+        notifyError(err);
         throw(err);
-        return alert(err);
       }
     });
   }
@@ -901,7 +901,7 @@ Template.remix_bar.events({
       "verticalId",
       "verticalIndex"
     ]));
-    alert('Remixing cards: coming soon!');
+    notifyRemix("Remixing cards: coming soon!");
   }
 });
 
@@ -931,8 +931,8 @@ Template.create_story.events({
     if (Meteor.user()){
       Meteor.call('createStory', function(err, pathObject){
         if (err) {
+          notifyError(err);
           throw(err);
-          return alert(err);
         }
         Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
       })

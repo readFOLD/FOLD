@@ -142,8 +142,7 @@ Router.route("profile", {
           // TODO add 404 tags for seo etc...
         }
       }
-
-  },
+  }
 });
 
 Router.route("recover_password", {
@@ -200,7 +199,7 @@ Router.route("my_story_profile", {
       this.redirect("home", {
         replaceState: true
       });
-      return alert("You must be logged in to view your stories");
+      return notifyInfo("You must be logged in to view your stories");
     }
   }
 });
@@ -329,7 +328,7 @@ Router.route("edit", {
         this.redirect("home", {
           replaceState: true
         });
-        alert("Creating and editing stories is temporarily disabled, possibly because things blew up (in a good way). Sorry about that! We'll have everything back up as soon as we can. Until then, why not check out some of the other great content authors in the community have written?")
+        notifyInfo("Creating and editing stories is temporarily disabled, possibly because things blew up (in a good way). Sorry about that! We'll have everything back up as soon as we can. Until then, why not check out some of the other great content authors in the community have written?")
       }
       return this.next(); // if they do own the story, let them through to create
     } else {

@@ -261,6 +261,7 @@ Tracker.autorun(function(){
       Session.set('saving', true);
       break;
     case 'failed':
+      notifyError('Saving failed. Please refresh and try again.');
       alert('Saving failed. Please refresh and try again.');
       break;
     case 'saved':
@@ -388,7 +389,7 @@ Template.create.events({
       if (hasAccess) {
         template.publishing.set(true);
       } else {
-        return alert("Publish will be available soon! You'll be able to use it to submit your story to be featured on our site when we launch in early April.");
+        notifyInfo("Publish will be available soon! You'll be able to use it to submit your story to be featured on our site when we launch in early April.");
       }
     });
   },
@@ -408,7 +409,7 @@ Template.create.events({
         });
       }
       if (err || !numDocs) {
-        return alert('Publication failed');
+        notifyError('Publication failed');
       } else {
         analytics.track('Publish story', window.trackingInfoFromStory(Stories.findOne(that._id))); // TODO add info about author
         Router.go('/profile/' + Meteor.user().username);
@@ -437,13 +438,13 @@ Template.add_vertical.events({
 
     return Meteor.call('insertVerticalSection', storyId, indexToInsert, function(err, numDocs) {
       if (err) {
+        notifyError(err);
         throw(err);
-        return alert(err);
       }
       if (numDocs) {
         return goToY(indexToInsert);
       } else {
-        return alert('No docs updated');
+        notifyError('Inserting section failed');
       }
     });
   }
@@ -855,8 +856,8 @@ Template.link_twitter.events({
       requestPermissions: ['user']
     }, function (err) {
       if (err) {
-        alert("Twitter login failed");
         throw(err);
+        notifyError("Twitter login failed");
       } else if (!Meteor.user().profile.bio){
         Meteor.call('setBioFromTwitter')
       }

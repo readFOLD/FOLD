@@ -42,7 +42,7 @@ loginWithTwitter = function() {
     requestPermissions: ['user']
   }, function (err) {
     if (err) {
-      alert("Twitter login failed");
+      notifyError("Twitter login failed");
       Session.set('signingInWithTwitter', false);
       throw(err); // throw error so we see it on kadira
     } else if (!Meteor.user().username) { // if they are signing up for the first time they won't have a username yet
