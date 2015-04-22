@@ -34,6 +34,7 @@ Template.signup_form.onCreated(function() {
   this.invalidPassword = new ReactiveVar(false);
   this.signupError = new ReactiveVar();
   this.emailError = new ReactiveVar();
+  this.usernameError = new ReactiveVar();
   this.passwordError = new ReactiveVar();
 });
 
@@ -56,6 +57,9 @@ Template.signup_form.helpers({
   emailError: function () { 
     return Template.instance().emailError.get();
   },
+  usernameError: function () { 
+    return Template.instance().usernameError.get();
+  },
   passwordError: function () { 
     return Template.instance().passwordError.get();
   }
@@ -74,6 +78,18 @@ Template.signup_form.events({
       return;
     }
   },
+  'blur input#signup-username': function(e, t) {
+    var val = $("#signup-username").val();
+
+    var usernameRegex = /^[a-zA-Z0-9-_]+$/;  // Only alphanumeric, -, and _
+
+    if (!val.match(usernameRegex)) {
+      t.usernameError.set('Invalid username')
+      return;
+    } else {
+      t.usernameError.set('')
+    }
+  },
   'blur input#signup-password': function(e, t) {
     var p1 = $("#signup-password").val();
 
@@ -86,8 +102,8 @@ Template.signup_form.events({
       t.passwordError.set('Password too short')
       return;
     }
-
   },
+
   'keyup input#signup-password2': function(e, t) {
     var p1 = $("#signup-password").val();
     var p2 = $("#signup-password2").val();

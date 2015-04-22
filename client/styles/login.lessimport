@@ -63,6 +63,10 @@ form#signup-form {
 	font-family: Muli;
 }
 
+a.green {
+  color: @action-color;
+}
+
 .login-button, .signup-button, .save-profile-button, .reset-button {
 	margin-top: 20px;
 	width: 100px;
