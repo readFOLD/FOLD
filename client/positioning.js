@@ -184,16 +184,22 @@ $(document).keydown(function(e) {
     letter = String.fromCharCode(e.keyCode);
     switch(letter){
       case 'J':
-        goUpOneCard()
+        goDownOneCard();
         break;
       case 'K':
-        goDownOneCard()
+        goUpOneCard();
+        break;
+      case 'H':
+        goLeftOneCard();
+        break;
+      case 'L':
+        goRightOneCard();
         break;
       case '&': // up arrow
-        goUpOneCard()
+        goUpOneCard();
         break;
       case '(': // down arrow
-        goDownOneCard()
+        goDownOneCard();
         break;
       case '%': // left arrow
         goLeftOneCard();
