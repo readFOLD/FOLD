@@ -793,11 +793,48 @@ Template.story_browser.events({
 
 Template.type_specific_icon.helpers(typeHelpers);
 
+Template.share_button.onCreated(function() {
+  this.tooltipShown = new ReactiveVar(true);
+})
+
 Template.share_button.events({
   'click': function(e, t) {
-    console.log('share')
+    t.tooltipShown.set(!t.tooltipShown.get());
+  },
+  'click .share-facebook': function(e, t) {
+    var width  = 575;
+    var height = 400;
+    var left   = ($(window).width()  - width)  / 2;
+    var top    = ($(window).height() - height) / 2;
+    var url    = "//facebook.com/sharer/sharer.php?u=" + encodeURIComponent(location.href);
+    var opts   = 'status=1' +
+      ',width='  + width  +
+      ',height=' + height +
+      ',top='    + top    +
+      ',left='   + left
+    window.open(url, 'facebook', opts);
+  },
+  'click .share-twitter': function(e, t) {
+    var title = $(".story-title").text();
+    var width  = 575;
+    var height = 400;
+    var left   = ($(window).width()  - width)  / 2;
+    var top    = ($(window).height() - height) / 2;
+    var url    = '//www.twitter.com/intent/tweet?text=Read "' + title + '" on @readFOLD&url=' + encodeURIComponent(location.href);
+    var opts   = 'status=1' +
+      ',width='  + width  +
+      ',height=' + height +
+      ',top='    + top    +
+      ',left='   + left
+    window.open(url, 'twitter', opts);
   }
 });
+
+Template.share_button.helpers({
+  "tooltipShown": function() {
+    return Template.instance().tooltipShown.get();
+  }
+})
 
 Template.favorite_button.helpers({
   userFavorited: function() {
@@ -806,7 +843,7 @@ Template.favorite_button.helpers({
 });
 
 Template.favorite_button.events({
-  "click .favorite": function() {
+  "click .favorite-button": function() {
     return Meteor.call('favoriteStory', this._id, function(err) {
       if (err) {
         throw(err);
@@ -814,7 +851,7 @@ Template.favorite_button.events({
       }
     });
   },
-  "click .unfavorite": function() {
+  "click .unfavorite-button": function() {
     return Meteor.call('unfavoriteStory', this._id, function(err) {
       if (err) {
         throw(err);

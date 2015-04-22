@@ -775,13 +775,9 @@ Template.create_link_section.onCreated(function() {
                 source: 'embedly'
               })));
               break;
-
-
           }
           break;
       }
-      console.log(that.focusResult.get())
-
     });
   };
 });
