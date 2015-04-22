@@ -525,6 +525,12 @@ div.image-section {
       opacity: 0.8;
     }
   }
+
+  img.giphy-logo {
+    position: absolute;
+    bottom: 10px;
+    right: 0px;
+  }
   
   .text-content {
     .opacity-background-transition;

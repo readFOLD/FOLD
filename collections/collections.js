@@ -475,6 +475,11 @@ GifBlock = (function(_super) {
     this.type = 'gif';
   }
 
+
+  GifBlock.prototype.isGiphy = function() {
+    return (this.source === 'giphy');
+  }
+
   GifBlock.prototype.showVideo = function() {
     return this.webMUrl() || this.mp4Url();
   };

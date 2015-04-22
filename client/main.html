@@ -283,14 +283,13 @@
       </video>
     {{else}}
       <img src="{{url}}" />
-      {{#if ownerName}}
-      {{#if uploadDate}}
+      {{#if isGiphy}}<img class="giphy-logo" src="/images/giphy_logo.png" />{{/if}}
+      {{#if ownerName}}{{#if uploadDate}}
       <div class="attribution">
         <i class="fa fa-flickr"></i>
         <a href="//flickr.com/{{ownerName}}" target="_blank">{{ownerName}}</a> <span class="separator">·</span><a href="{{webUrl}}" target="_blank">{{uploadDate}}</a>
       </div>
-      {{/if}}
-      {{/if}}
+      {{/if}}{{/if}}
     {{/if}}
     {{{textContent}}}
   </div>
