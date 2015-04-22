@@ -171,6 +171,37 @@ Meteor.startup(function() {
   return $(document).scroll(throttledUpdate);
 });
 
+
+window.trackingInfoFromStory = function(story){
+  return _.chain(story)
+    .pick([
+      '_id',
+      'authorDisplayUsername',
+      'authorId',
+      'authorName',
+      'authorUsername',
+      'createdAt',
+      'editorsPick',
+      'editorsPickAt',
+      'firstPublishedAt',
+      'headerImageFormat',
+      'keywords',
+      'narrativeRightsReserved',
+      'publishedAt',
+      'savedAt',
+      'shortId',
+      'title'])
+    .extend({
+      'numberOfContextBlocks': story.contextBlockIds.length,
+      'numberOfVerticalSections': story.verticalSections.length,
+      'favorites': story.favorited.length,
+      'numberofKeywords': story.keywords.length,
+      'titleLength': story.title.length
+    })
+    .extend(story.countContextTypes())
+    .value();
+};
+
 typeHelpers = {
   text: function() {
     return this.type === "text";
@@ -352,6 +383,12 @@ Template.vertical_section_block.events({
       contextId = $(e.currentTarget).data('contextId');
       return goToContext(contextId);
     }
+    analytics.track('Click anchor', _.extend(window.trackingInfoFromStory(Session.get('story'), {
+      verticalIndex: this.index,
+      contextType: $(e.currentTarget).data('contextType'),
+      contextSource: $(e.currentTarget).data('contextSource'),
+      numberOfContextCardsOnVertical: this.contextBlocks.length
+    })));
   }
 });
 
@@ -878,36 +915,6 @@ Template.login.onCreated(function(){
   $('html, body').scrollTop(0);
 });
 
-window.trackingInfoFromStory = function(story){
-  return _.chain(story)
-    .pick([
-      '_id',
-      'authorDisplayUsername',
-      'authorId',
-      'authorName',
-      'authorUsername',
-      'createdAt',
-      'editorsPick',
-      'editorsPickAt',
-      'firstPublishedAt',
-      'headerImageFormat',
-      'keywords',
-      'narrativeRightsReserved',
-      'publishedAt',
-      'savedAt',
-      'shortId',
-      'storyPathSegment',
-      'title'])
-    .extend({
-      'numberOfContextBlocks': story.contextBlockIds.length,
-      'numberOfVerticalSections': story.verticalSections.length,
-      'favorites': story.favorited.length,
-      'numberofKeywords': story.keywords.length,
-      'titleLength': story.title.length
-      })
-    .extend(story.countContextTypes())
-    .value();
-};
 
 var storyViewed = '';
 Template.read.onCreated(function(){
