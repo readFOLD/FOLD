@@ -3,10 +3,10 @@ var formatDate, weekDays, formatDateNice, monthNames;
 weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
-window.headerImageUrl = function(headerImage, headerImageFormat){
+window.headerImageUrl = function(headerImage, headerImageFormat, size){
   var image, imageFormat;
 
-  if (headerImage){
+  if (typeof headerImage === 'string'){
     image = headerImage;
     imageFormat = headerImageFormat;
   } else {
@@ -14,8 +14,11 @@ window.headerImageUrl = function(headerImage, headerImageFormat){
     imageFormat = this.headerImageFormat;
   }
 
+  var maxWidth = (size === 'small') ? 600 : 2048;
+  var maxHeight = (size === 'small') ? 1000 : 2048;
+
   if (image) {
-    return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + image
+    return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + maxWidth + ',h_' + maxHeight + ',c_limit/' + image
   }
 }
 
@@ -222,7 +225,7 @@ Template._story_preview_content.helpers({
       return formatDateNice(this.publishedAt);
     }
   },
-  headerImageUrl: headerImageUrl,
+  headerImageUrl: _.partial(headerImageUrl, _, _, 'small'),
   story: function(){
     if (Template.instance().data.useDraftStory){
       return this.draftStory;

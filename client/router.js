@@ -219,7 +219,7 @@ Router.route("read", {
           };
         }));
         setTitle(story.title);
-        setOGImage(headerImageUrl(story.headerImage));
+        setOGImage(headerImageUrl(story.headerImage, story.headerImageFormat));
         setStatusCode();
         return story;
       } else {
