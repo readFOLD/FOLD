@@ -616,9 +616,6 @@
 </template>
 
 <template name="share_button">
-  <div class="share-button {{#if tooltipShown}}active{{/if}}">
-    <button type='button' class='share'>{{> share_icon }}</button>
-  </div>
   {{#if tooltipShown}}
   <div class="sharing-tooltip">
     <ul>
@@ -633,6 +630,9 @@
     </ul>
   </div>
   {{/if}}
+  <div class="share-button {{#if tooltipShown}}active{{/if}}">
+    <button type='button' class='share'>{{> share_icon }}</button>
+  </div>
 </template>
 
 <template name="favorite_button">

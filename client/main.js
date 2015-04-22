@@ -794,7 +794,7 @@ Template.story_browser.events({
 Template.type_specific_icon.helpers(typeHelpers);
 
 Template.share_button.onCreated(function() {
-  this.tooltipShown = new ReactiveVar(true);
+  this.tooltipShown = new ReactiveVar(false);
 })
 
 Template.share_button.events({

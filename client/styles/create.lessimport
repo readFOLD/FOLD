@@ -152,9 +152,10 @@ div.floating-story-buttons {
   }
 
   .sharing-tooltip {
-    position: absolute;
+    position: relative;
     top: 55px;
-    right: 158px;
+    left: 55px;
+    float: left;
     background-color: @dark-color;
     color: white;
     width: 190px;
