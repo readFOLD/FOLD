@@ -88,13 +88,14 @@ Story = (function() {
     if (image) {
       url = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_north,h_' + maxHeight + ',w_' + maxWidth + '/' + image
     }
-    if(Meteor.Device.isPhone() && this.headerImageFormat ==='gif'){ // animated header image is static jpg on phone for now
+    if(this.headerImageFormat === 'gif'){ // animated header image is static jpg on phone for now //if(Meteor.Device.isPhone() && this.headerImageFormat ==='gif'){
       url += '.jpg'; // TODO, this could conflict with headerImageVideoObject if conditional changes
     }
     return url
   }
 
   Story.prototype.headerImageVideoObject = function(size){
+    return // looping video has chops occasionally, don't show it for now
     if (this.headerImageFormat ==='gif' && !Meteor.Device.isPhone()){
       var headerImageUrl = this.headerImageUrl(size);
       return {
