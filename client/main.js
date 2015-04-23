@@ -967,6 +967,8 @@ Template.read.onCreated(function(){
   Session.set("currentXByYId", {});
   Session.set("currentY", null);
   Session.set("showMinimap", true);
+  Session.set("showDraft", false);
+
   Session.set("mobileContextView", false);
   $('html, body').scrollTop(0);
 

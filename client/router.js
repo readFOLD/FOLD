@@ -260,7 +260,7 @@ Router.route("read", {
   onBeforeAction: function() {
     Session.set("newStory", false);
     Session.set("read", true);
-    Session.set("showDraft", false);
+
     return this.next();
   }
 });
