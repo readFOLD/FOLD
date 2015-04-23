@@ -15,10 +15,10 @@ window.headerImageUrl = function(headerImage, headerImageFormat, size){
   }
 
   var maxWidth = (size === 'small') ? 800 : 2048;
-  var maxHeight = (size === 'small') ? 1400 : 2048;
+  var maxHeight = (size === 'small') ? 230 : 350;
 
   if (image) {
-    return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + maxWidth + ',h_' + maxHeight + ',c_limit/' + image
+    return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + maxWidth + ',h_9999,c_limit/' + 'c_crop,g_north,h_' + maxHeight + ',w_' + maxWidth + '/' + image
   }
 }
 
