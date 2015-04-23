@@ -116,7 +116,11 @@ Template.filters.helpers({
 
 Template.filters.events({
   "change select": function(e, t) {
-    Session.set('filterValue', ($(e.target).val()));
+    var filterValue = $(e.target).val();
+    Session.set('filterValue', filterValue);
+    analytics.track('Select filter', {
+      label: filterValue
+    });
   }
 });
 
@@ -317,13 +321,16 @@ var closeSignInOverlay = function(){
 Template.signin_overlay.events({
   "click .close": function(d) {
     closeSignInOverlay();
+    analytics.track('Click close sign-in overlay');
   },
   "click .twitter-signin": function(d) {
     closeSignInOverlay();
-    return loginWithTwitter();
+    loginWithTwitter();
+    analytics.track('Click login with Twitter');
   },
   "click .email-signin": function(d) {
     closeSignInOverlay();
-    return loginWithEmail();
+    loginWithEmail();
+    analytics.track('Click login with email');
   }
 });

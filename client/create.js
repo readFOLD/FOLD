@@ -322,10 +322,12 @@ Template.vertical_section_block.events({
     if (!clipboardData){return}
     html = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
 
-    return document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
+    document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
+    analytics.track('Paste into fold-editable area');
   },
   'drop': function(e){
     e.preventDefault();
+    analytics.track('Drop (attempt) into fold-editable area');
     return false;
   },
   'paste .title.editable': window.plainTextPaste,   // only allow plaintext in title
@@ -388,6 +390,7 @@ Template.create.events({
     return Meteor.call('checkPublishAccess', function(err, hasAccess) {
       if (hasAccess) {
         template.publishing.set(true);
+        analytics.track('Click publish button');
       } else {
         notifyInfo("Publish will be available soon! You'll be able to use it to submit your story to be featured on our site when we launch in early April.");
       }
@@ -395,6 +398,7 @@ Template.create.events({
   },
   "click .cancel-publish": function (e, template) {
     template.publishing.set(false);
+    analytics.track('Click cancel publish button');
   },
   "click .confirm-publish": function (e, template) {
     var that = this;
@@ -411,9 +415,9 @@ Template.create.events({
       if (err || !numDocs) {
         notifyError('Publication failed');
       } else {
-        analytics.track('Publish story', window.trackingInfoFromStory(Stories.findOne(that._id))); // TODO add info about author
         Router.go('/profile/' + Meteor.user().username);
         notifySuccess('You story has been published!')
+        analytics.track('Publish story', window.trackingInfoFromStory(Stories.findOne(that._id))); // TODO add info about author
       }
     });
   },
@@ -427,6 +431,7 @@ Template.create.events({
       }
       return Meteor.call('updateHeaderImage', that._id, r.public_id, r.format, saveCallback);
     });
+    analytics.track('Change upload header on header');
   }
 });
 
@@ -443,7 +448,11 @@ Template.add_vertical.events({
         throw(err);
       }
       if (numDocs) {
-        return goToY(indexToInsert);
+        goToY(indexToInsert);
+        analytics.track('Add vertical section', {
+          label: indexToInsert,
+          verticalSectionIndex: indexToInsert
+        });
       } else {
         notifyError('Inserting section failed');
       }
@@ -465,18 +474,20 @@ Template.vertical_edit_menu.events({
     var index = this.index;
 
     Session.set('saveState', 'saving');
-    return Meteor.call('addTitle', storyId, index, function(err, numDocs) {
+    Meteor.call('addTitle', storyId, index, function(err, numDocs) {
       saveCallback(err, numDocs);
     });
+    analytics.track('Click add section title');
   },
   "click .remove-title": function() {
     var storyId = Session.get('storyId');
     var index = this.index;
 
     Session.set('saveState', 'saving');
-    return Meteor.call('removeTitle', storyId, index, function(err, numDocs) {
+    Meteor.call('removeTitle', storyId, index, function(err, numDocs) {
       saveCallback(err, numDocs);
     });
+    analytics.track('Click remove section title');
   },
   "click .move-card-up": function() {
     var indexToInsert, storyId, verticalSections;
@@ -484,12 +495,14 @@ Template.vertical_edit_menu.events({
     var index = this.index;
 
     Session.set('saveState', 'saving');
-    return Meteor.call('moveVerticalSectionUpOne', storyId, index, function(err, numDocs) {
+    Meteor.call('moveVerticalSectionUpOne', storyId, index, function(err, numDocs) {
       if (numDocs) {
         goToY(index - 1);
       }
       saveCallback(err, numDocs);
     });
+    analytics.track('Click move card up');
+
   },
   "click .move-card-down": function() {
     var indexToInsert, storyId, verticalSections;
@@ -497,12 +510,13 @@ Template.vertical_edit_menu.events({
     var index = this.index;
 
     Session.set('saveState', 'saving');
-    return Meteor.call('moveVerticalSectionDownOne', storyId, index, function(err, numDocs) {
+    Meteor.call('moveVerticalSectionDownOne', storyId, index, function(err, numDocs) {
       if (numDocs) {
         goToY(index + 1);
       }
       saveCallback(err, numDocs);
     });
+    analytics.track('Click move card down');
   },
   "click .delete-card": function() {
     if(confirm("Permanently delete this card and all associated context cards?")) {
@@ -511,7 +525,8 @@ Template.vertical_edit_menu.events({
       var index = this.index;
 
       Session.set('saveState', 'saving');
-      return Meteor.call('deleteVerticalSection', storyId, index, saveCallback);
+      Meteor.call('deleteVerticalSection', storyId, index, saveCallback);
+      analytics.track('Click delete card');
     }
   }
 });
@@ -623,7 +638,8 @@ var toggleHorizontalUI = function(forceBool) {
 
 Template.add_horizontal.events({
   "click": function(d) {
-    return toggleHorizontalUI();
+    toggleHorizontalUI();
+    analytics.track('Click toggle horizontal editor');
   }
 });
 
@@ -752,7 +768,8 @@ Template.context_anchor_new_card_option.events = {
 
     placeholderAnchorElement.addClass('placeholder');
 
-    return showNewHorizontalUI();
+    showNewHorizontalUI();
+    analytics.track('Click add new card inside fold editor');
   }
 };
 
@@ -778,6 +795,7 @@ Template.context_anchor_option.events = {
     //temporaryAnchorElement.data({contextId: contextId});
     saveUpdatedSelection();
     goToContext(contextId);
+    analytics.track('Click add link to context option inside fold editor');
     return false;
   }
 };
@@ -816,6 +834,7 @@ Template.horizontal_section_edit_delete.helpers({
 });
 Template.horizontal_section_block.events({
   "click .delete": function(d) {
+    analytics.track('Click delete horizontal');
     if(confirm("Permanently delete this card?")){
       var currentY = Session.get("currentY");
       Session.set('saveState', 'saving');
@@ -832,11 +851,13 @@ Template.horizontal_section_block.events({
           saveCallback(err, numDocs);
         }
       });
+      analytics.track('Confirm delete horizontal');
     }
   },
   "click .edit": function(e, t) {
     Session.set('editingContext', this._id);
-    return Session.set('addingContext', false);
+    Session.set('addingContext', false);
+    analytics.track('Click edit horizontal');
   }
 });
 
@@ -845,8 +866,10 @@ Template.create_options.events({
     if (Session.get('read')) {
       window.refreshContentDep.changed();
       Session.set('read', false);
+      analytics.track('Click toggle preview off');
     } else {
       Session.set('read', true);
+      analytics.track('Click toggle preview on');
     }
   }
 });
@@ -863,6 +886,7 @@ Template.link_twitter.events({
         Meteor.call('setBioFromTwitter')
       }
     });
+    analytics.track('Click Link Twitter');
   }
 });
 
@@ -887,5 +911,6 @@ Template.publish_overlay.events({
         scrollTop: 0
         }, 500, 'easeInExpo')}
       , 1500)
+    analytics.track('Click upload header inside publish dialog');
   }
 });

@@ -191,14 +191,14 @@ window.trackingInfoFromStory = function(story){
       'savedAt',
       'shortId',
       'title'])
-    .extend({
+    .extend(story.published ? {
       'numberOfContextBlocks': story.contextBlockIds.length,
       'numberOfVerticalSections': story.verticalSections.length,
       'favorites': story.favorited.length,
       'numberofKeywords': story.keywords.length,
       'titleLength': story.title.length
-    })
-    .extend(story.countContextTypes())
+    } : {})
+    .extend(story.countContextTypes ? story.countContextTypes() : {}) // TODO Fix
     .value();
 };
 
@@ -377,14 +377,15 @@ Template.vertical_section_block.events({
     e.preventDefault();
     if (Session.equals("currentY", t.data.index)){
       contextId = $(e.currentTarget).data('contextId');
-      return goToContext(contextId);
+      goToContext(contextId);
     }
-    analytics.track('Click anchor', _.extend(window.trackingInfoFromStory(Session.get('story'), {
+    analytics.track('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
       verticalIndex: this.index,
       contextType: $(e.currentTarget).data('contextType'),
       contextSource: $(e.currentTarget).data('contextSource'),
-      numberOfContextCardsOnVertical: this.contextBlocks.length
-    })));
+      numberOfContextCardsOnVertical: this.contextBlocks.length,
+      inReadMode: Session.get('read')
+    }));
   }
 });
 
@@ -489,6 +490,9 @@ Template.minimap.events({
   "click .minimap": function(d, t) {
     if (!Session.get('read')){ // only metaview in create for now
       Session.set("metaview", true);
+      analytics.track('Click minimap in create mode');
+    } else {
+      analytics.track('Click minimap in read mode');
     }
   }
 });
@@ -700,6 +704,7 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 Template.horizontal_section_block.events({
   'click .mobile-context-back-button': function(e, t){
     Session.set('mobileContextView', false);
+    analytics.track('Click mobile back button');
   }
 });
 
@@ -782,9 +787,11 @@ Template.story_browser.helpers({
 Template.story_browser.events({
   "click .right svg": function(d) {
     window.goRightOneCard();
+    analytics.track('Click right arrow');
   },
   "click .left svg": function(d) {
     window.goLeftOneCard()
+    analytics.track('Click left arrow');
   }
 });
 
@@ -811,6 +818,7 @@ Template.share_button.events({
       ',left='   + left
     window.open(url, 'facebook', opts);
     Meteor.call('countStoryShare', this._id, 'facebook');
+    analytics.track('Share on Facebook');
   },
   'click .share-twitter': function(e, t) {
     var title = $(".story-title").text();
@@ -826,6 +834,7 @@ Template.share_button.events({
       ',left='   + left
     window.open(url, 'twitter', opts);
     Meteor.call('countStoryShare', this._id, 'twitter');
+    analytics.track('Share on Twitter');
   }
 });
 
@@ -850,7 +859,10 @@ Template.favorite_button.events({
       if (err) {
         notifyError(err);
         throw(err);
+      } else {
+        analytics.track('Favorite story');
       }
+
     });
   },
   "click .unfavorite": function() {
@@ -858,6 +870,8 @@ Template.favorite_button.events({
       if (err) {
         notifyError(err);
         throw(err);
+      } else {
+        analytics.track('Unfavorite story');
       }
     });
   }
@@ -930,10 +944,12 @@ Template.create_story.events({
           notifyError(err);
           throw(err);
         }
+        analytics.track('User clicked create and created story');
         Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
       })
     } else {
-     Session.set('signingIn', true)
+      Session.set('signingIn', true)
+      analytics.track('User clicked create and needs to sign in');
     }
   }
 });
@@ -963,14 +979,27 @@ Template.login.onCreated(function(){
 
 var storyViewed = '';
 Template.read.onCreated(function(){
+  $('html, body').scrollTop(0);
   Session.set("wrap", {});
   Session.set("currentXByYId", {});
-  Session.set("currentY", null);
   Session.set("showMinimap", true);
   Session.set("showDraft", false);
 
   Session.set("mobileContextView", false);
-  $('html, body').scrollTop(0);
+  Session.set("currentY", null);
+
+  // analytics autorun
+  this.autorun(function(){
+    if (!Session.equals("currentY", null)){
+      var y = Session.get("currentY")
+      analytics.track('View vertical narrative section', {
+        label: y,
+        verticalNarrativeIndex: y,
+        storyId: Session.get("storyId")
+      })
+    }
+  })
+
 
   var id = this.data._id;
   if (storyViewed !== id){
