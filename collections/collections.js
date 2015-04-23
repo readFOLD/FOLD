@@ -86,7 +86,7 @@ Story = (function() {
     var maxHeight = (size === 'small') ? 230 : 350;
 
     if (image) {
-      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + maxWidth + ',h_9999,c_limit/' + 'c_crop,g_north,h_' + maxHeight + ',w_' + maxWidth + '/' + image
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_north,h_' + maxHeight + ',w_' + maxWidth + '/' + image
     }
   }
 
