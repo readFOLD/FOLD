@@ -38,7 +38,7 @@ Story = (function() {
         authorId: this.authorId,
         authorName: this.authorName,
         contextCountOfType:  function(){}, // stub out for now
-        countContextTypes:  this.countContextTypes.bind(this.draftStory),
+        countContextTypes:  function(){}, // stub out for now
         headerImageUrl: this.headerImageUrl.bind(this.draftStory),
         headerImageVideoObject: this.headerImageVideoObject.bind(this.draftStory),
         _id: this._id
