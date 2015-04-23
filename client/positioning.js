@@ -190,10 +190,14 @@ $(document).keydown(function(e) {
         goUpOneCard();
         break;
       case 'H':
-        goLeftOneCard();
+        if(Session.get('pastHeader')){
+          goLeftOneCard();
+        }
         break;
       case 'L':
-        goRightOneCard();
+        if(Session.get('pastHeader')) {
+          goRightOneCard();
+        }
         break;
       case '&': // up arrow
         goUpOneCard();
@@ -202,10 +206,14 @@ $(document).keydown(function(e) {
         goDownOneCard();
         break;
       case '%': // left arrow
-        goLeftOneCard();
+        if(Session.get('pastHeader')){
+          goLeftOneCard();
+        }
         break;
       case '\'': // right arrow
-        goRightOneCard();
+        if(Session.get('pastHeader')) {
+          goRightOneCard();
+        }
         break;
       case ' ': // spacebar
         break;
