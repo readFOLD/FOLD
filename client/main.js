@@ -257,11 +257,7 @@ Template.story_header.helpers({
     } else {
       return Session.get("storyTitle");
     }
-  },
-  headerImageAttribution: function() {
-    return this.headerImageAttribution;
-  },
-  headerImageUrl: headerImageUrl
+  }
 });
 
 Template.story_header.events = {

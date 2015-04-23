@@ -28,6 +28,21 @@ Story = (function() {
         content: ""
       });
     }
+    if (this.draftStory){
+      _.extend(this.draftStory, {
+        unpublishedChanges: (!this.published || !this.publishedAt || this.savedAt > this.publishedAt),
+        savedAt: this.savedAt,
+        userPathSegment: this.userPathSegment,
+        authorUsername: this.authorUsername,
+        authorDisplayUsername: this.authorDisplayUsername,
+        authorId: this.authorId,
+        authorName: this.authorName,
+        contextCountOfType:  this.contextCountOfType.bind(this.draftStory),
+        countContextTypes:  this.countContextTypes.bind(this.draftStory),
+        headerImageUrl: this.headerImageUrl.bind(this.draftStory),
+        _id: this._id
+      });
+    }
   }
 
   Story.prototype.contentPreview = function() {
@@ -60,6 +75,20 @@ Story = (function() {
   Story.prototype.countContextTypes = function(){
     return _.chain(this.contextBlocks).pluck('type').countBy(_.identity).value()
   };
+
+  Story.prototype.headerImageUrl = function(size){
+    var image, imageFormat;
+    image = this.headerImage;
+    imageFormat = this.headerImageFormat;
+
+
+    var maxWidth = (size === 'small') ? 800 : 2048;
+    var maxHeight = (size === 'small') ? 230 : 350;
+
+    if (image) {
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + maxWidth + ',h_9999,c_limit/' + 'c_crop,g_north,h_' + maxHeight + ',w_' + maxWidth + '/' + image
+    }
+  }
 
   return Story;
 
@@ -102,19 +131,6 @@ if (Meteor.isClient) {
 
 this.Stories = new Mongo.Collection("stories", {
   transform: function(doc) {
-    if (doc.draftStory){
-      _.extend(doc.draftStory, {
-        unpublishedChanges: (!doc.published || !doc.publishedAt || doc.savedAt > doc.publishedAt),
-        savedAt: doc.savedAt,
-        userPathSegment: doc.userPathSegment,
-        authorUsername: doc.authorUsername,
-        authorDisplayUsername: doc.authorDisplayUsername,
-        authorId: doc.authorId,
-        authorName: doc.authorName,
-        contextCountOfType: function(){}, // stub out method for now,
-        _id: doc._id
-      });
-    }
     return new Story(doc);
   }
 });

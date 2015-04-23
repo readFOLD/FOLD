@@ -243,7 +243,7 @@ Router.route("read", {
           };
         }));
         setTitle(story.title);
-        setMetaImage(headerImageUrl(story.headerImage, story.headerImageFormat));
+        setMetaImage(story.headerImageUrl());
         setMetaDescription(story.verticalSections[0].content);
         setStatusCode();
         return story;
