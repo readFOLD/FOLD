@@ -220,7 +220,7 @@ div.stories {
     height: 110px;
     overflow: hidden;
     background-color: @medium-color;
-    img {
+    img, video {
       width: 100%;
       min-height: 100%;
     }

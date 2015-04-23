@@ -267,7 +267,7 @@ div.title-overlay {
 
   background-color: @action-color;
 
-  .header-overlay-image{
+  .header-overlay-image, video{
     position: absolute;
     min-width: 100%;
     @media @mobile {

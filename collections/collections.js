@@ -40,6 +40,7 @@ Story = (function() {
         contextCountOfType:  this.contextCountOfType.bind(this.draftStory),
         countContextTypes:  this.countContextTypes.bind(this.draftStory),
         headerImageUrl: this.headerImageUrl.bind(this.draftStory),
+        headerImageVideoObject: this.headerImageVideoObject.bind(this.draftStory),
         _id: this._id
       });
     }
@@ -77,16 +78,30 @@ Story = (function() {
   };
 
   Story.prototype.headerImageUrl = function(size){
-    var image, imageFormat;
+    var image, imageFormat, url;
     image = this.headerImage;
-    imageFormat = this.headerImageFormat;
 
 
     var maxWidth = (size === 'small') ? 800 : 2048;
     var maxHeight = (size === 'small') ? 230 : 350;
 
     if (image) {
-      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_north,h_' + maxHeight + ',w_' + maxWidth + '/' + image
+      url = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_north,h_' + maxHeight + ',w_' + maxWidth + '/' + image
+    }
+    if(Meteor.Device.isPhone() && this.headerImageFormat ==='gif'){ // animated header image is static jpg on phone for now
+      url += '.jpg'; // TODO, this could conflict with headerImageVideoObject if conditional changes
+    }
+    return url
+  }
+
+  Story.prototype.headerImageVideoObject = function(size){
+    if (this.headerImageFormat ==='gif' && !Meteor.Device.isPhone()){
+      var headerImageUrl = this.headerImageUrl(size);
+      return {
+        previewUrl: headerImageUrl + '.jpg',
+        mp4Url: headerImageUrl + '.mp4',
+        webMUrl: headerImageUrl + '.webm'
+      }
     }
   }
 

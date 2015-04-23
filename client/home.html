@@ -288,7 +288,11 @@
 
     {{#linkTo route=linkRoute data=this}}
       <div class="overlay-image">
-        <img src="{{headerImageUrl 'small'}}" />
+        {{#with headerImageVideoObject 'small'}}
+          {{> looping_video}}
+        {{else}}
+          <img src="{{headerImageUrl 'small'}}" />
+        {{/with}}
       </div>
     {{/linkTo}}
 
