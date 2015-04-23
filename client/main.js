@@ -992,9 +992,12 @@ Template.read.onCreated(function(){
   this.autorun(function(){
     if (!Session.equals("currentY", null)){
       var y = Session.get("currentY")
+      var storyLength = Session.get("story").verticalSections.length;
       analytics.track('View vertical narrative section', {
         label: y,
         verticalNarrativeIndex: y,
+        storyLength: storyLength,
+        verticalNarrativeFraction: (y + 1) / storyLength,
         storyId: Session.get("storyId")
       })
     }
