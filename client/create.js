@@ -179,11 +179,7 @@ Template.create.onRendered(function() {
     }
   });
 
-  if (!(Session.equals("currentY", void 0) && Session.equals("currentX", void 0))) {
-    $('.attribution, #to-story').fadeOut(1);
-    goToY(Session.get("currentY"));
-    return goToX(Session.get("currentX"));
-  }
+
 
   $(window).scrollTop(Session.get('scrollTop'));
 
@@ -194,7 +190,6 @@ Template.create.onRendered(function() {
     }
     Session.set('previousY', y)
   });
-
 
   this.autorun(function() { // update UI when start and stop adding/editing context
     var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
@@ -217,6 +212,12 @@ Template.create.onRendered(function() {
       }
     }
   });
+
+  if (!(Session.equals("currentY", void 0) && Session.equals("currentX", void 0))) {
+    $('.attribution, #to-story').fadeOut(1);
+    goToY(Session.get("currentY"));
+    goToX(Session.get("currentX"));
+  }
 
 });
 
