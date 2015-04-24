@@ -300,7 +300,7 @@ var saveVerticalSectionContent = function(e, template) {
   return true;
 };
 
-var throttledSaveVerticalSectionContent = _.throttle(saveVerticalSectionContent, 5000, {trailing: false});
+var throttledSaveVerticalSectionContent = _.throttle(saveVerticalSectionContent, 4000, {trailing: false});
 
 Template.vertical_section_block.events({
   'blur [contenteditable]': window.updateUIBasedOnSelection,
