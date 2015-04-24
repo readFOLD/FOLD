@@ -294,6 +294,10 @@ div.title-overlay {
     }
   }
 
+  span:hover {
+    text-decoration: underline;
+  }
+
   &.fixed {
     position: fixed;
     height: 100px;
