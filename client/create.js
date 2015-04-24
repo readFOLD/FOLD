@@ -289,6 +289,19 @@ window.saveCallback =  function(err, success, cb) {
   }
 };
 
+var saveVerticalSectionContent = function(e, template) {
+  Session.set('saveState', 'saving');
+
+  Meteor.call('updateVerticalSectionContent',
+    Session.get('storyId'),
+    template.data.index,
+    cleanVerticalSectionContent($.trim(template.$('div.content').html())),
+    saveCallback);
+  return true;
+};
+
+var throttledSaveVerticalSectionContent = _.throttle(saveVerticalSectionContent, 5000, {trailing: false});
+
 Template.vertical_section_block.events({
   'blur [contenteditable]': window.updateUIBasedOnSelection,
   'keyup [contenteditable]': window.updateUIBasedOnSelection,
@@ -305,16 +318,8 @@ Template.vertical_section_block.events({
     }
     return true;
   },
-  'blur .content[contenteditable]' : function(e, template){
-    Session.set('saveState', 'saving');
-
-    Meteor.call('updateVerticalSectionContent',
-      Session.get('storyId'),
-      template.data.index,
-      cleanVerticalSectionContent($.trim(template.$('div.content').html())),
-      saveCallback);
-    return true;
-  },
+  'blur .content[contenteditable]' : saveVerticalSectionContent,
+  'keyup .content[contenteditable]' : throttledSaveVerticalSectionContent,
   'paste .fold-editable': function(e) {
     var clipboardData, html;
     e.preventDefault();
