@@ -954,39 +954,9 @@ Template.create_story.events({
   }
 });
 
-// ui setup moved from onRun
-Template.about.onCreated(function(){
-  $('html, body').scrollTop(0);
-});
-
-Template.terms.onCreated(function(){
-  $('html, body').scrollTop(0);
-});
-
-Template.home.onCreated(function(){
-  $('html, body').scrollTop(0);
-});
-
-
-Template.signup.onCreated(function(){
-  $('html, body').scrollTop(0);
-});
-
-Template.login.onCreated(function(){
-  $('html, body').scrollTop(0);
-});
-
 
 var storyViewed = '';
 Template.read.onCreated(function(){
-  $('html, body').scrollTop(0);
-  Session.set("wrap", {});
-  Session.set("currentXByYId", {});
-  Session.set("showMinimap", true);
-  Session.set("showDraft", false);
-
-  Session.set("mobileContextView", false);
-  Session.set("currentY", null);
 
   // analytics autorun
   this.autorun(function(){
@@ -1001,8 +971,7 @@ Template.read.onCreated(function(){
         storyId: Session.get("storyId")
       })
     }
-  })
-
+  });
 
   var id = this.data._id;
   if (storyViewed !== id){
@@ -1010,15 +979,4 @@ Template.read.onCreated(function(){
     Meteor.call('countStoryView', id);
     analytics.track('View story', trackingInfoFromStory(this.data));
   }
-});
-
-Template.create.onCreated(function(){
-  Session.set("wrap", {});
-  Session.set("currentXByYId", {});
-  Session.set("currentY", null);
-  Session.set("read", false);
-  Session.set("newStory", false);
-  Session.set("showDraft", true);
-  Session.set("showMinimap", true);
-  $('html, body').scrollTop(0);
 });
