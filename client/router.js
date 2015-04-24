@@ -290,13 +290,14 @@ Router.route("read", {
     }
   },
   onRun: function(){
-    $('html, body').scrollTop(0);
+    Session.set('scrollTop', 0);
     Session.set("wrap", {});
     Session.set("currentXByYId", {});
     Session.set("showMinimap", true);
     Session.set("showDraft", false);
     Session.set("mobileContextView", false);
     Session.set("currentY", null);
+    Session.set("previousY", null);
     this.next();
   },
   onBeforeAction: function() {
@@ -351,15 +352,15 @@ Router.route("edit", {
     }
   },
   onRun: function(){
-    console.log('RUNRUNRUN')
+    Session.set('scrollTop', 0);
     Session.set("wrap", {});
     Session.set("currentXByYId", {});
     Session.set("currentY", null);
+    Session.set("previousY", null);
     Session.set("read", false);
     Session.set("newStory", false);
     Session.set("showDraft", true);
     Session.set("showMinimap", true);
-    $('html, body').scrollTop(0);
     this.next();
   },
   action: function() {

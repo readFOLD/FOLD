@@ -166,6 +166,7 @@ Meteor.startup(function() {
   Session.setDefault("pastY", []);
   Session.setDefault("pastX", []);
   Session.setDefault("currentY", void 0);
+  Session.setDefault("previousY", void 0);
   Session.setDefault("currentX", void 0);
   throttledUpdate = _.throttle(updatecurrentY, 20);
   return $(document).scroll(throttledUpdate);
@@ -979,4 +980,9 @@ Template.read.onCreated(function(){
     Meteor.call('countStoryView', id);
     analytics.track('View story', trackingInfoFromStory(this.data));
   }
+});
+
+
+Template.read.onRendered(function(){
+  $(window).scrollTop(Session.get('scrollTop'));
 });

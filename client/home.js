@@ -204,6 +204,16 @@ Template.all_stories.onCreated(function(){
       })
     });
   });
+
+  var notFirstRun = false;
+  this.autorun(function(){
+    Session.get('filterValue'); // re-run whenever filter value changes
+    if (notFirstRun){
+      $(window).scrollTop(0)
+    }
+    notFirstRun = true;
+  })
+
 });
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)

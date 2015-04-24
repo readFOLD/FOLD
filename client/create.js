@@ -605,12 +605,7 @@ Tracker.autorun(function() { // update UI when start and stop adding/editing con
 });
 
 
-// Hide add card menu when scroll
-// TO-DO probably remove all the currentY stuff, since we're not tracking that in any real way
-Tracker.autorun(function() {
-  Session.get('currentY'); // so reacts to changes in currentY
-  Session.set("addingContext", null);
-});
+
 
 var scrollToRelativePosition = function(offset) {
   var selectedNarrative = $('.vertical-narrative-section.selected');
@@ -918,4 +913,19 @@ Template.publish_overlay.events({
       , 1500)
     analytics.track('Click upload header inside publish dialog');
   }
+});
+
+
+// Hide add card menu when scroll
+Template.create.onRendered(function(){
+  $(window).scrollTop(Session.get('scrollTop'));
+
+  this.autorun(function() {
+    var y = Session.get('currentY'); // so reacts to changes in currentY
+    if(y !== Session.get('previousY')){
+      Session.set("addingContext", null);
+    }
+    Session.set('previousY', y)
+  });
+
 });
