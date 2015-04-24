@@ -113,8 +113,8 @@ var createBlockEvents = {
   },
 
   "click .add-button": addFocusResult,
-  "keydown": function(e, t) {
-    if (e.which === 13){ // TODO make this not happen on textarea
+  "keydown .text-content.editable": function(e, t) {
+    if (e.which === 13){
       addFocusResult.apply(this,arguments);
     }
   },
