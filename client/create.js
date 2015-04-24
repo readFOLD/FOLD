@@ -157,16 +157,67 @@ Template.create.onRendered(function() {
     hideFoldEditor();
     hideFoldLinkRemover();
   };
+
+  this.autorun(function(){
+    switch(Session.get('saveState')) {
+      case 'saving':
+        Session.set('saving', true);
+        break;
+      case 'failed':
+        notifyError('Saving failed. Please refresh and try again.');
+        alert('Saving failed. Please refresh and try again.');
+        break;
+      case 'saved':
+        Session.set('saving', false);
+        break;
+    }
+  });
+
   this.autorun(function(){
     if (Session.get('read') || Session.get('currentYId')){
       return window.hideFoldAll();
     }
   });
+
   if (!(Session.equals("currentY", void 0) && Session.equals("currentX", void 0))) {
     $('.attribution, #to-story').fadeOut(1);
     goToY(Session.get("currentY"));
     return goToX(Session.get("currentX"));
   }
+
+  $(window).scrollTop(Session.get('scrollTop'));
+
+  this.autorun(function() { // Hide add card menu when scroll
+    var y = Session.get('currentY'); // so reacts to changes in currentY
+    if(y !== Session.get('previousY')){
+      Session.set("addingContext", null);
+    }
+    Session.set('previousY', y)
+  });
+
+
+  this.autorun(function() { // update UI when start and stop adding/editing context
+    var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
+    var verticalSection = Session.get('currentVerticalSection');
+    if (verticalSection) {
+      currentContextBlocks = verticalSection.contextBlocks;
+      horizontalContextDiv = $(".horizontal-context");
+      horizontalContextDiv.removeClass('editing');
+      if (Session.get("addingContext") || (_ref = Session.get("editingContext"), __indexOf.call(currentContextBlocks, _ref) >= 0)) {
+        Session.set("showMinimap", false);
+        return horizontalContextDiv.addClass('editing');
+      } else {
+        Session.set("showMinimap", true);
+        if (document.body){
+          if(!Session.get('read')){
+            document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
+            removePlaceholderLinks();
+          }
+        }
+      }
+    }
+  });
+
 });
 
 Template.fold_editor.helpers({
@@ -255,20 +306,7 @@ var rangeSelectsSingleNode = function (range) {
     range.endOffset === range.startOffset + 1;
 };
 
-Tracker.autorun(function(){
-  switch(Session.get('saveState')) {
-    case 'saving':
-      Session.set('saving', true);
-      break;
-    case 'failed':
-      notifyError('Saving failed. Please refresh and try again.');
-      alert('Saving failed. Please refresh and try again.');
-      break;
-    case 'saved':
-      Session.set('saving', false);
-      break;
-  }
-});
+
 
 window.saveCallback =  function(err, success, cb) {
   var saveUIUpdateDelay = 300;
@@ -541,69 +579,6 @@ Template.add_horizontal.helpers({
     return Session.get("verticalLeft") + Session.get("cardWidth") + Session.get("separation");
   }
 });
-
-Tracker.autorun(function(){
-  var story = Session.get('story');
-  var currentY = Session.get("currentY");
-  if (story && (currentY != null)) {
-    Session.set('currentVerticalSection', story.verticalSections[currentY]);
-  } else {
-    Session.set('currentVerticalSection', null);
-  }
-});
-
-Tracker.autorun(function() {
-  var verticalSection = Session.get('currentVerticalSection');
-  if (verticalSection) {
-    return Session.set('currentYId', verticalSection._id);
-  } else {
-    return Session.set('currentYId', null);
-  }
-});
-
-Tracker.autorun(function() {
-  var verticalSection = Session.get('currentVerticalSection');
-  var currentX = Session.get('currentX');
-  if (verticalSection) {
-    var currentContextBlockId = verticalSection.contextBlocks[currentX];
-    if (currentContextBlockId) {
-      return Session.set('currentXId', currentContextBlockId);
-    }
-  }
-  return Session.set('currentXId', null);
-});
-
-if (!Meteor.Device.isPhone()){ // highlight active context card link except on mobile
-  Tracker.autorun(function() {
-    if (currentXId = Session.get('currentXId')){
-      $('a[data-context-id="' + currentXId + '"]').addClass('active');
-      $('a[data-context-id!="' + currentXId + '"]').removeClass('active');
-    }
-  });
-}
-
-Tracker.autorun(function() { // update UI when start and stop adding/editing context
-  var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
-  var verticalSection = Session.get('currentVerticalSection');
-  if (verticalSection) {
-    currentContextBlocks = verticalSection.contextBlocks;
-    horizontalContextDiv = $(".horizontal-context");
-    horizontalContextDiv.removeClass('editing');
-    if (Session.get("addingContext") || (_ref = Session.get("editingContext"), __indexOf.call(currentContextBlocks, _ref) >= 0)) {
-      Session.set("showMinimap", false);
-      return horizontalContextDiv.addClass('editing');
-    } else {
-      Session.set("showMinimap", true);
-      if (document.body){
-        if(!Session.get('read')){
-          document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
-          removePlaceholderLinks();
-        }
-      }
-    }
-  }
-});
-
 
 
 
@@ -913,19 +888,4 @@ Template.publish_overlay.events({
       , 1500)
     analytics.track('Click upload header inside publish dialog');
   }
-});
-
-
-// Hide add card menu when scroll
-Template.create.onRendered(function(){
-  $(window).scrollTop(Session.get('scrollTop'));
-
-  this.autorun(function() {
-    var y = Session.get('currentY'); // so reacts to changes in currentY
-    if(y !== Session.get('previousY')){
-      Session.set("addingContext", null);
-    }
-    Session.set('previousY', y)
-  });
-
 });

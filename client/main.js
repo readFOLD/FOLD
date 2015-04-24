@@ -937,6 +937,48 @@ Template.display_twitter_section.events({
   }
 });
 
+
+Tracker.autorun(function(){
+  var story = Session.get('story');
+  var currentY = Session.get("currentY");
+  if (story && (currentY != null)) {
+    Session.set('currentVerticalSection', story.verticalSections[currentY]);
+  } else {
+    Session.set('currentVerticalSection', null);
+  }
+});
+
+Tracker.autorun(function() {
+  var verticalSection = Session.get('currentVerticalSection');
+  if (verticalSection) {
+    return Session.set('currentYId', verticalSection._id);
+  } else {
+    return Session.set('currentYId', null);
+  }
+});
+
+Tracker.autorun(function() {
+  var verticalSection = Session.get('currentVerticalSection');
+  var currentX = Session.get('currentX');
+  if (verticalSection) {
+    var currentContextBlockId = verticalSection.contextBlocks[currentX];
+    if (currentContextBlockId) {
+      return Session.set('currentXId', currentContextBlockId);
+    }
+  }
+  return Session.set('currentXId', null);
+});
+
+if (!Meteor.Device.isPhone()){ // highlight active context card link except on mobile
+  Tracker.autorun(function() {
+    if (currentXId = Session.get('currentXId')){
+      $('a[data-context-id="' + currentXId + '"]').addClass('active');
+      $('a[data-context-id!="' + currentXId + '"]').removeClass('active');
+    }
+  });
+}
+
+
 Template.create_story.events({
   'click': function(){
     if (Meteor.user()){
