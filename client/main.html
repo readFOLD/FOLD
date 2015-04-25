@@ -40,9 +40,11 @@
     </div>
     <div class="title-author">
       {{> story_title }}
-      <div class="author">By {{authorName}}
+      <div class="author">
+        <a href="{{profileUrl}}">
+          By <span>{{authorName}}</span>
+        </a>
       </div>
-
     </div>
     <div class="logo">
       {{#linkTo route="home"}}

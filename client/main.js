@@ -258,6 +258,9 @@ Template.story_header.helpers({
     } else {
       return Session.get("storyTitle");
     }
+  },
+  profileUrl: function(){
+    return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate and only use authorDisplayUsername
   }
 });
 
