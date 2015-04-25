@@ -770,6 +770,16 @@ Template.display_twitter_section.helpers(horizontalBlockHelpers);
 Template.display_map_section.helpers(horizontalBlockHelpers);
 
 Template.display_link_section.helpers(horizontalBlockHelpers);
+Template.display_link_section.events({
+  'click a': function (e, t) {
+    var url = e.currentTarget.href;
+    analytics.track('Click external link in link card', {
+      label: url,
+      url: url,
+      targetClassName: e.target.className
+    })
+  }
+});
 
 Template.display_text_section.onCreated(editableDescriptionCreatedBoilerplate);
 //Template.display_text_section.onDestroyed(editableDescriptionDestroyedBoilerplate('editTextSection'));
