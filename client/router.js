@@ -276,7 +276,7 @@ Router.route("read", {
         }));
         setTitle(story.title);
         setMetaImage(story.headerImageUrl());
-        setMetaDescription(story.verticalSections[0].content);
+        setMetaDescription(story.contentPreview());
         setStatusCode();
         return story;
       } else {

@@ -49,7 +49,7 @@ Story = (function() {
   Story.prototype.contentPreview = function() {
     var content;
     if (content = this.verticalSections[0].content) {
-      return content.replace(/(<([^>]+)>)/ig, "");
+      return $($.parseHTML(content)).text();
     }
   };
 
