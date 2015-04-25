@@ -38,7 +38,7 @@ var createBlockHelpers = {
     }
   },
   selected: function() {
-    return (this.source === Template.instance().source.get());
+    return (this.source === Session.get('newHorizontalDataSource'));
   },
   loading: function() {
     if (Template.instance().loadingResults)
@@ -87,7 +87,7 @@ var addFocusResult = function(d, template) {
 
 var createBlockEvents = {
   "click .data-source": function(d, template) {
-    template.source.set(this.source);
+    Session.set('newHorizontalDataSource', this.source);
   },
 
   "submit form": function(d, template) {
@@ -152,14 +152,14 @@ var existingSearchResults = function(options){
     searchQuery: inputs.query,
     searchOption: inputs.option,
     type: this.type,
-    source: this.source.get()
+    source: Session.get('newHorizontalDataSource')
   }, _.extend({}, options, {sort: {ordinalId: 1} }))
 };
 
 
 
 var searchAPI = function(query) {
-  var source = this.source.get();
+  var source = Session.get('newHorizontalDataSource');
   var type = this.type;
   var page;
 
@@ -411,7 +411,10 @@ Template.create_gif_section.events({
 searchTemplateCreatedBoilerplate = function(type, defaultSource) {
   return function() {
     this.type = type;
-    this.source = new ReactiveVar(defaultSource);
+    var previousSource = Session.get('newHorizontalDataSource');
+    if (!_.contains(_.pluck(dataSourcesByType[type], 'source'), previousSource)){
+      Session.set('newHorizontalDataSource', defaultSource)
+    }
 
     this.loadingResults = new ReactiveVar();
     this.focusResult = new ReactiveVar();
@@ -452,7 +455,7 @@ searchTemplateRenderedBoilerplate  = function() {
 
     // search when initially arrive and when source changes (if there aren't already results)
     this.autorun(function(){
-      that.source.get();
+      Session.get('newHorizontalDataSource');
       if (Session.get('addingContext') && that.getSearchInput().query && !that.existingSearchResults({reactive: false}).count()) {
         that.search();
       }
@@ -490,7 +493,7 @@ Template.create_image_section.onCreated(function(){
             width: doc.width,
             height: doc.height
           },
-          source: that.source.get(),
+          source: Session.get('newHorizontalDataSource'),
           authorId : Meteor.user()._id,
           fullDetails: doc
         }));
@@ -512,7 +515,7 @@ Template.create_image_section.onDestroyed(function(){
 
 Template.create_image_section.helpers({
   uploadMode: function(){
-    return Template.instance().source.get() === 'cloudinary';
+    return Session.get('newHorizontalDataSource') === 'cloudinary';
   },
   uploadStatus: function(){
     return Template.instance().uploadStatus.get();
@@ -568,7 +571,7 @@ _.each(dataSourcesByType, function(dataSources, type){
 
 Template.create_viz_section.onCreated(function() {
   this.type = 'viz';
-  this.source = new ReactiveVar('oec');
+  Session.set('newHorizontalDataSource', 'oec');
 
   this.directions = ['import', 'export'];
   this.countries = VizBlock.countries;
@@ -594,7 +597,7 @@ Template.create_viz_section.onCreated(function() {
       },
       authorId : Meteor.user()._id,
       type: that.type,
-      source: that.source.get()
+      source: Session.get('newHorizontalDataSource')
     }));
   });
 });
@@ -635,7 +638,7 @@ Template.create_viz_section.events({
 
 Template.create_link_section.onCreated(function() {
   this.type = 'link';
-  this.source = new ReactiveVar('link');
+  Session.set('newHorizontalDataSource', 'link');
   this.loadingResults = new ReactiveVar();
   this.noMoreResults = new ReactiveVar();
   this.focusResult = new ReactiveVar();
@@ -811,7 +814,7 @@ Template.create_link_section.helpers({
 
 Template.create_map_section.onCreated(function() {
   this.type = 'map';
-  this.source = new ReactiveVar('google_maps');
+  Session.set('newHorizontalDataSource', 'google_maps');
   this.loadingResults = new ReactiveVar();
   this.focusResult = new ReactiveVar();
 
@@ -846,7 +849,7 @@ Template.create_map_section.helpers({
 
 Template.create_text_section.onCreated(function() {
   this.type = 'text';
-  this.source = new ReactiveVar('free_text');
+  Session.set('newHorizontalDataSource', 'free_text');
 });
 
 Template.create_text_section.onRendered(function() {

@@ -603,14 +603,18 @@ var hideNewHorizontalUI = function() {
   return Session.set("addingContext", null);
 };
 
+var defaultContextType = 'video';
+
 var toggleHorizontalUI = function(forceBool) {
 
   if (!Session.get("addingContext")) {
+    Session.set('newHorizontalDataType', defaultContextType);
     showNewHorizontalUI()
   } else {
     hideNewHorizontalUI()
   }
 };
+
 
 Template.add_horizontal.events({
   "click": function(d) {
@@ -620,42 +624,42 @@ Template.add_horizontal.events({
 });
 
 Template.create_horizontal_section_block.onCreated(function() {
-  return this.type = new ReactiveVar('video');
+  Session.setDefault('newHorizontalDataType', defaultContextType);
 });
 
 Template.create_horizontal_section_block.helpers({
   type: function() {
-    return Template.instance().type.get();
+    return Session.get('newHorizontalDataType');
   },
   text: function() {
-    return Template.instance().type.get() === "text";
+    return Session.get('newHorizontalDataType') === "text";
   },
   image: function() {
-    return Template.instance().type.get() === "image";
+    return Session.get('newHorizontalDataType') === "image";
   },
   gif: function() {
-    return Template.instance().type.get() === "gif";
+    return Session.get('newHorizontalDataType') === "gif";
   },
   map: function() {
-    return Template.instance().type.get() === "map";
+    return Session.get('newHorizontalDataType') === "map";
   },
   video: function() {
-    return Template.instance().type.get() === "video";
+    return Session.get('newHorizontalDataType') === "video";
   },
   twitter: function() {
-    return Template.instance().type.get() === "twitter";
+    return Session.get('newHorizontalDataType') === "twitter";
   },
   viz: function() {
-    return Template.instance().type.get() === "viz";
+    return Session.get('newHorizontalDataType') === "viz";
   },
   audio: function() {
-    return Template.instance().type.get() === "audio";
+    return Session.get('newHorizontalDataType') === "audio";
   },
   link: function() {
-    return Template.instance().type.get() === "link";
+    return Session.get('newHorizontalDataType') === "link";
   },
   remix: function() {
-    return Template.instance().type.get() === "remix";
+    return Session.get('newHorizontalDataType') === "remix";
   }
 });
 
@@ -668,34 +672,34 @@ Template.create_horizontal_section_block.helpers({
 
 Template.create_horizontal_section_block.events({
   'click .text-button': function(d, t) {
-    return t.type.set('text');
+    return Session.set('newHorizontalDataType', 'text');
   },
   'click .map-button': function(d, t) {
-    return t.type.set('map');
+    return Session.set('newHorizontalDataType', 'map');
   },
   'click .video-button': function(d, t) {
-    return t.type.set('video');
+    return Session.set('newHorizontalDataType', 'video');
   },
   'click .image-button': function(d, t) {
-    return t.type.set('image');
+    return Session.set('newHorizontalDataType', 'image');
   },
   'click .gif-button': function(d, t) {
-    return t.type.set('gif');
+    return Session.set('newHorizontalDataType', 'gif');
   },
   'click .twitter-button': function(d, t) {
-    return t.type.set('twitter');
+    return Session.set('newHorizontalDataType', 'twitter');
   },
   'click .viz-button': function(d, t) {
-    return t.type.set('viz');
+    return Session.set('newHorizontalDataType', 'viz');
   },
   'click .audio-button': function(d, t) {
-    return t.type.set('audio');
+    return Session.set('newHorizontalDataType', 'audio');
   },
   'click .link-button': function(d, t) {
-    return t.type.set('link');
+    return Session.set('newHorizontalDataType', 'link');
   },
   'click .remix-button': function(d, t) {
-    return t.type.set('remix');
+    return Session.set('newHorizontalDataType', 'remix');
   },
   'mouseenter .horizontal-narrative-section': function() {
     document.body.style.overflow = 'hidden';
