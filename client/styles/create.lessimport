@@ -528,6 +528,7 @@ textarea {
   border: none;
   overflow: auto;
   outline: none;
+  resize: none;
   &:focus{
     outline-offset: 0;
   }
