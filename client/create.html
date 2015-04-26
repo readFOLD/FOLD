@@ -1,6 +1,11 @@
 <template name="create">
   {{#with draftStory}}
     {{> story_header }}
+    {{#if headerImageLoading}}
+      <div class="header loading-container">
+        {{> loading_icon}}
+      </div>
+    {{/if}}
     {{> story}}
     {{> fold_editor }}
     {{> fold_link_remover }}
@@ -727,7 +732,8 @@
       <p>By default, stories are published under a <a class="green underline" href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC-BY license</a>. If you would like to opt-out, please check this box
         <input type="checkbox" name="reserve-rights" checked="{{narrativeRightsReserved}}">  <a href="/terms" target="_blank">(Note that context cards are a shared resource and will remain CC-BY)</a></p>
 
-      <button type="submit" class="confirm-publish">Publish</button>
+      <button type="submit" class="confirm-publish">Publish
+      </button>
     </div>
   </div>
 </template>

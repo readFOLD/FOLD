@@ -1440,4 +1440,12 @@ div.loading-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  &.header {
+    margin-top: 0px;
+    position: relative;
+    top: -320px;
+  }
+  i.loading-icon {
+    z-index: 50;
+  }
 }
