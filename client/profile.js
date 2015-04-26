@@ -120,8 +120,8 @@ Template.user_profile.events({
   "click input[type=file]": function(d, template) {
     return template.editingPicture.set(true);
   },
-  "change input[type=file]": function(d, template){
-    var file = _.first(event.target.files);
+  "change input[type=file]": function(e, template){
+    var file = _.first(e.target.files);
     if (!file){
       template.uploadPreview.set(null);
     } 
