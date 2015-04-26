@@ -264,7 +264,7 @@ AudioBlock = (function(_super) {
   };
 
   AudioBlock.prototype.previewUrl = function() {
-    if (this.source === 'soundcloud') {
+    if (this.source === 'soundcloud' && this.reference.artworkUrl) {
       return this.reference.artworkUrl.replace(/large\.jpg/, "t500x500.jpg");
     }
   };
