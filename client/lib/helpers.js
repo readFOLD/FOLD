@@ -1,3 +1,6 @@
+window.startTime = window.performance ? window.performance.timing.navigationStart : Date.now(); // mobile safari doesn't have timing api
+
+
 $.cloudinary.config({
   cloud_name: Meteor.settings["public"].CLOUDINARY_CLOUD_NAME
 });

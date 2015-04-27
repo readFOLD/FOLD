@@ -13,9 +13,24 @@ Router.onRun(function() {
   this.next()
 });
 
+window.trackTiming = function(category, str, time){  // mobile safari doesn't have timing api so those results will not include initial request time
+  analytics.track(str, {time: time});
+
+  analytics.ready(function(){
+    ga('send', 'timing', category, str, time);
+  });
+};
+
+var jsLoadTime = Date.now() - startTime;
+
+trackTiming('JS', 'JS Loaded', jsLoadTime);
 
 
 Meteor.startup(function() {
+  var timeTillDOMReady = Date.now() - startTime;
+
+  trackTiming('DOM', 'DOM Ready', timeTillDOMReady);
+
   Tracker.autorun(function(c) {
     // waiting for user subscription to load
     if (! Router.current() || ! Router.current().ready())

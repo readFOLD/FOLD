@@ -137,6 +137,8 @@ var subscriptionsReady = new ReactiveDict();
 var subscribeToCuratedStories = function(cb){
   if(!curatedStoriesSub){
     curatedStoriesSub = Meteor.subscribe("curatedStoriesPub", function(){
+      var timeToLoadStories = Date.now() - createHomePageDate;
+      trackTiming('Homepage', 'Homepage ready (time since created template)', timeToLoadStories);
       subscriptionsReady.set('curatedStories', true);
       if(cb){
         cb();
@@ -192,8 +194,11 @@ var subscribeToStarredStories = function(cb){
   }
 };
 
+var createHomePageDate;
+
 Template.all_stories.onCreated(function(){
   var that = this;
+  createHomePageDate = Date.now();
   subscribeToCuratedStories(function(){
     subscribeToTrendingStories(function() {
       subscribeToNewestStories(function(){
