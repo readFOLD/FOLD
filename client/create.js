@@ -100,7 +100,8 @@ window.plainTextPaste = function(e) {
 };
 
 Template.create.onCreated(function() {
-  this.publishing = new ReactiveVar()
+  this.publishing = new ReactiveVar();
+  this.headerImageLoading = new ReactiveVar();
 });
 
 Template.create.onRendered(function() {
@@ -330,6 +331,7 @@ window.saveCallback =  function(err, success, cb) {
   }
 };
 
+
 var saveVerticalSectionContent = function(e, template) {
   Session.set('saveState', 'saving');
 
@@ -427,6 +429,9 @@ Template.create.helpers({
   },
   publishing: function() {
     return Template.instance().publishing.get();
+  },
+  headerImageLoading: function() {
+    return Template.instance().headerImageLoading.get();
   }
 });
 
@@ -467,15 +472,19 @@ Template.create.events({
       }
     });
   },
-  "change input.header-upload": function(){
+  "change input.header-upload":  function(e, template){
     var that = this;
+    template.headerImageLoading.set(true);
     var files = $("input.header-upload")[0].files;
     Session.set('saveState', 'saving');
     C.upload(files, function(r) { // callback does not respect typical error behavior and currently just doesn't call callback
       if (r.error){ // this can't get hit at the moment
         return saveCallback(r)
       }
-      return Meteor.call('updateHeaderImage', that._id, r.public_id, r.format, saveCallback);
+      return Meteor.call('updateHeaderImage', that._id, r.public_id, r.format, function(err, success) {
+        template.headerImageLoading.set(false);
+        saveCallback(err, success) 
+      });
     });
     analytics.track('Change upload header on header');
   }
