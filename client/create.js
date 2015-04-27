@@ -291,9 +291,7 @@ window.saveCallback =  function(err, success, cb) {
 };
 
 window.headerUploadCompleteCallback = function(template) {
-    console.log(template);
     template.headerImageLoading.set(false);
-    console.log("header loading stopped");
   };
 
 Template.vertical_section_block.events({
@@ -433,7 +431,6 @@ Template.create.events({
   },
   "change input.header-upload":  function(e, template){
     var that = this;
-    console.log(template)
     template.headerImageLoading.set(true);
     var files = $("input.header-upload")[0].files;
     Session.set('saveState', 'saving');

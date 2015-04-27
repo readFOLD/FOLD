@@ -1441,9 +1441,11 @@ div.loading-container {
   align-items: center;
   justify-content: center;
   &.header {
-    margin-top: 0px;
-    position: relative;
-    top: -320px;
+    margin-top: 6px;
+    position: absolute;
+    top: 10px;
+    right: 181px;
+    z-index: 101;
   }
   i.loading-icon {
     z-index: 50;
