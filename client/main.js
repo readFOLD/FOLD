@@ -500,6 +500,7 @@ Template.minimap.events({
       Session.set("metaview", true);
       analytics.track('Click minimap in create mode');
     } else {
+      notifyFeature('Zoom-out mode: coming soon!');
       analytics.track('Click minimap in read mode');
     }
   }
@@ -929,7 +930,7 @@ Template.remix_bar.events({
       "verticalId",
       "verticalIndex"
     ]));
-    notifyRemix("Remixing cards: coming soon!");
+    notifyFeature("Remixing cards: coming soon!");
   }
 });
 

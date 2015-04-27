@@ -569,7 +569,7 @@
 
 <template name="minimap">
   {{#if minimapLargeEnough}}
-  <div class="minimap {{#unless read}}hoverable{{/unless}}">
+  <div class="minimap hoverable">
     <div class="expand"><i class="fa fa-expand"></i></div>
     {{#each horizontalSectionsMap}}
     <div class="section {{#if selectedY}}selected-section{{/if}}" style="{{#if responsive}}height: {{sectionHeight}}px; margin-bottom: {{sectionMargin}}px;{{/if}}">

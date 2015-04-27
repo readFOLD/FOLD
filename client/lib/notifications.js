@@ -11,6 +11,8 @@ window.notifyRemix = function(message){
   );
 };
 
+window.notifyFeature = window.notifyRemix;
+
 window.notifySuccess = function(message){
   $.amaran({
       content: {
