@@ -11,6 +11,9 @@ div#login-buttons-and-more {
 
 div.home-top {
   position: fixed;
+  &.not-sticky{
+    position: absolute;
+  }
   background-color: white;
   height: 145px;
   @media @mobile{
