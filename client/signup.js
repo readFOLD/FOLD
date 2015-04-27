@@ -63,10 +63,10 @@ Template.signup_form.helpers({
 
 Template.signup_form.events({
   'blur input#signup-email, submit #signup-form': function(e, t) {
-    var email = $(e.currentTarget).val();
+    var email = $('input#signup-email').val();
     email = trimInput(email);
 
-    var result = checkValidEmail(email)
+    var result = checkValidEmail(email);
     if (!result.status) {
       t.emailError.set(result.message)
     } else {
@@ -74,10 +74,10 @@ Template.signup_form.events({
     }
   },
   'blur input#signup-name, submit #signup-form': function(e, t) {
-    var name = $(e.currentTarget).val();
+    var name = $('input#signup-name').val();
     name = trimInput(name);
 
-    var result = checkValidName(name)
+    var result = checkValidName(name);
     if (!result.status) {
       t.nameError.set(result.message)
     } else {
@@ -88,7 +88,7 @@ Template.signup_form.events({
     var username = $("#signup-username").val();
     username = trimInput(username);
 
-    var result = checkValidUsername(username)
+    var result = checkValidUsername(username);
     if (!result.status) {
       t.usernameError.set(result.message)
     } else {
@@ -101,16 +101,16 @@ Template.signup_form.events({
 
     var result = checkValidPassword(p1, p2);
     if (!result.status) {
-      t.passwordError.set(result.message)
+      t.passwordError.set(result.message);
     } else {
-      t.passwordError.set(false)
+      t.passwordError.set(false);
     }
 
     var result2 = checkValidPasswordConfirmation(p1, p2);
     if (!result2.status) {
-      t.password2Error.set(result2.message)
+      t.password2Error.set(result2.message);
     } else {
-      t.password2Error.set(false)
+      t.password2Error.set(false);
     }
   },
   'submit #signup-form': function (e, t) {
