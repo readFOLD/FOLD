@@ -332,10 +332,6 @@ window.saveCallback =  function(err, success, cb) {
 };
 
 
-var headerUploadCompleteCallback = function(template) {
-    template.headerImageLoading.set(false);
-  };
-
 var saveVerticalSectionContent = function(e, template) {
   Session.set('saveState', 'saving');
 
@@ -487,7 +483,9 @@ Template.create.events({
       }
       return Meteor.call('updateHeaderImage', that._id, r.public_id, r.format, 
                           saveCallback(r.error, r.public_id, 
-                            headerUploadCompleteCallback(template)));
+                            function() {
+                              template.headerImageLoading.set(false);
+                            }));
     });
     analytics.track('Change upload header on header');
   }
