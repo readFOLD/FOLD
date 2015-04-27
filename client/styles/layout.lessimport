@@ -555,6 +555,7 @@ div.image-section {
     text-shadow: 1px 1px @dark-color;
     text-align: right;
     color: white;
+    font-size: 13px;
 
     i.fa-flickr {
       margin-right: 2px;
