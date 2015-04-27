@@ -728,7 +728,10 @@ div.link-section {
 }
 
 div.text-section {
-  height: 100%;
+  .text-content{
+    overflow-y: hidden;
+    height: 264px;
+  }
 
   textarea {
     .content-font;
