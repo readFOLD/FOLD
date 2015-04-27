@@ -17,23 +17,47 @@ window.trimInput = function(val) {
   return val.replace(/^\s*|\s*$/g, "");
 }
 
-window.checkPassword = function(p1,p2) {
-  if (!isValidPassword(p1) || !(p1===p2)) {
-    return Template.instance().invalidPassword.set(true);
+window.checkValidEmail = function(email) {
+  if (email.length === 0 ) {
+    return { status: false, message: 'Please fill required field' };
+  } else if (!SimpleSchema.RegEx.Email.test(email)) {
+    return { status: false, message: 'Invalid e-mail address' };
   } else {
-    return Template.instance().invalidPassword.set(false);
+    return { status: true, message: false };
+  }
+};
+
+window.checkValidName = function(name) {
+  if (name.length === 0 ) {
+    return { status: false, message: 'Please fill required field' };
+  } else {
+    return { status: true, message: false };
+  }
+};
+
+window.checkValidPassword = function(p1, p2) {
+  if (p1.length === 0 ) {
+    return { status: false, message: 'Please fill required field' };
+  } else if (!isValidPassword(p1)) {
+    return { status: false, message: 'Too short (minimum 6 chars)' };
+  } else if (p1!==p2) {
+    return { status: false, message: 'Passwords do not match' };
+  } else {
+    return { status: true, message: false };
   }
 };
 
 window.checkValidUsername = function(username) {
   var usernameRegex = /^[a-zA-Z0-9-_]+$/;
-  if (!username.match(usernameRegex)) {
-  	return {status: false, message: 'Invalid characters'};
+  if (username.length === 0 ) {
+    return { status: false, message: 'Please fill required field' };
   } else if (username.length < 3) {
-  	return {status: false, message: 'Too short (minimum 3 chars)'};
+  	return { status: false, message: 'Too short (minimum 3 chars)' };
   } else if (username.length > 15) {
-  	return {status: false, message: 'Too long (maximum 15 chars)'};
+  	return { status: false, message: 'Too long (maximum 15 chars)' };
+  } else if (!username.match(usernameRegex)) {
+    return { status: false, message: 'Invalid characters (only letters, numbers, -, and _)' };
   } else {
-  	return {status: true, message: false};
+    return { status: true, message: false };
   }
 }
