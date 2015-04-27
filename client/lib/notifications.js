@@ -68,7 +68,8 @@ window.notifyDeploy = function(message, sticky){
       },
       'position' :'top right',
       theme:'colorful',
-      sticky: sticky
+      sticky: sticky,
+      clearAll: true
     }
   );
   $('.amaran').addClass('migration-notification');
