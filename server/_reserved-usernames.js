@@ -847,22 +847,18 @@ var disallowedUsernames = _.sortBy([
 
 
 checkUserSignup = function(username, email) {
-  if (!username || !email) {
-    var missing = !email ? 'your email' : 'a username';
-    throw new Meteor.Error('Please enter ' + missing + '.')
-  }
   if(username && _.indexOf(reservedUsernames, username.toLowerCase().trim(), true) !== -1){ // this check relies on the list being sorted
-    throw new Meteor.Error('The username "' + username + '" is reserved. Please email us at fold@media.mit.edu if you have rights to this name.')
+    throw new Meteor.Error('username', 'Username is reserved. Please email us at fold@media.mit.edu if you have rights to this name.')
   }
   if(username && _.indexOf(disallowedUsernames, username.toLowerCase().trim(), true) !== -1){
-    throw new Meteor.Error('The username "' + username + '" is taken.');
+    throw new Meteor.Error('username', 'Username is alrady taken.');
   }
   var existingUser = Meteor.users.findOne( { $or: [{username: username}, {'emails.address': email}]});
   if (existingUser) {
     if (existingUser.username === username){
-      throw new Meteor.Error('The username "' + username + '" is already in use.')
+      throw new Meteor.Error('username', 'Username is already in use.')
     } else {
-      throw new Meteor.Error('The email "' + email + '" is already in use.')
+      throw new Meteor.Error('email', 'Email is already in use.')
     }
 
   }

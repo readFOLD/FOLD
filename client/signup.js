@@ -1,19 +1,3 @@
-window.isValidPassword = function(p) {
-  if (p.length >= 6) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-var checkPassword = function(p1,p2) {
-  if (!isValidPassword(p1) || !(p1===p2)) {
-    return Template.instance().invalidPassword.set(true);
-  } else {
-    return Template.instance().invalidPassword.set(false);
-  }
-};
-
 var createUser = function(user, template) {
   Accounts.createUser({
     email: user.email,
@@ -24,7 +8,14 @@ var createUser = function(user, template) {
       }
     }, function(err) {
       if (err) {
-        template.signupError.set(err.reason || err.error);
+        if (err.error === 'username') {
+          template.usernameError.set(err.reason || err.error);          
+        } else if (err.error === 'email') {
+          template.emailError.set(err.reason || err.error);          
+        } else {
+          template.signupError.set(err.reason || err.error);          
+        }
+
       } else {
         Router.go('/');
      }});
@@ -79,34 +70,24 @@ Template.signup_form.events({
     }
   },
   'blur input#signup-username': function(e, t) {
-    var val = $("#signup-username").val();
+    var username = $("#signup-username").val();
+    username = trimInput(username);
 
-    var usernameRegex = /^[a-zA-Z0-9-_]+$/;  // Only alphanumeric, -, and _
-
-    if (!val.match(usernameRegex)) {
-      t.usernameError.set('Invalid username')
-      return;
+    var result = checkValidUsername(username)
+    if (!result.status) {
+      t.usernameError.set(result.message)
     } else {
-      t.usernameError.set('')
+      t.usernameError.set(false)
     }
   },
-  'blur input#signup-password': function(e, t) {
+  'blur input#signup-password, blur input#signup-password2': function(e, t) {
     var p1 = $("#signup-password").val();
-
-    if (p1 === '') {
-      t.passwordError.set('');
-      return;
-    }
+    var p2 = $("#signup-password2").val();
 
     if (!isValidPassword(p1)) {
       t.passwordError.set('Password too short')
       return;
     }
-  },
-
-  'keyup input#signup-password2': function(e, t) {
-    var p1 = $("#signup-password").val();
-    var p2 = $("#signup-password2").val();
 
     if (p1 !== p2) {
       t.passwordError.set('Passwords do not match')
@@ -118,8 +99,13 @@ Template.signup_form.events({
       return;
     }
   },
-  'submit #signup-form': function (e, template) {
+  'submit #signup-form': function (e, t) {
     e.preventDefault();
+
+    if (t.emailError.get() || t.usernameError.get() || t.passwordError.get()) {
+      t.signupError.set('Please fix errors in required fields');
+      return;
+    }
 
     var inputs = $('#signup-form').serializeArray();
     var userInfo = {};
@@ -132,15 +118,15 @@ Template.signup_form.events({
     if (Meteor.user()) { // if just finishing signup and already created a user via twitter
       Meteor.call('updateInitialTwitterUserInfo', userInfo, function (err) {
         if (err) {
-          template.signupError.set(err.reason || err.error);
+          t.signupError.set(err.reason || err.error);
         } else {
           Router.go('/');
         }
       });
     } else { // if email user
       checkPassword(userInfo.password, userInfo.password2);
-      if (!template.invalidPassword.get()) {
-        createUser(userInfo, template);
+      if (!t.invalidPassword.get()) {
+        createUser(userInfo, t);
       }
     }
   }
