@@ -531,6 +531,7 @@ div.image-section {
     position: absolute;
     bottom: 10px;
     right: 0px;
+    width: 150px;
   }
   
   .text-content {
