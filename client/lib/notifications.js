@@ -58,3 +58,18 @@ window.notifyInfo = function(message){
     }
   );
 };
+
+window.notifyDeploy = function(message, sticky){
+  $.amaran({
+      content: {
+        message: message,
+        color: 'white',
+        bgcolor: '#585094' // panel-color
+      },
+      'position' :'top right',
+      theme:'colorful',
+      sticky: sticky
+    }
+  );
+  $('.amaran').addClass('migration-notification');
+};
