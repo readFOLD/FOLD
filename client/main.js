@@ -74,6 +74,8 @@ updatecurrentY = function() {
   var actualY, h, i, maxScroll, readMode, scrollTop, stickyBody, stickyTitle, vertTop, _i, _len, _ref;
   scrollTop = $(document).scrollTop();
   Session.set("scrollTop", scrollTop);
+  $("div.logo").addClass("visible");
+
   if (scrollTop >= (200 - 32)) {
     Session.set("sticky", true);
   } else {
@@ -123,8 +125,10 @@ updatecurrentY = function() {
     Session.set("pastHeader", true);
   } else {
     $("div.title-overlay, div#banner-overlay").removeClass("fixed");
-    $("div.logo").removeClass("visible");
-    return Session.set("pastHeader", false);
+    Session.set("pastHeader", false);
+    if (scrollTop > 25){
+      $("div.logo").removeClass("visible");
+    }
 
   }
   if (scrollTop >= readMode) {
