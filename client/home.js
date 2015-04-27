@@ -197,9 +197,11 @@ Template.all_stories.onCreated(function(){
     subscribeToTrendingStories(function() {
       subscribeToNewestStories(function(){
         subscribeToStarredStories(function(){
-          that.autorun(function(){
-            that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}));
-          });
+          if (!that.view.isDestroyed){ // because this happens asynchronously, the user may have already navigated away
+            that.autorun(function(){
+              that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}));
+            });
+          }
         })
       })
     });
