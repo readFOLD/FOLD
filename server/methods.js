@@ -216,14 +216,23 @@ Meteor.methods({
   */
   flickrImageSearchList: function(query, option, page) {
     var items, nextPage;
+    var path = 'flickr.photos.search';
+    var photo_id = '';
     check(query, String);
+
+    if ((query.indexOf('flickr.com') !==-1) || (query.indexOf('flic.kr') !==-1)){
+      var newQuery = _.chain(query.split('/')).compact().last().value().match(/[\d\w]*/)[0];
+      photo_id = newQuery || query;
+      path = 'flickr.photos.getInfo';
+    }
     page = page || 1;  // flickr starts from 1
     this.unblock();
 
-    var url = "https://api.flickr.com/services/rest/?&method=flickr.photos.search";
+    var url = "https://api.flickr.com/services/rest/?&method=" + path;
 
     var requestParams = {
       tags: query.replace(' ', ','),
+      photo_id: photo_id,
       text: query,
       api_key: FLICKR_API_KEY,
       format: 'json',
@@ -242,7 +251,7 @@ Meteor.methods({
     });
 
     if (res.content){
-      items = JSON.parse(res.content).photos.photo;
+      items = photo_id ? [JSON.parse(res.content).photo] : JSON.parse(res.content).photos.photo;
     } else {
       items = [];
     }
