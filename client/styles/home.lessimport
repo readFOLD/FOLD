@@ -149,7 +149,7 @@ div.home-top {
 
     .user-action {
       background-color: @remix-color;
-      @profile-picture-size: 28px;
+      @profile-picture-size: 25px;
       button{
         line-height: @height;
       }
@@ -159,8 +159,8 @@ div.home-top {
       }
       img.profile-picture {
         margin:auto;
-        margin-right: 6px;
-        margin-bottom: -9.5px;
+        margin-right: 2px;
+        margin-bottom: -7.5px;
         z-index: 10;
         border-radius: @profile-picture-size/2;
         width: @profile-picture-size;
