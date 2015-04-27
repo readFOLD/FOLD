@@ -481,11 +481,10 @@ Template.create.events({
       if (r.error){ // this can't get hit at the moment
         return saveCallback(r)
       }
-      return Meteor.call('updateHeaderImage', that._id, r.public_id, r.format, 
-                          saveCallback(r.error, r.public_id, 
-                            function() {
-                              template.headerImageLoading.set(false);
-                            }));
+      return Meteor.call('updateHeaderImage', that._id, r.public_id, r.format, function(err, success) {
+        template.headerImageLoading.set(false);
+        saveCallback(err, success) 
+      });
     });
     analytics.track('Change upload header on header');
   }
