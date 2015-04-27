@@ -308,10 +308,10 @@ Template.login_buttons.onCreated(function() {
 });
 
 Template.login_buttons.events({
-  "mouseenter": function(d) {
+  "mouseenter li": function(d) {
     Template.instance().showUserInfo.set(true);
   },
-  "mouseleave": function(d) {
+  "mouseleave li": function(d) {
     Template.instance().showUserInfo.set(false);
   },
   "click .signin": function(d) {

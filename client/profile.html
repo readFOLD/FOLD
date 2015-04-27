@@ -36,10 +36,10 @@
           {{/c_upload}}
         {{/if}}
         {{#if uploadPreview}} 
-          <img class="profile-picture" src="{{uploadPreview}}">
+          <img class="profile-picture-large" src="{{uploadPreview}}">
         {{else}}
           {{#if profileImage user}} 
-           <img class="profile-picture" src="{{profileImage user 'large'}}"/>
+           <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>
           {{/if}}
         {{/if}}
      </div>
@@ -55,7 +55,7 @@
     {{/if}}
     <div class="picture">
       {{#if profileImage user}} 
-         <img class="profile-picture" src="{{profileImage user 'large'}}"/>
+         <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>
       {{/if}}
     </div>
     <div class="name">{{name}}</div>
