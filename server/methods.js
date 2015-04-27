@@ -467,7 +467,13 @@ Meteor.methods({
   vimeoVideoSearchList: function(query, option, page) {
     var items;
     var nextPage;
+    var path = '/videos';
     check(query, String);
+    if (query.indexOf('vimeo.com') !==-1) {
+      var newQuery = _.chain(query.split('/')).compact().last().value().match(/[\d]*/)[0];
+      path = path + '/' + newQuery;
+    }
+
     this.unblock();
     page = page || 1;
     
@@ -479,7 +485,7 @@ Meteor.methods({
 
     var vimeoResultsSync = Meteor.wrapAsync(client.request, client);
     var params = {
-      path: '/videos',
+      path: path,
       query: 
         { query: query,
           sort : 'relevant',
@@ -490,7 +496,7 @@ Meteor.methods({
 
     try {
       res = vimeoResultsSync(params);
-      items = res.data;
+      items = res.data || [res];
     } 
     catch (err) {
       if (err.statusCode !== 404) { 
