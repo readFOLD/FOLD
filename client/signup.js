@@ -62,7 +62,7 @@ Template.signup_form.helpers({
 });
 
 Template.signup_form.events({
-  'blur input#signup-email': function(e, t) {
+  'blur input#signup-email, submit #signup-form': function(e, t) {
     var email = $(e.currentTarget).val();
     email = trimInput(email);
 
@@ -73,7 +73,7 @@ Template.signup_form.events({
       t.emailError.set(false)
     }
   },
-  'blur input#signup-name': function(e, t) {
+  'blur input#signup-name, submit #signup-form': function(e, t) {
     var name = $(e.currentTarget).val();
     name = trimInput(name);
 
@@ -84,7 +84,7 @@ Template.signup_form.events({
       t.nameError.set(false)
     }
   },
-  'blur input#signup-username': function(e, t) {
+  'blur input#signup-username, submit #signup-form': function(e, t) {
     var username = $("#signup-username").val();
     username = trimInput(username);
 
@@ -95,32 +95,28 @@ Template.signup_form.events({
       t.usernameError.set(false)
     }
   },
-  'blur input#signup-password, blur input#signup-password2': function(e, t) {
+  'blur input#signup-password, blur input#signup-password2, submit #signup-form': function(e, t) {
     var p1 = $("#signup-password").val();
     var p2 = $("#signup-password2").val();
 
-    var result = checkValidPassword(p1, p2)
+    var result = checkValidPassword(p1, p2);
     if (!result.status) {
       t.passwordError.set(result.message)
     } else {
       t.passwordError.set(false)
     }
-  },
-  'blur input#signup-password2': function(e, t) {
-    var p1 = $("#signup-password").val();
-    var p2 = $("#signup-password2").val();
 
-    var result = checkValidPassword(p1, p2)
-    if (!result.status) {
-      t.passwordError.set(result.message)
+    var result2 = checkValidPasswordConfirmation(p1, p2);
+    if (!result2.status) {
+      t.password2Error.set(result2.message)
     } else {
-      t.passwordError.set(false)
+      t.password2Error.set(false)
     }
   },
   'submit #signup-form': function (e, t) {
     e.preventDefault();
 
-    if (t.emailError.get() || t.usernameError.get() || t.passwordError.get()) {
+    if (t.emailError.get() || t.usernameError.get() || t.passwordError.get()|| t.password2Error.get()) {
       t.signupError.set('Please fix errors in required fields');
       return;
     }

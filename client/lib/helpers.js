@@ -19,7 +19,7 @@ window.trimInput = function(val) {
 
 window.checkValidEmail = function(email) {
   if (email.length === 0 ) {
-    return { status: false, message: 'Please fill required field' };
+    return { status: false, message: 'Please enter your e-mail address' };
   } else if (!SimpleSchema.RegEx.Email.test(email)) {
     return { status: false, message: 'Invalid e-mail address' };
   } else {
@@ -29,18 +29,26 @@ window.checkValidEmail = function(email) {
 
 window.checkValidName = function(name) {
   if (name.length === 0 ) {
-    return { status: false, message: 'Please fill required field' };
+    return { status: false, message: 'Please enter your name' };
+  } else if (name.length > 127 ) {
+    return { status: false, message: 'Too long (maximum 127 characters)' };
   } else {
     return { status: true, message: false };
   }
 };
 
-window.checkValidPassword = function(p1, p2) {
+window.checkValidPassword = function(p1) {
   if (p1.length === 0 ) {
-    return { status: false, message: 'Please fill required field' };
+    return { status: false, message: 'Please enter a password' };
   } else if (!isValidPassword(p1)) {
-    return { status: false, message: 'Too short (minimum 6 chars)' };
-  } else if (p1!==p2) {
+    return { status: false, message: 'Too short (minimum 6 characters)' };
+  } else {
+    return { status: true, message: false };
+  }
+};
+
+window.checkValidPasswordConfirmation = function(p1, p2) {
+  if (p2.length && p1!==p2) {
     return { status: false, message: 'Passwords do not match' };
   } else {
     return { status: true, message: false };
@@ -50,13 +58,13 @@ window.checkValidPassword = function(p1, p2) {
 window.checkValidUsername = function(username) {
   var usernameRegex = /^[a-zA-Z0-9-_]+$/;
   if (username.length === 0 ) {
-    return { status: false, message: 'Please fill required field' };
+    return { status: false, message: 'Please enter a username' };
   } else if (username.length < 3) {
   	return { status: false, message: 'Too short (minimum 3 chars)' };
   } else if (username.length > 15) {
   	return { status: false, message: 'Too long (maximum 15 chars)' };
   } else if (!username.match(usernameRegex)) {
-    return { status: false, message: 'Invalid characters (only letters, numbers, -, and _)' };
+    return { status: false, message: 'Please only use letters, numbers, -, and _' };
   } else {
     return { status: true, message: false };
   }
