@@ -99,7 +99,7 @@ window.plainTextPaste = function(e) {
 
 Template.create.onCreated(function() {
   this.publishing = new ReactiveVar();
-  this.headerImageLoading = new ReactiveVar(false);
+  this.headerImageLoading = new ReactiveVar();
 });
 
 Template.create.onRendered(function() {
