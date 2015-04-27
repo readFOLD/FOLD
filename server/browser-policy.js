@@ -9,12 +9,8 @@ BrowserPolicy.content.allowMediaOrigin('res.cloudinary.com');
 BrowserPolicy.content.allowMediaOrigin('*.imgur.com');
 BrowserPolicy.content.allowMediaOrigin('*.giphy.com');
 
-// allow iframes from specific sources only
-BrowserPolicy.content.allowFrameOrigin('*.google.com');
-BrowserPolicy.content.allowFrameOrigin('*.youtube.com');
-BrowserPolicy.content.allowFrameOrigin('*.vimeo.com');
-BrowserPolicy.content.allowFrameOrigin('*.soundcloud.com');
-BrowserPolicy.content.allowFrameOrigin('*.atlas.media.mit.edu');
+// allow iframes from everywhere (needed for various browser bookmarklets)
+BrowserPolicy.content.allowFrameOrigin('*');
 
 // allow iframes from specific sources only (why not)
 BrowserPolicy.content.allowFontOrigin('*.gstatic.com');
