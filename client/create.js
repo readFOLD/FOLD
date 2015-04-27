@@ -30,7 +30,9 @@ window.updateUIBasedOnSelection = function(e){
       window.selectedNode = null;
 
       var selectionType = window.getSelection().type;
-      if(selectionType === 'Range' || selectionType === 'Caret' ) {
+      var selectionLength = window.getSelection().toString().length;
+
+      if (selectionType !== 'None'){//(selectionType === 'Range' || selectionType === 'Caret' ) {
         range = selection.getRangeAt(0);
 
         // Get containing tag
@@ -52,7 +54,7 @@ window.updateUIBasedOnSelection = function(e){
             tagName = parentNode.tagName.toLowerCase();
             selectedTags.push(tagName);
 
-            if (selectionType === 'Caret' && tagName === 'a') {
+            if (selectionType !== 'Range' && tagName === 'a') { // we want type === 'Caret', but firefox doesn't do that, so just avoid range
               window.enclosingAnchorTag = parentNode;
               break;
             }
@@ -63,7 +65,7 @@ window.updateUIBasedOnSelection = function(e){
 
           // TO-DO actually get this from selection
           if (e) {
-            if (selectionType === 'Range') {
+            if (selectionType === 'Range' || selectionLength) { // need to check selection length for firefox
               showFoldEditor();
               boundary = range.getBoundingClientRect();
               boundaryMiddle = (boundary.left + boundary.right) / 2;
@@ -158,16 +160,68 @@ Template.create.onRendered(function() {
     hideFoldEditor();
     hideFoldLinkRemover();
   };
+
+  this.autorun(function(){
+    switch(Session.get('saveState')) {
+      case 'saving':
+        Session.set('saving', true);
+        break;
+      case 'failed':
+        notifyError('Saving failed. Please refresh and try again.');
+        alert('Saving failed. Please refresh and try again.');
+        break;
+      case 'saved':
+        Session.set('saving', false);
+        break;
+    }
+  });
+
   this.autorun(function(){
     if (Session.get('read') || Session.get('currentYId')){
       return window.hideFoldAll();
     }
   });
+
+
+
+  $(window).scrollTop(Session.get('scrollTop'));
+
+  this.autorun(function() { // Hide add card menu when scroll
+    var y = Session.get('currentY'); // so reacts to changes in currentY
+    if(y !== Session.get('previousY')){
+      Session.set("addingContext", null);
+    }
+    Session.set('previousY', y)
+  });
+
+  this.autorun(function() { // update UI when start and stop adding/editing context
+    var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
+    var verticalSection = Session.get('currentVerticalSection');
+    if (verticalSection) {
+      currentContextBlocks = verticalSection.contextBlocks;
+      horizontalContextDiv = $(".horizontal-context");
+      horizontalContextDiv.removeClass('editing');
+      if (Session.get("addingContext") || (_ref = Session.get("editingContext"), __indexOf.call(currentContextBlocks, _ref) >= 0)) {
+        Session.set("showMinimap", false);
+        return horizontalContextDiv.addClass('editing');
+      } else {
+        Session.set("showMinimap", true);
+        if (document.body){
+          if(!Session.get('read')){
+            document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
+            removePlaceholderLinks();
+          }
+        }
+      }
+    }
+  });
+
   if (!(Session.equals("currentY", void 0) && Session.equals("currentX", void 0))) {
     $('.attribution, #to-story').fadeOut(1);
     goToY(Session.get("currentY"));
-    return goToX(Session.get("currentX"));
+    goToX(Session.get("currentX"));
   }
+
 });
 
 Template.fold_editor.helpers({
@@ -256,20 +310,7 @@ var rangeSelectsSingleNode = function (range) {
     range.endOffset === range.startOffset + 1;
 };
 
-Tracker.autorun(function(){
-  switch(Session.get('saveState')) {
-    case 'saving':
-      Session.set('saving', true);
-      break;
-    case 'failed':
-      notifyError('Saving failed. Please refresh and try again.');
-      alert('Saving failed. Please refresh and try again.');
-      break;
-    case 'saved':
-      Session.set('saving', false);
-      break;
-  }
-});
+
 
 window.saveCallback =  function(err, success, cb) {
   var saveUIUpdateDelay = 300;
@@ -290,9 +331,23 @@ window.saveCallback =  function(err, success, cb) {
   }
 };
 
-window.headerUploadCompleteCallback = function(template) {
+
+var headerUploadCompleteCallback = function(template) {
     template.headerImageLoading.set(false);
   };
+
+var saveVerticalSectionContent = function(e, template) {
+  Session.set('saveState', 'saving');
+
+  Meteor.call('updateVerticalSectionContent',
+    Session.get('storyId'),
+    template.data.index,
+    cleanVerticalSectionContent($.trim(template.$('div.content').html())),
+    saveCallback);
+  return true;
+};
+
+var throttledSaveVerticalSectionContent = _.throttle(saveVerticalSectionContent, 4000, {trailing: false});
 
 Template.vertical_section_block.events({
   'blur [contenteditable]': window.updateUIBasedOnSelection,
@@ -310,16 +365,8 @@ Template.vertical_section_block.events({
     }
     return true;
   },
-  'blur .content[contenteditable]' : function(e, template){
-    Session.set('saveState', 'saving');
-
-    Meteor.call('updateVerticalSectionContent',
-      Session.get('storyId'),
-      template.data.index,
-      cleanVerticalSectionContent($.trim(template.$('div.content').html())),
-      saveCallback);
-    return true;
-  },
+  'blur .content[contenteditable]' : saveVerticalSectionContent,
+  'keyup .content[contenteditable]' : throttledSaveVerticalSectionContent,
   'paste .fold-editable': function(e) {
     var clipboardData, html;
     e.preventDefault();
@@ -548,75 +595,7 @@ Template.add_horizontal.helpers({
   }
 });
 
-Tracker.autorun(function(){
-  var story = Session.get('story');
-  var currentY = Session.get("currentY");
-  if (story && (currentY != null)) {
-    Session.set('currentVerticalSection', story.verticalSections[currentY]);
-  } else {
-    Session.set('currentVerticalSection', null);
-  }
-});
 
-Tracker.autorun(function() {
-  var verticalSection = Session.get('currentVerticalSection');
-  if (verticalSection) {
-    return Session.set('currentYId', verticalSection._id);
-  } else {
-    return Session.set('currentYId', null);
-  }
-});
-
-Tracker.autorun(function() {
-  var verticalSection = Session.get('currentVerticalSection');
-  var currentX = Session.get('currentX');
-  if (verticalSection) {
-    var currentContextBlockId = verticalSection.contextBlocks[currentX];
-    if (currentContextBlockId) {
-      return Session.set('currentXId', currentContextBlockId);
-    }
-  }
-  return Session.set('currentXId', null);
-});
-
-if (!Meteor.Device.isPhone()){ // highlight active context card link except on mobile
-  Tracker.autorun(function() {
-    if (currentXId = Session.get('currentXId')){
-      $('a[data-context-id="' + currentXId + '"]').addClass('active');
-      $('a[data-context-id!="' + currentXId + '"]').removeClass('active');
-    }
-  });
-}
-
-Tracker.autorun(function() { // update UI when start and stop adding/editing context
-  var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
-  var verticalSection = Session.get('currentVerticalSection');
-  if (verticalSection) {
-    currentContextBlocks = verticalSection.contextBlocks;
-    horizontalContextDiv = $(".horizontal-context");
-    horizontalContextDiv.removeClass('editing');
-    if (Session.get("addingContext") || (_ref = Session.get("editingContext"), __indexOf.call(currentContextBlocks, _ref) >= 0)) {
-      Session.set("showMinimap", false);
-      return horizontalContextDiv.addClass('editing');
-    } else {
-      Session.set("showMinimap", true);
-      if (document.body){
-        if(!Session.get('read')){
-          document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
-          removePlaceholderLinks();
-        }
-      }
-    }
-  }
-});
-
-
-// Hide add card menu when scroll
-// TO-DO probably remove all the currentY stuff, since we're not tracking that in any real way
-Tracker.autorun(function() {
-  Session.get('currentY'); // so reacts to changes in currentY
-  Session.set("addingContext", null);
-});
 
 var scrollToRelativePosition = function(offset) {
   var selectedNarrative = $('.vertical-narrative-section.selected');
@@ -638,14 +617,18 @@ var hideNewHorizontalUI = function() {
   return Session.set("addingContext", null);
 };
 
+var defaultContextType = 'video';
+
 var toggleHorizontalUI = function(forceBool) {
 
   if (!Session.get("addingContext")) {
+    Session.set('newHorizontalDataType', defaultContextType);
     showNewHorizontalUI()
   } else {
     hideNewHorizontalUI()
   }
 };
+
 
 Template.add_horizontal.events({
   "click": function(d) {
@@ -655,42 +638,42 @@ Template.add_horizontal.events({
 });
 
 Template.create_horizontal_section_block.onCreated(function() {
-  return this.type = new ReactiveVar('video');
+  Session.setDefault('newHorizontalDataType', defaultContextType);
 });
 
 Template.create_horizontal_section_block.helpers({
   type: function() {
-    return Template.instance().type.get();
+    return Session.get('newHorizontalDataType');
   },
   text: function() {
-    return Template.instance().type.get() === "text";
+    return Session.get('newHorizontalDataType') === "text";
   },
   image: function() {
-    return Template.instance().type.get() === "image";
+    return Session.get('newHorizontalDataType') === "image";
   },
   gif: function() {
-    return Template.instance().type.get() === "gif";
+    return Session.get('newHorizontalDataType') === "gif";
   },
   map: function() {
-    return Template.instance().type.get() === "map";
+    return Session.get('newHorizontalDataType') === "map";
   },
   video: function() {
-    return Template.instance().type.get() === "video";
+    return Session.get('newHorizontalDataType') === "video";
   },
   twitter: function() {
-    return Template.instance().type.get() === "twitter";
+    return Session.get('newHorizontalDataType') === "twitter";
   },
   viz: function() {
-    return Template.instance().type.get() === "viz";
+    return Session.get('newHorizontalDataType') === "viz";
   },
   audio: function() {
-    return Template.instance().type.get() === "audio";
+    return Session.get('newHorizontalDataType') === "audio";
   },
   link: function() {
-    return Template.instance().type.get() === "link";
+    return Session.get('newHorizontalDataType') === "link";
   },
   remix: function() {
-    return Template.instance().type.get() === "remix";
+    return Session.get('newHorizontalDataType') === "remix";
   }
 });
 
@@ -703,34 +686,34 @@ Template.create_horizontal_section_block.helpers({
 
 Template.create_horizontal_section_block.events({
   'click .text-button': function(d, t) {
-    return t.type.set('text');
+    return Session.set('newHorizontalDataType', 'text');
   },
   'click .map-button': function(d, t) {
-    return t.type.set('map');
+    return Session.set('newHorizontalDataType', 'map');
   },
   'click .video-button': function(d, t) {
-    return t.type.set('video');
+    return Session.set('newHorizontalDataType', 'video');
   },
   'click .image-button': function(d, t) {
-    return t.type.set('image');
+    return Session.set('newHorizontalDataType', 'image');
   },
   'click .gif-button': function(d, t) {
-    return t.type.set('gif');
+    return Session.set('newHorizontalDataType', 'gif');
   },
   'click .twitter-button': function(d, t) {
-    return t.type.set('twitter');
+    return Session.set('newHorizontalDataType', 'twitter');
   },
   'click .viz-button': function(d, t) {
-    return t.type.set('viz');
+    return Session.set('newHorizontalDataType', 'viz');
   },
   'click .audio-button': function(d, t) {
-    return t.type.set('audio');
+    return Session.set('newHorizontalDataType', 'audio');
   },
   'click .link-button': function(d, t) {
-    return t.type.set('link');
+    return Session.set('newHorizontalDataType', 'link');
   },
   'click .remix-button': function(d, t) {
-    return t.type.set('remix');
+    return Session.set('newHorizontalDataType', 'remix');
   },
   'mouseenter .horizontal-narrative-section': function() {
     document.body.style.overflow = 'hidden';

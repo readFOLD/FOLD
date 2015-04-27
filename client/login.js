@@ -1,10 +1,10 @@
 Template.login_form.onCreated(function() {
-  this.loginFailed = new ReactiveVar(false);
+  this.loginError = new ReactiveVar(false);
 });
 
 Template.login_form.helpers({
-  loginFailed: function() {
-    return Template.instance().loginFailed.get();
+  loginError: function() {
+    return Template.instance().loginError.get();
   } 
 });
 
@@ -21,9 +21,10 @@ Template.login_form.events({
       });
     Meteor.loginWithPassword(user_info.username.toLowerCase(), user_info.password, function(err){
       if (err) {
-        template.loginFailed.set(true); 
+        template.loginError.set(err.reason); 
       } else {
-        Router.go("/")
+        Router.go("/");
+        notifyLogin();
       }
       return;
     })

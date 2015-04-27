@@ -8,7 +8,6 @@ natestrauser:font-awesome@4.0.3
 accounts-password
 accounts-twitter
 underscore
-iron:router
 
 reactive-var
 http
@@ -31,3 +30,4 @@ dfischer:prerenderio
 email
 browser-policy
 reactive-dict
+fold:iron-router@=1.0.8

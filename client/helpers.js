@@ -77,11 +77,12 @@ Handlebars.registerHelper("profileImage", function(user, size) {
   } else {
     diameter = 60;
   }
+  var dprSetting = window.isHighDensity ? ',dpr_2.0' : '';
   if (user && user.profile) { 
     if ( user.profile.profilePicture) {
-      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + diameter + ',h_' + diameter + ',c_fill,g_face,dpr_auto/' + user.profile.profilePicture
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + user.profile.profilePicture
     } else if (user.services && user.services.twitter) {
-      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/w_' + diameter + ',h_' + diameter + ',c_fill,g_face,dpr_auto/' + user.services.twitter.id
+      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + user.services.twitter.id
     }
   }
 });

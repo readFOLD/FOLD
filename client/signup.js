@@ -1,19 +1,3 @@
-window.isValidPassword = function(p) {
-  if (p.length >= 6) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-var checkPassword = function(p1,p2) {
-  if (!isValidPassword(p1) || !(p1===p2)) {
-    return Template.instance().invalidPassword.set(true);
-  } else {
-    return Template.instance().invalidPassword.set(false);
-  }
-};
-
 var createUser = function(user, template) {
   Accounts.createUser({
     email: user.email,
@@ -24,18 +8,27 @@ var createUser = function(user, template) {
       }
     }, function(err) {
       if (err) {
-        template.signupError.set(err.reason || err.error);
+        if (err.error === 'username') {
+          template.usernameError.set(err.reason || err.error);          
+        } else if (err.error === 'email') {
+          template.emailError.set(err.reason || err.error);          
+        } else {
+          template.signupError.set(err.reason || err.error);          
+        }
+
       } else {
         Router.go('/');
+        notifyLogin();
      }});
   };
 
 Template.signup_form.onCreated(function() {
-  this.invalidPassword = new ReactiveVar(false);
   this.signupError = new ReactiveVar();
   this.emailError = new ReactiveVar();
+  this.nameError = new ReactiveVar();
   this.usernameError = new ReactiveVar();
   this.passwordError = new ReactiveVar();
+  this.password2Error = new ReactiveVar();
 });
 
 Template.signup_form.helpers({
@@ -48,78 +41,85 @@ Template.signup_form.helpers({
   emailUser: function() {  
    return Session.get('emailUser');
   },
-  invalidPassword: function() {
-    return Template.instance().invalidPassword.get();
-  },
   signupError: function() {
     return Template.instance().signupError.get();
   },
   emailError: function () { 
     return Template.instance().emailError.get();
   },
+  nameError: function () { 
+    return Template.instance().nameError.get();
+  },
   usernameError: function () { 
     return Template.instance().usernameError.get();
   },
   passwordError: function () { 
     return Template.instance().passwordError.get();
+  },
+  password2Error: function () { 
+    return Template.instance().password2Error.get();
   }
 });
 
 Template.signup_form.events({
-  'blur input#signup-email': function(e, t) {
-    var val = $(e.currentTarget).val();
-    if (!SimpleSchema.RegEx.Email.test(val) && val !== '') {
-      t.emailError.set('Invalid e-mail address');
-      return;
-    }
+  'blur input#signup-email, submit #signup-form': function(e, t) {
+    var email = $(e.currentTarget).val();
+    email = trimInput(email);
 
-    if (SimpleSchema.RegEx.Email.test(val) && val !== '') {
-      t.emailError.set('');
-      return;
-    }
-  },
-  'blur input#signup-username': function(e, t) {
-    var val = $("#signup-username").val();
-
-    var usernameRegex = /^[a-zA-Z0-9-_]+$/;  // Only alphanumeric, -, and _
-
-    if (!val.match(usernameRegex)) {
-      t.usernameError.set('Invalid username')
-      return;
+    var result = checkValidEmail(email)
+    if (!result.status) {
+      t.emailError.set(result.message)
     } else {
-      t.usernameError.set('')
+      t.emailError.set(false)
     }
   },
-  'blur input#signup-password': function(e, t) {
-    var p1 = $("#signup-password").val();
+  'blur input#signup-name, submit #signup-form': function(e, t) {
+    var name = $(e.currentTarget).val();
+    name = trimInput(name);
 
-    if (p1 === '') {
-      t.passwordError.set('');
-      return;
-    }
-
-    if (!isValidPassword(p1)) {
-      t.passwordError.set('Password too short')
-      return;
+    var result = checkValidName(name)
+    if (!result.status) {
+      t.nameError.set(result.message)
+    } else {
+      t.nameError.set(false)
     }
   },
+  'blur input#signup-username, submit #signup-form': function(e, t) {
+    var username = $("#signup-username").val();
+    username = trimInput(username);
 
-  'keyup input#signup-password2': function(e, t) {
+    var result = checkValidUsername(username)
+    if (!result.status) {
+      t.usernameError.set(result.message)
+    } else {
+      t.usernameError.set(false)
+    }
+  },
+  'blur input#signup-password, blur input#signup-password2, submit #signup-form': function(e, t) {
     var p1 = $("#signup-password").val();
     var p2 = $("#signup-password2").val();
 
-    if (p1 !== p2) {
-      t.passwordError.set('Passwords do not match')
-      return;
+    var result = checkValidPassword(p1, p2);
+    if (!result.status) {
+      t.passwordError.set(result.message)
+    } else {
+      t.passwordError.set(false)
     }
 
-    if (p1 === p2) {
-      t.passwordError.set('')
-      return;
+    var result2 = checkValidPasswordConfirmation(p1, p2);
+    if (!result2.status) {
+      t.password2Error.set(result2.message)
+    } else {
+      t.password2Error.set(false)
     }
   },
-  'submit #signup-form': function (e, template) {
+  'submit #signup-form': function (e, t) {
     e.preventDefault();
+
+    if (t.emailError.get() || t.usernameError.get() || t.passwordError.get()|| t.password2Error.get()) {
+      t.signupError.set('Please fix errors in required fields');
+      return;
+    }
 
     var inputs = $('#signup-form').serializeArray();
     var userInfo = {};
@@ -132,16 +132,15 @@ Template.signup_form.events({
     if (Meteor.user()) { // if just finishing signup and already created a user via twitter
       Meteor.call('updateInitialTwitterUserInfo', userInfo, function (err) {
         if (err) {
-          template.signupError.set(err.reason || err.error);
+          t.signupError.set(err.reason || err.error);
         } else {
           Router.go('/');
+          notifyLogin();
         }
       });
-    } else { // if email user
-      checkPassword(userInfo.password, userInfo.password2);
-      if (!template.invalidPassword.get()) {
-        createUser(userInfo, template);
-      }
+    } 
+    else { // if email user
+      createUser(userInfo, t);
     }
   }
 });

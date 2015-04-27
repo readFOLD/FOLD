@@ -58,20 +58,23 @@ div.user-profile {
     margin: 50px calc(50% ~"-" @picture-radius*0.5) 20px;
     overflow: hidden;
     position: relative;
+    margin-bottom: 35px;
 
   } 
 
   div.name, div.bio {
     text-align: center;
     word-wrap:break-word;
-    margin: 5px 45px;
+    margin: 15px 30px;
   }
   div.name {
-    font-size: 250%;
+    font-size: 20px;
+    font-weight: bold;
     margin-bottom: 10px;
-    line-height: 100%;
+    line-height: 120%;
   }
   div.bio {
+    font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
     line-height: 160%;
     font-style: italic;
   }

@@ -26,6 +26,7 @@ ejson@1.0.6
 email@1.0.6
 facts@1.0.4
 fastclick@1.0.3
+fold:iron-router@1.0.8
 gadicohen:robots-txt@0.0.9
 geojson-utils@1.0.3
 html-tools@1.0.4
@@ -38,7 +39,6 @@ iron:dynamic-template@1.0.7
 iron:layout@1.0.7
 iron:location@1.0.7
 iron:middleware-stack@1.0.7
-iron:router@1.0.7
 iron:url@1.0.7
 jquery@1.11.3_2
 json@1.0.3

@@ -49,7 +49,7 @@ Story = (function() {
   Story.prototype.contentPreview = function() {
     var content;
     if (content = this.verticalSections[0].content) {
-      return content.replace(/(<([^>]+)>)/ig, "");
+      return $($.parseHTML(content)).text();
     }
   };
 
@@ -264,7 +264,7 @@ AudioBlock = (function(_super) {
   };
 
   AudioBlock.prototype.previewUrl = function() {
-    if (this.source === 'soundcloud') {
+    if (this.source === 'soundcloud' && this.reference.artworkUrl) {
       return this.reference.artworkUrl.replace(/large\.jpg/, "t500x500.jpg");
     }
   };

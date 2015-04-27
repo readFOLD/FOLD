@@ -44,7 +44,7 @@
 </template>
 
 <template name="top_banner_simple_no_links">
-  <div class="home-top remix-color">
+  <div class="home-top remix-color not-sticky">
     <div class="left">
       <div class="logo-title">
           <img class="logo" src="/FOLD_LOGO.svg">
@@ -84,15 +84,13 @@
             </li>
           {{/if}}
         {{/unless}}
-        <li class="user-action">
-          {{> login_buttons }}
-        </li>
+        {{> login_buttons }}
 
         {{#unless isPhone}}
           <li class="about-fold">
             {{#linkTo route="about"}}
             <button>
-                About FOLD
+                <span class="text">About FOLD</span>
 
             </button>
             {{/linkTo}}
@@ -100,20 +98,21 @@
         {{/unless}}
       </ol>
     </div>
-    <div class="user-image">
-      <div class="author-image">
-        <!-- TODO, CHANGE AUTHORPIC -->
-        {{#if profileImage}}
-          <img class="profile-picture" src="{{profileImage}}"/>
-        {{/if}} 
-      </div>
-    </div>
+
   </div>
 </template>
 <template name="login_buttons">
+  <li class="user-action">
+
     {{#if currentUser}}
       <a href="/profile/{{currentUser.displayUsername}}">
-        <button>{{currentUser.profile.name}}</button>
+
+        <button>
+            {{#if profileImage currentUser}}
+              <img class="profile-picture" src="{{profileImage currentUser}}"/>
+            {{/if}}
+          <span class="text">{{currentUser.profile.name}}</span>
+        </button>
       </a>
       {{#if showUserInfo}}
         <ol class="user-menu">
@@ -128,11 +127,12 @@
     {{else}}
       <button class="signin"> Log in / Sign up</button>
     {{/if}}
+  </li>
 </template>
 
 <template name="create_story">
   <button class="create-story" href="javascript:void(0);">
-    Make a Story
+    <span class="text">Make a Story</span>
   </button>
 </template>
 

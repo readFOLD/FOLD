@@ -10,25 +10,72 @@
 
 <template name="signup_form">
     <form id="signup-form" action="action">
+      <!-- Email -->
       <label for="email"> What's your e-mail? </label>
       {{#if emailError}}<span class="error">{{emailError}}</span>{{/if}}
-      <input id="signup-email" name="email" type="email" placeholder="email@fold.com" autofocus="autofocus" class="{{#if emailError}}error{{/if}}">
+      <input id="signup-email"
+        name="email"
+        type="email"
+        placeholder="email@fold.com"
+        dir="auto"
+        autofocus="autofocus"
+        class="{{#if emailError}}error{{/if}}"
+        required
+      >
 
+      <!-- Name -->
       <label for="name"> What's your name? </label>
-      <input id="signup-name" name="name" type="text" placeholder="Full Name" dir="auto" value="{{#if currentUser.profile.name}}{{currentUser.profile.name}}{{/if}}">
+      {{#if nameError}}<span class="error">{{nameError}}</span>{{/if}}
+      <input id="signup-name"
+        name="name"
+        type="text"
+        placeholder="Full Name"
+        dir="auto"
+        value="{{#if currentUser.profile.name}}{{currentUser.profile.name}}{{/if}}"
+        class="{{#if nameError}}error{{/if}}"
+        required
+      >
 
+      <!-- Username -->
       <label for="username">What's your username?</label>
       {{#if usernameError}}<span class="error">{{usernameError}}</span>{{/if}}
-      <input id="signup-username" name="username" type="text" placeholder="Username" value="{{#if currentUser.tempUsername}}{{currentUser.tempUsername}}{{/if}}">
+      <input id="signup-username"
+        name="username"
+        type="text"
+        placeholder="Username"
+        dir="auto"
+        value="{{#if currentUser.tempUsername}}{{currentUser.tempUsername}}{{/if}}"
+        class="{{#if usernameError}}error{{/if}}"
+        required
+      >
+
+      <!-- Password -->
       {{#if emailUser}}
-        <label for="password"> Choose a password </label>
+        <label for="password">Choose a password</label>
         {{#if passwordError}}<span class="error">{{passwordError}}</span>{{/if}}
-        <input id="signup-password" name="password" type="password" placeholder="password" class="{{#if passwordError}}error{{/if}}">
-        <label for="password2"> Reenter your password </label>
-        <input id="signup-password2" name="password2" type="password" placeholder="password">
+        <input id="signup-password"
+          name="password"
+          type="password"
+          placeholder="password"
+          dir="auto"
+          class="{{#if passwordError}}error{{/if}}"
+          required
+        >
+        <label for="password2">Reenter your password</label>
+        {{#if password2Error}}<span class="error">{{password2Error}}</span>{{/if}}
+        <input id="signup-password2"
+          name="password2"
+          type="password"
+          placeholder="password"
+          dir="auto"
+          class="{{#if password2Error}}error{{/if}}"
+          required
+        >
         <!-- profile image here -->
       {{/if}}
+
       {{#if signupError}}<div class="error">{{signupError}}</div>{{/if}}
+
       <p>By creating an account, I accept FOLD’s {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}} and {{#linkTo route="privacy" target='_blank' class='green'}}Privacy Policy{{/linkTo}}.</p>
       <button type="submit" class="signup-button">Sign up</button>
     </form>

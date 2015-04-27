@@ -28,8 +28,9 @@ loginWithTwitter = function() {
       throw(err); // throw error so we see it on kadira
     } else if (!Meteor.user().username) { // if they are signing up for the first time they won't have a username yet
       Router.go('twitter-signup');
+    } else { // otherwise they are a returning user, they are now logged in and free to proceed
+      notifyLogin();
     }
-    // otherwise they are a returning user, so do nothing because they are now logged in and free to proceed
   });
 };
 
@@ -197,13 +198,25 @@ Template.all_stories.onCreated(function(){
     subscribeToTrendingStories(function() {
       subscribeToNewestStories(function(){
         subscribeToStarredStories(function(){
-          that.autorun(function(){
-            that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}));
-          });
+          if (!that.view.isDestroyed){ // because this happens asynchronously, the user may have already navigated away
+            that.autorun(function(){
+              that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}));
+            });
+          }
         })
       })
     });
   });
+
+  var notFirstRun = false;
+  this.autorun(function(){
+    Session.get('filterValue'); // re-run whenever filter value changes
+    if (notFirstRun){
+      $(window).scrollTop(0)
+    }
+    notFirstRun = true;
+  })
+
 });
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
@@ -296,10 +309,10 @@ Template.login_buttons.onCreated(function() {
 });
 
 Template.login_buttons.events({
-  "mouseenter": function(d) {
+  "mouseenter .user-action": function(d) {
     Template.instance().showUserInfo.set(true);
   },
-  "mouseleave": function(d) {
+  "mouseleave .user-action": function(d) {
     Template.instance().showUserInfo.set(false);
   },
   "click .signin": function(d) {

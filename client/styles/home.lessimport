@@ -11,6 +11,9 @@ div#login-buttons-and-more {
 
 div.home-top {
   position: fixed;
+  &.not-sticky{
+    position: absolute;
+  }
   background-color: white;
   height: 145px;
   @media @mobile{
@@ -109,7 +112,7 @@ div.home-top {
     font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
 
     button{
-      padding: 12px 20px;
+      padding: 0px 23px;
       min-width: 152px;
       .size-to-fit;
       &:hover {
@@ -146,6 +149,23 @@ div.home-top {
 
     .user-action {
       background-color: @remix-color;
+      @profile-picture-size: 28px;
+      button{
+        line-height: @height;
+      }
+      span{
+        margin: auto;
+        display: inline-block;
+      }
+      img.profile-picture {
+        margin:auto;
+        margin-right: 6px;
+        margin-bottom: -9.5px;
+        z-index: 10;
+        border-radius: @profile-picture-size/2;
+        width: @profile-picture-size;
+        height: auto;
+      }
     }
 
     .about-fold {
@@ -180,6 +200,9 @@ div.signup, div.login, div.user_profile {
   width: 100%;
   height: 100%;
 }
+
+@profile-picture-size: 60px;
+
 
 div.stories {
   @profile-section: 400px;
@@ -239,7 +262,6 @@ div.stories {
     margin-bottom: calc(9% ~"-" 27px);
   }
 
-  @profile-picture-size: 60px;
 
 
   div.byline {

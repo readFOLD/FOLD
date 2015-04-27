@@ -166,6 +166,7 @@ Meteor.startup(function() {
   Session.setDefault("pastY", []);
   Session.setDefault("pastX", []);
   Session.setDefault("currentY", void 0);
+  Session.setDefault("previousY", void 0);
   Session.setDefault("currentX", void 0);
   throttledUpdate = _.throttle(updatecurrentY, 20);
   return $(document).scroll(throttledUpdate);
@@ -769,6 +770,16 @@ Template.display_twitter_section.helpers(horizontalBlockHelpers);
 Template.display_map_section.helpers(horizontalBlockHelpers);
 
 Template.display_link_section.helpers(horizontalBlockHelpers);
+Template.display_link_section.events({
+  'click a': function (e, t) {
+    var url = e.currentTarget.href;
+    analytics.track('Click external link in link card', {
+      label: url,
+      url: url,
+      targetClassName: e.target.className
+    })
+  }
+});
 
 Template.display_text_section.onCreated(editableDescriptionCreatedBoilerplate);
 //Template.display_text_section.onDestroyed(editableDescriptionDestroyedBoilerplate('editTextSection'));
@@ -939,6 +950,48 @@ Template.display_twitter_section.events({
   }
 });
 
+
+Tracker.autorun(function(){
+  var story = Session.get('story');
+  var currentY = Session.get("currentY");
+  if (story && (currentY != null)) {
+    Session.set('currentVerticalSection', story.verticalSections[currentY]);
+  } else {
+    Session.set('currentVerticalSection', null);
+  }
+});
+
+Tracker.autorun(function() {
+  var verticalSection = Session.get('currentVerticalSection');
+  if (verticalSection) {
+    return Session.set('currentYId', verticalSection._id);
+  } else {
+    return Session.set('currentYId', null);
+  }
+});
+
+Tracker.autorun(function() {
+  var verticalSection = Session.get('currentVerticalSection');
+  var currentX = Session.get('currentX');
+  if (verticalSection) {
+    var currentContextBlockId = verticalSection.contextBlocks[currentX];
+    if (currentContextBlockId) {
+      return Session.set('currentXId', currentContextBlockId);
+    }
+  }
+  return Session.set('currentXId', null);
+});
+
+if (!Meteor.Device.isPhone()){ // highlight active context card link except on mobile
+  Tracker.autorun(function() {
+    if (currentXId = Session.get('currentXId')){
+      $('a[data-context-id="' + currentXId + '"]').addClass('active');
+      $('a[data-context-id!="' + currentXId + '"]').removeClass('active');
+    }
+  });
+}
+
+
 Template.create_story.events({
   'click': function(){
     if (Meteor.user()){
@@ -957,39 +1010,9 @@ Template.create_story.events({
   }
 });
 
-// ui setup moved from onRun
-Template.about.onCreated(function(){
-  $('html, body').scrollTop(0);
-});
-
-Template.terms.onCreated(function(){
-  $('html, body').scrollTop(0);
-});
-
-Template.home.onCreated(function(){
-  $('html, body').scrollTop(0);
-});
-
-
-Template.signup.onCreated(function(){
-  $('html, body').scrollTop(0);
-});
-
-Template.login.onCreated(function(){
-  $('html, body').scrollTop(0);
-});
-
 
 var storyViewed = '';
 Template.read.onCreated(function(){
-  $('html, body').scrollTop(0);
-  Session.set("wrap", {});
-  Session.set("currentXByYId", {});
-  Session.set("showMinimap", true);
-  Session.set("showDraft", false);
-
-  Session.set("mobileContextView", false);
-  Session.set("currentY", null);
 
   // analytics autorun
   this.autorun(function(){
@@ -1004,8 +1027,7 @@ Template.read.onCreated(function(){
         storyId: Session.get("storyId")
       })
     }
-  })
-
+  });
 
   var id = this.data._id;
   if (storyViewed !== id){
@@ -1015,13 +1037,7 @@ Template.read.onCreated(function(){
   }
 });
 
-Template.create.onCreated(function(){
-  Session.set("wrap", {});
-  Session.set("currentXByYId", {});
-  Session.set("currentY", null);
-  Session.set("read", false);
-  Session.set("newStory", false);
-  Session.set("showDraft", true);
-  Session.set("showMinimap", true);
-  $('html, body').scrollTop(0);
+
+Template.read.onRendered(function(){
+  $(window).scrollTop(Session.get('scrollTop'));
 });

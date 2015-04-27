@@ -62,7 +62,11 @@ Router.route("home", {
       return this.render();
     }
   },
-  data: function() {}
+  data: function() {},
+  onRun: function(){
+    $('html, body').scrollTop(0);
+    this.next();
+  }
 });
 
 Router.route("about", {
@@ -77,7 +81,11 @@ Router.route("about", {
       return this.render();
     }
   },
-  data: function() {}
+  data: function() {},
+  onRun: function(){
+    $('html, body').scrollTop(0);
+    this.next();
+  }
 });
 
 Router.route("terms", {
@@ -92,7 +100,11 @@ Router.route("terms", {
       return this.render();
     }
   },
-  data: function() {}
+  data: function() {},
+  onRun: function(){
+    $('html, body').scrollTop(0);
+    this.next();
+  }
 });
 
 Router.route("privacy", {
@@ -107,7 +119,11 @@ Router.route("privacy", {
       return this.render();
     }
   },
-  data: function() {}
+  data: function() {},
+  onRun: function(){
+    $('html, body').scrollTop(0);
+    this.next();
+  }
 });
 
 Router.route("profile", {
@@ -142,6 +158,10 @@ Router.route("profile", {
           // TODO add 404 tags for seo etc...
         }
       }
+  },
+  onRun: function(){
+    $('html, body').scrollTop(0);
+    this.next();
   }
 });
 
@@ -156,8 +176,12 @@ Router.route("recover_password", {
       setStatusCode();
       return this.render();
     }
+  },
+  onRun: function(){
+    $('html, body').scrollTop(0);
+    this.next();
   }
-})
+});
 
 Router.route("reset_password", {
   path: "reset-password/:resetPasswordToken",
@@ -173,6 +197,10 @@ Router.route("reset_password", {
       setStatusCode();
       return this.render();
     }
+  },
+  onRun: function(){
+    $('html, body').scrollTop(0);
+    this.next();
   }
 })
 
@@ -201,6 +229,10 @@ Router.route("my_story_profile", {
       });
       return notifyInfo("You must be logged in to view your stories");
     }
+  },
+  onRun: function(){
+    $('html, body').scrollTop(0);
+    this.next();
   }
 });
 
@@ -244,7 +276,7 @@ Router.route("read", {
         }));
         setTitle(story.title);
         setMetaImage(story.headerImageUrl());
-        setMetaDescription(story.verticalSections[0].content);
+        setMetaDescription(story.contentPreview());
         setStatusCode();
         return story;
       } else {
@@ -256,6 +288,17 @@ Router.route("read", {
         // TODO add 404 tags for seo etc...
       }
     }
+  },
+  onRun: function(){
+    Session.set('scrollTop', 0);
+    Session.set("wrap", {});
+    Session.set("currentXByYId", {});
+    Session.set("showMinimap", true);
+    Session.set("showDraft", false);
+    Session.set("mobileContextView", false);
+    Session.set("currentY", null);
+    Session.set("previousY", null);
+    this.next();
   },
   onBeforeAction: function() {
     Session.set("newStory", false);
@@ -307,6 +350,18 @@ Router.route("edit", {
         // TODO add 404 tags for seo etc...
       }
     }
+  },
+  onRun: function(){
+    Session.set('scrollTop', 0);
+    Session.set("wrap", {});
+    Session.set("currentXByYId", {});
+    Session.set("currentY", null);
+    Session.set("previousY", null);
+    Session.set("read", false);
+    Session.set("newStory", false);
+    Session.set("showDraft", true);
+    Session.set("showMinimap", true);
+    this.next();
   },
   action: function() {
     if (this.ready()) {
@@ -382,6 +437,10 @@ Router.route("twitter-signup", {
       setStatusCode();
       return this.render();
     }
+  },
+  onRun: function(){
+    $('html, body').scrollTop(0);
+    this.next();
   }
 });
 
@@ -398,6 +457,10 @@ Router.route("email-signup", {
       setStatusCode();
       return this.render();
     }
+  },
+  onRun: function(){
+    $('html, body').scrollTop(0);
+    this.next();
   }
 });
 
@@ -412,10 +475,18 @@ Router.route("login", {
       setStatusCode();
       return this.render();
     }
+  },
+  onRun: function(){
+    $('html, body').scrollTop(0);
+    this.next();
   }
 });
 
 Router.route("stats", {
   path: "stats",
-  template: "stats"
+  template: "stats",
+  onRun: function(){
+    $('html, body').scrollTop(0);
+    this.next();
+  }
 });
