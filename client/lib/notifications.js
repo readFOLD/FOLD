@@ -24,6 +24,13 @@ window.notifySuccess = function(message){
   );
 };
 
+window.notifyLogin = function(){
+  var user = Meteor.user();
+  var name = user.profile.name ? user.profile.name.split(' ')[0] : user.profile.displayUsername;
+  notifySuccess('Welcome ' + name + '!');
+};
+
+
 window.notifyError = function(message){
   $.amaran({
       content: {

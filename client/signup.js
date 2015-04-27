@@ -18,6 +18,7 @@ var createUser = function(user, template) {
 
       } else {
         Router.go('/');
+        notifyLogin();
      }});
   };
 
@@ -138,6 +139,7 @@ Template.signup_form.events({
           t.signupError.set(err.reason || err.error);
         } else {
           Router.go('/');
+          notifyLogin();
         }
       });
     } 

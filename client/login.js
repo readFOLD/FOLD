@@ -23,7 +23,8 @@ Template.login_form.events({
       if (err) {
         template.loginError.set(err.reason); 
       } else {
-        Router.go("/")
+        Router.go("/");
+        notifyLogin();
       }
       return;
     })
