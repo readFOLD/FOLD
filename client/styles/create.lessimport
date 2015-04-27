@@ -356,7 +356,6 @@ div.title-overlay {
     background-color: @dark-color;
     padding: 5px 10px;
     opacity: 0.0;
-    font-size: 13px;
 
     &.shown{
       opacity: 1.0;

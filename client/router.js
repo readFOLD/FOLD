@@ -361,6 +361,10 @@ Router.route("edit", {
     Session.set("newStory", false);
     Session.set("showDraft", true);
     Session.set("showMinimap", true);
+    Session.set('saveState', 'saved');
+    if (Meteor.isClient){
+      window.readyToMigrate.set(false);
+    }
     this.next();
   },
   action: function() {

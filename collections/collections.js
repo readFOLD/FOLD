@@ -1038,6 +1038,7 @@ Schema.ContextBlocks = new SimpleSchema({
   },
   content: {
     type: String,
+    trim: false,
     label: " ",
     optional: true,
     autoform: {
@@ -1216,7 +1217,8 @@ var verticalSectionSchema = new SimpleSchema({
     defaultValue: false
   },
   'content': {
-    type: String
+    type: String,
+    trim: false
   },
   'contextBlocks': {
     type: [String],

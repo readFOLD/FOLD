@@ -61,56 +61,88 @@ Template.signup_form.helpers({
   }
 });
 
+var checkEmailField =  function(e, t) {
+  var email = $('input#signup-email').val();
+  email = trimInput(email);
+
+  var result = checkValidEmail(email);
+  if (!result.status) {
+    t.emailError.set(result.message)
+  } else {
+    t.emailError.set(false)
+  }
+};
+
+var checkNameField = function(e, t) {
+  var name = $('input#signup-name').val();
+  name = trimInput(name);
+
+  var result = checkValidName(name);
+  if (!result.status) {
+    t.nameError.set(result.message)
+  } else {
+    t.nameError.set(false)
+  }
+};
+
+var checkUsernameField = function(e, t) {
+  var username = $("#signup-username").val();
+  username = trimInput(username);
+
+  var result = checkValidUsername(username);
+  if (!result.status) {
+    t.usernameError.set(result.message)
+  } else {
+    t.usernameError.set(false)
+  }
+};
+
+var checkPasswordFields = function(e, t) {
+  var p1 = $("#signup-password").val();
+  var p2 = $("#signup-password2").val();
+
+  var result = checkValidPassword(p1, p2);
+  if (!result.status) {
+    t.passwordError.set(result.message);
+  } else {
+    t.passwordError.set(false);
+  }
+
+  var result2 = checkValidPasswordConfirmation(p1, p2);
+  if (!result2.status) {
+    t.password2Error.set(result2.message);
+  } else {
+    t.password2Error.set(false);
+  }
+};
+
+var enterPress = function(e){
+  return e.keyCode === 13
+};
+
 Template.signup_form.events({
-  'blur input#signup-email, submit #signup-form': function(e, t) {
-    var email = $('input#signup-email').val();
-    email = trimInput(email);
-
-    var result = checkValidEmail(email);
-    if (!result.status) {
-      t.emailError.set(result.message)
-    } else {
-      t.emailError.set(false)
+  'blur input#signup-email': checkEmailField,
+  'keypress input#signup-email': function(e,t) {
+    if (enterPress(e)) {
+      checkEmailField(e, t);
     }
   },
-  'blur input#signup-name, submit #signup-form': function(e, t) {
-    var name = $('input#signup-name').val();
-    name = trimInput(name);
-
-    var result = checkValidName(name);
-    if (!result.status) {
-      t.nameError.set(result.message)
-    } else {
-      t.nameError.set(false)
+  'blur input#signup-name': checkNameField,
+  'keypress input#signup-name': function(e,t) {
+    if (enterPress(e)) {
+      checkNameField(e, t);
     }
   },
-  'blur input#signup-username, submit #signup-form': function(e, t) {
-    var username = $("#signup-username").val();
-    username = trimInput(username);
-
-    var result = checkValidUsername(username);
-    if (!result.status) {
-      t.usernameError.set(result.message)
-    } else {
-      t.usernameError.set(false)
+  'blur input#signup-username': checkUsernameField,
+  'keypress input#signup-username': function(e,t) {
+    if (enterPress(e)) {
+      checkUsernameField(e, t);
     }
   },
-  'blur input#signup-password, blur input#signup-password2, submit #signup-form': function(e, t) {
-    var p1 = $("#signup-password").val();
-    var p2 = $("#signup-password2").val();
-
-    var result = checkValidPassword(p1, p2);
-    if (!result.status) {
-      t.passwordError.set(result.message);
-    } else {
-      t.passwordError.set(false);
-    }
-
-    var result2 = checkValidPasswordConfirmation(p1, p2);
-    if (!result2.status) {
-      t.password2Error.set(result2.message);
-    } else {
-      t.password2Error.set(false);
+  'blur input#signup-password, blur input#signup-password2': checkPasswordFields,
+    'keypress input#signup-password, blur input#signup-password2': function(e,t) {
+    if (enterPress(e)) {
+      checkPasswordFields(e, t);
     }
   },
   'submit #signup-form': function (e, t) {

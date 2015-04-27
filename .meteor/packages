@@ -31,3 +31,4 @@ email
 browser-policy
 reactive-dict
 fold:iron-router@=1.0.8
+reload

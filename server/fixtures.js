@@ -42,7 +42,6 @@ if (Stories.find().count() === 0) {
     authorUsername: 'author',
     authorDisplayUsername: 'authOr',
     favorited: [],
-    views: 0,
 
     verticalSections: [
       {
