@@ -30,7 +30,9 @@ window.updateUIBasedOnSelection = function(e){
       window.selectedNode = null;
 
       var selectionType = window.getSelection().type;
-      if(selectionType === 'Range' || selectionType === 'Caret' ) {
+      var selectionLength = window.getSelection().toString().length;
+
+      if (selectionType !== 'None'){//(selectionType === 'Range' || selectionType === 'Caret' ) {
         range = selection.getRangeAt(0);
 
         // Get containing tag
@@ -52,7 +54,7 @@ window.updateUIBasedOnSelection = function(e){
             tagName = parentNode.tagName.toLowerCase();
             selectedTags.push(tagName);
 
-            if (selectionType === 'Caret' && tagName === 'a') {
+            if (selectionType !== 'Range' && tagName === 'a') { // we want type === 'Caret', but firefox doesn't do that, so just avoid range
               window.enclosingAnchorTag = parentNode;
               break;
             }
@@ -63,7 +65,7 @@ window.updateUIBasedOnSelection = function(e){
 
           // TO-DO actually get this from selection
           if (e) {
-            if (selectionType === 'Range') {
+            if (selectionType === 'Range' || selectionLength) { // need to check selection length for firefox
               showFoldEditor();
               boundary = range.getBoundingClientRect();
               boundaryMiddle = (boundary.left + boundary.right) / 2;
