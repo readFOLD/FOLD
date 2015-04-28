@@ -226,9 +226,8 @@ Template.all_stories.onCreated(function(){
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   curatedStories: function() {
-    if (subscriptionsReady.get('curatedStories')) {
-      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 30, reactive: false});
-    }
+    // preview versions of all these stories come from fast-render so we can show them right away
+    return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 30, reactive: false});
   },
   trendingStories: function() {
     if (subscriptionsReady.get('trendingStories')) {
@@ -290,6 +289,9 @@ Template._story_preview_content.helpers({
   },
   profileUrl: function(){
     return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate and only use authorDisplayUsername
+  },
+  contextCountOfType: function(type){
+    return this.contextBlockTypeCount[type];
   }
 });
 

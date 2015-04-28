@@ -48,12 +48,38 @@ var readStoryFields = {
   'contextBlocks.searchOption': 0
 };
 
-Meteor.publish("curatedStoriesPub", function() {
+var previewStoryFields = {
+  shortId: 1,
+  savedAt: 1,
+  createdAt: 1,
+  publishedAt: 1,
+  firstPublishedAt: 1,
+  published: 1,
+  userPathSegment: 1,
+  authorId: 1,
+  authorName: 1,
+  authorUsername: 1,
+  authorDisplayUsername: 1,
+  //favorited: 1, // will need to add this back in for non-curated stories to use preview
+  editorsPick: 1,
+  editorsPickAt: 1,
+  //'analytics.views': 1,  // will need to add this back in for non-curated stories to use preview
+  'analytics.shares': 1,
+  contextBlockTypeCount: 1,
+  headerImageFormat: 1,
+  headerImage: 1,
+  storyPathSegment: 1,
+  title: 1
+}
+
+Meteor.publish("curatedStoriesPub", function(options) {
+  options = options ? options : {};
+
   return Stories.find({
     published: true,
     editorsPick: true
   }, {
-    fields: readStoryFields,
+    fields: options.preview ? previewStoryFields : readStoryFields,
     sort: {
       editorsPickAt: -1
     },
