@@ -33,7 +33,7 @@ var readStoryFields = {
   everPublished:0,
   //deleted: 0, // currently always blank so no need to filter
   //deletedAt: 0, // currently always blank so no need to filter
-  analytics: 0,
+  'analytics.shares': 0,
   //'contextBlocks.authorId': 0, // used in analytics
   //'contextBlocks.storyShortId': 0, // used in analytics
   'contextBlocks.storyId': 0,
