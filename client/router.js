@@ -294,7 +294,6 @@ Router.route("read", {
     Session.set("wrap", {});
     Session.set("currentXByYId", {});
     Session.set("showMinimap", true);
-    Session.set("showDraft", false);
     Session.set("mobileContextView", false);
     Session.set("currentY", null);
     Session.set("previousY", null);
@@ -305,6 +304,9 @@ Router.route("read", {
     Session.set("read", true);
 
     return this.next();
+  },
+  onAfterAction: function(){
+    Session.set("showDraft", false);
   }
 });
 
