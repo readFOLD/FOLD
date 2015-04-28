@@ -24,15 +24,36 @@ Meteor.users._ensureIndex({
   username: 1
 });
 
+var readStoryFields = {
+  draftStory: 0,
+  history: 0,
+  narrativeRightsReserved: 0,
+  //savedAt: 0, // used in analytics
+  //createdAt:0, // used in analytics
+  everPublished:0,
+  //deleted: 0, // currently always blank so no need to filter
+  //deletedAt: 0, // currently always blank so no need to filter
+  analytics: 0,
+  //'contextBlocks.authorId': 0, // used in analytics
+  //'contextBlocks.storyShortId': 0, // used in analytics
+  'contextBlocks.storyId': 0,
+  'contextBlocks.version': 0,
+  'contextBlocks.savedAt': 0,
+  'contextBlocks.publishedAt': 0,
+  'contextBlocks.createdAt': 0,
+  'contextBlocks.fullDetails': 0,
+  'contextBlocks.published': 0,
+  'contextBlocks.everPublished': 0,
+  'contextBlocks.searchQuery': 0,
+  'contextBlocks.searchOption': 0
+};
+
 Meteor.publish("curatedStoriesPub", function() {
   return Stories.find({
     published: true,
     editorsPick: true
   }, {
-    fields: {
-      draftStory: 0,
-      history: 0
-    },
+    fields: readStoryFields,
     sort: {
       editorsPickAt: -1
     },
@@ -44,10 +65,7 @@ Meteor.publish("newestStoriesPub", function() { // for now, it's just publishedA
   return Stories.find({
     published: true
   }, {
-    fields: {
-      draftStory: 0,
-      history: 0
-    },
+    fields: readStoryFields,
     sort: {
       publishedAt: -1
     },
@@ -59,10 +77,7 @@ Meteor.publish("trendingStoriesPub", function() { // for now, it's just the most
   return Stories.find({
     published: true
   }, {
-    fields: {
-      draftStory: 0,
-      history: 0
-    },
+    fields: readStoryFields,
     sort: {
       views: -1
     },
@@ -76,10 +91,7 @@ Meteor.publish("starredStoriesPub", function() { // TODO migrate current favorit
 
   return Stories.find({
     published: true,
-    fields: {
-      draftStory: 0,
-      history: 0
-    },
+    fields: readStoryFields,
     sort: {
       'favoritedTotal': -1
     },
@@ -92,10 +104,7 @@ Meteor.publish("favoriteStoriesPub", function(ids) { // requires ids to be passe
     published: true,
     _id: { $in : ids }
   }, {
-    fields: {
-      draftStory: 0,
-      history: 0
-    },
+    fields: readStoryFields,
     sort: {
       publishedAt: -1
     },

@@ -924,7 +924,7 @@ Template.remix_bar.events({
       "authorId",
       "index",
       "source",
-      "storyId",
+      //"storyId",
       "storyShortId",
       "type",
       "verticalId",
