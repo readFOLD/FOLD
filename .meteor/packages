@@ -33,4 +33,4 @@ reactive-dict
 fold:iron-router@=1.0.10
 reload
 meteorhacks:subs-manager
-meteorhacks:fast-render
+fold:fast-render@2.3.2
