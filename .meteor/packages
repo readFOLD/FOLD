@@ -30,5 +30,5 @@ dfischer:prerenderio
 email
 browser-policy
 reactive-dict
-fold:iron-router@=1.0.8
+fold:iron-router@=1.0.10
 reload
