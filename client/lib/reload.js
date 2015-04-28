@@ -33,6 +33,5 @@ Reload._onMigrate('fold', function (retry) {
 var migrationData = Reload._migrationData('fold');
 
 if (migrationData){
-  console.log('just migrated!!')
   window.codeReloaded = migrationData.codeReloaded;
 }
