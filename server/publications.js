@@ -79,7 +79,7 @@ Meteor.publish("trendingStoriesPub", function() { // for now, it's just the most
   }, {
     fields: readStoryFields,
     sort: {
-      views: -1
+      'analytics.views.total': -1
     },
     limit: 30 // initial limit
   });

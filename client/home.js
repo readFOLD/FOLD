@@ -232,7 +232,7 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
   },
   trendingStories: function() {
     if (subscriptionsReady.get('trendingStories')) {
-      return Stories.find({published: true}, {sort: {'views': -1}, limit: 30, reactive: false});
+      return Stories.find({published: true}, {sort: {'analytics.views.total': -1}, limit: 30, reactive: false});
     }
   },
   newestStories: function() {
