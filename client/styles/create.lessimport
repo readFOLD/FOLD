@@ -867,6 +867,12 @@ div.horizontal-context {
     overflow-y: scroll;
   }
 
+  .link-section.preview-section {
+    max-height: calc(100% ~"-" @searchFormHeight ~"-" 105px);
+    margin-top: 20px;
+    overflow-y: scroll;
+  }
+
   ol.search-results-container {   
     background-color: #ffffff;   
     width: 100%;
