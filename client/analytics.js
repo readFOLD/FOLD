@@ -1,7 +1,6 @@
 
 analytics.load(Meteor.settings["public"].SEGMENT_WRITE_KEY);
 
-// NOTE this stops running after hot code reload https://github.com/iron-meteor/iron-router/issues/1219
 Router.onRun(function() {
   var that = this;
 
@@ -23,38 +22,43 @@ window.trackTiming = function(category, str, time){  // mobile safari doesn't ha
 
 var jsLoadTime = Date.now() - startTime;
 
-trackTiming('JS', 'JS Loaded', jsLoadTime);
+if (!window.codeReloaded){
+  trackTiming('JS', 'JS Loaded', jsLoadTime);
+}
 
 
 Meteor.startup(function() {
-  var timeTillDOMReady = Date.now() - startTime;
 
-  trackTiming('DOM', 'DOM Ready', timeTillDOMReady);
+  if (!window.codeReloaded) {
+    var timeTillDOMReady = Date.now() - startTime;
 
-  Tracker.autorun(function(c) {
-    // waiting for user subscription to load
-    if (! Router.current() || ! Router.current().ready())
-      return;
+    trackTiming('DOM', 'DOM Ready', timeTillDOMReady);
 
-    var user = Meteor.user();
-    if (! user)
-      return;
+    Tracker.autorun(function(c) {
+      // waiting for user subscription to load
+      if (! Router.current() || ! Router.current().ready())
+        return;
 
-    var identificationInfo = {};
+      var user = Meteor.user();
+      if (! user)
+        return;
 
-    if (user.profile.name){
-      identificationInfo.name = user.profile.name;
-    }
-    if (user.emails && user.emails.length){
-      identificationInfo.email = user.emails[0].address;
-    }
+      var identificationInfo = {};
 
-    if (user._id){
-      analytics.identify(user._id, identificationInfo);
-    }
+      if (user.profile.name){
+        identificationInfo.name = user.profile.name;
+      }
+      if (user.emails && user.emails.length){
+        identificationInfo.email = user.emails[0].address;
+      }
 
-    c.stop();
-  });
+      if (user._id){
+        analytics.identify(user._id, identificationInfo);
+      }
+
+      c.stop();
+    });
+  }
 });
 
 // TODO alias user when created

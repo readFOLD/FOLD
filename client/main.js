@@ -1050,39 +1050,3 @@ Template.read.onCreated(function(){
 Template.read.onRendered(function(){
   $(window).scrollTop(Session.get('scrollTop'));
 });
-
-window.readyToMigrate = new ReactiveVar(false);
-
-Reload._onMigrate(function (retry) {
-  if(Router.current().route.getName() === 'edit'){
-    if (readyToMigrate.get()) {
-      return [true, {}];
-    } else {
-      notifyDeploy("We've just made an improvement! Click here to sync up the latest code.", true);
-      $('.migration-notification').click(function(){
-        saveCallback(null, true);
-        setTimeout(function(){
-          readyToMigrate.set(true);
-          retry();
-        }, 300);
-      });
-      Router.onRun(function(){
-        readyToMigrate.set(true);
-        retry();
-      });
-      return [false];
-    }
-  } else {
-    if (readyToMigrate.get()) {
-      return [true, {}];
-    } else {
-      notifyDeploy("We've just made an improvement! Wait just a moment while we sync up the latest code.", false);
-      setTimeout(function(){
-        readyToMigrate.set(true);
-        retry();
-      }, 2000);
-      return [false]
-    }
-  }
-
-});
