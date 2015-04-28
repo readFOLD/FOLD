@@ -295,16 +295,6 @@ Template._story_preview_content.helpers({
   }
 });
 
-Template.banner_buttons.helpers({
-  showCreateStory: function() {
-    if (!Meteor.user()){
-      return true
-    }
-    var accessPriority = Meteor.user().accessPriority;
-    return accessPriority && accessPriority <= window.createAccessLevel;
-  }
-});
-
 Template.login_buttons.helpers({
   showUserInfo: function() {
     return Template.instance().showUserInfo.get();

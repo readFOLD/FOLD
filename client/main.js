@@ -1004,14 +1004,19 @@ if (!Meteor.Device.isPhone()){ // highlight active context card link except on m
 Template.create_story.events({
   'click': function(){
     if (Meteor.user()){
-      Meteor.call('createStory', function(err, pathObject){
-        if (err) {
-          notifyError(err);
-          throw(err);
-        }
-        analytics.track('User clicked create and created story');
-        Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
-      })
+      var accessPriority = Meteor.user().accessPriority;
+      if (accessPriority && accessPriority <= window.createAccessLevel){
+        Meteor.call('createStory', function(err, pathObject){
+          if (err) {
+            notifyError(err);
+            throw(err);
+          }
+          analytics.track('User clicked create and created story');
+          Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
+        })
+      } else {
+        notifyInfo("Due to high demand, we had to turn off 'create new story' functionality for a moment. Stay tuned for updates!");
+      }
     } else {
       Session.set('signingIn', true)
       analytics.track('User clicked create and needs to sign in');
