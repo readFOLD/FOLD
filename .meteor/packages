@@ -32,3 +32,5 @@ browser-policy
 reactive-dict
 fold:iron-router@=1.0.10
 reload
+meteorhacks:subs-manager
+meteorhacks:fast-render
