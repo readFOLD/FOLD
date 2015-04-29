@@ -527,7 +527,7 @@ Template.create_image_section.helpers({
 
 Template.create_image_section.events({
   'change input[type=file]': function(e, t){
-    var file = _.first(event.target.files);
+    var file = _.first(e.target.files);
     if (file){
       var reader = new FileReader;
       reader.onload = function(upload){
