@@ -618,7 +618,7 @@ Template.horizontal_context.helpers({
             if (cBlock) {
               return cBlock;
             } else {
-              throw new Meteor.Error('context card not found on story ', + that._id);
+              throw new Meteor.Error('context card not found on story ' + that._id + ' .  context card: ' + id);
             }
           })
           .map(window.newTypeSpecificContextBlock)
