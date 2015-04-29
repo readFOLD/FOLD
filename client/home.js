@@ -288,7 +288,7 @@ Template._story_preview_content.helpers({
     return Meteor.users.findOne(this.authorId)
   },
   profileUrl: function(){
-    return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate and only use authorDisplayUsername
+    return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate drafts and only use authorDisplayUsername
   },
   contextCountOfType: function(type){
     return this.contextBlockTypeCount[type];
