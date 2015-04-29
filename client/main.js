@@ -5,9 +5,6 @@ UI.registerHelper('selectedIf', function(val) {
   return val ? 'selected' : '';
 });
 
-Meteor.startup(function(){
-  Meteor.subscribe('userData');
-});
 
 getCardWidth = function(windowWidth) {
   if (Meteor.Device.isPhone()){
