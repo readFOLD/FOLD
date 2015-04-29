@@ -104,21 +104,19 @@ updatecurrentY = function() {
     $("div.title-author").removeClass("fixed");
   }
   if (scrollTop >= stickyBody) {
-    vertTop = 427 + scrollTop - stickyTitle;
     $("div.horizontal-context").addClass("fixed");
-    $("div.vertical-narrative").css({
-      top: vertTop
-    });
+    $("div.vertical-narrative").addClass("fixed");
+    $("div.vertical-narrative").removeClass("free-scroll");
+
     if (scrollTop >= maxScroll) {
-      $("div.vertical-narrative").css({
-        top: 557
-      });
+      $("div.vertical-narrative").removeClass("fixed");
+      $("div.vertical-narrative").addClass("free-scroll");
+
     }
   } else {
-    $("div.vertical-narrative").css({
-      top: 427
-    });
     $("div.horizontal-context").removeClass("fixed");
+    $("div.vertical-narrative").removeClass("fixed");
+    $("div.vertical-narrative").removeClass("free-scroll");
   }
   if (scrollTop >= maxScroll) {
     $("div.title-overlay, div#banner-overlay").addClass("fixed");
