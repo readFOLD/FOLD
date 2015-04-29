@@ -14,20 +14,6 @@ Schema = {};
 Story = (function() {
   function Story(doc) {
     _.extend(this, doc);
-    if (this.verticalSections == null) {
-      this.verticalSections = [];
-    }
-    if (this.published == null) {
-      this.published = false;
-    }
-    if (this.verticalSections.length === 0) {
-      this.verticalSections.push({
-        _id: Random.id(8),
-        contextBlocks: [],
-        title: "",
-        content: ""
-      });
-    }
     if (this.draftStory){
       _.extend(this.draftStory, {
         unpublishedChanges: (!this.published || !this.publishedAt || this.savedAt > this.publishedAt),
