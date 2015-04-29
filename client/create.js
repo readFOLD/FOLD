@@ -443,7 +443,7 @@ Template.create.events({
         template.publishing.set(true);
         analytics.track('Click publish button');
       } else {
-        notifyInfo("Publish will be available soon! You'll be able to use it to submit your story to be featured on our site when we launch in early April.");
+        notifyInfo("Due to high demand, we had to turn off publish functionality for a moment. Stay tuned for updates!");
       }
     });
   },
