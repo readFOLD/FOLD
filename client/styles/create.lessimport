@@ -262,7 +262,7 @@ div.title-overlay {
   z-index: 30;
   color: @light-color;
   position: relative;
-  overflow-y: hidden;
+  overflow: hidden;
   background-color: @unselected-background-color;
 
   .header-overlay-image, video{
