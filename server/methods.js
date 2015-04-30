@@ -217,7 +217,7 @@ Meteor.methods({
   flickrImageSearchList: function(query, option, page) {
     var items, nextPage, newQuery;
     var path = 'flickr.photos.search';
-    var photo_id= '';
+    var photo_id = '';
     check(query, String);
 
     if ((query.indexOf('flickr.com') !==-1) && (query.indexOf('/photos/') !==-1)){
@@ -231,7 +231,7 @@ Meteor.methods({
     }
 
     if (newQuery) {
-      photo_id = newQuery || query;
+      photo_id = newQuery;
       path = 'flickr.photos.getInfo';
     }
 
