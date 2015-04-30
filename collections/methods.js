@@ -229,7 +229,7 @@ Meteor.methods({
     var setObject = { $set:{} };
     setObject['$set']['draftStory.verticalSections.' + index + '.content'] = content;
 
-    return updateStory.call(this, {_id: storyId}, setObject, {removeEmptyStrings: false})
+    return updateStory.call(this, {_id: storyId}, setObject, {removeEmptyStrings: false, autoConvert: false}); // don't autoconvert because https://github.com/aldeed/meteor-simple-schema/issues/348
   },
   updateHeaderImage: function(storyId, filePublicId, fileFormat) {
     check(storyId, String);
