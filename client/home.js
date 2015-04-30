@@ -291,7 +291,7 @@ Template._story_preview_content.helpers({
     return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate drafts and only use authorDisplayUsername
   },
   contextCountOfType: function(type){
-    return this.contextBlockTypeCount[type];
+    return this.contextBlockTypeCount ? this.contextBlockTypeCount[type] : this.contextCountOfType(type);
   }
 });
 
