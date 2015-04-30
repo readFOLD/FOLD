@@ -215,16 +215,26 @@ Meteor.methods({
 
   */
   flickrImageSearchList: function(query, option, page) {
-    var items, nextPage;
+    var items, nextPage, newQuery;
     var path = 'flickr.photos.search';
-    var photo_id = '';
+    var photo_id= '';
     check(query, String);
 
-    if ((query.indexOf('flickr.com') !==-1) || (query.indexOf('flic.kr') !==-1)){
-      var newQuery = _.chain(query.split('/')).compact().last().value().match(/[\d\w]*/)[0];
+    if ((query.indexOf('flickr.com') !==-1) && (query.indexOf('/photos/') !==-1)){
+      //search photo: flickr.com/photos/{user-id}/{photo-id}/in/photolist-{search-info}
+      //individual photo:  flickr.com/photos/{user-id}/{photo-id}
+      var split = _.chain(query.split('/')).compact().value();
+      newQuery =  (split[split.indexOf('photos') +2]).match(/[\d]*/)[0];
+    } else if ((query.indexOf('flic.kr') !==-1) && (query.indexOf('/p/') !==-1)){
+      //short url: https://flic.kr/p/{base58-photo-id}
+      newQuery = _.chain(query.split('/')).compact().last().value().match(/[\d\w]*/)[0];
+    }
+
+    if (newQuery) {
       photo_id = newQuery || query;
       path = 'flickr.photos.getInfo';
     }
+
     page = page || 1;  // flickr starts from 1
     this.unblock();
 
