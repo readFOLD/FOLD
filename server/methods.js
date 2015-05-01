@@ -378,23 +378,30 @@ Meteor.methods({
   soundcloudAudioSearchList: function(query, option, page) {
     var res;
     var items, nextPage;
+    var path = 'tracks';
     check(query, String);
+
+    if (query.indexOf('soundcloud.com') !==-1) {
+      path = 'resolve'
+    }
+
     this.unblock();
     var offset = page || 0;
     var limit = 50;
     requestParams = {
+      url: query,
       q: query,
       limit: limit,
       offset: offset,
       client_id: SOUNDCLOUD_CLIENT_ID
     };
 
-    res = HTTP.get('http://api.soundcloud.com/tracks.json', {
+    res = HTTP.get('http://api.soundcloud.com/' + path + '.json', {
       params: requestParams
     });
 
     if (res.content) {
-      items = JSON.parse(res.content);
+      items = path === 'resolve'? [JSON.parse(res.content)] : JSON.parse(res.content);
     } else {
       items = [];
     }
