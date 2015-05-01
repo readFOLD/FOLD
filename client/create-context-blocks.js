@@ -320,15 +320,27 @@ var searchIntegrations = {
     flickr: {
       methodName: 'flickrImageSearchList',
       mapFn: function(e) {
+        var username, uploadDate, title;
+        if (e.media) { 
+          //if single image result
+          ownername = e.owner.username;
+          uploadDate = e.dateuploaded;
+          title = e.title._content;
+        } else {
+          //if search result
+          ownername = e.ownername;
+          uploadDate = e.dateupload;
+          title = e.title;
+        }
         return {
           reference: {
-            ownerName: e.ownername,
-            uploadDate: new Date(parseInt(e.dateupload) * 1000),
+            ownerName: ownername,
+            uploadDate: new Date(parseInt(uploadDate) * 1000),
             flickrFarm: e.farm,
             flickrSecret: e.secret,
             id: e.id,
             flickrServer: e.server,
-            title: e.title
+            title: title
           }
         }
       }

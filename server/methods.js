@@ -265,7 +265,7 @@ Meteor.methods({
     } else {
       items = [];
     }
-
+    
     if (items.length){
       nextPage = page + 1;
     } else {
