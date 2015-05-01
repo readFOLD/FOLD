@@ -5,6 +5,7 @@ UI.registerHelper('selectedIf', function(val) {
   return val ? 'selected' : '';
 });
 
+
 getCardWidth = function(windowWidth) {
   if (Meteor.Device.isPhone()){
     return Session.get("windowWidth") - 2* getVerticalLeft();
@@ -103,21 +104,19 @@ updatecurrentY = function() {
     $("div.title-author").removeClass("fixed");
   }
   if (scrollTop >= stickyBody) {
-    vertTop = 427 + scrollTop - stickyTitle;
     $("div.horizontal-context").addClass("fixed");
-    $("div.vertical-narrative").css({
-      top: vertTop
-    });
+    $("div.vertical-narrative").addClass("fixed");
+    $("div.vertical-narrative").removeClass("free-scroll");
+
     if (scrollTop >= maxScroll) {
-      $("div.vertical-narrative").css({
-        top: 557
-      });
+      $("div.vertical-narrative").removeClass("fixed");
+      $("div.vertical-narrative").addClass("free-scroll");
+
     }
   } else {
-    $("div.vertical-narrative").css({
-      top: 427
-    });
     $("div.horizontal-context").removeClass("fixed");
+    $("div.vertical-narrative").removeClass("fixed");
+    $("div.vertical-narrative").removeClass("free-scroll");
   }
   if (scrollTop >= maxScroll) {
     $("div.title-overlay, div#banner-overlay").addClass("fixed");
@@ -614,7 +613,7 @@ Template.horizontal_context.helpers({
             if (cBlock) {
               return cBlock;
             } else {
-              throw new Meteor.Error('context card not found on story ', + that._id);
+              throw new Meteor.Error('context card not found on story ' + that._id + ' .  context card: ' + id);
             }
           })
           .map(window.newTypeSpecificContextBlock)
@@ -924,7 +923,7 @@ Template.remix_bar.events({
       "authorId",
       "index",
       "source",
-      "storyId",
+      //"storyId",
       "storyShortId",
       "type",
       "verticalId",
@@ -1000,14 +999,19 @@ if (!Meteor.Device.isPhone()){ // highlight active context card link except on m
 Template.create_story.events({
   'click': function(){
     if (Meteor.user()){
-      Meteor.call('createStory', function(err, pathObject){
-        if (err) {
-          notifyError(err);
-          throw(err);
-        }
-        analytics.track('User clicked create and created story');
-        Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
-      })
+      var accessPriority = Meteor.user().accessPriority;
+      if (accessPriority && accessPriority <= window.createAccessLevel){
+        Meteor.call('createStory', function(err, pathObject){
+          if (err) {
+            notifyError(err);
+            throw(err);
+          }
+          analytics.track('User clicked create and created story');
+          Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
+        })
+      } else {
+        notifyInfo("Due to high demand, we had to turn off 'create new story' functionality for a moment. Stay tuned for updates!");
+      }
     } else {
       Session.set('signingIn', true)
       analytics.track('User clicked create and needs to sign in');
@@ -1045,40 +1049,4 @@ Template.read.onCreated(function(){
 
 Template.read.onRendered(function(){
   $(window).scrollTop(Session.get('scrollTop'));
-});
-
-window.readyToMigrate = new ReactiveVar(false);
-
-Reload._onMigrate(function (retry) {
-  if(Router.current().route.getName() === 'edit'){
-    if (readyToMigrate.get()) {
-      return [true, {}];
-    } else {
-      notifyDeploy("We've just made an improvement! Click here to sync up the latest code.", true);
-      $('.migration-notification').click(function(){
-        saveCallback(null, true);
-        setTimeout(function(){
-          readyToMigrate.set(true);
-          retry();
-        }, 300);
-      });
-      Router.onRun(function(){
-        readyToMigrate.set(true);
-        retry();
-      });
-      return [false];
-    }
-  } else {
-    if (readyToMigrate.get()) {
-      return [true, {}];
-    } else {
-      notifyDeploy("We've just made an improvement! Wait just a moment while we sync up the latest code.", false);
-      setTimeout(function(){
-        readyToMigrate.set(true);
-        retry();
-      }, 2000);
-      return [false]
-    }
-  }
-
 });

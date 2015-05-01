@@ -42,6 +42,13 @@ if (Stories.find().count() === 0) {
     authorUsername: 'author',
     authorDisplayUsername: 'authOr',
     favorited: [],
+    contextBlockTypeCount:{
+      video: 8,
+      image: 9,
+      map: 2,
+      viz: 3,
+      text: 3
+    },
 
     verticalSections: [
       {

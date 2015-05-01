@@ -137,6 +137,8 @@ var subscriptionsReady = new ReactiveDict();
 var subscribeToCuratedStories = function(cb){
   if(!curatedStoriesSub){
     curatedStoriesSub = Meteor.subscribe("curatedStoriesPub", function(){
+      var timeToLoadStories = Date.now() - createHomePageDate;
+      trackTiming('Subscription', 'Full curated stories ready (time since created template)', timeToLoadStories);
       subscriptionsReady.set('curatedStories', true);
       if(cb){
         cb();
@@ -192,8 +194,11 @@ var subscribeToStarredStories = function(cb){
   }
 };
 
+var createHomePageDate;
+
 Template.all_stories.onCreated(function(){
   var that = this;
+  createHomePageDate = Date.now();
   subscribeToCuratedStories(function(){
     subscribeToTrendingStories(function() {
       subscribeToNewestStories(function(){
@@ -221,13 +226,12 @@ Template.all_stories.onCreated(function(){
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   curatedStories: function() {
-    if (subscriptionsReady.get('curatedStories')) {
-      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 30, reactive: false});
-    }
+    // preview versions of all these stories come from fast-render so we can show them right away
+    return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 30, reactive: false});
   },
   trendingStories: function() {
     if (subscriptionsReady.get('trendingStories')) {
-      return Stories.find({published: true}, {sort: {'views': -1}, limit: 30, reactive: false});
+      return Stories.find({published: true}, {sort: {'analytics.views.total': -1}, limit: 30, reactive: false});
     }
   },
   newestStories: function() {
@@ -284,17 +288,10 @@ Template._story_preview_content.helpers({
     return Meteor.users.findOne(this.authorId)
   },
   profileUrl: function(){
-    return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate and only use authorDisplayUsername
-  }
-});
-
-Template.banner_buttons.helpers({
-  showCreateStory: function() {
-    if (!Meteor.user()){
-      return true
-    }
-    var accessPriority = Meteor.user().accessPriority;
-    return accessPriority && accessPriority <= window.createAccessLevel;
+    return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate drafts and only use authorDisplayUsername
+  },
+  contextCountOfType: function(type){
+    return this.contextBlockTypeCount ? this.contextBlockTypeCount[type] : this.contextCountOfType(type);
   }
 });
 

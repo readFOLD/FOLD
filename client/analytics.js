@@ -1,7 +1,6 @@
 
 analytics.load(Meteor.settings["public"].SEGMENT_WRITE_KEY);
 
-// NOTE this stops running after hot code reload https://github.com/iron-meteor/iron-router/issues/1219
 Router.onRun(function() {
   var that = this;
 
@@ -13,33 +12,53 @@ Router.onRun(function() {
   this.next()
 });
 
+window.trackTiming = function(category, str, time){  // mobile safari doesn't have timing api so those results will not include initial request time
+  analytics.track(str, {time: time});
+
+  analytics.ready(function(){
+    ga('send', 'timing', category, str, time);
+  });
+};
+
+var jsLoadTime = Date.now() - startTime;
+
+if (!window.codeReloaded){
+  trackTiming('JS', 'JS Loaded', jsLoadTime);
+}
 
 
 Meteor.startup(function() {
-  Tracker.autorun(function(c) {
-    // waiting for user subscription to load
-    if (! Router.current() || ! Router.current().ready())
-      return;
 
-    var user = Meteor.user();
-    if (! user)
-      return;
+  if (!window.codeReloaded) {
+    var timeTillDOMReady = Date.now() - startTime;
 
-    var identificationInfo = {};
+    trackTiming('DOM', 'DOM Ready', timeTillDOMReady);
 
-    if (user.profile.name){
-      identificationInfo.name = user.profile.name;
-    }
-    if (user.emails && user.emails.length){
-      identificationInfo.email = user.emails[0].address;
-    }
+    Tracker.autorun(function(c) {
+      // waiting for user subscription to load
+      if (! Router.current() || ! Router.current().ready())
+        return;
 
-    if (user._id){
-      analytics.identify(user._id, identificationInfo);
-    }
+      var user = Meteor.user();
+      if (! user)
+        return;
 
-    c.stop();
-  });
+      var identificationInfo = {};
+
+      if (user.profile.name){
+        identificationInfo.name = user.profile.name;
+      }
+      if (user.emails && user.emails.length){
+        identificationInfo.email = user.emails[0].address;
+      }
+
+      if (user._id){
+        analytics.identify(user._id, identificationInfo);
+      }
+
+      c.stop();
+    });
+  }
 });
 
 // TODO alias user when created

@@ -14,20 +14,6 @@ Schema = {};
 Story = (function() {
   function Story(doc) {
     _.extend(this, doc);
-    if (this.verticalSections == null) {
-      this.verticalSections = [];
-    }
-    if (this.published == null) {
-      this.published = false;
-    }
-    if (this.verticalSections.length === 0) {
-      this.verticalSections.push({
-        _id: Random.id(8),
-        contextBlocks: [],
-        title: "",
-        content: ""
-      });
-    }
     if (this.draftStory){
       _.extend(this.draftStory, {
         unpublishedChanges: (!this.published || !this.publishedAt || this.savedAt > this.publishedAt),
@@ -119,7 +105,7 @@ var cleanHtmlOptions = {
   allowedAttributes: [["data-context-id"],["data-context-type"],["data-context-source"]] // data-context-id is used to direct links to context cards
 };
 
-var matchAnchors =  /<a( data-context-id=["|'].*?["|'])?( data-context-type=["|'].*?["|'])?( data-context-source=["|'].*?["|'])?.*?>/gm; // match anchors, capture data-context-id and other attributes so it can be kept in string
+var matchAnchors =  /<a( data-context-[a-z]*?=["|'].*?["|'])?( data-context-[a-z]*?=["|'].*?["|'])?( data-context-[a-z]*?=["|'].*?["|'])?.*?>/gm; // match anchors, capture data-context-id and other attributes so it can be kept in string
 var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match anchors that are left over from above if copied from somewhere else, capture contents so can be kept
 
 cleanVerticalSectionContent = function(html) {
