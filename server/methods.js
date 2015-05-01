@@ -215,8 +215,7 @@ Meteor.methods({
 
   */
   flickrImageSearchList: function(query, option, page) {
-    var items, nextPage, newQuery;
-    var path = 'flickr.photos.search';
+    var items, nextPage;
     var photo_id = '';
     check(query, String);
 
@@ -224,16 +223,13 @@ Meteor.methods({
       //search photo: flickr.com/photos/{user-id}/{photo-id}/in/photolist-{search-info}
       //individual photo:  flickr.com/photos/{user-id}/{photo-id}
       var split = _.chain(query.split('/')).compact().value();
-      newQuery =  (split[split.indexOf('photos') +2]).match(/[\d]*/)[0];
+      photo_id =  (split[split.indexOf('photos') +2]).match(/[\d]*/)[0];
     } else if ((query.indexOf('flic.kr') !==-1) && (query.indexOf('/p/') !==-1)){
       //short url: https://flic.kr/p/{base58-photo-id}
-      newQuery = _.chain(query.split('/')).compact().last().value().match(/[\d\w]*/)[0];
+      photo_id = _.chain(query.split('/')).compact().last().value().match(/[\d\w]*/)[0];
     }
 
-    if (newQuery) {
-      photo_id = newQuery;
-      path = 'flickr.photos.getInfo';
-    }
+    var path = photo_id ? 'flickr.photos.getInfo' : 'flickr.photos.search';
 
     page = page || 1;  // flickr starts from 1
     this.unblock();
