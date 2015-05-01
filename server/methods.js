@@ -229,11 +229,10 @@ Meteor.methods({
       photo_id = _.chain(query.split('/')).compact().last().value().match(/[\d\w]*/)[0];
     }
 
-    var path = photo_id ? 'flickr.photos.getInfo' : 'flickr.photos.search';
-
     page = page || 1;  // flickr starts from 1
     this.unblock();
 
+    var path = photo_id ? 'flickr.photos.getInfo' : 'flickr.photos.search';
     var url = "https://api.flickr.com/services/rest/?&method=" + path;
 
     var requestParams = {
