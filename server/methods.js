@@ -247,7 +247,7 @@ Meteor.methods({
         nojsoncallback: 1,
         sort: 'relevance',
         license: '1,2,3,4,5,6,7,8',
-        per_page: 1,
+        per_page: 200,
         extras: ['owner_name', 'date_upload'],
         page: page
       };
