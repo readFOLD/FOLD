@@ -215,48 +215,60 @@ Meteor.methods({
 
   */
   flickrImageSearchList: function(query, option, page) {
-    var items, nextPage;
-    var photo_id = '';
+    var items, nextPage, keywordSearch, path, requestParams;
     check(query, String);
 
     if ((query.indexOf('flickr.com') !==-1) && (query.indexOf('/photos/') !==-1)){
+      keywordSearch = false;
       //search photo: flickr.com/photos/{user-id}/{photo-id}/in/photolist-{search-info}
       //individual photo:  flickr.com/photos/{user-id}/{photo-id}
       var split = _.chain(query.split('/')).compact().value();
-      photo_id =  (split[split.indexOf('photos') +2]).match(/[\d]*/)[0];
+      var photo_id =  (split[split.indexOf('photos') +2]).match(/[\d]*/)[0];
     } else if ((query.indexOf('flic.kr') !==-1) && (query.indexOf('/p/') !==-1)){
+      keywordSearch = false;
       //short url: https://flic.kr/p/{base58-photo-id}
-      photo_id = _.chain(query.split('/')).compact().last().value().match(/[\d\w]*/)[0];
+      var photo_id = _.chain(query.split('/')).compact().last().value().match(/[\d\w]*/)[0];
+    } else {
+      keywordSearch = true;
     }
 
     page = page || 1;  // flickr starts from 1
     this.unblock();
 
-    var path = photo_id ? 'flickr.photos.getInfo' : 'flickr.photos.search';
-    var url = "https://api.flickr.com/services/rest/?&method=" + path;
+    if (keywordSearch) {
+      path = 'flickr.photos.search';
+      requestParams = {
+        tags: query.replace(' ', ','),
+        text: query,
+        api_key: FLICKR_API_KEY,
+        format: 'json',
+        privacy_filter: 1,
+        media: 'photos',
+        nojsoncallback: 1,
+        sort: 'relevance',
+        license: '1,2,3,4,5,6,7,8',
+        per_page: 1,
+        extras: ['owner_name', 'date_upload'],
+        page: page
+      };
+    } else {
+      path = 'flickr.photos.getInfo';
+      requestParams = {
+        photo_id: photo_id,
+        api_key: FLICKR_API_KEY,
+        format: 'json',
+        nojsoncallback: 1,
+      };
+    }
 
-    var requestParams = {
-      tags: query.replace(' ', ','),
-      photo_id: photo_id,
-      text: query,
-      api_key: FLICKR_API_KEY,
-      format: 'json',
-      privacy_filter: 1,
-      media: 'photos',
-      nojsoncallback: 1,
-      sort: 'relevance',
-      license: '1,2,3,4,5,6,7,8',
-      per_page: 200,
-      extras: ['owner_name', 'date_upload'],
-      page: page
-    };
+    var url = "https://api.flickr.com/services/rest/?&method=" + path;
 
     var res = HTTP.get(url, {
       params: requestParams
     });
-
+    
     if (res.content){
-      items = photo_id ? [JSON.parse(res.content).photo] : JSON.parse(res.content).photos.photo;
+      items = keywordSearch ? JSON.parse(res.content).photos.photo : [JSON.parse(res.content).photo];
     } else {
       items = [];
     }
@@ -377,31 +389,41 @@ Meteor.methods({
   },
   soundcloudAudioSearchList: function(query, option, page) {
     var res;
-    var items, nextPage;
-    var path = 'tracks';
+    var items, nextPage, keywordSearch, path, requestParams;
     check(query, String);
 
     if (query.indexOf('soundcloud.com') !==-1) {
-      path = 'resolve'
+      keywordSearch = false;
+    } else {
+      keywordSearch = true;
+    }
+
+    var offset = page || 0;
+    var limit = 50;
+    if (keywordSearch) {
+      path = 'tracks';  
+      requestParams = {
+        q: query,
+        limit: limit,
+        offset: offset,
+        client_id: SOUNDCLOUD_CLIENT_ID
+      };
+    } else {
+      path = 'resolve';
+      requestParams = {
+        url: query,
+        client_id: SOUNDCLOUD_CLIENT_ID
+      };
     }
 
     this.unblock();
-    var offset = page || 0;
-    var limit = 50;
-    requestParams = {
-      url: query,
-      q: query,
-      limit: limit,
-      offset: offset,
-      client_id: SOUNDCLOUD_CLIENT_ID
-    };
 
     res = HTTP.get('http://api.soundcloud.com/' + path + '.json', {
       params: requestParams
     });
 
     if (res.content) {
-      items = path === 'resolve'? [JSON.parse(res.content)] : JSON.parse(res.content);
+      items = JSON.parse(res.content).length ? JSON.parse(res.content) : [JSON.parse(res.content)];
     } else {
       items = [];
     }
@@ -429,7 +451,7 @@ Meteor.methods({
       isId = (/^\d+$/).test(query);
     }
     this.unblock();
-    count = 15;
+    count = 30;
     var api = {
       'all' : 'search/tweets',
       'all_url' : 'statuses/show', 
@@ -438,14 +460,14 @@ Meteor.methods({
     };
 
     params = {count: count};
-    if (page) {params.max_id = page;}
+    if (page) {params['max_id'] = page;}
     if (option === 'all' && isId) {
       option = 'all_url';
-      params.id = query;
+      params['id'] = query;
     } else if (option === 'all') {
-      params.q = query;
+      params['q'] = query;
     } else {
-      params.screen_name = query;
+      params['screen_name'] = query;
     }
 
     res = makeTwitterCall(api[option], params);
@@ -511,7 +533,7 @@ Meteor.methods({
         { query: query,
           sort : 'relevant',
           page: page,
-          per_page: 20
+          per_page: 40
         }
       };
 
