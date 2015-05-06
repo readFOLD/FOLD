@@ -223,7 +223,8 @@ Meteor.methods({
       //search photo: flickr.com/photos/{user-id}/{photo-id}/in/photolist-{search-info}
       //individual photo:  flickr.com/photos/{user-id}/{photo-id}
       var split = _.chain(query.split('/')).compact().value();
-      var photo_id =  (split[split.indexOf('photos') +2]).match(/[\d]*/)[0];
+      var offset = split.indexOf('photos');
+      if (split[offset+2]) var photo_id = (split[offset+2]).match(/[\d]*/)[0];
     } else if ((query.indexOf('flic.kr') !==-1) && (query.indexOf('/p/') !==-1)){
       keywordSearch = false;
       //short url: https://flic.kr/p/{base58-photo-id}
@@ -251,7 +252,7 @@ Meteor.methods({
         extras: ['owner_name', 'date_upload'],
         page: page
       };
-    } else {
+    } else if (photo_id) {
       path = 'flickr.photos.getInfo';
       requestParams = {
         photo_id: photo_id,
@@ -259,18 +260,22 @@ Meteor.methods({
         format: 'json',
         nojsoncallback: 1,
       };
-    }
+    } 
 
     var url = "https://api.flickr.com/services/rest/?&method=" + path;
 
     var res = HTTP.get(url, {
       params: requestParams
     });
-    
-    if (res.content){
-      items = keywordSearch ? JSON.parse(res.content).photos.photo : [JSON.parse(res.content).photo];
+
+    if (res.data) var results = res.data; 
+
+    if (results && (results.photos)) {
+      items = results.photos.photo;
+    } else if (results && results.photo) {
+      items = [results.photo];
     } else {
-      items = [];
+      items = []
     }
     
     if (items.length){
@@ -422,8 +427,12 @@ Meteor.methods({
       params: requestParams
     });
 
-    if (res.content) {
-      items = JSON.parse(res.content).length ? JSON.parse(res.content) : [JSON.parse(res.content)];
+    if (res.data) {
+      var results = res.data.length ? res.data : [res.data];
+    }
+
+    if (results && (results[0].kind === 'track')) {
+      items = results;
     } else {
       items = [];
     }
