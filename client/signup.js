@@ -140,7 +140,7 @@ Template.signup_form.events({
     }
   },
   'blur input#signup-password, blur input#signup-password2': checkPasswordFields,
-    'keypress input#signup-password, blur input#signup-password2': function(e,t) {
+  'keypress input#signup-password, blur input#signup-password2': function(e,t) {
     if (enterPress(e)) {
       checkPasswordFields(e, t);
     }
