@@ -357,7 +357,7 @@ TwitterBlock = (function(_super) {
   };
 
   TwitterBlock.prototype.formattedTweet = function() {
-    var text = _.escape(this.reference.text); // twttr seems to be escaping appropriately itself, but this doesn't seem to break anything either
+    var text = this.reference.text; // twttr seems to be escaping appropriately itself
 
     if (this.imgUrl()) {
       var imgIndex = text.lastIndexOf("http://");
