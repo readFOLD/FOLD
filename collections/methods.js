@@ -222,7 +222,16 @@ Meteor.methods({
       throw new Meteor.Error('Story not updated')
     }
     // TO-DO Remix. Don't actually delete if has ever been remixed (or maybe if ever published)
-    return ContextBlocks.remove({_id: contextId, authorId: this.userId});
+    var numRemoved = ContextBlocks.remove({_id: contextId, authorId: this.userId});
+
+    if (Meteor.isClient && numRemoved){
+      Session.set("addingContext", null);
+      Session.set("editingContext", null);
+      var currentX = Session.get('currentX');
+      goToX(currentX ? currentX - 1 : 0);
+    }
+
+    return numRemoved
   },
   updateStoryTitle: function(storyId, title){
     check(storyId, String);

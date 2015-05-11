@@ -802,17 +802,7 @@ Template.horizontal_section_block.events({
       Session.set('saveState', 'saving');
       id = this._id;
       removeAnchorTag($('.vertical-narrative-section[data-vertical-index="'+ currentY +'"] .content a[data-context-id="' + id + '"]'));
-      Meteor.call('removeContextFromStory', Session.get("storyId"), id, currentY, function(err, numDocs){
-        if(err){
-          return saveCallback(err);
-        } else {
-          Session.set("addingContext", null);
-          Session.set("editingContext", null);
-          var currentX = Session.get('currentX');
-          goToX(currentX ? currentX - 1 : 0);
-          saveCallback(err, numDocs);
-        }
-      });
+      Meteor.call('removeContextFromStory', Session.get("storyId"), id, currentY, saveCallback);
       analytics.track('Confirm delete horizontal');
     }
   },
