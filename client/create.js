@@ -466,7 +466,7 @@ Template.create.events({
         notifyError('Publication failed');
       } else {
         Router.go('/profile/' + Meteor.user().username);
-        notifySuccess('You story has been published!')
+        notifySuccess('You story has been published!');
         analytics.track('Publish story', window.trackingInfoFromStory(Stories.findOne(that._id))); // TODO add info about author
       }
     });
@@ -502,7 +502,6 @@ Template.add_vertical.events({
         throw(err);
       }
       if (numDocs) {
-        goToY(indexToInsert);
         analytics.track('Add vertical section', {
           label: indexToInsert,
           verticalSectionIndex: indexToInsert
@@ -528,9 +527,7 @@ Template.vertical_edit_menu.events({
     var index = this.index;
 
     Session.set('saveState', 'saving');
-    Meteor.call('addTitle', storyId, index, function(err, numDocs) {
-      saveCallback(err, numDocs);
-    });
+    Meteor.call('addTitle', storyId, index, saveCallback);
     analytics.track('Click add section title');
   },
   "click .remove-title": function() {
@@ -538,9 +535,7 @@ Template.vertical_edit_menu.events({
     var index = this.index;
 
     Session.set('saveState', 'saving');
-    Meteor.call('removeTitle', storyId, index, function(err, numDocs) {
-      saveCallback(err, numDocs);
-    });
+    Meteor.call('removeTitle', storyId, index, saveCallback);
     analytics.track('Click remove section title');
   },
   "click .move-card-up": function() {
@@ -549,12 +544,7 @@ Template.vertical_edit_menu.events({
     var index = this.index;
 
     Session.set('saveState', 'saving');
-    Meteor.call('moveVerticalSectionUpOne', storyId, index, function(err, numDocs) {
-      if (numDocs) {
-        goToY(index - 1);
-      }
-      saveCallback(err, numDocs);
-    });
+    Meteor.call('moveVerticalSectionUpOne', storyId, index, saveCallback);
     analytics.track('Click move card up');
 
   },
@@ -564,12 +554,7 @@ Template.vertical_edit_menu.events({
     var index = this.index;
 
     Session.set('saveState', 'saving');
-    Meteor.call('moveVerticalSectionDownOne', storyId, index, function(err, numDocs) {
-      if (numDocs) {
-        goToY(index + 1);
-      }
-      saveCallback(err, numDocs);
-    });
+    Meteor.call('moveVerticalSectionDownOne', storyId, index, saveCallback);
     analytics.track('Click move card down');
   },
   "click .delete-card": function() {
