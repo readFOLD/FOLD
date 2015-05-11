@@ -215,28 +215,40 @@ Meteor.methods({
 
   */
   flickrImageSearchList: function(query, option, page) {
-    var items, nextPage, keywordSearch, path, requestParams;
+    var items, nextPage, linkSearch, path, requestParams;
     check(query, String);
 
     if ((query.indexOf('flickr.com') !==-1) && (query.indexOf('/photos/') !==-1)){
-      keywordSearch = false;
       //search photo: flickr.com/photos/{user-id}/{photo-id}/in/photolist-{search-info}
       //individual photo:  flickr.com/photos/{user-id}/{photo-id}
-      var split = _.chain(query.split('/')).compact().value();
+      var split = _.compact(query.split('/'));
       var offset = split.indexOf('photos');
-      if (split[offset+2]) var photo_id = (split[offset+2]).match(/[\d]*/)[0];
+      if (split[offset+2]) {
+        var photo_id = (split[offset+2]).match(/[\d]*/)[0];
+        linkSearch = true;
+      } else {
+        linkSearch = false;
+      }
     } else if ((query.indexOf('flic.kr') !==-1) && (query.indexOf('/p/') !==-1)){
-      keywordSearch = false;
       //short url: https://flic.kr/p/{base58-photo-id}
       var photo_id = _.chain(query.split('/')).compact().last().value().match(/[\d\w]*/)[0];
+      linkSearch = true;
     } else {
-      keywordSearch = true;
+      linkSearch = false;
     }
 
     page = page || 1;  // flickr starts from 1
     this.unblock();
 
-    if (keywordSearch) {
+    if (linkSearch) {
+      path = 'flickr.photos.getInfo';
+      requestParams = {
+        photo_id: photo_id,
+        api_key: FLICKR_API_KEY,
+        format: 'json',
+        nojsoncallback: 1,
+      };
+    } else {
       path = 'flickr.photos.search';
       requestParams = {
         tags: query.replace(' ', ','),
@@ -252,14 +264,6 @@ Meteor.methods({
         extras: ['owner_name', 'date_upload'],
         page: page
       };
-    } else if (photo_id) {
-      path = 'flickr.photos.getInfo';
-      requestParams = {
-        photo_id: photo_id,
-        api_key: FLICKR_API_KEY,
-        format: 'json',
-        nojsoncallback: 1,
-      };
     } 
 
     var url = "https://api.flickr.com/services/rest/?&method=" + path;
@@ -268,7 +272,9 @@ Meteor.methods({
       params: requestParams
     });
 
-    if (res.data) var results = res.data; 
+    if (res.data) {
+      var results = res.data;
+    }
 
     if (results && (results.photos)) {
       items = results.photos.photo;
