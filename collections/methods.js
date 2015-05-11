@@ -308,7 +308,7 @@ Meteor.methods({
       hasTitle: false
     };
 
-    var numDocs = updateStory.call(this, {_id: storyId }, {
+    var numUpdated = updateStory.call(this, {_id: storyId }, {
       $push: {
         'draftStory.verticalSections': {
           $position: index,
@@ -317,11 +317,11 @@ Meteor.methods({
       }
     });
 
-    if (Meteor.isClient && numDocs){
+    if (Meteor.isClient && numUpdated){
       goToY(index);
     }
 
-    return numDocs;
+    return numUpdated;
   },
   moveVerticalSectionUpOne: function(storyId, index) {
     check(storyId, String);
@@ -344,17 +344,17 @@ Meteor.methods({
 
     swapArrayElements(verticalSections, index, index - 1);
 
-    var numDocs = updateStory.call(this, { _id: storyId }, {
+    var numUpdated = updateStory.call(this, { _id: storyId }, {
       $set: {
         'draftStory.verticalSections': verticalSections
       }
     });
 
-    if (Meteor.isClient && numDocs) {
+    if (Meteor.isClient && numUpdated) {
       goToY(index - 1);
     }
 
-    return numDocs
+    return numUpdated
   },
   moveVerticalSectionDownOne: function(storyId, index) {
     check(storyId, String);
@@ -379,17 +379,17 @@ Meteor.methods({
 
     swapArrayElements(verticalSections, index, index + 1);
 
-    var numDocs = updateStory.call(this, { _id: storyId }, {
+    var numUpdated = updateStory.call(this, { _id: storyId }, {
       $set: {
         'draftStory.verticalSections': verticalSections
       }
     })
 
-    if (Meteor.isClient && numDocs) {
+    if (Meteor.isClient && numUpdated) {
       goToY(index + 1);
     }
 
-    return numDocs
+    return numUpdated
   },
   deleteVerticalSection: function(storyId, index) {
     check(storyId, String);
