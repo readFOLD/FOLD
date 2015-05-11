@@ -182,7 +182,26 @@ Meteor.methods({
     pushObject = {};
     pushObject[pushSelectorString] = contextId;
     var numUpdated = updateStory.call(this, { _id: storyId }, { $addToSet: pushObject});
-    if (!numUpdated){
+
+    if (numUpdated){
+      if (Meteor.isClient){
+        window.hideNewHorizontalUI();
+        var placeholderAnchorElement = window.findPlaceholderLink(verticalIndex);
+        if (placeholderAnchorElement) {
+          placeholderAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
+          placeholderAnchorElement.attr('data-context-type', contextBlock.type);
+          placeholderAnchorElement.attr('data-context-source', contextBlock.source);
+
+          placeholderAnchorElement.removeClass('placeholder'); // add active class because we go to this context and if we're already there it won't get the class
+        }
+
+        var fields = {};
+        fields['draftStory.verticalSections.' + verticalIndex + '.contextBlocks'] = 1;
+        var story = Stories.findOne(storyId, fields);
+
+        goToX(_.indexOf(story.draftStory.verticalSections[verticalIndex].contextBlocks, contextId.toString()))
+      }
+    } else {
       throw new Meteor.Error('Story not updated')
     }
     return contextId;

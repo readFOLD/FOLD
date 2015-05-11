@@ -590,7 +590,7 @@ var showNewHorizontalUI = function() {
   return Session.set("editingContext", null);
 };
 
-var hideNewHorizontalUI = function() {
+window.hideNewHorizontalUI = function() {
   scrollToRelativePosition(350 + 29 - 93);
   return Session.set("addingContext", null);
 };
@@ -719,7 +719,7 @@ Template.horizontal_context.helpers({
   }
 });
 
-var findPlaceholderLink = function(verticalSectionIndex){
+window.findPlaceholderLink = function(verticalSectionIndex){
   return $('.vertical-narrative-section[data-vertical-index="' + verticalSectionIndex + '"]').find('a.placeholder');
 };
 
@@ -779,18 +779,8 @@ window.addContext = function(contextBlock) {
   Session.set('saveState', 'saving');
 
   Meteor.call('addContextToStory', storyId, Session.get("storyShortId"), contextBlock, verticalIndex, function(err, contextId){
-    if(contextId){
-      hideNewHorizontalUI();
-      var placeholderAnchorElement = findPlaceholderLink(verticalIndex);
-      if (placeholderAnchorElement) {
-        placeholderAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
-        placeholderAnchorElement.attr('data-context-type', contextBlock.type);
-        placeholderAnchorElement.attr('data-context-source', contextBlock.source);
-
-        placeholderAnchorElement.removeClass('placeholder'); // add active class because we go to this context and if we're already there it won't get the class
-        saveNarrativeSectionContent(verticalIndex);
-      }
-      goToContext(contextId);
+    if (contextId){
+      saveNarrativeSectionContent(verticalIndex);
     }
     saveCallback(err, contextId);
   });
