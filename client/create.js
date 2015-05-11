@@ -438,14 +438,13 @@ Template.create.helpers({
 Template.create.events({
   'mouseup': window.updateUIBasedOnSelection, // this is here so that it fires when mouse goes off to the side of vertical section
   "click .publish-story": function (e, template) {
-    return Meteor.call('checkPublishAccess', function(err, hasAccess) {
-      if (hasAccess) {
-        template.publishing.set(true);
-        analytics.track('Click publish button');
-      } else {
-        notifyInfo("Due to high demand, we had to turn off publish functionality for a moment. Stay tuned for updates!");
-      }
-    });
+    var accessPriority = Meteor.user().accessPriority;
+    if (!accessPriority || accessPriority > window.publishAccessLevel) {
+      notifyInfo("Due to high demand, we had to turn off publish functionality for a moment. Stay tuned for updates!");
+    } else {
+      template.publishing.set(true);
+      analytics.track('Click publish button');
+    }
   },
   "click .cancel-publish": function (e, template) {
     template.publishing.set(false);

@@ -405,14 +405,6 @@ Meteor.methods({
       }
     })
   },
-  checkPublishAccess: function() {
-    var accessPriority = Meteor.user().accessPriority;
-    if (!accessPriority || accessPriority > publishAccessLevel) {
-      return false;
-    } else {
-      return true;
-    }
-  },
   publishStory: function(storyId, title, keywords, narrativeRightsReserved) {
     check(storyId, String);
     check(title, String);
