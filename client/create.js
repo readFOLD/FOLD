@@ -539,8 +539,7 @@ Template.vertical_edit_menu.events({
     analytics.track('Click remove section title');
   },
   "click .move-card-up": function() {
-    var indexToInsert, storyId, verticalSections;
-    storyId = Session.get('storyId');
+    var storyId = Session.get('storyId');
     var index = this.index;
 
     Session.set('saveState', 'saving');
@@ -549,8 +548,7 @@ Template.vertical_edit_menu.events({
 
   },
   "click .move-card-down": function() {
-    var indexToInsert, storyId, verticalSections;
-    storyId = Session.get('storyId');
+    var storyId = Session.get('storyId');
     var index = this.index;
 
     Session.set('saveState', 'saving');
@@ -559,8 +557,7 @@ Template.vertical_edit_menu.events({
   },
   "click .delete-card": function() {
     if(confirm("Permanently delete this card and all associated context cards?")) {
-      var indexToInsert, storyId, verticalSections;
-      storyId = Session.get('storyId');
+      var storyId = Session.get('storyId');
       var index = this.index;
 
       Session.set('saveState', 'saving');
