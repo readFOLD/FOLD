@@ -496,7 +496,7 @@ Template.add_vertical.events({
     verticalSections = Session.get('story').verticalSections;
     indexToInsert = this.index != null ? this.index : verticalSections.length;
 
-    return Meteor.call('insertVerticalSection', storyId, indexToInsert, function(err, numDocs) {
+    return Meteor.call('insertVerticalSection', storyId, indexToInsert, Random.id(9), function(err, numDocs) {
       if (err) {
         notifyError(err);
         throw(err);

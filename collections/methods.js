@@ -325,11 +325,11 @@ Meteor.methods({
       }
     })
   },
-  insertVerticalSection: function(storyId, index) {
+  insertVerticalSection: function(storyId, index, verticalSectionId) { // TO-DO find a good way to generate this id in a trusted way
     check(storyId, String);
     check(index, Number);
     var newSection = {
-      _id: Random.id(8),
+      _id: verticalSectionId,
       contextBlocks: [],
       title: "",
       content: "",
@@ -568,7 +568,7 @@ Meteor.methods({
     check(storyId, String);
     return changeEditorsPick.call(this, storyId, false);
   },
-  createStory: function() {
+  createStory: function(shortId, verticalSectionId) { // TO-DO find a way to generate these in a trusted way server without compromising UI speed
     var user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to create a story');
@@ -578,13 +578,11 @@ Meteor.methods({
       throw new Meteor.Error('user does not have create access. userId: ' + this.userId);
     }
 
-    var shortId = Random.id(8);
-
     var storyPathSegment = _s.slugify('new-story') + '-' + shortId;  // TODO DRY
     var userPathSegment= user.displayUsername;
 
     initialVerticalSection = {
-      _id: Random.id(8),
+      _id: verticalSectionId,
       contextBlocks: [],
       title: "",
       content: "",
@@ -607,7 +605,12 @@ Meteor.methods({
         storyPathSegment: storyPathSegment,
         title: ''
       }
-  }, {removeEmptyStrings: false});
+    }, {removeEmptyStrings: false});
+
+    if (Meteor.isClient){
+      Router.go('edit', Stories.findOne({shortId:shortId}))
+    }
+
     return {
       userPathSegment: userPathSegment,
       storyPathSegment: storyPathSegment
