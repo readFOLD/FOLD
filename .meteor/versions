@@ -29,6 +29,7 @@ facts@1.0.4
 fastclick@1.0.3
 fold:fast-render@2.3.2
 fold:iron-router@1.0.10
+force-ssl@1.0.4
 gadicohen:robots-txt@0.0.9
 geojson-utils@1.0.3
 html-tools@1.0.4
