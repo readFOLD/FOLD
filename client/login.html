@@ -35,6 +35,9 @@
       {{/if}}
 
       <button type="submit" class="login-button">Log in</button>
+      {{#if loggingIn}}
+        {{> loading_icon}}
+      {{/if}}
       <a href="/recover-password" class="recover-password-link">Lost password?</a>
     </form>
   </div>
