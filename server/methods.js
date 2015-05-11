@@ -400,18 +400,24 @@ Meteor.methods({
   },
   soundcloudAudioSearchList: function(query, option, page) {
     var res;
-    var items, nextPage, keywordSearch, path, requestParams;
+    var items, nextPage, linkSearch, path, requestParams;
     check(query, String);
 
     if (query.indexOf('soundcloud.com') !==-1) {
-      keywordSearch = false;
+      linkSearch = true;
     } else {
-      keywordSearch = true;
+      linkSearch = false;
     }
 
     var offset = page || 0;
     var limit = 50;
-    if (keywordSearch) {
+    if (linkSearch) {
+      path = 'resolve';
+      requestParams = {
+        url: query,
+        client_id: SOUNDCLOUD_CLIENT_ID
+      };
+    } else {
       path = 'tracks';  
       requestParams = {
         q: query,
@@ -419,28 +425,23 @@ Meteor.methods({
         offset: offset,
         client_id: SOUNDCLOUD_CLIENT_ID
       };
-    } else {
-      path = 'resolve';
-      requestParams = {
-        url: query,
-        client_id: SOUNDCLOUD_CLIENT_ID
-      };
+
     }
 
     this.unblock();
   
-    var results;
     var res = HTTP.get('http://api.soundcloud.com/' + path + '.json', {
       params: requestParams
     });
 
+    var results;
     if (res && res.data) {
       results = res.data.length ? res.data : [res.data];
-    }
-
-
-    if (results && (results[0].kind === 'track')) {
-      items = results;
+      if (results && (results[0].kind === 'track')) {
+        items = results;
+      } else {
+        items = [];
+      }
     } else {
       items = [];
     }
