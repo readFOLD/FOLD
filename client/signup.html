@@ -78,5 +78,8 @@
 
       <p>By creating an account, I accept FOLD’s {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}} and {{#linkTo route="privacy" target='_blank' class='green'}}Privacy Policy{{/linkTo}}.</p>
       <button type="submit" class="signup-button">Sign up</button>
+      {{#if disableSignup}}
+        {{>loading_icon}}
+      {{/if}}
     </form>
 </template>
