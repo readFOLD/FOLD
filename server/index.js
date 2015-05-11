@@ -9,7 +9,7 @@ WebApp.connectHandlers.use(function(req, res, next) {
   }
 });
 
-if (_.contains([true, 'true'], process.env.ALLOW_BOTS){
+if (_.contains([true, 'true'], process.env.ALLOW_BOTS)){
   robots.addLine('User-agent: *\nDisallow: /create/');
 } else {
   robots.addLine('User-agent: *\nDisallow: /');
