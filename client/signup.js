@@ -1,27 +1,3 @@
-var createUser = function(user, template) {
-  Accounts.createUser({
-    email: user.email,
-    password: user.password,
-    username: user.username,
-    profile : {
-      "name" : user.name
-      }
-    }, function(err) {
-      if (err) {
-        if (err.error === 'username') {
-          template.usernameError.set(err.reason || err.error);          
-        } else if (err.error === 'email') {
-          template.emailError.set(err.reason || err.error);          
-        } else {
-          template.signupError.set(err.reason || err.error);          
-        }
-
-      } else {
-        Router.go('/');
-        notifyLogin();
-     }});
-  };
-
 Template.signup_form.onCreated(function() {
   this.signupError = new ReactiveVar();
   this.emailError = new ReactiveVar();
@@ -29,6 +5,7 @@ Template.signup_form.onCreated(function() {
   this.usernameError = new ReactiveVar();
   this.passwordError = new ReactiveVar();
   this.password2Error = new ReactiveVar();
+  this.disableSignup = new ReactiveVar();
 });
 
 Template.signup_form.helpers({
@@ -58,6 +35,9 @@ Template.signup_form.helpers({
   },
   password2Error: function () { 
     return Template.instance().password2Error.get();
+  },
+  disableSignup: function () {
+    return Template.instance().disableSignup.get();
   }
 });
 
@@ -140,7 +120,7 @@ Template.signup_form.events({
     }
   },
   'blur input#signup-password, blur input#signup-password2': checkPasswordFields,
-    'keypress input#signup-password, blur input#signup-password2': function(e,t) {
+  'keypress input#signup-password, blur input#signup-password2': function(e,t) {
     if (enterPress(e)) {
       checkPasswordFields(e, t);
     }
@@ -148,9 +128,18 @@ Template.signup_form.events({
   'submit #signup-form': function (e, t) {
     e.preventDefault();
 
+    if(t.disableSignup.get()){
+      return
+    } else {
+      t.disableSignup.set(true)
+    }
+
     if (t.emailError.get() || t.usernameError.get() || t.passwordError.get()|| t.password2Error.get()) {
       t.signupError.set('Please fix errors in required fields');
+      t.disableSignup.set(false);
       return;
+    } else {
+      t.signupError.set(null);
     }
 
     var inputs = $('#signup-form').serializeArray();
@@ -163,6 +152,7 @@ Template.signup_form.events({
 
     if (Meteor.user()) { // if just finishing signup and already created a user via twitter
       Meteor.call('updateInitialTwitterUserInfo', userInfo, function (err) {
+        t.disableSignup.set(false);
         if (err) {
           t.signupError.set(err.reason || err.error);
         } else {
@@ -170,9 +160,30 @@ Template.signup_form.events({
           notifyLogin();
         }
       });
-    } 
-    else { // if email user
-      createUser(userInfo, t);
+    } else { // if email user
+      Accounts.createUser({
+        email: userInfo.email,
+        password: userInfo.password,
+        username: userInfo.username,
+        profile : {
+          "name" : userInfo.name
+        }
+      }, function(err) {
+        t.disableSignup.set(false);
+        if (err) {
+          if (err.error === 'username') {
+            t.usernameError.set(err.reason || err.error);
+          } else if (err.error === 'email') {
+            t.emailError.set(err.reason || err.error);
+          } else {
+            t.signupError.set(err.reason || err.error);
+          }
+
+        } else {
+          Router.go('/');
+          notifyLogin();
+        }
+      });
     }
   }
 });

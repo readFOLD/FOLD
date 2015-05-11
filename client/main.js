@@ -733,9 +733,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
       if (!Session.get('read') && !Session.get('addingContext')) {
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
-        Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
-          saveCallback(err, numDocs);
-        });
+        Meteor.call(meteorMethod, that._id, textContent, saveCallback);
       }
     },
     "mouseenter .text-content.editable": function(d, template) {
@@ -750,9 +748,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
         e.preventDefault();
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
-        Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
-          saveCallback(err, numDocs);
-        });
+        Meteor.call(meteorMethod, that._id, textContent, saveCallback);
       }
     }
   }
@@ -1001,13 +997,17 @@ Template.create_story.events({
     if (Meteor.user()){
       var accessPriority = Meteor.user().accessPriority;
       if (accessPriority && accessPriority <= window.createAccessLevel){
-        Meteor.call('createStory', function(err, pathObject){
+
+        var shortId = Random.id(8);
+        var verticalSectionId = Random.id(9);
+
+        Meteor.call('createStory',shortId, verticalSectionId, function(err, pathObject){
           if (err) {
             notifyError(err);
             throw(err);
           }
           analytics.track('User clicked create and created story');
-          Router.go('/create/' + pathObject.userPathSegment + '/' + pathObject.storyPathSegment)
+
         })
       } else {
         notifyInfo("Due to high demand, we had to turn off 'create new story' functionality for a moment. Stay tuned for updates!");
@@ -1026,7 +1026,7 @@ Template.read.onCreated(function(){
   // analytics autorun
   this.autorun(function(){
     if (!Session.equals("currentY", null)){
-      var y = Session.get("currentY")
+      var y = Session.get("currentY");
       var storyLength = Session.get("story").verticalSections.length;
       analytics.track('View vertical narrative section', {
         label: y,

@@ -438,14 +438,13 @@ Template.create.helpers({
 Template.create.events({
   'mouseup': window.updateUIBasedOnSelection, // this is here so that it fires when mouse goes off to the side of vertical section
   "click .publish-story": function (e, template) {
-    return Meteor.call('checkPublishAccess', function(err, hasAccess) {
-      if (hasAccess) {
-        template.publishing.set(true);
-        analytics.track('Click publish button');
-      } else {
-        notifyInfo("Due to high demand, we had to turn off publish functionality for a moment. Stay tuned for updates!");
-      }
-    });
+    var accessPriority = Meteor.user().accessPriority;
+    if (!accessPriority || accessPriority > window.publishAccessLevel) {
+      notifyInfo("Due to high demand, we had to turn off publish functionality for a moment. Stay tuned for updates!");
+    } else {
+      template.publishing.set(true);
+      analytics.track('Click publish button');
+    }
   },
   "click .cancel-publish": function (e, template) {
     template.publishing.set(false);
@@ -467,7 +466,7 @@ Template.create.events({
         notifyError('Publication failed');
       } else {
         Router.go('/profile/' + Meteor.user().username);
-        notifySuccess('You story has been published!')
+        notifySuccess('You story has been published!');
         analytics.track('Publish story', window.trackingInfoFromStory(Stories.findOne(that._id))); // TODO add info about author
       }
     });
@@ -497,13 +496,12 @@ Template.add_vertical.events({
     verticalSections = Session.get('story').verticalSections;
     indexToInsert = this.index != null ? this.index : verticalSections.length;
 
-    return Meteor.call('insertVerticalSection', storyId, indexToInsert, function(err, numDocs) {
+    return Meteor.call('insertVerticalSection', storyId, indexToInsert, Random.id(9), function(err, numDocs) {
       if (err) {
         notifyError(err);
         throw(err);
       }
       if (numDocs) {
-        goToY(indexToInsert);
         analytics.track('Add vertical section', {
           label: indexToInsert,
           verticalSectionIndex: indexToInsert
@@ -529,9 +527,7 @@ Template.vertical_edit_menu.events({
     var index = this.index;
 
     Session.set('saveState', 'saving');
-    Meteor.call('addTitle', storyId, index, function(err, numDocs) {
-      saveCallback(err, numDocs);
-    });
+    Meteor.call('addTitle', storyId, index, saveCallback);
     analytics.track('Click add section title');
   },
   "click .remove-title": function() {
@@ -539,44 +535,29 @@ Template.vertical_edit_menu.events({
     var index = this.index;
 
     Session.set('saveState', 'saving');
-    Meteor.call('removeTitle', storyId, index, function(err, numDocs) {
-      saveCallback(err, numDocs);
-    });
+    Meteor.call('removeTitle', storyId, index, saveCallback);
     analytics.track('Click remove section title');
   },
   "click .move-card-up": function() {
-    var indexToInsert, storyId, verticalSections;
-    storyId = Session.get('storyId');
+    var storyId = Session.get('storyId');
     var index = this.index;
 
     Session.set('saveState', 'saving');
-    Meteor.call('moveVerticalSectionUpOne', storyId, index, function(err, numDocs) {
-      if (numDocs) {
-        goToY(index - 1);
-      }
-      saveCallback(err, numDocs);
-    });
+    Meteor.call('moveVerticalSectionUpOne', storyId, index, saveCallback);
     analytics.track('Click move card up');
 
   },
   "click .move-card-down": function() {
-    var indexToInsert, storyId, verticalSections;
-    storyId = Session.get('storyId');
+    var storyId = Session.get('storyId');
     var index = this.index;
 
     Session.set('saveState', 'saving');
-    Meteor.call('moveVerticalSectionDownOne', storyId, index, function(err, numDocs) {
-      if (numDocs) {
-        goToY(index + 1);
-      }
-      saveCallback(err, numDocs);
-    });
+    Meteor.call('moveVerticalSectionDownOne', storyId, index, saveCallback);
     analytics.track('Click move card down');
   },
   "click .delete-card": function() {
     if(confirm("Permanently delete this card and all associated context cards?")) {
-      var indexToInsert, storyId, verticalSections;
-      storyId = Session.get('storyId');
+      var storyId = Session.get('storyId');
       var index = this.index;
 
       Session.set('saveState', 'saving');
@@ -609,7 +590,7 @@ var showNewHorizontalUI = function() {
   return Session.set("editingContext", null);
 };
 
-var hideNewHorizontalUI = function() {
+window.hideNewHorizontalUI = function() {
   scrollToRelativePosition(350 + 29 - 93);
   return Session.set("addingContext", null);
 };
@@ -738,7 +719,7 @@ Template.horizontal_context.helpers({
   }
 });
 
-var findPlaceholderLink = function(verticalSectionIndex){
+window.findPlaceholderLink = function(verticalSectionIndex){
   return $('.vertical-narrative-section[data-vertical-index="' + verticalSectionIndex + '"]').find('a.placeholder');
 };
 
@@ -798,18 +779,8 @@ window.addContext = function(contextBlock) {
   Session.set('saveState', 'saving');
 
   Meteor.call('addContextToStory', storyId, Session.get("storyShortId"), contextBlock, verticalIndex, function(err, contextId){
-    if(contextId){
-      hideNewHorizontalUI();
-      var placeholderAnchorElement = findPlaceholderLink(verticalIndex);
-      if (placeholderAnchorElement) {
-        placeholderAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
-        placeholderAnchorElement.attr('data-context-type', contextBlock.type);
-        placeholderAnchorElement.attr('data-context-source', contextBlock.source);
-
-        placeholderAnchorElement.removeClass('placeholder'); // add active class because we go to this context and if we're already there it won't get the class
-        saveNarrativeSectionContent(verticalIndex);
-      }
-      goToContext(contextId);
+    if (contextId){
+      saveNarrativeSectionContent(verticalIndex);
     }
     saveCallback(err, contextId);
   });
@@ -831,17 +802,7 @@ Template.horizontal_section_block.events({
       Session.set('saveState', 'saving');
       id = this._id;
       removeAnchorTag($('.vertical-narrative-section[data-vertical-index="'+ currentY +'"] .content a[data-context-id="' + id + '"]'));
-      Meteor.call('removeContextFromStory', Session.get("storyId"), id, currentY, function(err, numDocs){
-        if(err){
-          return saveCallback(err);
-        } else {
-          Session.set("addingContext", null);
-          Session.set("editingContext", null);
-          var currentX = Session.get('currentX');
-          goToX(currentX ? currentX - 1 : 0);
-          saveCallback(err, numDocs);
-        }
-      });
+      Meteor.call('removeContextFromStory', Session.get("storyId"), id, currentY, saveCallback);
       analytics.track('Confirm delete horizontal');
     }
   },

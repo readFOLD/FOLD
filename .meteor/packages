@@ -34,3 +34,4 @@ fold:iron-router@=1.0.10
 reload
 meteorhacks:subs-manager
 fold:fast-render@2.3.2
+force-ssl

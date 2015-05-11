@@ -9,6 +9,9 @@ Template.login_form.helpers({
 });
 
 Template.login_form.events({
+  'keypress input': function(e, template) {
+    template.loginError.set(false);
+  },
   'submit #login-form' : function(e, template) {
     e.preventDefault();
     

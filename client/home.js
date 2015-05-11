@@ -317,8 +317,8 @@ Template.login_buttons.events({
   },
   "click .logout" : function(e) {
     e.preventDefault();
+    Template.instance().showUserInfo.set(false);
     Meteor.logout();
-    Router.go('home');
   }
 });
 

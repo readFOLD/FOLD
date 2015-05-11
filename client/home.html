@@ -5,11 +5,11 @@
     <div class="left">
       <div class="logo-title">
         {{#linkTo route="home"}}
-        <img class="logo" src="/FOLD_LOGO.svg">
+        <img class="logo" src="{{c.url 'static/FOLD_LOGO.svg'}}">
         {{/linkTo}}
         {{#linkTo route="home"}}
         <div class="title">
-          <img src="/FOLD_TITLE.svg">
+          <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
         </div>
         {{/linkTo}}
       </div>
@@ -47,9 +47,9 @@
   <div class="home-top remix-color not-sticky">
     <div class="left">
       <div class="logo-title">
-          <img class="logo" src="/FOLD_LOGO.svg">
+          <img class="logo" src="{{c.url 'static/FOLD_LOGO.svg'}}">
           <div class="title">
-            <img src="/FOLD_TITLE.svg">
+            <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
           </div>
       </div>
     </div>
@@ -61,11 +61,11 @@
     <div class="left">
       <div class="logo-title">
           {{#linkTo route="home"}}
-          <img class="logo" src="/FOLD_LOGO.svg">
+          <img class="logo" src="{{c.url 'static/FOLD_LOGO.svg'}}">
           {{/linkTo}}
           {{#linkTo route="home"}}
           <div class="title">
-            <img src="/FOLD_TITLE.svg">
+            <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
           </div>
           {{/linkTo}}
       </div>
@@ -312,7 +312,7 @@
             {{#if profileImage author}}
              <img class="profile-picture" src="{{profileImage author}}"/>
             {{else}}
-              <img class="profile-picture" src="/images/placeholder_image.png"/>
+              <img class="profile-picture" src="{{c.url 'static/placeholder_image.png'}}"/>
             {{/if}}
           </div>
 

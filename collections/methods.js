@@ -182,7 +182,26 @@ Meteor.methods({
     pushObject = {};
     pushObject[pushSelectorString] = contextId;
     var numUpdated = updateStory.call(this, { _id: storyId }, { $addToSet: pushObject});
-    if (!numUpdated){
+
+    if (numUpdated){
+      if (Meteor.isClient){
+        window.hideNewHorizontalUI();
+        var placeholderAnchorElement = window.findPlaceholderLink(verticalIndex);
+        if (placeholderAnchorElement) {
+          placeholderAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
+          placeholderAnchorElement.attr('data-context-type', contextBlock.type);
+          placeholderAnchorElement.attr('data-context-source', contextBlock.source);
+
+          placeholderAnchorElement.removeClass('placeholder'); // add active class because we go to this context and if we're already there it won't get the class
+        }
+
+        var fields = {};
+        fields['draftStory.verticalSections.' + verticalIndex + '.contextBlocks'] = 1;
+        var story = Stories.findOne(storyId, fields);
+
+        goToX(_.indexOf(story.draftStory.verticalSections[verticalIndex].contextBlocks, contextId.toString()))
+      }
+    } else {
       throw new Meteor.Error('Story not updated')
     }
     return contextId;
@@ -203,7 +222,16 @@ Meteor.methods({
       throw new Meteor.Error('Story not updated')
     }
     // TO-DO Remix. Don't actually delete if has ever been remixed (or maybe if ever published)
-    return ContextBlocks.remove({_id: contextId, authorId: this.userId});
+    var numRemoved = ContextBlocks.remove({_id: contextId, authorId: this.userId});
+
+    if (Meteor.isClient && numRemoved){
+      Session.set("addingContext", null);
+      Session.set("editingContext", null);
+      var currentX = Session.get('currentX');
+      goToX(currentX ? currentX - 1 : 0);
+    }
+
+    return numRemoved
   },
   updateStoryTitle: function(storyId, title){
     check(storyId, String);
@@ -297,25 +325,31 @@ Meteor.methods({
       }
     })
   },
-  insertVerticalSection: function(storyId, index) {
+  insertVerticalSection: function(storyId, index, verticalSectionId) { // TO-DO find a good way to generate this id in a trusted way
     check(storyId, String);
     check(index, Number);
     var newSection = {
-      _id: Random.id(8),
+      _id: verticalSectionId,
       contextBlocks: [],
       title: "",
       content: "",
       hasTitle: false
     };
 
-    return updateStory.call(this, {_id: storyId }, {
+    var numUpdated = updateStory.call(this, {_id: storyId }, {
       $push: {
         'draftStory.verticalSections': {
           $position: index,
           $each: [newSection]
         }
       }
-    })
+    });
+
+    if (Meteor.isClient && numUpdated){
+      goToY(index);
+    }
+
+    return numUpdated;
   },
   moveVerticalSectionUpOne: function(storyId, index) {
     check(storyId, String);
@@ -338,11 +372,17 @@ Meteor.methods({
 
     swapArrayElements(verticalSections, index, index - 1);
 
-    return updateStory.call(this, { _id: storyId }, {
+    var numUpdated = updateStory.call(this, { _id: storyId }, {
       $set: {
         'draftStory.verticalSections': verticalSections
       }
-    })
+    });
+
+    if (Meteor.isClient && numUpdated) {
+      goToY(index - 1);
+    }
+
+    return numUpdated
   },
   moveVerticalSectionDownOne: function(storyId, index) {
     check(storyId, String);
@@ -367,11 +407,17 @@ Meteor.methods({
 
     swapArrayElements(verticalSections, index, index + 1);
 
-    return updateStory.call(this, { _id: storyId }, {
+    var numUpdated = updateStory.call(this, { _id: storyId }, {
       $set: {
         'draftStory.verticalSections': verticalSections
       }
     })
+
+    if (Meteor.isClient && numUpdated) {
+      goToY(index + 1);
+    }
+
+    return numUpdated
   },
   deleteVerticalSection: function(storyId, index) {
     check(storyId, String);
@@ -404,14 +450,6 @@ Meteor.methods({
         'draftStory.verticalSections': {_id: verticalSections[index]._id}
       }
     })
-  },
-  checkPublishAccess: function() {
-    var accessPriority = Meteor.user().accessPriority;
-    if (!accessPriority || accessPriority > publishAccessLevel) {
-      return false;
-    } else {
-      return true;
-    }
   },
   publishStory: function(storyId, title, keywords, narrativeRightsReserved) {
     check(storyId, String);
@@ -530,7 +568,7 @@ Meteor.methods({
     check(storyId, String);
     return changeEditorsPick.call(this, storyId, false);
   },
-  createStory: function() {
+  createStory: function(shortId, verticalSectionId) { // TO-DO find a way to generate these in a trusted way server without compromising UI speed
     var user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to create a story');
@@ -540,13 +578,11 @@ Meteor.methods({
       throw new Meteor.Error('user does not have create access. userId: ' + this.userId);
     }
 
-    var shortId = Random.id(8);
-
     var storyPathSegment = _s.slugify('new-story') + '-' + shortId;  // TODO DRY
     var userPathSegment= user.displayUsername;
 
     initialVerticalSection = {
-      _id: Random.id(8),
+      _id: verticalSectionId,
       contextBlocks: [],
       title: "",
       content: "",
@@ -569,7 +605,12 @@ Meteor.methods({
         storyPathSegment: storyPathSegment,
         title: ''
       }
-  }, {removeEmptyStrings: false});
+    }, {removeEmptyStrings: false});
+
+    if (Meteor.isClient){
+      Router.go('edit', Stories.findOne({shortId:shortId}))
+    }
+
     return {
       userPathSegment: userPathSegment,
       storyPathSegment: storyPathSegment
