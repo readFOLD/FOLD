@@ -9,7 +9,12 @@ WebApp.connectHandlers.use(function(req, res, next) {
   }
 });
 
-robots.addLine('User-agent: *\nDisallow: /create/');
+if (_.contains([true, 'true'], process.env.ALLOW_BOTS){
+  robots.addLine('User-agent: *\nDisallow: /create/');
+} else {
+  robots.addLine('User-agent: *\nDisallow: /');
+}
+
 
 if (process.env.PRERENDER_TOKEN) {
   prerenderio.set('prerenderToken', process.env.PRERENDER_TOKEN);
