@@ -415,7 +415,7 @@ article.content {
 }
 
 div#overlay {
-  background: transparent url("/overlay.png");
+  background: transparent url("https://res.cloudinary.com/fold/image/upload/v1/static/overlay.png");
   opacity: 0.5;
   z-index: 0;
   .size-to-fit;

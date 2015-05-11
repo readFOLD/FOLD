@@ -692,7 +692,7 @@ LinkBlock = (function(_super) {
   };
 
   LinkBlock.prototype.thumbnailUrl = function() {
-    return this.reference.thumbnailUrl || '/LINK_SQUARE.svg';
+    return this.reference.thumbnailUrl || 'https://res.cloudinary.com/fold/image/upload/v1/static/LINK_SQUARE.svg';
   };
 
   LinkBlock.prototype.imageOnLeft = function() {
