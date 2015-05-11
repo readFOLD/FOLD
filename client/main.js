@@ -733,9 +733,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
       if (!Session.get('read') && !Session.get('addingContext')) {
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
-        Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
-          saveCallback(err, numDocs);
-        });
+        Meteor.call(meteorMethod, that._id, textContent, saveCallback);
       }
     },
     "mouseenter .text-content.editable": function(d, template) {
@@ -750,9 +748,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
         e.preventDefault();
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
-        Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
-          saveCallback(err, numDocs);
-        });
+        Meteor.call(meteorMethod, that._id, textContent, saveCallback);
       }
     }
   }
