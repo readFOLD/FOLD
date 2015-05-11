@@ -428,17 +428,15 @@ Meteor.methods({
     }
 
     this.unblock();
-
+  
     var results;
-    HTTP.get('http://api.soundcloud.com/' + path + '.json', {
+    var res = HTTP.get('http://api.soundcloud.com/' + path + '.json', {
       params: requestParams
-    }, function(res, err) {
-      if (err.statusCode !== 404) { 
-        throw err;
-      } else if (res.data) {
-        results = res.data.length ? res.data : [res.data];
-      }
     });
+
+    if (res && res.data) {
+      results = res.data.length ? res.data : [res.data];
+    }
 
 
     if (results && (results[0].kind === 'track')) {
