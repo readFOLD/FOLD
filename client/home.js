@@ -319,7 +319,6 @@ Template.login_buttons.events({
     e.preventDefault();
     Template.instance().showUserInfo.set(false);
     Meteor.logout();
-    Router.go('home');
   }
 });
 
