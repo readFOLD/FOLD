@@ -71,7 +71,7 @@ window.hammerSwipeOptions = {
 };
 
 
-updatecurrentY = function() {
+window.updateCurrentY = function() {
   var actualY, h, i, maxScroll, readMode, scrollTop, stickyBody, stickyTitle, vertTop, _i, _len, _ref;
   scrollTop = $(document).scrollTop();
   Session.set("scrollTop", scrollTop);
@@ -171,7 +171,7 @@ Meteor.startup(function() {
   Session.setDefault("currentY", void 0);
   Session.setDefault("previousY", void 0);
   Session.setDefault("currentX", void 0);
-  throttledUpdate = _.throttle(updatecurrentY, 20);
+  throttledUpdate = _.throttle(window.updateCurrentY, 20);
   return $(document).scroll(throttledUpdate);
 });
 

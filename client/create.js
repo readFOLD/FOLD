@@ -184,7 +184,7 @@ Template.create.onRendered(function() {
 
 
 
-  $(window).scrollTop(Session.get('scrollTop'));
+
 
   this.autorun(function() { // Hide add card menu when scroll
     var y = Session.get('currentY'); // so reacts to changes in currentY
@@ -221,6 +221,9 @@ Template.create.onRendered(function() {
     goToY(Session.get("currentY"));
     goToX(Session.get("currentX"));
   }
+
+  $(window).scrollTop(Session.get('scrollTop'));
+  window.updateCurrentY(); // needs to be manually triggered for better hot code reload behavior (perhaps due to throttle)
 
 });
 
