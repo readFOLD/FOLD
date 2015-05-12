@@ -375,6 +375,21 @@ footer{
   bottom:-@height;
   height: @height;
   display: inline-block;
+  text-align: center;
+  .write-prompt{
+    background-color: @white-color;
+    height: 142px;
+  }
+  p{
+    margin-top: 0;
+  }
+  button{
+    padding: 10px 12px 10px 12px;
+    background-color: @action-color;
+    &:hover {
+      background-color: @dark-color;
+    }
+  }
 }
 
 .full-page-width{

@@ -108,7 +108,12 @@
 <template name="story_footer">
   <footer class="story-footer">
     {{#unless isPhone}}
-      Bees
+      {{#if read}}
+        <div class="write-prompt vertical-narrative-section">
+          <p>Anyone can write a story on FOLD!</p>
+          {{> create_story}}
+        </div>
+      {{/if}}
     {{/unless}}
   </footer>
 </template>
