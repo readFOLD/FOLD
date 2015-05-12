@@ -1485,3 +1485,18 @@ div.loading-container {
     z-index: 50;
   }
 }
+
+.loading-page{
+  position: fixed;
+  top: 0;
+  left: 0;
+  .centered-loading-icon{
+    &::before{
+      height: 47%;
+      display: block;
+      content: '';
+    }
+    .size-to-fit;
+    text-align: center;
+  }
+}
