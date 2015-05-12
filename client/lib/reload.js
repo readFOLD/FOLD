@@ -6,6 +6,7 @@ Reload._onMigrate('fold', function (retry) {
   } else {
     if (Router.current().route.getName() === 'edit') {
       notifyDeploy("We've just made an improvement! Click here to sync up the latest code.", true);
+      analytics.track('Reload notification happened', {label: 'Reload on click'});
       $('.migration-notification').click(function () {
         saveCallback(null, true);
         setTimeout(function () {
@@ -20,6 +21,7 @@ Reload._onMigrate('fold', function (retry) {
       return [false];
     } else {
       notifyDeploy("We've just made an improvement! Wait just a moment while we sync up the latest code.", false);
+      analytics.track('Reload notification happened', {label: 'Immediate reload'});
       setTimeout(function () {
         readyToMigrate.set(true);
         retry();
@@ -27,7 +29,6 @@ Reload._onMigrate('fold', function (retry) {
       return [false]
     }
   }
-
 });
 
 var migrationData = Reload._migrationData('fold');
