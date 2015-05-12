@@ -931,6 +931,7 @@ div.horizontal-context {
   margin-left: 7px;
   position: absolute;
   top: -0.5 * @context-count-size;
+  width: 100%;
 }
 .context-count-text{
   display: none;
