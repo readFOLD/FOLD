@@ -109,7 +109,7 @@ a.underline{
   text-decoration: underline;
 }
 
-div.footer {
+.contact-footer {
   position: relative;
   bottom:0;
   height: 50px;

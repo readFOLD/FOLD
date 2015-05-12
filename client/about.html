@@ -1,8 +1,8 @@
 <template name="about">
   <div class="about">
-	{{> top_banner border="panel-border"}}
-	{{> about_content}}
-    {{> footer}}
+    {{> top_banner border="panel-border"}}
+    {{> about_content}}
+    {{> contact_footer}}
   </div>
 </template>
 
@@ -90,8 +90,8 @@
     </div>
 </template>
 
-<template name="footer">
-    <div class ="footer">
+<template name="contact_footer">
+    <div class ="contact-footer">
         Follow us at <a href="https://twitter.com/readFOLD" target="_blank">@readFOLD</a> or e-mail us at <a href="mailto:fold@media.mit.edu">fold@media.mit.edu</a>. Read our {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}} and {{#linkTo route="privacy" target='_blank' class='green'}}Privacy Policy{{/linkTo}}.
     </div>
 </template>

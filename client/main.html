@@ -76,10 +76,7 @@
              style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
             {{> vertical_narrative}}
 
-
-          <footer>
-
-          </footer>
+            {{> story_footer}}
         </div>
             <div class="horizontal-context">
                 {{> horizontal_context}}
@@ -105,6 +102,15 @@
             {{/unless}}
         {{/if}}
     {{/if}}
+</template>
+
+
+<template name="story_footer">
+  <footer class="story-footer">
+    {{#unless isPhone}}
+      Bees
+    {{/unless}}
+  </footer>
 </template>
 
 <template name="vertical_narrative">
