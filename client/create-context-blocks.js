@@ -165,6 +165,11 @@ var searchAPI = function(query) {
 
   var inputs = getSearchInput.call(this);
   var query = inputs.query;
+
+  if (!query){
+    return this.noMoreResults.set('Please enter a search query');
+  }
+
   var option = inputs.option;
 
   var mostRecentResult = this.existingSearchResults({reactive:false}).fetch().slice(-1)[0];
