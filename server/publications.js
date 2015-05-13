@@ -108,10 +108,7 @@ Meteor.publish("trendingStoriesPub", function() { // for now, it's just the most
   });
 });
 
-Meteor.publish("starredStoriesPub", function() { // TODO migrate current favorited and make this work!
-
-  return this.ready();
-
+Meteor.publish("starredStoriesPub", function() {
   return Stories.find({
     published: true,
     fields: readStoryFields,
