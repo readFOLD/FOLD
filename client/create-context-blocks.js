@@ -845,6 +845,10 @@ Template.create_map_section.onCreated(function() {
   this.search = function(){
     var inputs = getSearchInput.call(that);
 
+    if (!inputs.query){
+      return
+    }
+
     that.focusResult.set(new MapBlock({
       reference: {
         mapQuery: inputs.query,
@@ -857,6 +861,12 @@ Template.create_map_section.onCreated(function() {
 
 Template.create_map_section.onRendered(function() {
   this.$('input[type="search"]').focus();
+});
+
+Template.create_map_section.events({
+  'change input[type="radio"]': function(e, template) {
+    template.search();
+  }
 });
 
 Template.create_map_section.helpers({
