@@ -402,6 +402,29 @@ Template.vertical_section_block.onCreated(function() {
   });
 });
 
+Template.vertical_section_block.onRendered(function() {
+  var that = this;
+  if (!Meteor.Device.isPhone()){ // highlight active context card link except on mobile
+    this.autorun(function() {
+      Session.get('read') // make reactive to switching between preview and edit
+      var currentXId = Session.get('currentXId');
+      var pastHeader = Session.get("pastHeader");
+      if(Session.equals("currentYId", that.data._id) && pastHeader){ // if block is selected
+        if (currentXId){ // if there is a current context card
+          Meteor.setTimeout(function(){
+            that.$('a[data-context-id="' + currentXId + '"]').addClass('active');
+            that.$('a[data-context-id!="' + currentXId + '"]').removeClass('active');
+          }, 0)
+        }
+      } else {
+        Meteor.setTimeout(function(){
+          that.$('a').removeClass('active');
+        }, 0)
+      }
+    });
+  }
+});
+
 Template.vertical_section_block.helpers({
   babyburgerOpen: function(){
     return Template.instance().babyburgerOpen.get();

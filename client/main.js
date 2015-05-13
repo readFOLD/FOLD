@@ -986,14 +986,6 @@ Tracker.autorun(function() {
   return Session.set('currentXId', null);
 });
 
-if (!Meteor.Device.isPhone()){ // highlight active context card link except on mobile
-  Tracker.autorun(function() {
-    if (currentXId = Session.get('currentXId')){
-      $('a[data-context-id="' + currentXId + '"]').addClass('active');
-      $('a[data-context-id!="' + currentXId + '"]').removeClass('active');
-    }
-  });
-}
 
 
 Template.create_story.events({
