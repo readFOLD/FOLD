@@ -65,6 +65,7 @@ var previewStoryFields = {
   contextBlockTypeCount: 1,
   headerImageFormat: 1,
   headerImage: 1,
+  favoritedTotal: 1,
   storyPathSegment: 1,
   title: 1
 };
