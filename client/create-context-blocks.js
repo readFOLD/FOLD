@@ -798,6 +798,9 @@ Template.create_link_section.onCreated(function() {
   };
 });
 
+Template.create_link_section.onRendered(function() {
+  this.$('input[type="search"]').focus();
+});
 
 Template.create_link_section.helpers({
   preview: function(){
@@ -842,6 +845,10 @@ Template.create_map_section.onCreated(function() {
       authorId : Meteor.user()._id
     }))
   };
+});
+
+Template.create_map_section.onRendered(function() {
+  this.$('input[type="search"]').focus();
 });
 
 Template.create_map_section.helpers({
