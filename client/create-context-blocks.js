@@ -405,23 +405,19 @@ Template.create_twitter_section.events({
 Template.create_image_section.events({
   "dblclick .search-results-container li": function (d, template) {
     template.addingDescription.set(true);
-    setTimeout(function(){
-      template.$('textarea').focus();
-    });
   }
 });
 
 Template.create_gif_section.events({
   "dblclick .search-results-container li": function (d, template) {
     template.addingDescription.set(true);
-    setTimeout(function(){
-      template.$('textarea').focus();
-    });
   }
 });
 
 searchTemplateCreatedBoilerplate = function(type, defaultSource) {
   return function() {
+    var that = this;
+
     this.type = type;
     var previousSource = Session.get('newHorizontalDataSource');
     if (!_.contains(_.pluck(dataSourcesByType[type], 'source'), previousSource)){
@@ -434,12 +430,19 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
 
     this.addingDescription = new ReactiveVar(false);
 
+    this.autorun(function(){
+      if(that.addingDescription.get()){
+        Meteor.setTimeout(function(){
+          that.$('textarea').focus();
+        });
+      }
+    });
+
     this.search = _.bind(searchAPI, this);
     this.existingSearchResults = _.bind(existingSearchResults, this);
     this.getSearchInput = _.bind(getSearchInput, this);
     this.setSearchInput = _.bind(setSearchInput, this);
 
-    var that = this;
 
     this.autorun(function(){
       searchDep.depend();
