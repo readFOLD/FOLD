@@ -241,7 +241,7 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
   },
   starredStories: function() {
     if (subscriptionsReady.get('starredStories')) { // TODO remove the sort after the publication works
-      return _.sortBy(Stories.find({published: true}, {sort: {'favoritedTotal': -1}, limit: 30, reactive: false}).fetch(), function(e){return -1 * e.favorited.length});
+      return Stories.find({published: true}, {sort: {'favoritedTotal': -1}, limit: 30, reactive: false});
     }
   },
   showNewestStories: function(){

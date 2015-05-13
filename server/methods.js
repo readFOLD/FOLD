@@ -355,7 +355,7 @@ Meteor.methods({
       nextPage: nextPage,
       items: urlItems.concat(fullSearchItems)
     }
-  }, 
+  },
   giphyGifSearchList: function(query, option, page) {
     var res;
     var items;

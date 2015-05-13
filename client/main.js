@@ -198,7 +198,7 @@ window.trackingInfoFromStory = function(story){
     .extend(story.published ? {
       'numberOfContextBlocks': story.contextBlockIds.length,
       'numberOfVerticalSections': story.verticalSections.length,
-      'favorites': story.favorited.length,
+      'favorites': story.favoritedTotal,
       'numberofKeywords': story.keywords.length,
       'titleLength': story.title.length
     } : {})

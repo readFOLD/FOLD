@@ -1335,6 +1335,10 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
       type: [String],
       defaultValue: []
     },
+    favoritedTotal: {
+      type: Number,
+      defaultValue: 0
+    },
     editorsPick: {
       type: Boolean,
       optional: true

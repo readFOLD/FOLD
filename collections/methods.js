@@ -15,11 +15,29 @@ changeFavorite = function(storyId, toFavorite) {
   if (!this.userId) {
     throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to favorite a story');
   }
+
+  var story = Stories.findOne({
+    _id: storyId,
+  }, {
+    fields: {
+      favorited: 1
+    }
+  });
+
   operator = toFavorite ? '$addToSet' : '$pull';
   storyOperation = {};
   storyOperation[operator] = {
     favorited: this.userId
   };
+
+  var currentlyFavorited = (_.contains(story.favorited, this.userId));
+
+  if (toFavorite && !currentlyFavorited){
+    storyOperation['$inc'] = { favoritedTotal : 1 };
+  } else if (!toFavorite && currentlyFavorited){
+    storyOperation['$inc'] = { favoritedTotal : -1 };
+  }
+
   userOperation = {};
   userOperation[operator] = {
     'profile.favorites': storyId
