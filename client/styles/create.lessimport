@@ -1329,6 +1329,9 @@ div#fold-link-remover{
   .edit-menu;
   right: 10px;
   top: 10px;
+  button{
+    padding-top: 1px;
+  }
 }
 
 .narrative-babyburger {
