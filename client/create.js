@@ -196,18 +196,18 @@ Template.create.onRendered(function() {
 
   this.autorun(function() { // update UI when start and stop adding/editing context
     var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
-    var verticalSection = Session.get('currentVerticalSection');
-    if (verticalSection) {
-      currentContextBlocks = verticalSection.contextBlocks;
+    //var verticalSection = Session.get('currentVerticalSection');
+    if (Session.get('currentYId')) {
+      //currentContextBlocks = verticalSection.contextBlocks;
       horizontalContextDiv = $(".horizontal-context");
       horizontalContextDiv.removeClass('editing');
-      if (Session.get("addingContext") || (_ref = Session.get("editingContext"), __indexOf.call(currentContextBlocks, _ref) >= 0)) {
+      if (Session.get("addingContext")) { // editing individual cards isn't currently a thing // || (_ref = Session.get("editingContext"), __indexOf.call(currentContextBlocks, _ref) >= 0)) {
         Session.set("showMinimap", false);
         return horizontalContextDiv.addClass('editing');
       } else {
         Session.set("showMinimap", true);
         if (document.body){
-          if(!Session.get('read')){
+          if(!Session.get('read') && !Session.get('metaview')){
             document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
             removePlaceholderLinks();
           }
