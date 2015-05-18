@@ -131,7 +131,7 @@ var curatedStoriesSub,
   starredStoriesSub;
 
 var subscriptionsReady = new ReactiveDict();
-var curatedStoriesPage = new ReactiveVar(0);
+var curatedStoriesPage = new ReactiveVar(0); // TODO make it a dict
 
 
 var homeSubs = new SubsManager({
@@ -233,42 +233,36 @@ Template.all_stories.onCreated(function(){
 Template.top_banner.events({
   'click' : function(e,t){
     incrementReactiveVar(curatedStoriesPage);
-    console.log(curatedStoriesPage.get())
-    Meteor.subscribe('curatedStoriesPub', {page: 2})
+    subscriptionsReady.set('curatedStories', false);
+    homeSubs.subscribe('curatedStoriesPub', {page: curatedStoriesPage.get()}, function(){
+      subscriptionsReady.set('curatedStories', true);
+    })
+
   }
 })
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
-  curatedStories: function() {
-    // preview versions of all these stories come from fast-render so we can show them right away
-    return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: (curatedStoriesPage.get() + 1) * 1, reactive: false}).fetch(); // .fetch() prevents a weird "Bad index" error
-  },
-  trendingStories: function() {
-    if (subscriptionsReady.get('trendingStories')) {
-      return Stories.find({published: true}, {sort: {'analytics.views.total': -1}, limit: 30, reactive: false});
+  stories: function(){
+    switch (Session.get('filterValue')){
+      case 'curated': // preview versions of all these stories come from fast-render so we can show them right away
+        return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: (curatedStoriesPage.get() + 1) * 1, reactive: true}).fetch(); // .fetch() prevents a weird "Bad index" error
+        break;
+      case 'newest':
+        if (subscriptionsReady.get('newestStories')) {
+          return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: 30, reactive: true});
+        }
+        break;
+      case 'trending':
+        if (subscriptionsReady.get('trendingStories')) {
+          return Stories.find({published: true}, {sort: {'analytics.views.total': -1}, limit: 30, reactive: true});
+        }
+        break;
+      case 'starred':
+        if (subscriptionsReady.get('starredStories')) { // TODO remove the sort after the publication works
+          return Stories.find({published: true}, {sort: {'favoritedTotal': -1}, limit: 30, reactive: true});
+        }
+        break;
     }
-  },
-  newestStories: function() {
-    if (subscriptionsReady.get('newestStories')) {
-      return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: 30, reactive: false});
-    }
-  },
-  starredStories: function() {
-    if (subscriptionsReady.get('starredStories')) { // TODO remove the sort after the publication works
-      return Stories.find({published: true}, {sort: {'favoritedTotal': -1}, limit: 30, reactive: false});
-    }
-  },
-  showNewestStories: function(){
-    return Session.equals('filterValue', 'newest')
-  },
-  showCuratedStories: function(){
-    return Session.equals('filterValue', 'curated')
-  },
-  showTrendingStories: function(){
-    return Session.equals('filterValue', 'trending')
-  },
-  showStarredStories: function(){
-    return Session.equals('filterValue', 'starred')
   },
   storiesLoading: function(){
     return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')))

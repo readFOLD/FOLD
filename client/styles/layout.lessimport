@@ -1481,6 +1481,10 @@ div.loading-container {
     top: 20px;
     right: 195px;
   }
+  &.home-loading-container {
+    text-align: center;
+    display: block;
+  }
   i.loading-icon {
     z-index: 50;
   }

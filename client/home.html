@@ -170,30 +170,13 @@
 </template>
 
 <template name="all_stories">
-  {{#if showNewestStories}}
-    {{#each newestStories}}
-      {{> story_preview }}
-    {{/each}}
-  {{/if}}
-  {{#if showCuratedStories}}
-    {{#each curatedStories}}
-      {{> story_preview }}
-    {{/each}}
-  {{/if}}
-  {{#if showTrendingStories}}
-    {{#each trendingStories}}
-      {{> story_preview }}
-    {{/each}}
-  {{/if}}
-  {{#if showStarredStories}}
-    {{#each starredStories}}
-      {{> story_preview }}
-    {{/each}}
-  {{/if}}
+  {{#each stories}}
+    {{> story_preview }}
+  {{/each}}
   {{#if storiesLoading}}
-  <div class="loading-container">
-    {{> loading_icon}}
-  </div>
+    <div class="home-loading-container loading-container">
+      {{> loading_icon}}
+    </div>
   {{/if}}
 </template>
 
