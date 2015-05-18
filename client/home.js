@@ -131,12 +131,18 @@ var curatedStoriesSub,
   starredStoriesSub;
 
 var subscriptionsReady = new ReactiveDict();
+var curatedStoriesPage = new ReactiveVar(0);
 
+
+var homeSubs = new SubsManager({
+  cacheLimit: 9999,
+  expireIn: 99999999
+});
 
 // these methods all keep the subscription open for the lifetime of the window, but can be called again safely
 var subscribeToCuratedStories = function(cb){
   if(!curatedStoriesSub){
-    curatedStoriesSub = Meteor.subscribe("curatedStoriesPub", function(){
+    curatedStoriesSub = homeSubs.subscribe("curatedStoriesPub", function(){
       var timeToLoadStories = Date.now() - createHomePageDate;
       trackTiming('Subscription', 'Full curated stories ready (time since created template)', timeToLoadStories);
       subscriptionsReady.set('curatedStories', true);
@@ -152,7 +158,7 @@ var subscribeToCuratedStories = function(cb){
 };
 var subscribeToTrendingStories = function(cb){
   if(!trendingStoriesSub){
-    trendingStoriesSub = Meteor.subscribe("trendingStoriesPub", function(){
+    trendingStoriesSub = homeSubs.subscribe("trendingStoriesPub", function(){
       subscriptionsReady.set('trendingStories', true);
       if(cb){
         cb();
@@ -166,7 +172,7 @@ var subscribeToTrendingStories = function(cb){
 };
 var subscribeToNewestStories = function(cb){
   if(!newestStoriesSub){
-    newestStoriesSub = Meteor.subscribe("newestStoriesPub", function(){
+    newestStoriesSub = homeSubs.subscribe("newestStoriesPub", function(){
       subscriptionsReady.set('newestStories', true);
       if(cb){
         cb();
@@ -181,7 +187,7 @@ var subscribeToNewestStories = function(cb){
 
 var subscribeToStarredStories = function(cb){
   if(!starredStoriesSub){
-    starredStoriesSub = Meteor.subscribe("starredStoriesPub", function(){
+    starredStoriesSub = homeSubs.subscribe("starredStoriesPub", function(){
       subscriptionsReady.set('starredStories', true);
       if(cb){
         cb();
@@ -224,10 +230,18 @@ Template.all_stories.onCreated(function(){
 
 });
 
+Template.top_banner.events({
+  'click' : function(e,t){
+    incrementReactiveVar(curatedStoriesPage);
+    console.log(curatedStoriesPage.get())
+    Meteor.subscribe('curatedStoriesPub', {page: 2})
+  }
+})
+
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   curatedStories: function() {
     // preview versions of all these stories come from fast-render so we can show them right away
-    return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: 30, reactive: false});
+    return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: (curatedStoriesPage.get() + 1) * 1, reactive: false}).fetch(); // .fetch() prevents a weird "Bad index" error
   },
   trendingStories: function() {
     if (subscriptionsReady.get('trendingStories')) {

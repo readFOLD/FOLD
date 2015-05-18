@@ -72,3 +72,7 @@ window.checkValidUsername = function(username) {
     return { status: true, message: false };
   }
 }
+
+window.incrementReactiveVar = function(rv){
+  return rv.set(rv.get() + 1);
+}

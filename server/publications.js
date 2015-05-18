@@ -70,18 +70,22 @@ var previewStoryFields = {
   title: 1
 };
 
+var pubSize = 1;
+
 Meteor.publish("curatedStoriesPub", function(options) {
   options = options ? options : {};
+  _.defaults(options, {page: 0});
 
   return Stories.find({
     published: true,
     editorsPick: true
   }, {
     fields: options.preview ? previewStoryFields : readStoryFields,
+    skip: options.page * pubSize,
     sort: {
       editorsPickAt: -1
     },
-    limit: 30 // initial limit
+    limit: pubSize
   });
 });
 
@@ -93,7 +97,7 @@ Meteor.publish("newestStoriesPub", function() { // for now, it's just publishedA
     sort: {
       publishedAt: -1
     },
-    limit: 30 // initial limit
+    limit: pubSize
   });
 });
 
@@ -105,7 +109,7 @@ Meteor.publish("trendingStoriesPub", function() { // for now, it's just the most
     sort: {
       'analytics.views.total': -1
     },
-    limit: 30 // initial limit
+    limit: pubSize
   });
 });
 
@@ -116,7 +120,7 @@ Meteor.publish("starredStoriesPub", function() {
     sort: {
       'favoritedTotal': -1
     },
-    limit: 30 // initial limit
+    limit: pubSize
   });
 });
 
