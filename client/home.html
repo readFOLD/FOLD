@@ -177,6 +177,10 @@
     <div class="home-loading-container loading-container">
       {{> loading_icon}}
     </div>
+  {{else}}
+    {{#if moreToShow}}
+      <div class="show-more">Show more</div>
+    {{/if}}
   {{/if}}
 </template>
 

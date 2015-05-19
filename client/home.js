@@ -231,7 +231,7 @@ Template.all_stories.onCreated(function(){
 });
 
 Template.top_banner.events({
-  'click' : function(e,t){
+  'click .show-more' : function(e,t){
     incrementReactiveVar(curatedStoriesPage);
     subscriptionsReady.set('curatedStories', false);
     homeSubs.subscribe('curatedStoriesPub', {page: curatedStoriesPage.get()}, function(){
@@ -239,36 +239,44 @@ Template.top_banner.events({
     })
 
   }
-})
-
-Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
-  stories: function(){
-    switch (Session.get('filterValue')){
-      case 'curated': // preview versions of all these stories come from fast-render so we can show them right away
-        return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: (curatedStoriesPage.get() + 1) * 1, reactive: true}).fetch(); // .fetch() prevents a weird "Bad index" error
-        break;
-      case 'newest':
-        if (subscriptionsReady.get('newestStories')) {
-          return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: 30, reactive: true});
-        }
-        break;
-      case 'trending':
-        if (subscriptionsReady.get('trendingStories')) {
-          return Stories.find({published: true}, {sort: {'analytics.views.total': -1}, limit: 30, reactive: true});
-        }
-        break;
-      case 'starred':
-        if (subscriptionsReady.get('starredStories')) { // TODO remove the sort after the publication works
-          return Stories.find({published: true}, {sort: {'favoritedTotal': -1}, limit: 30, reactive: true});
-        }
-        break;
-    }
-  },
-  storiesLoading: function(){
-    return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')))
-  }
 });
 
+var currentHomeStories = function(){
+  switch (Session.get('filterValue')){
+    case 'curated': // preview versions of all these stories come from fast-render so we can show them right away
+      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: (curatedStoriesPage.get() + 1) * PUB_SIZE, reactive: true}); // .fetch() prevents a weird "Bad index" error
+      break;
+    case 'newest':
+      if (subscriptionsReady.get('newestStories')) {
+        return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: PUB_SIZE, reactive: true});
+      }
+      break;
+    case 'trending':
+      if (subscriptionsReady.get('trendingStories')) {
+        return Stories.find({published: true}, {sort: {'analytics.views.total': -1}, limit: PUB_SIZE, reactive: true});
+      }
+      break;
+    case 'starred':
+      if (subscriptionsReady.get('starredStories')) { // TODO remove the sort after the publication works
+        return Stories.find({published: true}, {sort: {'favoritedTotal': -1}, limit: PUB_SIZE, reactive: true});
+      }
+      break;
+  }
+}
+
+Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
+  stories: currentHomeStories,
+  storiesLoading: function(){
+    return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')))
+  },
+  moreToShow: function(){
+    var stories = currentHomeStories()
+    if (!stories){
+      return false
+    }
+    return currentHomeStories().count() >= curatedStoriesPage.get() * PUB_SIZE
+  }
+});
 
 Template.story_preview.helpers({
   story: function(){
