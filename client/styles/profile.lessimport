@@ -52,7 +52,7 @@ div.user-profile {
   }
 
   div.picture {
-    background-color: @black-color;
+    background-color: @light-transparent-color;
     width: @picture-radius;
     height: @picture-radius;
     border-radius: @picture-radius;
