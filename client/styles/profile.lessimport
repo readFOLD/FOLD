@@ -38,11 +38,12 @@ div.user-profile {
   z-index: 5;
 
   @media (max-width: 800px) {
-    @margin-side:15%;
+    @margin-side: 5%;
     margin-left: @margin-side;
     max-width: 100%;
     width: calc(100% ~"-" @margin-side*2);
     position: initial;
+    margin-top: 30px;
   }
 
   @media (max-height: 640px) {
@@ -51,7 +52,7 @@ div.user-profile {
   }
 
   div.picture {
-    background-color: @black-color;
+    background-color: @light-transparent-color;
     width: @picture-radius;
     height: @picture-radius;
     border-radius: @picture-radius;
@@ -60,6 +61,10 @@ div.user-profile {
     position: relative;
     margin-bottom: 35px;
 
+    .profile-picture-large {
+      height: 150px;
+      width: 150px;
+    }
   } 
 
   div.name, div.bio {
