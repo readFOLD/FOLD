@@ -1377,11 +1377,6 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
     draftStory: {
       type: draftStorySchema
     },
-    'history': {
-      type: [Object],
-      defaultValue: [],
-      blackbox: true
-    },
     'version': {
       type: String,
       optional: true
@@ -1461,3 +1456,4 @@ Schema.StoryStats = new SimpleSchema({
 this.StoryStats.attachSchema(Schema.StoryStats);
 
 
+this.StoryHistories = new Mongo.Collection("story_histories");

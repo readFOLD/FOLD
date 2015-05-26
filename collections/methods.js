@@ -565,9 +565,12 @@ Meteor.methods({
       }
     );
 
+    if (story.published){ // if was published before, add the current published version to the history
+      StoryHistories.insert(_.extend({storyId: story._id}, _.omit(story, ['draftStory', 'history', '_id']))); // TO-DO remove history once migrate all existing stories
+    }
+
     return updateStory.call(this, { _id: storyId }, {
-      $set: setObject,
-      $push: {'history': _.omit(story, ['draftStory', 'history'])} // history has everything except the current published story
+      $set: setObject
     });
   },
   favoriteStory: function(storyId) {
