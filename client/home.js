@@ -230,16 +230,6 @@ Template.all_stories.onCreated(function(){
 
 });
 
-Template.top_banner.events({
-  'click .show-more' : function(e,t){
-    incrementReactiveVar(curatedStoriesPage);
-    subscriptionsReady.set('curatedStories', false);
-    homeSubs.subscribe('curatedStoriesPub', {page: curatedStoriesPage.get()}, function(){
-      subscriptionsReady.set('curatedStories', true);
-    })
-
-  }
-});
 
 var currentHomeStories = function(){
   switch (Session.get('filterValue')){
@@ -263,6 +253,16 @@ var currentHomeStories = function(){
       break;
   }
 }
+
+Template.all_stories.events({
+  'click .show-more' : function(e,t){
+    incrementReactiveVar(curatedStoriesPage);
+    subscriptionsReady.set('curatedStories', false);
+    homeSubs.subscribe('curatedStoriesPub', {page: curatedStoriesPage.get()}, function(){
+      subscriptionsReady.set('curatedStories', true);
+    })
+  }
+});
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   stories: currentHomeStories,

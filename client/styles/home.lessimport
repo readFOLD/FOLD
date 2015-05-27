@@ -210,18 +210,29 @@ div.stories {
   width: 100%;
   height: 100%;
   background-color: @background-color;
-    &.profile {
-      margin-left: @profile-section;
-      width: calc(100% ~"-" @profile-section);
-      min-width: @profile-section;
+  &.profile {
+    margin-left: @profile-section;
+    width: calc(100% ~"-" @profile-section);
+    min-width: @profile-section;
 
-      @media (max-width: 800px) {
-        padding-top: 75px;
-        @margin-side: 25px;
-        margin-left: @margin-side;
-        min-width: calc(100% ~"-" @margin-side*2);
-      }
+    @media (max-width: 800px) {
+      padding-top: 75px;
+      @margin-side: 25px;
+      margin-left: @margin-side;
+      min-width: calc(100% ~"-" @margin-side*2);
     }
+  }
+
+  .button-footer {
+    text-align: center;
+  }
+
+  .show-more {
+    padding: 10px;
+    padding-left: 14px;
+    padding-right: 14px;
+    background-color: @action-color;
+  }
 
   div.story-browser {
     height: 80px;
@@ -236,7 +247,6 @@ div.stories {
     @media (max-width: 800px) {
       width: calc(100% ~"-" 4px);
     }
-
   }
 
   div.overlay-image {
@@ -402,7 +412,7 @@ div.stories {
       margin-right: @margin-side;
       width: calc(50% ~"-" @margin-side * 2);
 
-      @media (max-width: 1200px){
+      @media (max-width: 1200px) {
         @margin-side: 2%;
         margin-right: @margin-side*2;
         width: calc(100% ~"-" @margin-side * 8);
