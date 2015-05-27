@@ -131,7 +131,24 @@ var curatedStoriesSub,
   starredStoriesSub;
 
 var subscriptionsReady = new ReactiveDict();
-var curatedStoriesPage = new ReactiveVar(0); // TODO make it a dict
+var subscriptionsPage = new ReactiveDict();
+_.each(filters, function(filter){
+  subscriptionsPage.set(filter + 'Stories', 0);
+});
+
+var getCurrentSubscriptionPage = function(){
+  var filterValue = Session.get('filterValue');
+  return subscriptionsPage.get(filterValue + 'Stories')
+};
+
+var setCurrentSubscriptionPage = function(val){
+  var filterValue = Session.get('filterValue');
+  return subscriptionsPage.set(filterValue + 'Stories', val);
+};
+
+var incrementCurrentSubscriptionPage = function(){
+  setCurrentSubscriptionPage(getCurrentSubscriptionPage() + 1);
+};
 
 
 var homeSubs = new SubsManager({
@@ -226,40 +243,37 @@ Template.all_stories.onCreated(function(){
       $(window).scrollTop(0)
     }
     notFirstRun = true;
-  })
-
+  });
 });
 
 
 var currentHomeStories = function(){
-  switch (Session.get('filterValue')){
+
+  var limit = (getCurrentSubscriptionPage() + 1) * PUB_SIZE;
+
+  switch (Session.get('filterValue')) {
     case 'curated': // preview versions of all these stories come from fast-render so we can show them right away
-      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: (curatedStoriesPage.get() + 1) * PUB_SIZE, reactive: true}); // .fetch() prevents a weird "Bad index" error
+      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: limit, reactive: true}); // .fetch() prevents a weird "Bad index" error
       break;
     case 'newest':
-      if (subscriptionsReady.get('newestStories')) {
-        return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: PUB_SIZE, reactive: true});
-      }
+      return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: limit, reactive: true});
       break;
     case 'trending':
-      if (subscriptionsReady.get('trendingStories')) {
-        return Stories.find({published: true}, {sort: {'analytics.views.total': -1}, limit: PUB_SIZE, reactive: true});
-      }
+      return Stories.find({published: true}, {sort: {'analytics.views.total': -1}, limit: limit, reactive: true});
       break;
     case 'starred':
-      if (subscriptionsReady.get('starredStories')) { // TODO remove the sort after the publication works
-        return Stories.find({published: true}, {sort: {'favoritedTotal': -1}, limit: PUB_SIZE, reactive: true});
-      }
+      return Stories.find({published: true}, {sort: {'favoritedTotal': -1}, limit: limit, reactive: true});
       break;
   }
-}
+};
 
 Template.all_stories.events({
   'click .show-more' : function(e,t){
-    incrementReactiveVar(curatedStoriesPage);
-    subscriptionsReady.set('curatedStories', false);
-    homeSubs.subscribe('curatedStoriesPub', {page: curatedStoriesPage.get()}, function(){
-      subscriptionsReady.set('curatedStories', true);
+    var filterValue = Session.get('filterValue');
+    subscriptionsReady.set(filterValue + 'Stories', false);
+    homeSubs.subscribe(filterValue + 'StoriesPub', {page: getCurrentSubscriptionPage() + 1}, function(){
+      incrementCurrentSubscriptionPage();
+      subscriptionsReady.set(filterValue + 'Stories', true);
     })
   }
 });
@@ -270,11 +284,11 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
     return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')))
   },
   moreToShow: function(){
-    var stories = currentHomeStories()
+    var stories = currentHomeStories();
     if (!stories){
       return false
     }
-    return currentHomeStories().count() >= curatedStoriesPage.get() * PUB_SIZE
+    return currentHomeStories().count() >= getCurrentSubscriptionPage() * PUB_SIZE
   }
 });
 
