@@ -3,6 +3,7 @@
 .build*
 .DS_Store
 
+
 *.sublime-workspace
 
 settings.json
@@ -42,3 +43,6 @@ out/
 
 # JIRA plugin
 atlassian-ide-plugin.xml
+
+#Mongodump
+dump

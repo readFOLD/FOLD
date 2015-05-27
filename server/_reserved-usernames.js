@@ -14,7 +14,6 @@ var reservedUsernames = _.sortBy([
   'readfold',
   'civic',
   'civicmedia',
-  'joi',
 
   // famous ppl
   'whitehouse',
