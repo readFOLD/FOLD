@@ -288,7 +288,7 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
     if (!stories){
       return false
     }
-    return currentHomeStories().count() >= getCurrentSubscriptionPage() * PUB_SIZE
+    return currentHomeStories().count() >= (getCurrentSubscriptionPage() + 1) * PUB_SIZE
   }
 });
 
