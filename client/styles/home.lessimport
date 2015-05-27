@@ -223,9 +223,6 @@ div.stories {
     }
   }
 
-  .button-footer {
-    text-align: center;
-  }
 
   .show-more {
     padding: 10px;
@@ -480,4 +477,10 @@ div.stories {
       }
     }
   }
+}
+
+
+.home-loading-footer {
+  text-align: center;
+  width: 100%;
 }

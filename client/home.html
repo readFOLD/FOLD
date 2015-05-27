@@ -173,17 +173,16 @@
   {{#each stories}}
     {{> story_preview }}
   {{/each}}
-  {{#if storiesLoading}}
-    <div class="home-loading-container loading-container">
+  <div class="home-loading-footer">
+    {{#if storiesLoading}}
       {{> loading_icon}}
-    </div>
-  {{else}}
-    {{#if moreToShow}}
-      <div class="button-footer">
+    {{else}}
+      {{#if moreToShow}}
         <button class="show-more">Show more</button>
-      </div>
+      {{/if}}
     {{/if}}
-  {{/if}}
+  </div>
+
 </template>
 
 <template name="story_preview">
