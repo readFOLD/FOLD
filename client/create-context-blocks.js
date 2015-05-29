@@ -6,14 +6,6 @@ var count = function(){
   return i++;
 };
 
-var getIdFromUrl = function(url){
-  return _.chain(url.split('/')).compact().last().value().match(/[\d]*/)[0]
-};
-
-var parseDate = function(date) {
-  return date.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1");
-};
-
 var createBlockHelpers = {
   startingBlock: function() {
     if (this instanceof ContextBlock) {
@@ -192,7 +184,7 @@ var searchAPI = function(query) {
   var that = this;
   searchDep.changed();
 
-  integrationDetails = searchIntegrations[source];
+  integrationDetails = ContextBlock.searchMappings[source];
 
   if (integrationDetails.notSearch){ // don't search if it's not a search integration
     return
@@ -230,134 +222,6 @@ var searchAPI = function(query) {
         SearchResults.insert(item);
       });
   });
-};
-
-
-var searchIntegrations = {
-  youtube: {
-    methodName: 'youtubeVideoSearchList',
-    mapFn: function(e){
-      return {
-        reference: {
-          title: e.title,
-          description: e.description,
-          id: e.videoId,
-          username : e.channelTitle,
-          userId : e.channelId,
-          creationDate : parseDate(e.publishedAt)
-        }
-      }
-    }
-  },
-  vimeo: {
-    methodName: 'vimeoVideoSearchList',
-    mapFn: function(e){
-      return {
-        reference: {
-          title: e.name,
-          description: e.description,
-          id: getIdFromUrl(e.uri),
-          username: e.user.name,
-          creationDate: parseDate(e.created_time),
-          previewImage: getIdFromUrl(e.pictures.uri)
-        }
-      }
-    }
-  },
-  soundcloud: {
-    methodName: 'soundcloudAudioSearchList',
-    mapFn: function(e){
-      return {
-        reference: {
-          title: e.title,
-          description: e.description,
-          id: e.id,
-          username : e.channelTitle,
-          userId : e.user_id,
-          creationDate : parseDate(e.created_at),
-          artworkUrl: e.artwork_url
-        }
-      }
-    }
-  },
-  twitter: {
-    methodName: 'twitterSearchList',
-    mapFn: function(e){
-      var item = {
-        reference: {
-          text : e.text,
-          extendedEntities: e.extended_entities,
-          retweetedStatus: e.retweeted_status,
-          entities: e.entities,
-          id : e.id_str,
-          username : e.user.name,
-          screenname : e.user.screen_name,
-          userPic : e.user.profile_image_url_https,
-          creationDate : e.created_at.substring(0, 19)
-        }
-      };
-      return item;
-    }
-  },
-  imgur: {
-    methodName: 'imgurImageSearchList',
-    mapFn: function(e) {
-      return {
-        reference: {
-          id : e.id,
-          username : e.account_url,
-          userId : e.account_id,
-          fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
-          title : e.title,
-          hasMP4: e.mp4 ? true : false,
-          hasWebM: e.webm ? true : false
-        }
-      }
-    }
-  },
-  flickr: {
-    methodName: 'flickrImageSearchList',
-    mapFn: function (e) {
-      var username, uploadDate, title;
-      if (e.media) {
-        //if single image result
-        ownername = e.owner.username;
-        uploadDate = e.dateuploaded;
-        title = e.title._content;
-      } else {
-        //if search result
-        ownername = e.ownername;
-        uploadDate = e.dateupload;
-        title = e.title;
-      }
-      return {
-        reference: {
-          ownerName: ownername,
-          uploadDate: new Date(parseInt(uploadDate) * 1000),
-          flickrFarm: e.farm,
-          flickrSecret: e.secret,
-          id: e.id,
-          flickrServer: e.server,
-          title: title
-        }
-      }
-    }
-  },
-  cloudinary: {
-    notSearch: true
-  },
-  giphy: {
-    methodName: 'giphyGifSearchList',
-    mapFn: function(e){
-      return {
-        reference: {
-          id: e.id,
-          username: e.username,
-          source: e.source
-        }
-      }
-    }
-  }
 };
 
 
