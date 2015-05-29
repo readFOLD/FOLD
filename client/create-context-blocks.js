@@ -7,11 +7,6 @@ var count = function(){
 };
 
 var createBlockHelpers = {
-  startingBlock: function() {
-    if (this instanceof ContextBlock) {
-      return this;
-    }
-  },
   showAddButton: function(){
     return Template.instance().focusResult.get() ? true : false;
   },
@@ -747,14 +742,6 @@ Template.create_text_section.onRendered(function() {
   this.$('textarea').focus();
 });
 
-Template.create_text_section.helpers({
-  startingBlock: function() {
-    if (this instanceof ContextBlock) {
-      return this;
-    }
-  }
-});
-
 Template.create_text_section.events({
   'click .add-button': function(e, template){
     e.preventDefault()
@@ -768,9 +755,10 @@ Template.create_text_section.events({
 
 Template.create_twitter_section.helpers({
   twitterUser: function() {
-    return Meteor.user().services && Meteor.user().services.twitter && Meteor.user().services.twitter.id;
+    var user = Meteor.user();
+    return user.services && user.services.twitter && user.services.twitter.id;
   }
-})
+});
 
 Template.search_form.events({
   'keydown': function(){
@@ -820,26 +808,3 @@ Template.search_form.helpers({
     }
   }
 });
-
-
-// Template.create_image_section.events({
-//   "click div.save": function(d) {
-//     var context, description, horizontalIndex, horizontalSections, newDocument, parentSection, srcE, url;
-//     srcE = d.srcElement ? d.srcElement : d.target;
-//     parentSection = $(srcE).closest('section');
-//     horizontalIndex = parentSection.data('index');
-//     url = parentSection.find('input.image-url-input').val();
-//     description = parentSection.find('input.image-description-input').val();
-//     newDocument = {
-//       type: 'image',
-//       url: url,
-//       description: description,
-//       index: horizontalIndex
-//     };
-//     horizontalSections = Session.get('horizontalSections');
-//     horizontalSections[Session.get('currentVertical')].data[horizontalIndex] = newDocument;
-//     Session.set('horizontalSections', horizontalSections);
-//     context = newDocument;
-//     return renderTemplate(d, Template.display_image_section, context);
-//   }
-// });
