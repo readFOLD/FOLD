@@ -87,11 +87,14 @@ Meteor.publish("curatedStoriesPub", function(options) {
   });
 });
 
-Meteor.publish("newestStoriesPub", function() { // for now, it's just publishedAt (later should maybe be firstPublishedAt)
+Meteor.publish("newestStoriesPub", function(options) { // for now, it's just publishedAt (later should maybe be firstPublishedAt)
+  options = options ? options : {};
+  _.defaults(options, {page: 0});
   return Stories.find({
     published: true
   }, {
     fields: readStoryFields,
+    skip: options.page * PUB_SIZE,
     sort: {
       publishedAt: -1
     },
@@ -99,11 +102,14 @@ Meteor.publish("newestStoriesPub", function() { // for now, it's just publishedA
   });
 });
 
-Meteor.publish("trendingStoriesPub", function() { // for now, it's just the most views
+Meteor.publish("trendingStoriesPub", function(options) { // for now, it's just the most views
+  options = options ? options : {};
+  _.defaults(options, {page: 0});
   return Stories.find({
     published: true
   }, {
     fields: readStoryFields,
+    skip: options.page * PUB_SIZE,
     sort: {
       'analytics.views.total': -1
     },
@@ -111,10 +117,13 @@ Meteor.publish("trendingStoriesPub", function() { // for now, it's just the most
   });
 });
 
-Meteor.publish("starredStoriesPub", function() {
+Meteor.publish("starredStoriesPub", function(options) {
+  options = options ? options : {};
+  _.defaults(options, {page: 0});
   return Stories.find({
     published: true,
     fields: readStoryFields,
+    skip: options.page * PUB_SIZE,
     sort: {
       'favoritedTotal': -1
     },
