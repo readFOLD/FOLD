@@ -58,7 +58,7 @@ var createBlockHelpers = {
   focusResult: function() {
     var focusResult = Template.instance().focusResult.get();
     if (focusResult) { return focusResult; }
-  },
+  }
 };
 
 
@@ -245,7 +245,7 @@ var searchIntegrations = {
             id: e.videoId,
             username : e.channelTitle,
             userId : e.channelId,
-            creationDate : parseDate(e.publishedAt) 
+            creationDate : parseDate(e.publishedAt)
           }
         }
       }
@@ -260,7 +260,7 @@ var searchIntegrations = {
             id: getIdFromUrl(e.uri),
             username: e.user.name,
             creationDate: parseDate(e.created_time),
-            previewImage: getIdFromUrl(e.pictures.uri) 
+            previewImage: getIdFromUrl(e.pictures.uri)
           }
         }
       }
@@ -326,7 +326,7 @@ var searchIntegrations = {
       methodName: 'flickrImageSearchList',
       mapFn: function(e) {
         var username, uploadDate, title;
-        if (e.media) { 
+        if (e.media) {
           //if single image result
           ownername = e.owner.username;
           uploadDate = e.dateuploaded;
