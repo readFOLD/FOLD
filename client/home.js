@@ -130,25 +130,41 @@ var curatedStoriesSub,
   newestStoriesSub,
   starredStoriesSub;
 
-var subscriptionsReady = new ReactiveDict();
-var subscriptionsPage = new ReactiveDict();
-_.each(filters, function(filter){
-  subscriptionsPage.set(filter + 'Stories', 0);
-});
 
-var getCurrentSubscriptionPage = function(){
-  var filterValue = Session.get('filterValue');
+var getSubscriptionPage = function(filterValue){
   return subscriptionsPage.get(filterValue + 'Stories')
 };
 
-var setCurrentSubscriptionPage = function(val){
-  var filterValue = Session.get('filterValue');
+var setSubscriptionPage = function(filterValue, val){
   return subscriptionsPage.set(filterValue + 'Stories', val);
 };
+
+var getCurrentSubscriptionPage = function(){
+  return getSubscriptionPage(Session.get('filterValue'));
+};
+
+var setCurrentSubscriptionPage = function(val){
+  return setSubscriptionPage(Session.get('filterValue'), val);
+};
+
+
+var incrementSubscriptionPage = function(filterValue){
+  setSubscriptionPage(filterValue, getSubscriptionPage(filterValue) + 1);
+};
+
 
 var incrementCurrentSubscriptionPage = function(){
   setCurrentSubscriptionPage(getCurrentSubscriptionPage() + 1);
 };
+
+var subscriptionsReady = new ReactiveDict();
+var subscriptionsPage = new ReactiveDict();
+_.each(filters, function(filter){
+  setSubscriptionPage(filter, -1);
+});
+
+setSubscriptionPage('curated', 0); // curated stories are preloaded
+
 
 
 var homeSubs = new SubsManager({
@@ -176,6 +192,7 @@ var subscribeToCuratedStories = function(cb){
 var subscribeToTrendingStories = function(cb){
   if(!trendingStoriesSub){
     trendingStoriesSub = homeSubs.subscribe("trendingStoriesPub", function(){
+      incrementSubscriptionPage('trending');
       subscriptionsReady.set('trendingStories', true);
       if(cb){
         cb();
@@ -190,6 +207,7 @@ var subscribeToTrendingStories = function(cb){
 var subscribeToNewestStories = function(cb){
   if(!newestStoriesSub){
     newestStoriesSub = homeSubs.subscribe("newestStoriesPub", function(){
+      incrementSubscriptionPage('newest');
       subscriptionsReady.set('newestStories', true);
       if(cb){
         cb();
@@ -205,6 +223,7 @@ var subscribeToNewestStories = function(cb){
 var subscribeToStarredStories = function(cb){
   if(!starredStoriesSub){
     starredStoriesSub = homeSubs.subscribe("starredStoriesPub", function(){
+      incrementSubscriptionPage('starred');
       subscriptionsReady.set('starredStories', true);
       if(cb){
         cb();
@@ -250,6 +269,10 @@ Template.all_stories.onCreated(function(){
 var currentHomeStories = function(){
 
   var limit = (getCurrentSubscriptionPage() + 1) * PUB_SIZE;
+
+  if (limit <= 0){
+    return
+  }
 
   switch (Session.get('filterValue')) {
     case 'curated': // preview versions of all these stories come from fast-render so we can show them right away
