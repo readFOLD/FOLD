@@ -858,8 +858,8 @@ Template.link_twitter.events({
       requestPermissions: ['user']
     }, function (err) {
       if (err) {
-        throw(err);
         notifyError("Twitter login failed");
+        throw(err);
       } else if (!Meteor.user().profile.bio){
         Meteor.call('setBioFromTwitter')
       }
