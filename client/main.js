@@ -1,5 +1,4 @@
-var getCardWidth, horizontalBlockHelpers, throttledResize, typeHelpers, updatecurrentY,
-  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+var getCardWidth, horizontalBlockHelpers, throttledResize, typeHelpers;
 
 UI.registerHelper('selectedIf', function(val) {
   return val ? 'selected' : '';

@@ -35,3 +35,5 @@ reload
 meteorhacks:subs-manager
 fold:fast-render@2.3.2
 force-ssl
+fold:user-system@=0.1.0
+fold:context-blocks@=0.1.0
