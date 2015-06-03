@@ -1,6 +1,3 @@
-var createBlockEvents, createBlockHelpers, renderTemplate, showNewHorizontalUI, toggleHorizontalUI,
-  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-
 window.enclosingAnchorTag = null;
 window.selectedNode = null;
 
@@ -726,18 +723,6 @@ Template.create_horizontal_section_block.events({
     document.body.style.overflow='auto';
   }
 });
-
-renderTemplate = function(d, templateName, context) {
-  var parentSection, srcE;
-  srcE = d.srcElement ? d.srcElement : d.target;
-  parentSection = $(srcE).closest('section');
-  parentSection.empty();
-  if (context) {
-    return UI.insert(UI.renderWithData(templateName, context), parentSection.get(0));
-  } else {
-    return UI.insert(UI.render(templateName), parentSection.get(0));
-  }
-};
 
 Template.horizontal_context.helpers({
   lastUpdate: function() {
