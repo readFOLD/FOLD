@@ -3,6 +3,10 @@ var reservedUsernames = _.sortBy([
   // us
   'joe',
   'goldbeck',
+  'joegoldbeck',
+  'gordon',
+  'mangum',
+  'gordonmangum',
   'joseph',
   'alexis',
   'hope',
@@ -23,6 +27,7 @@ var reservedUsernames = _.sortBy([
   'flotus',
   'medialab',
   'mit',
+  'joi',
   'mitmedialab',
   'thepope',
   'obama',
