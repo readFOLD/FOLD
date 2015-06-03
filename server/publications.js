@@ -282,19 +282,7 @@ Meteor.publish("userData", function () {
 });
 
 
-Meteor.publish("tempUsernamePub", function() {
-  if (this.userId) {
-    return Meteor.users.find(this.userId, {
-      fields: {
-        'tempUsername': 1
-      }
-    });
-  } else {
-    this.ready();
-  }
-});
-
-// this publishes info one server facts (used on /stats page)
+// this publishes info on server facts (used on /stats page)
 Facts.setUserIdFilter(function (userId) {
   var user = Meteor.users.findOne(userId);
   return user && user.admin;
