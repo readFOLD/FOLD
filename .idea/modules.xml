@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/FOLD.iml" filepath="$PROJECT_DIR$/.idea/FOLD.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Deepstream.iml" filepath="$PROJECT_DIR$/.idea/Deepstream.iml" />
     </modules>
   </component>
 </project>
