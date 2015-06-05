@@ -19,6 +19,7 @@ if (Meteor.users.find().count() === 0) {
 
 if (Deepstreams.find().count() === 0) {
   Deepstreams.insert({
+    _id: 'someid',
     shortId: 'bbbb',
     curatorId: curatorId,
     streams: [{
@@ -26,6 +27,12 @@ if (Deepstreams.find().count() === 0) {
       _id: 'ant_stream654',
       reference: {
         id: 'tRn74l0hPp8'
+      }
+    }, {
+      source: 'youtube',
+      _id: 'walrus_stream123',
+      reference: {
+        id: 'HZRUsRVMS80'
       }
     }],
     activeStreamId: 'ant_stream654'
