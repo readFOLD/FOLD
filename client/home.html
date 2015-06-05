@@ -4,14 +4,14 @@
   <div class="home-top {{#if border}}{{border}}{{/if}}">
     <div class="left">
       <div class="logo-title">
-        {{#linkTo route="home"}}
+        <a href="/home">
         <img class="logo" src="{{c.url 'static/FOLD_LOGO.svg'}}">
-        {{/linkTo}}
-        {{#linkTo route="home"}}
+        </a>
+        <a href="/home">
         <div class="title">
           <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
         </div>
-        {{/linkTo}}
+        </a>
       </div>
       {{#if showFilters}}
       <div class="filter">
@@ -60,14 +60,14 @@
   <div class="home-top remix-color">
     <div class="left">
       <div class="logo-title">
-          {{#linkTo route="home"}}
+          <a href="/home">
           <img class="logo" src="{{c.url 'static/FOLD_LOGO.svg'}}">
-          {{/linkTo}}
-          {{#linkTo route="home"}}
+          </a>
+          <a href="/home">
           <div class="title">
             <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
           </div>
-          {{/linkTo}}
+          </a>
       </div>
     </div>
   </div>
@@ -86,12 +86,12 @@
 
         {{#unless isPhone}}
           <li class="about-fold">
-            {{#linkTo route="about"}}
-            <button>
-                <span class="text">About FOLD</span>
+            <a href="/about">
+              <button>
+                  <span class="text">About FOLD</span>
 
-            </button>
-            {{/linkTo}}
+              </button>
+            </a>
           </li>
         {{/unless}}
       </ol>
@@ -115,7 +115,7 @@
       {{#if showUserInfo}}
         <ol class="user-menu">
           <li>
-            {{#linkTo route="my_story_profile"}}<button>My stories</button>{{/linkTo}}
+            <a href="/my_story_profile"><button>My stories</button></a>
           </li>
           <li>
             <button class="logout">Logout</button>
@@ -272,7 +272,7 @@
       <!--TODO - add remix check-->
     </div>
 
-    {{#linkTo route=linkRoute data=this}}
+    <a href="story_url_here">
       <div class="overlay-image">
         {{#with headerImageVideoObject 'small'}}
           {{> looping_video}}
@@ -280,18 +280,20 @@
           <img src="{{headerImageUrl 'small'}}" />
         {{/with}}
       </div>
-    {{/linkTo}}
 
-    {{#linkTo route=linkRoute data=this}}
+    </a>
+
+    <a href="story_url_here">
       <div class="story-card">
       </div>
-    {{/linkTo}}
 
-    {{#linkTo route=linkRoute data=this}}
+    </a>
+
+    <a href="story_url_here">
       <div class="headline">
         {{title}}
       </div>
-    {{/linkTo}}
+    </a>
 
     <div class="byline">
       <a class="author-profile-link" href="{{profileUrl}}">

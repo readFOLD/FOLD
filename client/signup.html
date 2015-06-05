@@ -76,7 +76,7 @@
 
       {{#if signupError}}<div class="error">{{signupError}}</div>{{/if}}
 
-      <p>By creating an account, I accept FOLD’s {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}} and {{#linkTo route="privacy" target='_blank' class='green'}}Privacy Policy{{/linkTo}}.</p>
+      <p>By creating an account, I accept FOLD’s <a href="/terms" target='_blank' class='green'>Terms of Service</a> and <a href="/privacy" target='_blank' class='green'>Privacy Policy</a>.</p>
       <button type="submit" class="signup-button">Sign up</button>
       {{#if disableSignup}}
         {{>loading_icon}}

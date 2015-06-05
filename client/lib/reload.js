@@ -4,7 +4,7 @@ Reload._onMigrate('fold', function (retry) {
   if (readyToMigrate.get()) {
     return [true, {codeReloaded: true}];
   } else {
-    if (Router.current().route.getName() === 'edit') {
+    if (FlowRouter.current().route.getName() === 'edit') {
       notifyDeploy("We've just made an improvement! Click here to sync up the latest code.", true);
       analytics.track('Reload notification happened', {label: 'Reload on click'});
       $('.migration-notification').click(function () {
@@ -14,7 +14,7 @@ Reload._onMigrate('fold', function (retry) {
           retry();
         }, 300);
       });
-      Router.onRun(function () {
+      FlowRouter.onRun(function () {
         readyToMigrate.set(true);
         retry();
       });

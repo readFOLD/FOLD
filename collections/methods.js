@@ -571,7 +571,7 @@ Meteor.methods({
     }, {removeEmptyStrings: false});
 
     if (Meteor.isClient){
-      Router.go('edit', Stories.findOne({shortId:shortId}))
+      FlowRouter.go('edit', Stories.findOne({shortId:shortId}))
     }
 
     return {

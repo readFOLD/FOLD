@@ -180,7 +180,7 @@ window.moveOneCard = function(d) {
 };
 
 $(document).keydown(function(e) {
-  if (Router.current().route.getName() === 'read'){
+  if (FlowRouter.current().route.getName() === 'read'){
     letter = String.fromCharCode(e.keyCode);
     switch(letter){
       case 'J':

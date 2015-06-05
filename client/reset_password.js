@@ -39,7 +39,7 @@ Template.reset_password_form.events({
       } else {
         t.message.set('Your password has been successfully changed. Welcome back!');
         Meteor.setTimeout( function(){
-            Router.go('home')
+            FlowRouter.go('home')
         }, 1500);
       }
     });

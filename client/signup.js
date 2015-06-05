@@ -156,7 +156,7 @@ Template.signup_form.events({
         if (err) {
           t.signupError.set(err.reason || err.error);
         } else {
-          Router.go('/');
+          FlowRouter.go('/');
           notifyLogin();
         }
       });
@@ -180,7 +180,7 @@ Template.signup_form.events({
           }
 
         } else {
-          Router.go('/');
+          FlowRouter.go('/');
           notifyLogin();
         }
       });

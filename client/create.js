@@ -488,7 +488,7 @@ Template.create.events({
       if (err || !numDocs) {
         notifyError('Publication failed');
       } else {
-        Router.go('/profile/' + Meteor.user().username);
+        FlowRouter.go('/profile/' + Meteor.user().username);
         notifySuccess('You story has been published!');
         analytics.track('Publish story', window.trackingInfoFromStory(Stories.findOne(that._id))); // TODO add info about author
       }

@@ -1,7 +1,7 @@
 
 analytics.load(Meteor.settings["public"].SEGMENT_WRITE_KEY);
 
-Router.onRun(function() {
+FlowRouter.triggers.enter(function() {
   var that = this;
 
   Meteor.setTimeout(function(){
@@ -9,7 +9,6 @@ Router.onRun(function() {
     analytics.page(that.route.getName()); // maybe should be more page info here
   }, 100); // this might even be ok when set to 0
 
-  this.next()
 });
 
 window.trackTiming = function(category, str, time){  // mobile safari doesn't have timing api so those results will not include initial request time
@@ -36,7 +35,7 @@ Meteor.startup(function() {
 
     Tracker.autorun(function(c) {
       // waiting for user subscription to load
-      if (! Router.current() || ! Router.current().ready())
+      if (! FlowRouter.subsReady())
         return;
 
       var user = Meteor.user();

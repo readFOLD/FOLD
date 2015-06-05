@@ -25,11 +25,11 @@
 
     {{#if isAuthor}}
       {{#unless isPhone}}
-        {{#linkTo route="edit" data=this}}
+        <a href="/edit_this_thing">
           <button type="button" class="link-to-edit button">
             Edit This Story
           </button>
-        {{/linkTo}}
+        </a>
       {{/unless}}
     {{/if}}
   </div>

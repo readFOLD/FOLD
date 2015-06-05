@@ -27,7 +27,7 @@ loginWithTwitter = function() {
       Session.set('signingInWithTwitter', false);
       throw(err); // throw error so we see it on kadira
     } else if (!Meteor.user().username) { // if they are signing up for the first time they won't have a username yet
-      Router.go('twitter-signup');
+      FlowRouter.go('twitter-signup');
     } else { // otherwise they are a returning user, they are now logged in and free to proceed
       notifyLogin();
     }
@@ -35,7 +35,7 @@ loginWithTwitter = function() {
 };
 
 loginWithEmail = function() {
-  Router.go('login')
+  FlowRouter.go('login')
 };
 
 Template.home.helpers({
