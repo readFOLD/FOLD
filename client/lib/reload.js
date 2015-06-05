@@ -14,10 +14,10 @@ Reload._onMigrate('deepstream', function (retry) {
           retry();
         }, 300);
       });
-      FlowRouter.triggers.enter(function () {
+      FlowRouter.triggers.enter([function () {
         readyToMigrate.set(true);
         retry();
-      });
+      }]);
       return [false];
     } else {
       notifyDeploy("We've just made an improvement! Wait just a moment while we sync up the latest code.", false);
