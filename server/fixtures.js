@@ -17,6 +17,21 @@ if (Meteor.users.find().count() === 0) {
   });
 }
 
+if (Deepstreams.find().count() === 0) {
+  Deepstreams.insert({
+    shortId: 'bbbb',
+    curatorId: curatorId,
+    streams: [{
+      source: 'youtube',
+      _id: 'ant_stream654',
+      reference: {
+        id: 'tRn74l0hPp8'
+      }
+    }],
+    activeStreamId: 'ant_stream654'
+  });
+}
+
 // External Services
 
 ServiceConfiguration.configurations.upsert(

@@ -435,3 +435,104 @@ this.StoryStats.attachSchema(Schema.StoryStats);
 
 
 this.StoryHistories = new Mongo.Collection("story_histories");
+
+
+
+// DEEPSTREAM
+
+Deepstream = (function() {
+  function Deepstream(doc) {
+    _.extend(this, doc);
+  }
+
+  Deepstream.prototype.contextCountOfType = function(type) {
+    return this.contextBlocks.reduce(function(count, contextBlock){
+      if(contextBlock.type === type){
+        count++;
+      }
+      return count;
+    }, 0)
+  };
+
+  Deepstream.prototype.countContextTypes = function(){
+    return _.chain(this.contextBlocks).pluck('type').countBy(_.identity).value()
+  };
+
+  Deepstream.prototype.activeStream = function(){
+    streamObj = _.findWhere(this.streams, {_id: this.activeStreamId});
+    return new Stream(streamObj)
+  };
+
+  return Deepstream;
+
+})();
+
+
+this.Deepstreams = new Mongo.Collection("deepstreams", {
+  transform: function(doc) {
+    return new Deepstream(doc);
+  }
+});
+
+this.Deepstreams.allow({
+  insert: function() {
+    return true;
+  },
+  update: function() {
+    return true
+  },
+  remove: function() {
+    return true;
+  }
+});
+
+Stream = (function() {
+  function Stream(doc) {
+    _.extend(this, doc);
+  }
+
+  Stream.prototype.title = function () {
+    if (this.source === 'youtube') {
+      return this.reference.title
+    }
+  };
+
+  Stream.prototype.caption = function () {
+    if (this.source === 'youtube') {
+      return this.reference.description
+    }
+  };
+
+  Stream.prototype.username = function () {
+    if (this.source === 'youtube') {
+      return this.reference.username
+    }
+  };
+
+  Stream.prototype.creationDate = function () {
+    if (this.source === 'youtube') {
+      return this.reference.creationDate
+    }
+  };
+
+  Stream.prototype.url = function () {
+    if (this.source === 'youtube') {
+      return '//www.youtube.com/embed/' + this.reference.id + '?autoplay=1';
+    }
+  };
+
+  Stream.prototype.previewUrl = function () {
+    if (this.source === 'youtube') {
+      return '//img.youtube.com/vi/' + this.reference.id + '/0.jpg';
+    }
+  };
+
+  Stream.prototype.thumbnailUrl = function () {
+    if (this.source === 'youtube') {
+      return '//i.ytimg.com/vi/' + this.reference.id + '/default.jpg';
+    }
+  };
+
+  return Stream;
+
+})();
