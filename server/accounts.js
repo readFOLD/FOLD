@@ -45,7 +45,7 @@ Accounts.emailTemplates.from = 'Deepstream Accounts <deepstream@media.mit.edu>';
 Accounts.emailTemplates.siteName = 'deepstream.tv';
 
 Accounts.emailTemplates.resetPassword.subject = function(user, url) {
-  return 'FOLD Password Reset';
+  return 'Deepstream Password Reset';
 };
 
 Accounts.emailTemplates.resetPassword.text = function(user, url) {
