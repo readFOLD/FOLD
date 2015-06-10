@@ -57,15 +57,14 @@ Template.watch.onCreated(function () {
 
   window.onYouTubeIframeAPIReady = function() {
     console.log('api ready!!!!!')
-    mainPlayer = new YT.Player('main-stream', {
-      height: '390',
-      width: '640',
-      videoId: 'M7lc1UVf-VE',
+    var youTubePlayer = new YT.Player('main-stream', {
       events: {
         'onReady': onMainPlayerReady,
         'onStateChange': onMainPlayerStateChange
       }
     });
+
+    mainPlayer = youTubePlayer; // for now, just get all the functions. later do this function by function.
   };
 
   onMainPlayerReady = function(event){
