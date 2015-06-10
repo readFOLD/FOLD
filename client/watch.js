@@ -90,19 +90,22 @@ Template.watch.onCreated(function () {
 
 
 Template.watch.helpers({
-  streamUrl: function(){
-    if (FlowRouter.subsReady()){
-      return Deepstreams.findOne().activeStream().url()
+  thisDeepstream: function() {
+    if (FlowRouter.subsReady()) {
+      return Deepstreams.findOne()
     }
+  },
+  streamUrl: function(){
+    return this.activeStream().url()
   }
 });
 
 Template.watch.events({
-  'click .walrus': function(){
-    Deepstreams.update({_id: 'someid'}, {$set: {activeStreamId: 'walrus_stream123'}});
+  'click .sharks': function(){
+    Deepstreams.update({_id: 'someid'}, {$set: {activeStreamId: 'sharks'}});
   },
-  'click .ant': function(){
-    Deepstreams.update({_id: 'someid'}, {$set: {activeStreamId: 'ant_stream654'}});
+  'click .seahorses': function(){
+    Deepstreams.update({_id: 'someid'}, {$set: {activeStreamId: 'seahorses'}});
   },
   'click .mute': function(){
     Session.set('mainPlayerMuted', true);

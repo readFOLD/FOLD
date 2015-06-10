@@ -22,20 +22,21 @@ if (Deepstreams.find().count() === 0) {
     _id: 'someid',
     shortId: 'bbbb',
     curatorId: curatorId,
+    title: 'Real Live Fish',
     streams: [{
       source: 'youtube',
-      _id: 'ant_stream654',
+      _id: 'seahorses',
       reference: {
-        id: 'tRn74l0hPp8'
+        id: '6AMTZwJes4M'
       }
     }, {
       source: 'youtube',
-      _id: 'walrus_stream123',
+      _id: 'sharks',
       reference: {
-        id: 'HZRUsRVMS80'
+        id: 'A01g3lrwoGs'
       }
     }],
-    activeStreamId: 'ant_stream654'
+    activeStreamId: 'sharks'
   });
 }
 
