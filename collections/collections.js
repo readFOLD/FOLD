@@ -491,6 +491,12 @@ Stream = (function() {
     _.extend(this, doc);
   }
 
+  Stream.prototype.videoId = function () {
+    if (this.source === 'youtube') {
+      return this.reference.id;
+    }
+  };
+
   Stream.prototype.title = function () {
     if (this.source === 'youtube') {
       return this.reference.title
@@ -517,7 +523,7 @@ Stream = (function() {
 
   Stream.prototype.url = function () {
     if (this.source === 'youtube') {
-      return '//www.youtube.com/embed/' + this.reference.id + '?autoplay=1';
+      return '//www.youtube.com/embed/' + this.reference.id + '?enablejsapi=1&modestbranding=1&rel=0&iv_load_policy=3';
     }
   };
 

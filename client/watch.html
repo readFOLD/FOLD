@@ -1,6 +1,11 @@
 <template name="watch">
   <h1>Our First Deepstream - ANIMAL CAM!</h1>
-  <iframe width="560" height="315" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
+  <iframe id="main-stream" width="560" height="315" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
   <button class="walrus">Enough Ants. Show Me Walruses!</button>
   <button class="ant">Back to Ants!</button>
+  {{#if mainPlayerMuted}}
+    <button class="unmute">Un-mute</button>
+  {{else}}
+    <button class="mute">Mute</button>
+  {{/if}}
 </template>

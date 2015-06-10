@@ -6,21 +6,18 @@ Handlebars.registerHelper("log", function(v) {
   return console.log(v);
 });
 
+Handlebars.registerHelper("mainPlayerMuted", function() {
+  return Session.get("mainPlayerMuted");
+});
+
+
+
+
+
 Handlebars.registerHelper("hasContext", function(v) {
   return !_.isEmpty(this);
 });
 
-Handlebars.registerHelper("pastHeader", function() {
-  return Session.get("pastHeader");
-});
-
-Handlebars.registerHelper("read", function() {
-  return Session.get("read");
-});
-
-Handlebars.registerHelper("showDraft", function() {
-  return Session.get("showDraft");
-});
 
 Handlebars.registerHelper("saving", function() {
   return Session.get("saving");

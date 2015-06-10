@@ -1,6 +1,6 @@
 BrowserPolicy.framing.disallow(); // disallow iframe, for now
 BrowserPolicy.content.disallowInlineScripts(); // this provides a backstop against XSS
-BrowserPolicy.content.disallowEval(); // never allow eval
+BrowserPolicy.content.allowEval(); // need to allow eval for YouTube iFrame API
 BrowserPolicy.content.allowInlineStyles(); // we use inline styles a fair bit
 BrowserPolicy.content.allowImageOrigin('*'); // allowing all images is easiest and seems safe
 
