@@ -10,6 +10,10 @@ Handlebars.registerHelper("mainPlayerMuted", function() {
   return Session.get("mainPlayerMuted");
 });
 
+Handlebars.registerHelper("curateMode", function() {
+  return Session.get("curateMode");
+});
+
 
 
 

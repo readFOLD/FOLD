@@ -90,6 +90,9 @@ Template.watch.onCreated(function () {
 
 
 Template.watch.helpers({
+  onCuratePage: function(){
+    return Template.instance().data.onCuratePage;
+  },
   thisDeepstream: function() {
     if (FlowRouter.subsReady()) {
       return Deepstreams.findOne()
@@ -109,5 +112,11 @@ Template.watch.events({
   },
   'click .unmute': function(){
     Session.set('mainPlayerMuted', false);
+  },
+  'click .preview': function(){
+    Session.set('curateMode', false);
+  },
+  'click .return-to-curate': function(){
+    Session.set('curateMode', true);
   }
 });

@@ -6,15 +6,28 @@
     {{else}}
       <button class="mute">Mute</button>
     {{/if}}
-    <iframe id="main-stream" width="560" height="315" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
-    <ol class="streams">
-      {{#each streams}}
-        <li class="stream">
-          <button class="set-main-stream">
-            <img src="{{thumbnailUrl}}">
-          </button>
-        </li>
-      {{/each}}
-    </ol>
+
+    {{#if onCuratePage}}
+      {{#if curateMode}}
+        <button class="preview">Preview</button>
+      {{else}}
+        <button class="return-to-curate">Curate</button>
+      {{/if}}
+    {{/if}}
+
+    <div class="main-stream">
+      <iframe id="main-stream" width="560" height="315" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
+    </div>
+    {{#if curateMode}}
+      <ol class="streams">
+        {{#each streams}}
+          <li class="stream">
+            <button class="set-main-stream">
+              <img src="{{thumbnailUrl}}">
+            </button>
+          </li>
+        {{/each}}
+      </ol>
+    {{/if}}
   {{/with}}
 </template>
