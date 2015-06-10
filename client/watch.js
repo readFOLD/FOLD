@@ -101,11 +101,8 @@ Template.watch.helpers({
 });
 
 Template.watch.events({
-  'click .sharks': function(){
-    Deepstreams.update({_id: 'someid'}, {$set: {activeStreamId: 'sharks'}});
-  },
-  'click .seahorses': function(){
-    Deepstreams.update({_id: 'someid'}, {$set: {activeStreamId: 'seahorses'}});
+  'click .set-main-stream': function(){
+    Deepstreams.update({_id: 'someid'}, {$set: {activeStreamId: this._id}});
   },
   'click .mute': function(){
     Session.set('mainPlayerMuted', true);

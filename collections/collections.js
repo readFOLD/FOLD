@@ -443,6 +443,7 @@ this.StoryHistories = new Mongo.Collection("story_histories");
 Deepstream = (function() {
   function Deepstream(doc) {
     _.extend(this, doc);
+    this.streams = _.map(this.streams, function(stream){ return new Stream(stream)});
   }
 
   Deepstream.prototype.contextCountOfType = function(type) {
@@ -459,8 +460,7 @@ Deepstream = (function() {
   };
 
   Deepstream.prototype.activeStream = function(){
-    streamObj = _.findWhere(this.streams, {_id: this.activeStreamId});
-    return new Stream(streamObj)
+    return _.findWhere(this.streams, {_id: this.activeStreamId});
   };
 
   return Deepstream;

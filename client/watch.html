@@ -1,13 +1,20 @@
 <template name="watch">
   {{#with thisDeepstream}}
     <h1>{{title}}</h1>
-    <iframe id="main-stream" width="560" height="315" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
-    <button class="sharks">Enough Seahorses. Show Me Sharks!</button>
-    <button class="seahorses">Back to Seahorses!</button>
     {{#if mainPlayerMuted}}
       <button class="unmute">Un-mute</button>
     {{else}}
       <button class="mute">Mute</button>
     {{/if}}
+    <iframe id="main-stream" width="560" height="315" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
+    <ol class="streams">
+      {{#each streams}}
+        <li class="stream">
+          <button class="set-main-stream">
+            <img src="{{thumbnailUrl}}">
+          </button>
+        </li>
+      {{/each}}
+    </ol>
   {{/with}}
 </template>
