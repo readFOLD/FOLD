@@ -26,13 +26,13 @@ To run the FOLD server, API keys are needed for the various search integrations.
 "CLOUDINARY_API_KEY" // allows user to upload their own image for headers and context cards (https://cloudinary.com)
 "CLOUDINARY_API_SECRET"
 "NEW_USER_ACCESS_PRIORITY" // (1 is a good default) an "access priority" for new users, works with PUBLISH_ACCESS_LEVEL and CREATE_ACCESS_LEVEL below to determine if a user is allowed to create a story or publish
-"SMTP_USERNAME" // used for sending emails, for example forgotten password emails
+"SMTP_USERNAME" // used for sending emails, for example forgotten password emails. not required otherwise.
 "SMTP_API_KEY"
 "SMTP_SERVER"
 "SMTP_PORT"
 "public": {
   "GOOGLE_API_CLIENT_KEY" // used for google maps integration (https://console.developers.google.com/)
-  "SEGMENT_WRITE_KEY" // used for analytics. (https://segment.com/)
+  "SEGMENT_WRITE_KEY" // used for analytics.not required otherwise. (https://segment.com/)
   "CLOUDINARY_CLOUD_NAME" // allows user to upload their own image for headers and context cards (https://cloudinary.com)
   "PUBLISH_ACCESS_LEVEL" // (99999 is a good default) The maximum access priority a user can have and still be allowed to publish
   "CREATE_ACCESS_LEVEL" // (99999 is a good default) The maximum access priority a user can have and still be allowed to create a new story
