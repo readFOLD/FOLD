@@ -11,6 +11,7 @@ If you have feature requests, please post them on [our trello board](https://tre
 
 To run the FOLD server, API keys are needed for the various search integrations. They can be put in a settings.json file (along with a few other settings variables) containing the following values.
 ```
+{
 "VIMEO_API_KEY" // used for vimeo context card integration (https://developer.vimeo.com/)
 "VIMEO_API_SECRET"
 "VIMEO_ACCESS_TOKEN"
@@ -35,6 +36,7 @@ To run the FOLD server, API keys are needed for the various search integrations.
   "CLOUDINARY_CLOUD_NAME" // allows user to upload their own image for headers and context cards (https://cloudinary.com)
   "PUBLISH_ACCESS_LEVEL" // (99999 is a good default) The maximum access priority a user can have and still be allowed to publish
   "CREATE_ACCESS_LEVEL" // (99999 is a good default) The maximum access priority a user can have and still be allowed to create a new story
+}
 }
 ```
 
