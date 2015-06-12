@@ -17,7 +17,7 @@ To run the FOLD server, API keys are needed for the various search integrations.
 "VIMEO_ACCESS_TOKEN"
 "TWITTER_API_KEY" // used for twitter signup and context card integration (https://apps.twitter.com/)
 "TWITTER_API_SECRET"
-"GOOGLE_API_SERVER_KEY" // used for youtube context card integration (https://console.developers.google.com/)
+"GOOGLE_API_SERVER_KEY" // used for youtube context card integration (https://console.developers.google.com/ turn on the YouTube Data API)
 "FLICKR_API_KEY" // used for flickr context card integration (https://www.flickr.com/services/api/)
 "IMGUR_CLIENT_ID" // used for imgur context card integration (https://api.imgur.com/)
 "GIPHY_API_KEY" // (can use their public beta key "dc6zaTOxFJmzC" for development) used for giphy context card integration (https://api.giphy.com/)
@@ -31,7 +31,7 @@ To run the FOLD server, API keys are needed for the various search integrations.
 "SMTP_SERVER"
 "SMTP_PORT"
 "public": {
-  "GOOGLE_API_CLIENT_KEY" // used for google maps integration (https://console.developers.google.com/)
+  "GOOGLE_API_CLIENT_KEY" // used for google maps integration (https://console.developers.google.com/ turn on the Maps API)
   "SEGMENT_WRITE_KEY" // used for analytics.not required otherwise. (https://segment.com/)
   "CLOUDINARY_CLOUD_NAME" // allows user to upload their own image for headers and context cards (https://cloudinary.com)
   "PUBLISH_ACCESS_LEVEL" // (99999 is a good default) The maximum access priority a user can have and still be allowed to publish
