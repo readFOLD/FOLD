@@ -21,6 +21,8 @@ if (Deepstreams.find().count() === 0) {
   Deepstreams.insert({
     _id: 'someid',
     shortId: 'bbbb',
+    userPathSegment: 'curat0r',
+    storyPathSegment: 'fish-stream-bbbb',
     curatorId: curatorId,
     title: 'Real Live Fish',
     onAir: true,

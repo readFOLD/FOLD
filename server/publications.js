@@ -1,9 +1,9 @@
-//Stories._ensureIndex({
-//  shortId: 1
-//}, {
-//  unique: 1
-//});
-//
+Deepstreams._ensureIndex({
+  shortId: 1
+}, {
+  unique: 1
+});
+
 //Stories._ensureIndex({
 //  published: 1
 //});
@@ -12,9 +12,9 @@
 //  authorId: 1
 //});
 //
-//Meteor.users._ensureIndex({
-//  username: 1
-//});
+Meteor.users._ensureIndex({
+  username: 1
+});
 
 //var readStoryFields = {
 //  draftStory: 0,
@@ -64,6 +64,11 @@
 
 Meteor.publish("allDeepstreams", function() {
   return Deepstreams.find();
+});
+
+Meteor.publish("singleDeepstream", function(userPathSegment, shortId) {
+  check(shortId, String);
+  return Deepstreams.find({userPathSegment: userPathSegment, shortId: shortId});
 });
 
 Meteor.publish("curatedStoriesPub", function(options) {

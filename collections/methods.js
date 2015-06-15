@@ -541,14 +541,14 @@ Meteor.methods({
       throw new Meteor.Error('user does not have create access. userId: ' + this.userId);
     }
 
-    var storyPathSegment = _s.slugify('new-deep-stream') + '-' + shortId;  // TODO DRY
+    var streamPathSegment = _s.slugify('new-deep-stream') + '-' + shortId;  // TODO DRY
     var userPathSegment= user.displayUsername;
 
     Deepstreams.insert({
       onAir: false,
       savedAt: new Date,
       userPathSegment: userPathSegment,
-      storyPathSegment: storyPathSegment,
+      streamPathSegment: streamPathSegment,
       curatorId: this.userId,
       curatorName: user.profile.name || user.username,
       curatorUsername: user.username,
@@ -557,12 +557,12 @@ Meteor.methods({
     });
 
     if (Meteor.isClient){
-      FlowRouter.go('curate', Deepstreams.findOne({shortId:shortId}))
+      FlowRouter.go('curate', {userPathSegment: userPathSegment, streamPathSegment: streamPathSegment});
     }
 
     return {
       userPathSegment: userPathSegment,
-      storyPathSegment: storyPathSegment
+      streamPathSegment: streamPathSegment
     };
   }
 
