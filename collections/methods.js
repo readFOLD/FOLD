@@ -554,7 +554,7 @@ Meteor.methods({
       curatorUsername: user.username,
       curatorDisplayUsername: user.displayUsername,
       shortId: shortId
-    }, {removeEmptyStrings: false});
+    });
 
     if (Meteor.isClient){
       FlowRouter.go('curate', Deepstreams.findOne({shortId:shortId}))

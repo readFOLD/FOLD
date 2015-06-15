@@ -1,6 +1,6 @@
 window.readyToMigrate = new ReactiveVar(false);
 
-var RELOAD_DELAY = 0; // 2000; TODO switch back
+var RELOAD_DELAY = 300; // 2000; TODO switch back
 
 
 Reload._onMigrate('deepstream', function (retry) {
