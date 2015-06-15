@@ -531,7 +531,7 @@ Meteor.methods({
     check(storyId, String);
     return changeEditorsPick.call(this, storyId, false);
   },
-  createStory: function(shortId, verticalSectionId) { // TO-DO find a way to generate these in a trusted way server without compromising UI speed
+  createDeepstream: function(shortId) { // TO-DO find a way to generate these in a trusted way server without compromising UI speed
     var user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to create a story');
@@ -541,37 +541,23 @@ Meteor.methods({
       throw new Meteor.Error('user does not have create access. userId: ' + this.userId);
     }
 
-    var storyPathSegment = _s.slugify('new-story') + '-' + shortId;  // TODO DRY
+    var storyPathSegment = _s.slugify('new-deep-stream') + '-' + shortId;  // TODO DRY
     var userPathSegment= user.displayUsername;
 
-    initialVerticalSection = {
-      _id: verticalSectionId,
-      contextBlocks: [],
-      title: "",
-      content: "",
-      hasTitle: false
-    };
-
-    Stories.insert({
-      published: false,
-      verticalSections: [initialVerticalSection],
+    Deepstreams.insert({
+      onAir: false,
       savedAt: new Date,
       userPathSegment: userPathSegment,
       storyPathSegment: storyPathSegment,
-      authorId: this.userId,
-      authorName: user.profile.name || user.username,
-      authorUsername: user.username,
-      authorDisplayUsername: user.displayUsername,
-      shortId: shortId,
-      draftStory: {
-        verticalSections: [initialVerticalSection],
-        storyPathSegment: storyPathSegment,
-        title: ''
-      }
+      curatorId: this.userId,
+      curatorName: user.profile.name || user.username,
+      curatorUsername: user.username,
+      curatorDisplayUsername: user.displayUsername,
+      shortId: shortId
     }, {removeEmptyStrings: false});
 
     if (Meteor.isClient){
-      FlowRouter.go('edit', Stories.findOne({shortId:shortId}))
+      FlowRouter.go('curate', Deepstreams.findOne({shortId:shortId}))
     }
 
     return {

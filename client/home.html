@@ -9,7 +9,8 @@
         </a>
         <a href="/home">
         <div class="title">
-          <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
+          Deep Stream
+          <!--<img src="{{c.url 'static/FOLD_TITLE.svg'}}">-->
         </div>
         </a>
       </div>
@@ -49,7 +50,8 @@
       <div class="logo-title">
           <img class="logo" src="{{c.url 'static/FOLD_LOGO.svg'}}">
           <div class="title">
-            <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
+            Deep Stream
+            <!--<img src="{{c.url 'static/FOLD_TITLE.svg'}}">-->
           </div>
       </div>
     </div>
@@ -65,7 +67,8 @@
           </a>
           <a href="/home">
           <div class="title">
-            <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
+            Deep Stream
+            <!--<img src="{{c.url 'static/FOLD_TITLE.svg'}}">-->
           </div>
           </a>
       </div>
@@ -78,8 +81,8 @@
     <div class="action-items">
       <ol>
         {{#unless isPhone}}
-          <li class="create-story">
-            {{> create_story}}
+          <li class="create-deepstream">
+            {{> create_deepstream}}
           </li>
         {{/unless}}
         {{> login_buttons }}
@@ -128,21 +131,21 @@
   </li>
 </template>
 
-<template name="create_story">
-  <button class="create-story" href="javascript:void(0);">
-    <span class="text">Make a Story</span>
+<template name="create_deepstream">
+  <button class="create-deepstream" href="javascript:void(0);">
+    <span class="text">Curate a Livestream</span>
   </button>
 </template>
 
 <template name="home">
-  {{> top_banner showFilters="true" border="active-border"}}
-  <div class="stories"> 
-    <section>
-      <div class="story-container">
-        {{> all_stories}}
-      </div>
-    </section>
-  </div>
+  {{> top_banner}}
+  <!--<div class="stories"> -->
+    <!--<section>-->
+      <!--<div class="story-container">-->
+        <!--{{> all_stories}}-->
+      <!--</div>-->
+    <!--</section>-->
+  <!--</div>-->
 </template>
 
 <template name="filters">

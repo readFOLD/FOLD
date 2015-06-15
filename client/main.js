@@ -987,16 +987,15 @@ Tracker.autorun(function() {
 
 
 
-Template.create_story.events({
+Template.create_deepstream.events({
   'click': function(){
     if (Meteor.user()){
       var accessPriority = Meteor.user().accessPriority;
       if (accessPriority && accessPriority <= window.createAccessLevel){
 
         var shortId = Random.id(8);
-        var verticalSectionId = Random.id(9);
 
-        Meteor.call('createStory',shortId, verticalSectionId, function(err, pathObject){
+        Meteor.call('createDeepstream',shortId, function(err, pathObject){
           if (err) {
             notifyError(err);
             throw(err);
@@ -1005,11 +1004,11 @@ Template.create_story.events({
 
         })
       } else {
-        notifyInfo("Due to high demand, we had to turn off 'create new story' functionality for a moment. Stay tuned for updates!");
+        notifyInfo("Due to high demand, we had to turn off new curation functionality for a moment. Stay tuned for updates!");
       }
     } else {
-      Session.set('signingIn', true)
-      analytics.track('User clicked create and needs to sign in');
+      Session.set('signingIn', true);
+      analytics.track('User clicked curate on homepage and needs to sign in');
     }
   }
 });

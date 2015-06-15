@@ -86,7 +86,12 @@ Template.watch.onCreated(function () {
 
 });
 
-
+CREATION_STEPS = [
+  'title_description',
+  'find_stream',
+  'add_cards',
+  'go_on_air'
+];
 
 
 Template.watch.helpers({
@@ -100,6 +105,9 @@ Template.watch.helpers({
   },
   streamUrl: function(){
     return this.activeStream().url()
+  },
+  showTutorial: function(){
+    return _.contains(['find_stream', 'add_cards', 'go_on_air'], this.creationStep)
   }
 });
 

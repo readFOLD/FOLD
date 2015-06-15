@@ -6,8 +6,8 @@
 @light-transparent-color: rgba(244,244,244,0.75);
 @white-color: white;
 
-@background-color: #F8F8F8;
-@action-color: #1DB259;
+@background-color: #323232;
+@action-color: #F6C406;
 @inactive-color: #DDDDDD;
 @placeholder-color: #acacac;
 @danger-color: #ff1b0c;
@@ -38,6 +38,11 @@
     line-height: @mobile-content-line-height;
   }
   color: @dark-color;
+}
+
+body{
+  color: @white-color;
+  background-color: @background-color;
 }
 
 html {

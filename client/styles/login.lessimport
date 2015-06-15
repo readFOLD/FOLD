@@ -117,7 +117,7 @@ div.sign-up-options {
     background-color: @action-color;
     height: @button-height;
     display: block;
-    color: @white-color;
+    color: @black-color;
     text-align: center;
     line-height: @button-height;
     &:hover {

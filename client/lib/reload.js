@@ -1,5 +1,8 @@
 window.readyToMigrate = new ReactiveVar(false);
 
+var RELOAD_DELAY = 0; // 2000; TODO switch back
+
+
 Reload._onMigrate('deepstream', function (retry) {
   if (readyToMigrate.get()) {
     return [true, {codeReloaded: true}];
@@ -25,7 +28,7 @@ Reload._onMigrate('deepstream', function (retry) {
       setTimeout(function () {
         readyToMigrate.set(true);
         retry();
-      }, 2000);
+      }, RELOAD_DELAY);
       return [false]
     }
   }

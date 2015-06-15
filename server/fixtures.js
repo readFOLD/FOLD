@@ -23,6 +23,8 @@ if (Deepstreams.find().count() === 0) {
     shortId: 'bbbb',
     curatorId: curatorId,
     title: 'Real Live Fish',
+    onAir: true,
+    creationStep: null,
     streams: [{
       source: 'youtube',
       _id: 'seahorses',

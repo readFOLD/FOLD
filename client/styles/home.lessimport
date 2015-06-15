@@ -128,7 +128,7 @@ div.home-top {
       }
     }
 
-    .create-story {
+    .create-deepstream {
       background-color: @action-color;
       &:hover {
         background-color: @dark-color;
