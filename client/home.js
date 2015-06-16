@@ -57,28 +57,6 @@ Template.home.helpers({
 });
 
 
-Template.home.events({
-  "click div#expand-filter": function(d) {
-    var filterOpen, heightChange;
-    filterOpen = Session.get("filterOpen");
-    heightChange = filterOpen ? "-=100" : "+=100";
-    $("div#filter").animate({
-      height: heightChange
-    }, 250);
-    if (filterOpen) {
-      $("div.logo").animate({
-        top: "52px",
-        opacity: 1
-      }, 400, 'easeOutExpo');
-    } else {
-      $("div.logo").animate({
-        top: "78px",
-        opacity: 0
-      }, 400, 'easeOutExpo');
-    }
-    return Session.set("filterOpen", !filterOpen);
-  }
-});
 
 Template.categories.helpers({
   categories: function() {
@@ -395,5 +373,24 @@ Template.signin_overlay.events({
     closeSignInOverlay();
     loginWithEmail();
     analytics.track('Click login with email');
+  }
+});
+
+
+// DEEPSTREAM
+
+Template.streams.helpers({
+  streams: function(){
+    if (FlowRouter.subsReady()) {
+      return Deepstreams.find({onAir: true});
+    }
+  }
+});
+
+Template.stream_preview.helpers({
+  streams: function(){
+    if (FlowRouter.subsReady()) {
+      return Deepstreams.find({onAir: true});
+    }
   }
 });

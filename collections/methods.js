@@ -211,7 +211,7 @@ Meteor.methods({
   },
   publishStream: function(shortId){
     check(shortId, String);
-    // TODO add onAir at...
+    // TODO add onAir at... OR change it all to published
     return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: null, onAir: true }});
   },
   updateStoryTitle: function(storyId, title){

@@ -463,6 +463,10 @@ Deepstream = (function() {
     return _.findWhere(this.streams, {_id: this.activeStreamId});
   };
 
+  Deepstream.prototype.watchPath = function(){
+    return '/watch/' + this.userPathSegment + '/' + this.streamPathSegment;
+  };
+
   return Deepstream;
 
 })();

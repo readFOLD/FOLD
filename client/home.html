@@ -5,11 +5,13 @@
     <div class="left">
       <div class="logo-title">
         <a href="/">
-          {{> deepstream_logo}}
+          <div class="logo">
+            {{> deepstream_logo}}
+          </div>
         </a>
         <a href="/">
         <div class="title">
-          Deep Stream
+          DEEP STREAM
           <!--<img src="{{c.url 'static/FOLD_TITLE.svg'}}">-->
         </div>
         </a>
@@ -50,7 +52,7 @@
       <div class="logo-title">
           <img class="logo" src="{{c.url 'static/FOLD_LOGO.svg'}}">
           <div class="title">
-            Deep Stream
+            DEEP STREAM
             <!--<img src="{{c.url 'static/FOLD_TITLE.svg'}}">-->
           </div>
       </div>
@@ -67,7 +69,7 @@
           </a>
           <a href="/">
           <div class="title">
-            Deep Stream
+            DEEP STREAM
             <!--<img src="{{c.url 'static/FOLD_TITLE.svg'}}">-->
           </div>
           </a>
@@ -131,22 +133,7 @@
   </li>
 </template>
 
-<template name="create_deepstream">
-  <button class="create-deepstream" href="javascript:void(0);">
-    <span class="text">Curate a Livestream</span>
-  </button>
-</template>
 
-<template name="home">
-  {{> top_banner}}
-  <!--<div class="stories"> -->
-    <!--<section>-->
-      <!--<div class="story-container">-->
-        <!--{{> all_stories}}-->
-      <!--</div>-->
-    <!--</section>-->
-  <!--</div>-->
-</template>
 
 <template name="filters">
   <span class="filters">
@@ -331,4 +318,44 @@
   <div class="edit-or-read">
 
   </div>
+</template>
+
+
+
+<!--DEEPSTREAM-->
+<template name="streams">
+  {{#each streams}}
+    {{> stream_preview }}
+  {{/each}}
+</template>
+
+<template name="stream_preview">
+  <a href="{{watchPath}}">
+    <div class="stream">
+      {{title}}
+    </div>
+  </a>
+</template>
+
+
+<template name="create_deepstream">
+  <button class="create-deepstream" href="javascript:void(0);">
+    <span class="text">Curate a Livestream</span>
+  </button>
+</template>
+
+<template name="home">
+  {{> top_banner}}
+  <div class="streams">
+    <div class="streams-container">
+      {{> streams}}
+    </div>
+  </div>
+  <!--<div class="stories"> -->
+  <!--<section>-->
+  <!--<div class="story-container">-->
+  <!--{{> all_stories}}-->
+  <!--</div>-->
+  <!--</section>-->
+  <!--</div>-->
 </template>

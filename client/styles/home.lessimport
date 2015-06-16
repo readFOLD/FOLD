@@ -14,7 +14,7 @@ div.home-top {
   &.not-sticky{
     position: absolute;
   }
-  background-color: white;
+  background-color: @background-color;
   height: 145px;
   @media @mobile{
     img{
@@ -42,23 +42,37 @@ div.home-top {
   }
 
   div.logo-title {
+    @height: 40px;
     .logo {
+
       float: left;
       z-index: 10;
+      svg{
+        height: @height;
+        width: @height;
+      }
     }
 
     div.title {
       float: right;
+      background-color: @action-color;
+      color: @black-color;
+      height: @height;
+      font-size: 30px;
+      line-height: @height;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-left: 10px;
     }
 
     @media @not-mobile{
       display: inline-block;
-      margin-left: 60px;
-      margin-top: 37px;
-      width: 310px;
+      margin-left: 10px;
+      margin-top: 10px;
+      //width: 310px;
       div.title {
         //margin-top: 5px;
-        width: 222px;
+        //width: 256px;
       }
 
     }
@@ -483,4 +497,11 @@ div.stories {
 .home-loading-footer {
   text-align: center;
   width: 100%;
+}
+
+div.streams {
+  //@profile-section: 400px;
+  padding-top: 150px;
+  width: 100%;
+  height: 100%;
 }

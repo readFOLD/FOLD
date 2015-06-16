@@ -126,4 +126,7 @@ svg.deepstream-logo{
   .fg{
     fill: @action-color;
   }
+  .bg{
+    fill: @black-color;
+  }
 }
