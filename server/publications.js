@@ -62,8 +62,8 @@ Meteor.users._ensureIndex({
 //  title: 1
 //};
 
-Meteor.publish("allDeepstreams", function() {
-  return Deepstreams.find();
+Meteor.publish("deepstreamsOnAir", function() {
+  return Deepstreams.find({onAir: true});
 });
 
 Meteor.publish("singleDeepstream", function(userPathSegment, shortId) {

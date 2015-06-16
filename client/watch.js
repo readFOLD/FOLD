@@ -104,12 +104,28 @@ Template.watch.helpers({
     }
   },
   showTitleDescriptionEditOverlay: function(){
-    return _.contains(['title_description'], this.creationStep)
+    return this.creationStep == 'title_description';
   },
   showTutorial: function(){
     return _.contains(['find_stream', 'add_cards', 'go_on_air'], this.creationStep)
+  },
+  onFindStreamStep: function(){
+    return this.creationStep == 'find_stream';
+  },
+  onAddCardsStep: function(){
+    return this.creationStep == 'add_cards';
+  },
+  onGoOnAirStep: function(){
+    return this.creationStep == 'go_on_air';
   }
 });
+
+var basicErrorHandler = function(err){
+  if(err){
+    notifyError(err);
+    throw(err);
+  }
+};
 
 Template.watch.events({
   'click .set-main-stream': function(){
@@ -131,11 +147,15 @@ Template.watch.events({
     e.preventDefault();
     var title = t.$('.set-title').val();
     var description = t.$('.set-description').val();
-    Meteor.call('setStreamTitleDescription', t.data.shortId(), title, description, function(err){
-      if(err){
-        notifyError(err);
-        throw(err);
-      }
-    })
+    Meteor.call('setStreamTitleDescription', t.data.shortId(), title, description, basicErrorHandler);
+  },
+  'click .find-stream button': function(e, t){
+    Meteor.call('skipFindStreamStep', t.data.shortId(), basicErrorHandler);
+  },
+  'click .add-cards button': function(e, t){
+    Meteor.call('skipAddCardsStep', t.data.shortId(), basicErrorHandler);
+  },
+  'click .go-on-air button': function(e, t){
+    Meteor.call('publishStream', t.data.shortId(), basicErrorHandler);
   }
 });

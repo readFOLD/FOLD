@@ -30,9 +30,18 @@
     <div class="main-stream">
       {{#if showTutorial}}
         <div class="tutorial">
-          Step 1: Find streams that you want to curate on the right. Click “Add to Video List” and they will appear below.
-          Step 2: Add cards on the right to give viewers more information.
-          Step 3: Put your Deep Stream on air!
+          <div class="tutorial-step find-stream {{#if onFindStreamStep}}active{{/if}}">
+            Step 1: Find streams that you want to curate on the right. Click “Add to Video List” and they will appear below.
+            <button>Next step ></button>
+          </div>
+          <div class="tutorial-step add-cards {{#if onAddCardsStep}}active{{/if}}">
+            Step 2: Add cards on the right to give viewers more information.
+            <button>Next step ></button>
+          </div>
+          <div class="tutorial-step go-on-air {{#if onGoOnAirStep}}active{{/if}}">
+            Step 3: Put your Deep Stream on air!
+            <button>Publish!</button>
+          </div>
         </div>
       {{/if}}
       {{#if streamUrl}}

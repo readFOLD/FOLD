@@ -1382,3 +1382,16 @@ div.bottom-bar{
   background-color: @panel-color;
   z-index: 9000;
 }
+
+
+
+// DEEPSTREAM
+
+.tutorial-step {
+  &:not(.active){
+    button{
+      visibility: hidden;
+    }
+    opacity: 0.25;
+  }
+}
