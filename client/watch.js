@@ -145,7 +145,7 @@ var basicErrorHandler = function(err){
 Template.watch.onCreated(function(){
   this.titleLength = new ReactiveVar(0);
   this.descriptionLength = new ReactiveVar(0);
-})
+});
 
 Template.watch.events({
   'click .set-main-stream': function(){
