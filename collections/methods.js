@@ -96,15 +96,15 @@ var swapArrayElements = function(arr, x, y){
   arr[x] = b;
 };
 
-// only the author may update the story
-var updateStory = function(selector, modifier, options) {
+// only the curator may update the stream
+var updateStream = function(selector, modifier, options) {
   if (_.isEmpty(modifier)){
     return
   }
   modifier.$set = _.extend(modifier.$set || {}, {savedAt: new Date});
-  selector.authorId = this.userId; // this.userId must be the user (use via .call or .apply)
+  selector.curatorId = this.userId; // this.userId must be the user (use via .call or .apply)
 
-  return Stories.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
+  return Deepstreams.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
 };
 
 // only the author may update the story
@@ -191,7 +191,15 @@ Meteor.methods({
       goToX(currentX ? currentX - 1 : 0);
     }
 
-    return numRemoved
+    return numRemoved;
+  },
+  setStreamTitleDescription: function(shortId, title, description){
+    check(shortId, String);
+    check(title, String);
+    check(description, String);
+    // TODO DRY
+    var storyPathSegment = _s.slugify(title.toLowerCase() || 'deep-stream')+ '-' + shortId;
+    return updateStream.call(this, {shortId: shortId}, {$set: {'title' : title, 'description' : description, 'storyPathSegment' : storyPathSegment, creationStep: nextCreationStepAfter('title_description') }});
   },
   updateStoryTitle: function(storyId, title){
     check(storyId, String);
@@ -553,7 +561,8 @@ Meteor.methods({
       curatorName: user.profile.name || user.username,
       curatorUsername: user.username,
       curatorDisplayUsername: user.displayUsername,
-      shortId: shortId
+      shortId: shortId,
+      creationStep: CREATION_STEPS[0]
     });
 
     if (Meteor.isClient){

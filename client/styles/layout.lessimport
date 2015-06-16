@@ -1343,11 +1343,15 @@ div.minimap {
   }
 }
 
-.signin-overlay{
+.full-overlay{
   z-index: 99999;
   position: fixed;
   top: 0;
   left: 0;
+}
+
+.signin-overlay{
+  .full-overlay;
   background-color: rgba(255,255,255,0.8);
   .close{
     float: right;
@@ -1384,6 +1388,10 @@ div.minimap {
       }
     }
   }
+}
+
+.title-description-overlay{
+  .full-overlay;
 }
 
 .mobile-progress-header{

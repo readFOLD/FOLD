@@ -86,25 +86,25 @@ Template.watch.onCreated(function () {
 
 });
 
-CREATION_STEPS = [
-  'title_description',
-  'find_stream',
-  'add_cards',
-  'go_on_air'
-];
 
 
 Template.watch.helpers({
   onCuratePage: function(){
-    return Template.instance().data.onCuratePage;
+    return Template.instance().data.onCuratePage();
   },
   thisDeepstream: function() {
     if (FlowRouter.subsReady()) {
-      return Deepstreams.findOne()
+      return Deepstreams.findOne({shortId: Template.instance().data.shortId()});
     }
   },
   streamUrl: function(){
-    return this.activeStream().url()
+    var activeStream = this.activeStream()
+    if(activeStream){
+      return this.activeStream().url()
+    }
+  },
+  showTitleDescriptionEditOverlay: function(){
+    return _.contains(['title_description'], this.creationStep)
   },
   showTutorial: function(){
     return _.contains(['find_stream', 'add_cards', 'go_on_air'], this.creationStep)
@@ -126,5 +126,16 @@ Template.watch.events({
   },
   'click .return-to-curate': function(){
     Session.set('curateMode', true);
+  },
+  'submit #set-title-description': function(e, t){
+    e.preventDefault();
+    var title = t.$('.set-title').val();
+    var description = t.$('.set-description').val();
+    Meteor.call('setStreamTitleDescription', t.data.shortId(), title, description, function(err){
+      if(err){
+        notifyError(err);
+        throw(err);
+      }
+    })
   }
 });

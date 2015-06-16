@@ -76,3 +76,7 @@ window.checkValidUsername = function(username) {
 window.incrementReactiveVar = function(rv){
   return rv.set(rv.get() + 1);
 }
+
+window.idFromPathSegment = function(pathSegment) { // everything after last dash
+  return pathSegment.substring(pathSegment.lastIndexOf('-') + 1);
+};
