@@ -87,6 +87,8 @@ Template.watch.onCreated(function () {
 });
 
 
+var titleMax = 90;
+var descriptionMax = 270;
 
 Template.watch.helpers({
   onCuratePage: function(){
@@ -117,6 +119,18 @@ Template.watch.helpers({
   },
   onGoOnAirStep: function(){
     return this.creationStep == 'go_on_air';
+  },
+  titleLength: function(){
+    return  Template.instance().titleLength.get();
+  },
+  titleMax: function(){
+    return titleMax;
+  },
+  descriptionLength: function(){
+    return Template.instance().descriptionLength.get();
+  },
+  descriptionMax: function(){
+    return descriptionMax;
   }
 });
 
@@ -126,6 +140,12 @@ var basicErrorHandler = function(err){
     throw(err);
   }
 };
+
+
+Template.watch.onCreated(function(){
+  this.titleLength = new ReactiveVar(0);
+  this.descriptionLength = new ReactiveVar(0);
+})
 
 Template.watch.events({
   'click .set-main-stream': function(){
@@ -142,6 +162,24 @@ Template.watch.events({
   },
   'click .return-to-curate': function(){
     Session.set('curateMode', true);
+  },
+  'keypress .set-title': function(e, t){
+    if (e.keyCode === 13){
+      e.preventDefault();
+      $('.set-description').focus();
+    }
+  },
+  'keypress .set-description': function(e, t){
+    if (e.keyCode === 13){
+      e.preventDefault();
+      $('#set-title-description').submit();
+    }
+  },
+  'keyup .set-title': function(e, t){
+    t.titleLength.set($(e.currentTarget).val().length);
+  },
+  'keyup .set-description': function(e, t){
+    t.descriptionLength.set($(e.currentTarget).val().length);
   },
   'submit #set-title-description': function(e, t){
     e.preventDefault();

@@ -283,8 +283,8 @@ li{
 button{
   cursor: pointer;
   border: none;
-  color: white;
-  //background-color: inherit;
+  color: black;
+  background-color: @action-color;
   font-family: inherit;
   font-size: inherit;
 }
@@ -1393,6 +1393,7 @@ div.minimap {
 .title-description-overlay{
   .full-overlay;
   background-color: rgba(255,255,255,0.8);
+  color: @black-color;
 }
 
 .mobile-progress-header{
