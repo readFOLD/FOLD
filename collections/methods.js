@@ -119,53 +119,53 @@ var updateContextBlocks = function(selector, modifier, options) {
 };
 
 Meteor.methods({
-  addContextToStory: function(storyId, storyShortId, contextBlock, verticalIndex){
-    check(storyId, String);
-    check(storyShortId, String);
+  addContextToStream: function(streamShortId, contextBlock){
+    check(streamShortId, String);
     check(contextBlock, Object);
-    check(verticalIndex, Number);
-    if (!Stories.find({_id: storyId, authorId: this.userId},{ fields:{ _id: 1 }}).count()){
-      throw new Meteor.Error("User doesn't own story")
-    }
-    delete contextBlock._id;
+
+    //if (!Stories.find({_id: storyId, authorId: this.userId},{ fields:{ _id: 1 }}).count()){
+    //  throw new Meteor.Error("User doesn't own story")
+    //}
+
+    //delete contextBlock._id;
 
     // TO-DO Remix. When add remix, will need another method or modify this one
-    var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {
-      storyId: storyId,
-      storyShortId: storyShortId,
-      authorId: Meteor.user()._id,
-      savedAt: new Date
-    }));
+    //var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {
+    //  storyId: storyId,
+    //  storyShortId: storyShortId,
+    //  authorId: Meteor.user()._id,
+    //  savedAt: new Date
+    //}));
 
     var pushObject, pushSelectorString;
-    pushSelectorString = 'draftStory.verticalSections.' + verticalIndex + '.contextBlocks';
+    pushSelectorString = 'contextBlocks';
     pushObject = {};
-    pushObject[pushSelectorString] = contextId;
-    var numUpdated = updateStory.call(this, { _id: storyId }, { $addToSet: pushObject});
+    pushObject[pushSelectorString] = _.extend({}, contextBlock, {
+      //storyId: storyId,
+      //storyShortId: storyShortId,
+      authorId: Meteor.user()._id,
+      addedAt: new Date,
+      savedAt: new Date
+    });
+
+    var numUpdated = updateStream.call(this, { shortId: streamShortId }, { $addToSet: pushObject}); // TODO, make it so can't easily add the same one twice (savedAt and addedAt are different)
 
     if (numUpdated){
+
+      // TODO something
       if (Meteor.isClient){
-        window.hideNewHorizontalUI();
-        var placeholderAnchorElement = window.findPlaceholderLink(verticalIndex);
-        if (placeholderAnchorElement) {
-          placeholderAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
-          placeholderAnchorElement.attr('data-context-type', contextBlock.type);
-          placeholderAnchorElement.attr('data-context-source', contextBlock.source);
+        //window.hideNewHorizontalUI();
 
-          placeholderAnchorElement.removeClass('placeholder'); // add active class because we go to this context and if we're already there it won't get the class
-        }
-
-        var fields = {};
-        fields['draftStory.verticalSections.' + verticalIndex + '.contextBlocks'] = 1;
-        var story = Stories.findOne(storyId, fields);
-
-        goToX(_.indexOf(story.draftStory.verticalSections[verticalIndex].contextBlocks, contextId.toString()))
+        //var story = Stories.findOne(storyId, fields);
+        //goToX(_.indexOf(story.draftStory.verticalSections[verticalIndex].contextBlocks, contextId.toString()))
       }
     } else {
-      throw new Meteor.Error('Story not updated')
+      throw new Meteor.Error('Stream not updated')
     }
-    return contextId;
+    return contextBlock._id;
   },
+
+
   removeContextFromStory: function(storyId, contextId, verticalSectionIndex) {
     check(storyId, String);
     check(contextId, String);

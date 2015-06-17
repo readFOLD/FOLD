@@ -87,7 +87,12 @@ Template.watch.onCreated(function () {
         //})
       }
     }
-  })
+  });
+
+  this.autorun(function(){
+    Session.set("streamShortId", that.data.shortId());
+  });
+
 });
 
 Template.watch.onRendered(function(){

@@ -784,15 +784,10 @@ Template.context_anchor_option.events = {
 };
 
 window.addContext = function(contextBlock) {
-  var storyId = Session.get("storyId");
-  var verticalIndex = Session.get("currentY");
   Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
   Session.set('saveState', 'saving');
 
-  Meteor.call('addContextToStory', storyId, Session.get("storyShortId"), contextBlock, verticalIndex, function(err, contextId){
-    if (contextId){
-      saveNarrativeSectionContent(verticalIndex);
-    }
+  Meteor.call('addContextToStream', Session.get("streamShortId"), contextBlock, function(err, contextId){
     saveCallback(err, contextId);
   });
 };

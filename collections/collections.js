@@ -159,10 +159,7 @@ this.ContextBlocks.deny({
 });
 
 Schema.ContextBlocksExtension = new SimpleSchema({
-  storyId: {
-    type: String
-  },
-  storyShortId: {
+  streamShortId: {
     type: String
   }
 });
@@ -475,6 +472,10 @@ Deepstream = (function() {
 
   Deepstream.prototype.curatePath = function(){
     return '/curate/' + this.userPathSegment + '/' + this.streamPathSegment;
+  };
+
+  Deepstream.prototype.previewUrl = function(){
+    return this.activeStream().previewUrl();
   };
 
   return Deepstream;
