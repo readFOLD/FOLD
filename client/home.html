@@ -3,19 +3,7 @@
 <template name="top_banner">
   <div class="home-top {{#if border}}{{border}}{{/if}}">
     <div class="left">
-      <div class="logo-title">
-        <a href="/">
-          <div class="logo">
-            {{> deepstream_logo}}
-          </div>
-        </a>
-        <a href="/">
-        <div class="title">
-          DEEP STREAM
-          <!--<img src="{{c.url 'static/FOLD_TITLE.svg'}}">-->
-        </div>
-        </a>
-      </div>
+      {{> logo_title}}
       {{#if showFilters}}
       <div class="filter">
         {{> filters}}
@@ -358,4 +346,20 @@
   <!--</div>-->
   <!--</section>-->
   <!--</div>-->
+</template>
+
+<template name="logo_title">
+  <div class="logo-title">
+    <a href="/">
+      <div class="logo">
+        {{> deepstream_logo}}
+      </div>
+    </a>
+    <a href="/">
+      <div class="title">
+        DEEP STREAM
+        <!--<img src="{{c.url 'static/FOLD_TITLE.svg'}}">-->
+      </div>
+    </a>
+  </div>
 </template>

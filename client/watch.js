@@ -92,7 +92,7 @@ var descriptionMax = 270;
 
 Template.watch.helpers({
   onCuratePage: function(){
-    return Template.instance().data.onCuratePage();
+    return Template.instance().data.onCuratePage ? Template.instance().data.onCuratePage() : null;
   },
   thisDeepstream: function() {
     if (FlowRouter.subsReady()) {
@@ -195,5 +195,11 @@ Template.watch.events({
   },
   'click .go-on-air button': function(e, t){
     Meteor.call('publishStream', t.data.shortId(), basicErrorHandler);
+  },
+  'click .publish': function(e, t){
+    Meteor.call('publishStream', t.data.shortId(), basicErrorHandler);
+  },
+  'click .unpublish': function(e, t){
+    Meteor.call('unpublishStream', t.data.shortId(), basicErrorHandler);
   }
 });

@@ -1,0 +1,15 @@
+.watch{
+  h1{
+    display: inline-block;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: fixed;
+    top: 20px;
+    left: 400px;
+  }
+  .streams-list{
+    li{
+      float: left;
+    }
+  }
+}

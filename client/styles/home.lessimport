@@ -41,55 +41,6 @@ div.home-top {
     border-top: 6px solid @remix-color;
   }
 
-  div.logo-title {
-    @height: 40px;
-    .logo {
-
-      float: left;
-      z-index: 10;
-      svg{
-        height: @height;
-        width: @height;
-      }
-    }
-
-    div.title {
-      float: right;
-      background-color: @action-color;
-      color: @black-color;
-      height: @height;
-      font-size: 30px;
-      line-height: @height;
-      padding-left: 10px;
-      padding-right: 10px;
-      margin-left: 10px;
-    }
-
-    @media @not-mobile{
-      display: inline-block;
-      margin-left: 10px;
-      margin-top: 10px;
-      //width: 310px;
-      div.title {
-        //margin-top: 5px;
-        //width: 256px;
-      }
-
-    }
-    @media @mobile{
-      margin:auto;
-      text-align: center;
-      margin-top: 60px;
-      height: 28px;
-      width: 150px;
-      img{
-        height: 100%
-      }
-      .title {
-        height: 100%;
-      }
-    }
-  }
 
   div.filter {
     position: absolute;
@@ -111,91 +62,6 @@ div.home-top {
     }
   }
 
-  div.action-items {
-    @height: 45px;
-    position: absolute;
-    top: -6px;
-    @media @not-mobile{
-      right: @topButtonRight;
-    }
-    @media @mobile{
-      width: 100%;
-      text-align: center;
-    }
-    color: @light-color;
-    font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
-
-    button{
-      padding: 0px 23px;
-      min-width: 152px;
-      .size-to-fit;
-      &:hover {
-        background-color: @dark-color;
-      }
-    }
-
-    a {
-      min-width: 154px;
-      .size-to-fit;
-      &:hover {
-        background-color: @dark-color;
-      }
-    }
-
-    .create-deepstream {
-      background-color: @action-color;
-      &:hover {
-        background-color: @dark-color;
-      }
-    }
-
-    li {
-      height: @height;
-      @media @not-mobile{
-        float: left;
-      }
-      display: inline-block;
-      position: relative;
-      &:not(:last-child) {
-        margin-right: 12px;
-      }
-    }
-
-    .user-action {
-      background-color: @remix-color;
-      @profile-picture-size: 25px;
-      button{
-        line-height: @height;
-      }
-      span{
-        margin: auto;
-        display: inline-block;
-      }
-      img.profile-picture {
-        margin:auto;
-        margin-right: 2px;
-        margin-bottom: -7.5px;
-        z-index: 10;
-        border-radius: @profile-picture-size/2;
-        width: @profile-picture-size;
-        height: auto;
-      }
-    }
-
-    .about-fold {
-      background-color: @panel-color;
-    }
-
-    ol.user-menu {
-      background-color: @remix-color;
-      li {
-        float: none;
-        display: block;
-        margin:0;
-        border-top: 1px solid @white-color;
-      }
-    }
-  }
 
  /* div.user-image {
     position: absolute;
@@ -504,4 +370,139 @@ div.streams {
   padding-top: 150px;
   width: 100%;
   height: 100%;
+}
+
+
+div.logo-title {
+  @height: 40px;
+  display: inline-block;
+  .logo {
+
+    float: left;
+    z-index: 10;
+    svg{
+      height: @height;
+      width: @height;
+    }
+  }
+
+  div.title {
+    float: right;
+    background-color: @action-color;
+    color: @black-color;
+    height: @height;
+    font-size: 30px;
+    line-height: @height;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 10px;
+  }
+
+  @media @not-mobile{
+    display: inline-block;
+    margin-left: 10px;
+    margin-top: 10px;
+    //width: 310px;
+
+  }
+  @media @mobile{
+    margin:auto;
+    text-align: center;
+    margin-top: 60px;
+    height: 28px;
+    width: 150px;
+    img{
+      height: 100%
+    }
+    .title {
+      height: 100%;
+    }
+  }
+}
+
+
+div.action-items {
+  @height: 45px;
+  position: absolute;
+  top: -6px;
+  @media @not-mobile{
+    right: @topButtonRight;
+  }
+  @media @mobile{
+    width: 100%;
+    text-align: center;
+  }
+  color: @light-color;
+  font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+
+  button{
+    padding: 0px 23px;
+    min-width: 152px;
+    .size-to-fit;
+    &:hover {
+      background-color: @dark-color;
+    }
+  }
+
+  a {
+    min-width: 154px;
+    .size-to-fit;
+    &:hover {
+      background-color: @dark-color;
+    }
+  }
+
+  .create-deepstream {
+    background-color: @action-color;
+    &:hover {
+      background-color: @dark-color;
+    }
+  }
+
+  li {
+    height: @height;
+    @media @not-mobile{
+      float: left;
+    }
+    display: inline-block;
+    position: relative;
+    &:not(:last-child) {
+      margin-right: 12px;
+    }
+  }
+
+  .user-action {
+    background-color: @remix-color;
+    @profile-picture-size: 25px;
+    button{
+      line-height: @height;
+    }
+    span{
+      margin: auto;
+      display: inline-block;
+    }
+    img.profile-picture {
+      margin:auto;
+      margin-right: 2px;
+      margin-bottom: -7.5px;
+      z-index: 10;
+      border-radius: @profile-picture-size/2;
+      width: @profile-picture-size;
+      height: auto;
+    }
+  }
+
+  .about-fold {
+    background-color: @panel-color;
+  }
+
+  ol.user-menu {
+    background-color: @remix-color;
+    li {
+      float: none;
+      display: block;
+      margin:0;
+      border-top: 1px solid @white-color;
+    }
+  }
 }
