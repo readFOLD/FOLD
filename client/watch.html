@@ -1,104 +1,106 @@
 <template name="watch">
-  <div class="watch">
-    {{#with thisDeepstream}}
-      <div class="header-section">
-        <div class="top-row">
-          {{> logo_title}}
-          <h1 class="stream-title">{{title}}</h1>
-        </div>
-        {{#if mainPlayerMuted}}
-          <button class="unmute">Un-mute</button>
-        {{else}}
-          <button class="mute">Mute</button>
-        {{/if}}
-      </div>
+  {{#with thisDeepstream}}
 
-
-      <div class="main-section">
-        <div class="main-stream">
-          {{#if showTutorial}}
-            <div class="tutorial">
-              <div class="tutorial-step find-stream {{#if onFindStreamStep}}active{{/if}}">
-                Step 1: Find streams that you want to curate on the right. Click “Add to Video List” and they will appear below.
-                <button>Next step ></button>
-              </div>
-              <div class="tutorial-step add-cards {{#if onAddCardsStep}}active{{/if}}">
-                Step 2: Add cards on the right to give viewers more information.
-                <button>Next step ></button>
-              </div>
-              <div class="tutorial-step go-on-air {{#if onGoOnAirStep}}active{{/if}}">
-                Step 3: Put your Deep Stream on air!
-                <button>Publish!</button>
-              </div>
-            </div>
-          {{/if}}
-          {{#if streamUrl}}
-            <iframe id="{{mainStreamId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
-          {{/if}}
-        </div>
-        <div class="right-section">
-          {{> add_context}}
-        </div>
-      </div>
-      <div class="footer-section">
-        {{#if curateMode}}
-          <ol class="streams-list">
-            {{#each streams}}
-              <li class="stream">
-                <button class="set-main-stream {{#if active}}active{{/if}}">
-                  <img src="{{thumbnailUrl}}">
-                </button>
-              </li>
-            {{/each}}
-          </ol>
-        {{/if}}
-      </div>
-    {{/with}}
-  </div>
-
-
-  <!--Fixed sections-->
-
-  {{#if showTitleDescriptionEditOverlay}}
-    <div class="title-description-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
-      <form id="set-title-description" action="action">
-        <label for="title">Enter a title for your event:</label>
-        <input type="text" name="title" class="set-title" autofocus="autofocus">
-        <div class="character-count">{{titleLength}} / {{titleMax}}</div>
-        <label for="description">Enter a description:</label>
-        <textarea name="description" class="set-description" rows="3"></textarea>
-        <div class="character-count">{{descriptionLength}} / {{descriptionMax}}</div>
-        <button type="submit">OK</button>
-      </form>
-    </div>
-  {{/if}}
-
-  <div class="action-items">
-    <ol>
-      {{#if onCuratePage}}
-        <li>
-          {{#if onAir}}
-            <button class="unpublish">Unpublish</button>
+    <div class="watch">
+        <div class="header-section">
+          <div class="top-row">
+            {{> logo_title}}
+            <h1 class="stream-title">{{title}}</h1>
+          </div>
+          {{#if mainPlayerMuted}}
+            <button class="unmute">Un-mute</button>
           {{else}}
-            <button class="publish">Publish</button>
+            <button class="mute">Mute</button>
           {{/if}}
-        </li>
-        <li>
+        </div>
+
+
+        <div class="main-section">
+          <div class="main-stream">
+            {{#if showTutorial}}
+              <div class="tutorial">
+                <div class="tutorial-step find-stream {{#if onFindStreamStep}}active{{/if}}">
+                  Step 1: Find streams that you want to curate on the right. Click “Add to Video List” and they will appear below.
+                  <button>Next step ></button>
+                </div>
+                <div class="tutorial-step add-cards {{#if onAddCardsStep}}active{{/if}}">
+                  Step 2: Add cards on the right to give viewers more information.
+                  <button>Next step ></button>
+                </div>
+                <div class="tutorial-step go-on-air {{#if onGoOnAirStep}}active{{/if}}">
+                  Step 3: Put your Deep Stream on air!
+                  <button>Publish!</button>
+                </div>
+              </div>
+            {{/if}}
+            {{#if streamUrl}}
+              <iframe id="{{mainStreamId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
+            {{/if}}
+          </div>
+          <div class="right-section">
+            {{> add_context}}
+          </div>
+        </div>
+        <div class="footer-section">
           {{#if curateMode}}
-            <button class="preview">Preview</button>
-          {{else}}
-            <button class="return-to-curate">Curate</button>
+            <ol class="streams-list">
+              {{#each streams}}
+                <li class="stream">
+                  <button class="set-main-stream {{#if active}}active{{/if}}">
+                    <img src="{{thumbnailUrl}}">
+                  </button>
+                </li>
+              {{/each}}
+            </ol>
           {{/if}}
-        </li>
-      {{else}}
-        {{#if isCurator}}
+        </div>
+    </div>
+
+
+    <!--Fixed sections-->
+
+    {{#if showTitleDescriptionEditOverlay}}
+      <div class="title-description-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+        <form id="set-title-description" action="action">
+          <label for="title">Enter a title for your event:</label>
+          <input type="text" name="title" class="set-title" autofocus="autofocus">
+          <div class="character-count">{{titleLength}} / {{titleMax}}</div>
+          <label for="description">Enter a description:</label>
+          <textarea name="description" class="set-description" rows="3"></textarea>
+          <div class="character-count">{{descriptionLength}} / {{descriptionMax}}</div>
+          <button type="submit">OK</button>
+        </form>
+      </div>
+    {{/if}}
+
+    <div class="action-items">
+      <ol>
+        {{#if onCuratePage}}
           <li>
-            <a href="{{curatePath}}">
-              <button>Curate This Stream</button>
-            </a>
+            {{#if onAir}}
+              <button class="unpublish">Unpublish</button>
+            {{else}}
+              <button class="publish">Publish</button>
+            {{/if}}
           </li>
+          <li>
+            {{#if curateMode}}
+              <button class="preview">Preview</button>
+            {{else}}
+              <button class="return-to-curate">Curate</button>
+            {{/if}}
+          </li>
+        {{else}}
+          {{#if isCurator}}
+            <li>
+              <a href="{{curatePath}}">
+                <button>Curate This Stream</button>
+              </a>
+            </li>
+          {{/if}}
         {{/if}}
-      {{/if}}
-    </ol>
-  </div>
+      </ol>
+    </div>
+  {{/with}}
+
 </template>
