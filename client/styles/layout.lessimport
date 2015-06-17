@@ -8,6 +8,7 @@
 
 @background-color: #323232;
 @action-color: #F6C406;
+@dark-action-color: #dea406;
 @inactive-color: #DDDDDD;
 @placeholder-color: #acacac;
 @danger-color: #ff1b0c;

@@ -440,7 +440,7 @@ div.action-items {
     min-width: 152px;
     .size-to-fit;
     &:hover {
-      background-color: @dark-color;
+      background-color: @dark-action-color;
     }
   }
 
@@ -448,14 +448,14 @@ div.action-items {
     min-width: 154px;
     .size-to-fit;
     &:hover {
-      background-color: @dark-color;
+      background-color: @dark-action-color;
     }
   }
 
   .create-deepstream {
     background-color: @action-color;
     &:hover {
-      background-color: @dark-color;
+      background-color: @dark-action-color;
     }
   }
 

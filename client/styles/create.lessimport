@@ -618,42 +618,6 @@ div.add-context {
     }
   }
 
-  img.content-type-button {
-    position: absolute;
-    background-color: white;
-    border-radius: 20px;
-    border: 1px solid white;
-    width: 40px;
-    height: auto;
-    top: -20px;
-    right: 10px;
-  }
-
-
-
-  div.edit-delete {
-    position: absolute;
-    top: -10px;
-    color: black;
-    button {
-      display: inline-block;
-      line-height: 0px;
-      height: 25px;
-      border-radius: 13px;
-      width: 25px;
-    }
-
-    .delete {
-      &:hover {
-        background-color: @danger-color;
-      }
-    }
-  }
-
-  div.edit-delete {
-    right: 15px;
-  }
-
   div.create-section {
     padding-top: 22px;
     padding-left: 22px;
