@@ -181,11 +181,10 @@ Template.watch.helpers({
     return descriptionMax;
   },
   showStreamSearch: function(){
-    return this.curationStep === 'find_stream';
+    return this.creationStep === 'find_stream';
   },
   showContextSearch: function(){
-    return Template.instance().data.onCuratePage();
-    return this.curationStep === 'add_cards';
+    return this.creationStep === 'add_cards';
   }
 });
 

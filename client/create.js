@@ -638,6 +638,15 @@ Template.add_horizontal.events({
   }
 });
 
+Template.stream_search.events({
+  'mouseenter .horizontal-narrative-section': function() {
+    document.body.style.overflow = 'hidden';
+  },
+  'mouseleave .horizontal-narrative-section': function(){
+    document.body.style.overflow='auto';
+  }
+});
+
 Template.add_context.onCreated(function() {
   Session.setDefault('newHorizontalDataType', defaultContextType);
 });

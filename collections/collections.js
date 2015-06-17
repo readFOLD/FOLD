@@ -475,7 +475,8 @@ Deepstream = (function() {
   };
 
   Deepstream.prototype.previewUrl = function(){
-    return this.activeStream().previewUrl();
+    var activeStream = this.activeStream();
+    return activeStream ? activeStream.previewUrl() : null;
   };
 
   return Deepstream;

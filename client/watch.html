@@ -41,7 +41,12 @@
             {{#if showContextSearch}}
               {{> add_context}}
             {{else}}
-              <!--Show context here-->
+              {{#if showStreamSearch}}
+                {{ > stream_search}}
+              {{else}}
+                <!--Show context here-->
+
+              {{/if}}
             {{/if}}
           </div>
         </div>

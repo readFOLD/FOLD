@@ -587,6 +587,10 @@ div.add-context {
   }
   color: black;
 
+  .tabs{
+    display: none; // TODO REMOVE FROM DOM ENTIRELY
+  }
+
   .new-section {
     height: @horizontal-content-height;
     font-size: 55px;
@@ -787,13 +791,13 @@ div.add-context {
   }
 
   ol.search-results-container {   
-    background-color: #ffffff;   
+    background-color: @white-color;
     width: 100%;
     height: calc(100% ~"-" @searchFormHeight ~"-" 83px);
     overflow-y: scroll;
-    overflow-x: ellipsis;    
+    overflow-x: ellipsis;
     margin-top: 15px;  
-    list-style-type: none;  
+    list-style-type: none;
      
     @aspectRatio: 4/3;
     @searchResultHeight: 94px;     

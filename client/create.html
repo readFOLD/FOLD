@@ -316,6 +316,14 @@
 </template>
 
 
+
+<template name="stream_search">
+  <div class="add-context stream-search narrative-section selected editing">
+    {{> add_stream_section}}
+  </div>
+</template>
+
+
 <template name="search_form">
   <div class="search-form">
     <form>
@@ -691,6 +699,46 @@
       </ul>
     </div>
     {{> search_form}}
+    <ol class="search-results-container">
+      {{#each results}}
+        <li>
+          <div class="{{#if isFocused}}focused-{{/if}}search-result">
+            <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
+              {{#if isFocused}}
+                <iframe class="video" src="{{url}}"></iframe>
+              {{else}}
+                <img src="{{thumbnailUrl}}">
+              {{/if}}
+            </div>
+            <div class="info {{#if isFocused}}focused{{/if}}">
+              <div class="content-title">{{title}}</div>
+              <div class="descr">{{caption}}</div>
+              <div class="user">{{username}}</div>
+              <div class="date">{{creationDate}}</div>
+            </div>
+          </div>
+        </li>
+      {{/each}}
+      <li class="loading-icon">
+        {{#if loading}}
+          {{> loading_icon}}
+        {{/if}}
+        {{#if noMoreResults}}
+          {{noMoreResults}}
+        {{/if}}
+      </li>
+    </ol>
+    {{#if showAddButton}}
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    {{/if}}
+  </div>
+</template>
+
+<template name="add_stream_section">
+  <div class="create-section">
+    {{> search_form option1='live' label1='Live' option2='videos' label2='Videos'}}
     <ol class="search-results-container">
       {{#each results}}
         <li>

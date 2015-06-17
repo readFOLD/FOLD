@@ -4,7 +4,7 @@
 @medium-color: #CCCCCB;
 @light-color: #F4F4F4;
 @light-transparent-color: rgba(244,244,244,0.75);
-@white-color: white;
+@white-color: #D8D8D8;
 
 @background-color: #323232;
 @action-color: #F6C406;

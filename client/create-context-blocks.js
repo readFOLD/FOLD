@@ -225,6 +225,7 @@ var createTemplateNames = [
   'create_image_section',
   'create_gif_section',
   'create_video_section',
+  'add_stream_section',
   'create_twitter_section',
   'create_map_section',
   'create_audio_section',
@@ -247,6 +248,12 @@ Template.create_audio_section.events({
 Template.create_video_section.events({
   "dblclick .search-results-container li": function (d, template) {
     addContext(this);
+  }
+});
+
+Template.add_stream_section.events({
+  "dblclick .search-results-container li": function (d, template) {
+    addStream(this);
   }
 });
 
@@ -336,6 +343,9 @@ searchTemplateRenderedBoilerplate  = function() {
 
 Template.create_video_section.onCreated(searchTemplateCreatedBoilerplate('video', 'youtube'));
 Template.create_video_section.onRendered(searchTemplateRenderedBoilerplate());
+
+Template.add_stream_section.onCreated(searchTemplateCreatedBoilerplate('video', 'youtube'));
+Template.add_stream_section.onRendered(searchTemplateRenderedBoilerplate());
 
 Template.create_twitter_section.onCreated(searchTemplateCreatedBoilerplate('twitter', 'twitter'));
 Template.create_twitter_section.onRendered(searchTemplateRenderedBoilerplate());
