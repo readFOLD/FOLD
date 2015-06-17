@@ -16,7 +16,7 @@
     }
   }
 
-  #main-stream{
+  .main-stream-iframe{
     .size-to-fit;
   }
 }

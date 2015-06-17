@@ -47,25 +47,43 @@
 
 
 
+var ytScriptLoaded = false;
 
-
+var ytApiReady = new ReactiveVar(false);
 
 Template.watch.onCreated(function () {
-  $.getScript('https://www.youtube.com/iframe_api', function () {}); // TODO, do this in a way that won't do it lots of times
+  if(!ytScriptLoaded){
+    $.getScript('https://www.youtube.com/iframe_api', function () {});
+    ytScriptLoaded = true;
+  }
+
+  this.mainStreamId = Random.id(8);
 
   var that = this;
 
   window.onYouTubeIframeAPIReady = function() {
-    console.log('api ready!!!!!')
-    var youTubePlayer = new YT.Player('main-stream', {
-      events: {
-        'onReady': onMainPlayerReady,
-        'onStateChange': onMainPlayerStateChange
-      }
-    });
-
-    mainPlayer = youTubePlayer; // for now, just get all the functions. later do this function by function.
+    ytApiReady.set(true);
   };
+
+});
+
+Template.watch.onRendered(function(){
+  var that = this;
+
+
+  this.autorun(function(){
+    if(ytApiReady.get()){
+      Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
+        var youTubePlayer = new YT.Player(that.mainStreamId, {
+          events: {
+            'onReady': onMainPlayerReady,
+            'onStateChange': onMainPlayerStateChange
+          }
+        });
+        mainPlayer = youTubePlayer; // for now, just get all the functions. later do this function by function.
+      }, 1000);
+    }
+  });
 
   onMainPlayerReady = function(event){
     that.autorun(function(){
@@ -83,14 +101,16 @@ Template.watch.onCreated(function () {
   onMainPlayerStateChange = function(){
     console.log('PlayerStateChange')
   }
-
-});
+})
 
 
 var titleMax = 90;
 var descriptionMax = 270;
 
 Template.watch.helpers({
+  mainStreamId: function(){
+    return Template.instance().mainStreamId;
+  },
   onCuratePage: function(){
     return Template.instance().data.onCuratePage ? Template.instance().data.onCuratePage() : null;
   },
