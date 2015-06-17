@@ -42,7 +42,16 @@
                 <button class="return-to-curate">Curate</button>
               {{/if}}
             </li>
+          {{else}}
+            {{#if isCurator}}
+              <li>
+                <a href="{{curatePath}}">
+                  <button>Curate This Stream</button>
+                </a>
+              </li>
+            {{/if}}
           {{/if}}
+
         </ol>
       </div>
 
@@ -72,7 +81,7 @@
         <ol class="streams-list">
           {{#each streams}}
             <li class="stream">
-              <button class="set-main-stream">
+              <button class="set-main-stream {{#if active}}active{{/if}}">
                 <img src="{{thumbnailUrl}}">
               </button>
             </li>

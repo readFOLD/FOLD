@@ -443,7 +443,13 @@ this.StoryHistories = new Mongo.Collection("story_histories");
 Deepstream = (function() {
   function Deepstream(doc) {
     _.extend(this, doc);
-    this.streams = _.map(this.streams, function(stream){ return new Stream(stream)});
+    var that = this;
+    this.streams = _.map(this.streams, function(stream){
+      if (stream === that.activeStream()){
+        stream.active = true;
+      }
+      return new Stream(stream)
+    });
   }
 
   Deepstream.prototype.contextCountOfType = function(type) {
@@ -465,6 +471,10 @@ Deepstream = (function() {
 
   Deepstream.prototype.watchPath = function(){
     return '/watch/' + this.userPathSegment + '/' + this.streamPathSegment;
+  };
+
+  Deepstream.prototype.curatePath = function(){
+    return '/curate/' + this.userPathSegment + '/' + this.streamPathSegment;
   };
 
   return Deepstream;

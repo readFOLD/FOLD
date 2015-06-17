@@ -48,8 +48,8 @@ Handlebars.registerHelper("editingThisContext", function() {
 
 Handlebars.registerHelper("UsersCollection", Meteor.users);
 
-Handlebars.registerHelper("isAuthor", function() {
-  return Meteor.user() && Meteor.user()._id === this.authorId;
+Handlebars.registerHelper("isCurator", function() {
+  return Meteor.user() && Meteor.user()._id === this.curatorId;
 });
 
 Handlebars.registerHelper("cardWidth", function() {
