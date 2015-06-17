@@ -40,11 +40,6 @@
   color: @dark-color;
 }
 
-body{
-  color: @white-color;
-  background-color: @background-color;
-}
-
 html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -360,16 +355,13 @@ body {
   //potential option for card text
   // font-family: 'Alegreya Sans' , sans-serif;
   margin: 0;
+  color: @white-color;
   background-color: @background-color;
   transition: color 0.25s ease;
   transition: background-color 0.25s ease;
 
   line-height: 23px;
   font-size: 15px;
-  min-height: 1400px;
-  @media @desktop-xtall {
-    min-height: 2000px;
-  }
 }
 
 footer{

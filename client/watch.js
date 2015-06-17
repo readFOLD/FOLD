@@ -131,6 +131,13 @@ Template.watch.helpers({
   },
   descriptionMax: function(){
     return descriptionMax;
+  },
+  showStreamSearch: function(){
+    return this.curationStep === 'find_stream';
+  },
+  showContextSearch: function(){
+    return true;
+    return this.curationStep === 'add_cards';
   }
 });
 

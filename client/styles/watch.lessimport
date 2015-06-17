@@ -3,7 +3,7 @@
     display: inline-block;
     margin-top: 0;
     margin-bottom: 0;
-    position: fixed;
+    position: absolute;
     top: 20px;
     left: 400px;
   }
@@ -15,4 +15,28 @@
       }
     }
   }
+
+  #main-stream{
+    .size-to-fit;
+  }
+}
+
+
+.main-section{
+  height: 600px;
+}
+
+@right-section-width: 350px;
+
+.main-stream{
+  height: 100%;
+  width: calc(100% ~"-" @right-section-width);
+  float: left;
+  display: inline-block;
+}
+.right-section{
+  height: 100%;
+  float: left;
+  width: @right-section-width;
+  display: inline-block;
 }
