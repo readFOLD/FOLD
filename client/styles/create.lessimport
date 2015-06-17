@@ -580,10 +580,12 @@ div.create-section.link-twitter{
 @newCardBottomButtonHeight: 35px;
 
 
-div.horizontal-context {
+div.add-context {
+  .size-to-fit;
   section {
     padding: 0;
   }
+  color: black;
 
   .new-section {
     height: @horizontal-content-height;
@@ -602,59 +604,6 @@ div.horizontal-context {
 
   @contentIconBannerHeight: 80px;
 
-  div.content-icons {
-    display: -webkit-flex;
-    display: flex;
-    -webkit-justify-content: space-between;
-    justify-content: space-between;
-
-    width: 100%;
-    height: @contentIconBannerHeight;
-    padding-left: 17px;
-    padding-right: 17px;
-    background-color: @panel-color;
-    div.row {
-      text-align: justify;
-      -ms-text-justify: distribute-all-lines;
-      text-justify: distribute-all-lines;
-      margin-left: 10%;
-      margin-right: 10%;
-    }
-
-    @circle-diameter: 44px;
-    button {
-      height: @circle-diameter;
-      width: @circle-diameter;
-      padding: 0;
-      margin-top: 18px;
-      svg {
-        padding: 1.5px;
-
-        height: @circle-diameter;
-        width: @circle-diameter;
-        vertical-align: top;
-        display: inline-block;
-
-        &:hover, &.active {
-          .bg{
-            fill: @action-color;
-          }
-        }
-      }
-    }
-
-    .unimplemented {
-//      svg {
-//        fill: @inactive-color;
-//      }
-    }
-    span.stretch {
-      width: 100%;
-      display: inline-block;
-      font-size: 0;
-      line-height: 0;
-    }
-  }
 
   .horizontal-new-section {
     position: absolute;

@@ -963,7 +963,7 @@ div.horizontal-context {
 }
 
 
-.horizontal-narrative-section {
+.context-section{
   @unselected-opacity: 0.25;
   .left-transition;
   position: absolute;
@@ -972,7 +972,7 @@ div.horizontal-context {
   pointer-events: none;
 
   //min-width: 400px;
-  width: 32%;
+  width: 100%;
   background-color: @white-color;
   color: @dark-color;
   // display: none;
@@ -1006,25 +1006,6 @@ div.horizontal-context {
     }
   }
 
-  div.remix-bar{
-    padding-left: 15px;
-    top: @horizontal-content-height;
-    height: @remix-bar-height;
-    width: 100%;
-    position: absolute;
-    background-color: @panel-color;
-    line-height: @remix-bar-height;
-    color: white;
-    svg{
-      height:40px;
-      width:40px;
-    }
-    .remix-button{
-      float: right;
-      display: inline-block;
-    }
-  }
-
   div#index {
     position: absolute;
     top: -25px;
@@ -1043,11 +1024,6 @@ div.horizontal-context {
 
   &.new-section {
     opacity: 1.0;
-  }
-
-  &.editing {
-    height: ~"calc(100% - 125px)";
-    z-index: 100;
   }
 }
 

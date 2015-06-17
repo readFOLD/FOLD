@@ -33,10 +33,50 @@
   width: calc(100% ~"-" @right-section-width);
   float: left;
   display: inline-block;
+  z-index: 1;
 }
 .right-section{
   height: 100%;
   float: left;
   width: @right-section-width;
   display: inline-block;
+  z-index: 10;
+}
+
+
+div.content-icons {
+  @circle-diameter: 44px;
+  position: absolute;
+  right: @right-section-width;
+  width: @circle-diameter;
+  z-index: 999;
+  //height: @contentIconBannerHeight;
+  background-color: @panel-color;
+  li{
+    height: @circle-diameter;
+  }
+  button {
+    .size-to-fit;
+    padding: 0;
+    svg {
+      padding: 1.5px;
+
+      height: @circle-diameter;
+      width: @circle-diameter;
+      vertical-align: top;
+      display: inline-block;
+
+      &:hover, &.active {
+        .bg{
+          fill: @action-color;
+        }
+      }
+    }
+  }
+  span.stretch {
+    width: 100%;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0;
+  }
 }

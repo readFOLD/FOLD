@@ -111,522 +111,6 @@
 </template>
 
 
-<template name="create_horizontal_section_block">
-  <div class="narrative-section horizontal-narrative-section selected editing" style="width: {{cardWidth}}px; left: {{left}}px">
-    <div class="content-icons">
-      <button class='video-button {{#if video}}active{{/if}}'>
-        {{> video_icon }}
-      </button>
-      <button class='image-button {{#if image}}active{{/if}}'>
-        {{> image_icon }}
-      </button>
-      <button class='gif-button {{#if gif}}active{{/if}}'>
-        {{> gif_icon }}
-      </button>
-      <button class='map-button {{#if map}}active{{/if}}'>
-        {{> map_icon }}
-      </button>
-      <button class='twitter-button {{#if twitter}}active{{/if}}'>
-        {{> twitter_icon }}
-      </button>
-      <button class='audio-button {{#if audio}}active{{/if}}'>
-        {{> audio_icon }}
-      </button>
-      <button class='viz-button {{#if viz}}active{{/if}}'>
-        {{> viz_icon }}
-      </button>
-      <button class='text-button {{#if text}}active{{/if}}'>
-        {{> text_icon }}
-      </button>
-      <button class='link-button {{#if link}}active{{/if}}'>
-        {{> link_icon }}
-      </button>
-      <button class='remix-button {{#if remix}}active{{/if}}'>
-        {{> remix_icon }}
-      </button>
-    </div>
-    {{#if addingContext}}
-      {{#if type}}
-        {{#if remix}}{{> unimplemented_remix_section}}{{/if}}
-        {{#if link}}{{> create_link_section}}{{/if}}
-        {{#if text}}{{> create_text_section}}{{/if}}
-        {{#if audio}}{{> create_audio_section}}{{/if}}
-        {{#if image}}{{> create_image_section}}{{/if}}
-        {{#if gif}}{{> create_gif_section}}{{/if}}
-        {{#if map}}{{> create_map_section}}{{/if}}
-        {{#if video}}{{> create_video_section}}{{/if}}
-        {{#if twitter}}{{> create_twitter_section}}{{/if}}
-        {{#if viz}}{{> create_viz_section}}{{/if}}
-      {{/if}}
-    {{/if}}
-  </div>
-</template>
-
-
-<template name="search_form">
-  <div class="search-form">
-    <form>
-      <div class="search-outside-input-container search-open">
-        <div class="search-trigger">Search</div>
-        <div class="search-input-container">
-          <input type="search" placeholder={{placeholder}} autofocus="autofocus" dir="auto">
-        </div>
-        <button type="submit" class="search-button">{{> search_icon }}</button>
-      </div>
-      {{#if option1}}
-        <div class="search-radios">
-          <input type="radio" name="option" value={{option1}} checked />
-          <label for={{option1}}>{{label1}}</label>
-          {{#if option2}}
-            <input type="radio" name="option" value={{option2}} />
-            <label for={{option2}}>{{label2}}</label>
-            {{#if option3}}
-              <input type="radio" name="option" value={{option3}} />
-              <label for={{option3}}>{{label3}}</label>
-            {{/if}}
-          {{/if}}
-        </div>
-      {{/if}}
-    </form>
-  </div>
-</template>
-
-<!-- Create Templates -->
-
-<template name="unimplemented_remix_section">
-  <div class="create-section unimplemented">
-    Remix Card - a way for writers to reuse cards from other Deepstream stories with attribution to the original author. Coming soon!
-  </div>
-</template>
-
-<template name="create_text_section">
-  <div class="create-section">
-    <div class="tabs">
-      <ul>
-        {{#each dataSources}}
-          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
-        {{/each}}
-      </ul>
-    </div>
-    <div class="text-result-container">
-      <textarea name="content" value={{content}} class="text-input" rows="10" dir="auto"></textarea>
-    </div>
-    <button class="add-button">
-      Add
-    </button>
-  </div>
-</template>
-
-<template name="create_link_section">
-  <div class="create-section create-link-section">
-    <div class="tabs">
-      <ul>
-        {{#each dataSources}}
-          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
-        {{/each}}
-      </ul>
-    </div>
-
-    {{> search_form placeholderType='links'}}
-
-    {{#if loading}}
-      <div class="preview-section placeholder">
-        {{> loading_icon}}
-      </div>
-    {{else}}
-      {{#if noMoreResults}}
-        {{noMoreResults}}
-      {{/if}}
-      {{#if link}}
-        {{#with preview}}
-          <div class="link-section preview-section {{#if isFocused}}focused{{/if}}">
-            <div class="transparent-cover"></div>
-            <a href="{{url}}" target="_blank">
-              <div class="top">
-              {{#if thumbnailUrl}}
-                {{#if imageOnLeft}}
-                  <img class="thumbnail left" src="{{thumbnailUrl}}" />
-                {{else}}
-                  <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
-                {{/if}}
-                <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
-              {{/if}}
-              </div>
-            </a>
-            <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
-            <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
-          </div>
-        {{/with}}
-      {{else}}
-        {{#if image}}
-        <div class="preview-section image-section">
-          <img class="image" src="{{preview.url}}" />
-        </div>
-        {{else}}
-
-          {{#if video}}
-          <div class="preview-section video-section">
-            <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{preview.url}}" allowfullscreen></iframe>
-          </div>
-          {{/if}}
-        {{/if}}
-      {{/if}}
-    {{/if}}
-
-
-    {{#if showAddButton}}
-    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-      Add
-    </button>
-  {{/if}}
-  </div>
-</template>
-
-<template name="create_image_section">
-  <div class="create-section">
-    <div class="search-section" style="{{#if addingDescription}}display: none;{{/if}}">
-      <div class="tabs">
-        <ul>
-          {{#each dataSources}}
-            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
-          {{/each}}
-        </ul>
-      </div>
-      {{#if uploadMode}}
-        <div class="image-upload">
-          {{#c_upload}}
-            <input type="file" accept="image/*" class="image-upload">
-          {{/c_upload}}
-
-          <!--{{#each c.uploading_images}}-->
-            <!--<p>Uploading: {{percent_uploaded}}%</p>-->
-          <!--{{/each}}-->
-          {{#if uploadStatus}}
-            <p>{{uploadStatus}}</p>
-          {{/if}}
-          <img width="250" src="{{uploadPreview}}">
-        </div>
-      {{else}}
-        {{> search_form}}
-        <ol class="search-results-container">
-          {{#each results}}
-            <li class="tile {{#if isFocused}}focused{{/if}}">
-              <img src="{{thumbnailUrl}}">
-            </li>
-          {{/each}}
-          {{#if loading}}
-            {{> loading_icon}}
-          {{/if}}
-          {{#if noMoreResults}}
-            {{noMoreResults}}
-          {{/if}}
-        </ol>
-      {{/if}}
-      {{#if showAddButton}}
-        <button type="button" class="add-desc-button {{#if isActive}}enabled{{/if}}">
-          Add Description
-        </button>
-      {{/if}}
-    </div>
-    <div class="add-desc-section" style="{{#unless addingDescription}}display: none;{{/unless}}">
-      <div class="image-preview">
-        {{#with focusResult}}
-          {{> display_image_section}}
-        {{/with}}
-      </div>
-      <button type="button" class="back-button {{#if isActive}}enabled{{/if}}">
-        Back
-      </button>
-      <button type="submit" class="add-button">
-        Add
-      </button>
-    </div>
-  </div>
-</template>
-
-<template name="create_gif_section">
-  <div class="create-section">
-    <div class="search-section" style="{{#if addingDescription}}display: none;{{/if}}">
-      <div class="tabs">
-        <ul>
-          {{#each dataSources}}
-            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
-          {{/each}}
-        </ul>
-      </div>
-      {{> search_form}}
-      <ol class="search-results-container">
-        {{#each results}}
-          <li class="tile {{#if isFocused}}focused{{/if}}">
-            <img src="{{thumbnailUrl}}">
-          </li>
-        {{/each}}
-        {{#if loading}}
-          {{> loading_icon}}
-        {{/if}}
-        {{#if noMoreResults}}
-          {{noMoreResults}}
-        {{/if}}
-      </ol>
-      {{#if showAddButton}}
-        <button type="button" class="add-desc-button {{#if isActive}}enabled{{/if}}">
-          Add Description
-        </button>
-      {{/if}}
-    </div>
-    <div class="add-desc-section" style="{{#unless addingDescription}}display: none;{{/unless}}">
-      <div class="image-preview">
-        {{#with focusResult}}
-          {{> display_image_section}}
-        {{/with}}
-      </div>
-      <button type="button" class="back-button {{#if isActive}}enabled{{/if}}">
-        Back
-      </button>
-      <button type="submit" class="add-button">
-        Add
-      </button>
-    </div>
-  </div>
-</template>
-
-<template name="create_viz_section">
-  <div class="create-section">
-    <div class="tabs">
-      <ul>
-        {{#each dataSources}}
-          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
-        {{/each}}
-      </ul>
-    </div>
-    <select class="countries">
-      {{#each countries}}
-        <option class="countries" data-id="{{this.id}}" {{selectedIf isSelectedCountry}}>
-          {{this.name}}
-        </option>
-      {{/each}}
-    </select>
-    <select class="years">
-      {{#each years}}
-        <option class="year" data-category="{{this}}" {{selectedIf isSelectedYear}}>
-          {{this}}
-        </option>
-      {{/each}}
-    </select>
-
-    {{#if addingContext}}
-    <div class="viz-result-container">
-      <iframe width="{{cardWidth}}" height="315" src="{{url}}" frameborder="0" ></iframe>
-    </div>
-    {{/if}}
-
-    {{#if showAddButton}}
-      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-        Add
-      </button>
-    {{/if}}
-  </div>
-</template>
-
-<template name="create_map_section">
-  <div class="create-section create-map-section">
-    <div class="tabs">
-      <ul>
-        {{#each dataSources}}
-          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
-        {{/each}}
-      </ul>
-    </div>
-    {{> search_form option1='satellite' label1='Satellite' option2='roadmap' label2='Roadmap' placeholderType='locations'}}
-    <div class="map-result-container">
-      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
-    </div>
-    {{#if showAddButton}}
-    <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-      Add
-    </button>
-    {{/if}}
-  </div>
-</template>
-
-
-<template name="add_description_section">
-  Add description
-</template>
-
-
-<template name="create_twitter_section">
-  {{#if twitterUser}}
-    <div class="create-section twitter">
-      <div class="tabs">
-        <ul>
-          {{#each dataSources}}
-            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
-          {{/each}}
-        </ul>
-      </div>
-      {{> search_form option1='all' label1='All tweets' option2='user' label2='User' option3= 'favorites' label3='Favorites'}}
-      <ol class="search-results-container">
-        {{#each results}}
-          <li class="{{#if isFocused}}focused{{/if}}">
-            <div class="search-result {{#if imgUrl}}image{{/if}}">
-                <div class="thumbnail">
-                  <a href="//twitter.com/{{screenname}}" target="_blank">
-                    <img class="small" src="{{userpic}}">
-                  </a>
-                </div>
-                <div class="info twitter">
-                  <div class="content-title">{{username}}
-                    <span>
-                    <a href="//twitter.com/{{screenname}}" target="_blank">@{{screenname}}</a>
-                    </span>
-                  </div>
-                  <div class="tweet" dir="auto">{{{formattedTweet}}}
-                  </div>
-                  {{#if imgUrl}}
-                    <div>
-                      <img src="{{imgUrl}}" class="tweet-image">
-                    </div>
-                  {{/if}}
-                  <div class="descr">
-                    <span>
-                      <a href={{twitter_url}} target="_blank"><i class="fa fa-twitter"></i></a>
-                      {{#if retweetUser}}
-                        <a href={{retweet_url}} target="_blank">
-                        <i class="fa fa-retweet"></i> @{{retweetUser}}</a>
-                      {{/if}}
-                      <a href={{tweet_url}} target="_blank">{{date}}</a>
-                    </span>
-                  </div>
-                </div>
-              </div> 
-          </li>
-        {{/each}}
-        <li class="loading-icon">
-          {{#if loading}}
-            {{> loading_icon}}
-          {{/if}}
-          {{#if noMoreResults}}
-            {{noMoreResults}}
-          {{/if}}
-        </li>
-      </ol>
-      {{#if showAddButton}}
-        <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-          Add
-        </button>
-      {{/if}}
-    </div>
-  {{else}}
-    <div class="create-section link-twitter">
-      {{> link_twitter}}
-    </div>
-  {{/if}}
-</template>
-
-<template name="link_twitter">
-  <button class="link-twitter-button">Link Twitter Account</button>
-</template>
-
-<template name="create_video_section">
-  <div class="create-section">
-    <div class="tabs">
-      <ul>
-        {{#each dataSources}}
-          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
-        {{/each}}
-      </ul>
-    </div>
-    {{> search_form}}
-    <ol class="search-results-container">
-      {{#each results}}
-        <li>
-            <div class="{{#if isFocused}}focused-{{/if}}search-result">
-              <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
-                {{#if isFocused}}
-                  <iframe class="video" src="{{url}}"></iframe>
-                {{else}}
-                  <img src="{{thumbnailUrl}}">
-                {{/if}}
-              </div>
-              <div class="info {{#if isFocused}}focused{{/if}}">
-                <div class="content-title">{{title}}</div>
-                <div class="descr">{{caption}}</div>
-                <div class="user">{{username}}</div>
-                <div class="date">{{creationDate}}</div>
-              </div>
-            </div> 
-        </li>
-      {{/each}}
-      <li class="loading-icon">
-        {{#if loading}}
-          {{> loading_icon}}
-        {{/if}}
-        {{#if noMoreResults}}
-          {{noMoreResults}}
-        {{/if}}
-      </li>
-    </ol>
-    {{#if showAddButton}}
-      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-        Add
-      </button>
-    {{/if}}
-  </div>
-</template>
-
-<template name="create_audio_section">
-  <div class="create-section audio">
-    <div class="tabs">
-      <ul>
-        {{#each dataSources}}
-          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
-        {{/each}}
-      </ul>
-    </div>
-    {{> search_form}}
-    <ol class="search-results-container">
-      {{#each results}}
-        <li>
-            <div class="{{#if isFocused}}focused-{{/if}}search-result">
-              <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
-                {{#if isFocused}}
-                  <iframe class="audio" width="100%" src="{{url}}"></iframe>
-                {{else}}
-                  <div class="thumbnail">
-                    {{#if artworkUrl}}
-                      <img class="square" src="{{artworkUrl}}" />
-                    {{else}}
-                      <img class="square" src="https://addons.opera.com/media/extensions/45/11645/0.5-rev2/icons/icon_64x64.png" />
-                    {{/if}}
-                  </div>
-                  <div class="info {{#if isFocused}}focused{{/if}}">
-                    <div class="content-title">{{reference.title}}</div>
-                    <div class="descr">{{reference.description}}</div>
-                    <div class="user">{{reference.username}}</div>
-                    <div class="date">{{reference.creationDate}}</div>
-                  </div>
-                {{/if}}
-              </div>
-            </div> 
-        </li>
-      {{/each}}
-      <li class="loading-icon">
-        {{#if loading}}
-          {{> loading_icon}}
-        {{/if}}
-        {{#if noMoreResults}}
-          {{noMoreResults}}
-        {{/if}}
-      </li>
-    </ol>
-    {{#if showAddButton}}
-      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-        Add
-      </button>
-    {{/if}}
-  </div>
-</template>
 
 <template name="horizontal_section_edit_delete">
   {{#unless read}}
@@ -758,4 +242,541 @@
   <span class="pull-right">
     &gt;
   </span>
+</template>
+
+
+
+<!--DEEPSTREAM-->
+
+
+<template name="add_context">
+  <div class="add-context narrative-section context-sectionselected editing">
+    <div class="content-icons">
+      <ol>
+        <li>
+          <button class='video-button {{#if video}}active{{/if}}'>
+            {{> video_icon }}
+          </button>
+        </li>
+        <li>
+          <button class='image-button {{#if image}}active{{/if}}'>
+            {{> image_icon }}
+          </button>
+        </li>
+        <li>
+          <button class='gif-button {{#if gif}}active{{/if}}'>
+            {{> gif_icon }}
+          </button>
+        </li>
+        <li>
+          <button class='map-button {{#if map}}active{{/if}}'>
+            {{> map_icon }}
+          </button>
+        </li>
+        <li>
+          <button class='twitter-button {{#if twitter}}active{{/if}}'>
+            {{> twitter_icon }}
+          </button>
+        </li>
+        <li>
+          <button class='audio-button {{#if audio}}active{{/if}}'>
+            {{> audio_icon }}
+          </button>
+        </li>
+        <li>
+          <button class='text-button {{#if text}}active{{/if}}'>
+            {{> text_icon }}
+          </button>
+        </li>
+        <li>
+          <button class='link-button {{#if link}}active{{/if}}'>
+            {{> link_icon }}
+          </button>
+        </li>
+        <li>
+          <button class='remix-button {{#if remix}}active{{/if}}'>
+            {{> remix_icon }}
+          </button>
+        </li>
+      </ol>
+
+    </div>
+    {{#if type}}
+      {{#if remix}}{{> unimplemented_remix_section}}{{/if}}
+      {{#if link}}{{> create_link_section}}{{/if}}
+      {{#if text}}{{> create_text_section}}{{/if}}
+      {{#if audio}}{{> create_audio_section}}{{/if}}
+      {{#if image}}{{> create_image_section}}{{/if}}
+      {{#if gif}}{{> create_gif_section}}{{/if}}
+      {{#if map}}{{> create_map_section}}{{/if}}
+      {{#if video}}{{> create_video_section}}{{/if}}
+      {{#if twitter}}{{> create_twitter_section}}{{/if}}
+    {{/if}}
+  </div>
+</template>
+
+
+<template name="search_form">
+  <div class="search-form">
+    <form>
+      <div class="search-outside-input-container search-open">
+        <div class="search-trigger">Search</div>
+        <div class="search-input-container">
+          <input type="search" placeholder={{placeholder}} autofocus="autofocus" dir="auto">
+        </div>
+        <button type="submit" class="search-button">{{> search_icon }}</button>
+      </div>
+      {{#if option1}}
+        <div class="search-radios">
+          <input type="radio" name="option" value={{option1}} checked />
+          <label for={{option1}}>{{label1}}</label>
+          {{#if option2}}
+            <input type="radio" name="option" value={{option2}} />
+            <label for={{option2}}>{{label2}}</label>
+            {{#if option3}}
+              <input type="radio" name="option" value={{option3}} />
+              <label for={{option3}}>{{label3}}</label>
+            {{/if}}
+          {{/if}}
+        </div>
+      {{/if}}
+    </form>
+  </div>
+</template>
+
+<!-- Create Templates -->
+
+<template name="unimplemented_remix_section">
+  <div class="create-section unimplemented">
+    Remix Card - a way for writers to reuse cards from other Deepstream stories with attribution to the original author. Coming soon!
+  </div>
+</template>
+
+<template name="create_text_section">
+  <div class="create-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    <div class="text-result-container">
+      <textarea name="content" value={{content}} class="text-input" rows="10" dir="auto"></textarea>
+    </div>
+    <button class="add-button">
+      Add
+    </button>
+  </div>
+</template>
+
+<template name="create_link_section">
+  <div class="create-section create-link-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+
+    {{> search_form placeholderType='links'}}
+
+    {{#if loading}}
+      <div class="preview-section placeholder">
+        {{> loading_icon}}
+      </div>
+    {{else}}
+      {{#if noMoreResults}}
+        {{noMoreResults}}
+      {{/if}}
+      {{#if link}}
+        {{#with preview}}
+          <div class="link-section preview-section {{#if isFocused}}focused{{/if}}">
+            <div class="transparent-cover"></div>
+            <a href="{{url}}" target="_blank">
+              <div class="top">
+                {{#if thumbnailUrl}}
+                  {{#if imageOnLeft}}
+                    <img class="thumbnail left" src="{{thumbnailUrl}}" />
+                  {{else}}
+                    <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
+                  {{/if}}
+                  <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
+                {{/if}}
+              </div>
+            </a>
+            <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
+            <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+          </div>
+        {{/with}}
+      {{else}}
+        {{#if image}}
+          <div class="preview-section image-section">
+            <img class="image" src="{{preview.url}}" />
+          </div>
+        {{else}}
+
+          {{#if video}}
+            <div class="preview-section video-section">
+              <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{preview.url}}" allowfullscreen></iframe>
+            </div>
+          {{/if}}
+        {{/if}}
+      {{/if}}
+    {{/if}}
+
+
+    {{#if showAddButton}}
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    {{/if}}
+  </div>
+</template>
+
+<template name="create_image_section">
+  <div class="create-section">
+    <div class="search-section" style="{{#if addingDescription}}display: none;{{/if}}">
+      <div class="tabs">
+        <ul>
+          {{#each dataSources}}
+            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{#if uploadMode}}
+        <div class="image-upload">
+          {{#c_upload}}
+            <input type="file" accept="image/*" class="image-upload">
+          {{/c_upload}}
+
+            <!--{{#each c.uploading_images}}-->
+          <!--<p>Uploading: {{percent_uploaded}}%</p>-->
+            <!--{{/each}}-->
+          {{#if uploadStatus}}
+            <p>{{uploadStatus}}</p>
+          {{/if}}
+          <img width="250" src="{{uploadPreview}}">
+        </div>
+      {{else}}
+        {{> search_form}}
+        <ol class="search-results-container">
+          {{#each results}}
+            <li class="tile {{#if isFocused}}focused{{/if}}">
+              <img src="{{thumbnailUrl}}">
+            </li>
+          {{/each}}
+          {{#if loading}}
+            {{> loading_icon}}
+          {{/if}}
+          {{#if noMoreResults}}
+            {{noMoreResults}}
+          {{/if}}
+        </ol>
+      {{/if}}
+      {{#if showAddButton}}
+        <button type="button" class="add-desc-button {{#if isActive}}enabled{{/if}}">
+          Add Description
+        </button>
+      {{/if}}
+    </div>
+    <div class="add-desc-section" style="{{#unless addingDescription}}display: none;{{/unless}}">
+      <div class="image-preview">
+        {{#with focusResult}}
+          {{> display_image_section}}
+        {{/with}}
+      </div>
+      <button type="button" class="back-button {{#if isActive}}enabled{{/if}}">
+        Back
+      </button>
+      <button type="submit" class="add-button">
+        Add
+      </button>
+    </div>
+  </div>
+</template>
+
+<template name="create_gif_section">
+  <div class="create-section">
+    <div class="search-section" style="{{#if addingDescription}}display: none;{{/if}}">
+      <div class="tabs">
+        <ul>
+          {{#each dataSources}}
+            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{> search_form}}
+      <ol class="search-results-container">
+        {{#each results}}
+          <li class="tile {{#if isFocused}}focused{{/if}}">
+            <img src="{{thumbnailUrl}}">
+          </li>
+        {{/each}}
+        {{#if loading}}
+          {{> loading_icon}}
+        {{/if}}
+        {{#if noMoreResults}}
+          {{noMoreResults}}
+        {{/if}}
+      </ol>
+      {{#if showAddButton}}
+        <button type="button" class="add-desc-button {{#if isActive}}enabled{{/if}}">
+          Add Description
+        </button>
+      {{/if}}
+    </div>
+    <div class="add-desc-section" style="{{#unless addingDescription}}display: none;{{/unless}}">
+      <div class="image-preview">
+        {{#with focusResult}}
+          {{> display_image_section}}
+        {{/with}}
+      </div>
+      <button type="button" class="back-button {{#if isActive}}enabled{{/if}}">
+        Back
+      </button>
+      <button type="submit" class="add-button">
+        Add
+      </button>
+    </div>
+  </div>
+</template>
+
+<template name="create_viz_section">
+  <div class="create-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    <select class="countries">
+      {{#each countries}}
+        <option class="countries" data-id="{{this.id}}" {{selectedIf isSelectedCountry}}>
+          {{this.name}}
+        </option>
+      {{/each}}
+    </select>
+    <select class="years">
+      {{#each years}}
+        <option class="year" data-category="{{this}}" {{selectedIf isSelectedYear}}>
+          {{this}}
+        </option>
+      {{/each}}
+    </select>
+
+    {{#if addingContext}}
+      <div class="viz-result-container">
+        <iframe width="{{cardWidth}}" height="315" src="{{url}}" frameborder="0" ></iframe>
+      </div>
+    {{/if}}
+
+    {{#if showAddButton}}
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    {{/if}}
+  </div>
+</template>
+
+<template name="create_map_section">
+  <div class="create-section create-map-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    {{> search_form option1='satellite' label1='Satellite' option2='roadmap' label2='Roadmap' placeholderType='locations'}}
+    <div class="map-result-container">
+      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
+    </div>
+    {{#if showAddButton}}
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    {{/if}}
+  </div>
+</template>
+
+
+<template name="add_description_section">
+  Add description
+</template>
+
+
+<template name="create_twitter_section">
+  {{#if twitterUser}}
+    <div class="create-section twitter">
+      <div class="tabs">
+        <ul>
+          {{#each dataSources}}
+            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{> search_form option1='all' label1='All tweets' option2='user' label2='User' option3= 'favorites' label3='Favorites'}}
+      <ol class="search-results-container">
+        {{#each results}}
+          <li class="{{#if isFocused}}focused{{/if}}">
+            <div class="search-result {{#if imgUrl}}image{{/if}}">
+              <div class="thumbnail">
+                <a href="//twitter.com/{{screenname}}" target="_blank">
+                  <img class="small" src="{{userpic}}">
+                </a>
+              </div>
+              <div class="info twitter">
+                <div class="content-title">{{username}}
+                  <span>
+                    <a href="//twitter.com/{{screenname}}" target="_blank">@{{screenname}}</a>
+                    </span>
+                </div>
+                <div class="tweet" dir="auto">{{{formattedTweet}}}
+                </div>
+                {{#if imgUrl}}
+                  <div>
+                    <img src="{{imgUrl}}" class="tweet-image">
+                  </div>
+                {{/if}}
+                <div class="descr">
+                    <span>
+                      <a href={{twitter_url}} target="_blank"><i class="fa fa-twitter"></i></a>
+                      {{#if retweetUser}}
+                        <a href={{retweet_url}} target="_blank">
+                          <i class="fa fa-retweet"></i> @{{retweetUser}}</a>
+                      {{/if}}
+                      <a href={{tweet_url}} target="_blank">{{date}}</a>
+                    </span>
+                </div>
+              </div>
+            </div>
+          </li>
+        {{/each}}
+        <li class="loading-icon">
+          {{#if loading}}
+            {{> loading_icon}}
+          {{/if}}
+          {{#if noMoreResults}}
+            {{noMoreResults}}
+          {{/if}}
+        </li>
+      </ol>
+      {{#if showAddButton}}
+        <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+          Add
+        </button>
+      {{/if}}
+    </div>
+  {{else}}
+    <div class="create-section link-twitter">
+      {{> link_twitter}}
+    </div>
+  {{/if}}
+</template>
+
+<template name="link_twitter">
+  <button class="link-twitter-button">Link Twitter Account</button>
+</template>
+
+<template name="create_video_section">
+  <div class="create-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    {{> search_form}}
+    <ol class="search-results-container">
+      {{#each results}}
+        <li>
+          <div class="{{#if isFocused}}focused-{{/if}}search-result">
+            <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
+              {{#if isFocused}}
+                <iframe class="video" src="{{url}}"></iframe>
+              {{else}}
+                <img src="{{thumbnailUrl}}">
+              {{/if}}
+            </div>
+            <div class="info {{#if isFocused}}focused{{/if}}">
+              <div class="content-title">{{title}}</div>
+              <div class="descr">{{caption}}</div>
+              <div class="user">{{username}}</div>
+              <div class="date">{{creationDate}}</div>
+            </div>
+          </div>
+        </li>
+      {{/each}}
+      <li class="loading-icon">
+        {{#if loading}}
+          {{> loading_icon}}
+        {{/if}}
+        {{#if noMoreResults}}
+          {{noMoreResults}}
+        {{/if}}
+      </li>
+    </ol>
+    {{#if showAddButton}}
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    {{/if}}
+  </div>
+</template>
+
+<template name="create_audio_section">
+  <div class="create-section audio">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    {{> search_form}}
+    <ol class="search-results-container">
+      {{#each results}}
+        <li>
+          <div class="{{#if isFocused}}focused-{{/if}}search-result">
+            <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
+              {{#if isFocused}}
+                <iframe class="audio" width="100%" src="{{url}}"></iframe>
+              {{else}}
+                <div class="thumbnail">
+                  {{#if artworkUrl}}
+                    <img class="square" src="{{artworkUrl}}" />
+                  {{else}}
+                    <img class="square" src="https://addons.opera.com/media/extensions/45/11645/0.5-rev2/icons/icon_64x64.png" />
+                  {{/if}}
+                </div>
+                <div class="info {{#if isFocused}}focused{{/if}}">
+                  <div class="content-title">{{reference.title}}</div>
+                  <div class="descr">{{reference.description}}</div>
+                  <div class="user">{{reference.username}}</div>
+                  <div class="date">{{reference.creationDate}}</div>
+                </div>
+              {{/if}}
+            </div>
+          </div>
+        </li>
+      {{/each}}
+      <li class="loading-icon">
+        {{#if loading}}
+          {{> loading_icon}}
+        {{/if}}
+        {{#if noMoreResults}}
+          {{noMoreResults}}
+        {{/if}}
+      </li>
+    </ol>
+    {{#if showAddButton}}
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    {{/if}}
+  </div>
 </template>

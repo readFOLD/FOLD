@@ -638,11 +638,11 @@ Template.add_horizontal.events({
   }
 });
 
-Template.create_horizontal_section_block.onCreated(function() {
+Template.add_context.onCreated(function() {
   Session.setDefault('newHorizontalDataType', defaultContextType);
 });
 
-Template.create_horizontal_section_block.helpers({
+Template.add_context.helpers({
   type: function() {
     return Session.get('newHorizontalDataType');
   },
@@ -678,14 +678,14 @@ Template.create_horizontal_section_block.helpers({
   }
 });
 
-Template.create_horizontal_section_block.helpers({
+Template.add_context.helpers({
   left: function() {
     var addBlockWidth = 75;
     return addBlockWidth + Session.get("verticalLeft") + Session.get("cardWidth") + 2 * Session.get("separation");
   }
 });
 
-Template.create_horizontal_section_block.events({
+Template.add_context.events({
   'click .text-button': function(d, t) {
     return Session.set('newHorizontalDataType', 'text');
   },
