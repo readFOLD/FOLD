@@ -68,7 +68,11 @@ var addFocusResult = function(d, template) {
     focusResult.description = textAreaContent;
 
     template.focusResult.set(focusResult);
-    addContext(focusResult);
+    if(template.addingFunction){
+      template.addingFunction(focusResult);
+    } else {
+      addContext(focusResult);
+    }
   }
 };
 
@@ -237,6 +241,12 @@ _.each(createTemplateNames, function(templateName){
   Template[templateName].helpers(createBlockHelpers);
   Template[templateName].events(createBlockEvents);
 });
+
+
+Template.add_stream_section.onCreated(function(){
+  this.addingFunction = window.addStream;
+});
+
 
 
 Template.create_audio_section.events({

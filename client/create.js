@@ -792,6 +792,15 @@ Template.context_anchor_option.events = {
   }
 };
 
+window.addStream = function(stream) {
+  Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
+  Session.set('saveState', 'saving');
+
+  Meteor.call('addStreamToStream', Session.get("streamShortId"), stream, function(err, streamId){
+    saveCallback(err, streamId);
+  });
+};
+
 window.addContext = function(contextBlock) {
   Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
   Session.set('saveState', 'saving');

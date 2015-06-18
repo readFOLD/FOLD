@@ -164,6 +164,55 @@ Meteor.methods({
     }
     return contextBlock._id;
   },
+  setActiveStream: function(streamShortId, streamId){
+    check(streamShortId, String);
+    check(streamId, String);
+    return updateStream.call(this,{shortId: streamShortId}, {$set: {activeStreamId: streamId}});
+  },
+  addStreamToStream: function(streamShortId, stream){
+    check(streamShortId, String);
+    check(stream, Object);
+
+    //if (!Stories.find({_id: storyId, authorId: this.userId},{ fields:{ _id: 1 }}).count()){
+    //  throw new Meteor.Error("User doesn't own story")
+    //}
+
+    //delete contextBlock._id;
+
+    // TO-DO Remix. When add remix, will need another method or modify this one
+    //var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {
+    //  storyId: storyId,
+    //  storyShortId: storyShortId,
+    //  authorId: Meteor.user()._id,
+    //  savedAt: new Date
+    //}));
+
+    var pushObject, pushSelectorString;
+    pushSelectorString = 'streams';
+    pushObject = {};
+    pushObject[pushSelectorString] = _.extend({}, stream, {
+      //storyId: storyId,
+      //storyShortId: storyShortId,
+      authorId: Meteor.user()._id,
+      addedAt: new Date
+    });
+
+    var numUpdated = updateStream.call(this, { shortId: streamShortId }, { $addToSet: pushObject}); // TODO, make it so can't easily add the same one twice (addedAt is different)
+
+    if (numUpdated){
+
+      // TODO something
+      if (Meteor.isClient){
+        //window.hideNewHorizontalUI();
+
+        //var story = Stories.findOne(storyId, fields);
+        //goToX(_.indexOf(story.draftStory.verticalSections[verticalIndex].contextBlocks, contextId.toString()))
+      }
+    } else {
+      throw new Meteor.Error('Stream not updated')
+    }
+    return stream._id;
+  },
 
 
   removeContextFromStory: function(storyId, contextId, verticalSectionIndex) {

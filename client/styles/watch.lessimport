@@ -99,3 +99,9 @@ div.content-icons {
     line-height: 0;
   }
 }
+
+.stream-search{
+  .search-radios{
+    display: none; // TODO remove
+  }
+}

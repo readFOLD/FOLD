@@ -202,8 +202,8 @@ Template.watch.onCreated(function(){
 });
 
 Template.watch.events({
-  'click .set-main-stream': function(){
-    Deepstreams.update({_id: 'someid'}, {$set: {activeStreamId: this._id}});
+  'click .set-main-stream': function(e, t){
+    Meteor.call('setActiveStream', t.data.shortId(), this._id ,basicErrorHandler);
   },
   'click .mute': function(){
     Session.set('mainPlayerMuted', true);
