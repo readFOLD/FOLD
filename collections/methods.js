@@ -201,15 +201,23 @@ Meteor.methods({
       '$addToSet' : pushObject
     };
 
-    deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields:{'activeStreamId' : 1}});
+    deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields:{'activeStreamId' : 1, 'creationStep': 1}});
 
 
+    modifierObject['$set'] = {};
+
+    // make stream active if none is active
     if (!deepstream.activeStreamId){
-      console.log('yes')
-      console.log(stream._id)
-      modifierObject['$set'] = {
+      _.extend(modifierObject['$set'], {
         activeStreamId : stream._id
-      }
+      });
+    }
+
+    // advance creation if at this creation step
+    if (deepstream.creationStep === 'find_stream'){
+      _.extend(modifierObject['$set'], {
+        creationStep : nextCreationStepAfter('find_stream')
+      });
     }
 
 

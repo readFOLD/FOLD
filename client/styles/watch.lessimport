@@ -52,17 +52,24 @@
   left: 0;
   right: 0;
   background-color: rgba(50,50,50,0.5);
-  font-size: 20pt;
-  font-weight: 700;
-  padding-top: 150px;
+
+  padding-top: 70px;
+  padding-left: 170px;
   padding-right: 100px;
 }
 
 .tutorial-step{
-  margin-left: 190px;
-  margin-bottom: 40px;
+  font-size: 20pt;
+  font-weight: bold;
+  line-height: 25pt;
+  margin-top: 40px;
   button{
     margin-top: 20px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    padding-left: 14px;
+    padding-right: 14px;
+    font-weight: bold;
     display: block;
   }
 }

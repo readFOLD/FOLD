@@ -15,12 +15,14 @@ BrowserPolicy.content.allowFrameOrigin('*');
 // allow iframes from specific sources only (why not)
 BrowserPolicy.content.allowFontOrigin('*.gstatic.com');
 BrowserPolicy.content.allowFontOrigin('*.bootstrapcdn.com');
+BrowserPolicy.content.allowFontOrigin('*.googleapis.com');
 
 // allow scripts from everywhere (we already don't allow inline above)
 BrowserPolicy.content.allowScriptOrigin('*');
 
 // allow styles from specific sources only
 BrowserPolicy.content.allowStyleOrigin('*.bootstrapcdn.com');
+BrowserPolicy.content.allowStyleOrigin('*.googleapis.com');
 
 // disallow objects (until we need them)
 BrowserPolicy.content.disallowObject();
