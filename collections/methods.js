@@ -148,7 +148,23 @@ Meteor.methods({
       savedAt: new Date
     });
 
-    var numUpdated = updateStream.call(this, { shortId: streamShortId }, { $addToSet: pushObject}); // TODO, make it so can't easily add the same one twice (savedAt and addedAt are different)
+
+    var modifierObject = {
+      '$addToSet' : pushObject
+    };
+
+    deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields:{'creationStep': 1}});
+
+    modifierObject['$set'] = {};
+
+    // advance creation if at this creation step
+    if (deepstream.creationStep === 'add_cards'){
+      _.extend(modifierObject['$set'], {
+        creationStep : nextCreationStepAfter('add_cards')
+      });
+    }
+
+    var numUpdated = updateStream.call(this, { shortId: streamShortId }, modifierObject); // TODO, make it so can't easily add the same one twice (savedAt and addedAt are different)
 
     if (numUpdated){
 
