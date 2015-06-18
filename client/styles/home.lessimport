@@ -433,7 +433,7 @@ div.action-items {
     text-align: center;
   }
   color: @light-color;
-  font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+  font-family: 'Roboto', sans-serif;
 
   button{
     padding: 0px 23px;

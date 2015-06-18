@@ -123,6 +123,8 @@ html {
   src: local('Muli'), url(//fonts.gstatic.com/s/muli/v7/FrmKYbbiMrxVeJO6lA8KEvesZW2xOQ-xsNqO47m55DA.ttf) format('truetype');
 }
 
+@import url(http://fonts.googleapis.com/css?family=Roboto:500,400italic,700italic,700,500italic,400);
+
 @highdensity: ~"only screen and (-webkit-min-device-pixel-ratio: 1.5)",
 ~"only screen and (min--moz-device-pixel-ratio: 1.5)",
 ~"only screen and (-o-min-device-pixel-ratio: 3/2)",
@@ -302,7 +304,7 @@ input {
 
 input[type="text"], input[type="password"], input[type="email"] {
   width: 100%;
-  font-family: Muli;
+  font-family: 'Roboto', sans-serif;
   margin-top: 5px;
   margin-bottom: 15px;
   height: 55px;
@@ -344,12 +346,13 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 textarea {
-  font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
   //still like san-serif for headlines and bylines
-  font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;
+  //font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;
+  font-family: 'Roboto', sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -950,7 +953,7 @@ div.horizontal-context {
       display: none;
     }
     .context-count-text {
-      font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+      font-family: 'Roboto', sans-serif;
       font-size: 14px;
       position: absolute;
       cursor: default;

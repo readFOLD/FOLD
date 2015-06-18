@@ -32,17 +32,40 @@
   height: 100%;
   width: calc(100% ~"-" @right-section-width);
   float: left;
+  position: relative;
   display: inline-block;
   z-index: 1;
 }
 .right-section{
   height: 100%;
   float: left;
+  position: relative;
   width: @right-section-width;
   display: inline-block;
   z-index: 10;
 }
 
+.tutorial{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(50,50,50,0.5);
+  font-size: 20pt;
+  font-weight: 700;
+  padding-top: 150px;
+  padding-right: 100px;
+}
+
+.tutorial-step{
+  margin-left: 190px;
+  margin-bottom: 40px;
+  button{
+    margin-top: 20px;
+    display: block;
+  }
+}
 
 div.content-icons {
   @circle-diameter: 40px;
@@ -63,7 +86,7 @@ div.content-icons {
     .size-to-fit;
     background-color: inherit;
     &.active, &:hover{
-      background-color: rgba(100,100,100,0.75);
+      background-color: rgba(74,74,74,0.80);
     }
     svg {
       padding: 1.5px;
