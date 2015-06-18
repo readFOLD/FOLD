@@ -197,7 +197,23 @@ Meteor.methods({
       addedAt: new Date
     });
 
-    var numUpdated = updateStream.call(this, { shortId: streamShortId }, { $addToSet: pushObject}); // TODO, make it so can't easily add the same one twice (addedAt is different)
+    var modifierObject = {
+      '$addToSet' : pushObject
+    };
+
+    deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields:{'activeStreamId' : 1}});
+
+
+    if (!deepstream.activeStreamId){
+      console.log('yes')
+      console.log(stream._id)
+      modifierObject['$set'] = {
+        activeStreamId : stream._id
+      }
+    }
+
+
+    var numUpdated = updateStream.call(this, { shortId: streamShortId }, modifierObject); // TODO, make it so can't easily add the same one twice (addedAt is different)
 
     if (numUpdated){
 
