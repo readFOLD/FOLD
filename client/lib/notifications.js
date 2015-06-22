@@ -6,7 +6,8 @@ window.notifyRemix = function(message){
         bgcolor: '#EA1D75' // remix-color
       },
       'position' :'top right',
-      theme:'colorful'
+      theme:'colorful',
+      delay: 5000
     }
   );
 };
@@ -21,7 +22,8 @@ window.notifySuccess = function(message){
         bgcolor: '#1DB259' // action-color
       },
       'position' :'top right',
-      theme:'colorful'
+      theme:'colorful',
+      delay: 5000
     }
   );
 };
@@ -41,7 +43,8 @@ window.notifyError = function(message){
         bgcolor: '#ff1b0c' // danger-color
       },
       'position' :'top right',
-      theme:'colorful'
+      theme:'colorful',
+      delay: 5000
     }
   );
 };
@@ -54,7 +57,8 @@ window.notifyInfo = function(message){
         bgcolor: '#585094' // panel-color
       },
       'position' :'top right',
-      theme:'colorful'
+      theme:'colorful',
+      delay: 5000
     }
   );
 };

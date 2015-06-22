@@ -71,7 +71,7 @@ a.green {
 	margin-top: 20px;
 	width: 100px;
     background-color: @action-color;
-    color: @white-color;
+    color: @black-color;
     height: @button-height;
 
     &:hover {
