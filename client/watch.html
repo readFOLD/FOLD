@@ -16,7 +16,7 @@
 
 
         <div class="main-section">
-          <div class="main-stream">
+          <div class="main-stream {{#unless showRightSection}}fill-width{{/unless}}">
             {{#if showTutorial}}
               <div class="tutorial">
                 <div class="tutorial-step find-stream {{#if onFindStreamStep}}active{{/if}}">
@@ -43,18 +43,20 @@
               <iframe id="{{mainStreamId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
             {{/if}}
           </div>
-          <div class="right-section">
-            {{#if showContextSearch}}
-              {{> add_context}}
-            {{else}}
-              {{#if showStreamSearch}}
-                {{> stream_search}}
+          {{#if showRightSection}}
+            <div class="right-section">
+              {{#if showContextSearch}}
+                {{> add_context}}
               {{else}}
-                <!--Show context here-->
+                {{#if showStreamSearch}}
+                  {{> stream_search}}
+                {{else}}
+                  <!--Show context here-->
 
+                {{/if}}
               {{/if}}
-            {{/if}}
-          </div>
+            </div>
+          {{/if}}
         </div>
         <div class="footer-section">
           {{#if curateMode}}

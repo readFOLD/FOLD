@@ -59,6 +59,9 @@
 .main-stream{
   height: 100%;
   width: calc(100% ~"-" @right-section-width);
+  &.fill-width{
+    width: 100%;
+  }
   float: left;
   position: relative;
   display: inline-block;

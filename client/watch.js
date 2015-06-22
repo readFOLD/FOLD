@@ -180,11 +180,14 @@ Template.watch.helpers({
   descriptionMax: function(){
     return descriptionMax;
   },
+  showRightSection: function(){
+    return Session.get('mediaDataType')
+  },
   showStreamSearch: function(){
-    return Template.instance().data.onCuratePage && (this.creationStep === 'find_stream' || (this.creationStep !== 'add_cards') && Session.get('newHorizontalDataType') === 'stream');
+    return Template.instance().data.onCuratePage() && (this.creationStep === 'find_stream' || (this.creationStep !== 'add_cards') && Session.get('mediaDataType') === 'stream');
   },
   showContextSearch: function(){
-    return Template.instance().data.onCuratePage && (this.creationStep === 'add_cards' || (this.creationStep !== 'find_stream') && Session.get('newHorizontalDataType') !== 'stream');
+    return Template.instance().data.onCuratePage() && (this.creationStep === 'add_cards' || (this.creationStep !== 'find_stream') && Session.get('mediaDataType') !== 'stream');
   }
 });
 
@@ -282,7 +285,7 @@ Template.watch.events({
     if(this.creationStep && this.creationStep !== 'go_on_air'){
       Meteor.call('goToFindStreamStep', t.data.shortId(), basicErrorHandler);
     } else {
-      Session.set('newHorizontalDataType', 'stream');
+      Session.set('mediaDataType', 'stream');
     }
   }
 });
