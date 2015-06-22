@@ -181,10 +181,10 @@ Template.watch.helpers({
     return descriptionMax;
   },
   showStreamSearch: function(){
-    return this.creationStep === 'find_stream' || Session.get('searchClass') === 'stream';
+    return Template.instance().data.onCuratePage && (this.creationStep === 'find_stream' || Session.get('newHorizontalDataType') === 'stream');
   },
   showContextSearch: function(){
-    return this.creationStep === 'add_cards' || Session.get('searchClass') === 'context';
+    return Template.instance().data.onCuratePage && (this.creationStep === 'add_cards' || Session.get('newHorizontalDataType') !== 'stream');
   }
 });
 

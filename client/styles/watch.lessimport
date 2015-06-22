@@ -30,12 +30,13 @@
       }
       .active-overlay{
         position:absolute;
-        top: 30%;
-        width: 100%;
+        padding-top: 25%;
+        .size-to-fit;
         color: red;
         text-align: center;
         font-size: 28px;
         font-weight: bold;
+        background-color: rgba(100,100,100,0.6);
       }
 
     }
