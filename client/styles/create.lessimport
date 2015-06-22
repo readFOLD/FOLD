@@ -1303,13 +1303,3 @@ div.bottom-bar{
 
 
 
-// DEEPSTREAM
-
-.tutorial-step {
-  &:not(.active){
-    button{
-      visibility: hidden;
-    }
-    opacity: 0.25;
-  }
-}

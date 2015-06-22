@@ -290,6 +290,15 @@ Meteor.methods({
     var storyPathSegment = _s.slugify(title.toLowerCase() || 'deep-stream')+ '-' + shortId;
     return updateStream.call(this, {shortId: shortId}, {$set: {'title' : title, 'description' : description, 'storyPathSegment' : storyPathSegment, creationStep: nextCreationStepAfter('title_description') }});
   },
+  goToFindStreamStep: function(shortId){
+    return updateStream.call(this, { shortId: shortId}, {$set: { creationStep: 'find_stream'}});
+  },
+  goToAddCardsStep: function(shortId){
+    return updateStream.call(this, { shortId: shortId}, {$set: { creationStep: 'add_cards'}});
+  },
+  goToPublishStreamStep: function(shortId){
+    return updateStream.call(this, { shortId: shortId}, {$set: { creationStep: 'go_on_air'}});
+  },
   skipFindStreamStep: function(shortId){
     check(shortId, String);
     return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: nextCreationStepAfter('find_stream') }});

@@ -241,6 +241,15 @@ Template.watch.events({
     var description = t.$('.set-description').val();
     Meteor.call('setStreamTitleDescription', t.data.shortId(), title, description, basicErrorHandler);
   },
+  'click .find-stream .text': function(e, t){
+    Meteor.call('goToFindStreamStep', t.data.shortId(), basicErrorHandler);
+  },
+  'click .add-cards .text': function(e, t){
+    Meteor.call('goToAddCardsStep', t.data.shortId(), basicErrorHandler);
+  },
+  'click .go-on-air .text': function(e, t){
+    Meteor.call('goToPublishStreamStep', t.data.shortId(), basicErrorHandler);
+  },
   'click .find-stream button': function(e, t){
     Meteor.call('skipFindStreamStep', t.data.shortId(), basicErrorHandler);
   },
@@ -248,10 +257,22 @@ Template.watch.events({
     Meteor.call('skipAddCardsStep', t.data.shortId(), basicErrorHandler);
   },
   'click .go-on-air button': function(e, t){
-    Meteor.call('publishStream', t.data.shortId(), basicErrorHandler);
+    Meteor.call('publishStream', t.data.shortId(), function(err){
+      if(err){
+        basicErrorHandler(err)
+      } else {
+        notifySuccess("Congratulations! Your Deep Stream is now on air!")
+      }
+    });
   },
   'click .publish': function(e, t){
-    Meteor.call('publishStream', t.data.shortId(), basicErrorHandler);
+    Meteor.call('publishStream', t.data.shortId(), function(err){
+      if(err){
+        basicErrorHandler(err)
+      } else {
+        notifySuccess("Congratulations! Your Deep Stream is now on air!")
+      }
+    });
   },
   'click .unpublish': function(e, t){
     Meteor.call('unpublishStream', t.data.shortId(), basicErrorHandler);
