@@ -43,8 +43,10 @@
               <iframe id="{{mainStreamId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
             {{/if}}
           </div>
-          {{#if showRightSection}}
-            <div class="right-section">
+          <div class="right-section">
+            {{> content_icons}}
+            {{#if showRightSection}}
+
               {{#if showContextSearch}}
                 {{> add_context}}
               {{else}}
@@ -52,11 +54,10 @@
                   {{> stream_search}}
                 {{else}}
                   <!--Show context here-->
-
                 {{/if}}
               {{/if}}
-            </div>
-          {{/if}}
+            {{/if}}
+          </div>
         </div>
         <div class="footer-section">
           {{#if curateMode}}

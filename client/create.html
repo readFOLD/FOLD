@@ -251,51 +251,6 @@
 
 <template name="add_context">
   <div class="add-context narrative-section selected editing">
-    <div class="content-icons">
-      <ol>
-        <li>
-          <button class='video-button {{#if video}}active{{/if}}'>
-            {{> video_icon }}
-          </button>
-        </li>
-        <li>
-          <button class='image-button {{#if image}}active{{/if}}'>
-            {{> image_icon }}
-          </button>
-        </li>
-        <li>
-          <button class='map-button {{#if map}}active{{/if}}'>
-            {{> map_icon }}
-          </button>
-        </li>
-        <li>
-          <button class='twitter-button {{#if twitter}}active{{/if}}'>
-            {{> twitter_icon }}
-          </button>
-        </li>
-        <li>
-          <button class='audio-button {{#if audio}}active{{/if}}'>
-            {{> audio_icon }}
-          </button>
-        </li>
-        <li>
-          <button class='text-button {{#if text}}active{{/if}}'>
-            {{> text_icon }}
-          </button>
-        </li>
-        <li>
-          <button class='link-button {{#if link}}active{{/if}}'>
-            {{> link_icon }}
-          </button>
-        </li>
-        <li>
-          <button class='remix-button {{#if remix}}active{{/if}}'>
-            {{> remix_icon }}
-          </button>
-        </li>
-      </ol>
-
-    </div>
     {{#if type}}
       {{#if remix}}{{> unimplemented_remix_section}}{{/if}}
       {{#if link}}{{> create_link_section}}{{/if}}
@@ -309,6 +264,58 @@
   </div>
 </template>
 
+<template name="content_icons">
+  <div class="content-icons">
+    <ol>
+      <li>
+        <button class='stream-button {{#if stream}}active{{/if}}'>
+          {{> stream_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='video-button {{#if video}}active{{/if}}'>
+          {{> video_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='image-button {{#if image}}active{{/if}}'>
+          {{> image_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='map-button {{#if map}}active{{/if}}'>
+          {{> map_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='twitter-button {{#if twitter}}active{{/if}}'>
+          {{> twitter_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='audio-button {{#if audio}}active{{/if}}'>
+          {{> audio_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='text-button {{#if text}}active{{/if}}'>
+          {{> text_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='link-button {{#if link}}active{{/if}}'>
+          {{> link_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='remix-button {{#if remix}}active{{/if}}'>
+          {{> remix_icon }}
+        </button>
+      </li>
+    </ol>
+
+  </div>
+</template>
 
 
 <template name="stream_search">

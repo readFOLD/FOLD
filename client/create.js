@@ -651,9 +651,12 @@ Template.add_context.onCreated(function() {
   Session.setDefault('mediaDataType', defaultContextType);
 });
 
-Template.add_context.helpers({
+contextHelpers = ({
   type: function() {
     return Session.get('mediaDataType');
+  },
+  stream: function() {
+    return Session.get('mediaDataType') === "stream";
   },
   text: function() {
     return Session.get('mediaDataType') === "text";
@@ -687,6 +690,9 @@ Template.add_context.helpers({
   }
 });
 
+Template.add_context.helpers(contextHelpers);
+Template.content_icons.helpers(contextHelpers);
+
 Template.add_context.helpers({
   left: function() {
     var addBlockWidth = 75;
@@ -694,7 +700,10 @@ Template.add_context.helpers({
   }
 });
 
-Template.add_context.events({
+Template.content_icons.events({
+  'click .stream-button': function(d, t) {
+    return Session.set('mediaDataType', 'stream');
+  },
   'click .text-button': function(d, t) {
     return Session.set('mediaDataType', 'text');
   },
@@ -724,7 +733,10 @@ Template.add_context.events({
   },
   'click .remix-button': function(d, t) {
     return Session.set('mediaDataType', 'remix');
-  },
+  }
+});
+
+Template.add_context.events({
   'mouseenter .horizontal-narrative-section': function() {
     document.body.style.overflow = 'hidden';
   },

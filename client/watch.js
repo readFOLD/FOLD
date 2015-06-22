@@ -93,6 +93,21 @@ Template.watch.onCreated(function () {
     Session.set("streamShortId", that.data.shortId());
   });
 
+  this.autorun(function(){
+    if(FlowRouter.subsReady()){
+      if(that.data.onCuratePage()){
+        deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
+        if (deepstream.creationStep === 'find_stream'){
+          Session.set("mediaDataType", 'stream');
+        } else if (deepstream.creationStep === 'add_cards') {
+          Session.set("mediaDataType", 'image');
+        }
+      } else {
+        Session.set("mediaDataType", null); // TODO set to a media type that exists?
+      }
+    }
+  });
+
 });
 
 Template.watch.onRendered(function(){
@@ -184,10 +199,10 @@ Template.watch.helpers({
     return Session.get('mediaDataType')
   },
   showStreamSearch: function(){
-    return Template.instance().data.onCuratePage() && (this.creationStep === 'find_stream' || (this.creationStep !== 'add_cards') && Session.get('mediaDataType') === 'stream');
+    return Template.instance().data.onCuratePage() && Session.get('mediaDataType') === 'stream';
   },
   showContextSearch: function(){
-    return Template.instance().data.onCuratePage() && (this.creationStep === 'add_cards' || (this.creationStep !== 'find_stream') && Session.get('mediaDataType') !== 'stream');
+    return Template.instance().data.onCuratePage() && Session.get('mediaDataType') && Session.get('mediaDataType') !== 'stream';
   }
 });
 
@@ -287,5 +302,13 @@ Template.watch.events({
     } else {
       Session.set('mediaDataType', 'stream');
     }
+  }
+});
+
+
+// TODO remove and have an about section
+Template.banner_buttons.events({
+  'click .about-deepstream': function(){
+    notifyFeature('Coming soon!')
   }
 });

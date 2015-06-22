@@ -78,8 +78,9 @@
         {{> login_buttons }}
 
         {{#unless isPhone}}
-          <li class="about-fold">
-            <a href="/about">
+          <li class="about-deepstream">
+            <!--<a href="/about">-->
+            <a href="javascript:void(0)">
               <button>
                   <span class="text">About Deepstream</span>
 
@@ -96,7 +97,8 @@
   <li class="user-action">
 
     {{#if currentUser}}
-      <a href="/profile/{{currentUser.displayUsername}}">
+      <!--<a href="/profile/{{currentUser.displayUsername}}">-->
+      <a href="javascript:void(0)">
 
         <button>
             {{#if profileImage currentUser}}
@@ -108,7 +110,7 @@
       {{#if showUserInfo}}
         <ol class="user-menu">
           <li>
-            <a href="/my_story_profile"><button>My stories</button></a>
+            <a href="/my_streams"><button>My streams</button></a>
           </li>
           <li>
             <button class="logout">Logout</button>

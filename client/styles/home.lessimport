@@ -492,7 +492,7 @@ div.action-items {
     }
   }
 
-  .about-fold {
+  .about-deepstream {
     background-color: @panel-color;
   }
 
