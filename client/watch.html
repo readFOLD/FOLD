@@ -82,17 +82,24 @@
 
     <!--Fixed sections-->
 
+
+
     {{#if showTitleDescriptionEditOverlay}}
       <div class="title-description-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
-        <form id="set-title-description" action="action">
-          <label for="title">Enter a title for your event:</label>
-          <input type="text" name="title" class="set-title" autofocus="autofocus">
-          <div class="character-count">{{titleLength}} / {{titleMax}}</div>
-          <label for="description">Enter a description:</label>
-          <textarea name="description" class="set-description" rows="3"></textarea>
-          <div class="character-count">{{descriptionLength}} / {{descriptionMax}}</div>
-          <button type="submit">OK</button>
-        </form>
+        <div class="title-description-inputs">
+          <form id="set-title-description" action="action">
+            <label for="title">Enter a title for your Deep Stream:</label>
+            <input type="text" name="title" class="set-title" autofocus="autofocus">
+            <div class="character-count">{{titleLength}} / {{titleMax}}</div>
+            <label for="description">Enter a description:</label>
+            <textarea name="description" class="set-description" rows="3"></textarea>
+            <div class="character-count">{{descriptionLength}} / {{descriptionMax}}</div>
+            <div class="button-area">
+              <button type="submit">OK</button>
+            </div>
+
+          </form>
+        </div>
       </div>
     {{/if}}
 

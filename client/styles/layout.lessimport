@@ -1366,6 +1366,46 @@ div.minimap {
   .full-overlay;
   background-color: rgba(255,255,255,0.8);
   color: @black-color;
+  .title-description-inputs{
+    margin:auto;
+    display:block;
+    position: absolute;
+    height: 20%;
+    width: 500px;
+    label{
+      font-size: 28px;
+      font-weight: bold;
+    }
+    input, textarea{
+      font-size: 20px;
+      border: none;
+      padding-left: 18px;
+    }
+    textarea{
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    .character-count{
+      text-align: right;
+    }
+    .button-area{
+      text-align: center;
+      width: 100%;
+    }
+    button{
+      font-size: 24px;
+      font-weight: bold;
+      padding-left: 14px;
+      padding-right: 14px;
+      background-color: white;
+      border: 1px solid @medium-color;
+    }
+
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .mobile-progress-header{

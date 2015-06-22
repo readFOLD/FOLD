@@ -132,7 +132,7 @@ Template.watch.onRendered(function(){
 })
 
 
-var titleMax = 90;
+var titleMax = 60;
 var descriptionMax = 270;
 
 Template.watch.helpers({
