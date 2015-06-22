@@ -181,10 +181,10 @@ Template.watch.helpers({
     return descriptionMax;
   },
   showStreamSearch: function(){
-    return Template.instance().data.onCuratePage && (this.creationStep === 'find_stream' || Session.get('newHorizontalDataType') === 'stream');
+    return Template.instance().data.onCuratePage && (this.creationStep === 'find_stream' || (this.creationStep !== 'add_cards') && Session.get('newHorizontalDataType') === 'stream');
   },
   showContextSearch: function(){
-    return Template.instance().data.onCuratePage && (this.creationStep === 'add_cards' || Session.get('newHorizontalDataType') !== 'stream');
+    return Template.instance().data.onCuratePage && (this.creationStep === 'add_cards' || (this.creationStep !== 'find_stream') && Session.get('newHorizontalDataType') !== 'stream');
   }
 });
 
