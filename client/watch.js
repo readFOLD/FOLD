@@ -181,10 +181,10 @@ Template.watch.helpers({
     return descriptionMax;
   },
   showStreamSearch: function(){
-    return this.creationStep === 'find_stream';
+    return this.creationStep === 'find_stream' || Session.get('searchClass') === 'stream';
   },
   showContextSearch: function(){
-    return this.creationStep === 'add_cards';
+    return this.creationStep === 'add_cards' || Session.get('searchClass') === 'context';
   }
 });
 
@@ -276,5 +276,13 @@ Template.watch.events({
   },
   'click .unpublish': function(e, t){
     Meteor.call('unpublishStream', t.data.shortId(), basicErrorHandler);
+  },
+  'click .show-stream-search': function(e, t){
+    console.log(this)
+    if(this.creationStep && this.creationStep !== 'go_on_air'){
+      Meteor.call('goToFindStreamStep', t.data.shortId(), basicErrorHandler);
+    } else {
+      Session.set('searchClass', 'stream')
+    }
   }
 });

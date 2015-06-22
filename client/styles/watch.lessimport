@@ -6,14 +6,41 @@
     position: absolute;
     top: 20px;
     left: 400px;
+    font-size: 36px;
+    font-weight: bold;
   }
   .streams-list{
     li{
       float: left;
-      .active{
-        background-color: red;
+      margin-left: 20px;
+      button{
+        background-color: inherit;
+        color: @white-color;
+        img{
+          .size-to-fit;
+        }
+        border: 1px solid @white-color;
+        width: 120px;
+        height: 90px;
+        position: relative;
+        padding: 0;
       }
+      .active, &:hover{
+        .box-shadow(0px 8px 12px 0px rgba(0,0,0,0.75));
+      }
+      .active-overlay{
+        position:absolute;
+        top: 30%;
+        width: 100%;
+        color: red;
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
     }
+
+
   }
 
   .main-stream-iframe{
@@ -43,6 +70,10 @@
   width: @right-section-width;
   display: inline-block;
   z-index: 10;
+}
+
+.footer-section{
+  padding: 10px;
 }
 
 .tutorial{
@@ -166,6 +197,16 @@ div.content-icons {
     font-size: 0;
     line-height: 0;
   }
+}
+
+.search-section-title{
+  background-color: @medium-color;
+  color: @dark-color;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  height: 58px;
+  line-height: 58px;
 }
 
 .stream-search{

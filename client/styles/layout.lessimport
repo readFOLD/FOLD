@@ -1,7 +1,7 @@
 
 @black-color: #1D1D1D;
 @dark-color: #323232;
-@medium-color: #CCCCCB;
+@medium-color: #9B9B9B;
 @light-color: #F4F4F4;
 @light-transparent-color: rgba(244,244,244,0.75);
 @white-color: #D8D8D8;

@@ -62,10 +62,18 @@
               {{#each streams}}
                 <li class="stream">
                   <button class="set-main-stream {{#if active}}active{{/if}}">
+                    {{#if active}}
+                      <div class="active-overlay">ON AIR</div>
+                    {{/if}}
                     <img src="{{thumbnailUrl}}">
                   </button>
                 </li>
               {{/each}}
+              <li class="add-stream">
+                <button class="show-stream-search">
+                  Add Stream
+                </button>
+              </li>
             </ol>
           {{/if}}
         </div>
