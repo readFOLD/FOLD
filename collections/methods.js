@@ -217,7 +217,7 @@ Meteor.methods({
       '$addToSet' : pushObject
     };
 
-    deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields:{'activeStreamId' : 1, 'creationStep': 1}});
+    deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields:{'activeStreamId' : 1, 'creationStep': 1, 'streams': 1}});
 
 
     modifierObject['$set'] = {};
@@ -243,6 +243,9 @@ Meteor.methods({
 
       // TODO something
       if (Meteor.isClient){
+        if(deepstream.streams.length === 1){ // this is the second stream to be added
+          window.notifySuccess("You just added a second stream. Now you can switch between streams and all your viewers will see that change!")
+        }
         //window.hideNewHorizontalUI();
 
         //var story = Stories.findOne(storyId, fields);

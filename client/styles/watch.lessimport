@@ -107,14 +107,12 @@
       visibility: hidden;
     }
     .text {
+      cursor: pointer;
       opacity: 0.25;
       &:hover{
         opacity: 0.55;
       }
     }
-  }
-  .text{
-    cursor: pointer;
   }
   .number{
     margin-left: -100px;

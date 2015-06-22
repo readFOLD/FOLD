@@ -259,18 +259,18 @@ Template.watch.events({
   'click .go-on-air button': function(e, t){
     Meteor.call('publishStream', t.data.shortId(), function(err){
       if(err){
-        basicErrorHandler(err)
+        basicErrorHandler(err);
       } else {
-        notifySuccess("Congratulations! Your Deep Stream is now on air!")
+        notifySuccess("Congratulations! Your Deep Stream is now on air!");
       }
     });
   },
   'click .publish': function(e, t){
     Meteor.call('publishStream', t.data.shortId(), function(err){
       if(err){
-        basicErrorHandler(err)
+        basicErrorHandler(err);
       } else {
-        notifySuccess("Congratulations! Your Deep Stream is now on air!")
+        notifySuccess("Congratulations! Your Deep Stream is now on air!");
       }
     });
   },
@@ -282,7 +282,7 @@ Template.watch.events({
     if(this.creationStep && this.creationStep !== 'go_on_air'){
       Meteor.call('goToFindStreamStep', t.data.shortId(), basicErrorHandler);
     } else {
-      Session.set('searchClass', 'stream')
+      Session.set('newHorizontalDataType', 'stream');
     }
   }
 });
