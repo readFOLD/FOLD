@@ -93,6 +93,17 @@ Template.watch.onCreated(function () {
     Session.set("streamShortId", that.data.shortId());
   });
 
+  this.autorun(function() { // when change media data type, leave search mode, unless doing streams, then always search
+    if (Session.get("curateMode")) {
+      var mediaDataType = Session.get("mediaDataType");
+      if(mediaDataType && mediaDataType === 'stream'){
+        Session.set("searchingMedia", true);
+      } else {
+        Session.set("searchingMedia", false);
+      }
+    }
+  });
+
   this.autorun(function(){
     if(FlowRouter.subsReady()){
       if(that.data.onCuratePage()){
@@ -199,13 +210,13 @@ Template.watch.helpers({
     return descriptionMax;
   },
   showRightSection: function(){
-    return Session.get('mediaDataType')
+    return Session.get('mediaDataType');
   },
   showStreamSearch: function(){
-    return Template.instance().data.onCuratePage() && Session.get("searchingMedia") && Session.get('mediaDataType') === 'stream';
+    return Session.get("curateMode") && Session.get("searchingMedia") && Session.get('mediaDataType') === 'stream';
   },
   showContextSearch: function(){
-    return Template.instance().data.onCuratePage() && Session.get("searchingMedia") && Session.get('mediaDataType') && Session.get('mediaDataType') !== 'stream';
+    return Session.get("curateMode") && Session.get("searchingMedia") && Session.get('mediaDataType') && Session.get('mediaDataType') !== 'stream';
   }
 });
 
@@ -312,7 +323,20 @@ Template.watch.events({
 
 Template.context_browser.helpers({
   contextOfCurrentType: function(){
-    return this.contextOfType(Session.get('mediaDataType'))
+    return this.contextOfType(Session.get('mediaDataType'));
+  }
+});
+Template.context_browser.events({
+  'click .add-new-context': function(){
+    Session.set('searchingMedia', true);
+  },
+  'click .edit-current-context': function(){
+    notifyFeature('Coming soon!');
+  },
+  'click .delete-current-context': function(){
+    Meteor.call('removeContextFromStream', Session.get("streamShortId"), this._id, function(err){
+
+    });
   }
 });
 

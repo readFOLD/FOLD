@@ -43,7 +43,7 @@
               <iframe id="{{mainStreamId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
             {{/if}}
           </div>
-          <div class="right-section">
+          <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
             {{> content_icons}}
             {{#if showRightSection}}
               {{#if showContextSearch}}
@@ -139,12 +139,14 @@
 
 <template name="context_browser">
   <div class="context-browser">
-    <div class="edit-context-button-row">
-      <button class="add-new-context">Add</button>
-      <button class="edit-current-context">Edit</button>
-      <button class="delete-current-context">Delete</button>
-    </div>
     {{#each contextOfCurrentType}}
+      {{#if curateMode}}
+        <div class="edit-context-button-row">
+          <button class="add-new-context">Add</button>
+          <button class="edit-current-context">Edit</button>
+          <button class="delete-current-context">Delete</button>
+        </div>
+      {{/if}}
       {{> horizontal_section_block}}
     {{/each}}
   </div>

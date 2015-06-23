@@ -71,9 +71,67 @@
   height: 100%;
   float: left;
   position: relative;
-  width: @right-section-width;
   display: inline-block;
   z-index: 10;
+  width: @right-section-width;
+
+  .content-icons {
+    @circle-diameter: 40px;
+    position: absolute;
+    margin-top: @circle-diameter;
+    right: @right-section-width;
+    width: @circle-diameter + 10px;
+
+    z-index: 999;
+    //height: @contentIconBannerHeight;
+    background-color: rgba(255,255,255,0.5);
+    //li{
+    //  height: @circle-diameter;
+    //}
+    button {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      .size-to-fit;
+      background-color: inherit;
+      &.active, &:hover{
+        background-color: rgba(74,74,74,0.80);
+      }
+      svg {
+        padding: 1.5px;
+
+        height: @circle-diameter;
+        width: @circle-diameter;
+        vertical-align: top;
+        display: inline-block;
+        .bg{
+          fill: none;
+          stroke: @dark-color;
+          stroke-width: 2px;
+        }
+        .fg{
+          fill: @dark-color;
+        }
+
+        &:hover {
+
+          //.fg{
+          //  fill: @dark-action-color;
+          //}
+          //.bg{
+          //  fill: rgba(100,100,100,0.75);
+          //}
+        }
+      }
+    }
+
+  }
+
+  &.collapsed{
+    width: 0;
+    .content-icons {
+      right: 0;
+    }
+  }
 }
 
 .footer-section{
@@ -145,56 +203,7 @@
   }
 }
 
-div.content-icons {
-  @circle-diameter: 40px;
-  position: absolute;
-  margin-top: @circle-diameter;
-  right: @right-section-width;
-  width: @circle-diameter + 10px;
 
-  z-index: 999;
-  //height: @contentIconBannerHeight;
-  background-color: rgba(255,255,255,0.5);
-  //li{
-  //  height: @circle-diameter;
-  //}
-  button {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    .size-to-fit;
-    background-color: inherit;
-    &.active, &:hover{
-      background-color: rgba(74,74,74,0.80);
-    }
-    svg {
-      padding: 1.5px;
-
-      height: @circle-diameter;
-      width: @circle-diameter;
-      vertical-align: top;
-      display: inline-block;
-      .bg{
-        fill: none;
-        stroke: @dark-color;
-        stroke-width: 2px;
-      }
-      .fg{
-        fill: @dark-color;
-      }
-
-      &:hover {
-
-        //.fg{
-        //  fill: @dark-action-color;
-        //}
-        //.bg{
-        //  fill: rgba(100,100,100,0.75);
-        //}
-      }
-    }
-  }
-
-}
 
 .search-section-title{
   background-color: @medium-color;

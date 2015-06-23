@@ -284,6 +284,32 @@ Meteor.methods({
 
     return numRemoved;
   },
+  removeContextFromStream: function(shortId, contextId) {
+    check(shortId, String);
+    check(contextId, String);
+    var numUpdated = updateStream.call(this, {
+      shortId: shortId
+    }, {
+      $pull: {
+        contextBlocks: {
+          _id: contextId
+        }
+      }
+    });
+
+    if (!numUpdated){
+      throw new Meteor.Error('Stream not updated')
+    }
+
+    if (Meteor.isClient && numUpdated){
+      //Session.set("addingContext", null);
+      //Session.set("editingContext", null);
+      //var currentX = Session.get('currentX');
+      //goToX(currentX ? currentX - 1 : 0);
+    }
+
+    return numUpdated;
+  },
   setStreamTitleDescription: function(shortId, title, description){
     check(shortId, String);
     check(title, String);

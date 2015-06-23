@@ -53,6 +53,10 @@ html {
   .fg{
     fill: @light-color;
   }
+  .fg-stroke{
+    fill: none;
+    stroke: @dark-color;
+  }
   .active{
     .bg{
       fill: @action-color;
@@ -77,6 +81,10 @@ html {
   }
   .fg{
     fill: @dark-color;
+  }
+  .fg-stroke{
+    fill: none;
+    stroke: @light-color;
   }
 
   .active{

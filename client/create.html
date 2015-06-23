@@ -267,12 +267,14 @@
 <template name="content_icons">
   <div class="content-icons">
     <ol>
-      <li>
-        <button class='stream-button {{#if stream}}active{{/if}}'>
-          {{> stream_icon }}
-        </button>
-      </li>
-      <hr>
+      {{#if curateMode}}
+        <li>
+          <button class='stream-button {{#if stream}}active{{/if}}'>
+            {{> stream_icon }}
+          </button>
+        </li>
+        <hr>
+      {{/if}}
       <li>
         <button class='video-button {{#if video}}active{{/if}}'>
           {{> video_icon }}
