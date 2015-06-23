@@ -46,14 +46,13 @@
           <div class="right-section">
             {{> content_icons}}
             {{#if showRightSection}}
-
               {{#if showContextSearch}}
                 {{> add_context}}
               {{else}}
                 {{#if showStreamSearch}}
                   {{> stream_search}}
                 {{else}}
-                  <!--Show context here-->
+                  {{> context_browser}}
                 {{/if}}
               {{/if}}
             {{/if}}
@@ -136,4 +135,17 @@
     </div>
   {{/with}}
 
+</template>
+
+<template name="context_browser">
+  <div class="context-browser">
+    <div class="edit-context-button-row">
+      <button class="add-new-context">Add</button>
+      <button class="edit-current-context">Edit</button>
+      <button class="delete-current-context">Delete</button>
+    </div>
+    {{#each contextOfCurrentType}}
+      {{description}}
+    {{/each}}
+  </div>
 </template>

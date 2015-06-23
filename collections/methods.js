@@ -170,10 +170,9 @@ Meteor.methods({
 
       // TODO something
       if (Meteor.isClient){
-        //window.hideNewHorizontalUI();
+        Session.set("searchingMedia", false);
+        // Go to this context just added
 
-        //var story = Stories.findOne(storyId, fields);
-        //goToX(_.indexOf(story.draftStory.verticalSections[verticalIndex].contextBlocks, contextId.toString()))
       }
     } else {
       throw new Meteor.Error('Stream not updated')

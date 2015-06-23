@@ -99,11 +99,14 @@ Template.watch.onCreated(function () {
         deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
         if (deepstream.creationStep === 'find_stream'){
           Session.set("mediaDataType", 'stream');
+          Session.set("searchingMedia", true);
         } else if (deepstream.creationStep === 'add_cards') {
           Session.set("mediaDataType", 'image');
+          Session.set("searchingMedia", true);
         }
       } else {
         Session.set("mediaDataType", null); // TODO set to a media type that exists?
+        Session.set("searchingMedia", false);
       }
     }
   });
@@ -199,10 +202,10 @@ Template.watch.helpers({
     return Session.get('mediaDataType')
   },
   showStreamSearch: function(){
-    return Template.instance().data.onCuratePage() && Session.get('mediaDataType') === 'stream';
+    return Template.instance().data.onCuratePage() && Session.get("searchingMedia") && Session.get('mediaDataType') === 'stream';
   },
   showContextSearch: function(){
-    return Template.instance().data.onCuratePage() && Session.get('mediaDataType') && Session.get('mediaDataType') !== 'stream';
+    return Template.instance().data.onCuratePage() && Session.get("searchingMedia") && Session.get('mediaDataType') && Session.get('mediaDataType') !== 'stream';
   }
 });
 
@@ -300,11 +303,18 @@ Template.watch.events({
     if(this.creationStep && this.creationStep !== 'go_on_air'){
       Meteor.call('goToFindStreamStep', t.data.shortId(), basicErrorHandler);
     } else {
+      Session.set('searchingMedia', true);
       Session.set('mediaDataType', 'stream');
     }
   }
 });
 
+
+Template.context_browser.helpers({
+  contextOfCurrentType: function(){
+    return this.contextOfType(Session.get('mediaDataType'))
+  }
+});
 
 // TODO remove and have an about section
 Template.banner_buttons.events({
@@ -312,3 +322,4 @@ Template.banner_buttons.events({
     notifyFeature('Coming soon!')
   }
 });
+

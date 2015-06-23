@@ -462,6 +462,13 @@ Deepstream = (function() {
     return _.chain(this.contextBlocks).pluck('type').countBy(_.identity).value()
   };
 
+  Deepstream.prototype.contextOfType = function(type) {
+    if (type === 'stream'){
+      return null; // streams aren't context
+    }
+    return _.where(this.contextBlocks, {type : type})
+  };
+
   Deepstream.prototype.activeStream = function(){
     return _.findWhere(this.streams, {_id: this.activeStreamId});
   };
