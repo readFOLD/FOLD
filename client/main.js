@@ -6,13 +6,15 @@ UI.registerHelper('selectedIf', function(val) {
 
 
 getCardWidth = function(windowWidth) {
-  if (Meteor.Device.isPhone()){
-    return Session.get("windowWidth") - 2* getVerticalLeft();
-  } else if (windowWidth <= window.constants.minPageWidth) {
-    return 400;
-  } else {
-    return Math.min(520, (windowWidth - (16 * 3) - (88 * 2)) / 2);
-  }
+  return 350;
+  //
+  //if (Meteor.Device.isPhone()){
+  //  return Session.get("windowWidth") - 2* getVerticalLeft();
+  //} else if (windowWidth <= window.constants.minPageWidth) {
+  //  return 400;
+  //} else {
+  //  return Math.min(520, (windowWidth - (16 * 3) - (88 * 2)) / 2);
+  //}
 };
 
 Session.set("separation", 10);
@@ -669,7 +671,8 @@ editableDescriptionCreatedBoilerplate = function() {
 
 horizontalBlockHelpers = _.extend({}, typeHelpers, {
   selected: function() {
-    return Session.equals("currentX", this.index) && !Session.get("addingContext");
+    return true;
+    //return Session.equals("currentX", this.index) && !Session.get("addingContext");
   },
   textContent: function() {
     var textContent, rows;

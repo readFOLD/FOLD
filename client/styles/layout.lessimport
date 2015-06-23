@@ -926,7 +926,17 @@ div.horizontal-context {
       top: 90px;
     }
   }
+
+  div.button-options {
+    z-index: 30;
+  }
+}
+
+.context-section{
   div.preview {
+    display: none; // TODO fix this and display
+
+
     position: absolute;
     top: 0;
     z-index: 10;
@@ -944,9 +954,6 @@ div.horizontal-context {
     z-index: 20;
     position: absolute;
     .size-to-fit;
-  }
-  div.button-options {
-    z-index: 30;
   }
 }
 
