@@ -111,14 +111,17 @@ Template.watch.onCreated(function () {
         if (deepstream.creationStep === 'find_stream'){
           Session.set("mediaDataType", 'stream');
           Session.set("searchingMedia", true);
+          return
         } else if (deepstream.creationStep === 'add_cards') {
           Session.set("mediaDataType", 'image');
           Session.set("searchingMedia", true);
+          return
         }
-      } else {
-        Session.set("mediaDataType", null); // TODO set to a media type that exists?
-        Session.set("searchingMedia", false);
       }
+      // else
+      var mostRecentContext =  deepstream.mostRecentContext();
+      Session.set("mediaDataType", mostRecentContext ? mostRecentContext.type : null); // TODO set to a media type that exists?
+      Session.set("searchingMedia", false);
     }
   });
 

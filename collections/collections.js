@@ -476,6 +476,10 @@ Deepstream = (function() {
     return this.contextOfType(type).length;
   };
 
+  Deepstream.prototype.mostRecentContext = function() {
+    return this.contextBlocks ? _.sortBy(this.contextBlocks, 'addedAt')[0] : null;
+  };
+
 
 
   Deepstream.prototype.activeStream = function(){
