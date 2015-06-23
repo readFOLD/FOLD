@@ -692,6 +692,41 @@ contextHelpers = ({
 
 Template.add_context.helpers(contextHelpers);
 Template.content_icons.helpers(contextHelpers);
+Template.content_icons.helpers({
+  show_stream_icon: function () {
+    return Session.get("curateMode");
+  },
+  show_text_icon: function () {
+    return Session.get("curateMode") || this.hasContextOfType("text");
+  },
+  show_image_icon: function () {
+    return Session.get("curateMode") || this.hasContextOfType("image");
+  },
+  show_gif_icon: function () {
+    return Session.get("curateMode") || this.hasContextOfType("gif");
+  },
+  show_map_icon: function () {
+    return Session.get("curateMode") || this.hasContextOfType("map");
+  },
+  show_video_icon: function () {
+    return Session.get("curateMode") || this.hasContextOfType("video");
+  },
+  show_twitter_icon: function () {
+    return Session.get("curateMode") || this.hasContextOfType("twitter");
+  },
+  show_viz_icon: function () {
+    return Session.get("curateMode") || this.hasContextOfType("viz");
+  },
+  show_audio_icon: function () {
+    return Session.get("curateMode") || this.hasContextOfType("audio");
+  },
+  show_link_icon: function () {
+    return Session.get("curateMode") || this.hasContextOfType("link");
+  },
+  show_remix_icon: function () {
+    return Session.get("curateMode") || this.hasContextOfType("remix");
+  }
+});
 
 Template.add_context.helpers({
   left: function() {

@@ -210,7 +210,8 @@ Template.watch.helpers({
     return descriptionMax;
   },
   showRightSection: function(){
-    return Session.get('mediaDataType');
+    var mediaDataType = Session.get('mediaDataType');
+    return Session.get("curateMode") || (mediaDataType && this.hasContextOfType(mediaDataType));
   },
   showStreamSearch: function(){
     return Session.get("curateMode") && Session.get('mediaDataType') === 'stream'; // always search on stream
