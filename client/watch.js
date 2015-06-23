@@ -332,6 +332,9 @@ Template.context_browser.helpers({
   }
 });
 Template.context_browser.events({
+  'click .close': function(){
+    Session.set('mediaDataType', null);
+  },
   'click .add-new-context': function(){
     Session.set('searchingMedia', true);
   },

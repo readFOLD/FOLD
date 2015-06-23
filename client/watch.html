@@ -15,8 +15,8 @@
         </div>
 
 
-        <div class="main-section">
-          <div class="main-stream {{#unless showRightSection}}fill-width{{/unless}}">
+        <div class="main-section {{#unless showRightSection}}expanded{{/unless}}">
+          <div class="main-stream {{#unless showRightSection}}expanded{{/unless}}">
             {{#if showTutorial}}
               <div class="tutorial">
                 <div class="tutorial-step find-stream {{#if onFindStreamStep}}active{{/if}}">
@@ -139,6 +139,11 @@
 
 <template name="context_browser">
   <div class="context-browser">
+    <div class="browse-buttons">
+      <button class="left">Add</button>
+      <button class="right">Delete</button>
+      <button class="close">X</button>
+    </div>
     {{#each contextOfCurrentType}}
       {{#if curateMode}}
         <div class="edit-context-button-row">

@@ -52,6 +52,9 @@
 
 .main-section{
   height: 600px;
+  &.expanded{
+    height: 700px;
+  }
 }
 
 @right-section-width: 350px;
@@ -59,7 +62,7 @@
 .main-stream{
   height: 100%;
   width: calc(100% ~"-" @right-section-width);
-  &.fill-width{
+  &.expanded{
     width: 100%;
   }
   float: left;
