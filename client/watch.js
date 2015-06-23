@@ -130,18 +130,25 @@ Template.watch.onCreated(function () {
 Template.watch.onRendered(function(){
   var that = this;
 
+  this.mainPlayerApiActivated = false;
+
 
   this.autorun(function(){
-    if(ytApiReady.get()){
-      Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
-        var youTubePlayer = new YT.Player(that.mainStreamId, {
-          events: {
-            'onReady': onMainPlayerReady,
-            'onStateChange': onMainPlayerStateChange
-          }
-        });
-        mainPlayer = youTubePlayer; // for now, just get all the functions. later do this function by function.
-      }, 1000);
+    if(ytApiReady.get() && FlowRouter.subsReady()){
+      var deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
+      if (deepstream.streams.length && !this.mainPlayerApiActivated ){
+        console.log('activate the api!!')
+        this.mainPlayerApiActivated = true;
+        Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
+          var youTubePlayer = new YT.Player(that.mainStreamId, {
+            events: {
+              'onReady': onMainPlayerReady,
+              'onStateChange': onMainPlayerStateChange
+            }
+          });
+          mainPlayer = youTubePlayer; // for now, just get all the functions. later do this function by function.
+        }, 1000);
+      }
     }
   });
 
