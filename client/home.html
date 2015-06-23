@@ -320,12 +320,17 @@
 </template>
 
 <template name="stream_preview">
-  <a href="{{watchPath}}">
-    <div class="stream">
-      <h3>{{title}}</h3>
-      <img src="{{previewUrl}}"/>
-    </div>
-  </a>
+  <div class="stream-preview">
+    <a href="{{watchPath}}">
+      <div class="stream">
+        <img src="{{previewUrl}}"/>
+        <div>{{title}}</div>
+        <div>{{curatorName}}</div>
+        <div>{{dateInPast createdAt}}</div>
+
+      </div>
+    </a>
+  </div>
 </template>
 
 

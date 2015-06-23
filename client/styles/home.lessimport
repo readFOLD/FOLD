@@ -506,3 +506,20 @@ div.action-items {
     }
   }
 }
+
+
+// DEEPSTREAM
+.stream-preview{
+  width: 480px;
+  img{
+    height: 360px;
+    width: 480px;
+  }
+  margin-left: 30px;
+  margin-bottom: 60px;
+  &:hover{
+    img{
+      .box-shadow(4px 8px 12px 0px rgba(0,0,0,0.75));
+    }
+  }
+}

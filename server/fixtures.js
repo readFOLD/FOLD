@@ -40,7 +40,10 @@ if (Deepstreams.find().count() === 0) {
         id: 'A01g3lrwoGs'
       }
     }],
-    activeStreamId: 'seahorses'
+    activeStreamId: 'seahorses',
+    createdAt: Date.now(),
+    savedAt: Date.now(),
+    publishedAt: Date.now()
   });
 }
 

@@ -698,6 +698,7 @@ Meteor.methods({
 
     Deepstreams.insert({
       onAir: false,
+      createdAt: new Date,
       savedAt: new Date,
       userPathSegment: userPathSegment,
       streamPathSegment: streamPathSegment,

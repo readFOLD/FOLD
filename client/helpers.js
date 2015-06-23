@@ -14,6 +14,13 @@ Handlebars.registerHelper("curateMode", function() {
   return Session.get("curateMode");
 });
 
+Handlebars.registerHelper("dateInPast", function(date) {
+  if(!date){
+    return null
+  }
+  return moment(date).fromNow();
+});
+
 
 
 
