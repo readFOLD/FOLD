@@ -52,7 +52,11 @@
                 {{#if showStreamSearch}}
                   {{> stream_search}}
                 {{else}}
-                  {{> context_browser}}
+                  {{#if showChat}}
+                    {{> unimplemented_chat_section}}
+                  {{else}}
+                    {{> context_browser}}
+                  {{/if}}
                 {{/if}}
               {{/if}}
             {{/if}}

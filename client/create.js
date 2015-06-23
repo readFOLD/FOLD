@@ -685,8 +685,8 @@ contextHelpers = ({
   link: function() {
     return Session.get('mediaDataType') === "link";
   },
-  remix: function() {
-    return Session.get('mediaDataType') === "remix";
+  chat: function() {
+    return Session.get('mediaDataType') === "chat";
   }
 });
 
@@ -723,8 +723,8 @@ Template.content_icons.helpers({
   show_link_icon: function () {
     return Session.get("curateMode") || this.hasContextOfType("link");
   },
-  show_remix_icon: function () {
-    return Session.get("curateMode") || this.hasContextOfType("remix");
+  show_chat_icon: function () {
+    return true;
   }
 });
 
@@ -766,8 +766,9 @@ Template.content_icons.events({
   'click .link-button': function(d, t) {
     return Session.set('mediaDataType', 'link');
   },
-  'click .remix-button': function(d, t) {
-    return Session.set('mediaDataType', 'remix');
+  'click .chat-button': function(d, t) {
+    notifyFeature("Coming soon!");
+    return Session.set('mediaDataType', 'chat');
   }
 });
 

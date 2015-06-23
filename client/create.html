@@ -253,6 +253,7 @@
   <div class="add-context narrative-section selected editing">
     {{#if type}}
       {{#if remix}}{{> unimplemented_remix_section}}{{/if}}
+      {{#if chat}}{{> unimplemented_chat_section}}{{/if}}
       {{#if link}}{{> create_link_section}}{{/if}}
       {{#if text}}{{> create_text_section}}{{/if}}
       {{#if audio}}{{> create_audio_section}}{{/if}}
@@ -324,10 +325,10 @@
           </button>
         </li>
       {{/if}}
-      {{#if show_remix_icon}}
+      {{#if show_chat_icon}}
         <li>
-          <button class='remix-button {{#if remix}}active{{/if}}'>
-            {{> remix_icon }}
+          <button class='chat-button {{#if chat}}active{{/if}}'>
+            {{> chat_icon }}
           </button>
         </li>
       {{/if}}
@@ -375,6 +376,12 @@
 <!-- Create Templates -->
 
 <template name="unimplemented_remix_section">
+  <div class="create-section unimplemented">
+    Chat. Coming soon!
+  </div>
+</template>
+
+<template name="unimplemented_chat_section">
   <div class="create-section unimplemented">
     Chat. Coming soon!
   </div>

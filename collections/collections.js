@@ -473,14 +473,15 @@ Deepstream = (function() {
   };
 
   Deepstream.prototype.hasContextOfType = function(type) {
+    if(type === 'chat'){
+      return true // TODO this is a hack
+    }
     return this.contextOfType(type).length;
   };
 
   Deepstream.prototype.mostRecentContext = function() {
     return this.contextBlocks ? _.sortBy(this.contextBlocks, 'addedAt')[0] : null;
   };
-
-
 
   Deepstream.prototype.activeStream = function(){
     return _.findWhere(this.streams, {_id: this.activeStreamId});

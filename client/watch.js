@@ -83,7 +83,7 @@ Template.watch.onCreated(function () {
       } else {
         Session.set('signingIn', true); // if there is no user, take them to the signin page
         //FlowRouter.withReplaceState(function(){  // TO-DO, after they sign in, they should get back to the curate page
-          FlowRouter.go('/')
+          FlowRouter.go('/');
         //})
       }
     }
@@ -106,8 +106,8 @@ Template.watch.onCreated(function () {
 
   this.autorun(function(){
     if(FlowRouter.subsReady()){
+      var deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
       if(that.data.onCuratePage()){
-        deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
         if (deepstream.creationStep === 'find_stream'){
           Session.set("mediaDataType", 'stream');
           Session.set("searchingMedia", true);
@@ -218,6 +218,9 @@ Template.watch.helpers({
   },
   showStreamSearch: function(){
     return Session.get("curateMode") && Session.get('mediaDataType') === 'stream'; // always search on stream
+  },
+  showChat: function(){
+    return Session.get('mediaDataType') === 'chat';
   },
   showContextSearch: function(){
     var mediaDataType = Session.get('mediaDataType');
