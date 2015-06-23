@@ -258,6 +258,7 @@
       {{#if text}}{{> create_text_section}}{{/if}}
       {{#if audio}}{{> create_audio_section}}{{/if}}
       {{#if image}}{{> create_image_section}}{{/if}}
+      {{#if news}}{{> create_news_section}}{{/if}}
       {{#if map}}{{> create_map_section}}{{/if}}
       {{#if video}}{{> create_video_section}}{{/if}}
       {{#if twitter}}{{> create_twitter_section}}{{/if}}
@@ -287,6 +288,13 @@
         <li>
           <button class='image-button {{#if image}}active{{/if}}'>
             {{> image_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if show_news_icon}}
+        <li>
+          <button class='news-button {{#if news}}active{{/if}}'>
+            {{> news_icon }}
           </button>
         </li>
       {{/if}}
@@ -349,7 +357,7 @@
   <div class="search-form">
     <form>
       <div class="search-outside-input-container search-open">
-        <div class="search-trigger">Search</div>
+        <div class="search-trigger">{{#if searchInputLabel}}{{searchInputLabel}}{{else}}Search{{/if}}</div>
         <div class="search-input-container">
           <input type="search" placeholder={{placeholder}} autofocus="autofocus" dir="auto">
         </div>
@@ -387,6 +395,12 @@
   </div>
 </template>
 
+<template name="news_section">
+  <div class="create-section">
+    News. Coming soon!
+  </div>
+</template>
+
 <template name="create_text_section">
   <div class="search-section-title">Add Text</div>
   <div class="create-section">
@@ -417,7 +431,73 @@
       </ul>
     </div>
 
-    {{> search_form placeholderType='links'}}
+    {{> search_form searchInputLabel='URL' placeholderType='links'}}
+
+    {{#if loading}}
+      <div class="preview-section placeholder">
+        {{> loading_icon}}
+      </div>
+    {{else}}
+      {{#if noMoreResults}}
+        {{noMoreResults}}
+      {{/if}}
+      {{#if link}}
+        {{#with preview}}
+          <div class="link-section preview-section {{#if isFocused}}focused{{/if}}">
+            <div class="transparent-cover"></div>
+            <a href="{{url}}" target="_blank">
+              <div class="top">
+                {{#if thumbnailUrl}}
+                  {{#if imageOnLeft}}
+                    <img class="thumbnail left" src="{{thumbnailUrl}}" />
+                  {{else}}
+                    <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
+                  {{/if}}
+                  <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
+                {{/if}}
+              </div>
+            </a>
+            <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
+            <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+          </div>
+        {{/with}}
+      {{else}}
+        {{#if image}}
+          <div class="preview-section image-section">
+            <img class="image" src="{{preview.url}}" />
+          </div>
+        {{else}}
+
+          {{#if video}}
+            <div class="preview-section video-section">
+              <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{preview.url}}" allowfullscreen></iframe>
+            </div>
+          {{/if}}
+        {{/if}}
+      {{/if}}
+    {{/if}}
+
+
+    {{#if showAddButton}}
+      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+        Add
+      </button>
+    {{/if}}
+  </div>
+</template>
+
+<template name="create_news_section">
+  <div class="search-section-title">Add a News Story</div>
+  <div class="create-section create-news-section">
+    <div class="tabs">
+      <ul>
+        {{#each dataSources}}
+          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+        {{/each}}
+      </ul>
+    </div>
+
+    {{> search_form searchInputLabel='URL' placeholderType='news'}}
 
     {{#if loading}}
       <div class="preview-section placeholder">

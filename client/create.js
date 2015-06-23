@@ -667,6 +667,9 @@ contextHelpers = ({
   gif: function() {
     return Session.get('mediaDataType') === "gif";
   },
+  news: function() {
+    return Session.get('mediaDataType') === "news";
+  },
   map: function() {
     return Session.get('mediaDataType') === "map";
   },
@@ -704,6 +707,9 @@ Template.content_icons.helpers({
   },
   show_gif_icon: function () {
     return Session.get("curateMode") || this.hasContextOfType("gif");
+  },
+  show_news_icon: function () {
+    return Session.get("curateMode") || this.hasContextOfType("news");
   },
   show_map_icon: function () {
     return Session.get("curateMode") || this.hasContextOfType("map");
@@ -753,6 +759,9 @@ Template.content_icons.events({
   },
   'click .gif-button': function(d, t) {
     return Session.set('mediaDataType', 'gif');
+  },
+  'click .news-button': function(d, t) {
+    return Session.set('mediaDataType', 'news');
   },
   'click .twitter-button': function(d, t) {
     return Session.set('mediaDataType', 'twitter');

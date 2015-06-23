@@ -797,6 +797,12 @@ Template.search_form.helpers({
             'http://flickr.com'
           ]);
         break;
+      case 'news':
+        return 'e.g. ' +
+          _.sample([
+            'http://nytimes.com'
+          ]);
+        break;
       case 'locations':
         return 'e.g. ' +
           _.sample([
