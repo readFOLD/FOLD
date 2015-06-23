@@ -193,12 +193,7 @@ div.content-icons {
       }
     }
   }
-  span.stretch {
-    width: 100%;
-    display: inline-block;
-    font-size: 0;
-    line-height: 0;
-  }
+
 }
 
 .search-section-title{
