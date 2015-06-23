@@ -466,7 +466,10 @@ Deepstream = (function() {
     if (type === 'stream'){
       return null; // streams aren't context
     }
-    return _.where(this.contextBlocks, {type : type})
+    return _.chain(this.contextBlocks)
+      .where({type : type})
+      .map(newTypeSpecificContextBlock)
+      .value();
   };
 
   Deepstream.prototype.activeStream = function(){

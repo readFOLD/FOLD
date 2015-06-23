@@ -723,7 +723,6 @@ Template.horizontal_section_block.helpers(horizontalBlockHelpers);
 
 // Magic layout function
 Template.horizontal_section_block.helpers({
-  left: getHorizontalLeft,
   lastUpdate: function() {
     Session.get('lastUpdate');
   }
