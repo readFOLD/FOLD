@@ -824,6 +824,7 @@ div.twitter-section{
     right: 0px;
     top: 0px;
     z-index: 1;
+    background-color: inherit;
   }
   div.twitter-text-section {
     a {

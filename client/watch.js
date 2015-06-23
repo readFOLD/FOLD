@@ -332,9 +332,6 @@ Template.context_browser.events({
   'click .add-new-context': function(){
     Session.set('searchingMedia', true);
   },
-  'click .edit-current-context': function(){
-    notifyFeature('Coming soon!');
-  },
   'click .delete-current-context': function(){
     Meteor.call('removeContextFromStream', Session.get("streamShortId"), this._id, function(err){
       // TODO SOMETHING
