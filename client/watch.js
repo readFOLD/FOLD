@@ -213,10 +213,11 @@ Template.watch.helpers({
     return Session.get('mediaDataType');
   },
   showStreamSearch: function(){
-    return Session.get("curateMode") && Session.get("searchingMedia") && Session.get('mediaDataType') === 'stream';
+    return Session.get("curateMode") && Session.get('mediaDataType') === 'stream'; // always search on stream
   },
   showContextSearch: function(){
-    return Session.get("curateMode") && Session.get("searchingMedia") && Session.get('mediaDataType') && Session.get('mediaDataType') !== 'stream';
+    var mediaDataType = Session.get('mediaDataType');
+    return Session.get("curateMode") && (Session.get("searchingMedia") || (mediaDataType && this.contextOfType(mediaDataType).length === 0)) && mediaDataType && mediaDataType !== 'stream';
   }
 });
 
@@ -335,7 +336,7 @@ Template.context_browser.events({
   },
   'click .delete-current-context': function(){
     Meteor.call('removeContextFromStream', Session.get("streamShortId"), this._id, function(err){
-
+      // TODO SOMETHING
     });
   }
 });
