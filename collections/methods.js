@@ -127,8 +127,6 @@ Meteor.methods({
     //  throw new Meteor.Error("User doesn't own story")
     //}
 
-    contextBlock._id = Random.id(12);
-
     // TO-DO Remix. When add remix, will need another method or modify this one
     //var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {
     //  storyId: storyId,
@@ -171,8 +169,7 @@ Meteor.methods({
       // TODO something
       if (Meteor.isClient){
         Session.set("searchingMedia", false);
-        // Go to this context just added
-
+        setCurrentContextIdOfType(contextBlock.type, contextBlock._id);
       }
     } else {
       throw new Meteor.Error('Stream not updated')

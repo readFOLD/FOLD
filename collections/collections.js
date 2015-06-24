@@ -495,10 +495,7 @@ Deepstream = (function() {
     var contextBlock = _.findWhere(this.contextBlocks, {_id: contextId});
     var type = contextBlock.type;
     var contextOfType = this.contextOfType(type);
-    console.log(contextOfType)
-    console.log(contextBlock)
     var index = _.indexOf(contextOfType, contextBlock);
-    console.log(index)
     if (index < contextOfType.length - 1){
       return contextOfType[index + 1];
     }
@@ -508,8 +505,6 @@ Deepstream = (function() {
     var type = contextBlock.type;
     var contextOfType = this.contextOfType(type);
     var index = _.indexOf(contextOfType, contextBlock);
-    console.log(index)
-
     if (index > 0){
       return contextOfType[index - 1];
     }
