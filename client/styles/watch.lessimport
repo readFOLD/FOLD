@@ -233,7 +233,36 @@
   background-color: @medium-color;
 }
 
+.browse-buttons{
+  background-color: @black-color;
+  width: 100%;
+  height: 30px;
+}
+.edit-context-button-row{
+  background-color: @medium-color;
+  button{
+    font-size: 16px;
+    font-weight: bold;
+    padding-left: 10px;
+    padding-right: 10px;
+    &:hover{
+      background-color: @dark-action-color;
+    }
+  }
+  .add-new-context{
+    left: 0;
+  }
 
+  .delete-current-context{
+    position: absolute;
+    right: 0;
+  }
+}
+
+.action-items{
+  font-size: 14px;
+  font-weight: medium;
+}
 
 // TODO Refactor
 .news-preview{
@@ -244,3 +273,4 @@
 .news-section{
   height: 100%;
 }
+

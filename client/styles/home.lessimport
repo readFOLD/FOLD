@@ -437,7 +437,7 @@ div.action-items {
   font-family: 'Roboto', sans-serif;
 
   button{
-    padding: 0px 23px;
+    padding: 0px 20px;
     min-width: 152px;
     .size-to-fit;
     &:hover {
