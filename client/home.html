@@ -320,28 +320,29 @@
 <!--DEEPSTREAM-->
 <template name="streams">
   {{#each streams}}
-    {{> stream_preview }}
+    <a href="{{watchPath}}">
+      {{> stream_preview }}
+    </a>
   {{/each}}
 </template>
 
 <template name="my_streams">
   <h1>Your Deep Streams</h1>
   {{#each streams}}
-    {{> stream_preview }}
+    <a href="{{curatePath}}">
+      {{> stream_preview }}
+    </a>
   {{/each}}
 </template>
 
 <template name="stream_preview">
   <div class="stream-preview">
-    <a href="{{watchPath}}">
       <div class="stream">
         <img src="{{previewUrl}}"/>
         <div>{{title}}</div>
         <div>{{curatorName}}</div>
         <div>{{dateInPast createdAt}}</div>
-
       </div>
-    </a>
   </div>
 </template>
 
