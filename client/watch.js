@@ -142,9 +142,7 @@ Template.watch.onCreated(function () {
     if(FlowRouter.subsReady()) {
       var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
       var currentContextId = Session.get("currentContextIdByType")[Session.get('mediaDataType')];
-      if (currentContextId) {
-        Session.set("currentContext", _.findWhere(deepstream.contextBlocks, {_id: currentContextId}));
-      }
+      Session.set("currentContext", _.findWhere(deepstream.contextBlocks, {_id: currentContextId}));
     }
   });
 });
@@ -453,10 +451,10 @@ window.setCurrentContextIdOfType = function(type, contextId){
 }
 
 window.setCurrentContextIdOfTypeToMostRecent = function(){
-  var type = Session.get("mediaDataType")
+  var type = Session.get("mediaDataType");
   var mostRecentOfThisType = Deepstreams.findOne({shortId: Session.get("streamShortId")}).mostRecentContextOfType(type); // TODO simplify
   var currentContextIdByType = Session.get("currentContextIdByType");
-  if (mostRecentOfThisType && !currentContextIdByType[type]){
+  if (mostRecentOfThisType){
     currentContextIdByType[type] = mostRecentOfThisType._id;
     Session.set("currentContextIdByType", currentContextIdByType)
   }

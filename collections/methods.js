@@ -299,6 +299,7 @@ Meteor.methods({
     }
 
     if (Meteor.isClient && numUpdated){
+      setCurrentContextIdOfTypeToMostRecent();
       //Session.set("addingContext", null);
       //Session.set("editingContext", null);
       //var currentX = Session.get('currentX');
