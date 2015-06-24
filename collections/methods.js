@@ -313,8 +313,8 @@ Meteor.methods({
     check(title, String);
     check(description, String);
     // TODO DRY
-    var storyPathSegment = _s.slugify(title.toLowerCase() || 'deep-stream')+ '-' + shortId;
-    return updateStream.call(this, {shortId: shortId}, {$set: {'title' : title, 'description' : description, 'storyPathSegment' : storyPathSegment, creationStep: nextCreationStepAfter('title_description') }});
+    var streamPathSegment = _s.slugify(title.toLowerCase() || 'deep-stream')+ '-' + shortId;
+    return updateStream.call(this, {shortId: shortId}, {$set: {'title' : title, 'description' : description, 'streamPathSegment' : streamPathSegment, creationStep: nextCreationStepAfter('title_description') }});
   },
   goToFindStreamStep: function(shortId){
     return updateStream.call(this, { shortId: shortId}, {$set: { creationStep: 'find_stream'}});
@@ -356,7 +356,7 @@ Meteor.methods({
     check(shortId, String);
     check(title, String);
     // TODO DRY
-    var streamPathSegment = _s.slugify(title.toLowerCase() || 'new-stream') + '-' + shortId;
+    var streamPathSegment = _s.slugify(title.toLowerCase() || 'deep-stream') + '-' + shortId;
     return updateStream.call(this, {shortId: shortId}, {$set: {'title' : title, 'streamPathSegment' : streamPathSegment }});
   },
   updateVerticalSectionTitle: function(storyId, index, title){ // TO-DO switch to using id instead of index
