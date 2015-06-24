@@ -492,6 +492,9 @@ Deepstream = (function() {
   };
 
   Deepstream.prototype.nextContext = function(contextId) {
+    if(!this.contextBlocks){
+      return false
+    }
     var contextBlock = _.findWhere(this.contextBlocks, {_id: contextId});
     var type = contextBlock.type;
     var contextOfType = this.contextOfType(type);
@@ -501,6 +504,9 @@ Deepstream = (function() {
     }
   };
   Deepstream.prototype.previousContext = function(contextId) {
+    if(!this.contextBlocks){
+      return false
+    }
     var contextBlock = _.findWhere(this.contextBlocks, {_id: contextId});
     var type = contextBlock.type;
     var contextOfType = this.contextOfType(type);
