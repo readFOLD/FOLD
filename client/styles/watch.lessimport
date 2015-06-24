@@ -241,13 +241,10 @@
   color: @medium-color;
   font-size: 20px;
   font-weight: bold;
+  text-align: center;
   .count{
-    margin-left: 5px;
-  }
-  button{
-    background-color: inherit;
-    width: 40px;
-    height: 24px;
+    left: 5px;
+    position: absolute;
   }
   svg{
     .size-to-fit;
@@ -255,6 +252,20 @@
       fill: @medium-color;
     }
   }
+  button{
+    background-color: inherit;
+    width: 40px;
+    height: 24px;
+    &:disabled{
+      cursor: default;
+      svg{
+        .fg{
+          fill: @dark-color;
+        }
+      }
+    }
+  }
+
 }
 .edit-context-button-row{
   background-color: @medium-color;

@@ -446,7 +446,7 @@ Template.exit_search_button.helpers({
   showExitSearchButton: function(){
     return this.hasContextOfType(Session.get("mediaDataType"));
   }
-})
+});
 
 Template.exit_search_button.events({
   'click .exit-search-button': function(){
@@ -458,7 +458,7 @@ window.setCurrentContextIdOfType = function(type, contextId){
   var currentContextIdByType = Session.get("currentContextIdByType");
   currentContextIdByType[type] = contextId;
   Session.set("currentContextIdByType", currentContextIdByType)
-}
+};
 
 window.setCurrentContextIdOfTypeToMostRecent = function(){
   var type = Session.get("mediaDataType");
