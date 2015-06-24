@@ -136,6 +136,16 @@ Template.watch.onCreated(function () {
       Session.set("searchingMedia", false);
     }
   });
+
+  this.autorun(function(){
+    if(FlowRouter.subsReady()) {
+      var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
+      var currentContextId = Session.get("currentContextIdByType")[Session.get('mediaDataType')];
+      if (currentContextId) {
+        Session.set("currentContext", _.findWhere(deepstream.contextBlocks, {_id: currentContextId}));
+      }
+    }
+  });
 });
 
 Template.watch.onRendered(function(){
@@ -365,10 +375,13 @@ Template.context_browser.helpers({
     return this.contextOfType(Session.get('mediaDataType'));
   },
   currentContext: function(){
-    var currentContextId = Session.get("currentContextIdByType")[Session.get('mediaDataType')];
-    if (currentContextId){
-      return window.newTypeSpecificContextBlock(_.findWhere(this.contextBlocks, {_id: currentContextId}));
-    }
+    return newTypeSpecificContextBlock(Session.get('currentContext'));
+  },
+  showRightButton: function(){
+    return this.nextContext(Session.get("currentContext")._id);
+  },
+  showLeftButton: function(){
+    return this.previousContext(Session.get("currentContext")._id);
   }
 });
 
@@ -383,6 +396,12 @@ Template.context_browser.events({
     Meteor.call('removeContextFromStream', Session.get("streamShortId"), this._id, function(err){
       // TODO SOMETHING
     });
+  },
+  'click .right': function(){
+    setCurrentContextIdOfType(Session.get('mediaDataType'), this.nextContext(Session.get("currentContext")._id)._id);
+  },
+  'click .left': function(){
+    setCurrentContextIdOfType(Session.get('mediaDataType'), this.previousContext(Session.get("currentContext")._id)._id);
   }
 });
 
@@ -406,14 +425,18 @@ Template.exit_search_button.events({
   }
 });
 
+window.setCurrentContextIdOfType = function(type, contextId){
+  var currentContextIdByType = Session.get("currentContextIdByType");
+  currentContextIdByType[type] = contextId;
+  Session.set("currentContextIdByType", currentContextIdByType)
+}
+
 window.setCurrentContextIdOfTypeToMostRecent = function(){
-  console.log('happening')
   var type = Session.get("mediaDataType")
   var mostRecentOfThisType = Deepstreams.findOne({shortId: Session.get("streamShortId")}).mostRecentContextOfType(type); // TODO simplify
   var currentContextIdByType = Session.get("currentContextIdByType");
   if (mostRecentOfThisType && !currentContextIdByType[type]){
     currentContextIdByType[type] = mostRecentOfThisType._id;
-    console.log(currentContextIdByType)
     Session.set("currentContextIdByType", currentContextIdByType)
   }
 }

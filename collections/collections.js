@@ -445,7 +445,10 @@ Deepstream = (function() {
       if (stream === that.activeStream()){
         stream.active = true;
       }
-      return new Stream(stream)
+      return new Stream(stream);
+    });
+    this.contextBlocks = _.map(this.contextBlocks, function(contextBlock){
+      return newTypeSpecificContextBlock(contextBlock);
     });
   }
 
@@ -468,7 +471,6 @@ Deepstream = (function() {
     }
     return _.chain(this.contextBlocks)
       .where({type : type})
-      .map(newTypeSpecificContextBlock)
       .value();
   };
 
@@ -486,6 +488,30 @@ Deepstream = (function() {
   Deepstream.prototype.mostRecentContextOfType = function(type) {
     if(this.hasContextOfType(type)){
       return this.contextBlocks ? _.last(_.sortBy(this.contextOfType(type), 'addedAt')) : null;
+    }
+  };
+
+  Deepstream.prototype.nextContext = function(contextId) {
+    var contextBlock = _.findWhere(this.contextBlocks, {_id: contextId});
+    var type = contextBlock.type;
+    var contextOfType = this.contextOfType(type);
+    console.log(contextOfType)
+    console.log(contextBlock)
+    var index = _.indexOf(contextOfType, contextBlock);
+    console.log(index)
+    if (index < contextOfType.length - 1){
+      return contextOfType[index + 1];
+    }
+  };
+  Deepstream.prototype.previousContext = function(contextId) {
+    var contextBlock = _.findWhere(this.contextBlocks, {_id: contextId});
+    var type = contextBlock.type;
+    var contextOfType = this.contextOfType(type);
+    var index = _.indexOf(contextOfType, contextBlock);
+    console.log(index)
+
+    if (index > 0){
+      return contextOfType[index - 1];
     }
   };
 
