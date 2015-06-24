@@ -75,7 +75,7 @@ a.green {
     height: @button-height;
 
     &:hover {
-    	background-color: @dark-color;
+    	background-color: @dark-action-color;
     }
 }
 
@@ -121,7 +121,7 @@ div.sign-up-options {
     text-align: center;
     line-height: @button-height;
     &:hover {
-      background-color: @dark-color;
+      background-color: @dark-action-color;
     }
   }
 }
