@@ -352,6 +352,15 @@ Meteor.methods({
     var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
     return updateStory.call(this, {_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
+  updateStreamTitle: function(shortId, title){
+    console.log(arguments)
+
+    check(shortId, String);
+    check(title, String);
+    // TODO DRY
+    var streamPathSegment = _s.slugify(title.toLowerCase() || 'new-stream') + '-' + shortId;
+    return updateStream.call(this, {shortId: shortId}, {$set: {'title' : title, 'streamPathSegment' : streamPathSegment }});
+  },
   updateVerticalSectionTitle: function(storyId, index, title){ // TO-DO switch to using id instead of index
     check(storyId, String);
     check(index, Number);

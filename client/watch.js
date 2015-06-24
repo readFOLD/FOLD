@@ -232,6 +232,14 @@ Template.watch.helpers({
   showContextSearch: function(){
     var mediaDataType = Session.get('mediaDataType');
     return Session.get("curateMode") && (Session.get("searchingMedia") || (mediaDataType && this.contextOfType(mediaDataType).length === 0)) && mediaDataType && mediaDataType !== 'stream';
+  },
+  streamTitleElement: function(){
+    if (Session.get('curateMode')) {
+      // this is contenteditable in curate mode
+      return '<div class="stream-title" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
+    } else {
+      return '<div class="stream-title">' + _.escape(this.title) + '</div>';
+    }
   }
 });
 
@@ -332,6 +340,11 @@ Template.watch.events({
       Session.set('searchingMedia', true);
       Session.set('mediaDataType', 'stream');
     }
+  },
+  'blur .stream-title[contenteditable]': function(e,template) {
+    streamTitle = $.trim(template.$('div.stream-title').text());
+    Session.set('saveState', 'saving');
+    return Meteor.call('updateStreamTitle', Session.get('streamShortId'), streamTitle, basicErrorHandler)
   }
 });
 
