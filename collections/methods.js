@@ -119,7 +119,7 @@ var updateContextBlocks = function(selector, modifier, options) {
 };
 
 Meteor.methods({
-  addContextToStream: function(streamShortId, contextBlock){
+  addContextToStream: function(streamShortId, contextBlock){ // TODO find a way to pick id safely to avoid potential collisions. Context block id uniqueness is currently not enforced.
     check(streamShortId, String);
     check(contextBlock, Object);
 
