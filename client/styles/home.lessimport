@@ -422,6 +422,7 @@ div.logo-title {
 
 
 div.action-items {
+  z-index: 15;
   @height: 45px;
   position: absolute;
   top: -6px;

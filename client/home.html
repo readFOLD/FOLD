@@ -93,6 +93,7 @@
 
   </div>
 </template>
+
 <template name="login_buttons">
   <li class="user-action">
 
@@ -314,6 +315,13 @@
 
 <!--DEEPSTREAM-->
 <template name="streams">
+  {{#each streams}}
+    {{> stream_preview }}
+  {{/each}}
+</template>
+
+<template name="my_streams">
+  <h1>Your Deep Streams</h1>
   {{#each streams}}
     {{> stream_preview }}
   {{/each}}

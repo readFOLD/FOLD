@@ -71,6 +71,10 @@ Meteor.publish("singleDeepstream", function(userPathSegment, shortId) {
   return Deepstreams.find({userPathSegment: userPathSegment, shortId: shortId});
 });
 
+Meteor.publish("myDeepstreams", function() {
+  return Deepstreams.find({curatorId: this.userId});
+});
+
 Meteor.publish("curatedStoriesPub", function(options) {
   options = options ? options : {};
   _.defaults(options, {page: 0});

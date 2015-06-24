@@ -387,6 +387,14 @@ Template.streams.helpers({
   }
 });
 
+Template.my_streams.helpers({
+  streams: function(){
+    if (FlowRouter.subsReady()) {
+      return Deepstreams.find({curatorId: Meteor.user()._id});
+    }
+  }
+});
+
 Template.stream_preview.helpers({
   streams: function(){
     if (FlowRouter.subsReady()) {
