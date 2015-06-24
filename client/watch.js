@@ -174,6 +174,17 @@ Template.watch.onRendered(function(){
     }
   });
 
+  this.autorun(function(){
+    if(FlowRouter.subsReady()) {
+      var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {fields: {creationStep: 1}});
+      if (deepstream.creationStep === 'title_description') {
+        Meteor.setTimeout(function() { // TODO this is a hack.
+          that.$('input[name=title]')[0].focus();
+        }, 100);
+      }
+    }
+  });
+
   onMainPlayerReady = function(event){
     that.autorun(function(){
       if(Session.get('mainPlayerMuted')){
