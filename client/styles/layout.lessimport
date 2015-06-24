@@ -784,6 +784,7 @@ div.link-section {
 
 div.text-section {
   .text-content{
+    overflow-y: hidden;
     height: 264px;
   }
 
@@ -1025,6 +1026,8 @@ div.horizontal-context {
     pointer-events: auto;
   }
 
+  @fullHeight: 500px;
+
   &.text {
     opacity: 1;
     background-color: @unselected-background-color;
@@ -1039,6 +1042,7 @@ div.horizontal-context {
       background-color: @selected-background-color;
       color: @dark-color;
     }
+    height: @fullHeight;
   }
 
   div#index {
@@ -1046,6 +1050,10 @@ div.horizontal-context {
     top: -25px;
   }
 
+  &.news-card{
+    height: @fullHeight;
+    overflow-y: scroll;
+  }
 
   div.content {
     margin-top: 0px;

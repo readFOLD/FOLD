@@ -509,13 +509,13 @@
     {{else}}
       {{#if noMoreResults}}
         {{noMoreResults}}
+      {{else}}
+        {{#with focusResult}}
+          <div class="news-preview search-results-container">
+            {{> display_news_section}}
+          </div>
+        {{/with}}
       {{/if}}
-      {{#with focusResult}}
-        <div class="news-preview search-results-container">
-          <h4 class="news-title">{{title}}</h4>
-          <div class="news-html">{{{html}}}</div>
-        </div>
-      {{/with}}
     {{/if}}
 
 

@@ -234,6 +234,9 @@ typeHelpers = {
   },
   link: function() {
     return this.type === "link";
+  },
+  news: function() {
+    return this.type === "news";
   }
 };
 

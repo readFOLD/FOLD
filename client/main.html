@@ -262,6 +262,14 @@
           {{> display_link_section}}
         {{/if}}
       {{/if}}
+
+      {{#if news}}
+        {{#if editingThisContext}}
+          {{> create_news_section}}
+        {{else}}
+          {{> display_news_section}}
+        {{/if}}
+      {{/if}}
       {{else}}
         {{> display_broken_section}}
       {{/if}}
@@ -400,6 +408,13 @@
     {{/unless}}
 </template>
 
+
+<template name="display_news_section">
+  <div class="news-section {{#if isFocused}}focused{{/if}}">
+    <h4 class="news-title">{{title}}</h4>
+    <div class="news-html">{{{html}}}</div>
+  </div>
+</template>
 
 <template name="display_link_section">
   <div class="link-section {{#if isFocused}}focused{{/if}}">

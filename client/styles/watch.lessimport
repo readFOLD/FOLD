@@ -238,9 +238,9 @@
 // TODO Refactor
 .news-preview{
   height: 400px;
-  margin-top: 20px;
-  h4{
-    margin-top: 0;
-  }
   overflow-y: scroll;
+}
+
+.news-section{
+  height: 100%;
 }
