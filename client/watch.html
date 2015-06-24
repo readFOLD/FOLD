@@ -147,12 +147,14 @@
 <template name="context_browser">
   <div class="context-browser">
     <div class="browse-buttons">
-      <span class="count">{{currentNum}} of {{totalNum}}</span>
-      <button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>
-      <button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>
-    {{#unless curateMode}}
-      <button class="close">{{> close_circle}}</button>
-    {{/unless}}
+      {{#if currentContext}}
+        <span class="count">{{currentNum}} of {{totalNum}}</span>
+          <button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>
+          <button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>
+        {{#unless curateMode}}
+          <button class="close">{{> close_circle}}</button>
+        {{/unless}}
+      {{/if}}
     </div>
     {{#with currentContext}}
       {{#if curateMode}}
