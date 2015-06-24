@@ -251,6 +251,13 @@
     .fg{
       fill: @medium-color;
     }
+    .bg{
+      fill: none;
+      stroke: @medium-color;
+    }
+    .fg-stroke{
+      stroke: @medium-color;
+    }
   }
   button{
     background-color: inherit;
