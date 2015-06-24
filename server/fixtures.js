@@ -13,7 +13,10 @@ if (Meteor.users.find().count() === 0) {
   Accounts.createUser({
     email: 'test@example.com',
     username: 'testuser',
-    password: 'password'
+    password: 'password',
+    profile: {
+      name: 'Wonderful Tester'
+    }
   });
 }
 
