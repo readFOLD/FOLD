@@ -383,22 +383,33 @@ Template.context_browser.helpers({
   contextOfCurrentType: function(){
     return this.contextOfType(Session.get('mediaDataType'));
   },
+  totalNum: function(){
+    return this.contextOfType(Session.get('mediaDataType')).length;
+  },
+  currentNum: function(){
+    var cBlocks = this.contextOfType(Session.get('mediaDataType'));
+    return _.indexOf(cBlocks, _.findWhere(cBlocks, {_id: Session.get('currentContext')._id})) + 1;
+  },
   currentContext: function(){
     var currentContext = Session.get('currentContext');
     if (currentContext){
       return newTypeSpecificContextBlock(currentContext);
     }
   },
-  showRightButton: function(){
+  disableRightButton: function(){
     var currentContext = Session.get('currentContext');
     if (currentContext){
-      return this.nextContext(Session.get("currentContext")._id);
+      return !this.nextContext(Session.get("currentContext")._id);
+    } else {
+      return true
     }
   },
-  showLeftButton: function(){
+  disableLeftButton: function(){
     var currentContext = Session.get('currentContext');
     if (currentContext){
-      return this.previousContext(Session.get("currentContext")._id);
+      return !this.previousContext(Session.get("currentContext")._id);
+    } else {
+      return true
     }
   }
 });

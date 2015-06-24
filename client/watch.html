@@ -147,12 +147,9 @@
 <template name="context_browser">
   <div class="context-browser">
     <div class="browse-buttons">
-      {{#if showLeftButton}}
-        <button class="left">Left</button>
-      {{/if}}
-      {{#if showRightButton}}
-        <button class="right">Right</button>
-      {{/if}}
+      <span class="count">{{currentNum}} of {{totalNum}}</span>
+      <button class="left" disabled="disableLeftButton">{{> left_arrow}}</button>
+      <button class="right" disabled="disableRightButton">Right</button>
     {{#unless curateMode}}
       <button class="close">X</button>
     {{/unless}}
