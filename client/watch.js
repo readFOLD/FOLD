@@ -362,3 +362,15 @@ Template.banner_buttons.events({
   }
 });
 
+// TODO remove this template entirely and get this over to the create templates
+Template.exit_search_button.helpers({
+  showExitSearchButton: function(){
+    return this.hasContextOfType(Session.get("mediaDataType"));
+  }
+})
+
+Template.exit_search_button.events({
+  'click .exit-search-button': function(){
+    return Session.set('searchingMedia', false);
+  }
+})

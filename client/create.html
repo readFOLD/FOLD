@@ -403,6 +403,7 @@
 
 <template name="create_text_section">
   <div class="search-section-title">Add Text</div>
+  {{> exit_search_button}}
   <div class="create-section">
     <div class="tabs">
       <ul>
@@ -422,6 +423,7 @@
 
 <template name="create_link_section">
   <div class="search-section-title">Add a Link</div>
+  {{> exit_search_button}}
   <div class="create-section create-link-section">
     <div class="tabs">
       <ul>
@@ -488,6 +490,7 @@
 
 <template name="create_news_section">
   <div class="search-section-title">Add a News Story</div>
+  {{> exit_search_button}}
   <div class="create-section create-news-section">
     <div class="tabs">
       <ul>
@@ -554,6 +557,7 @@
 
 <template name="create_image_section">
   <div class="search-section-title">Add an Image</div>
+  {{> exit_search_button}}
   <div class="create-section">
     <div class="search-section" style="{{#if addingDescription}}display: none;{{/if}}">
       <div class="tabs">
@@ -617,6 +621,7 @@
 
 <template name="create_gif_section">
   <div class="search-section-title">Add a Gif</div>
+  {{> exit_search_button}}
   <div class="create-section">
     <div class="search-section" style="{{#if addingDescription}}display: none;{{/if}}">
       <div class="tabs">
@@ -702,6 +707,7 @@
 
 <template name="create_map_section">
   <div class="search-section-title">Add a Map</div>
+  {{> exit_search_button}}
   <div class="create-section create-map-section">
     <div class="tabs">
       <ul>
@@ -730,6 +736,7 @@
 
 <template name="create_twitter_section">
   <div class="search-section-title">Add a Tweet</div>
+  {{> exit_search_button}}
   {{#if twitterUser}}
     <div class="create-section twitter">
       <div class="tabs">
@@ -804,6 +811,7 @@
 
 <template name="create_video_section">
   <div class="search-section-title">Add a Video</div>
+  {{> exit_search_button}}
   <div class="create-section">
     <div class="tabs">
       <ul>
@@ -852,6 +860,7 @@
 
 <template name="add_stream_section">
   <div class="search-section-title">Add Streams</div>
+  {{> exit_search_button}}
   <div class="create-section add-stream-section">
     {{> search_form option1='live' label1='Live' option2='videos' label2='Videos'}}
     <ol class="search-results-container">
@@ -893,6 +902,7 @@
 
 <template name="create_audio_section">
   <div class="search-section-title">Add an Audio Clip</div>
+  {{> exit_search_button}}
   <div class="create-section audio">
     <div class="tabs">
       <ul>
@@ -943,4 +953,10 @@
       </button>
     {{/if}}
   </div>
+</template>
+
+<template name="exit_search_button">
+  {{#if showExitSearchButton}}
+    <button class="exit-search-button">x</button>
+  {{/if}}
 </template>
