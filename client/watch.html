@@ -151,7 +151,7 @@
       <button class="close">X</button>
     {{/unless}}
     </div>
-    {{#each contextOfCurrentType}}
+    {{#with currentContext}}
       {{#if curateMode}}
         <div class="edit-context-button-row">
           <button class="add-new-context">Add</button>
@@ -159,6 +159,6 @@
         </div>
       {{/if}}
       {{> horizontal_section_block}}
-    {{/each}}
+    {{/with}}
   </div>
 </template>

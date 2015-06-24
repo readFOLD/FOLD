@@ -746,34 +746,44 @@ Template.content_icons.events({
     return Session.set('mediaDataType', 'stream');
   },
   'click .text-button': function(d, t) {
-    return Session.set('mediaDataType', 'text');
+    Session.set('mediaDataType', 'text');
+    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .map-button': function(d, t) {
-    return Session.set('mediaDataType', 'map');
+    Session.set('mediaDataType', 'map');
+    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .video-button': function(d, t) {
-    return Session.set('mediaDataType', 'video');
+    Session.set('mediaDataType', 'video');
+    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .image-button': function(d, t) {
-    return Session.set('mediaDataType', 'image');
+    Session.set('mediaDataType', 'image');
+    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .gif-button': function(d, t) {
-    return Session.set('mediaDataType', 'gif');
+    Session.set('mediaDataType', 'gif');
+    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .news-button': function(d, t) {
-    return Session.set('mediaDataType', 'news');
+    Session.set('mediaDataType', 'news');
+    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .twitter-button': function(d, t) {
-    return Session.set('mediaDataType', 'twitter');
+    Session.set('mediaDataType', 'twitter');
+    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .viz-button': function(d, t) {
-    return Session.set('mediaDataType', 'viz');
+    Session.set('mediaDataType', 'viz');
+    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .audio-button': function(d, t) {
-    return Session.set('mediaDataType', 'audio');
+    Session.set('mediaDataType', 'audio');
+    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .link-button': function(d, t) {
-    return Session.set('mediaDataType', 'link');
+    Session.set('mediaDataType', 'link');
+    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .chat-button': function(d, t) {
     notifyFeature("Coming soon!");

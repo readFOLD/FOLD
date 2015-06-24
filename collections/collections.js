@@ -483,6 +483,12 @@ Deepstream = (function() {
     return this.contextBlocks ? _.last(_.sortBy(this.contextBlocks, 'addedAt')) : null;
   };
 
+  Deepstream.prototype.mostRecentContextOfType = function(type) {
+    if(this.hasContextOfType(type)){
+      return this.contextBlocks ? _.last(_.sortBy(this.contextOfType(type), 'addedAt')) : null;
+    }
+  };
+
   Deepstream.prototype.activeStream = function(){
     return _.findWhere(this.streams, {_id: this.activeStreamId});
   };

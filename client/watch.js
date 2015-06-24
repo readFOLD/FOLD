@@ -91,6 +91,7 @@ Template.watch.onCreated(function () {
 
   this.autorun(function(){
     Session.set("streamShortId", that.data.shortId());
+
   });
 
   this.autorun(function() { // when change media data type, leave search mode, unless doing streams, then always search
@@ -107,7 +108,10 @@ Template.watch.onCreated(function () {
   this.autorun(function(){
     if(FlowRouter.subsReady()){
       var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
+
       if(that.data.onCuratePage()){
+        Session.set("currentContextIdByType", {});
+
         if (deepstream.creationStep === 'find_stream'){
           Session.set("mediaDataType", 'stream');
           Session.set("searchingMedia", true);
@@ -120,11 +124,18 @@ Template.watch.onCreated(function () {
       }
       // else
       var mostRecentContext =  deepstream.mostRecentContext();
-      Session.set("mediaDataType", mostRecentContext ? mostRecentContext.type : null); // TODO set to a media type that exists?
+      if (mostRecentContext){
+        Session.set("mediaDataType", mostRecentContext.type);
+        var currentContextIdByType = {};
+        currentContextIdByType[mostRecentContext.type] = mostRecentContext._id;
+        Session.set("currentContextIdByType", currentContextIdByType);
+      } else {
+        Session.set("mediaDataType", null);
+        Session.set("currentContextIdByType", {});
+      }
       Session.set("searchingMedia", false);
     }
   });
-
 });
 
 Template.watch.onRendered(function(){
@@ -352,8 +363,15 @@ Template.watch.events({
 Template.context_browser.helpers({
   contextOfCurrentType: function(){
     return this.contextOfType(Session.get('mediaDataType'));
+  },
+  currentContext: function(){
+    var currentContextId = Session.get("currentContextIdByType")[Session.get('mediaDataType')];
+    if (currentContextId){
+      return window.newTypeSpecificContextBlock(_.findWhere(this.contextBlocks, {_id: currentContextId}));
+    }
   }
 });
+
 Template.context_browser.events({
   'click .close': function(){
     Session.set('mediaDataType', null);
@@ -386,4 +404,16 @@ Template.exit_search_button.events({
   'click .exit-search-button': function(){
     return Session.set('searchingMedia', false);
   }
-})
+});
+
+window.setCurrentContextIdOfTypeToMostRecent = function(){
+  console.log('happening')
+  var type = Session.get("mediaDataType")
+  var mostRecentOfThisType = Deepstreams.findOne({shortId: Session.get("streamShortId")}).mostRecentContextOfType(type); // TODO simplify
+  var currentContextIdByType = Session.get("currentContextIdByType");
+  if (mostRecentOfThisType && !currentContextIdByType[type]){
+    currentContextIdByType[type] = mostRecentOfThisType._id;
+    console.log(currentContextIdByType)
+    Session.set("currentContextIdByType", currentContextIdByType)
+  }
+}
