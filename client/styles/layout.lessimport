@@ -565,7 +565,7 @@ div.image-section {
   line-height: @horizontal-content-height;
   background-color: @black-color;
   text-align: center;
-  &:hover, &.always-show-caption{
+  &.always-show-caption{
     div.text-content{
       background-color: rgba(0, 0, 0, 0.8);
       opacity: 0.8;

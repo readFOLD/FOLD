@@ -145,9 +145,11 @@
 <template name="context_browser">
   <div class="context-browser">
     <div class="browse-buttons">
-      <button class="left">Add</button>
-      <button class="right">Delete</button>
+      <button class="left">Left</button>
+      <button class="right">Right</button>
+    {{#unless curateMode}}
       <button class="close">X</button>
+    {{/unless}}
     </div>
     {{#each contextOfCurrentType}}
       {{#if curateMode}}

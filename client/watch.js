@@ -106,7 +106,7 @@ Template.watch.onCreated(function () {
 
   this.autorun(function(){
     if(FlowRouter.subsReady()){
-      var deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
+      var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
       if(that.data.onCuratePage()){
         if (deepstream.creationStep === 'find_stream'){
           Session.set("mediaDataType", 'stream');

@@ -687,7 +687,7 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
       placeholder = 'Add a caption'
     }
 
-    if (Session.get('read')) {
+    if (!Session.get('curateMode')) {
       if (textContent.length){
         return '<div class="text-content" dir="auto">' + _.escape(textContent).replace(/\n/g, "<br>") + '</div>';
       } else {
@@ -735,10 +735,10 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 
     "blur .text-content.editable": function(d, template) {
       var that = this;
-      if (!Session.get('read') && !Session.get('addingContext')) {
+      if (Session.get('curateMode')) {
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
-        Meteor.call(meteorMethod, that._id, textContent, saveCallback);
+        Meteor.call(meteorMethod, Session.get('streamShortId'),that._id, textContent, saveCallback);
       }
     },
     "mouseenter .text-content.editable": function(d, template) {
@@ -749,7 +749,7 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
     },
     "keypress .image-section .text-content.editable": function(e, template) { // save on Enter
       var that = this;
-      if (!Session.get('read') && !Session.get('addingContext') && e.which === 13 ) {
+      if (Session.get('curateMode') && e.which === 13 ) {
         e.preventDefault();
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');

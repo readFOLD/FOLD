@@ -480,7 +480,7 @@ Deepstream = (function() {
   };
 
   Deepstream.prototype.mostRecentContext = function() {
-    return this.contextBlocks ? _.sortBy(this.contextBlocks, 'addedAt')[0] : null;
+    return this.contextBlocks ? _.last(_.sortBy(this.contextBlocks, 'addedAt')) : null;
   };
 
   Deepstream.prototype.activeStream = function(){

@@ -127,7 +127,7 @@ Meteor.methods({
     //  throw new Meteor.Error("User doesn't own story")
     //}
 
-    //delete contextBlock._id;
+    contextBlock._id = Random.id(12);
 
     // TO-DO Remix. When add remix, will need another method or modify this one
     //var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {
@@ -392,15 +392,17 @@ Meteor.methods({
     check(index, Number);
     return changeHasTitle.call(this, storyId, index, false);
   },
-  editHorizontalBlockDescription: function(horizontalId, description) {
-    check(horizontalId, String);
+  editHorizontalBlockDescription: function(shortId, contextId, description) {
+    check(shortId, String);
+    check(contextId, String);
     check(description, String);
-    return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"description": description}});
+    return updateStream.call(this, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.description": description}});
   },
-  editTextSection: function(horizontalId, content) {
-    check(horizontalId, String);
+  editTextSection: function(shortId, contextId, content) {
+    check(shortId, String);
+    check(contextId, String);
     check(content, String);
-    return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"content": content}});
+    return updateStream.call(this, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.content": content}});
   },
   reorderStory: function(storyId, idMap) {
     check(storyId, String);
