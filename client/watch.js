@@ -112,19 +112,16 @@ Template.watch.onCreated(function () {
 
       if(that.data.onCuratePage()){
         Session.set("currentContextIdByType", {});
-        if(reactiveDeepstream.creationStep){
-          if (_.contains(['find_stream'], reactiveDeepstream.creationStep)){
-            Session.set("mediaDataType", 'stream');
-            Session.set("searchingMedia", true);
-            return
-          } else if (reactiveDeepstream.creationStep === 'add_cards') {
-            Session.set("mediaDataType", 'image');
-            Session.set("searchingMedia", true);
-            return
-          }
-        } else {
+        if (_.contains(['find_stream'], reactiveDeepstream.creationStep)){
+          Session.set("mediaDataType", 'stream');
+          Session.set("searchingMedia", true);
+          return
+        } else if (reactiveDeepstream.creationStep === 'add_cards') {
+          Session.set("mediaDataType", 'image');
+          Session.set("searchingMedia", true);
           return
         }
+
       }
       // else
       var mostRecentContext =  deepstream.mostRecentContext();
