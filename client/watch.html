@@ -41,6 +41,9 @@
             {{/if}}
             {{#if streamUrl}}
               <iframe id="{{mainStreamId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
+              {{#with activeStream}}
+                <div class="bottom-overlay"><span class="stream-url">Livestream:  <a href="{{sourceUrl}}" target="_blank">{{sourceUrl}}</a></span><span class="stream-username">Streamer:  {{username}}</span></div>
+              {{/with}}
             {{/if}}
           </div>
           <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">

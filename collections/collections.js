@@ -599,7 +599,7 @@ Stream = (function() {
 
   Stream.prototype.url = function () {
     if (this.source === 'youtube') {
-      return '//www.youtube.com/embed/' + this.reference.id + '?enablejsapi=1&modestbranding=1&rel=0&iv_load_policy=3';
+      return '//www.youtube.com/embed/' + this.reference.id + '?enablejsapi=1&modestbranding=1&rel=0&iv_load_policy=3&autohide=1';
     }
   };
 
@@ -612,6 +612,12 @@ Stream = (function() {
   Stream.prototype.thumbnailUrl = function () {
     if (this.source === 'youtube') {
       return '//i.ytimg.com/vi/' + this.reference.id + '/default.jpg';
+    }
+  };
+
+  Stream.prototype.sourceUrl = function () {
+    if (this.source === 'youtube') {
+      return 'https://www.youtube.com/watch?v=' + this.reference.id;
     }
   };
 

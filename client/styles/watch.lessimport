@@ -300,6 +300,40 @@
   font-weight: medium;
 }
 
+.bottom-overlay{
+  pointer-events: none;
+  background-color: rgba(255,255,255,0.5);
+  position: absolute;
+  left: 25%;
+  bottom: 0;
+  width: 50%;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  font-weight: medium;
+  color: @black-color;
+  a{
+    pointer-events: all;
+  }
+  span{
+    display: inline-block;
+    height: 100%;
+    padding-left: 2%;
+    padding-right: 2%;
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .stream-url{
+    width: 65%;
+  }
+  .stream-username{
+    width: 35%;
+  }
+
+  z-index: 999;
+}
 // TODO Refactor
 .news-preview{
   height: 400px;

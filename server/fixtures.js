@@ -91,7 +91,7 @@ if (Deepstreams.find().count() === 0) {
         "title": "Shark Lagoon Cam powered by EXPLORE.org",
         "description": "Visit the full multicam experience: http://explore.org Subscribe: http://goo.gl/gjM9N1 Facebook: http://goo.gl/nRRN0h Twitter: http://goo.gl/n03NNU Watch The ...",
         "id": "w_GQNU85cJw",
-        "username": "",
+        "username": "explore_org",
         "userId": "UCSyg9cb3Iq-NtlbxqNB9wGw",
         "creationDate": "05/29/2015"
       },
