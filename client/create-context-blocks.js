@@ -565,7 +565,7 @@ Template.create_news_section.onCreated(function() {
   };
 });
 
-Template.create_link_section.onRendered(function() {
+Template.create_news_section.onRendered(function() {
   this.$('input[type="search"]').focus();
 });
 

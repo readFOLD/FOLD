@@ -108,17 +108,21 @@ Template.watch.onCreated(function () {
   this.autorun(function(){
     if(FlowRouter.subsReady()){
       var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
+      var reactiveDeepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {fields: {creationStep: 1}});
 
       if(that.data.onCuratePage()){
         Session.set("currentContextIdByType", {});
-
-        if (deepstream.creationStep === 'find_stream'){
-          Session.set("mediaDataType", 'stream');
-          Session.set("searchingMedia", true);
-          return
-        } else if (deepstream.creationStep === 'add_cards') {
-          Session.set("mediaDataType", 'image');
-          Session.set("searchingMedia", true);
+        if(reactiveDeepstream.creationStep){
+          if (_.contains(['find_stream'], reactiveDeepstream.creationStep)){
+            Session.set("mediaDataType", 'stream');
+            Session.set("searchingMedia", true);
+            return
+          } else if (reactiveDeepstream.creationStep === 'add_cards') {
+            Session.set("mediaDataType", 'image');
+            Session.set("searchingMedia", true);
+            return
+          }
+        } else {
           return
         }
       }
@@ -375,13 +379,22 @@ Template.context_browser.helpers({
     return this.contextOfType(Session.get('mediaDataType'));
   },
   currentContext: function(){
-    return newTypeSpecificContextBlock(Session.get('currentContext'));
+    var currentContext = Session.get('currentContext');
+    if (currentContext){
+      return newTypeSpecificContextBlock(currentContext);
+    }
   },
   showRightButton: function(){
-    return this.nextContext(Session.get("currentContext")._id);
+    var currentContext = Session.get('currentContext');
+    if (currentContext){
+      return this.nextContext(Session.get("currentContext")._id);
+    }
   },
   showLeftButton: function(){
-    return this.previousContext(Session.get("currentContext")._id);
+    var currentContext = Session.get('currentContext');
+    if (currentContext){
+      return this.previousContext(Session.get("currentContext")._id);
+    }
   }
 });
 
