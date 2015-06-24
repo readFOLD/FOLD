@@ -74,7 +74,7 @@ Template.watch.onCreated(function () {
         var accessPriority = Meteor.user().accessPriority; // TODO update for Deepstream
         if (!accessPriority || accessPriority > window.createAccessLevel){
           //FlowRouter.withReplaceState(function(){
-            FlowRouter.go('/')
+            FlowRouter.go('/');
           //})
           notifyInfo("Creating and editing streams is temporarily disabled, possibly because things blew up (in a good way). Sorry about that! We'll have everything back up as soon as we can. Until then, why not check out some of the other great content authors in the community have written?")
         }
@@ -82,9 +82,8 @@ Template.watch.onCreated(function () {
         return
       } else {
         Session.set('signingIn', true); // if there is no user, take them to the signin page
-        //FlowRouter.withReplaceState(function(){  // TO-DO, after they sign in, they should get back to the curate page
-          FlowRouter.go('/');
-        //})
+        Session.set('signingInFrom', setSigningInFrom());
+        FlowRouter.go('/'); // TODO this should probably be the corresponding watch page
       }
     }
   });

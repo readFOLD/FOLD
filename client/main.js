@@ -1010,6 +1010,7 @@ Template.create_deepstream.events({
       }
     } else {
       Session.set('signingIn', true);
+      Session.set('signingInFrom', setSigningInFrom());
       analytics.track('User clicked curate on homepage and needs to sign in');
     }
   }

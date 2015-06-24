@@ -345,6 +345,7 @@ Template.login_buttons.events({
   },
   "click .signin": function(d) {
     Session.set('signingIn', true);
+    setSigningInFrom();
   },
   "click .logout" : function(e) {
     e.preventDefault();
@@ -352,6 +353,14 @@ Template.login_buttons.events({
     Meteor.logout();
   }
 });
+
+window.setSigningInFrom = function(){
+  Session.set('signingInFrom', FlowRouter.current().path);
+};
+
+window.returnFromSignIn = function(){
+  FlowRouter.go(Session.get('signingInFrom') || '/');
+}
 
 var closeSignInOverlay = function(){
   Session.set('signingIn', false);

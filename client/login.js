@@ -26,7 +26,7 @@ Template.login_form.events({
       if (err) {
         template.loginError.set(err.reason); 
       } else {
-        FlowRouter.go("/");
+        returnFromSignIn();
         notifyLogin();
       }
       return;
