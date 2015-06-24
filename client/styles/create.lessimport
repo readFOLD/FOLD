@@ -883,7 +883,7 @@ div.add-context {
     @focusedThumbnailWidth: @aspectRatio * @focusedThumbnailHeight;
     
     div.focused-search-result { 
-      height: @searchResultHeight*2;    
+      height: @searchResultHeight*3.2;
       background: #e7e7e7;   
     }    
     
@@ -949,15 +949,16 @@ div.add-context {
       }
     }
 
-    @focusedSearchResultHeight: @searchResultHeight* 2;
-    div.focused {
-      top: -177px;
-      left: 20px + @focusedThumbnailWidth;   
-      max-width: calc(100% ~"-" 30px ~"-" @focusedThumbnailWidth);
-      max-height: @focusedSearchResultHeight - 10px;   
-      
+    .info.focused {
+      top: 10px;
+      left: 10px;
+      //left: 20px + @focusedThumbnailWidth;
+      //max-width: calc(100% ~"-" 30px ~"-" @focusedThumbnailWidth);
+      //max-height: @focusedSearchResultHeight - 10px;
+      width: calc(100% ~"-" 30px);
+      max-width: 100%;
       .descr {
-        height: 132px;
+        height: 50px;
         overflow: hidden;
         margin-bottom: 0px;
       }
