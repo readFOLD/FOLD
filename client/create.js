@@ -731,6 +731,9 @@ Template.content_icons.helpers({
   },
   show_chat_icon: function () {
     return true;
+  },
+  disableAllButStream: function (){
+    return _.contains(['title_description', 'find_stream'], this.creationStep);
   }
 });
 

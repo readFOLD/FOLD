@@ -95,7 +95,13 @@
       .size-to-fit;
       background-color: inherit;
       &.active, &:hover{
-        background-color: rgba(74,74,74,0.80);
+        &:not(:disabled){
+          background-color: rgba(74,74,74,0.80);
+        }
+      }
+      &:disabled{
+        opacity: .3;
+        cursor: inherit;
       }
       svg {
         padding: 1.5px;
