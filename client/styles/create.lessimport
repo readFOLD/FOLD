@@ -793,7 +793,7 @@ div.add-context {
   ol.search-results-container {   
     background-color: @white-color;
     width: 100%;
-    height: calc(100% ~"-" @searchFormHeight ~"-" 83px);
+    max-height: calc(100% ~"-" @searchFormHeight ~"-" 83px);
     overflow-y: scroll;
     overflow-x: ellipsis;
     margin-top: 15px;  
@@ -970,7 +970,6 @@ div.add-context {
       left: calc(100%~"-" 90px);
       background-color: @action-color;
       height: @newCardBottomButtonHeight;
-      color: @light-color;
       width: 90px;
       margin-top: 12px;
       margin-bottom: 15px;

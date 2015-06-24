@@ -510,40 +510,12 @@
       {{#if noMoreResults}}
         {{noMoreResults}}
       {{/if}}
-      {{#if link}}
-        {{#with preview}}
-          <div class="link-section preview-section {{#if isFocused}}focused{{/if}}">
-            <div class="transparent-cover"></div>
-            <a href="{{url}}" target="_blank">
-              <div class="top">
-                {{#if thumbnailUrl}}
-                  {{#if imageOnLeft}}
-                    <img class="thumbnail left" src="{{thumbnailUrl}}" />
-                  {{else}}
-                    <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
-                  {{/if}}
-                  <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
-                {{/if}}
-              </div>
-            </a>
-            <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
-            <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
-          </div>
-        {{/with}}
-      {{else}}
-        {{#if image}}
-          <div class="preview-section image-section">
-            <img class="image" src="{{preview.url}}" />
-          </div>
-        {{else}}
-
-          {{#if video}}
-            <div class="preview-section video-section">
-              <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{preview.url}}" allowfullscreen></iframe>
-            </div>
-          {{/if}}
-        {{/if}}
-      {{/if}}
+      {{#with focusResult}}
+        <div class="news-preview search-results-container">
+          <h4 class="news-title">{{title}}</h4>
+          <div class="news-html">{{{html}}}</div>
+        </div>
+      {{/with}}
     {{/if}}
 
 

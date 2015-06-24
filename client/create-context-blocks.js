@@ -234,6 +234,7 @@ var createTemplateNames = [
   'create_map_section',
   'create_audio_section',
   'create_viz_section',
+  'create_news_section',
   'create_link_section'
 ];
 
@@ -525,6 +526,49 @@ Template.create_viz_section.events({
   }
 })
 
+Template.create_news_section.onCreated(function() {
+  this.type = 'link';
+  Session.set('newHorizontalDataSource', 'news');
+  this.loadingResults = new ReactiveVar();
+  this.noMoreResults = new ReactiveVar();
+  this.focusResult = new ReactiveVar();
+
+  var that = this;
+  this.search = function(){
+    var url = this.$('input[type="search"]').val();
+    that.loadingResults.set(true);
+
+    Meteor.call('embedlyExtractResult', url, function(error, result) {
+      that.loadingResults.set(false);
+
+      if(error){
+        that.noMoreResults.set('No results found');
+        return
+      }
+      that.noMoreResults.set(false);
+
+      that.focusResult.set(new NewsBlock({
+        fullDetails: result,
+        authorId : Meteor.user()._id,
+        searchQuery: url,
+        fromEmbedly: true,
+        version: 'em1',
+        reference: {
+          title: result.title,
+          description: result.description,
+          content: result.content
+          // TODO add more
+        },
+        source: 'embedly'
+      }));
+    });
+  };
+});
+
+Template.create_link_section.onRendered(function() {
+  this.$('input[type="search"]').focus();
+});
+
 Template.create_link_section.onCreated(function() {
   this.type = 'link';
   Session.set('newHorizontalDataSource', 'link');
@@ -546,7 +590,7 @@ Template.create_link_section.onCreated(function() {
       }
       that.noMoreResults.set(false);
 
-      addPropertiesToBaseline = function(obj){
+      var addPropertiesToBaseline = function(obj){
         var newObj = _.extend({}, obj, {
           fullDetails: result,
           authorId : Meteor.user()._id,

@@ -226,3 +226,15 @@
   right: 0;
   background-color: @medium-color;
 }
+
+
+
+// TODO Refactor
+.news-preview{
+  height: 400px;
+  margin-top: 20px;
+  h4{
+    margin-top: 0;
+  }
+  overflow-y: scroll;
+}

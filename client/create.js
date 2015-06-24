@@ -792,10 +792,10 @@ Template.content_icons.events({
 });
 
 Template.add_context.events({
-  'mouseenter .horizontal-narrative-section': function() {
+  'mouseenter .search-results-container': function() {
     document.body.style.overflow = 'hidden';
   },
-  'mouseleave .horizontal-narrative-section': function(){
+  'mouseleave .search-results-container': function(){
     document.body.style.overflow='auto';
   }
 });

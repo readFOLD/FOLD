@@ -29,7 +29,7 @@ ejson@1.0.6
 email@1.0.6
 facts@1.0.4
 fastclick@1.0.3
-fold:context-blocks@0.2.1
+fold:context-blocks@0.3.0
 fold:fast-render@2.3.2
 fold:user-system@0.1.1
 force-ssl@1.0.4
