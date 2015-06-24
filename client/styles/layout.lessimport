@@ -784,7 +784,6 @@ div.link-section {
 
 div.text-section {
   .text-content{
-    overflow-y: hidden;
     height: 264px;
   }
 
