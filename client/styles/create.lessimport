@@ -542,7 +542,6 @@ textarea {
   &.text-input {
     max-height: 300px;
     max-width: 476px;
-    overflow: hidden;
     border: 1px dashed #e0e1e2;
     margin-top: 10px;
     padding: 18px;
