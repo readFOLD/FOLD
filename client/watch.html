@@ -7,11 +7,35 @@
             {{> logo_title}}
             {{{streamTitleElement}}}
           </div>
-          {{#if mainPlayerMuted}}
-            <button class="unmute">Un-mute</button>
-          {{else}}
-            <button class="mute">Mute</button>
-          {{/if}}
+          <div class="second-row">
+            <div class="curator-info">
+              <div class="header">Curated By</div>
+              <div class="rest">
+                <div class="curator-pic">
+                  {{> default_user_pic}}
+                </div>
+                <div class="curator-details">
+                  {{curatorName}}
+                </div>
+              </div>
+            </div>
+            <div class="live-indicator">
+              LIVE
+            </div>
+            <div class="about-stream">
+              <div class="header">About</div>
+              <div class="rest">
+                <div class="description">
+                  {{description}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--{{#if mainPlayerMuted}}-->
+            <!--<button class="unmute">Un-mute</button>-->
+          <!--{{else}}-->
+            <!--<button class="mute">Mute</button>-->
+          <!--{{/if}}-->
         </div>
 
 
@@ -65,27 +89,27 @@
             {{/if}}
           </div>
         </div>
+      {{#if curateMode}}
         <div class="footer-section">
-          {{#if curateMode}}
-            <ol class="streams-list">
-              {{#each streams}}
-                <li class="stream">
-                  <button class="set-main-stream {{#if active}}active{{/if}}">
-                    {{#if active}}
-                      <div class="active-overlay">ON AIR</div>
-                    {{/if}}
-                    <img src="{{thumbnailUrl}}">
-                  </button>
-                </li>
-              {{/each}}
-              <li class="add-stream">
-                <button class="show-stream-search">
-                  Add Stream
+          <ol class="streams-list">
+            {{#each streams}}
+              <li class="stream">
+                <button class="set-main-stream {{#if active}}active{{/if}}">
+                  {{#if active}}
+                    <div class="active-overlay">ON AIR</div>
+                  {{/if}}
+                  <img src="{{thumbnailUrl}}">
                 </button>
               </li>
-            </ol>
-          {{/if}}
+            {{/each}}
+            <li class="add-stream">
+              <button class="show-stream-search">
+                Add Stream
+              </button>
+            </li>
+          </ol>
         </div>
+      {{/if}}
     </div>
 
 

@@ -6,6 +6,7 @@
 @light-transparent-color: rgba(244,244,244,0.75);
 @white-color: #D8D8D8;
 
+@live-color: #C90523;
 @background-color: #323232;
 @action-color: #F6C406;
 @dark-action-color: #dea406;
@@ -299,9 +300,9 @@ section{
   .size-to-fit;
 }
 
-iframe{    
+iframe{
   border-style: none;
-}  
+}
 
 input {
   font-family: inherit;
@@ -578,7 +579,7 @@ div.image-section {
     right: 0px;
     width: 150px;
   }
-  
+
   .text-content {
     .opacity-background-transition;
   }
@@ -911,7 +912,7 @@ div#banner-overlay {
 div.horizontal-context {
   float: right;
   top: 350px;
-  
+
   margin-top: @horizontal-context-margin-top;
   margin-bottom: 500px;
   .size-to-fit;
@@ -1135,7 +1136,7 @@ div.minimap {
       .selected-block {
         background-color: @action-color;
       }
-    }    
+    }
   }
 
   .block {
