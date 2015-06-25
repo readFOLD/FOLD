@@ -19,9 +19,11 @@
                 </div>
               </div>
             </div>
-            <div class="live-indicator">
-              LIVE
-            </div>
+            {{#if activeStream}}
+              <div class="live-indicator">
+                LIVE
+              </div>
+            {{/if}}
             <div class="about-stream">
               <div class="header">About</div>
               <div class="rest">
