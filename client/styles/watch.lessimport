@@ -246,6 +246,9 @@
     left: 5px;
     position: absolute;
   }
+  .close{
+    float: right;
+  }
   svg{
     .size-to-fit;
     .fg{
@@ -262,7 +265,8 @@
   button{
     background-color: inherit;
     width: 40px;
-    height: 24px;
+    height: 25px;
+    line-height: 34px;
     &:disabled{
       cursor: default;
       svg{
