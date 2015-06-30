@@ -26,6 +26,7 @@ percolatestudio:segment.io@=1.1.1_1
 bozhao:link-accounts
 lepozepo:cloudinary
 mystor:device-detection
+dfischer:prerenderio
 email
 browser-policy
 reactive-dict
