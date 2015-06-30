@@ -16,6 +16,6 @@ if (_.contains([true, 'true'], process.env.ALLOW_BOTS)){
 }
 
 
-if (process.env.PRERENDER_TOKEN) {
-  prerenderio.set('prerenderToken', process.env.PRERENDER_TOKEN);
-}
+// if (process.env.PRERENDER_TOKEN) {
+//   prerenderio.set('prerenderToken', process.env.PRERENDER_TOKEN);
+// }
