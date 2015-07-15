@@ -406,41 +406,47 @@ Template.story.onRendered(function(){
   }
 });
 
+var saveMetaviewOrdering = function() {
+  var newVerticalSectionIDs = $( ".sortable-rows" ).sortable('toArray', {attribute: 'data-id'});
+
+  var newContextBlocks = [];
+  $( ".sortable-blocks" ).each(function(i, e) {
+    newContextBlocks.push($(e).sortable('toArray', {attribute: 'data-id'} ))
+  });
+
+
+  var idMap = _.map(newVerticalSectionIDs, function(id, index){
+    return {
+      verticalId: id,
+      contextBlocks: newContextBlocks[index]
+    }
+  });
+
+  Session.set('saveState', 'saving');
+
+  Meteor.call('reorderStory', Session.get("storyId"), idMap, saveCallback)
+
+
+  //var originalVerticalSections = that.data.verticalSections;
+
+  //var newVerticalSections = []
+  //_.map(newVerticalSectionIDs, function(id, i) {
+  //  var newVerticalSection = _.findWhere(originalVerticalSections, {_id: id});
+  //  newVerticalSection.contextBlocks = newContextBlocks[i];
+  //  newVerticalSections.push(newVerticalSection);
+  //});
+  //Meteor.call('saveStory', {_id: Session.get("storyId")}, {$set: {'draftStory.verticalSections': newVerticalSections}})
+};
+
 Template.metaview.onRendered(function() {
   document.body.style.overflow = 'hidden'; // prevent document scroll while in metaview
   var that = this;  
-  this.$(".sortable-rows, .sortable-blocks").sortable({
-    stop: function() {
-      var newVerticalSectionIDs = $( ".sortable-rows" ).sortable('toArray', {attribute: 'data-id'})
-
-      var newContextBlocks = [];
-      $( ".sortable-blocks" ).each(function(i, e) { 
-        newContextBlocks.push($(e).sortable('toArray', {attribute: 'data-id'} ))
-      });
-
-
-      var idMap = _.map(newVerticalSectionIDs, function(id, index){
-        return {
-          verticalId: id,
-          contextBlocks: newContextBlocks[index]
-        }
-      });
-
-      Session.set('saveState', 'saving');
-
-      Meteor.call('reorderStory', Session.get("storyId"), idMap, saveCallback)
-
-
-      //var originalVerticalSections = that.data.verticalSections;
-
-      //var newVerticalSections = []
-      //_.map(newVerticalSectionIDs, function(id, i) {
-      //  var newVerticalSection = _.findWhere(originalVerticalSections, {_id: id});
-      //  newVerticalSection.contextBlocks = newContextBlocks[i];
-      //  newVerticalSections.push(newVerticalSection);
-      //});
-      //Meteor.call('saveStory', {_id: Session.get("storyId")}, {$set: {'draftStory.verticalSections': newVerticalSections}})
-    }
+  this.$(".sortable-rows").sortable({
+    stop: saveMetaviewOrdering
+  });
+  this.$(".sortable-blocks").sortable({
+    connectWith: ".sortable-blocks",
+    stop: saveMetaviewOrdering
   });
 
   this.$(".sortable-rows, .sortable-blocks").disableSelection();
