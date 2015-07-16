@@ -191,15 +191,7 @@ Meteor.methods({
 
     //delete contextBlock._id;
 
-    // TO-DO Remix. When add remix, will need another method or modify this one
-    //var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {
-    //  storyId: storyId,
-    //  storyShortId: storyShortId,
-    //  authorId: Meteor.user()._id,
-    //  savedAt: new Date
-    //}));
-
-    var pushObject, pushSelectorString;
+    var pushObject, pushSelectorString, success;
     pushSelectorString = 'streams';
     pushObject = {};
     pushObject[pushSelectorString] = _.extend({}, stream, {
@@ -214,7 +206,6 @@ Meteor.methods({
     };
 
     deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields:{'activeStreamId' : 1, 'creationStep': 1, 'streams': 1}});
-
 
     modifierObject['$set'] = {};
 
@@ -232,10 +223,17 @@ Meteor.methods({
       });
     }
 
+    var duplicateStream = _.any(deepstream.streams, function(existingStream) {
+      return stream.reference.id === existingStream.reference.id
+    });
 
-    var numUpdated = updateStream.call(this, { shortId: streamShortId }, modifierObject); // TODO, make it so can't easily add the same one twice (addedAt is different)
+    if(duplicateStream){
+      success = true; // it's already done!
+    } else {
+      success = updateStream.call(this, { shortId: streamShortId }, modifierObject); // TODO, make it so can't easily add the same one twice (addedAt is different)
+    }
 
-    if (numUpdated){
+    if (success){
 
       // TODO something
       if (Meteor.isClient){
