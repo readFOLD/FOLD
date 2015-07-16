@@ -1,4 +1,4 @@
-window.notifyRemix = function(message){
+window.notifyFeature = function(message){
   $.amaran({
       content: {
         message: message,
@@ -7,12 +7,10 @@ window.notifyRemix = function(message){
       },
       'position' :'top right',
       theme:'colorful',
-      delay: 5000
+      delay: 8000
     }
   );
 };
-
-window.notifyFeature = window.notifyRemix;
 
 window.notifySuccess = function(message){
   $.amaran({
@@ -23,7 +21,7 @@ window.notifySuccess = function(message){
       },
       'position' :'top right',
       theme:'colorful',
-      delay: 5000
+      delay: 8000
     }
   );
 };
@@ -44,7 +42,7 @@ window.notifyError = function(message){
       },
       'position' :'top right',
       theme:'colorful',
-      delay: 5000
+      delay: 8000
     }
   );
 };
@@ -58,7 +56,7 @@ window.notifyInfo = function(message){
       },
       'position' :'top right',
       theme:'colorful',
-      delay: 5000
+      delay: 8000
     }
   );
 };
