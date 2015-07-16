@@ -253,34 +253,6 @@ Meteor.methods({
     return stream._id;
   },
 
-
-  removeContextFromStory: function(storyId, contextId, verticalSectionIndex) {
-    check(storyId, String);
-    check(contextId, String);
-    check(verticalSectionIndex, Number);
-    var pushSelectorString = 'draftStory.verticalSections.' + verticalSectionIndex + '.contextBlocks';
-    var pullObject = {};
-    pullObject[pushSelectorString] = contextId;
-    var numUpdated = updateStory.call(this, {
-      _id: storyId
-    }, {
-      $pull: pullObject
-    });
-    if (!numUpdated){
-      throw new Meteor.Error('Story not updated')
-    }
-    // TO-DO Remix. Don't actually delete if has ever been remixed (or maybe if ever published)
-    var numRemoved = ContextBlocks.remove({_id: contextId, authorId: this.userId});
-
-    if (Meteor.isClient && numRemoved){
-      Session.set("addingContext", null);
-      Session.set("editingContext", null);
-      var currentX = Session.get('currentX');
-      goToX(currentX ? currentX - 1 : 0);
-    }
-
-    return numRemoved;
-  },
   removeContextFromStream: function(shortId, contextId) {
     check(shortId, String);
     check(contextId, String);
@@ -343,13 +315,6 @@ Meteor.methods({
     // TODO maybe change it all to published
     return updateStream.call(this, {shortId: shortId}, {$set: {onAir: false }});
   },
-  updateStoryTitle: function(storyId, title){
-    check(storyId, String);
-    check(title, String);
-    // TODO DRY
-    var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
-    return updateStory.call(this, {_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
-  },
   updateStreamTitle: function(shortId, title){
     console.log(arguments)
 
@@ -358,25 +323,6 @@ Meteor.methods({
     // TODO DRY
     var streamPathSegment = _s.slugify(title.toLowerCase() || 'deep-stream') + '-' + shortId;
     return updateStream.call(this, {shortId: shortId}, {$set: {'title' : title, 'streamPathSegment' : streamPathSegment }});
-  },
-  updateVerticalSectionTitle: function(storyId, index, title){ // TO-DO switch to using id instead of index
-    check(storyId, String);
-    check(index, Number);
-    check(title, String);
-    var setObject = { $set:{} };
-    setObject['$set']['draftStory.verticalSections.' + index + '.title'] = title;
-
-    return updateStory.call(this, {_id: storyId}, setObject, {removeEmptyStrings: false})
-  },
-  updateVerticalSectionContent: function(storyId, index, content){ // TO-DO switch to using id instead of index
-    check(storyId, String);
-    check(index, Number);
-    check(content, String);
-    // html is cleaned client-side on both save and display
-    var setObject = { $set:{} };
-    setObject['$set']['draftStory.verticalSections.' + index + '.content'] = content;
-
-    return updateStory.call(this, {_id: storyId}, setObject, {removeEmptyStrings: false, autoConvert: false}); // don't autoconvert because https://github.com/aldeed/meteor-simple-schema/issues/348
   },
   updateHeaderImage: function(storyId, filePublicId, fileFormat) {
     check(storyId, String);
@@ -389,16 +335,6 @@ Meteor.methods({
       }
     })
   },
-  addTitle: function(storyId, index) {
-    check(storyId, String);
-    check(index, Number);
-    return changeHasTitle.call(this, storyId, index, true);
-  },
-  removeTitle: function(storyId, index) {
-    check(storyId, String);
-    check(index, Number);
-    return changeHasTitle.call(this, storyId, index, false);
-  },
   editHorizontalBlockDescription: function(shortId, contextId, description) {
     check(shortId, String);
     check(contextId, String);
@@ -410,41 +346,6 @@ Meteor.methods({
     check(contextId, String);
     check(content, String);
     return updateStream.call(this, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.content": content}});
-  },
-  reorderStory: function(storyId, idMap) {
-    check(storyId, String);
-    check(idMap, [Object]);
-
-    var story = Stories.findOne({_id: storyId, authorId: this.userId}, {
-      fields: {
-        'draftStory.verticalSections': 1
-      }
-    });
-
-    if (!story || !story.draftStory){
-      return new Meteor.Error('story not found for reordering: ' + storyId)
-    }
-
-    var draftStory = story.draftStory;
-
-    var originalVerticalSections = draftStory.verticalSections;
-
-
-    var newVerticalSections = _.map(idMap, function(horizontal) {
-      return _.extend(
-        {},
-        _.findWhere(originalVerticalSections, {_id: horizontal.verticalId}),
-        {
-          contextBlocks: horizontal.contextBlocks
-        }
-      );
-    });
-
-    return updateStory.call(this, {_id: storyId}, {
-      $set: {
-        'draftStory.verticalSections': newVerticalSections
-      }
-    })
   },
   insertVerticalSection: function(storyId, index, verticalSectionId) { // TO-DO find a good way to generate this id in a trusted way
     check(storyId, String);
@@ -571,110 +472,6 @@ Meteor.methods({
         'draftStory.verticalSections': {_id: verticalSections[index]._id}
       }
     })
-  },
-  publishStory: function(storyId, title, keywords, narrativeRightsReserved) {
-    check(storyId, String);
-    check(title, String);
-    check(keywords, [String]);
-    check(narrativeRightsReserved, Boolean);
-    if (!this.userId) {
-      throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to publish a story');
-    }
-
-    var user = Meteor.user();
-
-    if (!user){
-      throw new Meteor.Error('user not found by author to publish. userId: ' + this.userId);
-    }
-
-    var accessPriority = user.accessPriority;
-    if(!accessPriority || accessPriority > publishAccessLevel){
-      throw new Meteor.Error('user does not have publish access. userId: ' + this.userId);
-    }
-
-    var story = Stories.findOne({_id: storyId, authorId: this.userId});
-
-    if (!story){
-      throw new Meteor.Error('story not found by author to publish. story: ' + storyId + '  userId: ' + this.userId);
-    }
-
-
-    var draftStory = story.draftStory;
-
-    if (!draftStory){
-      throw new Meteor.Error('story for publishing does not have a draft. story: ' + storyId + '  userId: ' + this.userId)
-    }
-
-    var contextBlockIds = _.chain(draftStory.verticalSections)
-      .pluck('contextBlocks')
-      .flatten()
-      .value();
-
-    // update contextblocks so they are ready for publish
-    var numCBlocksUpdated = updateContextBlocks.call(this, { _id: {$in: contextBlockIds} }, {
-      $set: {
-        'published': true,
-        'everPublished': true,
-        'publishedAt': new Date()
-      },
-    }, {multi: true});
-
-    if (numCBlocksUpdated !== contextBlockIds.length){
-      throw new Meteor.Error('context blocks failed to update on publish ' + storyId + '. Maybe some are missing. Or are not by author. Number of ids: ' + contextBlockIds.length + ' Number of blocks updated: ' + numCBlocksUpdated);
-    }
-
-    var contextBlocks = ContextBlocks.find({_id: {$in: contextBlockIds}}).fetch();
-
-    var contextBlockTypeCount = _.chain(contextBlocks).pluck('type').countBy(_.identity).value();
-
-    // TO-DO
-    // Maybe a list of which cards are original and which are remixed
-
-    var fieldsToCopyFromDraft = [
-      'verticalSections',
-      'headerImage',
-      'headerImageFormat',
-      'headerImageAttribution'
-      //'title'
-    ];
-
-    var fieldsToSetFromArguments = {
-      'title': title,
-      'draftStory.title': title,
-      'keywords': keywords,
-      'draftStory.keywords': keywords,
-      'narrativeRightsReserved': narrativeRightsReserved,
-      'draftStory.narrativeRightsReserved': narrativeRightsReserved,
-    };
-
-
-    var setObject = _.extend({},
-      _.pick(draftStory, fieldsToCopyFromDraft), // copy all safe fields from draftStory.
-      fieldsToSetFromArguments,
-      {
-        'contextBlocks': contextBlocks,
-        'contextBlockIds': contextBlockIds,
-        'contextBlockTypeCount': contextBlockTypeCount,
-        'userPathSegment': user.displayUsername,
-        'storyPathSegment': _s.slugify(title.toLowerCase()) + '-' + story.shortId, // TODO DRY
-        'publishedAt': new Date,
-        'firstPublishedAt': story.firstPublishedAt || new Date, // only change if not set TODO cleanup and actually don't set if already set
-        'published': true,
-        'everPublished': true,
-        'authorName': user.profile.name || 'Anonymous',
-        'authorUsername': user.username,
-        'authorDisplayUsername': user.displayUsername,
-        'version': 'earlybird'
-      }
-    );
-
-    if (story.published){ // if was published before, add the current published version to the history
-      StoryHistories.insert(_.extend({storyId: story._id}, _.omit(story, ['draftStory', 'history', '_id']))); // TO-DO remove history once migrate all existing stories
-    }
-
-    return updateStory.call(this, { _id: storyId }, {
-      $set: setObject
-    });
   },
   favoriteStory: function(storyId) {
     check(storyId, String);
