@@ -440,13 +440,16 @@ var saveMetaviewOrdering = function() {
 
 Template.metaview.onRendered(function() {
   document.body.style.overflow = 'hidden'; // prevent document scroll while in metaview
-  var that = this;  
+  var that = this;
   this.$(".sortable-rows").sortable({
     stop: saveMetaviewOrdering
   });
   this.$(".sortable-blocks").sortable({
     connectWith: ".sortable-blocks",
-    stop: saveMetaviewOrdering
+    stop: function() {
+      resetXPositionMemory(); // prevent XId stuff from getting all crazy
+      saveMetaviewOrdering();
+    }
   });
 
   this.$(".sortable-rows, .sortable-blocks").disableSelection();

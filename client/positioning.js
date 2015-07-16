@@ -220,3 +220,9 @@ $(document).keydown(function(e) {
     }
   }
 });
+
+window.resetXPositionMemory = function () {
+  Session.set("wrap", {});
+  Session.set("currentXByYId", {});
+};
+
