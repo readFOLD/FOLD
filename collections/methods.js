@@ -224,7 +224,7 @@ Meteor.methods({
     }
 
     var duplicateStream = _.any(deepstream.streams, function(existingStream) {
-      return stream.reference.id === existingStream.reference.id
+      return stream.reference.id === existingStream.reference.id;
     });
 
     if(duplicateStream){
@@ -233,20 +233,28 @@ Meteor.methods({
       success = updateStream.call(this, { shortId: streamShortId }, modifierObject); // TODO, make it so can't easily add the same one twice (addedAt is different)
     }
 
-    if (success){
+    if (success) {
 
       // TODO something
       if (Meteor.isClient){
-        if(deepstream.streams.length === 1){ // this is the second stream to be added
-          window.notifySuccess("You just added a second stream. Now you can switch between streams and all your viewers will see that change!")
+        if(deepstream.streams.length === 1) { // this is the second stream to be added
+          window.notifySuccess("You just added a second stream. Now you can switch between streams and all your viewers will see that change!");
         }
+
+        // briefly add the justAdded class so that user knows it was added to the bottom
+        setTimeout(function(){ // wait till in DOM. TO-DO this is kinda hacky
+          $('.stream[data-stream-reference-id="' + stream.reference.id + '"]').addClass('justAdded');
+          setTimeout(function(){
+            $('.stream[data-stream-reference-id="' + stream.reference.id + '"]').removeClass('justAdded');
+          }, 1300);
+        }, 0);
         //window.hideNewHorizontalUI();
 
         //var story = Stories.findOne(storyId, fields);
         //goToX(_.indexOf(story.draftStory.verticalSections[verticalIndex].contextBlocks, contextId.toString()))
       }
     } else {
-      throw new Meteor.Error('Stream not updated')
+      throw new Meteor.Error('Stream not updated');
     }
     return stream._id;
   },

@@ -8,6 +8,11 @@
     font-weight: bold;
   }
   .streams-list{
+    .stream.justAdded{
+      button{
+        outline: 4px solid green;
+      }
+    }
     li{
       float: left;
       margin-left: 20px;

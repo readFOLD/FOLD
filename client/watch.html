@@ -95,7 +95,7 @@
         <div class="footer-section">
           <ol class="streams-list">
             {{#each streams}}
-              <li class="stream">
+              <li data-stream-reference-id="{{reference.id}}" class="stream">
                 <button class="set-main-stream {{#if active}}active{{/if}}">
                   {{#if active}}
                     <div class="active-overlay">ON AIR</div>
