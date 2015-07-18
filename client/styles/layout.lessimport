@@ -966,7 +966,7 @@ div.horizontal-context {
     pointer-events: auto;
   }
 
-  @fullHeight: 485px;
+  @fullHeight: 500px;
 
   &.text {
     opacity: 1;
