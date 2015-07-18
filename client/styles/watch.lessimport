@@ -80,6 +80,8 @@
   display: inline-block;
   z-index: 10;
   width: @right-section-width;
+  border-top: 1px solid @black-color;
+  border-bottom: 1px solid @light-color;
 
   .content-icons {
     @circle-diameter: 40px;
@@ -148,6 +150,11 @@
 
 .footer-section{
   padding: 10px;
+  .stream-stats{
+    position: absolute;
+    right: @right-section-width;
+    width: 100px;
+  }
 }
 
 .tutorial{
@@ -356,15 +363,20 @@
   font-size: 20px;
   font-weight: bold;
   position: relative;
+  height: 90px;
 }
 
 .curator-info{
+  right: 0px;
+  position: absolute;
+  width: @right-section-width;
+  padding-left: 20px;
   display: inline-block;
   .curator-pic{
     height: 56px;
     width: 56px;
     display: inline-block;
-    margin-left: 18px;
+    margin-left: 8px;
     margin-right: 10px;
     .bg{
       fill: @medium-color;

@@ -8,17 +8,6 @@
             {{{streamTitleElement}}}
           </div>
           <div class="second-row">
-            <div class="curator-info">
-              <div class="header">Curated By</div>
-              <div class="rest">
-                <div class="curator-pic">
-                  {{> default_user_pic}}
-                </div>
-                <div class="curator-details">
-                  {{curatorName}}
-                </div>
-              </div>
-            </div>
             {{#if activeStream}}
               <div class="live-indicator">
                 LIVE
@@ -91,8 +80,8 @@
             {{/if}}
           </div>
         </div>
-      {{#if curateMode}}
-        <div class="footer-section">
+      <div class="footer-section">
+        {{#if curateMode}}
           <ol class="streams-list">
             {{#each streams}}
               <li data-stream-reference-id="{{reference.id}}" class="stream">
@@ -110,8 +99,23 @@
               </button>
             </li>
           </ol>
+        {{/if}}
+        <div class="stream-stats">
+          <div class="views">Views: 12,245</div>
+          <div class="favorites">Favs: 133</div>
         </div>
-      {{/if}}
+        <div class="curator-info">
+          <div class="header">CURATOR</div>
+          <div class="rest">
+            <div class="curator-pic">
+              {{> default_user_pic}}
+            </div>
+            <div class="curator-details">
+              {{curatorName}}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
 
