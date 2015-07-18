@@ -564,14 +564,8 @@ div.image-section {
   .size-to-fit;
   position: relative;
   line-height: @horizontal-content-height;
-  background-color: @black-color;
+  background-color: @medium-color;
   text-align: center;
-  &.always-show-caption{
-    div.text-content{
-      background-color: rgba(0, 0, 0, 0.8);
-      opacity: 0.8;
-    }
-  }
 
   img.giphy-logo {
     position: absolute;
@@ -580,16 +574,14 @@ div.image-section {
     width: 150px;
   }
 
-  .text-content {
-    .opacity-background-transition;
+  .text-content{
+    color: white;
+    background-color: @dark-color;
   }
 
   textarea.text-content {
     padding: 8px;
     display: block;
-    background-color: rgba(0, 0, 0, 0.8);
-    opacity: 0.8;
-    color: white;
   }
 
   div.attribution {
@@ -624,9 +616,6 @@ div.image-section {
     .text-align-start;
     width: 100%;
     padding: 8px;
-    opacity: 0;
-    background-color: rgba(0, 0, 0, 0);
-    color: white;
     min-height: 36px;
 
   }

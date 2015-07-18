@@ -77,6 +77,7 @@
   height: 100%;
   float: left;
   position: relative;
+  background-color: @medium-color;
   display: inline-block;
   z-index: 10;
   width: @right-section-width;
