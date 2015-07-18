@@ -240,344 +240,66 @@ typeHelpers = {
   }
 };
 
-Template.story_header.onRendered(function() {
-  var range, sel, titleDiv;
-  // add cursor to title section if empty
-  if (!this.data.title) {
-    if (!Session.get('read')) {
-      titleDiv = $(this)[0].find('.story-title');
-      sel = window.getSelection();
-      if (sel.rangeCount > 0) {
-        sel.removeAllRanges();
-      }
-      range = document.createRange();
-      range.selectNodeContents(titleDiv);
-      range.collapse();
-      return sel.addRange(range);
-    }
-  }
-});
-
-Template.story_header.helpers({
-  title: function() {
-    if (this.title) {
-      return this.title;
-    } else {
-      return Session.get("storyTitle");
-    }
-  },
-  profileUrl: function(){
-    return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate and only use authorDisplayUsername
-  }
-});
-
-Template.story_header.events = {
-  "click #to-story": function() {
-    $('#to-story, .attribution').fadeOut();
-    goToX(0);
-    return goToY(0);
-  },
-  "click #banner-overlay": function() {
-    var path;
-    if (Session.get("pastHeader")) {
-      $("html, body").animate({
-        scrollTop: 0
-      }, function() {
-        return $('#to-story, .attribution').fadeIn();
-      });
-      Session.set("currentX", void 0);
-      Session.set("currentY", void 0);
-      path = window.location.pathname.split("/");
-      path.pop();
-      return path.pop();
-    } else {
-      $('#to-story, .attribution').fadeOut();
-      goToX(0);
-      return goToY(0);
-    }
-  },
-  "keydown": function (e) {
-    if (e.which == 13) { // enter
-      e.preventDefault();
-      $(':focus').blur(); // TO-DO this should move focus to the first block
-      $('#to-story, .attribution').fadeOut();
-      goToX(0);
-      return goToY(0);
-    }
-  }
-};
-
-Template.story.helpers({
-  horizontalExists: function() {
-    var currentY, _ref;
-    currentY = Session.get('currentY');
-    return ((_ref = Session.get('horizontalSectionsMap')[currentY]) != null ? _ref.horizontal.length : void 0) > 1;
-  },
-  pastHeader: function() {
-    return Session.get("pastHeader");
-  },
-
-  metaviewOpen: function() {
-    return Session.get("metaview")
-  },
-  showMinimap: function() {
-    return Session.get("showMinimap") && (!Meteor.Device.isPhone());
-  },
-  showMobileMinimap: function() {
-    return Session.get("showMinimap") && (Meteor.Device.isPhone());
-  }
-});
-
-Template.story_title.helpers({
-  storyTitleDiv: function(){
-    if (Session.get('read')) {
-      return '<div class="story-title">' + _.escape(this.title) + '</div>';
-    } else {
-      // this is contenteditable in edit mode
-      return '<div class="story-title" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
-    }
-  }
-});
-
-Template.vertical_section_block.helpers({
-  notFirst: function() {
-    return !Session.equals("currentY", 0);
-  },
-  verticalSelected: function() {
-    return Session.equals("currentY", this.index) && Session.get("pastHeader");
-  },
-  validTitle: function() {
-    return this.title === !"title";
-  },
-  titleDiv: function() {
-    if (Session.get('read')) {
-      return '<div class="title" dir="auto">' + _.escape(this.title) + '</div>';
-    } else {
-      // this is contenteditable in edit mode
-      return '<div class="title editable" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
-    }
-  },
-  // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
-  contentDiv: function() {
-    if (Session.get('read')) {
-      return '<div class="content" dir="auto">' + cleanVerticalSectionContent(this.content) + '</div>';
-    } else {
-      // nonReactiveContent preserves browser undo functionality across saves
-      // this is contenteditable in edit mode
-      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true" dir="auto">' + cleanVerticalSectionContent(Template.instance().semiReactiveContent.get()) + '</div>';
-    }
-  }
-});
-
-Template.vertical_narrative.helpers({
-  verticalSectionsWithIndex: function() {
-    return this.verticalSections.map(function(v, i) {
-      return _.extend(v, {
-        index: i
-      });
-    });
-  }
-});
-
-Template.vertical_section_block.events({
-  "click": function(d, t) {
-    goToY(t.data.index);
-  },
-  "click a": function(e, t) {
-    var contextId;
-    e.preventDefault();
-    if (Session.equals("currentY", t.data.index)){
-      contextId = $(e.currentTarget).data('contextId');
-      goToContext(contextId);
-    }
-    analytics.track('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
-      verticalIndex: this.index,
-      contextType: $(e.currentTarget).data('contextType'),
-      contextSource: $(e.currentTarget).data('contextSource'),
-      numberOfContextCardsOnVertical: this.contextBlocks.length,
-      inReadMode: Session.get('read')
-    }));
-  }
-});
-
-Template.story.onRendered(function(){
-  // TODO destroy bindings later?
-  if(Meteor.Device.isPhone()){
-    this.$('.vertical-narrative').hammer(hammerSwipeOptions).bind('swipeleft',function(){
-        // TODO only if selected
-        Session.set('mobileContextView', true);
-      }
-    );
-  }
-});
-
-Template.metaview.onRendered(function() {
-  document.body.style.overflow = 'hidden'; // prevent document scroll while in metaview
-  var that = this;  
-  this.$(".sortable-rows, .sortable-blocks").sortable({
-    stop: function() {
-      var newVerticalSectionIDs = $( ".sortable-rows" ).sortable('toArray', {attribute: 'data-id'})
-
-      var newContextBlocks = [];
-      $( ".sortable-blocks" ).each(function(i, e) { 
-        newContextBlocks.push($(e).sortable('toArray', {attribute: 'data-id'} ))
-      });
+//Template.story_header.onRendered(function() {
+//  var range, sel, titleDiv;
+//  // add cursor to title section if empty
+//  if (!this.data.title) {
+//    if (!Session.get('read')) {
+//      titleDiv = $(this)[0].find('.story-title');
+//      sel = window.getSelection();
+//      if (sel.rangeCount > 0) {
+//        sel.removeAllRanges();
+//      }
+//      range = document.createRange();
+//      range.selectNodeContents(titleDiv);
+//      range.collapse();
+//      return sel.addRange(range);
+//    }
+//  }
+//});
 
 
-      var idMap = _.map(newVerticalSectionIDs, function(id, index){
-        return {
-          verticalId: id,
-          contextBlocks: newContextBlocks[index]
-        }
-      });
+//Template.story_title.helpers({
+//  storyTitleDiv: function(){
+//    if (Session.get('read')) {
+//      return '<div class="story-title">' + _.escape(this.title) + '</div>';
+//    } else {
+//      // this is contenteditable in edit mode
+//      return '<div class="story-title" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
+//    }
+//  }
+//});
 
-      Session.set('saveState', 'saving');
+//Template.vertical_section_block.helpers({
+//  notFirst: function() {
+//    return !Session.equals("currentY", 0);
+//  },
+//  verticalSelected: function() {
+//    return Session.equals("currentY", this.index) && Session.get("pastHeader");
+//  },
+//  validTitle: function() {
+//    return this.title === !"title";
+//  },
+//  titleDiv: function() {
+//    if (Session.get('read')) {
+//      return '<div class="title" dir="auto">' + _.escape(this.title) + '</div>';
+//    } else {
+//      // this is contenteditable in edit mode
+//      return '<div class="title editable" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
+//    }
+//  },
+//  // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
+//  contentDiv: function() {
+//    if (Session.get('read')) {
+//      return '<div class="content" dir="auto">' + cleanVerticalSectionContent(this.content) + '</div>';
+//    } else {
+//      // nonReactiveContent preserves browser undo functionality across saves
+//      // this is contenteditable in edit mode
+//      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true" dir="auto">' + cleanVerticalSectionContent(Template.instance().semiReactiveContent.get()) + '</div>';
+//    }
+//  }
+//});
 
-      Meteor.call('reorderStory', Session.get("storyId"), idMap, saveCallback)
-
-
-      //var originalVerticalSections = that.data.verticalSections;
-
-      //var newVerticalSections = []
-      //_.map(newVerticalSectionIDs, function(id, i) {
-      //  var newVerticalSection = _.findWhere(originalVerticalSections, {_id: id});
-      //  newVerticalSection.contextBlocks = newContextBlocks[i];
-      //  newVerticalSections.push(newVerticalSection);
-      //});
-      //Meteor.call('saveStory', {_id: Session.get("storyId")}, {$set: {'draftStory.verticalSections': newVerticalSections}})
-    }
-  });
-
-  this.$(".sortable-rows, .sortable-blocks").disableSelection();
-});
-
-Template.metaview.onDestroyed(function() {
-  document.body.style.overflow = 'auto';
-});
-
-Template.metaview.events({
-  "click .close": function(d, t) {
-    Session.set("metaview", false);
-  },
-  "click": function(d, t) {
-    d.preventDefault();
-  },
-  // these lines below prevent mouseout and mouseover from getting to other dom elements that will release the scroll lock
-  mouseover: function(d){
-    d.preventDefault();
-    d.stopPropagation();
-  },
-  mouseout: function(d){
-    d.preventDefault();
-    d.stopPropagation();
-  }
-})
-
-Template.metaview_context_block.helpers(typeHelpers)
-
-Template.metaview.helpers({
-  verticalSectionsWithIndex: function() {
-    return this.verticalSections.map(function(v, i) {
-      return _.extend(v, {
-        index: i
-      });
-    });
-  },
-  horizontalSections: function() {
-    var blocks = this.contextBlocks
-       .map(function(id) {
-         return ContextBlocks.findOne({ // by finding one at a time, this keeps in broken links. TO-DO maybe should find a better soln that uses $in
-           _id: id
-         }) || {_id: id}; // fallback to just having id if cannot find
-       });
-    return blocks;
-  },
-  textContent: function(){
-    return $($.parseHTML(this.content)).text();
-  }
-});
-
-Template.minimap.events({
-  "click .minimap": function(d, t) {
-    if (!Session.get('read')){ // only metaview in create for now
-      Session.set("metaview", true);
-      analytics.track('Click minimap in create mode');
-    } else {
-      notifyFeature('Zoom-out mode: coming soon!');
-      analytics.track('Click minimap in read mode');
-    }
-  }
-});
-
-Template.minimap.helpers({
-  horizontalSectionsMap: function() {
-    return Session.get("horizontalSectionsMap");
-  },
-  selectedX: function() {
-    return Session.equals("currentX", this.horizontalIndex);
-  },
-  selectedY: function() {
-    return Session.equals("currentY", this.verticalIndex);
-  },
-  minimapLargeEnough: function() {
-    // Ensure minimap height is greater than 0 and sections are at least 5 pixels tall
-    if (Session.get("minimapMaxHeight") <= 0 || (Session.get("minimapMaxHeight") / Session.get("horizontalSectionsMap").length < 5)) {
-      return false;
-    } else {
-      return true;
-    }
-  },
-  responsive: function() {
-    var maxHeight = Session.get("minimapMaxHeight");
-    var defaultSectionHeight = 17 + 5;  // Section height + margin-bottom
-    return (Session.get("horizontalSectionsMap").length * defaultSectionHeight >= maxHeight)
-  },
-  sectionHeight: function() {
-    var maxHeight = Session.get("minimapMaxHeight");
-    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75;  // 75% of available space
-  },
-  verticalCardWidth: function() {
-    var maxHeight = Session.get("minimapMaxHeight");
-    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 1.53333;  //  1.53333 aspect ratio
-  },
-  horizontalCardWidth: function() {
-    var maxHeight = Session.get("minimapMaxHeight");
-    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 0.7645 * 1.53333;  // Horizontal block is 76.45% of section
-  },
-  sectionMargin: function() {
-    var maxHeight = Session.get("minimapMaxHeight");
-    return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.25;  // 25% of available space (33% of section)
-  }
-});
-
-Template.mobile_minimap.helpers({
-  verticalSelectedArray: function() {
-    var currentYId = Session.get('currentYId')
-    return _.map(this.verticalSections, function(v){
-      return {selected: currentYId === v._id};
-    });
-  },
-  horizontalSelectedArray: function() {
-    var currentXId = Session.get('currentXId');
-    var currentY = Session.get('currentY');
-    if (this.verticalSections[currentY]){
-      return _.map(this.verticalSections[currentY].contextBlocks, function(cId){
-        return {selected: currentXId === cId};
-      });
-    } else {
-      return [];
-    }
-  },
-  horizontalWidth: function(){
-    return Session.get('windowWidth') - Session.get('mobileMargin');
-  },
-  verticalHeight: function(){
-    return Session.get('windowHeight') - Session.get('mobileMargin');
-  },
-  mobileMargin: function(){
-    return Session.get('mobileMargin');
-  }
-});
 
 Template.horizontal_context.helpers({
   verticalExists: function() {

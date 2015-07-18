@@ -344,104 +344,104 @@ var saveVerticalSectionContent = function(e, template) {
 };
 
 var throttledSaveVerticalSectionContent = _.throttle(saveVerticalSectionContent, 4000, {trailing: false});
-
-Template.vertical_section_block.events({
-  'blur [contenteditable]': window.updateUIBasedOnSelection,
-  'keyup [contenteditable]': window.updateUIBasedOnSelection,
-  'blur .title[contenteditable]' : function(e, template){
-    Session.set('saveState', 'saving');
-
-    Meteor.call('updateVerticalSectionTitle', Session.get('storyId'), template.data.index, $.trim(template.$('div.title').text()), saveCallback);
-    return true;
-  },
-  'keydown .title[contenteditable]' : function(e, template){
-    if (e.keyCode === 13){ // enter
-      e.preventDefault();
-      template.$('.content').focus();
-    }
-    return true;
-  },
-  'blur .content[contenteditable]' : saveVerticalSectionContent,
-  'keyup .content[contenteditable]' : throttledSaveVerticalSectionContent,
-  'paste .fold-editable': function(e) {
-    var clipboardData, html;
-    e.preventDefault();
-    clipboardData = (e.originalEvent || e).clipboardData;
-    if (!clipboardData){return}
-    html = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
-
-    document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
-    analytics.track('Paste into fold-editable area');
-  },
-  'drop': function(e){
-    e.preventDefault();
-    analytics.track('Drop (attempt) into fold-editable area');
-    return false;
-  },
-  'paste .title.editable': window.plainTextPaste,   // only allow plaintext in title
-  'mouseenter .narrative-babyburger-and-menu': function(e, template){
-    template.babyburgerOpen.set(true);
-  },
-  'mouseleave .narrative-babyburger-and-menu': function(e, template){
-    template.babyburgerOpen.set(false);
-  }
-});
+//
+//Template.vertical_section_block.events({
+//  'blur [contenteditable]': window.updateUIBasedOnSelection,
+//  'keyup [contenteditable]': window.updateUIBasedOnSelection,
+//  'blur .title[contenteditable]' : function(e, template){
+//    Session.set('saveState', 'saving');
+//
+//    Meteor.call('updateVerticalSectionTitle', Session.get('storyId'), template.data.index, $.trim(template.$('div.title').text()), saveCallback);
+//    return true;
+//  },
+//  'keydown .title[contenteditable]' : function(e, template){
+//    if (e.keyCode === 13){ // enter
+//      e.preventDefault();
+//      template.$('.content').focus();
+//    }
+//    return true;
+//  },
+//  'blur .content[contenteditable]' : saveVerticalSectionContent,
+//  'keyup .content[contenteditable]' : throttledSaveVerticalSectionContent,
+//  'paste .fold-editable': function(e) {
+//    var clipboardData, html;
+//    e.preventDefault();
+//    clipboardData = (e.originalEvent || e).clipboardData;
+//    if (!clipboardData){return}
+//    html = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
+//
+//    document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
+//    analytics.track('Paste into fold-editable area');
+//  },
+//  'drop': function(e){
+//    e.preventDefault();
+//    analytics.track('Drop (attempt) into fold-editable area');
+//    return false;
+//  },
+//  'paste .title.editable': window.plainTextPaste,   // only allow plaintext in title
+//  'mouseenter .narrative-babyburger-and-menu': function(e, template){
+//    template.babyburgerOpen.set(true);
+//  },
+//  'mouseleave .narrative-babyburger-and-menu': function(e, template){
+//    template.babyburgerOpen.set(false);
+//  }
+//});
 
 window.refreshContentDep = new Tracker.Dependency();
+//
+//Template.vertical_section_block.onCreated(function() {
+//  this.semiReactiveContent = new ReactiveVar(); // used in edit mode so that browser undo functionality doesn't break when autosave
+//  this.babyburgerOpen = new ReactiveVar(false);
+//  var that = this;
+//  this.autorun(function() {
+//    window.refreshContentDep.depend();
+//    that.semiReactiveContent.set(that.data.content)
+//  });
+//});
+//
+//Template.vertical_section_block.onRendered(function() {
+//  var that = this;
+//  if (!Meteor.Device.isPhone()){ // highlight active context card link except on mobile
+//    this.autorun(function() {
+//      Session.get('read') // make reactive to switching between preview and edit
+//      var currentXId = Session.get('currentXId');
+//      var pastHeader = Session.get("pastHeader");
+//      if(Session.equals("currentYId", that.data._id) && pastHeader){ // if block is selected
+//        if (currentXId){ // if there is a current context card
+//          Meteor.setTimeout(function(){
+//            that.$('a[data-context-id="' + currentXId + '"]').addClass('active');
+//            that.$('a[data-context-id!="' + currentXId + '"]').removeClass('active');
+//          }, 0)
+//        }
+//      } else {
+//        Meteor.setTimeout(function(){
+//          that.$('a').removeClass('active');
+//        }, 0)
+//      }
+//    });
+//  }
+//});
 
-Template.vertical_section_block.onCreated(function() {
-  this.semiReactiveContent = new ReactiveVar(); // used in edit mode so that browser undo functionality doesn't break when autosave
-  this.babyburgerOpen = new ReactiveVar(false);
-  var that = this;
-  this.autorun(function() {
-    window.refreshContentDep.depend();
-    that.semiReactiveContent.set(that.data.content)
-  });
-});
-
-Template.vertical_section_block.onRendered(function() {
-  var that = this;
-  if (!Meteor.Device.isPhone()){ // highlight active context card link except on mobile
-    this.autorun(function() {
-      Session.get('read') // make reactive to switching between preview and edit
-      var currentXId = Session.get('currentXId');
-      var pastHeader = Session.get("pastHeader");
-      if(Session.equals("currentYId", that.data._id) && pastHeader){ // if block is selected
-        if (currentXId){ // if there is a current context card
-          Meteor.setTimeout(function(){
-            that.$('a[data-context-id="' + currentXId + '"]').addClass('active');
-            that.$('a[data-context-id!="' + currentXId + '"]').removeClass('active');
-          }, 0)
-        }
-      } else {
-        Meteor.setTimeout(function(){
-          that.$('a').removeClass('active');
-        }, 0)
-      }
-    });
-  }
-});
-
-Template.vertical_section_block.helpers({
-  babyburgerOpen: function(){
-    return Template.instance().babyburgerOpen.get();
-  }
-});
-
-Template.story_title.events({
-  'paste [contenteditable]': window.plainTextPaste,
-  'drop': function(e){
-    e.preventDefault();
-    return false;
-  },
-  'blur .story-title[contenteditable]': function(e,template) {
-    storyId = Session.get('storyId');
-    storyTitle = $.trim(template.$('div.story-title').text());
-
-    Session.set('saveState', 'saving');
-    return Meteor.call('updateStoryTitle', storyId, storyTitle, saveCallback)
-  }
-});
+//Template.vertical_section_block.helpers({
+//  babyburgerOpen: function(){
+//    return Template.instance().babyburgerOpen.get();
+//  }
+//});
+//
+//Template.story_title.events({
+//  'paste [contenteditable]': window.plainTextPaste,
+//  'drop': function(e){
+//    e.preventDefault();
+//    return false;
+//  },
+//  'blur .story-title[contenteditable]': function(e,template) {
+//    storyId = Session.get('storyId');
+//    storyTitle = $.trim(template.$('div.story-title').text());
+//
+//    Session.set('saveState', 'saving');
+//    return Meteor.call('updateStoryTitle', storyId, storyTitle, saveCallback)
+//  }
+//});
 
 Template.create.helpers({
   narrativeView: function() {
