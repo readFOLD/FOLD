@@ -1,13 +1,14 @@
 @breakpoint-one: 900px;
 @breakpoint-two: 600px;
 
+@topButtonRight: 20px;
+
 div#login-buttons-and-more {
   position: absolute;
   top: 15px;
   left: 15px;
 }
 
-@topButtonRight: 72px;
 
 div.home-top {
   position: fixed;
@@ -421,11 +422,31 @@ div.logo-title {
 }
 
 
+
+
+
+// DEEPSTREAM
+.stream-preview{
+  width: 480px;
+  img{
+    height: 360px;
+    width: 480px;
+  }
+  margin-left: 30px;
+  margin-bottom: 60px;
+  &:hover{
+    img{
+      .box-shadow(4px 8px 12px 0px rgba(0,0,0,0.75));
+    }
+  }
+}
+
+
 div.action-items {
   z-index: 15;
-  @height: 45px;
+  @height: 30px;
   position: absolute;
-  top: -6px;
+  top: 10px;
   @media @not-mobile{
     right: @topButtonRight;
   }
@@ -437,8 +458,8 @@ div.action-items {
   font-family: 'Roboto', sans-serif;
 
   button{
-    padding: 0px 20px;
-    min-width: 152px;
+    padding: 0px 10px;
+    min-width: 100px;
     .size-to-fit;
     &:hover {
       background-color: @dark-action-color;
@@ -446,7 +467,7 @@ div.action-items {
   }
 
   a {
-    min-width: 154px;
+    min-width: 100px;
     .size-to-fit;
     &:hover {
       background-color: @dark-action-color;
@@ -504,23 +525,6 @@ div.action-items {
       display: block;
       margin:0;
       border-top: 1px solid @white-color;
-    }
-  }
-}
-
-
-// DEEPSTREAM
-.stream-preview{
-  width: 480px;
-  img{
-    height: 360px;
-    width: 480px;
-  }
-  margin-left: 30px;
-  margin-bottom: 60px;
-  &:hover{
-    img{
-      .box-shadow(4px 8px 12px 0px rgba(0,0,0,0.75));
     }
   }
 }
