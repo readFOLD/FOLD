@@ -648,34 +648,34 @@ Template.create_deepstream.events({
   }
 });
 
-
-var storyViewed = '';
-Template.read.onCreated(function(){
-
-  // analytics autorun
-  this.autorun(function(){
-    if (!Session.equals("currentY", null)){
-      var y = Session.get("currentY");
-      var storyLength = Session.get("story").verticalSections.length;
-      analytics.track('View vertical narrative section', {
-        label: y,
-        verticalNarrativeIndex: y,
-        storyLength: storyLength,
-        verticalNarrativeFraction: (y + 1) / storyLength,
-        storyId: Session.get("storyId")
-      })
-    }
-  });
-
-  var id = this.data._id;
-  if (storyViewed !== id){
-    storyViewed = id;
-    Meteor.call('countStoryView', id);
-    analytics.track('View story', trackingInfoFromStory(this.data));
-  }
-});
-
-
-Template.read.onRendered(function(){
-  $(window).scrollTop(Session.get('scrollTop'));
-});
+//
+//var storyViewed = '';
+//Template.read.onCreated(function(){
+//
+//  // analytics autorun
+//  this.autorun(function(){
+//    if (!Session.equals("currentY", null)){
+//      var y = Session.get("currentY");
+//      var storyLength = Session.get("story").verticalSections.length;
+//      analytics.track('View vertical narrative section', {
+//        label: y,
+//        verticalNarrativeIndex: y,
+//        storyLength: storyLength,
+//        verticalNarrativeFraction: (y + 1) / storyLength,
+//        storyId: Session.get("storyId")
+//      })
+//    }
+//  });
+//
+//  var id = this.data._id;
+//  if (storyViewed !== id){
+//    storyViewed = id;
+//    Meteor.call('countStoryView', id);
+//    analytics.track('View story', trackingInfoFromStory(this.data));
+//  }
+//});
+//
+//
+//Template.read.onRendered(function(){
+//  $(window).scrollTop(Session.get('scrollTop'));
+//});
