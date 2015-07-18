@@ -183,22 +183,25 @@ Template.watch.onRendered(function(){
   });
 
   onMainPlayerReady = function(event){
-    that.autorun(function(){
-      if(Session.get('mainPlayerMuted')){
-        mainPlayer.mute();
-      } else {
-        mainPlayer.unMute();
-      }
-    });
+    console.log('Player Ready')
+
+    //that.autorun(function(){ // TO-DO, if uncomment this, ensure it only gets started once, not everytime video switches
+    //  if(Session.get('mainPlayerMuted')){
+    //    mainPlayer.mute();
+    //  } else {
+    //    mainPlayer.unMute();
+    //  }
+    //});
 
     event.target.playVideo();
   };
 
 
-  onMainPlayerStateChange = function(){
+  onMainPlayerStateChange = function(event){
     console.log('PlayerStateChange')
+    console.log(event)
   }
-})
+});
 
 
 var titleMax = 60;
