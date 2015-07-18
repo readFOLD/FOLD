@@ -29,37 +29,6 @@
   Templates used in reading, creating, and editing
 -->
 
-<template name="horizontal_context">
-  {{#unless read}}
-    {{#if verticalExists}}
-      {{#if currentYId}}
-        {{> add_horizontal}}
-      {{/if}}
-      {{#each horizontalSections}}
-        {{#if horizontalShown}}
-          {{> context_anchor_menu}}
-        {{/if}}
-      {{/each}}
-      <div style="display: {{#if addingContext}}inherit{{else}}none{{/if}}">
-        {{> add_context}}
-      </div>
-    {{/if}}
-  {{/unless}}
-  {{#each horizontalSections}}
-    {{#if horizontalShown}}
-    {{!-- <div class="inline-block {{#unless horizontalShown}}hide{{/unless}}"> --}}
-      {{#each data}}
-        {{> horizontal_section_block}}
-      {{/each}}
-      {{#unless read}}
-        {{add_horizontal}}
-      {{/unless}}
-    {{!-- </div> --}}
-    {{/if}}
-
-  {{/each}}
-</template>
-
 
 <template name="horizontal_section_block">
   <div
@@ -167,9 +136,6 @@
   <div class="text-section" dir="auto">
     {{{textContent}}}
   </div>
-    {{#unless read}}
-      {{> horizontal_section_edit_delete}}
-    {{/unless}}
 </template>
 
 <template name="display_image_section">
@@ -188,9 +154,6 @@
     {{/if}}
     {{{textContent}}}
   </div>
-  {{#unless read}}
-    {{> horizontal_section_edit_delete}}
-  {{/unless}}
 </template>
 
 <template name="looping_video">
@@ -219,9 +182,6 @@
       <img src="{{previewUrl}}"/>
     </div>
   </div>
-  {{#unless read}}
-    {{> horizontal_section_edit_delete}}
-  {{/unless}}
 </template>
 
 <template name="display_viz_section">
@@ -234,9 +194,6 @@
       </div>
     {{/if}}
   </div>
-  {{#unless read}}
-    {{> horizontal_section_edit_delete}}
-  {{/unless}}
 </template>
 
 
@@ -253,9 +210,6 @@
       <img src="{{previewUrl}}"/>
     </div>
   </div>
-  {{#unless read}}
-      {{> horizontal_section_edit_delete}}
-    {{/unless}}
 </template>
 
 <template name="display_video_section">
@@ -274,9 +228,6 @@
         </div>
       {{/if}}
   </div>
-  {{#unless read}}
-      {{> horizontal_section_edit_delete}}
-    {{/unless}}
 </template>
 
 
@@ -306,9 +257,6 @@
       <a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
     </div>
   </div>
-  {{#unless read}}
-    {{> horizontal_section_edit_delete}}
-  {{/unless}}
 </template>
 
 <template name="display_twitter_section">
@@ -366,18 +314,12 @@
         </div>
       </div>
   </div>
-  {{#unless read}}
-      {{> horizontal_section_edit_delete}}
-    {{/unless}}
 </template>
 
 
 <template name="display_broken_section">
   <div class="broken-section">
   </div>
-  {{#unless read}}
-    {{> horizontal_section_edit_delete}}
-  {{/unless}}
 </template>
 
 

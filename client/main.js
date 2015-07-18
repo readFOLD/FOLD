@@ -300,77 +300,6 @@ typeHelpers = {
 //  }
 //});
 
-
-Template.horizontal_context.helpers({
-  verticalExists: function() {
-    return Session.get("horizontalSectionsMap").length;
-  },
-  horizontalSections: function() {
-    var that = this;
-    return this.verticalSections.map(function(verticalSection, verticalIndex) {
-      var sortedContext, unsortedContext;
-
-      if (Session.get('showDraft')) { // In CREATE, these need to be looked up from the db
-        sortedContext = _.chain(verticalSection.contextBlocks)
-          .map(function(id) {
-            return ContextBlocks.findOne({ // by finding one at a time, this keeps in broken links. TO-DO maybe should find a better soln that uses $in
-              _id: id
-            }) || {_id: id}; // fallback to just having id if cannot find
-          })
-          .map(function (datum, horizontalIndex) {
-            return _.extend(datum || {}, {
-              index: horizontalIndex,
-              verticalIndex: verticalIndex,
-              verticalId: verticalSection._id
-            });
-          })
-          .value();
-        //sortedContext = _.sortBy(unsortedContext, function (datum) {
-        //  return datum.horizontalIndex;
-        //});
-        return {
-          index: verticalIndex,
-          data: sortedContext
-        };
-      } else { // In READ, these are denormalized on the document
-        var data = _.chain(verticalSection.contextBlocks)
-          .map(function(id) {
-            var cBlock = _.findWhere(that.contextBlocks, {_id: id})
-            if (cBlock) {
-              return cBlock;
-            } else {
-              throw new Meteor.Error('context card not found on story ' + that._id + ' .  context card: ' + id);
-            }
-          })
-          .map(window.newTypeSpecificContextBlock)
-          .map(function (datum, horizontalIndex) {
-            return _.extend(datum || {}, {
-              index: horizontalIndex,
-              verticalIndex: verticalIndex,
-              verticalId: verticalSection._id
-
-            });
-          })
-          .value();
-        return {
-          data: data,
-          index: verticalIndex
-        }
-      }
-    });
-  },
-  last: function() {
-    var lastIndex, _ref;
-    lastIndex = ((_ref = Session.get("horizontalSectionsMap")[Session.get("currentY")]) != null ? _ref.horizontal.length : void 0) - 1;
-    return (this.index === lastIndex) && (lastIndex > 0);
-  },
-  horizontalShown: function() {
-    return Session.equals("currentY", this.index);
-  }
-});
-
-
-
 editableDescriptionCreatedBoilerplate = function() {
   this.editing = new ReactiveVar(false);
 };
@@ -517,33 +446,11 @@ Template.display_text_section.helpers(horizontalBlockHelpers);
 Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
 
 
-Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
-
-Template.story_browser.helpers({
-  showLeftArrow: function() {
-    return !Meteor.Device.isPhone() && (Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentYId')]);
-  },
-  showRightArrow: function() {
-    return !Meteor.Device.isPhone();
-  }
-});
-
-Template.story_browser.events({
-  "click .right svg": function(d) {
-    window.goRightOneCard();
-    analytics.track('Click right arrow');
-  },
-  "click .left svg": function(d) {
-    window.goLeftOneCard()
-    analytics.track('Click left arrow');
-  }
-});
-
 Template.type_specific_icon.helpers(typeHelpers);
 
 Template.share_button.onCreated(function() {
   this.tooltipShown = new ReactiveVar(false);
-})
+});
 
 Template.share_button.events({
   'click': function(e, t) {

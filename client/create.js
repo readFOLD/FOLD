@@ -95,134 +95,130 @@ window.plainTextPaste = function(e) {
   e.preventDefault();
   return document.execCommand('insertText', false, clipboardData.getData('text/plain'));
 };
-
-Template.create.onCreated(function() {
-  this.publishing = new ReactiveVar();
-  this.headerImageLoading = new ReactiveVar();
-});
-
-Template.create.onRendered(function() {
-  window.showAnchorMenu = function() {
-    Session.set("anchorMenuOpen", true);
-    return $(".anchor-menu").show();
-  };
-  window.hideAnchorMenu = function() {
-    Session.set("anchorMenuOpen", false);
-    return $(".anchor-menu").hide();
-  };
-  window.toggleAnchorMenu = function() {
-    var anchorMenu, contextAnchorMenu, shiftAmt;
-    anchorMenu = $(".anchor-menu");
-    contextAnchorMenu = $(".context-anchor-menu");
-    shiftAmt = 120;
-    if (anchorMenu.is(':visible') || contextAnchorMenu.is(':visible')) {
-      $('#fold-editor').css('top', parseInt($('#fold-editor').css('top')) + shiftAmt);
-      window.hideAnchorMenu();
-      return window.hideContextAnchorMenu();
-    } else {
-      $('#fold-editor').css('top', parseInt($('#fold-editor').css('top')) - shiftAmt);
-      return window.showAnchorMenu();
-    }
-  };
-  window.showContextAnchorMenu = function() {
-    var contextAnchorForm;
-    contextAnchorForm = $(".context-anchor-menu");
-    contextAnchorForm.show();
-    Session.set("contextAnchorMenuOpen", true);
-    return contextAnchorForm.insertAfter('#fold-editor-button-group');
-  };
-  window.hideContextAnchorMenu = function() {
-    Session.set("contextAnchorMenuOpen", false);
-    return $(".context-anchor-menu").hide();
-  };
-  window.showFoldEditor = function() {
-    $('#fold-editor').show();
-    hideFoldLinkRemover();
-  };
-  window.hideFoldEditor = function() {
-    $('#fold-editor').hide();
-    hideContextAnchorMenu();
-    return hideAnchorMenu();
-  };
-
-  window.showFoldLinkRemover = function() {
-    $('#fold-link-remover').show();
-    hideFoldEditor();
-  };
-  window.hideFoldLinkRemover = function() {
-    $('#fold-link-remover').hide();
-  };
-
-  window.hideFoldAll = function() {
-    hideFoldEditor();
-    hideFoldLinkRemover();
-  };
-
-  this.autorun(function(){
-    switch(Session.get('saveState')) {
-      case 'saving':
-        Session.set('saving', true);
-        break;
-      case 'failed':
-        notifyError('Saving failed. Please refresh and try again.');
-        alert('Saving failed. Please refresh and try again.');
-        break;
-      case 'saved':
-        Session.set('saving', false);
-        break;
-    }
-  });
-
-  this.autorun(function(){
-    if (Session.get('read') || Session.get('currentYId')){
-      return window.hideFoldAll();
-    }
-  });
-
-
-
-
-
-  this.autorun(function() { // Hide add card menu when scroll
-    var y = Session.get('currentY'); // so reacts to changes in currentY
-    if(y !== Session.get('previousY')){
-      Session.set("addingContext", null);
-    }
-    Session.set('previousY', y)
-  });
-
-  this.autorun(function() { // update UI when start and stop adding/editing context
-    var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
-    //var verticalSection = Session.get('currentVerticalSection');
-    if (Session.get('currentYId')) {
-      //currentContextBlocks = verticalSection.contextBlocks;
-      horizontalContextDiv = $(".horizontal-context");
-      horizontalContextDiv.removeClass('editing');
-      if (Session.get("addingContext")) { // editing individual cards isn't currently a thing // || (_ref = Session.get("editingContext"), __indexOf.call(currentContextBlocks, _ref) >= 0)) {
-        Session.set("showMinimap", false);
-        return horizontalContextDiv.addClass('editing');
-      } else {
-        Session.set("showMinimap", true);
-        if (document.body){
-          if(!Session.get('read') && !Session.get('metaview')){
-            document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
-            removePlaceholderLinks();
-          }
-        }
-      }
-    }
-  });
-
-  if (!(Session.equals("currentY", void 0) && Session.equals("currentX", void 0))) {
-    $('.attribution, #to-story').fadeOut(1);
-    goToY(Session.get("currentY"));
-    goToX(Session.get("currentX"));
-  }
-
-  $(window).scrollTop(Session.get('scrollTop'));
-  window.updateCurrentY(); // needs to be manually triggered for better hot code reload behavior (perhaps due to throttle)
-
-});
+//
+//
+//Template.create.onRendered(function() {
+//  window.showAnchorMenu = function() {
+//    Session.set("anchorMenuOpen", true);
+//    return $(".anchor-menu").show();
+//  };
+//  window.hideAnchorMenu = function() {
+//    Session.set("anchorMenuOpen", false);
+//    return $(".anchor-menu").hide();
+//  };
+//  window.toggleAnchorMenu = function() {
+//    var anchorMenu, contextAnchorMenu, shiftAmt;
+//    anchorMenu = $(".anchor-menu");
+//    contextAnchorMenu = $(".context-anchor-menu");
+//    shiftAmt = 120;
+//    if (anchorMenu.is(':visible') || contextAnchorMenu.is(':visible')) {
+//      $('#fold-editor').css('top', parseInt($('#fold-editor').css('top')) + shiftAmt);
+//      window.hideAnchorMenu();
+//      return window.hideContextAnchorMenu();
+//    } else {
+//      $('#fold-editor').css('top', parseInt($('#fold-editor').css('top')) - shiftAmt);
+//      return window.showAnchorMenu();
+//    }
+//  };
+//  window.showContextAnchorMenu = function() {
+//    var contextAnchorForm;
+//    contextAnchorForm = $(".context-anchor-menu");
+//    contextAnchorForm.show();
+//    Session.set("contextAnchorMenuOpen", true);
+//    return contextAnchorForm.insertAfter('#fold-editor-button-group');
+//  };
+//  window.hideContextAnchorMenu = function() {
+//    Session.set("contextAnchorMenuOpen", false);
+//    return $(".context-anchor-menu").hide();
+//  };
+//  window.showFoldEditor = function() {
+//    $('#fold-editor').show();
+//    hideFoldLinkRemover();
+//  };
+//  window.hideFoldEditor = function() {
+//    $('#fold-editor').hide();
+//    hideContextAnchorMenu();
+//    return hideAnchorMenu();
+//  };
+//
+//  window.showFoldLinkRemover = function() {
+//    $('#fold-link-remover').show();
+//    hideFoldEditor();
+//  };
+//  window.hideFoldLinkRemover = function() {
+//    $('#fold-link-remover').hide();
+//  };
+//
+//  window.hideFoldAll = function() {
+//    hideFoldEditor();
+//    hideFoldLinkRemover();
+//  };
+//
+//  this.autorun(function(){
+//    switch(Session.get('saveState')) {
+//      case 'saving':
+//        Session.set('saving', true);
+//        break;
+//      case 'failed':
+//        notifyError('Saving failed. Please refresh and try again.');
+//        alert('Saving failed. Please refresh and try again.');
+//        break;
+//      case 'saved':
+//        Session.set('saving', false);
+//        break;
+//    }
+//  });
+//
+//  this.autorun(function(){
+//    if (Session.get('read') || Session.get('currentYId')){
+//      return window.hideFoldAll();
+//    }
+//  });
+//
+//
+//
+//
+//
+//  this.autorun(function() { // Hide add card menu when scroll
+//    var y = Session.get('currentY'); // so reacts to changes in currentY
+//    if(y !== Session.get('previousY')){
+//      Session.set("addingContext", null);
+//    }
+//    Session.set('previousY', y)
+//  });
+//
+//  this.autorun(function() { // update UI when start and stop adding/editing context
+//    var currentContextBlocks, currentY, horizontalContextDiv, story, _ref;
+//    //var verticalSection = Session.get('currentVerticalSection');
+//    if (Session.get('currentYId')) {
+//      //currentContextBlocks = verticalSection.contextBlocks;
+//      horizontalContextDiv = $(".horizontal-context");
+//      horizontalContextDiv.removeClass('editing');
+//      if (Session.get("addingContext")) { // editing individual cards isn't currently a thing // || (_ref = Session.get("editingContext"), __indexOf.call(currentContextBlocks, _ref) >= 0)) {
+//        Session.set("showMinimap", false);
+//        return horizontalContextDiv.addClass('editing');
+//      } else {
+//        Session.set("showMinimap", true);
+//        if (document.body){
+//          if(!Session.get('read') && !Session.get('metaview')){
+//            document.body.style.overflow = 'auto'; // return scroll to document in case it lost it
+//            removePlaceholderLinks();
+//          }
+//        }
+//      }
+//    }
+//  });
+//
+//  if (!(Session.equals("currentY", void 0) && Session.equals("currentX", void 0))) {
+//    $('.attribution, #to-story').fadeOut(1);
+//    goToY(Session.get("currentY"));
+//    goToX(Session.get("currentX"));
+//  }
+//
+//  $(window).scrollTop(Session.get('scrollTop'));
+//  window.updateCurrentY(); // needs to be manually triggered for better hot code reload behavior (perhaps due to throttle)
+//
+//});
 
 Template.fold_editor.helpers({
   boldActive: function() {
@@ -443,160 +439,6 @@ window.refreshContentDep = new Tracker.Dependency();
 //  }
 //});
 
-Template.create.helpers({
-  narrativeView: function() {
-    return Session.get("narrativeView");
-  },
-  category: function() {
-    return Session.get("storyCategory");
-  },
-  publishing: function() {
-    return Template.instance().publishing.get();
-  },
-  headerImageLoading: function() {
-    return Template.instance().headerImageLoading.get();
-  }
-});
-
-Template.create.events({
-  'mouseup': window.updateUIBasedOnSelection, // this is here so that it fires when mouse goes off to the side of vertical section
-  "click .publish-story": function (e, template) {
-    var accessPriority = Meteor.user().accessPriority;
-    if (!accessPriority || accessPriority > window.publishAccessLevel) {
-      notifyInfo("Due to high demand, we had to turn off publish functionality for a moment. Stay tuned for updates!");
-    } else {
-      template.publishing.set(true);
-      analytics.track('Click publish button');
-    }
-  },
-  "click .cancel-publish": function (e, template) {
-    template.publishing.set(false);
-    analytics.track('Click cancel publish button');
-  },
-  "click .confirm-publish": function (e, template) {
-    var that = this;
-    var title = template.$('input[name=confirm-title]').val();
-    var keywords = _.compact(template.$('input[name=keywords]').val().split(','));
-    var narrativeRightsReserved = template.$('input[name=reserve-rights]').is(':checked');
-    return Meteor.call('publishStory', this._id, title, keywords, narrativeRightsReserved, function(err, numDocs) {
-      template.publishing.set(false);
-      if (err) {
-        setTimeout(function () {
-          throw(err);
-        });
-      }
-      if (err || !numDocs) {
-        notifyError('Publication failed');
-      } else {
-        FlowRouter.go('/profile/' + Meteor.user().username);
-        notifySuccess('You story has been published!');
-        analytics.track('Publish story', window.trackingInfoFromStory(Stories.findOne(that._id))); // TODO add info about author
-      }
-    });
-  },
-  "change input.header-upload":  function(e, template){
-    var that = this;
-    template.headerImageLoading.set(true);
-    var files = $("input.header-upload")[0].files;
-    Session.set('saveState', 'saving');
-    C.upload(files, function(r) { // callback does not respect typical error behavior and currently just doesn't call callback
-      if (r.error){ // this can't get hit at the moment
-        return saveCallback(r)
-      }
-      return Meteor.call('updateHeaderImage', that._id, r.public_id, r.format, function(err, success) {
-        template.headerImageLoading.set(false);
-        saveCallback(err, success) 
-      });
-    });
-    analytics.track('Change upload header on header');
-  }
-});
-
-Template.add_vertical.events({
-  "click": function() {
-    var indexToInsert, storyId, verticalSections;
-    storyId = Session.get('storyId');
-    verticalSections = Session.get('story').verticalSections;
-    indexToInsert = this.index != null ? this.index : verticalSections.length;
-
-    return Meteor.call('insertVerticalSection', storyId, indexToInsert, Random.id(9), function(err, numDocs) {
-      if (err) {
-        notifyError(err);
-        throw(err);
-      }
-      if (numDocs) {
-        analytics.track('Add vertical section', {
-          label: indexToInsert,
-          verticalSectionIndex: indexToInsert
-        });
-      } else {
-        notifyError('Inserting section failed');
-      }
-    });
-  }
-});
-
-Template.vertical_edit_menu.helpers({
-  canMoveUp: function () {
-    return this.index;
-  },
-  canMoveDown: function () {
-    return this.index < Session.get('story').verticalSections.length - 1;
-  }
-});
-Template.vertical_edit_menu.events({
-  "click .add-title": function() {
-    var storyId = Session.get('storyId');
-    var index = this.index;
-
-    Session.set('saveState', 'saving');
-    Meteor.call('addTitle', storyId, index, saveCallback);
-    analytics.track('Click add section title');
-  },
-  "click .remove-title": function() {
-    var storyId = Session.get('storyId');
-    var index = this.index;
-
-    Session.set('saveState', 'saving');
-    Meteor.call('removeTitle', storyId, index, saveCallback);
-    analytics.track('Click remove section title');
-  },
-  "click .move-card-up": function() {
-    var storyId = Session.get('storyId');
-    var index = this.index;
-
-    Session.set('saveState', 'saving');
-    Meteor.call('moveVerticalSectionUpOne', storyId, index, saveCallback);
-    analytics.track('Click move card up');
-
-  },
-  "click .move-card-down": function() {
-    var storyId = Session.get('storyId');
-    var index = this.index;
-
-    Session.set('saveState', 'saving');
-    Meteor.call('moveVerticalSectionDownOne', storyId, index, saveCallback);
-    analytics.track('Click move card down');
-  },
-  "click .delete-card": function() {
-    if(confirm("Permanently delete this card and all associated context cards?")) {
-      var storyId = Session.get('storyId');
-      var index = this.index;
-
-      Session.set('saveState', 'saving');
-      Meteor.call('deleteVerticalSection', storyId, index, saveCallback);
-      analytics.track('Click delete card');
-    }
-  }
-});
-
-Template.add_horizontal.helpers({
-  left: function() {
-    return Session.get("verticalLeft") + Session.get("cardWidth") + Session.get("separation");
-  }
-});
-
-
 
 var scrollToRelativePosition = function(offset) {
   var selectedNarrative = $('.vertical-narrative-section.selected');
@@ -629,14 +471,6 @@ var toggleHorizontalUI = function(forceBool) {
     hideNewHorizontalUI()
   }
 };
-
-
-Template.add_horizontal.events({
-  "click": function(d) {
-    toggleHorizontalUI();
-    analytics.track('Click toggle horizontal editor');
-  }
-});
 
 Template.stream_search.events({
   'mouseenter .horizontal-narrative-section': function() {
@@ -803,12 +637,6 @@ Template.add_context.events({
   }
 });
 
-Template.horizontal_context.helpers({
-  lastUpdate: function() {
-    Session.get('lastUpdate');
-  }
-});
-
 window.findPlaceholderLink = function(verticalSectionIndex){
   return $('.vertical-narrative-section[data-vertical-index="' + verticalSectionIndex + '"]').find('a.placeholder');
 };
@@ -882,14 +710,6 @@ window.addContext = function(contextBlock) {
   });
 };
 
-Template.horizontal_section_edit_delete.helpers({
-  canMoveLeft: function () {
-    return this.index;
-  },
-  canMoveRight: function () {
-    return this.index < Session.get('story').verticalSections[this.verticalIndex].contextBlocks.length - 1;
-  }
-});
 Template.horizontal_section_block.events({
   "click .delete": function(d) {
     analytics.track('Click delete horizontal');
@@ -909,19 +729,6 @@ Template.horizontal_section_block.events({
   }
 });
 
-Template.create_options.events({
-  "click .toggle-preview": function() {
-    if (Session.get('read')) {
-      window.refreshContentDep.changed();
-      Session.set('read', false);
-      analytics.track('Click toggle preview off');
-    } else {
-      Session.set('read', true);
-      analytics.track('Click toggle preview on');
-    }
-  }
-});
-
 Template.link_twitter.events({
   "click button": function() {
     Meteor.linkWithTwitter({
@@ -937,28 +744,28 @@ Template.link_twitter.events({
     analytics.track('Click Link Twitter');
   }
 });
-
-Template.publish_overlay.onRendered(function(){
-  this.$('#story-tags-input').tagsInput({
-    minInputWidth: '80px',
-    width: '100%',
-    height: '83px'
-  });
-});
-
-Template.publish_overlay.helpers({
-  'keywordsString': function(){
-    return (this.keywords || []).toString();
-  }
-});
-
-Template.publish_overlay.events({
-  'click .header-upload': function(e, t) {
-    Meteor.setTimeout(function(){
-      $('body,html').animate({
-        scrollTop: 0
-        }, 500, 'easeInExpo')}
-      , 1500)
-    analytics.track('Click upload header inside publish dialog');
-  }
-});
+//
+//Template.publish_overlay.onRendered(function(){
+//  this.$('#story-tags-input').tagsInput({
+//    minInputWidth: '80px',
+//    width: '100%',
+//    height: '83px'
+//  });
+//});
+//
+//Template.publish_overlay.helpers({
+//  'keywordsString': function(){
+//    return (this.keywords || []).toString();
+//  }
+//});
+//
+//Template.publish_overlay.events({
+//  'click .header-upload': function(e, t) {
+//    Meteor.setTimeout(function(){
+//      $('body,html').animate({
+//        scrollTop: 0
+//        }, 500, 'easeInExpo')}
+//      , 1500)
+//    analytics.track('Click upload header inside publish dialog');
+//  }
+//});

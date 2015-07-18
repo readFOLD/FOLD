@@ -1,22 +1,3 @@
-<template name="create">
-  {{#with draftStory}}
-    {{> story_header }}
-    {{#if headerImageLoading}}
-      <div class="header loading-container">
-        {{> loading_icon}}
-      </div>
-    {{/if}}
-    {{> story}}
-    {{> fold_editor }}
-    {{> fold_link_remover }}
-    {{#if publishing}}
-      {{> publish_overlay }}
-    {{/if}}
-  {{/with}}
-
-  {{> create_options}}
-</template>
-
 <template name="fold_editor">
   <div id="fold-editor">
     <div id="fold-editor-button-group">
@@ -46,84 +27,6 @@
     </div>
   </div>
 </template>
-
-<template name="create_options">
-  {{#unless pastHeader}}
-  <div class="upload-header-image">
-    {{#unless read}}
-      <input type="file" class="header-upload change-header-upload">
-    {{/unless}}
-  </div>
-  {{/unless}}
-  <div class="floating-story-buttons">
-    {{#unless addingContext}}
-      <div class="saved-text">
-        {{#if saving}}
-          Saving...
-        {{else}}
-          Saved
-        {{/if}}
-      </div>
-
-      <button type="button" class="toggle-preview button">
-        {{#if read}}
-          Edit
-        {{else}}
-          Preview
-        {{/if}}
-      </button>
-      {{#if draftStory.unpublishedChanges}}
-        <button type="button" class="publish-story button">
-          {{#if published}}
-            Publish Changes
-          {{else}}
-            Publish
-          {{/if}}
-      </button>
-      {{/if}}
-    {{/unless}}
-  </div>
-</template>
-
-<template name="add_vertical_minimized">
-  <div class="narrative-section new-section minimized">
-    {{> add_vertical}}
-  </div>
-</template>
-
-<template name="add_vertical_unminimized">
-  <div class="narrative-section new-section unminimized">
-    {{> add_vertical}}
-  </div>
-</template>
-
-<template name="add_vertical">
-    <div class="fit">
-      {{> add_card_icon}}
-    </div>
-</template>
-
-
-<template name="add_horizontal">
-  <div class="narrative-section new-section horizontal-new-section {{#if addingContext}}editing{{/if}}" style="left: {{left}}px;">
-    {{> add_card_icon}}
-  </div>
-</template>
-
-
-
-<template name="horizontal_section_edit_delete">
-  <!--{{#unless read}}-->
-    <!--{{#if selected}}-->
-      <!--<div class="button-options edit-delete">-->
-        <!--<button class="delete button">-->
-          <!--<i class="fa fa-times"></i>-->
-        <!--</button>-->
-      <!--</div>-->
-    <!--{{/if}}-->
-  <!--{{/unless}}-->
-</template>
-
 
 <template name="anchor_menu">
   <div class="anchor-menu">
@@ -160,65 +63,6 @@
       </ol>
     </div>
     <div class="bottom-bar"></div>
-  </div>
-</template>
-
-<template name="vertical_edit_menu">
-  <div class="vertical-edit-menu">
-    <ul>
-      {{#if hasTitle}}
-        <li>
-          <button class="remove-title">
-            Remove title
-          </button>
-        </li>
-      {{else}}
-        <li>
-          <button class="add-title">
-            Add title (optional)
-          </button>
-        </li>
-      {{/if}}
-      {{#if canMoveUp}}
-        <li>
-          <button class="move-card-up">
-            Move row up one
-          </button>
-        </li>
-      {{/if}}
-      {{#if canMoveDown}}
-        <li>
-          <button class="move-card-down">
-            Move row down one
-          </button>
-        </li>
-      {{/if}}
-      <li>
-        <button class="delete-card">
-          Delete card
-        </button>
-      </li>
-    </ul>
-  </div>
-</template>
-
-<template name="publish_overlay">
-  <div class="publish-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
-    <div class="central-publish-modal">
-      <button class="cancel-publish">✕</button>
-
-      <label for="confirm-title">Confirm title</label>
-      <input type="text" name="confirm-title" value="{{title}}">
-      {{#unless headerImage}}
-        <input type="file" class="header-upload do-header-upload">
-      {{/unless}}
-      <input name="keywords" id="story-tags-input" value="{{keywordsString}}">
-      <p>By default, stories are published under a <a class="green underline" href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC-BY license</a>. If you would like to opt-out, please check this box
-        <input type="checkbox" name="reserve-rights" checked="{{narrativeRightsReserved}}">  (As per <a href="/terms" class="green underline" target="_blank">our terms</a>, that context cards are a shared resource and will remain CC-BY)</p>
-
-      <button type="submit" class="confirm-publish">Publish
-      </button>
-    </div>
   </div>
 </template>
 
