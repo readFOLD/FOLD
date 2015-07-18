@@ -233,246 +233,6 @@ div.floating-story-buttons {
   }
 }
 
-input.background-image-input {
-  width: 140px;
-  position: absolute;
-  right: 150px;
-  top: 50px;
-}
-
-
-div.save-background-image {
-  .background-transition;
-  position: absolute;
-  right: 110px;
-  top: 50px;
-  border: 1px solid black;
-
-  &:hover {
-    background-color: white;
-  }
-}
-
-div.title-overlay {
-  @media @not-mobile {
-    min-width: 1024px;
-  }
-  height: 350px;
-
-  z-index: 30;
-  color: @light-color;
-  position: relative;
-  overflow: hidden;
-  background-color: @unselected-background-color;
-
-  .header-overlay-image, video{
-    position: absolute;
-    min-width: 100%;
-    @media @mobile {
-      max-height: 100%;
-    }
-  }
-
-  div.logo {
-    .opacity-transition;
-    width: 60px;
-    height: 60px;
-    border-radius: 30px;
-    position: relative;
-    top: 19px;
-    right: -20px;
-    background-color: @dark-color;
-    opacity: 0.0;
-    img {
-      width: 60px;
-    }
-
-    &.visible {
-      opacity: 1.0;
-    }
-  }
-
-  a:hover {
-    span{
-      text-decoration: underline;
-    }
-  }
-
-  &.fixed {
-    position: fixed;
-    height: 100px;
-    width: 100%;
-    @media @mobile {
-      display: none;
-    }
-  }
-
-  &.read:hover {
-    border-bottom: 1px dashed grey;
-  }
-
-
-
-  div.description {
-    width: 500px;
-    float: right;
-    font-size: 20px;
-    margin-right: 75px;
-    line-height: 26px;
-    margin-top: 100px;
-  }
-
-  div.upload {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    background-color: @dark-color;
-    color: @light-color;
-    cursor: pointer;
-    padding: 5px;
-    text-align: center;
-    font-size: 14px;
-    line-height: 30px;
-    height: 40px;
-    width: 180px;
-
-    &:hover {
-      background-color: @action-color;
-      color: @dark-color;
-    }
-
-    opacity: 0.0;
-
-    &.shown {
-      opacity: 1.0;
-    }
-  }
-
-
-  div.attribution {
-    position: absolute;
-    top: 305px;
-    right: 15px;
-    background-color: @dark-color;
-    padding: 5px 10px;
-    opacity: 0.0;
-
-    &.shown{
-      opacity: 1.0;
-    }
-  }
-
-  div.aj {
-    top: 15px;
-  }
-
-  div.title-author {
-    position: absolute;
-    margin-left: 95px;
-    margin-top: 125px;
-    max-width: 1300px;
-    @media @mobile {
-      margin-left: 20px;
-      margin-right: 20px;
-      max-width: calc(100% ~"-" 40px);
-    }
-    padding: 11px;
-    background-color: @dark-color;
-    &.fixed {
-      position: fixed;
-      padding-top: 19px;
-    }
-    div.story-title {
-      max-width: 100%;
-      font-weight: bold;
-      font-size: 25px;
-      line-height: 30px;
-      padding-bottom: 9px;
-      overflow-x: hidden;
-      overflow-y: visible;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      @media @mobile {
-        white-space: normal;
-      }
-    }
-    div.author {
-      font-size: 18px;
-      //font-style: italic;
-    }
-  }
-}
-
-div.button-options {
-  button {
-    background-color: @dark-color;
-    color: @light-color;
-    cursor: pointer;
-    padding: 5px;
-    text-align: center;
-    font-size: 16px;
-    float: left;
-    &:not(:last-child) {
-      margin-right: 10px;
-    }
-
-    width: 110px;
-
-    &:hover {
-      background-color: @action-color;
-      color: @dark-color;
-    } 
-  }
-
-  div.delete-button {
-    &:hover {
-      background-color: @danger-color;
-    }
-  }
-}
-
-header.header {
-  div.story-title {
-    float: left;
-  }
-  div.category {
-    display: inline;
-    font-size: 14px;
-    margin-left: 50px;
-  }
-  div.analytics {
-    display: inline;
-    font-size: 14px;
-    margin-left: 30px;
-  }
-  div.username {
-    display: inline;
-    position: absolute;
-    right: 145px;
-    text-align: right;
-    top: 25px;
-  }
-}
-
-div.browser-offset {
-  .no-select;
-  padding-top: 100px;
-}
-
-div.narrativeView {
-  section {
-    margin-bottom: 0 !important;
-  }
-}
-
-.new-section {
-  fill: @dark-color;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
-
 div.vertical-narrative {
   z-index: 20;
 
@@ -516,12 +276,6 @@ div.vertical-narrative {
   }
 }
 
-
-.control-label {
-    font-weight: bold;
-    font-size: 17px;
-}
-
 textarea {
   border: none;
   overflow: auto;
@@ -553,7 +307,7 @@ textarea {
 }
 
 svg{
-    transition: fill 0.25s ease;
+  transition: fill 0.25s ease;
 }
 
 .new-section {
@@ -1239,7 +993,6 @@ div#fold-link-remover{
     width: @size;
     vertical-align: middle;
   }
-
 }
 
 .vertical-edit-menu{
@@ -1299,6 +1052,3 @@ div.bottom-bar{
   background-color: @panel-color;
   z-index: 9000;
 }
-
-
-
