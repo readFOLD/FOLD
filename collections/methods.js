@@ -330,17 +330,6 @@ Meteor.methods({
     var streamPathSegment = _s.slugify(title.toLowerCase() || 'deep-stream') + '-' + shortId;
     return updateStream.call(this, {shortId: shortId}, {$set: {'title' : title, 'streamPathSegment' : streamPathSegment }});
   },
-  updateHeaderImage: function(storyId, filePublicId, fileFormat) {
-    check(storyId, String);
-    check(filePublicId, String);
-    check(fileFormat, String);
-    return updateStory.call(this, {_id: storyId}, {
-      $set: {
-        'draftStory.headerImage': filePublicId,
-        'draftStory.headerImageFormat': fileFormat
-      }
-    })
-  },
   editHorizontalBlockDescription: function(shortId, contextId, description) {
     check(shortId, String);
     check(contextId, String);
@@ -353,132 +342,132 @@ Meteor.methods({
     check(content, String);
     return updateStream.call(this, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.content": content}});
   },
-  insertVerticalSection: function(storyId, index, verticalSectionId) { // TO-DO find a good way to generate this id in a trusted way
-    check(storyId, String);
-    check(index, Number);
-    var newSection = {
-      _id: verticalSectionId,
-      contextBlocks: [],
-      title: "",
-      content: "",
-      hasTitle: false
-    };
-
-    var numUpdated = updateStory.call(this, {_id: storyId }, {
-      $push: {
-        'draftStory.verticalSections': {
-          $position: index,
-          $each: [newSection]
-        }
-      }
-    });
-
-    if (Meteor.isClient && numUpdated){
-      goToY(index);
-    }
-
-    return numUpdated;
-  },
-  moveVerticalSectionUpOne: function(storyId, index) {
-    check(storyId, String);
-    check(index, Number);
-    if (!index){
-      throw new Meteor.Error('Must have a positive index')
-    }
-
-    var selector = { _id: storyId };
-    var story = Stories.findOne(selector, {fields:
-      {
-        'draftStory.verticalSections': 1,
-        'authorId': 1
-      }
-    });
-
-    assertOwner(this.userId, story);
-
-    var verticalSections = story.draftStory.verticalSections;
-
-    swapArrayElements(verticalSections, index, index - 1);
-
-    var numUpdated = updateStory.call(this, { _id: storyId }, {
-      $set: {
-        'draftStory.verticalSections': verticalSections
-      }
-    });
-
-    if (Meteor.isClient && numUpdated) {
-      goToY(index - 1);
-    }
-
-    return numUpdated
-  },
-  moveVerticalSectionDownOne: function(storyId, index) {
-    check(storyId, String);
-    check(index, Number);
-
-    var selector = { _id: storyId };
-    var story = Stories.findOne(selector, {fields:
-      {
-        'draftStory.verticalSections': 1,
-        'authorId': 1
-      }
-    });
-
-    assertOwner(this.userId, story);
-
-    var verticalSections = story.draftStory.verticalSections;
-
-
-    if ((index + 1) >= verticalSections.length){
-      throw new Meteor.Error('Index too high')
-    }
-
-    swapArrayElements(verticalSections, index, index + 1);
-
-    var numUpdated = updateStory.call(this, { _id: storyId }, {
-      $set: {
-        'draftStory.verticalSections': verticalSections
-      }
-    })
-
-    if (Meteor.isClient && numUpdated) {
-      goToY(index + 1);
-    }
-
-    return numUpdated
-  },
-  deleteVerticalSection: function(storyId, index) {
-    check(storyId, String);
-    check(index, Number);
-
-    var selector = { _id: storyId };
-    var story = Stories.findOne(selector, {fields:
-      {
-        'draftStory.verticalSections': 1,
-        'authorId': 1
-      }
-    });
-
-    assertOwner(this.userId, story);
-
-    var verticalSections = story.draftStory.verticalSections;
-
-    if (index < 0 || index >= story.draftStory.verticalSections){
-      throw new Meteor.Error('Index too high')
-    }
-
-    var contextBlocks = verticalSections[index].contextBlocks;
-
-    if (contextBlocks){ // TO-DO Remix. Check if remixed etc..
-      ContextBlocks.remove({_id: {$in: contextBlocks}, authorId: this.userId})
-    }
-
-    return updateStory.call(this, { _id: storyId }, {
-      $pull: {
-        'draftStory.verticalSections': {_id: verticalSections[index]._id}
-      }
-    })
-  },
+  //insertVerticalSection: function(storyId, index, verticalSectionId) { // TO-DO find a good way to generate this id in a trusted way
+  //  check(storyId, String);
+  //  check(index, Number);
+  //  var newSection = {
+  //    _id: verticalSectionId,
+  //    contextBlocks: [],
+  //    title: "",
+  //    content: "",
+  //    hasTitle: false
+  //  };
+  //
+  //  var numUpdated = updateStory.call(this, {_id: storyId }, {
+  //    $push: {
+  //      'draftStory.verticalSections': {
+  //        $position: index,
+  //        $each: [newSection]
+  //      }
+  //    }
+  //  });
+  //
+  //  if (Meteor.isClient && numUpdated){
+  //    goToY(index);
+  //  }
+  //
+  //  return numUpdated;
+  //},
+  //moveVerticalSectionUpOne: function(storyId, index) {
+  //  check(storyId, String);
+  //  check(index, Number);
+  //  if (!index){
+  //    throw new Meteor.Error('Must have a positive index')
+  //  }
+  //
+  //  var selector = { _id: storyId };
+  //  var story = Stories.findOne(selector, {fields:
+  //    {
+  //      'draftStory.verticalSections': 1,
+  //      'authorId': 1
+  //    }
+  //  });
+  //
+  //  assertOwner(this.userId, story);
+  //
+  //  var verticalSections = story.draftStory.verticalSections;
+  //
+  //  swapArrayElements(verticalSections, index, index - 1);
+  //
+  //  var numUpdated = updateStory.call(this, { _id: storyId }, {
+  //    $set: {
+  //      'draftStory.verticalSections': verticalSections
+  //    }
+  //  });
+  //
+  //  if (Meteor.isClient && numUpdated) {
+  //    goToY(index - 1);
+  //  }
+  //
+  //  return numUpdated
+  //},
+  //moveVerticalSectionDownOne: function(storyId, index) {
+  //  check(storyId, String);
+  //  check(index, Number);
+  //
+  //  var selector = { _id: storyId };
+  //  var story = Stories.findOne(selector, {fields:
+  //    {
+  //      'draftStory.verticalSections': 1,
+  //      'authorId': 1
+  //    }
+  //  });
+  //
+  //  assertOwner(this.userId, story);
+  //
+  //  var verticalSections = story.draftStory.verticalSections;
+  //
+  //
+  //  if ((index + 1) >= verticalSections.length){
+  //    throw new Meteor.Error('Index too high')
+  //  }
+  //
+  //  swapArrayElements(verticalSections, index, index + 1);
+  //
+  //  var numUpdated = updateStory.call(this, { _id: storyId }, {
+  //    $set: {
+  //      'draftStory.verticalSections': verticalSections
+  //    }
+  //  })
+  //
+  //  if (Meteor.isClient && numUpdated) {
+  //    goToY(index + 1);
+  //  }
+  //
+  //  return numUpdated
+  //},
+  //deleteVerticalSection: function(storyId, index) {
+  //  check(storyId, String);
+  //  check(index, Number);
+  //
+  //  var selector = { _id: storyId };
+  //  var story = Stories.findOne(selector, {fields:
+  //    {
+  //      'draftStory.verticalSections': 1,
+  //      'authorId': 1
+  //    }
+  //  });
+  //
+  //  assertOwner(this.userId, story);
+  //
+  //  var verticalSections = story.draftStory.verticalSections;
+  //
+  //  if (index < 0 || index >= story.draftStory.verticalSections){
+  //    throw new Meteor.Error('Index too high')
+  //  }
+  //
+  //  var contextBlocks = verticalSections[index].contextBlocks;
+  //
+  //  if (contextBlocks){ // TO-DO Remix. Check if remixed etc..
+  //    ContextBlocks.remove({_id: {$in: contextBlocks}, authorId: this.userId})
+  //  }
+  //
+  //  return updateStory.call(this, { _id: storyId }, {
+  //    $pull: {
+  //      'draftStory.verticalSections': {_id: verticalSections[index]._id}
+  //    }
+  //  })
+  //},
   favoriteStory: function(storyId) {
     check(storyId, String);
     return changeFavorite.call(this, storyId, true);
@@ -533,5 +522,3 @@ Meteor.methods({
   }
 
 });
-
-

@@ -14,11 +14,11 @@ window.isValidPassword = function(p) {
   } else {
     return false;
   }
-}
+};
 
 window.trimInput = function(val) {
   return val.replace(/^\s*|\s*$/g, "");
-}
+};
 
 window.checkValidEmail = function(email) {
   if (email.length === 0 ) {
@@ -71,11 +71,11 @@ window.checkValidUsername = function(username) {
   } else {
     return { status: true, message: false };
   }
-}
+};
 
 window.incrementReactiveVar = function(rv){
   return rv.set(rv.get() + 1);
-}
+};
 
 window.idFromPathSegment = function(pathSegment) { // everything after last dash
   return pathSegment.substring(pathSegment.lastIndexOf('-') + 1);
