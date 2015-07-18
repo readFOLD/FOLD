@@ -585,10 +585,8 @@ div.image-section {
   }
 
   textarea.text-content {
-    position: absolute;
     padding: 8px;
-    top: 0;
-    left: 0;
+    display: block;
     background-color: rgba(0, 0, 0, 0.8);
     opacity: 0.8;
     color: white;
@@ -624,8 +622,6 @@ div.image-section {
     font-size: @font-size;
     line-height: 20px;
     .text-align-start;
-    position: absolute;
-    top: 0;
     width: 100%;
     padding: 8px;
     opacity: 0;
