@@ -414,23 +414,11 @@
         </ol>
       {{/if}}
       {{#if showAddButton}}
-        <button type="button" class="add-desc-button {{#if isActive}}enabled{{/if}}">
-          Add Description
+        {{{textContent}}}
+        <button type="submit" class="add-button">
+          Add
         </button>
       {{/if}}
-    </div>
-    <div class="add-desc-section" style="{{#unless addingDescription}}display: none;{{/unless}}">
-      <div class="image-preview">
-        {{#with focusResult}}
-          {{> display_image_section}}
-        {{/with}}
-      </div>
-      <button type="button" class="back-button {{#if isActive}}enabled{{/if}}">
-        Back
-      </button>
-      <button type="submit" class="add-button">
-        Add
-      </button>
     </div>
   </div>
 </template>
@@ -462,23 +450,11 @@
         {{/if}}
       </ol>
       {{#if showAddButton}}
-        <button type="button" class="add-desc-button {{#if isActive}}enabled{{/if}}">
-          Add Description
+        {{{textContent}}}
+        <button type="submit" class="add-button">
+          Add
         </button>
       {{/if}}
-    </div>
-    <div class="add-desc-section" style="{{#unless addingDescription}}display: none;{{/unless}}">
-      <div class="image-preview">
-        {{#with focusResult}}
-          {{> display_image_section}}
-        {{/with}}
-      </div>
-      <button type="button" class="back-button {{#if isActive}}enabled{{/if}}">
-        Back
-      </button>
-      <button type="submit" class="add-button">
-        Add
-      </button>
     </div>
   </div>
 </template>

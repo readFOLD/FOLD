@@ -80,3 +80,28 @@ window.incrementReactiveVar = function(rv){
 window.idFromPathSegment = function(pathSegment) { // everything after last dash
   return pathSegment.substring(pathSegment.lastIndexOf('-') + 1);
 };
+
+
+window.textContentHelper = function() {
+  var textContent, rows;
+  if (this.type === 'text'){
+    textContent = this.content || '';
+    rows = 10;
+    placeholder = '';
+  }
+  else {
+    textContent = this.description || '';
+    rows = 2;
+    placeholder = 'Add a caption'
+  }
+
+  if (!Session.get('curateMode')) {
+    if (textContent.length){
+      return '<div class="text-content" dir="auto">' + _.escape(textContent).replace(/\n/g, "<br>") + '</div>';
+    } else {
+      return ''
+    }
+  } else {
+    return '<textarea name="content" class="text-content editable" rows="' + rows + '" placeholder="' + placeholder +  '" dir="auto">' + _.escape(textContent) + '</textarea>';
+  }
+};

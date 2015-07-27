@@ -39,13 +39,11 @@ var createBlockHelpers = {
     searchDep.depend();
     return Template.instance().existingSearchResults()
   },
-  addingDescription: function() {
-    return Template.instance().addingDescription.get();
-  },
   focusResult: function() {
     var focusResult = Template.instance().focusResult.get();
     if (focusResult) { return focusResult; }
-  }
+  },
+  textContent: textContentHelper
 };
 
 
@@ -94,13 +92,6 @@ var createBlockEvents = {
 
   "click .search-results-container li": function(d, template) {
     template.focusResult.set(this);
-  },
-
-  "click .add-desc-button": function (d, template) {
-    template.addingDescription.set(true);
-  },
-  "click .back-button": function (d, template) {
-    template.addingDescription.set(false);
   },
 
   "click .add-button": addFocusResult,
@@ -274,17 +265,6 @@ Template.create_twitter_section.events({
   }
 });
 
-Template.create_image_section.events({
-  "dblclick .search-results-container li": function (d, template) {
-    template.addingDescription.set(true);
-  }
-});
-
-Template.create_gif_section.events({
-  "dblclick .search-results-container li": function (d, template) {
-    template.addingDescription.set(true);
-  }
-});
 
 searchTemplateCreatedBoilerplate = function(type, defaultSource) {
   return function() {
@@ -300,15 +280,14 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
     this.focusResult = new ReactiveVar();
     this.noMoreResults = new ReactiveVar();
 
-    this.addingDescription = new ReactiveVar(false);
 
-    this.autorun(function(){
-      if(that.addingDescription.get()){
-        Meteor.setTimeout(function(){
-          that.$('textarea').focus();
-        });
-      }
-    });
+    //this.autorun(function(){
+    //  if(that.addingDescription.get()){
+    //    Meteor.setTimeout(function(){
+    //      that.$('textarea').focus();
+    //    });
+    //  }
+    //});
 
     this.search = _.bind(searchAPI, this);
     this.existingSearchResults = _.bind(existingSearchResults, this);
@@ -387,7 +366,6 @@ Template.create_image_section.onCreated(function(){
           authorId : Meteor.user()._id,
           fullDetails: doc
         }));
-        that.addingDescription.set(true);
       }
     },
     removed: function (id) {  // upload failed
