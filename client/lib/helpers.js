@@ -83,7 +83,7 @@ window.idFromPathSegment = function(pathSegment) { // everything after last dash
 
 
 window.textContentHelper = function() {
-  var textContent, rows;
+  var textContent, rows, placeholder;
   if (this.type === 'text'){
     textContent = this.content || '';
     rows = 10;
@@ -91,7 +91,7 @@ window.textContentHelper = function() {
   }
   else {
     textContent = this.description || '';
-    rows = 2;
+    rows = 3;
     placeholder = 'Add a caption'
   }
 

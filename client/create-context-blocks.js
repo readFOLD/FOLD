@@ -232,36 +232,23 @@ var createTemplateNames = [
 _.each(createTemplateNames, function(templateName){
   Template[templateName].helpers(createBlockHelpers);
   Template[templateName].events(createBlockEvents);
+  Template[templateName].events({
+    "dblclick .search-results-container li": function (d, template) {
+      addContext(this);
+    }
+  });
 });
 
+Template.add_stream_section.helpers(createBlockHelpers);
+Template.add_stream_section.events(createBlockEvents);
 
 Template.add_stream_section.onCreated(function(){
   this.addingFunction = window.addStream;
 });
 
-
-
-Template.create_audio_section.events({
-  "dblclick .search-results-container li": function (d, template) {
-    addContext(this);
-  }
-});
-
-Template.create_video_section.events({
-  "dblclick .search-results-container li": function (d, template) {
-    addContext(this);
-  }
-});
-
 Template.add_stream_section.events({
   "dblclick .search-results-container li": function (d, template) {
     addStream(this);
-  }
-});
-
-Template.create_twitter_section.events({
-  "dblclick .search-results-container li": function (d, template) {
-    addContext(this);
   }
 });
 
@@ -280,14 +267,6 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
     this.focusResult = new ReactiveVar();
     this.noMoreResults = new ReactiveVar();
 
-
-    //this.autorun(function(){
-    //  if(that.addingDescription.get()){
-    //    Meteor.setTimeout(function(){
-    //      that.$('textarea').focus();
-    //    });
-    //  }
-    //});
 
     this.search = _.bind(searchAPI, this);
     this.existingSearchResults = _.bind(existingSearchResults, this);
