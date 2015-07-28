@@ -335,7 +335,13 @@ Template.watch.events({
     e.preventDefault();
     var title = t.$('.set-title').val();
     var description = t.$('.set-description').val();
-    Meteor.call('publishStream', t.data.shortId(), title, description, basicErrorHandler);
+    Meteor.call('publishStream', t.data.shortId(), title, description, function(err){
+      if(err){
+        basicErrorHandler(err);
+      } else {
+        notifySuccess("Congratulations! Your Deep Stream is now on air!");
+      }
+    });
   },
   'click .find-stream .text': function(e, t){
     Meteor.call('goToFindStreamStep', t.data.shortId(), basicErrorHandler);
