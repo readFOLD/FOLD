@@ -329,7 +329,7 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
     return true;
     //return Session.equals("currentX", this.index) && !Session.get("addingContext");
   },
-  textContent: textContentHelper
+  annotation: textContentHelper
 });
 
 // TODO get swipes on context cards to work

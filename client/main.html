@@ -134,7 +134,7 @@
 <!-- Display Templates -->
 <template name="display_text_section">
   <div class="text-section" dir="auto">
-    {{{textContent}}}
+    {{{annotation}}}
   </div>
 </template>
 
@@ -152,7 +152,7 @@
         </div>
       {{/if}}
     {{/if}}
-    {{{textContent}}}
+    {{{annotation}}}
   </div>
 </template>
 
@@ -181,7 +181,7 @@
     <div class="preview">
       <img src="{{previewUrl}}"/>
     </div>
-    {{{textContent}}}
+    {{{annotation}}}
   </div>
 </template>
 
@@ -194,7 +194,7 @@
         {{> viz_icon}}
       </div>
     {{/if}}
-    {{{textContent}}}
+    {{{annotation}}}
   </div>
 </template>
 
@@ -211,7 +211,7 @@
     <div class="preview">
       <img src="{{previewUrl}}"/>
     </div>
-    {{{textContent}}}
+    {{{annotation}}}
   </div>
 </template>
 
@@ -225,7 +225,7 @@
     <div class="preview">
       <img src="{{previewUrl}}"/>
     </div>
-    {{{textContent}}}
+    {{{annotation}}}
   </div>
 </template>
 
@@ -234,7 +234,7 @@
   <div class="news-section {{#if isFocused}}focused{{/if}}">
     <h4 class="news-title">{{title}}</h4>
     <div class="news-html">{{{html}}}</div>
-    {{{textContent}}}
+    {{{annotation}}}
   </div>
 </template>
 
@@ -256,7 +256,7 @@
     <div class="bottom">
       <a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
     </div>
-    {{{textContent}}}
+    {{{annotation}}}
   </div>
 </template>
 
@@ -314,7 +314,7 @@
         </div>
       </div>
     </div>
-    {{{textContent}}}
+    {{{annotation}}}
   </div>
 </template>
 
