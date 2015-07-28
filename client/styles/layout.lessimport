@@ -1024,11 +1024,6 @@ div.horizontal-context {
   position: fixed;
   top: 0;
   left: 0;
-}
-
-.signin-overlay{
-  .full-overlay;
-  background-color: rgba(255,255,255,0.8);
   .close{
     float: right;
     background-color: rgba(0,0,0,0);
@@ -1037,6 +1032,12 @@ div.horizontal-context {
     margin-top: 10px;
     color: @black-color;
   }
+}
+
+.signin-overlay{
+  .full-overlay;
+  background-color: rgba(255,255,255,0.8);
+
   .signin-buttons{
     margin:auto;
     display:block;

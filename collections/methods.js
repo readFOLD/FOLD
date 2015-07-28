@@ -286,14 +286,6 @@ Meteor.methods({
 
     return numUpdated;
   },
-  setStreamTitleDescription: function(shortId, title, description){
-    check(shortId, String);
-    check(title, String);
-    check(description, String);
-    // TODO DRY
-    var streamPathSegment = _s.slugify(title.toLowerCase() || 'deep-stream')+ '-' + shortId;
-    return updateStream.call(this, {shortId: shortId}, {$set: {'title' : title, 'description' : description, 'streamPathSegment' : streamPathSegment, creationStep: nextCreationStepAfter('title_description') }});
-  },
   goToFindStreamStep: function(shortId){
     return updateStream.call(this, { shortId: shortId}, {$set: { creationStep: 'find_stream'}});
   },
@@ -311,10 +303,30 @@ Meteor.methods({
     check(shortId, String);
     return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: nextCreationStepAfter('add_cards') }});
   },
-  publishStream: function(shortId){
+  goBackFromTitleDescriptionStep: function(shortId){
     check(shortId, String);
+    return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: creationStepBefore('title_description') }});
+  },
+  proceedFromGoOnAirStep: function(shortId){
+    check(shortId, String);
+    return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: nextCreationStepAfter('go_on_air') }});
+  },
+  publishStream: function(shortId, title, description){
+    check(shortId, String);
+
     // TODO add onAir at... OR change it all to published
-    return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: null, onAir: true }});
+    var setObject = {creationStep: null, onAir: true };
+
+    if(title){ // if title, description included
+      check(title, String);
+      check(description, String);
+      var streamPathSegment = _s.slugify(title.toLowerCase() || 'deep-stream')+ '-' + shortId;
+      setObject.title = title;
+      setObject.description = description;
+      setObject.streamPathSegment = streamPathSegment;
+    }
+
+    return updateStream.call(this, {shortId: shortId}, {$set: setObject});
   },
   unpublishStream: function(shortId){
     check(shortId, String);

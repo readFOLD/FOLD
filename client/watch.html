@@ -46,7 +46,7 @@
                   <div class="text">
                     <span class="number">Step 3:</span><span class="instruction">Put your Deep Stream on air!</span>
                   </div>
-                  <button>Publish!</button>
+                  <button class="publish">Publish!</button>
                 </div>
               </div>
             {{/if}}
@@ -121,16 +121,17 @@
 
     {{#if showTitleDescriptionEditOverlay}}
       <div class="title-description-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+        <button class="close">✕</button>
         <div class="title-description-inputs">
-          <form id="set-title-description" action="action">
+          <form id="publish-with-title-description" action="action">
             <label for="title">Enter a title for your Deep Stream:</label>
-            <input type="text" name="title" class="set-title" autofocus="autofocus">
+            <input type="text" name="title" value="{{title}}" class="set-title" autofocus="autofocus">
             <div class="character-count">{{titleLength}} / {{titleMax}}</div>
             <label for="description">Enter a description:</label>
-            <textarea name="description" class="set-description" rows="3"></textarea>
+            <textarea name="description" value="{{description}}" class="set-description" rows="3"></textarea>
             <div class="character-count">{{descriptionLength}} / {{descriptionMax}}</div>
             <div class="button-area">
-              <button type="submit">OK</button>
+              <button type="submit">Publish!</button>
             </div>
 
           </form>

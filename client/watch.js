@@ -277,7 +277,7 @@ Template.watch.helpers({
   streamDescriptionElement: function(){
     if (Session.get('curateMode')) {
       // this is contenteditable in curate mode
-      return '<div class="stream-description" placeholder="Description" contenteditable="true" dir="auto">' + _.escape(this.description) + '</div>';
+      return '<div class="stream-description" placeholder="Enter a description" contenteditable="true" dir="auto">' + _.escape(this.description) + '</div>';
     } else {
       return '<div class="stream-description">' + _.escape(this.description) + '</div>';
     }
@@ -322,7 +322,7 @@ Template.watch.events({
   'keypress .set-description': function(e, t){
     if (e.keyCode === 13){
       e.preventDefault();
-      $('#set-title-description').submit();
+      $('#publish-with-title-description').submit();
     }
   },
   'keyup .set-title': function(e, t){
@@ -331,11 +331,11 @@ Template.watch.events({
   'keyup .set-description': function(e, t){
     t.descriptionLength.set($(e.currentTarget).val().length);
   },
-  'submit #set-title-description': function(e, t){
+  'submit #publish-with-title-description': function(e, t){
     e.preventDefault();
     var title = t.$('.set-title').val();
     var description = t.$('.set-description').val();
-    Meteor.call('setStreamTitleDescription', t.data.shortId(), title, description, basicErrorHandler);
+    Meteor.call('publishStream', t.data.shortId(), title, description, basicErrorHandler);
   },
   'click .find-stream .text': function(e, t){
     Meteor.call('goToFindStreamStep', t.data.shortId(), basicErrorHandler);
@@ -352,29 +352,27 @@ Template.watch.events({
   'click .add-cards button': function(e, t){
     Meteor.call('skipAddCardsStep', t.data.shortId(), basicErrorHandler);
   },
-  'click .go-on-air button': function(e, t){
-    Meteor.call('publishStream', t.data.shortId(), function(err){
-      if(err){
-        basicErrorHandler(err);
-      } else {
-        notifySuccess("Congratulations! Your Deep Stream is now on air!");
-      }
-    });
+  'click .title-description-overlay .close': function(e, t){
+    Meteor.call('goBackFromTitleDescriptionStep', t.data.shortId(), basicErrorHandler);
   },
   'click .publish': function(e, t){
-    Meteor.call('publishStream', t.data.shortId(), function(err){
-      if(err){
-        basicErrorHandler(err);
-      } else {
-        notifySuccess("Congratulations! Your Deep Stream is now on air!");
-      }
-    });
+    if (this.creationStep === 'go_on_air') {
+      Meteor.call('proceedFromGoOnAirStep', t.data.shortId(), basicErrorHandler);
+    } else if (!this.creationStep) {
+      Meteor.call('publishStream', t.data.shortId(), function(err){
+        if(err){
+          basicErrorHandler(err);
+        } else {
+          notifySuccess("Congratulations! Your Deep Stream is now on air!");
+        }
+      });
+    } // TODO handle if in the middle of creation (or just disable button or something)
+
   },
   'click .unpublish': function(e, t){
     Meteor.call('unpublishStream', t.data.shortId(), basicErrorHandler);
   },
   'click .show-stream-search': function(e, t){
-    console.log(this)
     if(this.creationStep && this.creationStep !== 'go_on_air'){
       Meteor.call('goToFindStreamStep', t.data.shortId(), basicErrorHandler);
     } else {

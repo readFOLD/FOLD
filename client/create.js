@@ -567,7 +567,7 @@ Template.content_icons.helpers({
     return true;
   },
   disableAllButStream: function (){
-    return _.contains(['title_description', 'find_stream'], this.creationStep);
+    return _.contains(['find_stream'], this.creationStep);
   }
 });
 
