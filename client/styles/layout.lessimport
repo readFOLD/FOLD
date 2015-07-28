@@ -893,7 +893,6 @@ div.horizontal-context {
   }
   div.active-display {
     z-index: 20;
-    position: absolute;
     .size-to-fit;
   }
 }

@@ -356,7 +356,10 @@
       {{else}}
         {{#with focusResult}}
           <div class="news-preview search-results-container">
-            {{> display_news_section}}
+            <div class="news-section focused">
+              <h4 class="news-title">{{title}}</h4>
+              <div class="news-html">{{{html}}}</div>
+            </div>
           </div>
         {{/with}}
       {{/if}}

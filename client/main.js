@@ -400,14 +400,22 @@ Template.display_image_section.helpers(horizontalBlockHelpers);
 Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
 Template.display_audio_section.helpers(horizontalBlockHelpers);
+Template.display_audio_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
 Template.display_video_section.helpers(horizontalBlockHelpers);
+Template.display_video_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
 Template.display_twitter_section.helpers(horizontalBlockHelpers);
+Template.display_twitter_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
 Template.display_map_section.helpers(horizontalBlockHelpers);
+Template.display_map_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+
+Template.display_news_section.helpers(horizontalBlockHelpers);
+Template.display_news_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
 Template.display_link_section.helpers(horizontalBlockHelpers);
+Template.display_link_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 Template.display_link_section.events({
   'click a': function (e, t) {
     var url = e.currentTarget.href;
