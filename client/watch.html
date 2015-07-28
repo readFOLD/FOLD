@@ -5,7 +5,6 @@
         <div class="header-section">
           <div class="top-row">
             {{> logo_title}}
-            {{{streamTitleElement}}}
           </div>
           <div class="second-row">
             {{#if activeStream}}
@@ -13,13 +12,10 @@
                 LIVE
               </div>
             {{/if}}
+            {{{streamTitleElement}}}
             <div class="about-stream">
-              <div class="header">About</div>
-              <div class="rest">
-                <div class="description">
-                  {{description}}
-                </div>
-              </div>
+              <div class="icon"><i class="fa fa-info-circle"></i></div>
+              {{{streamDescriptionElement}}}
             </div>
           </div>
           <!--{{#if mainPlayerMuted}}-->

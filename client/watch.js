@@ -273,6 +273,14 @@ Template.watch.helpers({
     } else {
       return '<div class="stream-title">' + _.escape(this.title) + '</div>';
     }
+  },
+  streamDescriptionElement: function(){
+    if (Session.get('curateMode')) {
+      // this is contenteditable in curate mode
+      return '<div class="stream-description" placeholder="Description" contenteditable="true" dir="auto">' + _.escape(this.description) + '</div>';
+    } else {
+      return '<div class="stream-description">' + _.escape(this.description) + '</div>';
+    }
   }
 });
 
@@ -378,6 +386,11 @@ Template.watch.events({
     streamTitle = $.trim(template.$('div.stream-title').text());
     Session.set('saveState', 'saving');
     return Meteor.call('updateStreamTitle', Session.get('streamShortId'), streamTitle, basicErrorHandler)
+  },
+  'blur .stream-description[contenteditable]': function(e,template) {
+    streamDescription = $.trim(template.$('div.stream-description').text());
+    Session.set('saveState', 'saving');
+    return Meteor.call('updateStreamDescription', Session.get('streamShortId'), streamDescription, basicErrorHandler)
   }
 });
 

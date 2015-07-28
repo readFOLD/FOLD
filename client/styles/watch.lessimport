@@ -1,11 +1,9 @@
 .watch{
   .stream-title{
     display: inline-block;
-    position: absolute;
-    top: 20px;
-    left: 400px;
     font-size: 36px;
     font-weight: bold;
+    margin-left: 10px;
   }
   .streams-list{
     .stream.justAdded{
@@ -314,7 +312,7 @@
 
 .action-items{
   font-size: 14px;
-  font-weight: medium;
+  font-weight: normal;
 }
 
 .bottom-overlay{
@@ -353,18 +351,18 @@
 }
 
 .top-row{
-  background-color: @medium-color;
+  background-color: @black-color;
   height: 60px;
   .box-shadow(0px 2px 12px 0px rgba(0,0,0,0.75));
 }
 
 .second-row{
-  padding-top: 5px;
-  padding-left: 30px;
+  padding-top: 10px;
+  padding-left: 10px;
   font-size: 20px;
   font-weight: bold;
   position: relative;
-  height: 90px;
+  height: 65px;
 }
 
 .curator-info{
@@ -397,11 +395,16 @@
   width: @right-section-width;
   right: 0px;
   position: absolute;
-  .description{
+  .icon{
+    display: inline-block;
+  }
+  .stream-description{
+    display: inline-block;
     font-size: 14px;
     line-height: 18px;
     font-weight: normal;
     padding-right: 10px;
+    width: @right-section-width - 50px;
   }
 }
 
@@ -411,13 +414,10 @@
   display: inline-block;
   font-size: 28px;
   font-weight: bold;
-  position: absolute;
   height: 42px;
   line-height: 42px;
   width: 88px;
   text-align: center;
-  left: 45%;
-  bottom: 0;
 }
 
 

@@ -322,13 +322,16 @@ Meteor.methods({
     return updateStream.call(this, {shortId: shortId}, {$set: {onAir: false }});
   },
   updateStreamTitle: function(shortId, title){
-    console.log(arguments)
-
     check(shortId, String);
     check(title, String);
     // TODO DRY
     var streamPathSegment = _s.slugify(title.toLowerCase() || 'deep-stream') + '-' + shortId;
     return updateStream.call(this, {shortId: shortId}, {$set: {'title' : title, 'streamPathSegment' : streamPathSegment }});
+  },
+  updateStreamDescription: function(shortId, description){
+    check(shortId, String);
+    check(description, String);
+    return updateStream.call(this, {shortId: shortId}, {$set: {'description' : description }});
   },
   editHorizontalBlockDescription: function(shortId, contextId, description) {
     check(shortId, String);
