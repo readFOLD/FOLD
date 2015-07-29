@@ -70,6 +70,14 @@
   position: relative;
   display: inline-block;
   z-index: 1;
+  &.PiP{
+    position: fixed;
+    z-index: 9999999999999;
+    height: 150px;
+    width: 250px;
+    float: none;
+    left: 0;
+  }
 }
 .right-section{
   height: 100%;
@@ -250,6 +258,7 @@
 }
 .large-context-browser{
   .full-overlay;
+  background-color: rgba(0,0,0,0.8);
 }
 
 .browse-buttons{

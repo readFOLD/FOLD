@@ -269,6 +269,9 @@ Template.watch.helpers({
   largeContextMode: function(){
     return Session.get('largeContextMode');
   },
+  PiP: function(){
+    return Session.get('largeContextMode');
+  },
   streamTitleElement: function(){
     if (Session.get('curateMode')) {
       // this is contenteditable in curate mode

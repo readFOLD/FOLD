@@ -27,7 +27,7 @@
 
 
         <div class="main-section {{#unless showRightSection}}expanded{{/unless}}">
-          <div class="main-stream {{#unless showRightSection}}expanded{{/unless}}">
+          <div class="main-stream {{#unless showRightSection}}expanded{{/unless}} {{#if PiP}}PiP{{/if}}">
             {{#if showTutorial}}
               <div class="tutorial">
                 <div class="tutorial-step find-stream {{#if onFindStreamStep}}active{{/if}}">
@@ -52,9 +52,11 @@
             {{/if}}
             {{#if streamUrl}}
               <iframe id="{{mainStreamId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
-              {{#with activeStream}}
-                <div class="bottom-overlay"><span class="stream-url">Livestream:  <a href="{{sourceUrl}}" target="_blank">{{sourceUrl}}</a></span><span class="stream-username">Streamer:  {{username}}</span></div>
-              {{/with}}
+              {{#unless PiP}}
+                {{#with activeStream}}
+                  <div class="bottom-overlay"><span class="stream-url">Livestream:  <a href="{{sourceUrl}}" target="_blank">{{sourceUrl}}</a></span><span class="stream-username">Streamer:  {{username}}</span></div>
+                {{/with}}
+              {{/unless}}
             {{/if}}
           </div>
           <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
@@ -205,7 +207,7 @@
 </template>
 
 <template name="large_context_browser">
-  <div class="large-context-browser">
+  <div class="large-context-browser" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
     <div class="browse-buttons">
       {{#if currentContext}}
         <span class="count">{{currentNum}} of {{totalNum}}</span>
