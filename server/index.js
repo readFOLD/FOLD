@@ -15,6 +15,7 @@ if (_.contains([true, 'true'], process.env.ALLOW_BOTS)){
   robots.addLine('User-agent: *\nDisallow: /');
 }
 
+WebApp.connectHandlers.use(Meteor.npmRequire("prerender-node"));
 
 // if (process.env.PRERENDER_TOKEN) {
 //   prerenderio.set('prerenderToken', process.env.PRERENDER_TOKEN);
