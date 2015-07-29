@@ -139,6 +139,10 @@
       </div>
     {{/if}}
 
+    {{#if largeContextMode}}
+      {{> large_context_browser}}
+    {{/if}}
+
     {{> signin_overlay}}
 
     <div class="action-items">
@@ -179,21 +183,47 @@
     <div class="browse-buttons">
       {{#if currentContext}}
         <span class="count">{{currentNum}} of {{totalNum}}</span>
-          <button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>
-          <button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>
+        <button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>
+        <button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>
         {{#unless curateMode}}
           <button class="close">{{> close_circle}}</button>
         {{/unless}}
       {{/if}}
     </div>
-    {{#with currentContext}}
-      {{#if curateMode}}
-        <div class="edit-context-button-row">
-          <button class="add-new-context">New</button>
-          <button class="delete-current-context">Delete</button>
-        </div>
-      {{/if}}
+    {{#if curateMode}}
+      <div class="edit-context-button-row">
+        <button class="add-new-context">New</button>
+      </div>
+    {{/if}}
+    {{#each contextOfCurrentType}}
       {{> horizontal_section_block}}
+      {{#if curateMode}}
+        <button class="delete-current-context">Delete</button>
+      {{/if}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="large_context_browser">
+  <div class="large-context-browser">
+    <div class="browse-buttons">
+      {{#if currentContext}}
+        <span class="count">{{currentNum}} of {{totalNum}}</span>
+        <button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>
+        <button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>
+        <button class="close">{{> close_circle}}</button>
+      {{/if}}
+    </div>
+    {{#if curateMode}}
+      <div class="edit-context-button-row">
+        <button class="add-new-context">New</button>
+      </div>
+    {{/if}}
+    {{#with currentContext}}
+      {{> horizontal_section_block}}
+      {{#if curateMode}}
+        <button class="delete-current-context">Delete</button>
+      {{/if}}
     {{/with}}
   </div>
 </template>

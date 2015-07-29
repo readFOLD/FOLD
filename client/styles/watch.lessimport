@@ -244,6 +244,14 @@
   background-color: @medium-color;
 }
 
+.context-browser{
+  overflow-y: scroll;
+  height: 100%;
+}
+.large-context-browser{
+  .full-overlay;
+}
+
 .browse-buttons{
   background-color: @black-color;
   width: 100%;

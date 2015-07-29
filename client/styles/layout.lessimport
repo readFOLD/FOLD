@@ -941,10 +941,10 @@ div.horizontal-context {
 .context-section{
   @unselected-opacity: 0.25;
   .left-transition;
-  position: absolute;
-  height: @horizontal-content-height;
+  //position: absolute;
+  //height: @horizontal-content-height;
   // box-shadow: 3px 3px #848484;
-  pointer-events: none;
+  //pointer-events: none;
 
   //min-width: 400px;
   width: 100%;

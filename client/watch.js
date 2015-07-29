@@ -266,6 +266,9 @@ Template.watch.helpers({
     var mediaDataType = Session.get('mediaDataType');
     return Session.get("curateMode") && (Session.get("searchingMedia") || (mediaDataType && this.contextOfType(mediaDataType).length === 0)) && mediaDataType && mediaDataType !== 'stream';
   },
+  largeContextMode: function(){
+    return Session.get('largeContextMode');
+  },
   streamTitleElement: function(){
     if (Session.get('curateMode')) {
       // this is contenteditable in curate mode
@@ -437,6 +440,66 @@ Template.context_browser.helpers({
 Template.context_browser.events({
   'click .close': function(){
     Session.set('mediaDataType', null);
+  },
+  'click .add-new-context': function(){
+    Session.set('searchingMedia', true);
+  },
+  'click .delete-current-context': function(){
+    Meteor.call('removeContextFromStream', Session.get("streamShortId"), this._id, function(err){
+      // TODO SOMETHING
+    });
+  },
+  'click .image-section': function(){
+    setCurrentContextIdOfType('image', this._id);
+    Session.set('largeContextMode', true);
+  },
+  'click .right': function(){
+    setCurrentContextIdOfType(Session.get('mediaDataType'), this.nextContext(Session.get("currentContext")._id)._id);
+  },
+  'click .left': function(){
+    setCurrentContextIdOfType(Session.get('mediaDataType'), this.previousContext(Session.get("currentContext")._id)._id);
+  }
+});
+
+
+Template.large_context_browser.helpers({
+  contextOfCurrentType: function(){
+    return this.contextOfType(Session.get('mediaDataType'));
+  },
+  totalNum: function(){
+    return this.contextOfType(Session.get('mediaDataType')).length;
+  },
+  currentNum: function(){
+    var cBlocks = this.contextOfType(Session.get('mediaDataType'));
+    return _.indexOf(cBlocks, _.findWhere(cBlocks, {_id: Session.get('currentContext')._id})) + 1;
+  },
+  currentContext: function(){
+    var currentContext = Session.get('currentContext');
+    if (currentContext){
+      return newTypeSpecificContextBlock(currentContext);
+    }
+  },
+  disableRightButton: function(){
+    var currentContext = Session.get('currentContext');
+    if (currentContext){
+      return !this.nextContext(Session.get("currentContext")._id);
+    } else {
+      return true
+    }
+  },
+  disableLeftButton: function(){
+    var currentContext = Session.get('currentContext');
+    if (currentContext){
+      return !this.previousContext(Session.get("currentContext")._id);
+    } else {
+      return true
+    }
+  }
+});
+
+Template.large_context_browser.events({
+  'click .close': function(){
+    Session.set('largeContextMode', false);
   },
   'click .add-new-context': function(){
     Session.set('searchingMedia', true);
