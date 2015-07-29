@@ -466,6 +466,9 @@ Template.context_browser.events({
 
 
 Template.large_context_browser.helpers({
+  mediaTypeForDisplay: function(){
+    return _s.capitalize(Session.get('mediaDataType'));
+  },
   contextOfCurrentType: function(){
     return this.contextOfType(Session.get('mediaDataType'));
   },

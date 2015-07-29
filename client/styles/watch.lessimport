@@ -266,6 +266,15 @@
     margin-left: @PiP-width + 2 * @left-margin;
     position: relative;
   }
+  .close{
+    position: absolute;
+    right: 10px;
+    z-index: 99999999999;
+    .size(40px);
+    .fg-stroke{
+      stroke: white;
+    }
+  }
 }
 
 .browse-buttons{

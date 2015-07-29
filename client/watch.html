@@ -208,26 +208,16 @@
 
 <template name="large_context_browser">
   <div class="large-context-browser" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+    <button class="close">{{> close_circle}}</button>
     <div class="context-area">
       <div class="browse-buttons">
-        {{#if currentContext}}
-          <span class="count">{{currentNum}} of {{totalNum}}</span>
-          <button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>
-          <button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>
-          <button class="close">{{> close_circle}}</button>
-        {{/if}}
+        <span class="count">{{mediaTypeForDisplay}} {{currentNum}} of {{totalNum}}</span>
       </div>
-      {{#if curateMode}}
-        <div class="edit-context-button-row">
-          <button class="add-new-context">New</button>
-        </div>
-      {{/if}}
+      <button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>
       {{#with currentContext}}
         {{> horizontal_section_block}}
-        {{#if curateMode}}
-          <button class="delete-current-context">Delete</button>
-        {{/if}}
       {{/with}}
+      <button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>
     </div>
 
   </div>
