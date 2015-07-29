@@ -59,6 +59,8 @@
 }
 
 @right-section-width: 350px;
+@PiP-width: 250px;
+@left-margin: 10px;
 
 .main-stream{
   height: 100%;
@@ -74,9 +76,9 @@
     position: fixed;
     z-index: 9999999999999;
     height: 150px;
-    width: 250px;
+    width: @PiP-width;
     float: none;
-    left: 0;
+    left: @left-margin;
   }
 }
 .right-section{
@@ -256,9 +258,14 @@
   overflow-y: scroll;
   height: 100%;
 }
+
 .large-context-browser{
   .full-overlay;
   background-color: rgba(0,0,0,0.8);
+  .context-area {
+    margin-left: @PiP-width + 2 * @left-margin;
+    position: relative;
+  }
 }
 
 .browse-buttons{
@@ -375,7 +382,7 @@
 
 .second-row{
   padding-top: 10px;
-  padding-left: 10px;
+  padding-left: @left-margin;
   font-size: 20px;
   font-weight: bold;
   position: relative;
