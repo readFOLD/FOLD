@@ -74,6 +74,13 @@
   display: inline-block;
   z-index: 1;
   &.PiP{
+    z-index: inherit;
+  }
+
+}
+.main-stream-iframe-holder{
+  .size-to-fit;
+  &.PiP{
     position: fixed;
     z-index: 9999999999999;
     height: @PiP-height;
@@ -262,14 +269,26 @@
 
 .large-context-browser{
   .full-overlay;
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(25,25,25,0.7);
   .context-area {
     margin-left: @PiP-width + 2 * @left-margin;
     margin-right: @PiP-width + 2 * @left-margin;
     position: relative;
-    top: 100px;
+    top: @top-row-height + @second-row-height;
     text-align: center;
+    .count{
+      height: 34px;
+      line-height: 34px;
+      font-weight: bold;
+      text-align: center;
+      color: @medium-color;
+      font-size: 20px;
+      position: absolute;
+      top: -34px;
+      width: 100%;
+    }
   }
+
   @browse-button-width: 70px;
   .left, .right{
     height: 170px;
@@ -383,19 +402,21 @@
   z-index: 999;
 }
 
+@top-row-height: 60px;
 .top-row{
   background-color: @black-color;
-  height: 60px;
+  height: @top-row-height;
   .box-shadow(0px 2px 12px 0px rgba(0,0,0,0.75));
 }
 
+@second-row-height: 65px;
 .second-row{
   padding-top: 10px;
   padding-left: @left-margin;
   font-size: 20px;
   font-weight: bold;
   position: relative;
-  height: 65px;
+  height: @second-row-height;
 }
 
 .curator-info{

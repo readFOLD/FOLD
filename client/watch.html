@@ -51,7 +51,9 @@
               </div>
             {{/if}}
             {{#if streamUrl}}
-              <iframe id="{{mainStreamId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
+              <div class="main-stream-iframe-holder {{#if PiP}}PiP{{/if}}">
+                <iframe id="{{mainStreamId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
+              </div>
               {{#unless PiP}}
                 {{#with activeStream}}
                   <div class="bottom-overlay"><span class="stream-url">Livestream:  <a href="{{sourceUrl}}" target="_blank">{{sourceUrl}}</a></span><span class="stream-username">Streamer:  {{username}}</span></div>
@@ -210,9 +212,7 @@
   <div class="large-context-browser" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
     <button class="close">{{> close_circle}}</button>
     <div class="context-area">
-      <div class="browse-buttons">
-        <span class="count">{{mediaTypeForDisplay}} {{currentNum}} of {{totalNum}}</span>
-      </div>
+      <div class="count">{{mediaTypeForDisplay}} {{currentNum}} of {{totalNum}}</div>
       <button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>
       {{#with currentContext}}
         {{> horizontal_section_block}}
