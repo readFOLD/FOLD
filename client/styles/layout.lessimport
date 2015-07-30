@@ -517,7 +517,7 @@ div.image-section {
   .size-to-fit;
   position: relative;
   line-height: @horizontal-content-height;
-  background-color: @medium-color;
+  background-color: transparent;
   text-align: center;
 
   img.giphy-logo {
@@ -947,7 +947,7 @@ div.horizontal-context {
 
   //min-width: 400px;
   width: 100%;
-  background-color: @white-color;
+  background-color: transparent;
   color: @dark-color;
   // display: none;
   opacity:  @unselected-opacity;

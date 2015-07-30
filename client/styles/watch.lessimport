@@ -60,6 +60,7 @@
 
 @right-section-width: 350px;
 @PiP-width: 250px;
+@PiP-height: 150px;
 @left-margin: 10px;
 
 .main-stream{
@@ -75,7 +76,7 @@
   &.PiP{
     position: fixed;
     z-index: 9999999999999;
-    height: 150px;
+    height: @PiP-height;
     width: @PiP-width;
     float: none;
     left: @left-margin;
@@ -264,7 +265,23 @@
   background-color: rgba(0,0,0,0.8);
   .context-area {
     margin-left: @PiP-width + 2 * @left-margin;
+    margin-right: @PiP-width + 2 * @left-margin;
     position: relative;
+    top: 100px;
+    text-align: center;
+  }
+  @browse-button-width: 70px;
+  .left, .right{
+    height: 170px;
+    width: @browse-button-width;
+    position: absolute;
+    top: @PiP-height;
+  }
+  .left{
+    left: -@browse-button-width - @left-margin;
+  }
+  .right{
+    right: -@browse-button-width - @left-margin;
   }
   .close{
     position: absolute;
@@ -286,25 +303,8 @@
   font-size: 20px;
   font-weight: bold;
   text-align: center;
-  .count{
-    left: 5px;
-    position: absolute;
-  }
   .close{
     float: right;
-  }
-  svg{
-    .size-to-fit;
-    .fg{
-      fill: @medium-color;
-    }
-    .bg{
-      fill: none;
-      stroke: @medium-color;
-    }
-    .fg-stroke{
-      stroke: @medium-color;
-    }
   }
   button{
     background-color: inherit;
