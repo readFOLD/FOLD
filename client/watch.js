@@ -529,6 +529,8 @@ Template.large_context_browser.events({
   }
 });
 
+Template.full_context_section.helpers(horizontalBlockHelpers);
+
 // TODO remove and have an about section
 Template.banner_buttons.events({
   'click .about-deepstream': function(){

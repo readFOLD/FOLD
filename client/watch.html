@@ -2,84 +2,84 @@
   {{#with thisDeepstream}}
 
     <div class="watch">
-        <div class="header-section">
-          <div class="top-row">
-            {{> logo_title}}
-          </div>
-          <div class="second-row">
-            {{#if activeStream}}
-              <div class="live-indicator">
-                LIVE
-              </div>
-            {{/if}}
-            {{{streamTitleElement}}}
-            <div class="about-stream">
-              <div class="icon"><i class="fa fa-info-circle"></i></div>
-              {{{streamDescriptionElement}}}
-            </div>
-          </div>
-          <!--{{#if mainPlayerMuted}}-->
-            <!--<button class="unmute">Un-mute</button>-->
-          <!--{{else}}-->
-            <!--<button class="mute">Mute</button>-->
-          <!--{{/if}}-->
+      <div class="header-section">
+        <div class="top-row">
+          {{> logo_title}}
         </div>
-
-
-        <div class="main-section {{#unless showRightSection}}expanded{{/unless}}">
-          <div class="main-stream {{#unless showRightSection}}expanded{{/unless}} {{#if PiP}}PiP{{/if}}">
-            {{#if showTutorial}}
-              <div class="tutorial">
-                <div class="tutorial-step find-stream {{#if onFindStreamStep}}active{{/if}}">
-                  <div class="text">
-                    <span class="number">Step 1:</span><span class="instruction">Find streams that you want to curate on the right.</span>
-                  </div>
-                  <button>Skip this step ></button>
-                </div>
-                <div class="tutorial-step add-cards {{#if onAddCardsStep}}active{{/if}}">
-                  <div class="text">
-                    <span class="number">Step 2:</span><span class="instruction">Add cards on the right to give viewers more information.</span>
-                  </div>
-                  <button>Skip this step ></button>
-                </div>
-                <div class="tutorial-step go-on-air {{#if onGoOnAirStep}}active{{/if}}">
-                  <div class="text">
-                    <span class="number">Step 3:</span><span class="instruction">Put your Deep Stream on air!</span>
-                  </div>
-                  <button class="publish">Publish!</button>
-                </div>
-              </div>
-            {{/if}}
-            {{#if streamUrl}}
-              <div class="main-stream-iframe-holder {{#if PiP}}PiP{{/if}}">
-                <iframe id="{{mainStreamId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
-              </div>
-              {{#unless PiP}}
-                {{#with activeStream}}
-                  <div class="bottom-overlay"><span class="stream-url">Livestream:  <a href="{{sourceUrl}}" target="_blank">{{sourceUrl}}</a></span><span class="stream-username">Streamer:  {{username}}</span></div>
-                {{/with}}
-              {{/unless}}
-            {{/if}}
+        <div class="second-row">
+          {{#if activeStream}}
+            <div class="live-indicator">
+              LIVE
+            </div>
+          {{/if}}
+          {{{streamTitleElement}}}
+          <div class="about-stream">
+            <div class="icon"><i class="fa fa-info-circle"></i></div>
+            {{{streamDescriptionElement}}}
           </div>
-          <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
-            {{> content_icons}}
-            {{#if showRightSection}}
-              {{#if showContextSearch}}
-                {{> add_context}}
+        </div>
+        <!--{{#if mainPlayerMuted}}-->
+          <!--<button class="unmute">Un-mute</button>-->
+        <!--{{else}}-->
+          <!--<button class="mute">Mute</button>-->
+        <!--{{/if}}-->
+      </div>
+
+
+      <div class="main-section {{#unless showRightSection}}expanded{{/unless}}">
+        <div class="main-stream {{#unless showRightSection}}expanded{{/unless}} {{#if PiP}}PiP{{/if}}">
+          {{#if showTutorial}}
+            <div class="tutorial">
+              <div class="tutorial-step find-stream {{#if onFindStreamStep}}active{{/if}}">
+                <div class="text">
+                  <span class="number">Step 1:</span><span class="instruction">Find streams that you want to curate on the right.</span>
+                </div>
+                <button>Skip this step ></button>
+              </div>
+              <div class="tutorial-step add-cards {{#if onAddCardsStep}}active{{/if}}">
+                <div class="text">
+                  <span class="number">Step 2:</span><span class="instruction">Add cards on the right to give viewers more information.</span>
+                </div>
+                <button>Skip this step ></button>
+              </div>
+              <div class="tutorial-step go-on-air {{#if onGoOnAirStep}}active{{/if}}">
+                <div class="text">
+                  <span class="number">Step 3:</span><span class="instruction">Put your Deep Stream on air!</span>
+                </div>
+                <button class="publish">Publish!</button>
+              </div>
+            </div>
+          {{/if}}
+          {{#if streamUrl}}
+            <div class="main-stream-iframe-holder {{#if PiP}}PiP{{/if}}">
+              <iframe id="{{mainStreamId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
+            </div>
+            {{#unless PiP}}
+              {{#with activeStream}}
+                <div class="bottom-overlay"><span class="stream-url">Livestream:  <a href="{{sourceUrl}}" target="_blank">{{sourceUrl}}</a></span><span class="stream-username">Streamer:  {{username}}</span></div>
+              {{/with}}
+            {{/unless}}
+          {{/if}}
+        </div>
+        <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
+          {{> content_icons}}
+          {{#if showRightSection}}
+            {{#if showContextSearch}}
+              {{> add_context}}
+            {{else}}
+              {{#if showStreamSearch}}
+                {{> stream_search}}
               {{else}}
-                {{#if showStreamSearch}}
-                  {{> stream_search}}
+                {{#if showChat}}
+                  {{> unimplemented_chat_section}}
                 {{else}}
-                  {{#if showChat}}
-                    {{> unimplemented_chat_section}}
-                  {{else}}
-                    {{> context_browser}}
-                  {{/if}}
+                  {{> context_browser}}
                 {{/if}}
               {{/if}}
             {{/if}}
-          </div>
+          {{/if}}
         </div>
+      </div>
       <div class="footer-section">
         {{#if curateMode}}
           <ol class="streams-list">
@@ -179,34 +179,33 @@
       </ol>
     </div>
   {{/with}}
-
 </template>
 
 <template name="context_browser">
   <div class="context-browser">
     <div class="browse-buttons">
-      {{#if currentContext}}
+      <span class="type">{{mediaTypeForDisplay}}</span>
 
-        <span class="type">{{mediaTypeForDisplay}}</span>
         <!--<span class="count">{{currentNum}} of {{totalNum}}</span>-->
         <!--<button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>-->
         <!--<button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>-->
         {{#unless curateMode}}
           <button class="close">{{> close_circle}}</button>
         {{/unless}}
-      {{/if}}
     </div>
     {{#if curateMode}}
       <div class="edit-context-button-row">
         <button class="add-new-context">New</button>
       </div>
     {{/if}}
-    {{#each contextOfCurrentType}}
-      {{> horizontal_section_block}}
-      {{#if curateMode}}
-        <button class="delete-current-context">Delete</button>
-      {{/if}}
-    {{/each}}
+    <div class="context-area">
+      {{#each contextOfCurrentType}}
+        {{> horizontal_section_block}}
+        {{#if curateMode}}
+          <button class="delete-current-context">Delete</button>
+        {{/if}}
+      {{/each}}
+    </div>
   </div>
 </template>
 
@@ -221,6 +220,49 @@
       {{/with}}
       <button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>
     </div>
+  </div>
+</template>
 
+
+
+
+<template name="full_context_section">
+  <div
+      class="narrative-section context-section {{#if type}}{{type}}-card{{/if}}" data-index="{{index}}">
+    <section>
+      {{#if type}}
+        {{#if text}}
+          {{> display_text_section}}
+        {{/if}}
+        {{#if image}}
+          {{> display_image_section}}
+        {{/if}}
+        {{#if gif}}
+          {{> display_image_section}}
+        {{/if}}
+        {{#if map}}
+          {{> display_map_section}}
+        {{/if}}
+        {{#if audio}}
+          {{> display_audio_section}}
+        {{/if}}
+        {{#if video}}
+          {{> display_video_section}}
+        {{/if}}
+        {{#if twitter}}
+          {{> display_twitter_section}}
+        {{/if}}
+
+        {{#if link}}
+          {{> display_link_section}}
+        {{/if}}
+
+        {{#if news}}
+          {{> display_news_section}}
+        {{/if}}
+      {{else}}
+        {{> display_broken_section}}
+      {{/if}}
+    </section>
   </div>
 </template>

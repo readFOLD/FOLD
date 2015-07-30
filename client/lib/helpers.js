@@ -118,3 +118,43 @@ window.pluralizeMediaType = function(mediaType){
       return mediaType + 's'
   }
 }
+
+window.typeHelpers = {
+  text: function() {
+    return this.type === "text";
+  },
+  image: function() {
+    return this.type === "image";
+  },
+  gif: function() {
+    return this.type === "gif";
+  },
+  map: function() {
+    return this.type === "map";
+  },
+  video: function() {
+    return this.type === "video";
+  },
+  viz: function() {
+    return this.type === "viz";
+  },
+  twitter: function() {
+    return this.type === "twitter";
+  },
+  audio: function() {
+    return this.type === "audio";
+  },
+  link: function() {
+    return this.type === "link";
+  },
+  news: function() {
+    return this.type === "news";
+  }
+};
+
+window.horizontalBlockHelpers = _.extend({}, typeHelpers, {
+  selected: function(){
+    return true;
+  },
+  annotation: textContentHelper
+});

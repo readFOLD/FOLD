@@ -1,21 +1,8 @@
-var getCardWidth, horizontalBlockHelpers, throttledResize, typeHelpers;
+var throttledResize;
 
 UI.registerHelper('selectedIf', function(val) {
   return val ? 'selected' : '';
 });
-
-
-getCardWidth = function(windowWidth) {
-  return 350;
-  //
-  //if (Meteor.Device.isPhone()){
-  //  return Session.get("windowWidth") - 2* getVerticalLeft();
-  //} else if (windowWidth <= window.constants.minPageWidth) {
-  //  return 400;
-  //} else {
-  //  return Math.min(520, (windowWidth - (16 * 3) - (88 * 2)) / 2);
-  //}
-};
 
 Session.set("separation", 10);
 
@@ -34,16 +21,9 @@ Meteor.startup(function(){
 
     Session.set("windowWidth", windowWidth);
 
-    var cardWidth = getCardWidth(windowWidth);
-
-    Session.set("cardWidth", cardWidth);
-
-    Session.set("verticalLeft", Session.get('mobileContextView') ? getVerticalLeft(windowWidth) - cardWidth : getVerticalLeft(windowWidth));
-
     if (Meteor.Device.isPhone()) {
       document.body.style.overflowX = "hidden";
       $('body').css('max-width', windowWidth);
-      Session.set("mobileMargin", getVerticalLeft(windowWidth));
     }
   });
 
@@ -207,38 +187,6 @@ window.trackingInfoFromStory = function(story){
     .value();
 };
 
-typeHelpers = {
-  text: function() {
-    return this.type === "text";
-  },
-  image: function() {
-    return this.type === "image";
-  },
-  gif: function() {
-    return this.type === "gif";
-  },
-  map: function() {
-    return this.type === "map";
-  },
-  video: function() {
-    return this.type === "video";
-  },
-  viz: function() {
-    return this.type === "viz";
-  },
-  twitter: function() {
-    return this.type === "twitter";
-  },
-  audio: function() {
-    return this.type === "audio";
-  },
-  link: function() {
-    return this.type === "link";
-  },
-  news: function() {
-    return this.type === "news";
-  }
-};
 
 //Template.story_header.onRendered(function() {
 //  var range, sel, titleDiv;
@@ -324,13 +272,6 @@ editableDescriptionCreatedBoilerplate = function() {
 //};
 
 
-horizontalBlockHelpers = _.extend({}, typeHelpers, {
-  selected: function() {
-    return true;
-    //return Session.equals("currentX", this.index) && !Session.get("addingContext");
-  },
-  annotation: textContentHelper
-});
 
 // TODO get swipes on context cards to work
 //Template.horizontal_section_block.onRendered(function(){

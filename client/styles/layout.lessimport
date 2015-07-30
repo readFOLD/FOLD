@@ -951,20 +951,10 @@ div.horizontal-context {
   //min-width: 400px;
   width: 100%;
   background-color: transparent;
-  color: @dark-color;
   // display: none;
-  opacity:  @unselected-opacity;
 
   @media @mobile {
     visibility: hidden;
-  }
-
-  &.selected {
-    opacity: 1.0;
-    @media @mobile {
-      visibility: visible;
-    }
-    pointer-events: auto;
   }
 
   @fullHeight: 500px;

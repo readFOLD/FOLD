@@ -263,9 +263,17 @@
 }
 
 .context-browser{
-  overflow-y: scroll;
   height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-flow: column;
+
+  .context-area{
+    overflow-y: scroll;
+    flex: auto;
+  }
 }
+
 
 .large-context-browser{
   .full-overlay;
@@ -306,7 +314,7 @@
     position: absolute;
     right: 10px;
     z-index: 99999999999;
-    .size(40px);
+    .size(80px);
     .fg-stroke{
       stroke: white;
     }
