@@ -105,3 +105,16 @@ window.textContentHelper = function() {
     return '<textarea name="content" class="text-content editable" rows="' + rows + '" placeholder="' + placeholder +  '" dir="auto">' + _.escape(textContent) + '</textarea>';
   }
 };
+
+window.pluralizeMediaType = function(mediaType){
+  switch(mediaType){
+    case 'news':
+      return 'news';
+    case 'text':
+      return 'text';
+    case 'chat':
+      return 'chat';
+    default:
+      return mediaType + 's'
+  }
+}

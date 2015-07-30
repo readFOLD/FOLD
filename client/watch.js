@@ -406,6 +406,9 @@ Template.watch.events({
 
 
 Template.context_browser.helpers({
+  mediaTypeForDisplay: function(){
+    return pluralizeMediaType(Session.get('mediaDataType')).toUpperCase();
+  },
   contextOfCurrentType: function(){
     return this.contextOfType(Session.get('mediaDataType'));
   },
@@ -452,7 +455,10 @@ Template.context_browser.events({
       // TODO SOMETHING
     });
   },
-  'click .image-section': function(){
+  'click .image-section': function(e, t){
+    if ($(e.target).is('textarea')){
+      return
+    }
     setCurrentContextIdOfType('image', this._id);
     Session.set('largeContextMode', true);
   },

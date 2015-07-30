@@ -527,15 +527,8 @@ div.image-section {
     width: 150px;
   }
 
-  .text-content{
-    color: white;
-    background-color: @dark-color;
-  }
 
-  textarea.text-content {
-    padding: 8px;
-    display: block;
-  }
+
 
   div.attribution {
     margin-top: -30px;
@@ -562,16 +555,7 @@ div.image-section {
     }
   }
 
-  div.text-content {
-    @font-size: 14px;
-    font-size: @font-size;
-    line-height: 20px;
-    .text-align-start;
-    width: 100%;
-    padding: 8px;
-    min-height: 36px;
 
-  }
   img, video {
     width: auto;
     max-width: 100%;
@@ -893,6 +877,25 @@ div.horizontal-context {
   div.active-display {
     z-index: 20;
     .size-to-fit;
+  }
+
+  .text-content{
+    color: white;
+    background-color: @dark-color;
+  }
+  textarea.text-content {
+    padding: 8px;
+    display: block;
+  }
+  div.text-content {
+    @font-size: 14px;
+    font-size: @font-size;
+    line-height: 20px;
+    .text-align-start;
+    width: 100%;
+    padding: 8px;
+    min-height: 36px;
+
   }
 }
 
