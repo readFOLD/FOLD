@@ -114,6 +114,8 @@ window.pluralizeMediaType = function(mediaType){
       return 'text';
     case 'chat':
       return 'chat';
+    case 'twitter':
+      return 'tweet';
     default:
       return mediaType + 's'
   }

@@ -200,7 +200,7 @@
     {{/if}}
     <div class="context-area">
       {{#each contextOfCurrentType}}
-        {{> horizontal_section_block}}
+        {{> full_context_section}}
         {{#if curateMode}}
           <button class="delete-current-context">Delete</button>
         {{/if}}
@@ -216,7 +216,7 @@
       <div class="count">{{mediaTypeForDisplay}} {{currentNum}} of {{totalNum}}</div>
       <button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>
       {{#with currentContext}}
-        {{> horizontal_section_block}}
+        {{> full_context_section}}
       {{/with}}
       <button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>
     </div>

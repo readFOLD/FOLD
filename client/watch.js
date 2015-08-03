@@ -254,7 +254,7 @@ Template.watch.helpers({
   },
   showRightSection: function(){
     var mediaDataType = Session.get('mediaDataType');
-    return Session.get("curateMode") || (mediaDataType && this.hasContextOfType(mediaDataType));
+    return !Session.get('largeContextMode') && (Session.get("curateMode") || (mediaDataType && this.hasContextOfType(mediaDataType)));
   },
   showStreamSearch: function(){
     return Session.get("curateMode") && Session.get('mediaDataType') === 'stream'; // always search on stream
@@ -507,6 +507,15 @@ Template.large_context_browser.helpers({
       return true
     }
   }
+});
+
+Template.large_context_browser.onRendered(function(){
+  document.body.style.overflow = 'hidden';
+  $(window).scrollTop(0);
+});
+
+Template.large_context_browser.onDestroyed(function(){
+  document.body.style.overflow = 'auto';
 });
 
 Template.large_context_browser.events({
