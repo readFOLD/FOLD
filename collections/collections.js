@@ -339,3 +339,51 @@ Stream = (function() {
   return Stream;
 
 })();
+
+this.Streams = new Mongo.Collection("streams", {
+  transform: function(doc) {
+    return new Stream(doc);
+  }
+});
+
+
+if(Meteor.isServer){
+
+
+  this.Streams.remove({});
+  console.log('remove all')
+
+  Streams._ensureIndex({
+    title: "text",
+    description: "text"
+  });
+
+  Meteor.call('ustreamVideoSearchList', 'this does nothing', function(error, result){
+    if(error){
+      throw error
+    }
+
+    if(!result.items || !result.items.length){
+      throw 'no items!!'
+    }
+
+    _.each(result.items, function(doc) {
+      console.log('insert')
+      Streams.insert(doc);
+    })
+
+
+    //console.log(Streams.find({title: 'Live_ISS_Stream'}).fetch())
+    //console.log(Streams.find({ $text: { $search: 'ISS', $language: 'en' } }).fetch())
+
+  });
+}
+
+if(Meteor.isClient){
+  StreamSearch.search('ISS'); // initiate search
+  Meteor.setTimeout(function(){
+    console.log(StreamSearch.getStatus())
+    console.log(StreamSearch.getData())
+  }, 1000)
+
+}

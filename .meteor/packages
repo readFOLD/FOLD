@@ -39,3 +39,4 @@ fold:context-blocks@0.2.0
 meteorhacks:flow-router
 meteorhacks:flow-layout
 momentjs:moment
+meteorhacks:search-source
