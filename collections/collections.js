@@ -277,36 +277,3 @@ this.Deepstreams.allow({
   }
 });
 
-
-if(Meteor.isServer){
-
-
-  this.Streams.remove({});
-
-  Streams._ensureIndex({
-    title: "text",
-    description: "text"
-  });
-
-  Meteor.call('ustreamVideoSearchList', 'this does nothing', function(error, result){
-    if(error){
-      throw error
-    }
-
-    if(!result.items || !result.items.length){
-      throw 'no items!!'
-    }
-
-    console.log(result.items.length)
-
-    _.each(result.items, function(doc) {
-      _.extend(doc, {_source: 'ustream'});
-      Streams.insert(doc);
-    })
-
-
-    //console.log(Streams.find({title: 'Live_ISS_Stream'}).fetch())
-    //console.log(Streams.find({ $text: { $search: 'ISS', $language: 'en' } }).fetch())
-
-  });
-}

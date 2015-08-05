@@ -2,7 +2,7 @@ SearchSource.defineSource('streams', function(searchText) {
   var options = {
     limit: 100,
     sort: {
-      viewersNow: -1
+      currentViewers: -1
     }
   };
 
@@ -30,3 +30,30 @@ function buildRegExp(searchText) {
   var parts = searchText.trim().split(/[ \-\:]+/);
   return new RegExp("(" + parts.join('|') + ")", "ig");
 }
+
+
+// load UStreams into database
+
+this.Streams.remove({});
+
+Meteor.call('ustreamVideoSearchList', function(error, result){
+  if(error){
+    throw error
+  }
+
+  if(!result.items || !result.items.length){
+    throw 'no items!!'
+  }
+
+  console.log('ustreams loaded')
+  _.each(result.items, function(doc) {
+
+    _.extend(doc, {
+      _source: 'ustream',
+      currentViewers: parseInt(doc.viewersNow),
+      totalViews: parseInt(doc.totalViews)
+    });
+    Streams.insert(doc);
+  })
+
+});

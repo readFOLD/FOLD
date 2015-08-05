@@ -16,6 +16,13 @@ Meteor.users._ensureIndex({
   username: 1
 });
 
+
+Streams._ensureIndex({
+  title: "text",
+  description: "text"
+});
+
+
 //var readStoryFields = {
 //  draftStory: 0,
 //  history: 0,
