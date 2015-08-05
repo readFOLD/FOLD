@@ -130,12 +130,20 @@ var setSearchInput = function(query){
 
 var existingSearchResults = function(options){
   inputs = getSearchInput.call(this);
-  return SearchResults.find({
+  var selector = {
     searchQuery: inputs.query,
     searchOption: inputs.option,
-    type: this.type,
-    source: Session.get('newHorizontalDataSource')
-  }, _.extend({}, options, {sort: {ordinalId: 1} }))
+    type: this.type
+  }
+
+  var newHorizontalDataSource = Session.get('newHorizontalDataSource');
+
+  if (newHorizontalDataSource.indexOf('all_') !== 0){ // naming convention...
+    _.extend(selector, {
+      source: Session.get('newHorizontalDataSource')
+    });
+  }
+  return SearchResults.find(selector, _.extend({}, options, {sort: {ordinalId: 1} }))
 };
 
 
@@ -200,13 +208,15 @@ var searchAPI = function(query) {
       .each(function(item, i) {
         _.extend(item, {
           type : type,
-          source: source,
           authorId : Meteor.user()._id,
           searchQuery : query,
           searchOption : option,
           nextPage: nextPage,
           ordinalId: count(),
           fullDetails: items[i] // include all original details from the api
+        });
+        _.defaults(item, {
+          source: source // for multi-source search, may already have a source
         });
 
         SearchResults.insert(item);
@@ -220,7 +230,7 @@ var createTemplateNames = [
   'create_image_section',
   'create_gif_section',
   'create_video_section',
-  'add_stream_section',
+  'create_stream_section',
   'create_twitter_section',
   'create_map_section',
   'create_audio_section',
@@ -239,14 +249,14 @@ _.each(createTemplateNames, function(templateName){
   });
 });
 
-Template.add_stream_section.helpers(createBlockHelpers);
-Template.add_stream_section.events(createBlockEvents);
+Template.create_stream_section.helpers(createBlockHelpers);
+Template.create_stream_section.events(createBlockEvents);
 
-Template.add_stream_section.onCreated(function(){
+Template.create_stream_section.onCreated(function(){
   this.addingFunction = window.addStream;
 });
 
-Template.add_stream_section.events({
+Template.create_stream_section.events({
   "dblclick .search-results-container li": function (d, template) {
     addStream(this);
   }
@@ -313,8 +323,8 @@ searchTemplateRenderedBoilerplate  = function() {
 Template.create_video_section.onCreated(searchTemplateCreatedBoilerplate('video', 'youtube'));
 Template.create_video_section.onRendered(searchTemplateRenderedBoilerplate());
 
-Template.add_stream_section.onCreated(searchTemplateCreatedBoilerplate('video', 'youtube'));
-Template.add_stream_section.onRendered(searchTemplateRenderedBoilerplate());
+Template.create_stream_section.onCreated(searchTemplateCreatedBoilerplate('stream', 'all_streaming_services'));
+Template.create_stream_section.onRendered(searchTemplateRenderedBoilerplate());
 
 Template.create_twitter_section.onCreated(searchTemplateCreatedBoilerplate('twitter', 'twitter'));
 Template.create_twitter_section.onRendered(searchTemplateRenderedBoilerplate());
@@ -398,6 +408,7 @@ Template.create_audio_section.onCreated(searchTemplateCreatedBoilerplate('audio'
 Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
 
 var dataSourcesByType = {
+  'stream': [{source: 'all_streaming_services', 'display': 'All'}],
   'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}, {source: 'cloudinary', display: 'Upload Your Own'}],
   'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
   'gif': [{source: 'giphy', display: 'Giphy'}],

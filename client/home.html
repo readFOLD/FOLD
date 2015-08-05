@@ -356,6 +356,11 @@
 <template name="home">
   {{> top_banner}}
   <div class="streams">
+    <input type="search" id="stream-search-input"/>
+    {{#each searchResults}}
+      <h1>{{title}}</h1>
+      <h3>{{viewersNow}}</h3>
+    {{/each}}
     <div class="streams-container">
       {{> streams}}
     </div>

@@ -411,3 +411,16 @@ Template.stream_preview.helpers({
     }
   }
 });
+
+Template.home.helpers({
+  searchResults: function(){
+    return StreamSearch.getData();
+  }
+});
+
+Template.home.events({
+  "keyup #stream-search-input": _.throttle(function(e) {
+    var text = $(e.target).val().trim();
+    StreamSearch.search(text);
+  }, 200)
+});

@@ -277,81 +277,11 @@ this.Deepstreams.allow({
   }
 });
 
-Stream = (function() {
-  function Stream(doc) {
-    _.extend(this, doc);
-  }
-
-  Stream.prototype.videoId = function () {
-    if (this.source === 'youtube') {
-      return this.reference.id;
-    }
-  };
-
-  Stream.prototype.title = function () {
-    if (this.source === 'youtube') {
-      return this.reference.title
-    }
-  };
-
-  Stream.prototype.caption = function () {
-    if (this.source === 'youtube') {
-      return this.reference.description
-    }
-  };
-
-  Stream.prototype.username = function () {
-    if (this.source === 'youtube') {
-      return this.reference.username
-    }
-  };
-
-  Stream.prototype.creationDate = function () {
-    if (this.source === 'youtube') {
-      return this.reference.creationDate
-    }
-  };
-
-  Stream.prototype.url = function () {
-    if (this.source === 'youtube') {
-      return '//www.youtube.com/embed/' + this.reference.id + '?enablejsapi=1&modestbranding=1&rel=0&iv_load_policy=3&autohide=1';
-    }
-  };
-
-  Stream.prototype.previewUrl = function () {
-    if (this.source === 'youtube') {
-      return '//img.youtube.com/vi/' + this.reference.id + '/0.jpg';
-    }
-  };
-
-  Stream.prototype.thumbnailUrl = function () {
-    if (this.source === 'youtube') {
-      return '//i.ytimg.com/vi/' + this.reference.id + '/default.jpg';
-    }
-  };
-
-  Stream.prototype.sourceUrl = function () {
-    if (this.source === 'youtube') {
-      return 'https://www.youtube.com/watch?v=' + this.reference.id;
-    }
-  };
-
-  return Stream;
-
-})();
-
-this.Streams = new Mongo.Collection("streams", {
-  transform: function(doc) {
-    return new Stream(doc);
-  }
-});
-
 
 if(Meteor.isServer){
 
 
   this.Streams.remove({});
-  console.log('remove all')
 
   Streams._ensureIndex({
     title: "text",
@@ -367,8 +297,10 @@ if(Meteor.isServer){
       throw 'no items!!'
     }
 
+    console.log(result.items.length)
+
     _.each(result.items, function(doc) {
-      console.log('insert')
+      _.extend(doc, {_source: 'ustream'});
       Streams.insert(doc);
     })
 
@@ -377,13 +309,4 @@ if(Meteor.isServer){
     //console.log(Streams.find({ $text: { $search: 'ISS', $language: 'en' } }).fetch())
 
   });
-}
-
-if(Meteor.isClient){
-  StreamSearch.search('ISS'); // initiate search
-  Meteor.setTimeout(function(){
-    console.log(StreamSearch.getStatus())
-    console.log(StreamSearch.getData())
-  }, 1000)
-
 }

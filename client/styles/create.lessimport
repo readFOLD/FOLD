@@ -614,6 +614,7 @@ div.add-context {
     div.thumbnail {
       img{   
         width: @searchResultWidth;
+        height: @searchResultHeight - @innerElementPadding;
         padding-top: @innerElementPadding;
         margin-left: 10px;
 
