@@ -51,6 +51,45 @@ var ytScriptLoaded = false;
 
 var ytApiReady = new ReactiveVar(false);
 
+window.mainPlayer = {
+  play: function(){
+    switch(this.activeStreamSource){
+      case 'youtube':
+        this._youTubePlayer.playVideo();
+        break;
+      case 'ustream':
+        this._ustreamPlayer.callMethod('play');
+        break;
+      default:
+        throw new Meteor.Error('main player has no active stream source')
+    }
+  },
+  pause: function(){
+    switch(this.activeStreamSource){
+      case 'youtube':
+        this._youTubePlayer.pauseVideo();
+        break;
+      case 'ustream':
+        this._ustreamPlayer.callMethod('pause');
+        break;
+      default:
+        throw new Meteor.Error('main player has no active stream source')
+    }
+  },
+  stop: function(){
+    switch(this.activeStreamSource){
+      case 'youtube':
+        this._youTubePlayer.stopVideo();
+        break;
+      case 'ustream':
+        this._ustreamPlayer.callMethod('stop');
+        break;
+      default:
+        throw new Meteor.Error('main player has no active stream source')
+    }
+  }
+}
+
 Template.watch.onCreated(function () {
   if(!ytScriptLoaded){
     $.getScript('https://www.youtube.com/iframe_api', function () {});
@@ -149,24 +188,68 @@ Template.watch.onCreated(function () {
 Template.watch.onRendered(function(){
   var that = this;
 
-  this.mainPlayerApiActivated = false;
+  this.mainPlayerYTApiActivated = false;
+  this.mainPlayerUSApiActivated = false;
 
 
   this.autorun(function(){
     if(ytApiReady.get() && FlowRouter.subsReady()){
       var deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
-      if (deepstream.streams.length && !this.mainPlayerApiActivated ){
-        console.log('activate the api!!')
-        this.mainPlayerApiActivated = true;
-        Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
-          var youTubePlayer = new YT.Player(that.mainStreamId, {
-            events: {
-              'onReady': onMainPlayerReady,
-              'onStateChange': onMainPlayerStateChange
-            }
-          });
-          mainPlayer = youTubePlayer; // for now, just get all the functions. later do this function by function.
-        }, 1000);
+      var activeStream = deepstream.activeStream();
+      if (activeStream && activeStream.source === 'youtube'){
+        if ( !this.mainPlayerYTApiActivated ){
+          console.log('activate the yt api!!')
+          this.mainPlayerYTApiActivated = true;
+          Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
+            var youTubePlayer = new YT.Player(that.mainStreamId, {
+              events: {
+                'onReady': onMainPlayerReady,
+                'onStateChange': onMainPlayerStateChange
+              }
+            });
+            mainPlayer._youTubePlayer = youTubePlayer;
+          }, 1000);
+        }
+        mainPlayer.activeStreamSource = 'youtube';
+
+      } else if (activeStream && activeStream.source === 'ustream'){
+        if ( !this.mainPlayerUSApiActivated ){
+          console.log('activate the ustream api!!')
+          this.mainPlayerUSApiActivated = true;
+          Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
+            var ustreamPlayer = UstreamEmbed(that.mainStreamId);
+
+            ustreamPlayer.getProperty('content', function(){
+              console.log('98493849')
+              console.log('content')
+              console.log(arguments)
+              //Meteor.setTimeout(onMainPlayerReady, 1000);
+
+            })
+
+            ustreamPlayer.addListener('content', function() {
+              console.log('content changed')
+              console.log(arguments)
+            });
+
+            ustreamPlayer.addListener('syncedMeta', function() {
+              console.log('syncedMeta changed')
+              console.log(arguments)
+              //Meteor.setTimeout(onMainPlayerReady, 1000);
+            });
+
+            ustreamPlayer.addListener('playing', function() {
+              console.log('playing changed')
+              console.log(arguments)
+              //Meteor.setTimeout(onMainPlayerReady, 1000);
+            });
+
+            mainPlayer._ustreamPlayer = ustreamPlayer;
+          }, 1000);
+        }
+        Meteor.setTimeout(onMainPlayerReady, 4000); // TODO, this is a hack. Is there any way to know that the player is ready?
+        mainPlayer.activeStreamSource = 'ustream';
+
       }
     }
   });
@@ -193,7 +276,7 @@ Template.watch.onRendered(function(){
     //  }
     //});
 
-    event.target.playVideo();
+    mainPlayer.play();
   };
 
 
