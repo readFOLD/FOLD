@@ -11,7 +11,8 @@ SearchSource.defineSource('streams', function(searchText) {
     var regExp = buildRegExp(searchText);
     var selector = {$or: [
       {title: regExp},
-      {description: regExp}
+      {description: regExp},
+      {username: regExp}
       //{ $text: { $search: searchText, $language: 'en' } }
     ]};
 
@@ -60,6 +61,7 @@ Meteor.startup(function(){
 
         _.extend(doc, {
           _source: 'ustream',
+          username: doc.user.userName,
           currentViewers: parseInt(doc.viewersNow),
           totalViews: parseInt(doc.totalViews)
         });
