@@ -254,7 +254,7 @@ Template.watch.helpers({
   },
   showRightSection: function(){
     var mediaDataType = Session.get('mediaDataType');
-    return !Session.get('largeContextMode') && (Session.get("curateMode") || (mediaDataType && this.hasContextOfType(mediaDataType)));
+    return !Session.get('largeContextMode') && (mediaDataType && (Session.get("curateMode") || this.hasContextOfType(mediaDataType)));
   },
   showStreamSearch: function(){
     return Session.get("curateMode") && Session.get('mediaDataType') === 'stream'; // always search on stream

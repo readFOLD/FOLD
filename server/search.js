@@ -43,8 +43,6 @@ Meteor.startup(function(){
 
     var maxUStreamPages = parseInt(process.env.MAX_USTREAM_PAGES) || parseInt(Meteor.settings.MAX_USTREAM_PAGES) || 999999999999;
 
-    console.log(maxUStreamPages)
-
     var ustreamInsertCallback = function(error, result){
       if(error){
         allUStreamsLoaded = true;
