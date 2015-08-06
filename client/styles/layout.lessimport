@@ -18,6 +18,9 @@
 @favorite-color: #FFD600;
 @dark-favorite-color: #EFC820;
 
+@active-pill-color: #663A80;
+@inactive-pill-color: #462859;
+
 @unselected-text-color: #999999;
 @unselected-background-color: #eeeeee;
 

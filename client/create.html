@@ -209,14 +209,14 @@
       </div>
       {{#if option1}}
         <div class="search-radios">
-          <input type="radio" name="option" value={{option1}} checked />
-          <label for={{option1}}>{{label1}}</label>
+          <input type="radio" name="option" value="{{option1}}" id="{{randomIdPrefix}}{{option1}}"  checked />
+          <label for="{{randomIdPrefix}}{{option1}}">{{label1}}</label>
           {{#if option2}}
-            <input type="radio" name="option" value={{option2}} />
-            <label for={{option2}}>{{label2}}</label>
+            <input type="radio" name="option" value="{{option2}}" id="{{randomIdPrefix}}{{option2}}"  />
+            <label for="{{randomIdPrefix}}{{option2}}">{{label2}}</label>
             {{#if option3}}
-              <input type="radio" name="option" value={{option3}} />
-              <label for={{option3}}>{{label3}}</label>
+              <input type="radio" name="option" value="{{option3}}" id="{{randomIdPrefix}}{{option3}}"  />
+              <label for="{{randomIdPrefix}}{{option3}}">{{label3}}</label>
             {{/if}}
           {{/if}}
         </div>

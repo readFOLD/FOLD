@@ -798,7 +798,15 @@ Template.search_form.events({
   }
 });
 
+Template.search_form.onRendered(function(){
+  this.randomIdPrefix = Random.id(6);
+});
+
+
 Template.search_form.helpers({
+  randomIdPrefix: function(){
+    return Template.instance().randomIdPrefix;
+  },
   placeholder: function() {
     switch(Template.instance().data.placeholderType){
       case 'links':
