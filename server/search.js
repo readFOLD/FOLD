@@ -31,50 +31,50 @@ function buildRegExp(searchText) {
   return new RegExp("(" + parts.join('|') + ")", "ig");
 }
 
-
-Meteor.startup(function(){
-
 // load UStreams into database
+Meteor.startup(function(){
+  Meteor.setTimeout(function(){
 
-  Streams.remove({});
+    Streams.remove({});
 
-  var allUStreamsLoaded = false;
+    var allUStreamsLoaded = false;
 
-  var page = 1;
+    var page = 1;
 
-  var maxUStreamPages = parseInt(process.env.MAX_USTREAM_PAGES) || parseInt(Meteor.settings.MAX_USTREAM_PAGES) || 999999999999;
+    var maxUStreamPages = parseInt(process.env.MAX_USTREAM_PAGES) || parseInt(Meteor.settings.MAX_USTREAM_PAGES) || 999999999999;
 
-  console.log(maxUStreamPages)
+    console.log(maxUStreamPages)
 
-  var ustreamInsertCallback = function(error, result){
-    if(error){
-      allUStreamsLoaded = true;
-      throw error
+    var ustreamInsertCallback = function(error, result){
+      if(error){
+        allUStreamsLoaded = true;
+        throw error
+      }
+
+      if(!result.items || !result.items.length){
+        allUStreamsLoaded = true;
+        console.log((page - 1) + ' ustream pages loaded');
+        return
+      }
+
+      console.log('ustreams loaded')
+      _.each(result.items, function(doc) {
+
+        _.extend(doc, {
+          _source: 'ustream',
+          currentViewers: parseInt(doc.viewersNow),
+          totalViews: parseInt(doc.totalViews)
+        });
+        Streams.insert(doc);
+      })
+
     }
 
-    if(!result.items || !result.items.length){
-      allUStreamsLoaded = true;
-      console.log((page - 1) + ' ustream pages loaded');
-      return
-    }
 
-    console.log('ustreams loaded')
-    _.each(result.items, function(doc) {
-
-      _.extend(doc, {
-        _source: 'ustream',
-        currentViewers: parseInt(doc.viewersNow),
-        totalViews: parseInt(doc.totalViews)
-      });
-      Streams.insert(doc);
-    })
-
-  }
-
-
-  while(!allUStreamsLoaded && page <= maxUStreamPages){
-    Meteor.call('ustreamVideoSearchList', undefined, undefined, page, ustreamInsertCallback);
-    page += 1;
-  };
+    while(!allUStreamsLoaded && page <= maxUStreamPages){
+      Meteor.call('ustreamVideoSearchList', undefined, undefined, page, ustreamInsertCallback);
+      page += 1;
+    };
+  })
 
 })
