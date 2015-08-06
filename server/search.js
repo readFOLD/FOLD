@@ -36,7 +36,7 @@ function buildRegExp(searchText) {
 
 this.Streams.remove({});
 
-Meteor.call('ustreamVideoSearchList', function(error, result){
+var ustreamInsertCallback = function(error, result){
   if(error){
     throw error
   }
@@ -56,4 +56,8 @@ Meteor.call('ustreamVideoSearchList', function(error, result){
     Streams.insert(doc);
   })
 
+}
+
+_.each([1,2,3,4,5], function(page){ // TODO, make async
+  Meteor.call('ustreamVideoSearchList', undefined, undefined, page, ustreamInsertCallback);
 });
