@@ -36,13 +36,24 @@ function buildRegExp(searchText) {
 
 this.Streams.remove({});
 
+var allUStreamsLoaded = false;
+
+var page = 1;
+
+var maxUStreamPages = parseInt(process.env.MAX_USTREAM_PAGES) || parseInt(Meteor.settings.MAX_USTREAM_PAGES) || 999999999999;
+
+console.log(maxUStreamPages)
+
 var ustreamInsertCallback = function(error, result){
   if(error){
+    allUStreamsLoaded = true;
     throw error
   }
 
   if(!result.items || !result.items.length){
-    throw 'no items!!'
+    allUStreamsLoaded = true;
+    console.log((page - 1) + ' ustream pages loaded');
+    return
   }
 
   console.log('ustreams loaded')
@@ -58,6 +69,8 @@ var ustreamInsertCallback = function(error, result){
 
 }
 
-_.each([1,2,3,4,5], function(page){ // TODO, make async
+
+while(!allUStreamsLoaded && page <= maxUStreamPages){
   Meteor.call('ustreamVideoSearchList', undefined, undefined, page, ustreamInsertCallback);
-});
+  page += 1;
+};
