@@ -35,7 +35,7 @@ meteorhacks:subs-manager
 fold:fast-render@2.3.2
 force-ssl
 fold:user-system@=0.1.1
-fold:context-blocks@0.2.0
+fold:context-blocks@0.4.0
 meteorhacks:flow-router
 meteorhacks:flow-layout
 momentjs:moment
