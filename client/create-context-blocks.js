@@ -90,7 +90,7 @@ var createBlockEvents = {
 
   "scroll ol.search-results-container": throttledSearchScrollFn,
 
-  "click .search-results-container li": function(d, template) {
+  "click .search-results-container li:not(.loading-icon)": function(d, template) {
     template.focusResult.set(this);
   },
 
@@ -243,7 +243,7 @@ _.each(createTemplateNames, function(templateName){
   Template[templateName].helpers(createBlockHelpers);
   Template[templateName].events(createBlockEvents);
   Template[templateName].events({
-    "dblclick .search-results-container li": function (d, template) {
+    "dblclick .search-results-container li:not(.loading-icon)": function (d, template) {
       addContext(this);
     }
   });
@@ -257,7 +257,7 @@ Template.create_stream_section.onCreated(function(){
 });
 
 Template.create_stream_section.events({
-  "dblclick .search-results-container li": function (d, template) {
+  "dblclick .search-results-container li:not(.loading-icon)": function (d, template) {
     addStream(this);
   }
 });
