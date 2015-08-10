@@ -67,17 +67,19 @@ var changeEditorsPick = function(storyId, isPick) {
   });
 };
 
-var changeHasTitle = function(storyId, index, newValue){
+var changeAllowUserStreamSwitch = function(shortId, canSwitch) {
+  check(shortId, String);
+  check(canSwitch, Boolean);
+  this.unblock();
+  return updateStream.call(this, {
+    shortId: shortId
+  }, {
+    $set: {
+      allowUserStreamSwitch: canSwitch
+    }
+  });
+};
 
-  var selector = {_id: storyId};
-  setObject = {};
-  key = 'draftStory.verticalSections.' + index + '.hasTitle'
-  setObject[key] = newValue;
-
-  return updateStory.call(this, {_id: storyId }, {
-    $set: setObject
-  })
-}
 
 
 var checkOwner = function(userId, doc) {
@@ -356,6 +358,12 @@ Meteor.methods({
     check(contextId, String);
     check(content, String);
     return updateStream.call(this, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.content": content}});
+  },
+  allowUserStreamSwitch: function(shortId){
+    return changeAllowUserStreamSwitch.call(this, shortId, true);
+  },
+  disallowUserStreamSwitch: function(shortId){
+    return changeAllowUserStreamSwitch.call(this, shortId, false);
   },
   //insertVerticalSection: function(storyId, index, verticalSectionId) { // TO-DO find a good way to generate this id in a trusted way
   //  check(storyId, String);

@@ -213,23 +213,16 @@ Template.watch.onCreated(function () {
 
   this.autorun(function(){ // TO-DO Performance, don't rerun on every stream switch, only get fields needed
     if(FlowRouter.subsReady()) {
-      if(!that.userControlledActiveStreamId.get()){
-        var deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
+      var userControlledActiveStreamId = that.userControlledActiveStreamId.get();
+      var deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
+
+      if(that.userControlledActiveStreamId.get()){
+        that.activeStream.set(deepstream.getStream(userControlledActiveStreamId));
+      } else{
         that.activeStream.set(deepstream.activeStream());
       }
     }
   });
-
-  this.autorun(function(){ // TO-DO Performance, don't rerun on every stream switch, only get fields needed
-    if(FlowRouter.subsReady()) {
-      var userControlledActiveStreamId = that.userControlledActiveStreamId.get();
-      if(userControlledActiveStreamId){
-        var deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
-        that.activeStream.set(deepstream.getStream(userControlledActiveStreamId));
-      }
-    }
-  });
-
 
 });
 
@@ -539,12 +532,21 @@ Template.watch.events({
   'blur .stream-title[contenteditable]': function(e,template) {
     streamTitle = $.trim(template.$('div.stream-title').text());
     Session.set('saveState', 'saving');
-    return Meteor.call('updateStreamTitle', Session.get('streamShortId'), streamTitle, basicErrorHandler)
+    return Meteor.call('updateStreamTitle', t.data.shortId(), streamTitle, basicErrorHandler)
   },
   'blur .stream-description[contenteditable]': function(e,template) {
     streamDescription = $.trim(template.$('div.stream-description').text());
     Session.set('saveState', 'saving');
-    return Meteor.call('updateStreamDescription', Session.get('streamShortId'), streamDescription, basicErrorHandler)
+    return Meteor.call('updateStreamDescription', t.data.shortId(), streamDescription, basicErrorHandler)
+  },
+  'click .allow-user-stream-switch': function(e,t){
+    console.log('allow')
+    return Meteor.call('allowUserStreamSwitch', t.data.shortId(), basicErrorHandler)
+  },
+  'click .disallow-user-stream-switch': function(e,t){
+    console.log('disallow')
+
+    return Meteor.call('disallowUserStreamSwitch', t.data.shortId(), basicErrorHandler)
   }
 });
 
