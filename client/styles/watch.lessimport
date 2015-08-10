@@ -300,6 +300,7 @@
 
   @browse-button-width: 70px;
   .left, .right{
+    background: transparent;
     height: 170px;
     width: @browse-button-width;
     position: absolute;
@@ -352,13 +353,11 @@
 }
 .edit-context-button-row{
   button{
+    background-color: transparent;
     font-size: 16px;
     font-weight: bold;
     padding-left: 10px;
     padding-right: 10px;
-    &:hover{
-      background-color: @dark-action-color;
-    }
   }
   .add-new-context{
     left: 0;

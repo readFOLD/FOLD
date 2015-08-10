@@ -119,6 +119,9 @@
         </div>
         {{#if curateMode}}
           <div class="curator-menu">
+            <div class="settings-menu">
+              {{> setting_icon}}
+            </div>
             <button class="allow-user-stream-switch">YES</button>
             <button class="disallow-user-stream-switch">NO</button>
           </div>
@@ -203,7 +206,8 @@
     </div>
     {{#if curateMode}}
       <div class="edit-context-button-row">
-        <button class="add-new-context">New</button>
+        <button class="switch-to-list-mode">{{> list_icon}}</button>
+        <button class="add-new-context">{{> add_icon}}</button>
       </div>
     {{/if}}
     <div class="context-area">
@@ -222,11 +226,11 @@
     <button class="close">{{> close_circle}}</button>
     <div class="context-area">
       <div class="count">{{mediaTypeForDisplay}} {{currentNum}} of {{totalNum}}</div>
-      <button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>
+      <button class="left" disabled="{{disableLeftButton}}">{{> scroll_left_icon}}</button>
       {{#with currentContext}}
         {{> full_context_section}}
       {{/with}}
-      <button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>
+      <button class="right" disabled="{{disableRightButton}}">{{> scroll_right_icon}}</button>
     </div>
   </div>
 </template>
