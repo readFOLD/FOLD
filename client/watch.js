@@ -120,7 +120,7 @@ Template.watch.onCreated(function () {
     ytScriptLoaded = true;
   }
 
-  this.mainStreamId = Random.id(8);
+  this.mainStreamElementId = Random.id(8);
 
   var that = this;
 
@@ -216,7 +216,7 @@ Template.watch.onCreated(function () {
       var userControlledActiveStreamId = that.userControlledActiveStreamId.get();
       var deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
 
-      if(that.userControlledActiveStreamId.get()){
+      if(userControlledActiveStreamId && deepstream.allowUserStreamSwitch){
         that.activeStream.set(deepstream.getStream(userControlledActiveStreamId));
       } else{
         that.activeStream.set(deepstream.activeStream());
@@ -241,7 +241,7 @@ Template.watch.onRendered(function(){
           console.log('activate the yt api!!')
           this.mainPlayerYTApiActivated = true;
           Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
-            var youTubePlayer = new YT.Player(that.mainStreamId, {
+            var youTubePlayer = new YT.Player(that.mainStreamElementId, {
               events: {
                 'onReady': onMainPlayerReady,
                 'onStateChange': onMainPlayerStateChange
@@ -257,7 +257,7 @@ Template.watch.onRendered(function(){
           console.log('activate the ustream api!!')
           this.mainPlayerUSApiActivated = true;
           Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
-            var ustreamPlayer = UstreamEmbed(that.mainStreamId);
+            var ustreamPlayer = UstreamEmbed(that.mainStreamElementId);
 
             ustreamPlayer.getProperty('content', function(){
               console.log('98493849')
@@ -337,8 +337,8 @@ Template.watch.helpers({
   active: function(){ // inside #each streams
     return this._id === Template.instance().activeStream.get()._id;
   },
-  mainStreamId: function(){
-    return Template.instance().userControlledActiveStreamId.get() || Template.instance().mainStreamId;
+  mainStreamElementId: function(){
+    return Template.instance().mainStreamElementId;
   },
   onCuratePage: function(){
     return Template.instance().data.onCuratePage ? Template.instance().data.onCuratePage() : null;
@@ -440,7 +440,6 @@ Template.watch.events({
     if(Session.get('curateMode')){
       Meteor.call('setActiveStream', t.data.shortId(), this._id ,basicErrorHandler);
     } else {
-      console.log(this._id)
       t.userControlledActiveStreamId.set(this._id);
     }
   },

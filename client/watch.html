@@ -52,7 +52,7 @@
           {{/if}}
           {{#if streamUrl}}
             <div class="main-stream-iframe-holder {{#if PiP}}PiP{{/if}}">
-              <iframe id="{{mainStreamId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
+              <iframe id="{{mainStreamElementId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
             </div>
             {{#unless PiP}}
               {{#with activeStream}}
@@ -117,10 +117,12 @@
             </div>
           </div>
         </div>
-        <div class="curator-menu">
-          <button class="allow-user-stream-switch">YES</button>
-          <button class="disallow-user-stream-switch">NO</button>
-        </div>
+        {{#if curateMode}}
+          <div class="curator-menu">
+            <button class="allow-user-stream-switch">YES</button>
+            <button class="disallow-user-stream-switch">NO</button>
+          </div>
+        {{/if}}
       </div>
     </div>
 
