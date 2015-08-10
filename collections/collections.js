@@ -157,9 +157,6 @@ Deepstream = (function() {
     _.extend(this, doc);
     var that = this;
     this.streams = _.map(this.streams, function(stream){
-      if (stream === that.activeStream()){
-        stream.active = true;
-      }
       return new Stream(stream);
     });
     this.contextBlocks = _.map(this.contextBlocks, function(contextBlock){
@@ -238,7 +235,11 @@ Deepstream = (function() {
   };
 
   Deepstream.prototype.activeStream = function(){
-    return _.findWhere(this.streams, {_id: this.activeStreamId});
+    return this.getStream(this.activeStreamId);
+  };
+
+  Deepstream.prototype.getStream = function(id){
+    return _.findWhere(this.streams, {_id: id});
   };
 
   Deepstream.prototype.watchPath = function(){

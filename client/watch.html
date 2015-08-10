@@ -81,7 +81,7 @@
         </div>
       </div>
       <div class="footer-section">
-        {{#if curateMode}}
+        {{#if showStreamSwitcher}}
           <ol class="streams-list">
             {{#each streams}}
               <li data-stream-reference-id="{{reference.id}}" class="stream">
@@ -93,11 +93,13 @@
                 </button>
               </li>
             {{/each}}
+          {{#if curateMode}}
             <li class="add-stream">
               <button class="show-stream-search">
                 Add Stream
               </button>
             </li>
+          {{/if}}
           </ol>
         {{/if}}
         <div class="stream-stats">

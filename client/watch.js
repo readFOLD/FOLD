@@ -207,6 +207,30 @@ Template.watch.onCreated(function () {
       Session.set("currentContext", _.findWhere(deepstream.contextBlocks, {_id: currentContextId}));
     }
   });
+
+  this.activeStream = new ReactiveVar();
+  this.userControlledActiveStreamId = new ReactiveVar();
+
+  this.autorun(function(){ // TO-DO Performance, don't rerun on every stream switch, only get fields needed
+    if(FlowRouter.subsReady()) {
+      if(!that.userControlledActiveStreamId.get()){
+        var deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
+        that.activeStream.set(deepstream.activeStream());
+      }
+    }
+  });
+
+  this.autorun(function(){ // TO-DO Performance, don't rerun on every stream switch, only get fields needed
+    if(FlowRouter.subsReady()) {
+      var userControlledActiveStreamId = that.userControlledActiveStreamId.get();
+      if(userControlledActiveStreamId){
+        var deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
+        that.activeStream.set(deepstream.getStream(userControlledActiveStreamId));
+      }
+    }
+  });
+
+
 });
 
 Template.watch.onRendered(function(){
@@ -218,8 +242,7 @@ Template.watch.onRendered(function(){
 
   this.autorun(function(){
     if(ytApiReady.get() && FlowRouter.subsReady()){
-      var deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
-      var activeStream = deepstream.activeStream();
+      var activeStream = that.activeStream.get();
       if (activeStream && activeStream.source === 'youtube'){
         if ( !this.mainPlayerYTApiActivated ){
           console.log('activate the yt api!!')
@@ -315,8 +338,14 @@ var titleMax = 60;
 var descriptionMax = 270;
 
 Template.watch.helpers({
+  activeStream: function(){
+    return Template.instance().activeStream.get();
+  },
+  active: function(){ // inside #each streams
+    return this._id === Template.instance().activeStream.get()._id;
+  },
   mainStreamId: function(){
-    return Template.instance().mainStreamId;
+    return Template.instance().userControlledActiveStreamId.get() || Template.instance().mainStreamId;
   },
   onCuratePage: function(){
     return Template.instance().data.onCuratePage ? Template.instance().data.onCuratePage() : null;
@@ -327,9 +356,9 @@ Template.watch.helpers({
     }
   },
   streamUrl: function(){
-    var activeStream = this.activeStream()
+    var activeStream = Template.instance().activeStream.get();
     if(activeStream){
-      return this.activeStream().url()
+      return activeStream.url()
     }
   },
   showTitleDescriptionEditOverlay: function(){
@@ -394,6 +423,9 @@ Template.watch.helpers({
     } else {
       return '<div class="stream-description">' + _.escape(this.description) + '</div>';
     }
+  },
+  showStreamSwitcher: function(){
+    return Session.get('curateMode') || this.allowUserStreamSwitch;
   }
 });
 
@@ -412,7 +444,12 @@ Template.watch.onCreated(function(){
 
 Template.watch.events({
   'click .set-main-stream': function(e, t){
-    Meteor.call('setActiveStream', t.data.shortId(), this._id ,basicErrorHandler);
+    if(Session.get('curateMode')){
+      Meteor.call('setActiveStream', t.data.shortId(), this._id ,basicErrorHandler);
+    } else {
+      console.log(this._id)
+      t.userControlledActiveStreamId.set(this._id);
+    }
   },
   'click .mute': function(){
     Session.set('mainPlayerMuted', true);

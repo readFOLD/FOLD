@@ -72,6 +72,7 @@ if (Deepstreams.find().count() === 0) {
 
   Deepstreams.insert({
     "_id": "BDK7EPax4rriqN3L2",
+    allowUserStreamSwitch: true,
     "onAir": true,
     "createdAt": new Date("2015-06-24T18:59:39.767Z"),
     "savedAt": new Date("2015-06-24T19:24:24.056Z"),
