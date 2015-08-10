@@ -87,6 +87,30 @@ window.mainPlayer = {
       default:
         throw new Meteor.Error('main player has no active stream source')
     }
+  },
+  mute: function(){
+    switch(this.activeStreamSource){
+      case 'youtube':
+        this._youTubePlayer.muteVideo();
+        break;
+      case 'ustream':
+        this._ustreamPlayer.callMethod('volume', 0);
+        break;
+      default:
+        throw new Meteor.Error('main player has no active stream source')
+    }
+  },
+  unMute: function(){
+    switch(this.activeStreamSource){
+      case 'youtube':
+        this._youTubePlayer.unMuteVideo();
+        break;
+      case 'ustream':
+        this._ustreamPlayer.callMethod('volume', 100); // TO-DO return volume to wherever they were before mute
+        break;
+      default:
+        throw new Meteor.Error('main player has no active stream source')
+    }
   }
 }
 
