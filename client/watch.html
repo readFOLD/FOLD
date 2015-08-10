@@ -18,11 +18,11 @@
             {{{streamDescriptionElement}}}
           </div>
         </div>
-        <!--{{#if mainPlayerMuted}}-->
-          <!--<button class="unmute">Un-mute</button>-->
-        <!--{{else}}-->
-          <!--<button class="mute">Mute</button>-->
-        <!--{{/if}}-->
+          <!--{{#if mainPlayerMuted}}-->
+        <!--<button class="unmute">Un-mute</button>-->
+          <!--{{else}}-->
+        <!--<button class="mute">Mute</button>-->
+          <!--{{/if}}-->
       </div>
 
 
@@ -52,11 +52,14 @@
           {{/if}}
           {{#if streamUrl}}
             <div class="main-stream-iframe-holder {{#if PiP}}PiP{{/if}}">
-              <iframe id="{{mainStreamElementId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0" allowfullscreen></iframe>
+              <iframe id="{{mainStreamElementId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0"
+                      allowfullscreen></iframe>
             </div>
             {{#unless PiP}}
               {{#with activeStream}}
-                <div class="bottom-overlay"><span class="stream-url">Livestream:  <a href="{{sourceUrl}}" target="_blank">{{sourceUrl}}</a></span><span class="stream-username">Streamer:  {{username}}</span></div>
+                <div class="bottom-overlay"><span class="stream-url">Livestream:  <a href="{{sourceUrl}}"
+                                                                                     target="_blank">{{sourceUrl}}</a></span><span
+                    class="stream-username">Streamer:  {{username}}</span></div>
               {{/with}}
             {{/unless}}
           {{/if}}
@@ -93,13 +96,13 @@
                 </button>
               </li>
             {{/each}}
-          {{#if curateMode}}
-            <li class="add-stream">
-              <button class="show-stream-search">
-                Add Stream
-              </button>
-            </li>
-          {{/if}}
+            {{#if curateMode}}
+              <li class="add-stream">
+                <button class="show-stream-search">
+                  Add Stream
+                </button>
+              </li>
+            {{/if}}
           </ol>
         {{/if}}
         <div class="stream-stats">
@@ -117,13 +120,26 @@
             </div>
           </div>
         </div>
-        {{#if curateMode}}
+        {{#if isCurator}}
           <div class="curator-menu">
-            <div class="settings-menu">
-              {{> setting_icon}}
-            </div>
-            <button class="allow-user-stream-switch">YES</button>
-            <button class="disallow-user-stream-switch">NO</button>
+            {{#if onCuratePage}}
+              <button class="settings-menu">{{> setting_icon}}</button>
+              {{#if settingsMenuOpen}}
+                {{> settings_menu}}
+              {{/if}}
+              <button class="microphone">{{> microphone_icon}}</button>
+              <button class="webcam">{{> webcam_icon}}</button>
+
+              {{#if curateMode}}
+                <button class="preview">Preview</button>
+              {{else}}
+                <button class="return-to-curate">Curate</button>
+              {{/if}}
+            {{else}}
+              <a href="{{curatePath}}">
+                <button class="curate-this-stream">Curate This Stream</button>
+              </a>
+            {{/if}}
           </div>
         {{/if}}
       </div>
@@ -141,9 +157,11 @@
           <form id="publish-with-title-description" action="action">
             <label for="title">Enter a title for your Deep Stream:</label>
             <input type="text" name="title" value="{{title}}" class="set-title" autofocus="autofocus">
+
             <div class="character-count">{{titleLength}} / {{titleMax}}</div>
             <label for="description">Enter a description:</label>
             <textarea name="description" value="{{description}}" class="set-description" rows="3"></textarea>
+
             <div class="character-count">{{descriptionLength}} / {{descriptionMax}}</div>
             <div class="button-area">
               <button type="submit">Publish!</button>
@@ -159,36 +177,7 @@
     {{/if}}
 
     {{> signin_overlay}}
-
-    <div class="action-items">
-      <ol>
-        {{#if onCuratePage}}
-          <li>
-            {{#if onAir}}
-              <button class="unpublish">Unpublish</button>
-            {{else}}
-              <button class="publish">Publish</button>
-            {{/if}}
-          </li>
-          <li>
-            {{#if curateMode}}
-              <button class="preview">Preview</button>
-            {{else}}
-              <button class="return-to-curate">Curate</button>
-            {{/if}}
-          </li>
-        {{else}}
-          {{#if isCurator}}
-            <li>
-              <a href="{{curatePath}}">
-                <button>Curate This Stream</button>
-              </a>
-            </li>
-          {{/if}}
-        {{/if}}
-        {{> login_buttons}}
-      </ol>
-    </div>
+    {{> banner_buttons}}
   {{/with}}
 </template>
 
@@ -197,12 +186,12 @@
     <div class="browse-buttons">
       <span class="type">{{mediaTypeForDisplay}}</span>
 
-        <!--<span class="count">{{currentNum}} of {{totalNum}}</span>-->
-        <!--<button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>-->
-        <!--<button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>-->
-        {{#unless curateMode}}
-          <button class="close">{{> close_circle}}</button>
-        {{/unless}}
+      <!--<span class="count">{{currentNum}} of {{totalNum}}</span>-->
+      <!--<button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>-->
+      <!--<button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>-->
+      {{#unless curateMode}}
+        <button class="close">{{> close_circle}}</button>
+      {{/unless}}
     </div>
     {{#if curateMode}}
       <div class="edit-context-button-row">
@@ -234,8 +223,6 @@
     </div>
   </div>
 </template>
-
-
 
 
 <template name="full_context_section">
@@ -276,5 +263,26 @@
         {{> display_broken_section}}
       {{/if}}
     </section>
+  </div>
+</template>
+
+<template name="settings_menu">
+  <div class="settings-menu">
+    <ul>
+      <li>
+        {{#if allowUserStreamSwitch}}
+          <button class="disallow-user-stream-switch">NO</button>
+        {{else}}
+          <button class="allow-user-stream-switch">YES</button>
+        {{/if}}
+      </li>
+      <li>
+        {{#if onAir}}
+          <button class="unpublish">Unpublish</button>
+        {{else}}
+          <button class="publish">Publish</button>
+        {{/if}}
+      </li>
+    </ul>
   </div>
 </template>

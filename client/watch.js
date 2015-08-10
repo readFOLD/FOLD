@@ -546,6 +546,12 @@ Template.watch.events({
     console.log('disallow')
 
     return Meteor.call('disallowUserStreamSwitch', t.data.shortId(), basicErrorHandler)
+  },
+  'click .microphone': function(e,t){
+    notifyFeature('Live audio broadcast: coming soon!');
+  },
+  'click .webcam': function(e,t){
+    notifyFeature('Live webcam broadcast: coming soon!');
   }
 });
 

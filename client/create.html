@@ -96,7 +96,6 @@
 <template name="add_context">
   <div class="add-context narrative-section selected editing">
     {{#if type}}
-      {{#if remix}}{{> unimplemented_remix_section}}{{/if}}
       {{#if chat}}{{> unimplemented_chat_section}}{{/if}}
       {{#if link}}{{> create_link_section}}{{/if}}
       {{#if text}}{{> create_text_section}}{{/if}}
@@ -227,21 +226,9 @@
 
 <!-- Create Templates -->
 
-<template name="unimplemented_remix_section">
-  <div class="create-section unimplemented">
-    Chat. Coming soon!
-  </div>
-</template>
-
 <template name="unimplemented_chat_section">
   <div class="create-section unimplemented">
     Chat. Coming soon!
-  </div>
-</template>
-
-<template name="news_section">
-  <div class="create-section">
-    News. Coming soon!
   </div>
 </template>
 

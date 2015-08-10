@@ -623,7 +623,7 @@ Template.content_icons.events({
     setCurrentContextIdOfTypeToMostRecent();
   },
   'click .chat-button': function(d, t) {
-    notifyFeature("Coming soon!");
+    notifyFeature("Chat: coming soon!");
     return Session.set('mediaDataType', 'chat');
   }
 });

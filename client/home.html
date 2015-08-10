@@ -75,23 +75,23 @@
     <div class="action-items">
       <ol>
         {{#unless isPhone}}
-          <li class="create-deepstream">
-            {{> create_deepstream}}
-          </li>
-        {{/unless}}
-        {{> login_buttons }}
-
-        {{#unless isPhone}}
           <li class="about-deepstream">
             <!--<a href="/about">-->
             <a href="javascript:void(0)">
               <button>
-                  <span class="text">About Deepstream</span>
+                <span class="text">About Deepstream</span>
 
               </button>
             </a>
           </li>
         {{/unless}}
+        {{> login_buttons }}
+        {{#unless isPhone}}
+          <li class="create-deepstream">
+            {{> create_deepstream}}
+          </li>
+        {{/unless}}
+
       </ol>
     </div>
 

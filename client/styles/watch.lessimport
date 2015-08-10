@@ -91,6 +91,7 @@
   }
 }
 .right-section{
+
   height: 100%;
   float: left;
   position: relative;
@@ -100,6 +101,10 @@
   width: @right-section-width;
   border-top: 1px solid @black-color;
   border-bottom: 1px solid @light-color;
+
+  button{
+    background-color: transparent;
+  }
 
   .content-icons {
     @circle-diameter: 40px;
@@ -353,7 +358,6 @@
 }
 .edit-context-button-row{
   button{
-    background-color: transparent;
     font-size: 16px;
     font-weight: bold;
     padding-left: 10px;
@@ -366,6 +370,15 @@
   .delete-current-context{
     position: absolute;
     right: 0;
+  }
+}
+
+.curator-menu{
+  button{
+    background-color: transparent;
+  }
+  .preview, .return-to-curate, .curate-this-stream{
+    background-color: @action-color;
   }
 }
 
