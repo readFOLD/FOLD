@@ -229,6 +229,8 @@ Template.watch.onCreated(function () {
 Template.watch.onRendered(function(){
   var that = this;
 
+  this.settingsMenuOpen = new ReactiveVar();
+
   this.mainPlayerYTApiActivated = false;
   this.mainPlayerUSApiActivated = false;
 
@@ -419,6 +421,9 @@ Template.watch.helpers({
   },
   showStreamSwitcher: function(){
     return Session.get('curateMode') || this.allowUserStreamSwitch;
+  },
+  settingsMenuOpen: function(){
+    return Template.instance().settingsMenuOpen.get();
   }
 });
 
@@ -539,13 +544,19 @@ Template.watch.events({
     return Meteor.call('updateStreamDescription', t.data.shortId(), streamDescription, basicErrorHandler)
   },
   'click .allow-user-stream-switch': function(e,t){
-    console.log('allow')
     return Meteor.call('allowUserStreamSwitch', t.data.shortId(), basicErrorHandler)
   },
   'click .disallow-user-stream-switch': function(e,t){
-    console.log('disallow')
-
     return Meteor.call('disallowUserStreamSwitch', t.data.shortId(), basicErrorHandler)
+  },
+  'click .set-current-context-as-default': function(e,t){
+    notifyFeature('Default view settings: coming soon!');
+  },
+  'mouseenter .settings-button-and-menu': function(e, template){
+    template.settingsMenuOpen.set(true);
+  },
+  'mouseleave .settings-button-and-menu': function(e, template){
+    template.settingsMenuOpen.set(false);
   },
   'click .microphone': function(e,t){
     notifyFeature('Live audio broadcast: coming soon!');

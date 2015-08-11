@@ -412,12 +412,67 @@
     display: inline-flex;
     flex-direction: row;
     justify-content: space-between;
-    button {
+    .settings-menu-button, .webcam, .microphone {
       background-color: transparent;
       .size(30px);
       padding: 0;
     }
   }
+}
+
+.edit-menu{
+  position: absolute;
+  li{
+    width: 100%;
+    height: 60px;
+    background-color: @light-color;
+    button{
+      .size-to-fit;
+      background-color: inherit;
+    }
+    &:not(:last-child){
+      border-bottom: 1px solid @black-color;
+    }
+  }
+
+  button{
+    //font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;
+    //font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    padding-left: 20px;
+    .text-align-start;
+    text-decoration: none;
+    display: inline-block;
+    &:hover {
+      //color: white;
+      background-color: @medium-color;
+    }
+  }
+  //svg{
+  //  fill: @light-color;
+  //}
+  &:after{
+    @triangleSize: 8px;
+    content:'';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -@triangleSize;
+    width: 0;
+    height: 0;
+    border-top: solid @triangleSize @light-color;
+    border-left: solid @triangleSize transparent;
+    border-right: solid @triangleSize transparent;
+  }
+}
+
+.settings-menu{
+  .edit-menu;
+  bottom: 50px;
+  right: 180px;
+  width: 260px;
+  z-index: 99999;
 }
 
 .action-items{

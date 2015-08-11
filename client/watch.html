@@ -127,10 +127,12 @@
             {{#if onCuratePage}}
               {{#if curateMode}}
                 <div class="icon-button-group">
-                  <button class="settings-menu">{{> setting_icon}}</button>
-                  {{#if settingsMenuOpen}}
-                    {{> settings_menu}}
-                  {{/if}}
+                  <div class="settings-button-and-menu">
+                    <button class="settings-menu-button">{{> setting_icon}}</button>
+                    {{#if settingsMenuOpen}}
+                      {{> settings_menu}}
+                    {{/if}}
+                  </div>
                   <button class="microphone">{{> microphone_icon}}</button>
                   <button class="webcam">{{> webcam_icon}}</button>
                 </div>
@@ -275,10 +277,13 @@
   <div class="settings-menu">
     <ul>
       <li>
+        <button class="set-current-context-as-default">Set current item as default view</button>
+      </li>
+      <li>
         {{#if allowUserStreamSwitch}}
-          <button class="disallow-user-stream-switch">NO</button>
+          <button class="disallow-user-stream-switch">Hide list of streams from viewers</button>
         {{else}}
-          <button class="allow-user-stream-switch">YES</button>
+          <button class="allow-user-stream-switch">Show list of streams to viewers</button>
         {{/if}}
       </li>
       <li>
