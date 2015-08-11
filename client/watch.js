@@ -216,7 +216,7 @@ Template.watch.onCreated(function () {
       var userControlledActiveStreamId = that.userControlledActiveStreamId.get();
       var deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
 
-      if(userControlledActiveStreamId && deepstream.allowUserStreamSwitch){
+      if(userControlledActiveStreamId && deepstream.userStreamSwitchAllowed()){
         that.activeStream.set(deepstream.getStream(userControlledActiveStreamId));
       } else{
         that.activeStream.set(deepstream.activeStream());
@@ -420,7 +420,7 @@ Template.watch.helpers({
     }
   },
   showStreamSwitcher: function(){
-    return Session.get('curateMode') || this.allowUserStreamSwitch;
+    return Session.get('curateMode') || this.userStreamSwitchAllowed();
   },
   settingsMenuOpen: function(){
     return Template.instance().settingsMenuOpen.get();

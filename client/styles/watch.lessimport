@@ -469,8 +469,8 @@
 
 .settings-menu{
   .edit-menu;
-  bottom: 50px;
-  right: 180px;
+  bottom: 37px;
+  right: 177px;
   width: 260px;
   z-index: 99999;
 }

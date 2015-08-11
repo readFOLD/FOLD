@@ -67,20 +67,6 @@ var changeEditorsPick = function(storyId, isPick) {
   });
 };
 
-var changeAllowUserStreamSwitch = function(shortId, canSwitch) {
-  check(shortId, String);
-  check(canSwitch, Boolean);
-  this.unblock();
-  return updateStream.call(this, {
-    shortId: shortId
-  }, {
-    $set: {
-      allowUserStreamSwitch: canSwitch
-    }
-  });
-};
-
-
 
 var checkOwner = function(userId, doc) {
   return userId && userId === doc.authorId;
@@ -360,10 +346,26 @@ Meteor.methods({
     return updateStream.call(this, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.content": content}});
   },
   allowUserStreamSwitch: function(shortId){
-    return changeAllowUserStreamSwitch.call(this, shortId, true);
+    check(shortId, String);
+    this.unblock();
+    return updateStream.call(this, {
+      shortId: shortId
+    }, {
+      $set: {
+        disallowUserStreamSwitch: false
+      }
+    });
   },
   disallowUserStreamSwitch: function(shortId){
-    return changeAllowUserStreamSwitch.call(this, shortId, false);
+    check(shortId, String);
+    this.unblock();
+    return updateStream.call(this, {
+      shortId: shortId
+    }, {
+      $set: {
+        disallowUserStreamSwitch: true
+      }
+    });
   },
   //insertVerticalSection: function(storyId, index, verticalSectionId) { // TO-DO find a good way to generate this id in a trusted way
   //  check(storyId, String);
