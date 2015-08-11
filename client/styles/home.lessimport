@@ -375,34 +375,45 @@ div.streams {
 
 
 div.logo-title {
-  @height: 40px;
+  @height: 60px;
   display: inline-block;
   .logo {
 
     float: left;
     z-index: 10;
     svg{
-      height: @height;
-      width: @height;
+      margin-top: 3px;
+      margin-left: 5px;
+      .size(@height - 3px);
     }
   }
 
   div.title {
     float: right;
-    background-color: @action-color;
+    margin-top: 5px;
     color: @black-color;
-    height: @height;
-    font-size: 30px;
-    line-height: @height;
-    padding-left: 10px;
-    padding-right: 10px;
+    height: 100%;
     margin-left: 10px;
+    .name{
+      margin-top: 5px;
+      background-color: @action-color;
+      line-height: 100%;
+      padding-left: 8px;
+      padding-right: 5px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      //line-height: calc(100% ~"-" 6px);
+      font-size: 30px;
+    }
+    .slogan{
+      font-size: 12px;
+      line-height: 20px;
+      color: @white-color;
+    }
   }
 
   @media @not-mobile{
     display: inline-block;
-    margin-left: 10px;
-    margin-top: 10px;
     //width: 310px;
 
   }
