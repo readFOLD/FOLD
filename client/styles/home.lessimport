@@ -458,6 +458,8 @@ div.action-items {
   font-family: 'Roboto', sans-serif;
 
   button{
+    text-transform: uppercase;
+
     padding: 0px 10px;
     min-width: 100px;
     .size-to-fit;
