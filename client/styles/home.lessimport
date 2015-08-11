@@ -548,7 +548,11 @@ div.action-items {
   background-color: @darker-color;
   padding-right: 15px;
   .box-shadow(0px 2px 12px 0px rgba(0,0,0,0.55));
+  .tabs{
+    display: inline-block;
+  }
   .stream-search{
+    display: inline-block;
     height: 40px;
     width: 300px;
     float: right;
