@@ -541,3 +541,32 @@ div.action-items {
     }
   }
 }
+
+.filter-row{
+  height: 60px;
+  padding-top: 10px;
+  background-color: @darker-color;
+  padding-right: 15px;
+  .box-shadow(0px 2px 12px 0px rgba(0,0,0,0.55));
+  .stream-search{
+    height: 40px;
+    width: 300px;
+    float: right;
+    background-color: @dark-color;
+    .stream-search-icon{
+      display: inline-block;
+      background-color: inherit;
+      width: 30px;
+      padding: 10px;
+      .fg{
+        fill: @medium-color;
+      }
+    }
+    input[type=search]{
+      height: 100%;
+      background-color: inherit;
+      color: @white-color;
+    }
+  }
+
+}

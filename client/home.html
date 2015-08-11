@@ -4,13 +4,26 @@
   <div class="home-top {{#if border}}{{border}}{{/if}}">
     <div class="top-row">
       {{> logo_title}}
-      {{#if showFilters}}
-      <div class="filter">
-        {{> filters}}
-        <!--{{> filters}} in {{> categories}}-->
-      </div>
-      {{/if}}
     </div>
+    {{#if showFilters}}
+      <div class="filter-row">
+
+        <!--<div class="filter">-->
+          <!--{{> filters}}-->
+          <!--&lt;!&ndash;{{> filters}} in {{> categories}}&ndash;&gt;-->
+        <!--</div>-->
+        <div class="stream-search">
+          <form class="stream-search-form">
+            <div class="stream-search-icon">
+              <label for="stream-search-input">
+                {{> search_icon}}
+              </label>
+            </div>
+            <input id="stream-search-input" type="search"/>
+          </form>
+        </div>
+      </div>
+    {{/if}}
     {{> banner_buttons}}
     {{> signin_overlay}}
   </div>
@@ -344,13 +357,8 @@
 </template>
 
 <template name="home">
-  {{> top_banner}}
+  {{> top_banner showFilters="true"}}
   <div class="streams">
-    <input type="search" id="stream-search-input"/>
-    {{#each searchResults}}
-      <h1>{{title}}</h1>
-      <h3>{{viewersNow}}</h3>
-    {{/each}}
     <div class="streams-container">
       {{> streams}}
     </div>

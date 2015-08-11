@@ -1,5 +1,6 @@
 
-@black-color: #1D1D1D;
+@black-color: #030303;
+@darker-color: #181818;
 @dark-color: #323232;
 @medium-color: #9B9B9B;
 @light-color: #F4F4F4;
