@@ -563,7 +563,19 @@ Template.watch.events({
   },
   'click .webcam': function(e,t){
     notifyFeature('Live webcam broadcast: coming soon!');
-  }
+  },
+  'click .email-share-button': function(e,t){
+    notifyFeature('Success!! Email share: coming soon!');
+  },
+  'click .twitter-share-button': function(e,t){
+    notifyFeature('Success!! Twitter share: coming soon!');
+  },
+  'click .facebook-share-button': function(e,t){
+    notifyFeature('Success!! Facebook share: coming soon!');
+  },
+  'click .favorite-button': function(e,t){
+    notifyFeature('Success!! Favoriting streams: coming soon!');
+  },
 });
 
 

@@ -77,27 +77,6 @@ svg.mobile-back-icon{
   .star-button;
 }
 
-.favorite-button{
-  .star-button;
-  .favorite {
-    .fg {
-      fill: @light-color;
-      &:hover {
-        fill: @medium-color;
-      }
-    }
-  }
-  .unfavorite{
-    .fg{
-      fill: @favorite-color;
-      &:hover{
-        fill: @dark-favorite-color;
-      }
-    }
-  }
-
-}
-
 .editors-pick-button{
   .star-button;
   .pick{

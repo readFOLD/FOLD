@@ -105,9 +105,16 @@
             {{/if}}
           </ol>
         {{/if}}
-        <div class="stream-stats">
-          <div class="views">Views: 12,245</div>
-          <div class="favorites">Favs: 133</div>
+        <div class="stream-stats-and-share">
+          <div class="share-and-favorite">
+            <button class="favorite-button">{{> favorite_icon}}</button>
+            <button class="twitter-share-button">{{> twitter_share_icon}}</button>
+            <button class="facebook-share-button">{{> facebook_share_icon}}</button>
+            <button class="email-share-button">{{> email_share_icon}}</button>
+          </div>
+          <div class="stream-stats">
+            <div class="views">Views: 12,245</div>
+          </div>
         </div>
         <div class="curator-menu">
           {{#unless curateMode}}

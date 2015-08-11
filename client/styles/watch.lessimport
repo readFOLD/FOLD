@@ -173,10 +173,19 @@
 
 .footer-section{
   padding: 10px;
-  .stream-stats{
+  .stream-stats-and-share{
     position: absolute;
     right: @right-section-width;
     width: 100px;
+    .inverted-icon-colors;
+    .stream-stats{
+      margin-top: 20px;
+    }
+    button{
+      .size(20px);
+      background: @light-color;
+      padding: 3px;
+    }
   }
 }
 
@@ -405,6 +414,9 @@
     display: inline-block;
     vertical-align: top;
     margin-top: 10px;
+  }
+  .curator-info{
+    width: 160px;
   }
   .icon-button-group{
     width: 160px;
