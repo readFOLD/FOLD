@@ -2,7 +2,7 @@
 
 <template name="top_banner">
   <div class="home-top {{#if border}}{{border}}{{/if}}">
-    <div class="left">
+    <div class="top-row">
       {{> logo_title}}
       {{#if showFilters}}
       <div class="filter">
@@ -36,7 +36,7 @@
 
 <template name="top_banner_simple_no_links">
   <div class="home-top remix-color not-sticky">
-    <div class="left">
+    <div class="top-row">
       <div class="logo-title">
         <div class="logo">
           {{> deepstream_logo}}
@@ -53,23 +53,9 @@
 </template>
 
 <template name="top_banner_simple">
-  <div class="home-top remix-color">
-    <div class="left">
-      <div class="logo-title">
-        <a href="/">
-          <div class="logo">
-            {{> deepstream_logo}}
-          </div>
-        </a>
-          <a href="/">
-          <div class="title">
-            <div class="name">DEEP STREAM</div>
-            <div class="slogan">Turn livestreams into something deeper</div>
-
-            <!--<img src="{{c.url 'static/FOLD_TITLE.svg'}}">-->
-          </div>
-          </a>
-      </div>
+  <div class="home-top">
+    <div class="top-row">
+      {{> logo_title}}
     </div>
   </div>
 </template>
