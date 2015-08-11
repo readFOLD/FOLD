@@ -109,28 +109,31 @@
           <div class="views">Views: 12,245</div>
           <div class="favorites">Favs: 133</div>
         </div>
-        <div class="curator-info">
-          <div class="header">CURATOR</div>
-          <div class="rest">
-            <div class="curator-pic">
-              {{> default_user_pic}}
+        <div class="curator-menu">
+          {{#unless curateMode}}
+            <div class="curator-info">
+              <div class="header">CURATOR</div>
+              <div class="rest">
+                <div class="curator-pic">
+                  {{> default_user_pic}}
+                </div>
+                <div class="curator-details">
+                  {{curatorName}}
+                </div>
+              </div>
             </div>
-            <div class="curator-details">
-              {{curatorName}}
-            </div>
-          </div>
-        </div>
-        {{#if isCurator}}
-          <div class="curator-menu">
+          {{/unless}}
+          {{#if isCurator}}
             {{#if onCuratePage}}
-              <button class="settings-menu">{{> setting_icon}}</button>
-              {{#if settingsMenuOpen}}
-                {{> settings_menu}}
-              {{/if}}
-              <button class="microphone">{{> microphone_icon}}</button>
-              <button class="webcam">{{> webcam_icon}}</button>
-
               {{#if curateMode}}
+                <div class="icon-button-group">
+                  <button class="settings-menu">{{> setting_icon}}</button>
+                  {{#if settingsMenuOpen}}
+                    {{> settings_menu}}
+                  {{/if}}
+                  <button class="microphone">{{> microphone_icon}}</button>
+                  <button class="webcam">{{> webcam_icon}}</button>
+                </div>
                 <button class="preview">Preview</button>
               {{else}}
                 <button class="return-to-curate">Curate</button>
@@ -140,9 +143,11 @@
                 <button class="curate-this-stream">Curate This Stream</button>
               </a>
             {{/if}}
-          </div>
-        {{/if}}
+          {{/if}}
+
+        </div>
       </div>
+
     </div>
 
 

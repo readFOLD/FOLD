@@ -358,10 +358,16 @@
 }
 .edit-context-button-row{
   button{
+    .size(30px);
     font-size: 16px;
     font-weight: bold;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 0;
+  }
+  .add-new-context{
+    float: right;
+  }
+  button.switch-to-list-mode{
+    width: 40px;
   }
   .add-new-context{
     left: 0;
@@ -374,11 +380,43 @@
 }
 
 .curator-menu{
-  button{
-    background-color: transparent;
+  right: 0px;
+  position: absolute;
+  width: @right-section-width;
+  padding-left: 30px;
+  display: inline-block;
+  .curator-info{
+    display: inline-block;
+    width: @right-section-width - 100px;
   }
-  .preview, .return-to-curate, .curate-this-stream{
-    background-color: @action-color;
+
+  .curator-pic{
+    height: 56px;
+    width: 56px;
+    display: inline-block;
+    margin-left: 8px;
+    margin-right: 10px;
+    .bg{
+      fill: @medium-color;
+    }
+  }
+  .curator-details{
+    font-size: 14px;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 10px;
+  }
+  .icon-button-group{
+    width: 160px;
+    margin-right: 45px;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    button {
+      background-color: transparent;
+      .size(30px);
+      padding: 0;
+    }
   }
 }
 
@@ -439,29 +477,6 @@
   height: @second-row-height;
 }
 
-.curator-info{
-  right: 0px;
-  position: absolute;
-  width: @right-section-width;
-  padding-left: 20px;
-  display: inline-block;
-  .curator-pic{
-    height: 56px;
-    width: 56px;
-    display: inline-block;
-    margin-left: 8px;
-    margin-right: 10px;
-    .bg{
-      fill: @medium-color;
-    }
-  }
-  .curator-details{
-    font-size: 14px;
-    display: inline-block;
-    vertical-align: top;
-    margin-top: 10px;
-  }
-}
 
 .about-stream{
   display: inline-block;
