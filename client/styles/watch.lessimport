@@ -149,6 +149,12 @@
           fill: @dark-color;
         }
 
+        &.stream-icon{
+          .bg{
+            stroke: none;
+          }
+        }
+
         &:hover {
 
           //.fg{
@@ -361,6 +367,7 @@
           fill: @dark-color;
         }
       }
+
     }
   }
 
