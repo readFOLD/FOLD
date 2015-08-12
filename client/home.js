@@ -389,32 +389,38 @@ Template.signin_overlay.events({
 // DEEPSTREAM
 
 Meteor.startup(function(){
-  Session.set('homeStreamListMode', 'best');
+  Session.setDefault('homeStreamListMode', 'best');
 });
 
 
-Template.home.helpers({
-  //searchResults: function(){
-  //  return StreamSearch.getData();
-  //}
+Template.top_banner.helpers({
   showBestStreams: function(){
-    Session.equals('homeStreamListMode', 'best');
+    return Session.equals('homeStreamListMode', 'best');
   },
   showMostRecentStreams: function(){
-    Session.equals('homeStreamListMode', 'most_recent');
+    return Session.equals('homeStreamListMode', 'most_recent');
+  }
+});
+
+Template.home.onRendered(function(){
+  var query = Session.get('homeStreamListQuery');
+  if (query){
+    this.$('#stream-search-input').val(query);
   }
 });
 
 Template.home.events({
   "submit .stream-search-form": function(e, t){
     e.preventDefault();
-    Session.set('homeStreamListQuery', $(e.currentTarget).find('input[type="search"]').val());
+    Session.set('homeStreamListQuery', t.$('#stream-search-input').val());
     Session.set('homeStreamListMode', 'search');
   },
   "click .show-best-streams": function(e, t){
+    t.$('#stream-search-input').val('');
     Session.set('homeStreamListMode', 'best');
   },
   "click .show-most-recent-streams": function(e, t){
+    t.$('#stream-search-input').val('');
     Session.set('homeStreamListMode', 'most_recent');
   }
 });

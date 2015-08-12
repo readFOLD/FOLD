@@ -437,6 +437,8 @@ div.logo-title {
 
 
 // DEEPSTREAM
+
+
 .stream-preview{
   width: 480px;
   img{
@@ -545,11 +547,39 @@ div.action-items {
 .filter-row{
   height: 60px;
   padding-top: 10px;
+  padding-left: 65px;
   background-color: @darker-color;
   padding-right: 15px;
+  position: relative;
+
   .box-shadow(0px 2px 12px 0px rgba(0,0,0,0.55));
   .tabs{
     display: inline-block;
+    bottom: 0;
+    position: absolute;
+
+    li {
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+      display: inline-block;
+      min-width: 100px;
+      button {
+        color: @medium-color;
+      }
+
+      &.selected, &:hover {
+        border-bottom: 2px solid @white-color;
+        button {
+          color: @white-color;
+        }
+      }
+    }
+    button {
+      padding-left: 20px;
+      padding-right: 20px;
+      background-color: transparent;
+    }
   }
   .stream-search{
     display: inline-block;

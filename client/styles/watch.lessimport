@@ -564,6 +564,7 @@
   height: @top-row-height;
   .box-shadow(0px 2px 12px 0px rgba(0,0,0,0.75));
   position: relative;
+  z-index: 10;
 }
 
 @second-row-height: 65px;
