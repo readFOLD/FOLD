@@ -557,7 +557,7 @@ div.logo-title {
       .text{
         text-align: left;
       }
-      .create{
+      .create-deepstream{
         .action-button;
         height: 30px;
         width: 90px;
