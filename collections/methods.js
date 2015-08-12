@@ -225,7 +225,7 @@ Meteor.methods({
 
       // TODO something
       if (Meteor.isClient){
-        if(deepstream.streams.length === 1) { // this is the second stream to be added
+        if(deepstream.streams.length === 2) { // this is the second stream to be added
           window.notifySuccess("You just added a second stream. Now you can switch between streams and all your viewers will see that change!");
         }
 
