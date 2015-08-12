@@ -54,6 +54,7 @@
             <div class="main-stream-iframe-holder {{#if PiP}}PiP{{/if}}">
               <iframe id="{{mainStreamElementId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0"
                       allowfullscreen></iframe>
+              {{#if PiP}}<div class="PiP-overlay"></div>{{/if}}
             </div>
             {{#unless PiP}}
               {{#with activeStream}}

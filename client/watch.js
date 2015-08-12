@@ -576,6 +576,9 @@ Template.watch.events({
   'click .favorite-button': function(e,t){
     notifyFeature('Success!! Favoriting streams: coming soon!');
   },
+  'click .PiP-overlay': function(e,t){
+    Session.set('largeContextMode', false)
+  }
 });
 
 
