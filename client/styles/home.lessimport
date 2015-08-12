@@ -512,6 +512,7 @@ div.logo-title {
 }
 
 .preview-hover{
+  .box-shadow(1px 2px 3px 0px rgba(0,0,0,0.5));
   &:hover{
     .box-shadow(4px 8px 12px 0px rgba(0,0,0,0.75));
   }
@@ -547,9 +548,18 @@ div.logo-title {
   margin-bottom: 50px;
   position: relative;
   .preview-hover;
-  img{
+  .stream-image{
     height: 136px;
     width: 172px;
+    position: relative;
+    img{
+      .size-to-fit;
+    }
+    svg{
+      opacity: 0.7;
+      .center-over-parent-div;
+      .size(35px);
+    }
   }
   .existing-deepstreams-message{
     display: inline-block;
@@ -558,9 +568,12 @@ div.logo-title {
     top: 70px;
     right: 10px;
     font-size: 14px;
+    color: @medium-color;
   }
   .title{
     font-size: 18px;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
   .small-stream-info{
     width: 100%;
@@ -585,6 +598,8 @@ div.logo-title {
     position: absolute;
     height: 510px;
     width: 80%;
+
+    background-color: @black-color;
 
     top: 50%;
     left: 50%;

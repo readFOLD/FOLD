@@ -175,6 +175,12 @@ html {
   }
 }
 
+.center-over-parent-div{ // requires parent div to be position relative or absolute
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 .action-button{
   color: black;

@@ -427,7 +427,10 @@
   <div class="stream-preview">
     <button class="show-preview-overlay">
       <div class="stream">
-        <img src="{{thumbnailUrl}}"/>
+        <div class="stream-image">
+          <img src="{{thumbnailUrl}}"/>
+          {{> play_video_icon}}
+        </div>
         <div class="existing-deepstreams-message">0 deepstreams have been made from this</div>
         <div class="title">{{title}}</div>
         <div class="small-stream-info">
