@@ -216,7 +216,7 @@ Template.watch.onCreated(function () {
       var userControlledActiveStreamId = that.userControlledActiveStreamId.get();
       var deepstream = Deepstreams.findOne({shortId: that.data.shortId()});
 
-      if(userControlledActiveStreamId && deepstream.userStreamSwitchAllowed()){
+      if(!Session.get('curateMode') && userControlledActiveStreamId && deepstream.userStreamSwitchAllowed()){
         that.activeStream.set(deepstream.getStream(userControlledActiveStreamId));
       } else{
         that.activeStream.set(deepstream.activeStream());
