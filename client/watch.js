@@ -454,7 +454,8 @@ Template.watch.events({
   'click .unmute': function(){
     Session.set('mainPlayerMuted', false);
   },
-  'click .preview': function(){
+  'click .preview': function(e,t){
+    t.userControlledActiveStreamId.set(null); // so that stream selection doesn't switch
     Session.set('curateMode', false);
   },
   'click .return-to-curate': function(){
