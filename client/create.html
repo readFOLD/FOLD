@@ -156,7 +156,13 @@
           </button>
         </li>
       {{/if}}
-      <!--WIKIPEDIA-->
+      {{#if show_wikipedia_icon}}
+        <li>
+          <button class='wikipedia-button {{#if wikipedia}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> wikipedia_icon }}
+          </button>
+        </li>
+      {{/if}}
       {{#if show_video_icon}}
         <li>
           <button class='video-button {{#if video}}active{{/if}}' disabled='{{disableAllButStream}}'>
