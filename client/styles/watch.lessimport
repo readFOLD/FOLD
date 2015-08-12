@@ -447,12 +447,16 @@
   }
 }
 
-.preview{
-  background-color: @action-color;
+.action-button{
   color: black;
+  background-color: @action-color;
   &:hover {
-  background-color: @dark-action-color;
+    background-color: @dark-action-color;
   }
+}
+
+button.preview{
+  .action-button;
   position: relative;
   left: 30px;
   top: 18px;
@@ -461,16 +465,16 @@
 }
 
 .return-to-curate{
-  color: black;
-  background-color: @action-color;
-  &:hover {
-  background-color: @dark-action-color;
-  }
+  .action-button;
   position: relative;
   left: 80px;
   bottom: 30px;
   padding-left: 5px;
   text-transform: uppercase;
+}
+
+.curate-this-stream{
+  .action-button;
 }
 
 .edit-menu{
