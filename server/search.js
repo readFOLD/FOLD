@@ -26,12 +26,6 @@ SearchSource.defineSource('streams', function(searchText) {
   }
 });
 
-function buildRegExp(searchText) {
-  // this is a dumb implementation
-  var parts = searchText.trim().split(/[ \-\:]+/);
-  return new RegExp("(" + parts.join('|') + ")", "ig");
-}
-
 // load UStreams into database
 Meteor.startup(function(){
   Meteor.setTimeout(function(){

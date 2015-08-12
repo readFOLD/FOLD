@@ -388,10 +388,66 @@ Template.signin_overlay.events({
 
 // DEEPSTREAM
 
+Meteor.startup(function(){
+  Session.set('homeStreamListMode', 'best');
+});
+
+
+Template.home.helpers({
+  //searchResults: function(){
+  //  return StreamSearch.getData();
+  //}
+  showBestStreams: function(){
+    Session.equals('homeStreamListMode', 'best');
+  },
+  showMostRecentStreams: function(){
+    Session.equals('homeStreamListMode', 'most_recent');
+  }
+});
+
+Template.home.events({
+  "submit .stream-search-form": function(e, t){
+    e.preventDefault();
+    Session.set('homeStreamListQuery', $(e.currentTarget).find('input[type="search"]').val());
+    Session.set('homeStreamListMode', 'search');
+  },
+  "click .show-best-streams": function(e, t){
+    Session.set('homeStreamListMode', 'best');
+  },
+  "click .show-most-recent-streams": function(e, t){
+    Session.set('homeStreamListMode', 'most_recent');
+  }
+});
+
 Template.streams.helpers({
   streams: function(){
     if (FlowRouter.subsReady()) {
-      return Deepstreams.find({onAir: true});
+      var selector = {onAir: true};
+      var sort = {createdAt: -1};
+      switch(Session.get('homeStreamListMode')){
+        case 'best':
+          _.extend(selector, {
+            editorsPick: true
+          });
+          break;
+        case 'most_recent':
+          // do nothing, already sorted by createdAt
+          break;
+        case 'search':
+          var regExp = buildRegExp(Session.get('homeStreamListQuery'));
+          _.extend(selector, {
+            $or: [
+              {title: regExp},
+              {description: regExp},
+              {username: regExp}
+              //{ $text: { $search: searchText, $language: 'en' } }
+            ]
+          });
+          break;
+      }
+      return Deepstreams.find(selector, {
+        sort: sort
+      });
     }
   }
 });
@@ -404,23 +460,4 @@ Template.my_streams.helpers({
   }
 });
 
-Template.stream_preview.helpers({
-  streams: function(){
-    if (FlowRouter.subsReady()) {
-      return Deepstreams.find({onAir: true});
-    }
-  }
-});
 
-Template.home.helpers({
-  searchResults: function(){
-    return StreamSearch.getData();
-  }
-});
-
-Template.home.events({
-  "keyup #stream-search-input": _.throttle(function(e) {
-    var text = $(e.target).val().trim();
-    StreamSearch.search(text);
-  }, 200)
-});
