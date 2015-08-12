@@ -409,15 +409,16 @@ Template.top_banner.helpers({
 
 Template.home.onCreated(function () {
   var that = this;
-  this.noMoreResults = new ReactiveVar();
-  this.loadingResults = new ReactiveVar();
+  this.noMoreStreamResults = new ReactiveVar();
+  this.loadingStreamResults = new ReactiveVar();
 
   this.streamSearch = function(query){
-
+    that.loadingStreamResults.set(true);
+    that.noMoreStreamResults.set(null);
     Meteor.call('streamSearchList', query, function (err, results) {
-      that.loadingResults.set(false);
+      that.loadingStreamResults.set(false);
       if (err) {
-        that.noMoreResults.set('No more results'); // TO-DO - surface error to user?
+        that.noMoreStreamResults.set('No more results'); // TO-DO - surface error to user?
         throw(err);
         return;
       }
@@ -426,7 +427,7 @@ Template.home.onCreated(function () {
       var nextPage = results.nextPage;
 
       if (!items || !items.length) {
-        that.noMoreResults.set('No results found');
+        that.noMoreStreamResults.set('No results found');
         return;
       }
       _.chain(items)
@@ -460,13 +461,29 @@ Template.home.onRendered(function () {
 
 
 
+Template.home.helpers({
+  noMoreStreamResults: function(){
+    return Template.instance().noMoreStreamResults.get();
+  },
+  loadingStreamResults: function(){
+    return Template.instance().loadingStreamResults.get();
+  }
+});
+
 Template.home.events({
   "submit .stream-search-form": function (e, t) {
     e.preventDefault();
     var query = t.$('#stream-search-input').val();
     Session.set('homeStreamListQuery', query);
     Session.set('homeStreamListMode', 'search');
-    t.streamSearch(query)
+
+    // TODO DRY
+    if(SearchResults.find({
+      searchQuery: Session.get('homeStreamListQuery'),
+      searchOption: "homepage_search"
+    }).count() === 0){
+      t.streamSearch(query);
+    }
   },
   "click .show-best-streams": function (e, t) {
     t.$('#stream-search-input').val('');
@@ -522,7 +539,7 @@ Template.streams.helpers({
               currentViewers: -1
             },
             limit: 20
-          }).map(ContextBlock.searchMappings['all_streaming_services'].mapFn).map(function(stream){ return new Stream(stream)});
+          }).map(ContextBlock.searchMappings['all_streaming_services'].mapFn).map(function(stream){ return new Stream(stream)}); // TODO refactor all this so that streams make a bit more sense
           break;
         case 'most_recent':
           return Streams.find({}, {

@@ -339,6 +339,12 @@
     </div>
     <div class="streams-container">
       <h2>LIVESTREAMS</h2>
+      {{#if loadingStreamResults}}
+        Loading...
+      {{/if}}
+      {{#if noMoreStreamResults}}
+        {{noMoreStreamResults}}
+      {{/if}}
       {{> streams}}
     </div>
   </div>
