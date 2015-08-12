@@ -651,6 +651,7 @@ div.action-items {
   }
 
   .user-action {
+    min-width: 110px;
     @profile-picture-size: 25px;
     button{
       line-height: @height;
