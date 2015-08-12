@@ -434,6 +434,27 @@
     {{#if showPreviewOverlay}}
       <div class="stream-preview-screen-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
         <button class="close">{{> close_circle}}</button>
+        <div class="preview-box">
+          <div class="text-prompt">Click CREATE and add some content to start DeepStreaming this livestream</div>
+          <div class="main-stream">
+            <div class="main-stream-iframe-holder">
+              <iframe id="{{mainStreamElementId}}" class="main-stream-iframe" src="{{autoplayUrl}}" frameborder="0"
+                      allowfullscreen></iframe>
+            </div>
+          </div>
+          <div class="right-section">
+            {{> content_icons showAll="true"}}
+            <div class="text">Add great content like news stories, pictures, tweets and more to this livestream</div>
+            <button class="create">CREATE</button>
+            <div class="text">After you add content you'll have the option to publish your page and start DeepStreaming</div>
+          </div>
+          <div class="video-info">
+            <div class="title">{{title}}</div>
+            <div class="description">{{description}}</div>
+            <div class="username">{{username}}</div>
+            <div class="date">{{createdAtString}}</div>
+          </div>
+        </div>
       </div>
     {{/if}}
   </div>

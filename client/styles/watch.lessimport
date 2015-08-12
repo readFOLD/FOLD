@@ -46,9 +46,7 @@
 
   }
 
-  .main-stream-iframe{
-    .size-to-fit;
-  }
+
 }
 
 
@@ -96,6 +94,11 @@
     left: @left-margin;
   }
 }
+
+.main-stream-iframe{
+  .size-to-fit;
+}
+
 .right-section{
 
   height: 100%;
@@ -445,6 +448,8 @@
     }
   }
 }
+
+
 
 button.preview{
   .action-button;

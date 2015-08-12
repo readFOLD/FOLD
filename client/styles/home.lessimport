@@ -535,7 +535,64 @@ div.logo-title {
 
 .stream-preview-screen-overlay{
   .full-overlay;
-  background-color: rgba(255,255,255,0.4);
+  background-color: rgba(48,48,48,0.87);
+  .preview-box{
+    margin:auto;
+    display:block;
+    text-align: center;
+    position: absolute;
+    height: 510px;
+    width: 80%;
+    background-color: @dark-color;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .right-section{
+      border: none;
+      padding-top: 20px;
+      padding-left: 30px;
+      padding-right: 30px;
+      .text{
+        text-align: left;
+      }
+      .create{
+        .action-button;
+        height: 30px;
+        width: 90px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+      .content-icons{
+        pointer-events: none;
+        margin-top: 0px;
+        button.active{
+          background-color: inherit;
+        }
+      }
+    }
+    .text-prompt{
+      position: absolute;
+      font-size: 18px;
+      top: -40px;
+      width: 100%;
+    }
+    .video-info{
+      @height: 100px;
+      text-align: left;
+      position: absolute;
+      padding-top: 20px;
+      bottom: -@height;
+      height: @height;
+      .title{
+        font-size: 18px;
+      }
+      .username, .date{
+        display: inline-block;
+      }
+    }
+  }
 }
 
 
