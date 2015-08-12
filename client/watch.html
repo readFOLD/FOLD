@@ -67,18 +67,16 @@
         </div>
         <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
           {{> content_icons}}
-          {{#if showRightSection}}
-            {{#if showContextSearch}}
-              {{> add_context}}
+          {{#if showContextSearch}}
+            {{> add_context}}
+          {{else}}
+            {{#if showStreamSearch}}
+              {{> stream_search}}
             {{else}}
-              {{#if showStreamSearch}}
-                {{> stream_search}}
+              {{#if showChat}}
+                {{> unimplemented_chat_section}}
               {{else}}
-                {{#if showChat}}
-                  {{> unimplemented_chat_section}}
-                {{else}}
-                  {{> context_browser}}
-                {{/if}}
+                {{> context_browser}}
               {{/if}}
             {{/if}}
           {{/if}}
