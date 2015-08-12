@@ -540,7 +540,7 @@ div.logo-title {
     svg{
       opacity: 0.7;
       .center-over-parent-div;
-      .size(35px);
+      .size(100px);
     }
   }
 
