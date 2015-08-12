@@ -2,7 +2,6 @@
   .stream-title{
     display: inline-block;
     font-size: 36px;
-    font-weight: bold;
     margin-left: 10px;
     min-width: 400px;
   }
@@ -34,7 +33,7 @@
         position:absolute;
         padding-top: 25%;
         .size-to-fit;
-        color: red;
+        color: #c90523;
         text-align: center;
         font-size: 28px;
         font-weight: bold;
@@ -104,7 +103,7 @@
   height: 100%;
   float: left;
   position: relative;
-  background-color: @dark-color;
+  background-color: @background-color;
   display: inline-block;
   z-index: 10;
   width: @right-section-width;
@@ -246,20 +245,20 @@
     margin-right: 15px;
   }
   button{
+    .action-button;
     font-size: 12pt;
-    background-color: @dark-action-color;
     color: black;
-    font-weight: bold;
     margin-top: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 10px;
     padding-right: 10px;
     display: block;
+    text-transform: uppercase;
   }
   &.go-on-air{
     button{
-      background-color: @action-color;
+      .action-button;
       font-size: 20pt;
       margin-top: 20px;
       padding-top: 18px;
@@ -319,9 +318,8 @@
     .count{
       height: 34px;
       line-height: 34px;
-      font-weight: bold;
       text-align: center;
-      color: @medium-color;
+      color: @dark-color;
       font-size: 20px;
       position: absolute;
       top: -34px;
@@ -355,11 +353,11 @@
 }
 
 .browse-buttons{
-  background-color: @dark-color;
+  // background-color: @dark-color;
   width: 100%;
   height: 34px;
   line-height: 34px;
-  color: @medium-color;
+  color: @white-color;
   font-size: 20px;
   font-weight: bold;
   text-align: center;
