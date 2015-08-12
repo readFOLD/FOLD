@@ -350,6 +350,7 @@
     {{#if showDeepstreams}}
       <div class="deepstreams-container">
         <h2>DEEPSTREAMS</h2>
+        <h3>Deepstreams are livestreams that people have enhanced with great content like images, tweets, and news stories.</h3>
         {{> deepstreams}}
       </div>
     {{/if}}
@@ -426,9 +427,13 @@
   <div class="stream-preview">
     <button class="show-preview-overlay">
       <div class="stream">
-        <img src="{{previewUrl}}"/>
-        <div>{{title}}</div>
-        <div>{{dateInPast createdAt}}</div>
+        <img src="{{thumbnailUrl}}"/>
+        <div class="existing-deepstreams-message">0 deepstreams have been made from this</div>
+        <div class="title">{{title}}</div>
+        <div class="small-stream-info">
+          <div class="username">{{username}}</div>
+          <div class="views">{{totalViews}} Views</div>
+        </div>
       </div>
     </button>
     {{#if showPreviewOverlay}}

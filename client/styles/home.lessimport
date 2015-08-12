@@ -502,11 +502,18 @@ div.logo-title {
 // DEEPSTREAM
 
 
+.deepstreams-container, .streams-container{
+  padding-left: 100px;
+}
+
+.streams-container{
+  background-color: @darker-color;
+  padding-top: 20px;
+}
+
 .preview-hover{
   &:hover{
-    img{
-      .box-shadow(4px 8px 12px 0px rgba(0,0,0,0.75));
-    }
+    .box-shadow(4px 8px 12px 0px rgba(0,0,0,0.75));
   }
 }
 
@@ -517,7 +524,7 @@ div.logo-title {
     height: 360px;
     width: 480px;
   }
-  margin-left: 30px;
+  margin-right: 30px;
   margin-bottom: 60px;
   .preview-hover;
 }
@@ -526,11 +533,46 @@ div.logo-title {
 .stream-preview{
   display: inline-block;
   button{
-    background-color: transparent;
+    .size-to-fit;
   }
-  margin-left: 30px;
+  .stream{
+    padding: 10px;
+    text-align: left;
+    .size-to-fit;
+  }
+  height: 200px;
+  width: 375px;
+  background-color: @dark-color;
+  margin-right: 30px;
   margin-bottom: 50px;
+  position: relative;
   .preview-hover;
+  img{
+    height: 136px;
+    width: 172px;
+  }
+  .existing-deepstreams-message{
+    display: inline-block;
+    width: 150px;
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    font-size: 14px;
+  }
+  .title{
+    font-size: 18px;
+  }
+  .small-stream-info{
+    width: 100%;
+    color: @medium-color;
+  }
+  .username, .views{
+    display: inline-block;
+    font-size: 14px;
+  }
+  .views{
+    float:right;
+  }
 }
 
 .stream-preview-screen-overlay{
@@ -543,7 +585,6 @@ div.logo-title {
     position: absolute;
     height: 510px;
     width: 80%;
-    background-color: @dark-color;
 
     top: 50%;
     left: 50%;
@@ -554,6 +595,8 @@ div.logo-title {
       padding-top: 20px;
       padding-left: 30px;
       padding-right: 30px;
+      background-color: @darker-color;
+
       .text{
         text-align: left;
       }
@@ -685,7 +728,7 @@ div.action-items {
   height: 60px;
   padding-top: 10px;
   padding-left: 65px;
-  background-color: @darker-color;
+  background-color: @darkerer-color;
   padding-right: 15px;
   position: relative;
 
