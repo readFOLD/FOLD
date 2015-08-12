@@ -499,6 +499,8 @@ Template.home.events({
       searchOption: "homepage_search"
     }).count() === 0){
       t.streamSearch(query);
+    } else {
+      t.noMoreStreamResults.set(null);
     }
   },
   "click .show-best-streams": function (e, t) {
