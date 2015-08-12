@@ -393,12 +393,6 @@ Template.signin_overlay.events({
 
 // DEEPSTREAM
 
-Meteor.startup(function () {
-  Session.setDefault('homeStreamListMode', 'best');
-  Session.setDefault('homeStreamListType', 'both');
-});
-
-
 Template.top_banner.helpers({
   showBestStreams: function () {
     return Session.equals('homeStreamListMode', 'best');
@@ -410,6 +404,10 @@ Template.top_banner.helpers({
 
 Template.home.onCreated(function () {
   var that = this;
+  Session.set('homeStreamListMode', 'best');
+  Session.set('homeStreamListType', 'both');
+  Session.set('homeStreamListQuery', null);
+
   this.noMoreStreamResults = new ReactiveVar();
   this.loadingStreamResults = new ReactiveVar();
 
@@ -452,12 +450,6 @@ Template.home.onCreated(function () {
     });
   }
 
-});
-Template.home.onRendered(function () {
-  var query = Session.get('homeStreamListQuery');
-  if (query) {
-    this.$('#stream-search-input').val(query);
-  }
 });
 
 

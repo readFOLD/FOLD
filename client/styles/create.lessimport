@@ -485,7 +485,9 @@ div.add-context {
     }
 
   }
-
+  .search-form{
+    text-align: center;
+  }
   .search-radios{
     position: relative;
     margin-top: 20px;

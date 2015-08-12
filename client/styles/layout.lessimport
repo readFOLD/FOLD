@@ -120,7 +120,7 @@ html {
 
 .pill-radios{
 
-  display: flex; // this removes the space between the labels. float: left on label also works
+  display: inline-flex; // this removes the space between the labels. float: left on label also works
   input[type="radio"] {
     display: none;
   }

@@ -635,3 +635,6 @@
   height: 100%;
 }
 
+.link-twitter-button{
+  .action-button;
+}

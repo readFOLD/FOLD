@@ -124,6 +124,8 @@ Template.watch.onCreated(function () {
 
   var that = this;
 
+  this.settingsMenuOpen = new ReactiveVar();
+
   window.onYouTubeIframeAPIReady = function() {
     ytApiReady.set(true);
   };
@@ -229,7 +231,6 @@ Template.watch.onCreated(function () {
 Template.watch.onRendered(function(){
   var that = this;
 
-  this.settingsMenuOpen = new ReactiveVar();
 
   this.mainPlayerYTApiActivated = false;
   this.mainPlayerUSApiActivated = false;
