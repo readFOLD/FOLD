@@ -74,10 +74,20 @@ Meteor.publish("deepstreamsOnAir", function() {
 });
 
 Meteor.publish("bestStreams", function() {
-  return Streams.find();
+  return Streams.find({}, {
+    sort: {
+      currentViewers: -1
+    },
+    limit: 20
+  });
 });
-Meteor.publish("recentStreams", function() {
-  return Streams.find();
+Meteor.publish("mostRecentStreams", function() {
+  return Streams.find({}, {
+    sort: {
+      createdAt: -1
+    },
+    limit: 20
+  });
 });
 
 

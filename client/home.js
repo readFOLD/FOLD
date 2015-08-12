@@ -518,18 +518,24 @@ Template.streams.helpers({
       switch (Session.get('homeStreamListMode')) {
         case 'best':
           return Streams.find({}, {
-          sort: sort
-        });
+            sort: {
+              currentViewers: -1
+            },
+            limit: 20
+          }).map(ContextBlock.searchMappings['all_streaming_services'].mapFn).map(function(stream){ return new Stream(stream)});
           break;
         case 'most_recent':
           return Streams.find({}, {
-            sort: sort
-          });
+            sort: {
+              createdAt: -1
+            },
+            limit: 20
+          }).map(ContextBlock.searchMappings['all_streaming_services'].mapFn).map(function(stream){ return new Stream(stream)});
           break;
         case 'search':
           return SearchResults.find({
             searchQuery: Session.get('homeStreamListQuery'),
-            searchOption: "homepage_search",
+            searchOption: "homepage_search"
           })
       }
     }
