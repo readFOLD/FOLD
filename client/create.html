@@ -120,31 +120,10 @@
         </li>
         <hr>
       {{/if}}
-      {{#if show_video_icon}}
-        <li>
-          <button class='video-button {{#if video}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> video_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_image_icon}}
-        <li>
-          <button class='image-button {{#if image}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> image_icon }}
-          </button>
-        </li>
-      {{/if}}
       {{#if show_news_icon}}
         <li>
           <button class='news-button {{#if news}}active{{/if}}' disabled='{{disableAllButStream}}'>
             {{> news_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_map_icon}}
-        <li>
-          <button class='map-button {{#if map}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> map_icon }}
           </button>
         </li>
       {{/if}}
@@ -155,17 +134,40 @@
           </button>
         </li>
       {{/if}}
-      {{#if show_audio_icon}}
-        <li>
-          <button class='audio-button {{#if audio}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> audio_icon }}
-          </button>
-        </li>
-      {{/if}}
       {{#if show_text_icon}}
         <li>
           <button class='text-button {{#if text}}active{{/if}}' disabled='{{disableAllButStream}}'>
             {{> text_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if show_map_icon}}
+        <li>
+          <button class='map-button {{#if map}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> map_icon }}
+          </button>
+        </li>
+
+      {{/if}}
+      {{#if show_image_icon}}
+        <li>
+          <button class='image-button {{#if image}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> image_icon }}
+          </button>
+        </li>
+      {{/if}}
+      <!--WIKIPEDIA-->
+      {{#if show_video_icon}}
+        <li>
+          <button class='video-button {{#if video}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> video_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if show_audio_icon}}
+        <li>
+          <button class='audio-button {{#if audio}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> audio_icon }}
           </button>
         </li>
       {{/if}}
