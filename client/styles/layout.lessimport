@@ -1,14 +1,14 @@
 
 @black-color: #030303;
-@darker-color: #181818;
-@dark-color: #323232;
+@darker-color: #212121;
+@dark-color: #303030;
 @medium-color: #9B9B9B;
 @light-color: #F4F4F4;
 @light-transparent-color: rgba(244,244,244,0.75);
 @white-color: #D8D8D8;
 
 @live-color: #C90523;
-@background-color: #323232;
+@background-color: #424242;
 @action-color: #F6C406;
 @dark-action-color: #dea406;
 @inactive-color: #DDDDDD;
@@ -953,8 +953,8 @@ div.horizontal-context {
   }
 
   .text-content{
-    color: white;
-    background-color: @dark-color;
+    color: black;
+    background-color: @medium-color;
   }
   textarea.text-content {
     padding: 8px;
