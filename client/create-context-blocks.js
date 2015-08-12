@@ -1,11 +1,5 @@
 var searchDep = new Tracker.Dependency();
 
-var i = 0;
-
-var count = function(){
-  return i++;
-};
-
 var createBlockHelpers = {
   showAddButton: function(){
     return Template.instance().focusResult.get() ? true : false;
@@ -143,7 +137,7 @@ var existingSearchResults = function(options){
       source: Session.get('newHorizontalDataSource')
     });
   }
-  return SearchResults.find(selector, _.extend({}, options, {sort: {ordinalId: 1} }))
+  return SearchResults.find(selector, _.extend({}, options, {sort: {ordinalId: 1} }));
 };
 
 

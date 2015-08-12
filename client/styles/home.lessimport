@@ -366,7 +366,7 @@ div.stories {
   width: 100%;
 }
 
-div.streams {
+div.deepstreams-and-streams {
   //@profile-section: 400px;
   padding-top: 150px;
   width: 100%;
@@ -439,7 +439,7 @@ div.logo-title {
 // DEEPSTREAM
 
 
-.stream-preview{
+.deepstream-preview{
   width: 480px;
   img{
     height: 360px;

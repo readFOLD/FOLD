@@ -329,55 +329,17 @@
 
 
 <!--DEEPSTREAM-->
-<template name="streams">
-  {{#each streams}}
-    <a href="{{watchPath}}">
-      {{> stream_preview }}
-    </a>
-  {{/each}}
-</template>
-
-<template name="my_streams">
-  <h1>Your Deep Streams</h1>
-  {{#each streams}}
-    <a href="{{curatePath}}">
-      {{> stream_preview }}
-    </a>
-  {{/each}}
-</template>
-
-<template name="stream_preview">
-  <div class="stream-preview">
-      <div class="stream">
-        <img src="{{previewUrl}}"/>
-        <div>{{title}}</div>
-        <div>{{curatorName}}</div>
-        <div>{{dateInPast createdAt}}</div>
-      </div>
-  </div>
-</template>
-
-
-<template name="create_deepstream">
-  <button class="create-deepstream" href="javascript:void(0);">
-    <span class="text">Create</span>
-  </button>
-</template>
 
 <template name="home">
   {{> top_banner showFilters="true"}}
-  <div class="streams">
+  <div class="deepstreams-and-streams">
+    <div class="deepstreams-container">
+      {{> deepstreams}}
+    </div>
     <div class="streams-container">
       {{> streams}}
     </div>
   </div>
-  <!--<div class="stories"> -->
-  <!--<section>-->
-  <!--<div class="story-container">-->
-  <!--{{> all_stories}}-->
-  <!--</div>-->
-  <!--</section>-->
-  <!--</div>-->
 </template>
 
 <template name="logo_title">
@@ -396,4 +358,55 @@
       </div>
     </a>
   </div>
+</template>
+
+<template name="deepstreams">
+  {{#each streams}}
+    <a href="{{watchPath}}">
+      {{> deepstream_preview }}
+    </a>
+  {{/each}}
+</template>
+
+<template name="streams">
+  {{#each streams}}
+    {{> stream_preview }}
+  {{/each}}
+</template>
+
+<template name="my_streams">
+  <h1>Your Deep Streams</h1>
+  {{#each streams}}
+    <a href="{{curatePath}}">
+      {{> stream_preview }}
+    </a>
+  {{/each}}
+</template>
+
+<template name="deepstream_preview">
+  <div class="deepstream-preview">
+    <div class="deepstream">
+      <img src="{{previewUrl}}"/>
+      <div>{{title}}</div>
+      <div>{{curatorName}}</div>
+      <div>{{dateInPast createdAt}}</div>
+    </div>
+  </div>
+</template>
+
+<template name="stream_preview">
+  <div class="stream-preview">
+      <div class="stream">
+        <img src="{{previewUrl}}"/>
+        <div>{{title}}</div>
+        <div>{{dateInPast createdAt}}</div>
+      </div>
+  </div>
+</template>
+
+
+<template name="create_deepstream">
+  <button class="create-deepstream" href="javascript:void(0);">
+    <span class="text">Create</span>
+  </button>
 </template>

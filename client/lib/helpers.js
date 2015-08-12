@@ -160,3 +160,10 @@ window.horizontalBlockHelpers = _.extend({}, typeHelpers, {
   },
   annotation: textContentHelper
 });
+
+
+var i = 0;
+
+window.count = function(){
+  return i++;
+};

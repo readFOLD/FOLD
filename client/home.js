@@ -1,23 +1,23 @@
 var formatDate, weekDays, formatDateNice, monthNames;
 
 weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 // Friday 2/20/2015 20:29:22
-formatDate = function(date) {
+formatDate = function (date) {
   var hms;
   hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
   return weekDays[date.getDay()] + " " + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
 };
 
 // February 7th, 2015
-formatDateNice = function(date) {
+formatDateNice = function (date) {
   var hms;
   hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
   return monthNames[(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear();
 };
 
-loginWithTwitter = function() {
+loginWithTwitter = function () {
   Session.set('signingInWithTwitter', true);
   Meteor.loginWithTwitter({
     requestPermissions: ['user']
@@ -34,67 +34,64 @@ loginWithTwitter = function() {
   });
 };
 
-loginWithEmail = function() {
+loginWithEmail = function () {
   FlowRouter.go('login')
 };
 
 Template.home.helpers({
-  user: function() {
+  user: function () {
     return Meteor.user();
   },
-  filterOpen: function() {
+  filterOpen: function () {
     return Session.get("filterOpen");
   },
-  sticky: function() {
+  sticky: function () {
     return Session.get("sticky");
   },
-  filter: function() {
+  filter: function () {
     return Session.get("filter");
   },
-  category: function() {
+  category: function () {
     return Session.get("category");
   }
 });
 
 
-
 Template.categories.helpers({
-  categories: function() {
+  categories: function () {
     return ['all', 'news', 'history', 'art', 'technology', 'politics', 'e-sports', 'music', 'gaming', 'sponsored'];
   },
-  selected: function() {
+  selected: function () {
     return Session.equals("category", this.toString());
   }
 });
 
 Template.categories.events({
-  "click li": function(d) {
+  "click li": function (d) {
     var srcE;
     srcE = d.srcElement ? d.srcElement : d.target;
     return Session.set('category', $(srcE).data('category'));
   }
 });
 
-Template.filters.onRendered(function() {
-  $("select").selectOrDie({
-
-  });
+Template.filters.onRendered(function () {
+  $("select").selectOrDie({});
 });
 
 var filters = ['curated', 'trending', 'starred', 'newest'];
 Session.set('filterValue', filters[0]); // this must correspond to the first thingin the dropdown
 
 Template.filters.helpers({
-  filters: function() {
+  filters: function () {
     return filters
   },
-  conditionallySelected: function(){
+  conditionallySelected: function () {
     return Session.equals('filterValue', this.toString()) ? 'selected' : '';
   }
 });
 
 Template.filters.events({
-  "change select": function(e, t) {
+  "change select": function (e, t) {
     var filterValue = $(e.target).val();
     Session.set('filterValue', filterValue);
     analytics.track('Select filter', {
@@ -109,40 +106,39 @@ var curatedStoriesSub,
   starredStoriesSub;
 
 
-var getSubscriptionPage = function(filterValue){
+var getSubscriptionPage = function (filterValue) {
   return subscriptionsPage.get(filterValue + 'Stories')
 };
 
-var setSubscriptionPage = function(filterValue, val){
+var setSubscriptionPage = function (filterValue, val) {
   return subscriptionsPage.set(filterValue + 'Stories', val);
 };
 
-var getCurrentSubscriptionPage = function(){
+var getCurrentSubscriptionPage = function () {
   return getSubscriptionPage(Session.get('filterValue'));
 };
 
-var setCurrentSubscriptionPage = function(val){
+var setCurrentSubscriptionPage = function (val) {
   return setSubscriptionPage(Session.get('filterValue'), val);
 };
 
 
-var incrementSubscriptionPage = function(filterValue){
+var incrementSubscriptionPage = function (filterValue) {
   setSubscriptionPage(filterValue, getSubscriptionPage(filterValue) + 1);
 };
 
 
-var incrementCurrentSubscriptionPage = function(){
+var incrementCurrentSubscriptionPage = function () {
   setCurrentSubscriptionPage(getCurrentSubscriptionPage() + 1);
 };
 
 var subscriptionsReady = new ReactiveDict();
 var subscriptionsPage = new ReactiveDict();
-_.each(filters, function(filter){
+_.each(filters, function (filter) {
   setSubscriptionPage(filter, -1);
 });
 
 setSubscriptionPage('curated', 0); // curated stories are preloaded
-
 
 
 var homeSubs = new SubsManager({
@@ -151,64 +147,64 @@ var homeSubs = new SubsManager({
 });
 
 // these methods all keep the subscription open for the lifetime of the window, but can be called again safely
-var subscribeToCuratedStories = function(cb){
-  if(!curatedStoriesSub){
-    curatedStoriesSub = homeSubs.subscribe("curatedStoriesPub", function(){
+var subscribeToCuratedStories = function (cb) {
+  if (!curatedStoriesSub) {
+    curatedStoriesSub = homeSubs.subscribe("curatedStoriesPub", function () {
       var timeToLoadStories = Date.now() - createHomePageDate;
       trackTiming('Subscription', 'Full curated stories ready (time since created template)', timeToLoadStories);
       subscriptionsReady.set('curatedStories', true);
-      if(cb){
+      if (cb) {
         cb();
       }
     })
   } else {
-    if(cb){
+    if (cb) {
       cb();
     }
   }
 };
-var subscribeToTrendingStories = function(cb){
-  if(!trendingStoriesSub){
-    trendingStoriesSub = homeSubs.subscribe("trendingStoriesPub", function(){
+var subscribeToTrendingStories = function (cb) {
+  if (!trendingStoriesSub) {
+    trendingStoriesSub = homeSubs.subscribe("trendingStoriesPub", function () {
       incrementSubscriptionPage('trending');
       subscriptionsReady.set('trendingStories', true);
-      if(cb){
+      if (cb) {
         cb();
       }
     })
   } else {
-    if(cb){
+    if (cb) {
       cb();
     }
   }
 };
-var subscribeToNewestStories = function(cb){
-  if(!newestStoriesSub){
-    newestStoriesSub = homeSubs.subscribe("newestStoriesPub", function(){
+var subscribeToNewestStories = function (cb) {
+  if (!newestStoriesSub) {
+    newestStoriesSub = homeSubs.subscribe("newestStoriesPub", function () {
       incrementSubscriptionPage('newest');
       subscriptionsReady.set('newestStories', true);
-      if(cb){
+      if (cb) {
         cb();
       }
     })
   } else {
-    if(cb){
+    if (cb) {
       cb();
     }
   }
 };
 
-var subscribeToStarredStories = function(cb){
-  if(!starredStoriesSub){
-    starredStoriesSub = homeSubs.subscribe("starredStoriesPub", function(){
+var subscribeToStarredStories = function (cb) {
+  if (!starredStoriesSub) {
+    starredStoriesSub = homeSubs.subscribe("starredStoriesPub", function () {
       incrementSubscriptionPage('starred');
       subscriptionsReady.set('starredStories', true);
-      if(cb){
+      if (cb) {
         cb();
       }
     })
   } else {
-    if(cb){
+    if (cb) {
       cb();
     }
   }
@@ -216,16 +212,21 @@ var subscribeToStarredStories = function(cb){
 
 var createHomePageDate;
 
-Template.all_stories.onCreated(function(){
+Template.all_stories.onCreated(function () {
   var that = this;
   createHomePageDate = Date.now();
-  subscribeToCuratedStories(function(){
-    subscribeToTrendingStories(function() {
-      subscribeToNewestStories(function(){
-        subscribeToStarredStories(function(){
-          if (!that.view.isDestroyed){ // because this happens asynchronously, the user may have already navigated away
-            that.autorun(function(){
-              that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}));
+  subscribeToCuratedStories(function () {
+    subscribeToTrendingStories(function () {
+      subscribeToNewestStories(function () {
+        subscribeToStarredStories(function () {
+          if (!that.view.isDestroyed) { // because this happens asynchronously, the user may have already navigated away
+            that.autorun(function () {
+              that.subscribe('minimalUsersPub', Stories.find({published: true}, {
+                fields: {authorId: 1},
+                reactive: false
+              }).map(function (story) {
+                return story.authorId
+              }));
             });
           }
         })
@@ -234,9 +235,9 @@ Template.all_stories.onCreated(function(){
   });
 
   var notFirstRun = false;
-  this.autorun(function(){
+  this.autorun(function () {
     Session.get('filterValue'); // re-run whenever filter value changes
-    if (notFirstRun){
+    if (notFirstRun) {
       $(window).scrollTop(0)
     }
     notFirstRun = true;
@@ -244,17 +245,21 @@ Template.all_stories.onCreated(function(){
 });
 
 
-var currentHomeStories = function(){
+var currentHomeStories = function () {
 
   var limit = (getCurrentSubscriptionPage() + 1) * PUB_SIZE;
 
-  if (limit <= 0){
+  if (limit <= 0) {
     return
   }
 
   switch (Session.get('filterValue')) {
     case 'curated': // preview versions of all these stories come from fast-render so we can show them right away
-      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: limit, reactive: true}); // .fetch() prevents a weird "Bad index" error
+      return Stories.find({published: true, editorsPick: true}, {
+        sort: {'editorsPickAt': -1},
+        limit: limit,
+        reactive: true
+      }); // .fetch() prevents a weird "Bad index" error
       break;
     case 'newest':
       return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: limit, reactive: true});
@@ -269,10 +274,10 @@ var currentHomeStories = function(){
 };
 
 Template.all_stories.events({
-  'click .show-more' : function(e,t){
+  'click .show-more': function (e, t) {
     var filterValue = Session.get('filterValue');
     subscriptionsReady.set(filterValue + 'Stories', false);
-    homeSubs.subscribe(filterValue + 'StoriesPub', {page: getCurrentSubscriptionPage() + 1}, function(){
+    homeSubs.subscribe(filterValue + 'StoriesPub', {page: getCurrentSubscriptionPage() + 1}, function () {
       incrementCurrentSubscriptionPage();
       subscriptionsReady.set(filterValue + 'Stories', true);
     })
@@ -281,12 +286,12 @@ Template.all_stories.events({
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   stories: currentHomeStories,
-  storiesLoading: function(){
-    return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')))
+  storiesLoading: function () {
+    return (!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')))
   },
-  moreToShow: function(){
+  moreToShow: function () {
     var stories = currentHomeStories();
-    if (!stories){
+    if (!stories) {
       return false
     }
     return currentHomeStories().count() >= (getCurrentSubscriptionPage() + 1) * PUB_SIZE
@@ -294,91 +299,91 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
 });
 
 Template.story_preview.helpers({
-  story: function(){
+  story: function () {
     return Stories.findOne(this._id);
   }
 });
 
 Template._story_preview_content.helpers({
-  lastPublishDate: function() {
-    if(this.publishedAt) {
+  lastPublishDate: function () {
+    if (this.publishedAt) {
       return formatDateNice(this.publishedAt);
     }
   },
-  story: function(){
-    if (Template.instance().data.useDraftStory){
+  story: function () {
+    if (Template.instance().data.useDraftStory) {
       return this.draftStory;
     } else {
       return this;
     }
   },
-  linkRoute: function(){
+  linkRoute: function () {
     return Template.instance().data.useDraftStory ? 'edit' : 'read';
   },
-  author: function(){
+  author: function () {
     return Meteor.users.findOne(this.authorId)
   },
-  profileUrl: function(){
+  profileUrl: function () {
     return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate drafts and only use authorDisplayUsername
   },
-  contextCountOfType: function(type){
+  contextCountOfType: function (type) {
     return this.contextBlockTypeCount ? this.contextBlockTypeCount[type] : this.contextCountOfType(type);
   }
 });
 
 Template.login_buttons.helpers({
-  showUserInfo: function() {
+  showUserInfo: function () {
     return Template.instance().showUserInfo.get();
   }
 });
 
-Template.login_buttons.onCreated(function() {
+Template.login_buttons.onCreated(function () {
   return this.showUserInfo = new ReactiveVar(false);
 });
 
 Template.login_buttons.events({
-  "mouseenter .user-action": function(d) {
+  "mouseenter .user-action": function (d) {
     Template.instance().showUserInfo.set(true);
   },
-  "mouseleave .user-action": function(d) {
+  "mouseleave .user-action": function (d) {
     Template.instance().showUserInfo.set(false);
   },
-  "click .signin": function(d) {
+  "click .signin": function (d) {
     Session.set('signingIn', true);
     setSigningInFrom();
   },
-  "click .logout" : function(e) {
+  "click .logout": function (e) {
     e.preventDefault();
     Template.instance().showUserInfo.set(false);
     Meteor.logout();
   }
 });
 
-window.setSigningInFrom = function(){
+window.setSigningInFrom = function () {
   Session.set('signingInFrom', FlowRouter.current().path);
 };
 
-window.returnFromSignIn = function(){
+window.returnFromSignIn = function () {
   FlowRouter.go(Session.get('signingInFrom') || '/');
 }
 
-var closeSignInOverlay = function(){
+var closeSignInOverlay = function () {
   Session.set('signingIn', false);
 };
 
 // TODO close sign in overlay on esc (27) need to do on whole window though
 
 Template.signin_overlay.events({
-  "click .close": function(d) {
+  "click .close": function (d) {
     closeSignInOverlay();
     analytics.track('Click close sign-in overlay');
   },
-  "click .twitter-signin": function(d) {
+  "click .twitter-signin": function (d) {
     closeSignInOverlay();
     loginWithTwitter();
     analytics.track('Click login with Twitter');
   },
-  "click .email-signin": function(d) {
+  "click .email-signin": function (d) {
     closeSignInOverlay();
     loginWithEmail();
     analytics.track('Click login with email');
@@ -388,49 +393,97 @@ Template.signin_overlay.events({
 
 // DEEPSTREAM
 
-Meteor.startup(function(){
+Meteor.startup(function () {
   Session.setDefault('homeStreamListMode', 'best');
 });
 
 
 Template.top_banner.helpers({
-  showBestStreams: function(){
+  showBestStreams: function () {
     return Session.equals('homeStreamListMode', 'best');
   },
-  showMostRecentStreams: function(){
+  showMostRecentStreams: function () {
     return Session.equals('homeStreamListMode', 'most_recent');
   }
 });
 
-Template.home.onRendered(function(){
+Template.home.onCreated(function () {
+  var that = this;
+  this.noMoreResults = new ReactiveVar();
+  this.loadingResults = new ReactiveVar();
+
+  this.streamSearch = function(query){
+
+    Meteor.call('streamSearchList', query, function (err, results) {
+      that.loadingResults.set(false);
+      if (err) {
+        that.noMoreResults.set('No more results'); // TO-DO - surface error to user?
+        throw(err);
+        return;
+      }
+
+      var items = results.items;
+      var nextPage = results.nextPage;
+
+      if (!items || !items.length) {
+        that.noMoreResults.set('No results found');
+        return;
+      }
+      _.chain(items)
+        .map(ContextBlock.searchMappings['all_streaming_services'].mapFn || _.identity)
+        .each(function (item, i) {
+          _.extend(item, {
+            type: "stream",
+            //authorId: Meteor.user() ? Meteor.user()._id : ,
+            searchQuery: query,
+            searchOption: "homepage_search",
+            nextPage: nextPage,
+            ordinalId: count(),
+            fullDetails: items[i] // include all original details from the api
+          });
+          //_.defaults(item, {
+          //  source: source // for multi-source search, may already have a source
+          //});
+
+          SearchResults.insert(item);
+        });
+    });
+  }
+
+});
+Template.home.onRendered(function () {
   var query = Session.get('homeStreamListQuery');
-  if (query){
+  if (query) {
     this.$('#stream-search-input').val(query);
   }
 });
 
+
+
 Template.home.events({
-  "submit .stream-search-form": function(e, t){
+  "submit .stream-search-form": function (e, t) {
     e.preventDefault();
-    Session.set('homeStreamListQuery', t.$('#stream-search-input').val());
+    var query = t.$('#stream-search-input').val();
+    Session.set('homeStreamListQuery', query);
     Session.set('homeStreamListMode', 'search');
+    t.streamSearch(query)
   },
-  "click .show-best-streams": function(e, t){
+  "click .show-best-streams": function (e, t) {
     t.$('#stream-search-input').val('');
     Session.set('homeStreamListMode', 'best');
   },
-  "click .show-most-recent-streams": function(e, t){
+  "click .show-most-recent-streams": function (e, t) {
     t.$('#stream-search-input').val('');
     Session.set('homeStreamListMode', 'most_recent');
   }
 });
 
-Template.streams.helpers({
-  streams: function(){
+Template.deepstreams.helpers({
+  streams: function () {
     if (FlowRouter.subsReady()) {
       var selector = {onAir: true};
       var sort = {createdAt: -1};
-      switch(Session.get('homeStreamListMode')){
+      switch (Session.get('homeStreamListMode')) {
         case 'best':
           _.extend(selector, {
             editorsPick: true
@@ -458,8 +511,33 @@ Template.streams.helpers({
   }
 });
 
+Template.streams.helpers({
+  streams: function () {
+    if (FlowRouter.subsReady()) {
+      var sort = {};
+      switch (Session.get('homeStreamListMode')) {
+        case 'best':
+          return Streams.find({}, {
+          sort: sort
+        });
+          break;
+        case 'most_recent':
+          return Streams.find({}, {
+            sort: sort
+          });
+          break;
+        case 'search':
+          return SearchResults.find({
+            searchQuery: Session.get('homeStreamListQuery'),
+            searchOption: "homepage_search",
+          })
+      }
+    }
+  }
+});
+
 Template.my_streams.helpers({
-  streams: function(){
+  streams: function () {
     if (FlowRouter.subsReady()) {
       return Deepstreams.find({curatorId: Meteor.user()._id});
     }

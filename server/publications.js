@@ -73,6 +73,14 @@ Meteor.publish("deepstreamsOnAir", function() {
   return Deepstreams.find({onAir: true});
 });
 
+Meteor.publish("bestStreams", function() {
+  return Streams.find();
+});
+Meteor.publish("recentStreams", function() {
+  return Streams.find();
+});
+
+
 Meteor.publish("singleDeepstream", function(userPathSegment, shortId) {
   check(shortId, String);
   return Deepstreams.find({userPathSegment: userPathSegment, shortId: shortId});
