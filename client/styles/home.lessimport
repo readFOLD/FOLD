@@ -15,7 +15,6 @@ div.home-top {
   &.not-sticky{
     position: absolute;
   }
-  background-color: @background-color;
   height: 145px;
   @media @mobile{
     img{

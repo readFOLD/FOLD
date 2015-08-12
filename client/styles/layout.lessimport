@@ -10,7 +10,7 @@
 @white-color: #D8D8D8;
 
 @live-color: #C90523;
-@background-color: #424242;
+@background-color: @dark-color;
 @action-color: #F6C406;
 @dark-action-color: #dea406;
 @inactive-color: #DDDDDD;
