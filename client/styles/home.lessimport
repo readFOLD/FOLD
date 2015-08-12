@@ -373,6 +373,64 @@ div.deepstreams-and-streams {
   height: 100%;
 }
 
+.stream-type-selector-container{
+  text-align: center;
+}
+
+.stream-type-selector{
+  @height: 46px;
+  li {
+    color: @white-color;
+    height: auto;
+    display:inline-block;
+    text-align:center;
+    background-color: @inactive-pill-color;
+
+    -webkit-border-radius: @height/2;
+    -moz-border-radius: @height/2;
+    border-radius: @height/2;
+
+    &:not(:first-of-type):not(:last-of-type){
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      border-radius: 0;
+    }
+
+    &:first-of-type{
+      -webkit-border-top-right-radius: 0;
+      -webkit-border-bottom-right-radius: 0;
+      -moz-border-radius-topright: 0;
+      -moz-border-radius-bottomright: 0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &:last-of-type{
+      -webkit-border-top-left-radius: 0;
+      -webkit-border-bottom-left-radius: 0;
+      -moz-border-radius-topleft: 0;
+      -moz-border-radius-bottomleft: 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &.selected, &:hover {
+      background-color: @active-pill-color;
+    }
+  }
+  button{
+    padding:0 15px;
+    font-size:18px;
+    font-weight:bold;
+    line-height:@height;
+    color: @white-color;
+    background-color: transparent;
+  }
+
+  //display: inline-flex;
+  width: auto;
+}
+
 
 div.logo-title {
   @height: 60px;

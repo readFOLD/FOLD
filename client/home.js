@@ -395,6 +395,7 @@ Template.signin_overlay.events({
 
 Meteor.startup(function () {
   Session.setDefault('homeStreamListMode', 'best');
+  Session.setDefault('homeStreamListType', 'both');
 });
 
 
@@ -467,6 +468,21 @@ Template.home.helpers({
   },
   loadingStreamResults: function(){
     return Template.instance().loadingStreamResults.get();
+  },
+  showDeepstreamsOnly: function(){
+    return Session.equals('homeStreamListType', 'deepstreams');
+  },
+  showLivestreamsOnly: function(){
+    return Session.equals('homeStreamListType', 'livestreams');
+  },
+  showDeepstreamsAndLivestreams: function(){
+    return Session.equals('homeStreamListType', 'both');
+  },
+  showDeepstreams: function(){
+    return Session.equals('homeStreamListType', 'both') || Session.equals('homeStreamListType', 'deepstreams');
+  },
+  showLivestreams: function(){
+    return Session.equals('homeStreamListType', 'both') || Session.equals('homeStreamListType', 'livestreams');
   }
 });
 
@@ -492,6 +508,15 @@ Template.home.events({
   "click .show-most-recent-streams": function (e, t) {
     t.$('#stream-search-input').val('');
     Session.set('homeStreamListMode', 'most_recent');
+  },
+  "click .show-deepstreams-only": function (e, t) {
+    Session.set('homeStreamListType', 'deepstreams');
+  },
+  "click .show-livestreams-only": function (e, t) {
+    Session.set('homeStreamListType', 'livestreams');
+  },
+  "click .show-deepstreams-and-livestreams": function (e, t) {
+    Session.set('homeStreamListType', 'both');
   }
 });
 

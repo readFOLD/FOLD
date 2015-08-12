@@ -333,20 +333,38 @@
 <template name="home">
   {{> top_banner showFilters="true"}}
   <div class="deepstreams-and-streams">
-    <div class="deepstreams-container">
-      <h2>DEEPSTREAMS</h2>
-      {{> deepstreams}}
+    <div class="stream-type-selector-container">
+
+      <div class="stream-type-selector">
+          <ul>
+            <li class="{{#if showDeepstreamsOnly}}selected{{/if}}">
+              <button class="show-deepstreams-only">DEEPSTREAMS</button>
+            </li><li class="{{#if showDeepstreamsAndLivestreams}}selected{{/if}}">
+              <button class="show-deepstreams-and-livestreams">BOTH</button>
+            </li><li class="{{#if showLivestreamsOnly}}selected{{/if}}">
+              <button class="show-livestreams-only">LIVESTREAMS</button>
+            </li>
+          </ul>
+      </div>
     </div>
-    <div class="streams-container">
-      <h2>LIVESTREAMS</h2>
-      {{#if loadingStreamResults}}
-        Loading...
-      {{/if}}
-      {{#if noMoreStreamResults}}
-        {{noMoreStreamResults}}
-      {{/if}}
-      {{> streams}}
-    </div>
+    {{#if showDeepstreams}}
+      <div class="deepstreams-container">
+        <h2>DEEPSTREAMS</h2>
+        {{> deepstreams}}
+      </div>
+    {{/if}}
+    {{#if showLivestreams}}
+      <div class="streams-container">
+        <h2>LIVESTREAMS</h2>
+        {{#if loadingStreamResults}}
+          Loading...
+        {{/if}}
+        {{#if noMoreStreamResults}}
+          {{noMoreStreamResults}}
+        {{/if}}
+        {{> streams}}
+      </div>
+    {{/if}}
   </div>
 </template>
 
@@ -373,6 +391,8 @@
     <a href="{{watchPath}}">
       {{> deepstream_preview }}
     </a>
+  {{else}}
+    No results found.
   {{/each}}
 </template>
 
