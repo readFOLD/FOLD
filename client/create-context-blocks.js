@@ -761,8 +761,11 @@ Template.create_twitter_section.helpers({
 });
 
 Template.search_form.events({
-  'keydown': function(){
+  'change, keydown': function(){
     searchDep.changed();
+  },
+  'change input[type="radio"]': function(e,t){
+    t.$('form').submit();
   }
 });
 
