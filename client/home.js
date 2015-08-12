@@ -518,15 +518,20 @@ Template.deepstreams.helpers({
   streams: function () {
     if (FlowRouter.subsReady()) {
       var selector = {onAir: true};
-      var sort = {createdAt: -1};
+      var sort = {};
       switch (Session.get('homeStreamListMode')) {
         case 'best':
           _.extend(selector, {
             editorsPick: true
           });
+          _.extend(sort, {
+            editorsPickAt: -1
+          });
           break;
         case 'most_recent':
-          // do nothing, already sorted by createdAt
+          _.extend(sort, {
+            createdAt: -1
+          });
           break;
         case 'search':
           var regExp = buildRegExp(Session.get('homeStreamListQuery'));
