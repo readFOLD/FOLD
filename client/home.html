@@ -422,9 +422,21 @@
         </div>
         <div class="live-indicator">LIVE</div>
       </div>
-      <div>{{title}}</div>
-      <div>{{curatorName}}</div>
-      <div>{{dateInPast createdAt}}</div>
+      <div class="title-and-views">
+        <span class="title">{{title}}</span>
+        <span class="views">37 Views</span>
+      </div>
+      <div class="small-stream-info">
+        <div>
+          <span class="stream-count">Tracking {{streams.length}} streamers</span>
+          <span class="favorited">0 {{> favorite_icon}}</span>
+        </div>
+        <div>
+          <span class="date">Updated {{dateInPast savedAt}}</span>
+          <span class="username">{{curatorName}}</span>
+        </div>
+
+      </div>
     </div>
   </div>
 </template>

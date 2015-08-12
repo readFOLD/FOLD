@@ -550,6 +550,33 @@ div.logo-title {
   margin-right: 30px;
   margin-bottom: 60px;
   .preview-hover;
+
+  .title-and-views{
+    margin-top: 5px;
+    margin-bottom: 3px;
+  }
+  .title{
+    font-size: 18px;
+  }
+  .small-stream-info, .views{
+    color: @medium-color;
+    font-size: 14px;
+  }
+  .small-stream-info{
+    width: 100%;
+    svg{
+      .fg{
+        fill: @favorite-color;
+      }
+      margin-bottom: -2px;
+      margin-left: 1px;
+      .size(14px);
+    }
+  }
+  .views, .username, .favorited{
+    float:right;
+  }
+
 }
 
 .stream-preview{
