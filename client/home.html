@@ -415,7 +415,13 @@
 <template name="deepstream_preview">
   <div class="deepstream-preview">
     <div class="deepstream">
-      <img src="{{previewUrl}}"/>
+      <div class="image-and-content">
+        <div class="stream-image">
+          <img src="{{previewUrl}}"/>
+          {{> play_video_icon}}
+        </div>
+        <div class="live-indicator">LIVE</div>
+      </div>
       <div>{{title}}</div>
       <div>{{curatorName}}</div>
       <div>{{dateInPast createdAt}}</div>

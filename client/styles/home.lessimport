@@ -519,17 +519,39 @@ div.logo-title {
 }
 
 .deepstream-preview{
-  width: 480px;
+  width: 560px;
+  height: 300px;
   display: inline-block;
-  img{
-    height: 360px;
-    width: 480px;
+  background-color: @dark-medium-color;
+  .image-and-content{
+    position: relative;
+    .live-indicator{
+      position: absolute;
+      top:0;
+      left:0;
+    }
+    .stream-image{
+      height: 200px;
+      width: 350px;
+      position: relative;
+    }
+    img{
+      .size-to-fit;
+    }
+    svg{
+      opacity: 0.7;
+      .center-over-parent-div;
+      .size(35px);
+    }
+  }
+
+  .deepstream{
+    padding: 12px;
   }
   margin-right: 30px;
   margin-bottom: 60px;
   .preview-hover;
 }
-
 
 .stream-preview{
   display: inline-block;
@@ -543,7 +565,7 @@ div.logo-title {
   }
   height: 200px;
   width: 375px;
-  background-color: @dark-color;
+  background-color: @dark-medium-color;
   margin-right: 30px;
   margin-bottom: 50px;
   position: relative;
