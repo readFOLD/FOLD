@@ -1,5 +1,6 @@
 
 @black-color: #030303;
+@darkerer-color: #181818;
 @darker-color: #212121;
 @dark-color: #303030;
 @medium-color: #9B9B9B;
@@ -174,6 +175,12 @@ html {
   }
 }
 
+.center-over-parent-div{ // requires parent div to be position relative or absolute
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 .action-button{
   color: black;

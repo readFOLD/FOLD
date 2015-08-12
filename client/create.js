@@ -534,34 +534,34 @@ Template.content_icons.helpers({
     return Session.get("curateMode");
   },
   show_text_icon: function () {
-    return Session.get("curateMode") || this.hasContextOfType("text");
+    return this.showAll || Session.get("curateMode") || this.hasContextOfType("text");
   },
   show_image_icon: function () {
-    return Session.get("curateMode") || this.hasContextOfType("image");
+    return this.showAll || Session.get("curateMode") || this.hasContextOfType("image");
   },
   show_gif_icon: function () {
-    return Session.get("curateMode") || this.hasContextOfType("gif");
+    return this.showAll || Session.get("curateMode") || this.hasContextOfType("gif");
   },
   show_news_icon: function () {
-    return Session.get("curateMode") || this.hasContextOfType("news");
+    return this.showAll || Session.get("curateMode") || this.hasContextOfType("news");
   },
   show_map_icon: function () {
-    return Session.get("curateMode") || this.hasContextOfType("map");
+    return this.showAll || Session.get("curateMode") || this.hasContextOfType("map");
   },
   show_video_icon: function () {
-    return Session.get("curateMode") || this.hasContextOfType("video");
+    return this.showAll || Session.get("curateMode") || this.hasContextOfType("video");
   },
   show_twitter_icon: function () {
-    return Session.get("curateMode") || this.hasContextOfType("twitter");
+    return this.showAll || Session.get("curateMode") || this.hasContextOfType("twitter");
   },
   show_viz_icon: function () {
-    return Session.get("curateMode") || this.hasContextOfType("viz");
+    return this.showAll || Session.get("curateMode") || this.hasContextOfType("viz");
   },
   show_audio_icon: function () {
-    return Session.get("curateMode") || this.hasContextOfType("audio");
+    return this.showAll || Session.get("curateMode") || this.hasContextOfType("audio");
   },
   show_link_icon: function () {
-    return Session.get("curateMode") || this.hasContextOfType("link");
+    return this.showAll || Session.get("curateMode") || this.hasContextOfType("link");
   },
   show_chat_icon: function () {
     return true;

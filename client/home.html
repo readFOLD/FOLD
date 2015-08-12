@@ -350,6 +350,7 @@
     {{#if showDeepstreams}}
       <div class="deepstreams-container">
         <h2>DEEPSTREAMS</h2>
+        <h3>Deepstreams are livestreams that people have enhanced with great content like images, tweets, and news stories.</h3>
         {{> deepstreams}}
       </div>
     {{/if}}
@@ -426,14 +427,42 @@
   <div class="stream-preview">
     <button class="show-preview-overlay">
       <div class="stream">
-        <img src="{{previewUrl}}"/>
-        <div>{{title}}</div>
-        <div>{{dateInPast createdAt}}</div>
+        <div class="stream-image">
+          <img src="{{thumbnailUrl}}"/>
+          {{> play_video_icon}}
+        </div>
+        <div class="existing-deepstreams-message">0 deepstreams have been made from this</div>
+        <div class="title">{{title}}</div>
+        <div class="small-stream-info">
+          <div class="username">{{username}}</div>
+          <div class="views">{{totalViews}} Views</div>
+        </div>
       </div>
     </button>
     {{#if showPreviewOverlay}}
       <div class="stream-preview-screen-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
         <button class="close">{{> close_circle}}</button>
+        <div class="preview-box">
+          <div class="text-prompt">Click CREATE and add some content to start DeepStreaming this livestream</div>
+          <div class="main-stream">
+            <div class="main-stream-iframe-holder">
+              <iframe id="{{mainStreamElementId}}" class="main-stream-iframe" src="{{autoplayUrl}}" frameborder="0"
+                      allowfullscreen></iframe>
+            </div>
+          </div>
+          <div class="right-section">
+            {{> content_icons showAll="true"}}
+            <div class="text">Add great content like news stories, pictures, tweets and more to this livestream</div>
+            {{> create_deepstream}}
+            <div class="text">After you add content you'll have the option to publish your page and start DeepStreaming</div>
+          </div>
+          <div class="video-info">
+            <div class="title">{{title}}</div>
+            <div class="description">{{description}}</div>
+            <div class="username">{{username}}</div>
+            <div class="date">{{createdAtString}}</div>
+          </div>
+        </div>
       </div>
     {{/if}}
   </div>

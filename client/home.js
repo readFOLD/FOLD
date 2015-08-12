@@ -566,7 +566,9 @@ Template.streams.helpers({
               currentViewers: -1
             },
             limit: 20
-          }).map(ContextBlock.searchMappings['all_streaming_services'].mapFn).map(function(stream){ return new Stream(stream)}); // TODO refactor all this so that streams make a bit more sense
+          }).map(function(stream){
+            return _.extend({_id: stream._id}, ContextBlock.searchMappings['all_streaming_services'].mapFn(stream));
+          }).map(function(stream){ return new Stream(stream)}); // TODO refactor all this so that streams make a bit more sense
           break;
         case 'most_recent':
           return Streams.find({}, {
@@ -574,7 +576,9 @@ Template.streams.helpers({
               createdAt: -1
             },
             limit: 20
-          }).map(ContextBlock.searchMappings['all_streaming_services'].mapFn).map(function(stream){ return new Stream(stream)});
+          }).map(function(stream){
+            return _.extend({_id: stream._id}, ContextBlock.searchMappings['all_streaming_services'].mapFn(stream));
+          }).map(function(stream){ return new Stream(stream)});
           break;
         case 'search':
           return SearchResults.find({

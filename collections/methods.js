@@ -225,7 +225,7 @@ Meteor.methods({
 
       // TODO something
       if (Meteor.isClient){
-        if(deepstream.streams.length === 1) { // this is the second stream to be added
+        if(deepstream.streams.length === 2) { // this is the second stream to be added
           window.notifySuccess("You just added a second stream. Now you can switch between streams and all your viewers will see that change!");
         }
 
@@ -509,7 +509,7 @@ Meteor.methods({
     check(storyId, String);
     return changeEditorsPick.call(this, storyId, false);
   },
-  createDeepstream: function(shortId) { // TO-DO find a way to generate these in a trusted way server without compromising UI speed
+  createDeepstream: function(shortId, initialStream) { // TO-DO find a way to generate these ids in a trusted way server without compromising UI speed
     var user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to create a story');
@@ -538,6 +538,10 @@ Meteor.methods({
 
     if (Meteor.isClient){
       FlowRouter.go('curate', {userPathSegment: userPathSegment, streamPathSegment: streamPathSegment});
+    }
+
+    if(initialStream){
+      Meteor.call('addStreamToStream', shortId, initialStream);
     }
 
     return {

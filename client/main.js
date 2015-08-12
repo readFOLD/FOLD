@@ -551,13 +551,16 @@ Tracker.autorun(function() {
 
 Template.create_deepstream.events({
   'click': function(){
+
     if (Meteor.user()){
       var accessPriority = Meteor.user().accessPriority;
       if (accessPriority && accessPriority <= window.createAccessLevel){
 
         var shortId = Random.id(8);
 
-        Meteor.call('createDeepstream',shortId, function(err, pathObject){
+        var initialStream = (this instanceof Stream) ? this : null;
+
+        Meteor.call('createDeepstream',shortId, initialStream, function(err, pathObject){
           if (err) {
             notifyError(err);
             throw(err);
