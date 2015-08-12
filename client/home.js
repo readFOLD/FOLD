@@ -552,6 +552,9 @@ Template.deepstreams.helpers({
         sort: sort
       });
     }
+  },
+  subsReady: function(){
+    return FlowRouter.subsReady();
   }
 });
 

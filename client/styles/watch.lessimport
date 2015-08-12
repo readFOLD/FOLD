@@ -561,9 +561,7 @@
     padding-left: 2%;
     padding-right: 2%;
     float: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    .ellipsis-text;
   }
   .stream-url{
     width: 63%;

@@ -191,6 +191,12 @@ html {
   }
 }
 
+.ellipsis-text{
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+
 
 // http://asimpleframe.com/
 @font-face {

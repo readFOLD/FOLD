@@ -556,6 +556,7 @@ div.logo-title {
     margin-bottom: 3px;
   }
   .title{
+    .ellipsis-text;
     font-size: 18px;
   }
   .small-stream-info, .views{
@@ -619,6 +620,7 @@ div.logo-title {
     color: @medium-color;
   }
   .title{
+    .ellipsis-text;
     font-size: 18px;
     margin-top: 5px;
     margin-bottom: 5px;

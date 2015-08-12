@@ -32,7 +32,6 @@ browser-policy
 reactive-dict
 reload
 meteorhacks:subs-manager
-fold:fast-render@2.3.2
 force-ssl
 fold:user-system@=0.1.1
 fold:context-blocks@=0.5.0
@@ -40,3 +39,4 @@ meteorhacks:flow-router
 meteorhacks:flow-layout
 momentjs:moment
 meteorhacks:search-source
+meteorhacks:fast-render
