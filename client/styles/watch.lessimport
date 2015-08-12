@@ -436,6 +436,7 @@
   .icon-button-group{
     width: 160px;
     margin-right: 45px;
+    padding-top: 25px;
     display: inline-flex;
     flex-direction: row;
     justify-content: space-between;
@@ -446,26 +447,35 @@
   }
 }
 
-button.preview{
-  .action-button;
-  position: relative;
-  left: 30px;
-  top: 18px;
-  padding-left: 5px;
-  text-transform: uppercase;
-}
+.curator-menu{
+  @button-width: 75px;
 
-.return-to-curate{
-  .action-button;
-  position: relative;
-  left: 80px;
-  bottom: 30px;
-  padding-left: 5px;
-  text-transform: uppercase;
-}
+  button.preview{
+    .action-button;
+    width: @button-width;
+    position: relative;
+    bottom: 5px;
+    text-transform: uppercase;
+  }
 
-.curate-this-stream{
-  .action-button;
+  .return-to-curate{
+    .action-button;
+    width: @button-width;
+    position: relative;
+    left: 45px;
+    bottom: 29px;
+    padding-left: 5px;
+    text-transform: uppercase;
+  }
+
+  .curate-this-stream{
+    .action-button;
+    position: relative;
+    left: 35px;
+    bottom: 35px;
+    padding-left: 5px;
+    text-transform: uppercase;
+  }
 }
 
 .edit-menu{
