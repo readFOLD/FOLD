@@ -440,7 +440,6 @@
     flex-direction: row;
     justify-content: space-between;
     .settings-menu-button, .webcam, .microphone {
-      background-color: transparent;
       .size(30px);
       padding: 0;
     }
@@ -526,6 +525,7 @@ button.preview{
 
 .settings-menu{
   .edit-menu;
+  color: black;
   bottom: 37px;
   right: 177px;
   width: 260px;
