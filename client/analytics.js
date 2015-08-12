@@ -2,7 +2,7 @@
 analytics.load(Meteor.settings["public"].SEGMENT_WRITE_KEY);
 
 FlowRouter.triggers.enter(function(context) {
-  Meteor.setTimeout(function(){
+  setTimeout(function(){
     $('meta[property="og:url"]').attr('content', window.location.href);
     analytics.page(context.route.name); // maybe should be more page info here
   }, 100); // this might even be ok when set to 0
