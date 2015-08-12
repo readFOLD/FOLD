@@ -20,6 +20,7 @@
 @dark-favorite-color: #EFC820;
 
 @active-pill-color: #663A80;
+@hover-pill-color: #5f2d72;
 @inactive-pill-color: #462859;
 
 @unselected-text-color: #999999;
@@ -160,8 +161,11 @@ html {
       border-bottom-left-radius: 0;
     }
 
-    &.selected, &:hover {
+    &.selected{
       background-color: @active-pill-color;
+    }
+    &:hover {
+      background-color: @hover-pill-color;
     }
   }
 

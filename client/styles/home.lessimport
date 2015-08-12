@@ -414,7 +414,10 @@ div.deepstreams-and-streams {
       border-bottom-left-radius: 0;
     }
 
-    &.selected, &:hover {
+    &:hover {
+      background-color: @hover-pill-color;
+    }
+    &.selected {
       background-color: @active-pill-color;
     }
   }
@@ -497,20 +500,37 @@ div.logo-title {
 // DEEPSTREAM
 
 
-.deepstream-preview{
-  width: 480px;
-  img{
-    height: 360px;
-    width: 480px;
-  }
-  margin-left: 30px;
-  margin-bottom: 60px;
+.preview-hover{
   &:hover{
     img{
       .box-shadow(4px 8px 12px 0px rgba(0,0,0,0.75));
     }
   }
 }
+
+.deepstream-preview{
+  width: 480px;
+  display: inline-block;
+  img{
+    height: 360px;
+    width: 480px;
+  }
+  margin-left: 30px;
+  margin-bottom: 60px;
+  .preview-hover;
+}
+
+
+.stream-preview{
+  display: inline-block;
+  button{
+    background-color: transparent;
+  }
+  margin-left: 30px;
+  margin-bottom: 50px;
+  .preview-hover;
+}
+
 
 
 div.action-items {
