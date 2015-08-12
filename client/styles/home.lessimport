@@ -383,6 +383,10 @@ div.deepstreams-and-streams {
     color: @white-color;
     height: auto;
     display:inline-block;
+    font-size:18px;
+    font-weight:bold;
+    line-height:@height;
+
     text-align:center;
     background-color: @inactive-pill-color;
 
@@ -423,9 +427,7 @@ div.deepstreams-and-streams {
   }
   button{
     padding:0 15px;
-    font-size:18px;
-    font-weight:bold;
-    line-height:@height;
+
     color: @white-color;
     background-color: transparent;
   }
@@ -545,8 +547,7 @@ div.action-items {
     width: 100%;
     text-align: center;
   }
-  color: @light-color;
-  font-family: 'Roboto', sans-serif;
+  color: @black-color;
 
   button{
     text-transform: uppercase;
@@ -576,6 +577,7 @@ div.action-items {
 
   li {
     height: @height;
+    background-color: @action-color;
     @media @not-mobile{
       float: left;
     }
@@ -587,7 +589,6 @@ div.action-items {
   }
 
   .user-action {
-    background-color: @remix-color;
     @profile-picture-size: 25px;
     button{
       line-height: @height;
@@ -607,12 +608,7 @@ div.action-items {
     }
   }
 
-  .about-deepstream {
-    background-color: @panel-color;
-  }
-
   ol.user-menu {
-    background-color: @remix-color;
     li {
       float: none;
       display: block;
@@ -656,7 +652,6 @@ div.action-items {
     button {
       padding-left: 20px;
       padding-right: 20px;
-      background-color: transparent;
     }
   }
   .stream-search{

@@ -195,7 +195,7 @@ html {
   src: local('Muli'), url(//fonts.gstatic.com/s/muli/v7/FrmKYbbiMrxVeJO6lA8KEvesZW2xOQ-xsNqO47m55DA.ttf) format('truetype');
 }
 
-@import url(http://fonts.googleapis.com/css?family=Roboto:500,400italic,700italic,700,500italic,400);
+@import url(//fonts.googleapis.com/css?family=Roboto:500,400italic,700italic,700,500italic,400);
 
 @highdensity: ~"only screen and (-webkit-min-device-pixel-ratio: 1.5)",
 ~"only screen and (min--moz-device-pixel-ratio: 1.5)",
@@ -353,10 +353,11 @@ li{
 button{
   cursor: pointer;
   border: none;
-  color: black;
-  background-color: @action-color;
+  color: inherit;
+  background-color: inherit;
   font-family: inherit;
   font-size: inherit;
+  font-weight: inherit;
 }
 
 section{

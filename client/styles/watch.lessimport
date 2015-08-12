@@ -239,6 +239,7 @@
   button{
     font-size: 12pt;
     background-color: @dark-action-color;
+    color: black;
     font-weight: bold;
     margin-top: 20px;
     padding-top: 10px;
@@ -249,6 +250,7 @@
   }
   &.go-on-air{
     button{
+      background-color: @action-color;
       font-size: 20pt;
       margin-top: 20px;
       padding-top: 18px;
@@ -441,6 +443,7 @@
 
 .preview{
   background-color: @action-color;
+  color: black;
   &:hover {
   background-color: @dark-action-color;
   }
@@ -452,6 +455,7 @@
 }
 
 .return-to-curate{
+  color: black;
   background-color: @action-color;
   &:hover {
   background-color: @dark-action-color;
