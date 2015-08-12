@@ -446,14 +446,6 @@
   }
 }
 
-.action-button{
-  color: black;
-  background-color: @action-color;
-  &:hover {
-    background-color: @dark-action-color;
-  }
-}
-
 button.preview{
   .action-button;
   position: relative;

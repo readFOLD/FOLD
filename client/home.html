@@ -40,7 +40,7 @@
 <template name="signin_overlay">
   {{#if signingIn}}
     <div class="signin-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
-      <button class="close">✕</button>
+      <button class="close">{{> close_circle}}</button>
       <div class="signin-buttons">
         <ol class="user-menu">
           <li>
@@ -424,14 +424,18 @@
 
 <template name="stream_preview">
   <div class="stream-preview">
-    <button>
+    <button class="show-preview-overlay">
       <div class="stream">
         <img src="{{previewUrl}}"/>
         <div>{{title}}</div>
         <div>{{dateInPast createdAt}}</div>
       </div>
     </button>
-
+    {{#if showPreviewOverlay}}
+      <div class="stream-preview-screen-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+        <button class="close">{{> close_circle}}</button>
+      </div>
+    {{/if}}
   </div>
 </template>
 
