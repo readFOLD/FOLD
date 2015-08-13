@@ -26,8 +26,8 @@
       </div>
 
 
-      <div class="main-section {{#unless showRightSection}}expanded{{/unless}}">
-        <div class="main-stream {{#unless showRightSection}}expanded{{/unless}} {{#if PiP}}PiP{{/if}}">
+      <div class="main-section {{#if expandMainSection}}expanded{{/if}}">
+        <div class="main-stream {{#if expandMainSection}}expanded{{/if}} {{#if PiP}}PiP{{/if}}">
           {{#if showTutorial}}
             <div class="tutorial">
               <div class="tutorial-step find-stream {{#if onFindStreamStep}}active{{/if}}">
@@ -245,7 +245,6 @@
 <template name="full_context_section">
   <div
       class="narrative-section context-section {{#if type}}{{type}}-card{{/if}}" data-index="{{index}}">
-    <section>
       {{#if type}}
         {{#if text}}
           {{> display_text_section}}
@@ -277,14 +276,12 @@
       {{else}}
         {{> display_broken_section}}
       {{/if}}
-    </section>
   </div>
 </template>
 
 <template name="preview_context_section">
   <div
       class="narrative-section context-section preview-context-section {{#if type}}{{type}}-card{{/if}}" data-index="{{index}}">
-    <section>
       {{#if type}}
         {{#if text}}
           {{> display_text_section}}
@@ -319,7 +316,6 @@
       {{else}}
         {{> display_broken_section}}
       {{/if}}
-    </section>
   </div>
 </template>
 

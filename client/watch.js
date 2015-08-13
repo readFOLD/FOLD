@@ -388,6 +388,10 @@ Template.watch.helpers({
     var mediaDataType = Session.get('mediaDataType');
     return !Session.get('largeContextMode') && (mediaDataType && (Session.get("curateMode") || this.hasContextOfType(mediaDataType)));
   },
+  expandMainSection: function(){
+    var mediaDataType = Session.get('mediaDataType');
+    return !(mediaDataType && (Session.get("curateMode") || this.hasContextOfType(mediaDataType)));
+  },
   showStreamSearch: function(){
     return Session.get("curateMode") && Session.get('mediaDataType') === 'stream'; // always search on stream
   },
