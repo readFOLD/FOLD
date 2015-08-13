@@ -450,13 +450,15 @@
     }
   }
 
-  button.show-full{
+  div.show-full{
     text-align: start;
     line-height: 0;
     width: 100%;
     padding: 0;
     .preview-hover;
+    cursor: pointer;
   }
+
   .link-section{
     line-height: 18px;
     background-color: @dark-color;
