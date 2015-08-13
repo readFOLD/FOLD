@@ -1100,6 +1100,7 @@ div.horizontal-context {
 
 .signin-overlay{
   .full-overlay;
+  z-index: 111111;
   background-color: rgba(48,48,48,0.87);
   .close{
     color:@black-color;
