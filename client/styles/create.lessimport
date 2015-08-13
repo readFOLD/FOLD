@@ -508,6 +508,9 @@ div.add-context {
     }
   }  
 
+  .news-preview.search-results-container {
+    height: calc(100% ~"-" @searchFormHeight ~"-" 40px);
+  }
   .twitter .search-results-container {
     height: calc(100% ~"-" @searchFormHeight ~"-" 126px);
   }

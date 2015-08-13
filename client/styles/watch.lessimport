@@ -707,9 +707,36 @@
 
 .news-section{
   height: 100%;
-  line-height: normal;
+  line-height: 23px;
+  overflow-x: hidden;
+  .news-header-image{
+    min-height: 80px;
+    max-height: 160px;
+    min-width: 100%;
+  }
+  .news-source{
+    font-weight: bold;
+    img{
+      height: 12px;
+    }
+  }
 }
+
+.create-section {
+  .news-section {
+    height: 100%;
+    line-height: normal;
+    overflow-y: scroll;
+  }
+}
+
 
 .link-twitter-button{
   .action-button;
 }
+
+.create-section.unimplemented{
+  text-align: center;
+  padding-top: 40px;
+}
+

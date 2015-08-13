@@ -126,6 +126,10 @@
 
 <template name="display_news_section">
   <div class="news-section {{#if isFocused}}focused{{/if}}">
+    <div class="news-source">{{#if providerIconUrl}}<img class="provider-image" src="{{providerIconUrl}}"/>{{/if}}{{providerName}}</div>
+    {{#if headerImageUrl}}
+      <img class="news-header-image" src="{{headerImageUrl}}"/>
+    {{/if}}
     <h4 class="news-title">{{title}}</h4>
     <div class="news-html">{{{html}}}</div>
     {{{annotation}}}
