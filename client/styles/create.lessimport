@@ -752,13 +752,6 @@ div.add-context {
   }
 }
 
-div.text-section {
-  .content-font;
-  margin-top: 25px;
-  margin-left: 30px;
-  margin-right: 30px;
-}
-
 .create-link-section {
   .preview-section {
     height: 300px;

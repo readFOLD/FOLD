@@ -443,6 +443,10 @@
       width: 100%;
     }
   }
+  .link-section{
+    line-height: 18px;
+    background-color: @dark-color;
+  }
 }
 
 
@@ -675,6 +679,7 @@
 
 .news-section{
   height: 100%;
+  line-height: normal;
 }
 
 .link-twitter-button{

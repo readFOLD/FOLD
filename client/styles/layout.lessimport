@@ -708,8 +708,6 @@ div.oec-section {
 
 div.link-section {
   position: relative;
-  height: 300px;
-  border-bottom: 7px solid @action-color;
 
   div.top {
     .thumbnail {
@@ -737,18 +735,15 @@ div.link-section {
       padding-right: 20px;
       padding-bottom: 7px;
       line-height: 26px;
-      background-color: @white-color;
       overflow:hidden;
 
       &.image-on-left {
         display: flex;
         align-items: center;
-        background-color: @dark-color;
         float: right;
         padding-top: 0;
         width: calc(100% ~"-" 130px);
         border-bottom: 1px solid @dark-color;
-        background-color: @dark-color;
         color: white;
         height: 130px;
       }
@@ -775,13 +770,12 @@ div.link-section {
   }
 
   .bottom {
-    position: absolute;
-    left: 15px;
-    bottom: 7px;
     padding-top: 13px;
-    cursor: pointer;
-    width: calc(100% ~"-" 15px);
-    background-color: @white-color;
+    padding-bottom: 5px;
+
+    padding-right: 10px;
+    text-align: right;
+    //background-color: @white-color;
     a {
       color: @action-color;
     }
@@ -795,7 +789,9 @@ div.text-section {
   }
 
   textarea {
-    .content-font;
+    @font-size: 14px;
+    font-size: @font-size;
+    line-height: 20px;
   }
 }
 
