@@ -112,10 +112,6 @@
   border-top: 1px solid @black-color;
   border-bottom: 1px solid @medium-color;
 
-  button{
-    background-color: transparent;
-  }
-
   .content-icons {
     @circle-diameter: 40px;
     position: absolute;
@@ -433,6 +429,7 @@
   top: 8px;
   right: 4px;
   position: absolute;
+  background: transparent;
 }
 
 

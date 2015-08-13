@@ -545,7 +545,7 @@ div.add-context {
     list-style-type: none;
      
     @aspectRatio: 4/3;
-    @searchResultHeight: 94px;     
+    @searchResultHeight: 94px;
     @thumbnailHeight: 90px;    
     @thumbnailWidth: 120px; 
     
@@ -603,6 +603,7 @@ div.add-context {
     
     
     @searchResultWidth: @aspectRatio * (@searchResultHeight - (2 * @innerElementPadding));
+    @smallThumbnailWidth: .8*@searchResultHeight - (2 * @innerElementPadding);
     div.thumbnail {
       img{   
         width: @searchResultWidth;
@@ -615,7 +616,7 @@ div.add-context {
         }
 
         &.small {
-          width: .8*@searchResultHeight - (2 * @innerElementPadding);
+          width:  @smallThumbnailWidth;
           height: auto;
         }
 
@@ -654,12 +655,13 @@ div.add-context {
       position: relative;   
       top:  -@searchResultHeight+@innerElementPadding;  
       left: @thumbnailWidth;   
-      max-width: calc(100% ~"-" 10px ~"-" @thumbnailWidth);   
+      max-width: calc(100% ~"-" 10px ~"-" @thumbnailWidth);
       max-height: @searchResultHeight - 10px;   
 
       &.twitter {
         top: -64px;
         left: 78px;
+        max-width: calc(100% ~"-" 20px ~"-" @smallThumbnailWidth);
       }
       div.content-title {    
         font-weight: bold; 
@@ -684,9 +686,16 @@ div.add-context {
       .descr, .tweet {   
         overflow: hidden; 
         font-size: 11px;   
+        line-height: 16px;
+      }
+      .descr{
         height: @textAreaHeight*0.4533333;  // 34px
-        line-height: 16px;   
-      }    
+      }
+
+      .tweet {
+        height: @textAreaHeight*0.64;
+      }
+
       .descr {
         margin-bottom: 6px;
       }   
