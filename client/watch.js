@@ -646,10 +646,15 @@ Template.context_browser.events({
     if ($(e.target).is('textarea')) { // don't go to big browser when its time to edit context
       return
     }
-    if(_.contains(['image', 'video', 'map'], this.type)){
+    if(_.contains(['image', 'video', 'map', 'news', 'text', 'wikipedia'], this.type)){
       setCurrentContextIdOfType(this.type, this._id);
-      Session.set('largeContextMode', true);
+      if(_.contains(['image', 'video', 'map'], this.type)){
+        Session.set('largeContextMode', true);
+      } else {
+        Session.set('singleContextMode', true);
+      }
     }
+
   },
   'click .right': function(){
     setCurrentContextIdOfType(Session.get('mediaDataType'), this.nextContext(Session.get("currentContext")._id)._id);

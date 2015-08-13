@@ -284,7 +284,7 @@
           {{> display_text_section}}
         {{/if}}
         {{#if image}}
-          {{> display_image_section}}
+          {{> preview_image_section}}
         {{/if}}
         {{#if gif}}
           {{> display_image_section}}
@@ -308,7 +308,7 @@
           {{> display_link_section}}
         {{/if}}
         {{#if news}}
-          {{> display_news_section}}
+          {{> preview_news_section}}
         {{/if}}
       {{else}}
         {{> display_broken_section}}
@@ -320,19 +320,37 @@
   </div>
 </template>
 
+<template name="preview_image_section">
+  <button class="show-full">
+    {{> display_image_section}}
+  </button>
+</template>
+
 <template name="preview_video_section">
-  <div class="video-preview">
-    <img src="{{previewUrl}}"/>
-    {{> play_video_icon}}
-  </div>
-  {{{annotation}}}
+  <button class="show-full">
+    <div class="video-preview">
+      <img src="{{previewUrl}}"/>
+      {{> play_video_icon}}
+    </div>
+    {{{annotation}}}
+  </button>
 </template>
 
 <template name="preview_map_section">
-  <div class="map-preview">
-    <img src="{{previewUrl 200 310}}"/>
-  </div>
-  {{{annotation}}}
+  <button class="show-full">
+    <div class="map-preview">
+      <img src="{{previewUrl 200 310}}"/>
+    </div>
+    {{{annotation}}}
+  </button>
+</template>
+
+<template name="preview_news_section">
+  <button class="show-full">
+    <div class="news-preview">
+      {{title}}
+    </div>
+  </button>
 </template>
 
 

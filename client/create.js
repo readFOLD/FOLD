@@ -584,43 +584,33 @@ Template.content_icons.events({
   },
   'click .text-button': function(d, t) {
     Session.set('mediaDataType', 'text');
-    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .map-button': function(d, t) {
     Session.set('mediaDataType', 'map');
-    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .video-button': function(d, t) {
     Session.set('mediaDataType', 'video');
-    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .image-button': function(d, t) {
     Session.set('mediaDataType', 'image');
-    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .gif-button': function(d, t) {
     Session.set('mediaDataType', 'gif');
-    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .news-button': function(d, t) {
     Session.set('mediaDataType', 'news');
-    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .twitter-button': function(d, t) {
     Session.set('mediaDataType', 'twitter');
-    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .viz-button': function(d, t) {
     Session.set('mediaDataType', 'viz');
-    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .audio-button': function(d, t) {
     Session.set('mediaDataType', 'audio');
-    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .link-button': function(d, t) {
     Session.set('mediaDataType', 'link');
-    setCurrentContextIdOfTypeToMostRecent();
   },
   'click .chat-button': function(d, t) {
     notifyFeature("Chat: coming soon!");

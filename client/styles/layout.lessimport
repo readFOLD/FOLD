@@ -1062,11 +1062,6 @@ div.horizontal-context {
     top: -25px;
   }
 
-  &.news-card{
-    height: @fullHeight;
-    overflow-y: scroll;
-  }
-
   div.content {
     margin-top: 0px;
   }

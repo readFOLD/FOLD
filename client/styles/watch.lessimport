@@ -446,8 +446,26 @@
       width: 100%;
     }
   }
+
+  button.show-full{
+    text-align: start;
+    line-height: 0;
+    width: 100%;
+    padding: 0;
+    .preview-hover;
+  }
   .link-section{
     line-height: 18px;
+    background-color: @dark-color;
+  }
+  .news-preview{
+    width: 100%;
+    @lineHeight: 18px;
+    @padding: 6px;
+    font-size: 14px;
+    line-height: @lineHeight;
+    min-height: @lineHeight * 1 + @padding*2;
+    padding: @padding;
     background-color: @dark-color;
   }
 }
@@ -675,10 +693,6 @@
 
 
 // TODO Refactor
-.news-preview{
-  height: 400px;
-  overflow-y: scroll;
-}
 
 .news-section{
   height: 100%;
