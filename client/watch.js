@@ -638,7 +638,7 @@ Template.context_browser.events({
       // TODO SOMETHING
     });
   },
-  'click .context-section': function(e, t){
+  'click .context-section .clickable': function(e, t){
     console.log(this)
     if ($(e.target).is('textarea')) { // don't go to big browser when its time to edit context
       return

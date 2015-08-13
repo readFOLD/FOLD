@@ -306,6 +306,29 @@
     flex: auto;
     padding: 20px;
   }
+  .context-section{
+    position: relative;
+    &:hover{
+      .delete-current-context{
+        display: inline-block;
+        opacity: 1;
+      }
+    }
+  }
+
+  .delete-current-context{
+    .opacity-transition;
+    opacity: 0;
+    .size(20px);
+    padding:0;
+    svg{
+      .size-to-fit;
+    }
+    position: absolute;
+    z-index: 8888;
+    right: 2px;
+    top: 2px;
+  }
 }
 
 
@@ -360,6 +383,7 @@
     height: 100%;
     max-height: @mainSectionHeight;
   }
+
   .video-section, .map-section{
     height: @mainSectionHeight;
   }
@@ -424,7 +448,6 @@
   }
 }
 
-
 .edit-context-button-row{
   button{
     .size(30px);
@@ -440,11 +463,6 @@
   }
   .add-new-context{
     left: 0;
-  }
-
-  .delete-current-context{
-    position: absolute;
-    right: 0;
   }
 }
 

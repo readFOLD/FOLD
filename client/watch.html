@@ -218,9 +218,6 @@
       {{else}}
         {{#each contextOfCurrentType}}
           {{> preview_context_section}}
-          {{#if curateMode}}
-            <button class="delete-current-context">Delete</button>
-          {{/if}}
         {{/each}}
       {{/if}}
     </div>
@@ -282,6 +279,7 @@
 <template name="preview_context_section">
   <div
       class="narrative-section context-section preview-context-section {{#if type}}{{type}}-card{{/if}}" data-index="{{index}}">
+    <div class="clickable">
       {{#if type}}
         {{#if text}}
           {{> display_text_section}}
@@ -316,6 +314,10 @@
       {{else}}
         {{> display_broken_section}}
       {{/if}}
+    </div>
+      {{#if curateMode}}
+        <button class="delete-current-context">{{> close_circle}}</button>
+      {{/if}}
   </div>
 </template>
 
@@ -329,7 +331,7 @@
 
 <template name="preview_map_section">
   <div class="map-preview">
-    <img src="{{previewUrl}}"/>
+    <img src="{{previewUrl 200 310}}"/>
   </div>
   {{{annotation}}}
 </template>
