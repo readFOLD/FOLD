@@ -603,7 +603,6 @@ hr {
 div.image-section {
   .size-to-fit;
   position: relative;
-  line-height: @horizontal-content-height;
   background-color: transparent;
   text-align: center;
 
@@ -613,9 +612,6 @@ div.image-section {
     right: 0px;
     width: 150px;
   }
-
-
-
 
   div.attribution {
     margin-top: -30px;

@@ -346,11 +346,17 @@ Template.display_audio_section.events(editableDescriptionEventsBoilerplate('edit
 Template.display_video_section.helpers(horizontalBlockHelpers);
 Template.display_video_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
+Template.preview_video_section.helpers(horizontalBlockHelpers);
+Template.preview_video_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+
 Template.display_twitter_section.helpers(horizontalBlockHelpers);
 Template.display_twitter_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
 Template.display_map_section.helpers(horizontalBlockHelpers);
 Template.display_map_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+
+Template.preview_map_section.helpers(horizontalBlockHelpers);
+Template.preview_map_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
 Template.display_news_section.helpers(horizontalBlockHelpers);
 Template.display_news_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));

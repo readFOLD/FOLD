@@ -296,20 +296,16 @@
           {{> display_image_section}}
         {{/if}}
         {{#if map}}
-          <div class="map-preview">
-            <img src="{{previewUrl}}"/>
-          </div>
-          {{{annotation}}}
+
+          {{> preview_map_section}}
+
         {{/if}}
         {{#if audio}}
           {{> display_audio_section}}
         {{/if}}
         {{#if video}}
-          <div class="video-preview">
-            <img src="{{previewUrl}}"/>
-            {{> play_video_icon}}
-          </div>
-          {{{annotation}}}
+          {{> preview_video_section}}
+
         {{/if}}
         {{#if twitter}}
           {{> display_twitter_section}}
@@ -326,6 +322,22 @@
     </section>
   </div>
 </template>
+
+<template name="preview_video_section">
+  <div class="video-preview">
+    <img src="{{previewUrl}}"/>
+    {{> play_video_icon}}
+  </div>
+  {{{annotation}}}
+</template>
+
+<template name="preview_map_section">
+  <div class="map-preview">
+    <img src="{{previewUrl}}"/>
+  </div>
+  {{{annotation}}}
+</template>
+
 
 <template name="settings_menu">
   <div class="settings-menu">
