@@ -217,11 +217,9 @@
 
 <template name="display_video_section">
   <div class="video-section">
-    {{#if selected}}
-      <div class="active-display">
-        <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
-      </div>
-    {{/if}}
+    <div class="active-display">
+      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+    </div>
     <div class="preview">
       <img src="{{previewUrl}}"/>
     </div>

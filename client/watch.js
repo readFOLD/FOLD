@@ -634,12 +634,11 @@ Template.context_browser.events({
       // TODO SOMETHING
     });
   },
-  'click .image-section': function(e, t){
-    if ($(e.target).is('textarea')){
-      return
+  'click .context-section': function(e, t){
+    if(_.contains(['image', 'video', 'map'], this.type)){
+      setCurrentContextIdOfType(this.type, this._id);
+      Session.set('largeContextMode', true);
     }
-    setCurrentContextIdOfType('image', this._id);
-    Session.set('largeContextMode', true);
   },
   'click .right': function(){
     setCurrentContextIdOfType(Session.get('mediaDataType'), this.nextContext(Session.get("currentContext")._id)._id);
@@ -718,6 +717,7 @@ Template.large_context_browser.events({
 });
 
 Template.full_context_section.helpers(horizontalBlockHelpers);
+Template.preview_context_section.helpers(horizontalBlockHelpers);
 
 // TODO remove and have an about section
 Template.banner_buttons.events({
