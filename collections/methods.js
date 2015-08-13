@@ -529,6 +529,7 @@ Meteor.methods({
     });
 
     if (Meteor.isClient){
+      Session.set('showPreviewOverlayForStreamId', null);
       FlowRouter.go('curate', {userPathSegment: userPathSegment, streamPathSegment: streamPathSegment});
     }
 

@@ -591,22 +591,18 @@ Template.streams.helpers({
   }
 });
 
-Template.stream_preview.onCreated(function () {
-  this.showPreviewOverlay = new ReactiveVar();
-});
-
 Template.stream_preview.events({
   'click .close': function(e,t){
-    t.showPreviewOverlay.set(false);
+    Session.set('showPreviewOverlayForStreamId', null);
   },
   'click .show-preview-overlay': function(e,t){
-    t.showPreviewOverlay.set(true);
+    Session.set('showPreviewOverlayForStreamId', this._id);
   }
 });
 
 Template.stream_preview.helpers({
   'showPreviewOverlay': function(){
-    return Template.instance().showPreviewOverlay.get();
+    return Session.equals('showPreviewOverlayForStreamId', this._id);
   }
 });
 
