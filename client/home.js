@@ -364,6 +364,7 @@ window.setSigningInFrom = function () {
 };
 
 window.returnFromSignIn = function () {
+  closeSignInOverlay();
   FlowRouter.go(Session.get('signingInFrom') || '/');
 }
 

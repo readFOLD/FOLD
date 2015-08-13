@@ -41,16 +41,18 @@
   {{#if signingIn}}
     <div class="signin-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
       <button class="close">{{> close_circle}}</button>
-      <div class="signin-buttons">
-        <ol class="user-menu">
-          <li>
-            <button class="twitter-signin">Log in with Twitter</button>
-          </li>
-          <li>
-            <button class="email-signin">Log in with email</button>
-          </li>
-        </ol>
-      </div>
+
+      {{> login_form}}
+      <!--<div class="signin-buttons">-->
+        <!--<ol class="user-menu">-->
+          <!--<li>-->
+            <!--<button class="twitter-signin">Log in with Twitter</button>-->
+          <!--</li>-->
+          <!--<li>-->
+            <!--<button class="email-signin">Log in with email</button>-->
+          <!--</li>-->
+        <!--</ol>-->
+      <!--</div>-->
     </div>
   {{/if}}
 </template>

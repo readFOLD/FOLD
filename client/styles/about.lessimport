@@ -110,7 +110,7 @@ a.underline{
 }
 
 .contact-footer {
-  position: relative;
+  position: absolute;
   bottom:0;
   height: 50px;
   width: 100%;
@@ -118,7 +118,7 @@ a.underline{
   text-align: center;
   font-size: 12px;
   padding: 15px;
-  background-color: white;
+  background-color: @dark-color;
   z-index: 5;
   a {
       color: @action-color;

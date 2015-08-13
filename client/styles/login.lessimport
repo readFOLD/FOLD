@@ -1,4 +1,4 @@
-@button-height: 45px;
+@button-height: 30px;
 
 div.login, div.reset-password, div.recover-password {
   width: 100%;
@@ -9,22 +9,38 @@ div.login, div.reset-password, div.recover-password {
     padding-top: 200px;
   }
 }
+.login{
+  text-align: center;
+  font-weight: bold;
+  label{
+    display: none;
+  }
+  .vertical-divider{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: 18px;
+  }
+}
 
 input.error, input.required {
   border-bottom: 5px solid red;
 }
 
 @media @not-mobile{
+  @centeringAmt: 15%;
   div.login-left {
     position: relative;
     float: left;
     width: 45%;
+    padding-left: @centeringAmt;
   }
 
   div.login-right {
     position: relative;
     float: left;
     width: 45%;
+    padding-right: @centeringAmt;
+
   }
 }
 
@@ -46,28 +62,26 @@ form {
 form#login-form {
 	width: 350px;
 	font-size: 15px;
-	font-family: Muli;
 	margin: auto;
 }
 
 h1.login-header {
   text-align: center;
-  margin-bottom: 50px;
-  font-size: 23px;
+  margin-bottom: 30px;
+  font-size: 26px;
 }
 
 form#signup-form {
 	width: 350px;
 	margin-left: 75px;
 	margin-top: 55px;
-	font-family: Muli;
 }
 
 a.green {
   color: @action-color;
 }
 
-.login-button, .signup-button, .save-profile-button, .reset-button {
+.save-profile-button, .reset-button {
 	margin-top: 20px;
 	width: 100px;
     background-color: @action-color;
@@ -79,9 +93,46 @@ a.green {
     }
 }
 
-a.recover-password-link {
-  margin-left: 100px;
+.login-button, .signup-button, .save-profile-button, .reset-button, .twitter-signin {
+	margin-top: 20px;
+	width: 180px;
+    background-color: @action-color;
+    color: @black-color;
+    height: @button-height;
 
+    &:hover {
+    	background-color: @dark-action-color;
+    }
+}
+
+.login-button{
+  margin-bottom: 10px;
+}
+
+.signup{
+  font-weight: bold;
+  .twitter-signin{
+    width: auto;
+    margin-bottom: 10px;
+  }
+  .signup-button{
+    width: auto;
+    margin-top: 0;
+
+  }
+  .signup-button-container{
+    text-align: center;
+  }
+  .login-left{
+    text-align: center;
+  }
+  .divider{
+    padding-top: 40px;
+  }
+}
+
+
+a.recover-password-link {
   &:hover {
     color: @action-color;
   }
@@ -116,7 +167,7 @@ div.sign-up-options {
   a{
     background-color: @action-color;
     height: @button-height;
-    display: block;
+    display: inline-block;
     color: @black-color;
     text-align: center;
     line-height: @button-height;

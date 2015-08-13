@@ -848,3 +848,7 @@ div.action-items {
   }
 
 }
+
+.twitter-signin{
+  .action-button;
+}

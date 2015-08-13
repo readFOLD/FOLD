@@ -405,7 +405,7 @@ input[type="text"], input[type="password"], input[type="email"] {
   margin-bottom: 15px;
   height: 55px;
   border: none;
-  border-bottom: 5px solid @action-color;
+  border-bottom: 5px solid transparent;
   padding-left: 18px;
   font-size: 17px;
 
@@ -1100,7 +1100,7 @@ div.horizontal-context {
 
 .signin-overlay{
   .full-overlay;
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba(48,48,48,0.87);
   .close{
     color:@black-color;
   }
