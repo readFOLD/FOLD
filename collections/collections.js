@@ -213,9 +213,14 @@ Deepstream = (function() {
     }
     var type = contextBlock.type;
     var contextOfType = this.contextOfType(type);
+    if (contextOfType.length < 2){
+      return null;
+    }
     var index = _.indexOf(contextOfType, contextBlock);
     if (index < contextOfType.length - 1){
       return contextOfType[index + 1];
+    } else {
+      return _.first(contextOfType);
     }
   };
   Deepstream.prototype.previousContext = function(contextId) {
@@ -228,9 +233,14 @@ Deepstream = (function() {
     }
     var type = contextBlock.type;
     var contextOfType = this.contextOfType(type);
+    if (contextOfType.length < 2){
+      return null;
+    }
     var index = _.indexOf(contextOfType, contextBlock);
     if (index > 0){
       return contextOfType[index - 1];
+    } else {
+      return _.last(contextOfType);
     }
   };
 
