@@ -391,6 +391,12 @@ Template.signin_overlay.events({
   }
 });
 
+Template.signup_page.events({
+  "click .twitter-signin": function (d) {
+    loginWithTwitter();
+    analytics.track('Click sign up with Twitter');
+  }
+})
 
 // DEEPSTREAM
 
