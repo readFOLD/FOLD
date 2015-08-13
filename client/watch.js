@@ -624,8 +624,8 @@ Template.context_browser.helpers({
       return true
     }
   },
-  showListModeButton: function(){
-    return _.contains(['text', 'news'], Session.get('mediaDataType'))
+  singleContextMode: function(){
+    return Session.get('currentContext') && _.contains(['text', 'news'], Session.get('mediaDataType'))
   }
 });
 
@@ -650,17 +650,12 @@ Template.context_browser.events({
       setCurrentContextIdOfType(this.type, this._id);
       if(_.contains(['image', 'video', 'map'], this.type)){
         Session.set('largeContextMode', true);
-      } else {
-        Session.set('singleContextMode', true);
       }
     }
 
   },
-  'click .right': function(){
-    setCurrentContextIdOfType(Session.get('mediaDataType'), this.nextContext(Session.get("currentContext")._id)._id);
-  },
-  'click .left': function(){
-    setCurrentContextIdOfType(Session.get('mediaDataType'), this.previousContext(Session.get("currentContext")._id)._id);
+  'click .switch-to-list-mode': function(){
+    setCurrentContextIdOfType(Session.get('mediaDataType'), null);
   }
 });
 

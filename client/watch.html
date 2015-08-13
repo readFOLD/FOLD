@@ -197,7 +197,7 @@
 <template name="context_browser">
   <div class="context-browser">
     <div class="browse-buttons">
-      {{#if showListModeButton}}
+      {{#if singleContextMode}}
         <button class="switch-to-list-mode">{{> list_icon}}</button>
       {{/if}}
       <span class="type">{{mediaTypeForDisplay}}</span>
@@ -212,8 +212,10 @@
       {{/if}}
     </div>
     <div class="context-area">
-      {{#if individualScrollMode}}
-        COMIGN SOON!
+      {{#if singleContextMode}}
+        {{#with currentContext}}
+          {{> full_context_section}}
+        {{/with}}
       {{else}}
         {{#each contextOfCurrentType}}
           {{> preview_context_section}}
