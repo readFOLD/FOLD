@@ -623,6 +623,9 @@ Template.context_browser.helpers({
     } else {
       return true
     }
+  },
+  showListModeButton: function(){
+    return _.contains(['text', 'news'], Session.get('mediaDataType'))
   }
 });
 

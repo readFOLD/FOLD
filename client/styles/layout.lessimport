@@ -947,10 +947,26 @@ div.horizontal-context {
   .text-content{
     color: black;
     background-color: @medium-color;
+
   }
   textarea.text-content {
     padding: 8px;
     display: block;
+    &::-webkit-input-placeholder {
+      color: @dark-medium-color;
+    }
+
+    &:-moz-placeholder { /* Firefox 18- */
+      color: @dark-medium-color;
+    }
+
+    &::-moz-placeholder {  /* Firefox 19+ */
+      color: @dark-medium-color;
+    }
+
+    &:-ms-input-placeholder {
+      color: @dark-medium-color;
+    }
   }
   div.text-content {
     @font-size: 14px;
