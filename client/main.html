@@ -29,108 +29,6 @@
   Templates used in reading, creating, and editing
 -->
 
-
-<template name="horizontal_section_block">
-  <div
-      class="narrative-section context-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if editingThisContext}}editing{{/if}}" data-index="{{index}}">
-<section>
-  <!--    <div id="index">
-      {{index}}
-    </div> -->
-    {{#if isPhone}}
-      {{#if selected}}
-        <button class="mobile-context-back-button">
-          {{> mobile_back_icon }}
-        </button>
-      {{/if}}
-    {{/if}}
-    {{#if type}}
-      {{#if text}}
-        {{#if editingThisContext}}
-          {{> create_text_section}}
-        {{else}}
-          {{> display_text_section}}
-        {{/if}}
-      {{/if}}
-      {{#if image}}
-        {{#if editingThisContext}}
-          {{> create_image_section}}
-        {{else}}
-          {{> display_image_section}}
-        {{/if}}
-      {{/if}}
-      {{#if gif}}
-        {{#if editingThisContext}}
-          {{> create_gif_section}}
-        {{else}}
-          {{> display_image_section}}
-        {{/if}}
-      {{/if}}
-      {{#if map}}
-        {{#if editingThisContext}}
-          {{> create_map_section}}
-        {{else}}
-          {{> display_map_section}}
-        {{/if}}
-      {{/if}}
-      {{#if audio}}
-        {{#if editingThisContext}}
-          {{> create_audio_section}}
-        {{else}}
-          {{> display_audio_section}}
-        {{/if}}
-      {{/if}}
-      {{#if video}}
-        {{#if editingThisContext}}
-          {{> create_video_section}}
-        {{else}}
-          {{> display_video_section}}
-        {{/if}}
-      {{/if}}
-      {{#if twitter}}
-        {{#if editingThisContext}}
-          {{> create_twitter_section}}
-        {{else}}
-          {{> display_twitter_section}}
-        {{/if}}
-      {{/if}}
-
-      {{#if link}}
-        {{#if editingThisContext}}
-          {{> create_link_section}}
-        {{else}}
-          {{> display_link_section}}
-        {{/if}}
-      {{/if}}
-
-      {{#if news}}
-        {{#if editingThisContext}}
-          {{> create_news_section}}
-        {{else}}
-          {{> display_news_section}}
-        {{/if}}
-      {{/if}}
-      {{else}}
-        {{> display_broken_section}}
-      {{/if}}
-      {{#if read}}
-        {{#unless isPhone}}
-          {{> remix_bar}}
-        {{/unless}}
-      {{/if}}
-      </section>
-    </div>
-  </template>
-
-<template name="remix_bar">
-    <div class="remix-bar">
-        <!--This card has been shared 6 times-->
-        <span class="remix-button">
-            {{> remix_icon_square}}
-        </span>
-    </div>
-</template>
-
 <!-- Display Templates -->
 <template name="display_text_section">
   <div class="text-section" dir="auto">
@@ -175,7 +73,7 @@
   <div class="map-section">
     {{#if selected}}
       <div class="active-display">
-        <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
+        <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}"></iframe>
       </div>
     {{/if}}
     <div class="preview">
@@ -188,7 +86,7 @@
 <template name="display_viz_section">
   <div class="viz-section">
     {{#if selected}}
-      <iframe width="100%" height="315" src="{{url}}" frameborder="0" ></iframe>
+      <iframe width="100%" height="100%" src="{{url}}" frameborder="0" ></iframe>
     {{else}}
       <div class="icon-only-preview">
         {{> viz_icon}}
@@ -205,7 +103,7 @@
   <div class="audio-section">
     {{#if selected}}
       <div class="active-display">
-        <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+        <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
       </div>
     {{/if}}
     <div class="preview">
@@ -218,7 +116,7 @@
 <template name="display_video_section">
   <div class="video-section">
     <div class="active-display">
-      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+      <iframe id="6666666" width="100%" height="100%" frameborder="0" style="border:0" src="{{autoplayUrl}}" allowfullscreen></iframe>
     </div>
     <div class="preview">
       <img src="{{previewUrl}}"/>

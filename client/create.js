@@ -715,24 +715,24 @@ window.addContext = function(contextBlock) {
   });
 };
 
-Template.horizontal_section_block.events({
-  "click .delete": function(d) {
-    analytics.track('Click delete horizontal');
-    if(confirm("Permanently delete this card?")){
-      var currentY = Session.get("currentY");
-      Session.set('saveState', 'saving');
-      id = this._id;
-      removeAnchorTag($('.vertical-narrative-section[data-vertical-index="'+ currentY +'"] .content a[data-context-id="' + id + '"]'));
-      Meteor.call('removeContextFromStory', Session.get("storyId"), id, currentY, saveCallback);
-      analytics.track('Confirm delete horizontal');
-    }
-  },
-  "click .edit": function(e, t) {
-    Session.set('editingContext', this._id);
-    Session.set('addingContext', false);
-    analytics.track('Click edit horizontal');
-  }
-});
+//Template.horizontal_section_block.events({
+//  "click .delete": function(d) {
+//    analytics.track('Click delete horizontal');
+//    if(confirm("Permanently delete this card?")){
+//      var currentY = Session.get("currentY");
+//      Session.set('saveState', 'saving');
+//      id = this._id;
+//      removeAnchorTag($('.vertical-narrative-section[data-vertical-index="'+ currentY +'"] .content a[data-context-id="' + id + '"]'));
+//      Meteor.call('removeContextFromStory', Session.get("storyId"), id, currentY, saveCallback);
+//      analytics.track('Confirm delete horizontal');
+//    }
+//  },
+//  "click .edit": function(e, t) {
+//    Session.set('editingContext', this._id);
+//    Session.set('addingContext', false);
+//    analytics.track('Click edit horizontal');
+//  }
+//});
 
 Template.link_twitter.events({
   "click button": function() {

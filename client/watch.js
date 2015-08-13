@@ -91,7 +91,7 @@ window.mainPlayer = {
   mute: function(){
     switch(this.activeStreamSource){
       case 'youtube':
-        this._youTubePlayer.muteVideo();
+        this._youTubePlayer.mute();
         break;
       case 'ustream':
         this._ustreamPlayer.callMethod('volume', 0);
@@ -103,7 +103,7 @@ window.mainPlayer = {
   unMute: function(){
     switch(this.activeStreamSource){
       case 'youtube':
-        this._youTubePlayer.unMuteVideo();
+        this._youTubePlayer.unMute();
         break;
       case 'ustream':
         this._ustreamPlayer.callMethod('volume', 100); // TO-DO return volume to wherever they were before mute
@@ -635,6 +635,10 @@ Template.context_browser.events({
     });
   },
   'click .context-section': function(e, t){
+    console.log(this)
+    if ($(e.target).is('textarea')) { // don't go to big browser when its time to edit context
+      return
+    }
     if(_.contains(['image', 'video', 'map'], this.type)){
       setCurrentContextIdOfType(this.type, this._id);
       Session.set('largeContextMode', true);
@@ -687,13 +691,25 @@ Template.large_context_browser.helpers({
   }
 });
 
+
 Template.large_context_browser.onRendered(function(){
   document.body.style.overflow = 'hidden';
+
   $(window).scrollTop(0);
+
+  if (Session.get('mediaDataType') === 'video') {
+    Meteor.setTimeout(function () { // mute stream if playing a video
+      mainPlayer.mute();
+    }, 1000); // TODO Hack, if mute main video before youtube video loads, will play as muted. Need to mute as soon as loaded
+  }
+
 });
 
 Template.large_context_browser.onDestroyed(function(){
   document.body.style.overflow = 'auto';
+  if(Session.get('mediaDataType') === 'video'){
+    mainPlayer.unMute(); // TODO - only unmute if was unmuted before created
+  }
 });
 
 Template.large_context_browser.events({

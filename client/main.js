@@ -289,21 +289,21 @@ editableDescriptionCreatedBoilerplate = function() {
 //  }
 //});
 
-Template.horizontal_section_block.events({
-  'click .mobile-context-back-button': function(e, t){
-    Session.set('mobileContextView', false);
-    analytics.track('Click mobile back button');
-  }
-});
+//Template.horizontal_section_block.events({
+//  'click .mobile-context-back-button': function(e, t){
+//    Session.set('mobileContextView', false);
+//    analytics.track('Click mobile back button');
+//  }
+//});
 
-Template.horizontal_section_block.helpers(horizontalBlockHelpers);
-
-// Magic layout function
-Template.horizontal_section_block.helpers({
-  lastUpdate: function() {
-    Session.get('lastUpdate');
-  }
-});
+//Template.horizontal_section_block.helpers(horizontalBlockHelpers);
+//
+//// Magic layout function
+//Template.horizontal_section_block.helpers({
+//  lastUpdate: function() {
+//    Session.get('lastUpdate');
+//  }
+//});
 
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 
@@ -472,25 +472,6 @@ Template.editors_pick_button.events({
         throw(err);
       }
     });
-  }
-});
-
-
-
-Template.remix_bar.events({
-  'click .remix-button': function(){
-    analytics.track('Remix context card click', _.pick(this, [
-      "_id",
-      "authorId",
-      "index",
-      "source",
-      //"storyId",
-      "storyShortId",
-      "type",
-      "verticalId",
-      "verticalIndex"
-    ]));
-    notifyFeature("Remixing cards: coming soon!");
   }
 });
 

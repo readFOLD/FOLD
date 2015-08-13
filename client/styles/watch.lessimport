@@ -48,11 +48,13 @@
 
 }
 
+@mainSectionHeight: 545px;
+@mainSectionExpandedHeight: 645px;
 
 .main-section{
-  height: 545px;
+  height: @mainSectionHeight;
   &.expanded{
-    height: 645px;
+    height: @mainSectionExpandedHeight;
   }
 }
 
@@ -350,6 +352,9 @@
       stroke: white;
     }
   }
+  .video-section{
+    height: @mainSectionHeight;
+  }
 }
 
 .browse-buttons{
@@ -379,8 +384,21 @@
 
     }
   }
-
 }
+
+
+.preview-context-section{
+  .video-preview{
+    position: relative;
+    svg{
+      opacity: 0.7;
+      .center-over-parent-div;
+      .size(60px);
+    }
+  }
+}
+
+
 .edit-context-button-row{
   button{
     .size(30px);
