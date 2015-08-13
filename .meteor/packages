@@ -34,7 +34,7 @@ reload
 meteorhacks:subs-manager
 force-ssl
 fold:user-system@=0.1.1
-fold:context-blocks@=0.5.2
+fold:context-blocks@=0.5.3
 meteorhacks:flow-router
 meteorhacks:flow-layout
 momentjs:moment
