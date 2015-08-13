@@ -283,7 +283,7 @@
     <div class="clickable">
       {{#if type}}
         {{#if text}}
-          {{> display_text_section}}
+          {{> preview_text_section}}
         {{/if}}
         {{#if image}}
           {{> preview_image_section}}
@@ -344,6 +344,14 @@
       <img src="{{previewUrl 200 310}}"/>
     </div>
     {{{annotation}}}
+  </button>
+</template>
+
+<template name="preview_text_section">
+  <button class="show-full">
+    <div class="text-preview" dir="auto">
+      {{content}}
+    </div>
   </button>
 </template>
 

@@ -325,6 +325,12 @@
   }
 }
 
+.text-section{
+  textarea{
+    max-height: 440px; // TODO hack
+  }
+}
+
 
 .large-context-browser{
   .full-overlay;
@@ -458,13 +464,19 @@
     line-height: 18px;
     background-color: @dark-color;
   }
-  .news-preview{
+  .news-preview, .text-preview{
     width: 100%;
     @lineHeight: 18px;
     @padding: 6px;
     font-size: 14px;
     line-height: @lineHeight;
     min-height: @lineHeight * 1 + @padding*2;
+    max-height: @lineHeight * 3 + @padding*2;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: @padding;
     background-color: @dark-color;
   }

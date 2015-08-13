@@ -358,6 +358,7 @@ Template.display_map_section.events(editableDescriptionEventsBoilerplate('editHo
 Template.preview_map_section.helpers(horizontalBlockHelpers);
 Template.preview_map_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
+Template.preview_news_section.helpers(horizontalBlockHelpers);
 Template.display_news_section.helpers(horizontalBlockHelpers);
 Template.display_news_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
@@ -377,6 +378,7 @@ Template.display_link_section.events({
 Template.display_text_section.onCreated(editableDescriptionCreatedBoilerplate);
 //Template.display_text_section.onDestroyed(editableDescriptionDestroyedBoilerplate('editTextSection'));
 Template.display_text_section.helpers(horizontalBlockHelpers);
+Template.preview_text_section.helpers(horizontalBlockHelpers);
 Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
 
 

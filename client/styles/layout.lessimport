@@ -783,11 +783,6 @@ div.link-section {
 }
 
 div.text-section {
-  .text-content{
-    overflow-y: scroll;
-    height: 264px;
-  }
-
   textarea {
     @font-size: 14px;
     font-size: @font-size;

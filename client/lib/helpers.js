@@ -81,7 +81,7 @@ window.textContentHelper = function() {
   var textContent, rows, placeholder;
   if (this.type === 'text'){
     textContent = this.content || '';
-    rows = 10;
+    rows = 40;
     placeholder = '';
   }
   else {

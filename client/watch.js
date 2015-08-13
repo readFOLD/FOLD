@@ -542,12 +542,12 @@ Template.watch.events({
   'blur .stream-title[contenteditable]': function(e,template) {
     streamTitle = $.trim(template.$('div.stream-title').text());
     Session.set('saveState', 'saving');
-    return Meteor.call('updateStreamTitle', t.data.shortId(), streamTitle, basicErrorHandler)
+    return Meteor.call('updateStreamTitle', template.data.shortId(), streamTitle, basicErrorHandler)
   },
   'blur .stream-description[contenteditable]': function(e,template) {
     streamDescription = $.trim(template.$('div.stream-description').text());
     Session.set('saveState', 'saving');
-    return Meteor.call('updateStreamDescription', t.data.shortId(), streamDescription, basicErrorHandler)
+    return Meteor.call('updateStreamDescription', template.data.shortId(), streamDescription, basicErrorHandler)
   },
   'click .allow-user-stream-switch': function(e,t){
     return Meteor.call('allowUserStreamSwitch', t.data.shortId(), basicErrorHandler)
