@@ -157,11 +157,6 @@
 <template name="display_twitter_section">
   <div class="twitter-section">
     <div class="active-display">
-    {{#if imgUrl}}
-      <div class='image-section'>
-        <img src='{{imgUrl}}'>
-      </div>
-    {{/if}}
       <div class="twitter-text-section {{#if selected}} selected {{/if}} {{#if imgUrl}}image{{/if}} ">
         <div class="flag {{#if selected}} selected {{/if}} {{#if imgUrl}}image{{/if}}"></div>
         <div class='tweet-card'>
@@ -207,6 +202,11 @@
         </div>
       </div>
     </div>
+    {{#if imgUrl}}
+      <div class='image-section'>
+        <img src='{{imgUrl}}'>
+      </div>
+    {{/if}}
     {{{annotation}}}
   </div>
 </template>

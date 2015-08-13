@@ -833,37 +833,16 @@ div.twitter-section{
     background-color: inherit;
   }
   div.twitter-text-section {
+    background-color: @dark-color;
     a {
       &:hover {
         color: @action-color;
       }
     }
-    padding: 32px 15px 25px 25px;
+    padding: 24px 10px 20px 20px;
     .size-to-fit;
     display: table;
 
-    &.image{
-      background-color: @light-transparent-color;
-      position: relative;
-      top: -100%;
-      &.transparent {
-        z-index: -5;
-      }
-      &.show-corner.selected {
-        .linear-gradient(45deg, @light-transparent-color, @light-transparent-color);
-        .linear-gradient(135deg, @light-transparent-color, @light-transparent-color);
-        .linear-gradient(225deg, transparent 22px, @light-transparent-color 22px);
-      }
-      .flag.show-corner.selected {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 30px;
-        height: 30px;
-        .box-shadow(0 1px 1px rgba(0,0,0,0.3), -1px 1px 1px rgba(0,0,0,0.2));
-        .linear-gradient(225deg, transparent 50%, @light-transparent-color 50%);
-      }
-    }
     div.tweet-card {
       display: table-cell;
       vertical-align: bottom;
@@ -883,8 +862,8 @@ div.twitter-section{
         }
       }
       div.tweet {
-        font-size: 19px;
-        line-height: 28px;
+        font-size: 16px;
+        line-height: 20px;
         padding-bottom: 12px;
         max-width: 480px;
 
@@ -893,9 +872,16 @@ div.twitter-section{
   }
   div.info {
     float: left;
+    font-size: 12px;
   }
   div.actions {
-    margin-left: calc(100% ~"-" 55px);
+    float: right;
+    text-align: right;
+    width: 100%;
+    margin-top: 8px;
+    //display: table-row;
+    //position: absolute;
+    //margin-left: calc(100% ~"-" 55px);
   }
 }
 

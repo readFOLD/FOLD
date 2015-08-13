@@ -408,26 +408,23 @@
   position: relative;
   vertical-align: middle;
 
-  .close{
-    position: absolute;
-    top: 4px;
-    right: 2px;
-  }
-  button{
-    background-color: inherit;
-    width: 40px;
-    height: 25px;
-    line-height: 34px;
-    &:disabled{
-      cursor: default;
-      svg{
-        .fg{
-          fill: @dark-color;
-        }
-      }
 
-    }
+  button{
+    .size(30px);
+    padding: 0;
+    top: 8px;
+    position: absolute;
   }
+
+  .close, .add-new-context{
+    right: 4px;
+  }
+
+  .switch-to-list-mode{
+    width: 40px;
+    left: 4px;
+  }
+
 }
 
 
@@ -448,23 +445,6 @@
   }
 }
 
-.edit-context-button-row{
-  button{
-    .size(30px);
-    font-size: 16px;
-    font-weight: bold;
-    padding: 0;
-  }
-  .add-new-context{
-    float: right;
-  }
-  button.switch-to-list-mode{
-    width: 40px;
-  }
-  .add-new-context{
-    left: 0;
-  }
-}
 
 .curator-menu{
   right: 0px;

@@ -197,21 +197,20 @@
 <template name="context_browser">
   <div class="context-browser">
     <div class="browse-buttons">
+      {{#if curateMode}}
+        <button class="switch-to-list-mode">{{> list_icon}}</button>
+      {{/if}}
       <span class="type">{{mediaTypeForDisplay}}</span>
 
       <!--<span class="count">{{currentNum}} of {{totalNum}}</span>-->
       <!--<button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>-->
       <!--<button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>-->
-      {{#unless curateMode}}
-        <button class="close">{{> close_circle}}</button>
-      {{/unless}}
-    </div>
-    {{#if curateMode}}
-      <div class="edit-context-button-row">
-        <button class="switch-to-list-mode">{{> list_icon}}</button>
+      {{#if curateMode}}
         <button class="add-new-context">{{> add_icon}}</button>
-      </div>
-    {{/if}}
+      {{else}}
+        <button class="close">{{> close_circle}}</button>
+      {{/if}}
+    </div>
     <div class="context-area">
       {{#if individualScrollMode}}
         COMIGN SOON!

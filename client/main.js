@@ -481,26 +481,26 @@ Template.editors_pick_button.events({
   }
 });
 
-Template.display_twitter_section.events({
-  "click .show-image" : function(e, template) {
-    template.$('.twitter-text-section').toggleClass('transparent');
-  },
-  "click .image-section" : function(e, template) {
-    template.$('.twitter-text-section').removeClass('transparent');
-  },
-  "mouseenter .twitter-section" : function(e, template) {
-    if (template.data.imgUrl) {
-      template.$('.twitter-text-section').addClass('show-corner');
-      template.$('.flag').addClass('show-corner');
-    }
-  },
-  "mouseleave .twitter-section" : function(e, template) {
-    if (template.data.imgUrl) {
-      template.$('.twitter-text-section').removeClass('show-corner');
-      template.$('.flag').removeClass('show-corner');
-    }
-  }
-});
+//Template.display_twitter_section.events({
+//  "click .show-image" : function(e, template) {
+//    template.$('.twitter-text-section').toggleClass('transparent');
+//  },
+//  "click .image-section" : function(e, template) {
+//    template.$('.twitter-text-section').removeClass('transparent');
+//  },
+//  "mouseenter .twitter-section" : function(e, template) {
+//    if (template.data.imgUrl) {
+//      template.$('.twitter-text-section').addClass('show-corner');
+//      template.$('.flag').addClass('show-corner');
+//    }
+//  },
+//  "mouseleave .twitter-section" : function(e, template) {
+//    if (template.data.imgUrl) {
+//      template.$('.twitter-text-section').removeClass('show-corner');
+//      template.$('.flag').removeClass('show-corner');
+//    }
+//  }
+//});
 
 
 Tracker.autorun(function(){
