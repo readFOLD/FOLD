@@ -679,10 +679,12 @@
   right: 0px;
   position: absolute;
   .icon{
-    display: inline-block;
+    position: absolute;
+    top: 15px;
   }
   .stream-description{
-    display: inline-block;
+    position: absolute;
+    left: 30px;
     font-size: 14px;
     line-height: 18px;
     font-weight: normal;
