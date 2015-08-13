@@ -694,9 +694,6 @@ Template.large_context_browser.helpers({
 
 Template.large_context_browser.onRendered(function(){
   document.body.style.overflow = 'hidden';
-  console.log('happen')
-  console.log(document.body.style.overflow)
-
   $(window).scrollTop(0);
 
   if (Session.get('mediaDataType') === 'video') {
