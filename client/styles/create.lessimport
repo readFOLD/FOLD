@@ -322,12 +322,8 @@ div.create-section.link-twitter{
   text-align: center;
 }
 .link-twitter-button{
-  background-color: @action-color;
   height: 50px;
   padding: 8px;
-  &:hover{
-    background-color: @black-color;
-  }
 }
 
 @newCardBottomButtonHeight: 35px;
