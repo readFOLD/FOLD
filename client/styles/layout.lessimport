@@ -839,7 +839,7 @@ div.twitter-section{
         color: @action-color;
       }
     }
-    padding: 24px 10px 20px 20px;
+    padding: 20px 10px 12px 18px;
     .size-to-fit;
     display: table;
 
@@ -878,7 +878,7 @@ div.twitter-section{
     float: right;
     text-align: right;
     width: 100%;
-    margin-top: 8px;
+    margin-top: 10px;
     //display: table-row;
     //position: absolute;
     //margin-left: calc(100% ~"-" 55px);
