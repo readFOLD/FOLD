@@ -264,14 +264,6 @@ Meteor.methods({
       throw new Meteor.Error('Stream not updated')
     }
 
-    if (Meteor.isClient && numUpdated){
-      setCurrentContextIdOfTypeToMostRecent();
-      //Session.set("addingContext", null);
-      //Session.set("editingContext", null);
-      //var currentX = Session.get('currentX');
-      //goToX(currentX ? currentX - 1 : 0);
-    }
-
     return numUpdated;
   },
   goToFindStreamStep: function(shortId){
