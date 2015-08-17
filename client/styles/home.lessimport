@@ -846,7 +846,7 @@ div.action-items {
       width: 30px;
       padding: 10px;
       .fg{
-        fill: @medium-color;
+        fill: @white-color;
       }
     }
     input[type=search]{
