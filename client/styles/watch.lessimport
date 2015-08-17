@@ -125,6 +125,9 @@
     //li{
     //  height: @circle-diameter;
     //}
+    li:not(:first-child){
+      border-top: 1px solid @dark-medium-color;
+    }
     button {
       padding-top: 5px;
       padding-bottom: 5px;
@@ -132,7 +135,13 @@
       background-color: inherit;
       &.active, &:hover{
         &:not(:disabled){
-          background-color: rgba(74,74,74,0.80);
+          background-color: @dark-medium-color;
+          .bg{
+            stroke: @medium-color;
+          }
+          .fg{
+            fill: @medium-color;
+          }
         }
       }
       &:disabled{
