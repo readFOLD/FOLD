@@ -110,7 +110,9 @@ window.pluralizeMediaType = function(mediaType){
     case 'chat':
       return 'chat';
     case 'twitter':
-      return 'tweet';
+      return 'tweets';
+    case 'audio':
+      return 'audio';
     default:
       return mediaType + 's'
   }
