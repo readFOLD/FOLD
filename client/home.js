@@ -562,9 +562,28 @@ Template.deepstreams.helpers({
   }
 });
 
+Template.deepstream_preview.onCreated(function(){
+  this.contentPreview = new ReactiveVar(); // TODO this should default to something
+});
+
 Template.deepstream_preview.helpers({
-  linkPath: function(){
+  linkPath: function () {
     return Template.instance().data.linkToCurate ? this.curatePath() : this.watchPath();
+  },
+  contentPreview: function(){
+    return Template.instance().contentPreview.get();
+  }
+});
+
+Template.deepstream_preview.events({
+  'click .text-button': function(d, t) {
+    t.contentPreview.set(this.mostRecentContextOfType('text'));
+  },
+  'click .news-button': function(d, t) {
+    t.contentPreview.set(this.mostRecentContextOfType('news'));
+  },
+  'click .twitter-button': function(d, t) {
+    t.contentPreview.set(this.mostRecentContextOfType('twitter'));
   }
 });
 

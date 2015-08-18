@@ -426,6 +426,9 @@
         </a>
         <div class="content">
           {{> content_preview_icons}}
+          {{#with contentPreview}}
+            {{title}}
+          {{/with}}
         </div>
       </div>
       <a href="{{linkPath}}">
