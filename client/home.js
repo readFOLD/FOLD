@@ -562,6 +562,12 @@ Template.deepstreams.helpers({
   }
 });
 
+Template.deepstream_preview.helpers({
+  linkPath: function(){
+    return Template.instance().data.linkToCurate ? this.curatePath() : this.watchPath();
+  }
+});
+
 Template.streams.helpers({
   streams: function () {
     if (FlowRouter.subsReady()) {

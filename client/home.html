@@ -391,9 +391,7 @@
 
 <template name="deepstreams">
   {{#each streams}}
-    <a href="{{watchPath}}">
-      {{> deepstream_preview }}
-    </a>
+    {{> deepstream_preview deepstream=this}}
   {{else}}
     {{#if subsReady}}
       No results found.
@@ -410,42 +408,46 @@
 <template name="my_streams">
   <h1>Your Deep Streams</h1>
   {{#each streams}}
-    <a href="{{curatePath}}">
-      {{> deepstream_preview }}
-    </a>
+      {{> deepstream_preview linkToCurate=true deepstream=this }}
   {{/each}}
 </template>
 
 <template name="deepstream_preview">
+  {{#with deepstream}}
   <div class="deepstream-preview">
     <div class="deepstream">
       <div class="image-and-content">
-        <div class="stream-image">
-          <img src="{{previewUrl}}"/>
-          {{> play_video_icon}}
-        </div>
-        <div class="live-indicator">LIVE</div>
+        <a href="{{linkPath}}">
+          <div class="stream-image">
+            <img src="{{previewUrl}}"/>
+            {{> play_video_icon}}
+          </div>
+          <div class="live-indicator">LIVE</div>
+        </a>
         <div class="content">
           {{> content_preview_icons}}
         </div>
       </div>
-      <div class="title-and-views">
-        <span class="title">{{title}}</span>
-        <span class="views">3,730 Views</span>
-      </div>
-      <div class="small-stream-info">
-        <div>
-          <span class="stream-count">Tracking {{streams.length}} streamers</span>
-          <span class="favorited">3 {{> favorite_icon}}</span>
+      <a href="{{linkPath}}">
+        <div class="title-and-views">
+          <span class="title">{{title}}</span>
+          <span class="views">3,730 Views</span>
         </div>
-        <div>
-          <span class="date">Updated {{dateInPast savedAt}}</span>
-          <span class="username">{{curatorName}}</span>
-        </div>
+        <div class="small-stream-info">
+          <div>
+            <span class="stream-count">Tracking {{streams.length}} streamers</span>
+            <span class="favorited">3 {{> favorite_icon}}</span>
+          </div>
+          <div>
+            <span class="date">Updated {{dateInPast savedAt}}</span>
+            <span class="username">{{curatorName}}</span>
+          </div>
 
-      </div>
+        </div>
+      </a>
     </div>
   </div>
+  {{/with}}
 </template>
 
 
