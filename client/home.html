@@ -425,7 +425,9 @@
           {{> play_video_icon}}
         </div>
         <div class="live-indicator">LIVE</div>
-        <div class="content">{{contextBlocks.length}} pieces of content are included in this DeepStream.<br><br>(Soon, you'll be able to preview them here)</div>
+        <div class="content">
+          {{> content_preview_icons}}
+        </div>
       </div>
       <div class="title-and-views">
         <span class="title">{{title}}</span>
@@ -443,6 +445,35 @@
 
       </div>
     </div>
+  </div>
+</template>
+
+
+<template name="content_preview_icons">
+  <div class="content-preview-icons content-icons">
+    <ol>
+      {{#if hasContextOfType "news"}}
+        <li>
+          <button class='news-button {{#if news}}active{{/if}}'>
+            {{> news_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if hasContextOfType "twitter"}}
+        <li>
+          <button class='twitter-button {{#if twitter}}active{{/if}}'>
+            {{> twitter_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if hasContextOfType "text"}}
+        <li>
+          <button class='text-button {{#if text}}active{{/if}}'>
+            {{> text_icon }}
+          </button>
+        </li>
+      {{/if}}
+    </ol>
   </div>
 </template>
 
@@ -498,3 +529,4 @@
     <span class="text">Create</span>
   </button>
 </template>
+

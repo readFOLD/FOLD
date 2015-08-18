@@ -518,8 +518,18 @@ div.logo-title {
 }
 
 .deepstream-preview{
-  width: 560px;
+  @width: 560px;
+  @stream-image-width: 350px;
+  @padding: 12px;
+  @content-section-width: @width - @stream-image-width - 2 * @padding;
+
+  width: @width;
   height: 300px;
+
+
+  .deepstream{
+    padding: @padding;
+  }
   display: inline-block;
   background-color: @dark-medium-color;
   .image-and-content{
@@ -531,31 +541,35 @@ div.logo-title {
     }
     .stream-image{
       height: 200px;
-      width: 350px;
+      width: @stream-image-width;
       position: relative;
+      svg{
+        opacity: 0.7;
+        .center-over-parent-div;
+        .size(100px);
+      }
     }
     img{
       .size-to-fit;
     }
-    svg{
-      opacity: 0.7;
-      .center-over-parent-div;
-      .size(100px);
-    }
+
     .content{
       display: inline-block;
-      width: 150px;
+      width: @content-section-width;
+      height: 100%;
+      .content-preview-icons{
+        right: @content-section-width;
+        margin-top: 20px;
+      }
+      top: 0;
+      right: 0;
       position: absolute;
-      top: 25px;
-      right: 10px;
       font-size: 14px;
       color: @medium-color;
     }
+
   }
 
-  .deepstream{
-    padding: 12px;
-  }
   margin-right: 30px;
   margin-bottom: 60px;
   .preview-hover;
