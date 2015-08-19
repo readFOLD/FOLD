@@ -53,6 +53,10 @@ Handlebars.registerHelper("editingThisContext", function() {
   }
 });
 
+Handlebars.registerHelper("isContextOfType", function(type) {
+  return type == this.type;
+});
+
 Handlebars.registerHelper("UsersCollection", Meteor.users);
 
 Handlebars.registerHelper("isCurator", function() {

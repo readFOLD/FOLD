@@ -203,6 +203,19 @@ Deepstream = (function() {
     }
   };
 
+  Deepstream.prototype.mostRecentContextOfTypes = function(types) {
+    var that = this;
+    return _.chain(types)
+      .map(function(type){
+        return that.contextOfType(type)
+      })
+      .flatten()
+      .tap(function(a){console.log(a)})
+      .sortBy('addedAt')
+      .last()
+      .value()
+  };
+
   Deepstream.prototype.nextContext = function(contextId) {
     if(!this.contextBlocks){
       return null;

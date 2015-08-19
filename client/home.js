@@ -563,7 +563,8 @@ Template.deepstreams.helpers({
 });
 
 Template.deepstream_preview.onCreated(function(){
-  this.contentPreview = new ReactiveVar(); // TODO this should default to something
+
+  this.contentPreview = new ReactiveVar(this.data.deepstream.mostRecentContextOfTypes(['news', 'twitter', 'text']));
 });
 
 Template.deepstream_preview.helpers({
@@ -572,18 +573,22 @@ Template.deepstream_preview.helpers({
   },
   contentPreview: function(){
     return Template.instance().contentPreview.get();
+  },
+  previewTypeIs: function(type){
+    var contentPreview = Template.instance().contentPreview.get();
+    return contentPreview && contentPreview.type == type;
   }
 });
 
 Template.deepstream_preview.events({
-  'click .text-button': function(d, t) {
-    t.contentPreview.set(this.mostRecentContextOfType('text'));
-  },
   'click .news-button': function(d, t) {
     t.contentPreview.set(this.mostRecentContextOfType('news'));
   },
   'click .twitter-button': function(d, t) {
     t.contentPreview.set(this.mostRecentContextOfType('twitter'));
+  },
+  'click .text-button': function(d, t) {
+    t.contentPreview.set(this.mostRecentContextOfType('text'));
   }
 });
 

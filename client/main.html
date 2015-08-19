@@ -136,6 +136,14 @@
   </div>
 </template>
 
+<template name="homepage_preview_news_section">
+  <div class="homepage-preview-news-section">
+    <div class="news-source">{{#if providerIconUrl}}<img class="provider-image" src="{{providerIconUrl}}"/>{{/if}}{{providerName}}</div>
+    <h4 class="news-title">{{title}}</h4>
+    <div class="news-html">{{{html}}}</div>
+  </div>
+</template>
+
 <template name="display_link_section">
   <div class="link-section {{#if isFocused}}focused{{/if}}">
     <a href="{{url}}" target="_blank">

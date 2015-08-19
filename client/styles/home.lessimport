@@ -561,11 +561,12 @@ div.logo-title {
         right: @content-section-width;
         margin-top: 20px;
       }
+      padding-left: 10px;
+      padding-right: 10px;
       top: 0;
       right: 0;
       position: absolute;
       font-size: 14px;
-      color: @medium-color;
     }
 
   }
@@ -601,6 +602,17 @@ div.logo-title {
     float:right;
   }
 
+}
+
+.homepage-content-preview{
+  overflow-y: scroll;
+  height: 100%;
+}
+
+.homepage-preview-news-section{
+  .news-source{
+    font-size: 20px;
+  }
 }
 
 .stream-preview{

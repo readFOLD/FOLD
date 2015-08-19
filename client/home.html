@@ -425,9 +425,33 @@
           <div class="live-indicator">LIVE</div>
         </a>
         <div class="content">
-          {{> content_preview_icons}}
+          <div class="content-preview-icons content-icons">
+            <ol>
+              {{#if hasContextOfType "news"}}
+                <li>
+                  <button class='news-button {{#if previewTypeIs "news"}}active{{/if}}'>
+                    {{> news_icon }}
+                  </button>
+                </li>
+              {{/if}}
+              {{#if hasContextOfType "twitter"}}
+                <li>
+                  <button class='twitter-button {{#if previewTypeIs "twitter"}}active{{/if}}'>
+                    {{> twitter_icon }}
+                  </button>
+                </li>
+              {{/if}}
+              {{#if hasContextOfType "text"}}
+                <li>
+                  <button class='text-button {{#if previewTypeIs "text"}}active{{/if}}'>
+                    {{> text_icon }}
+                  </button>
+                </li>
+              {{/if}}
+            </ol>
+          </div>
           {{#with contentPreview}}
-            {{title}}
+            {{> homepage_content_preview}}
           {{/with}}
         </div>
       </div>
@@ -453,34 +477,19 @@
   {{/with}}
 </template>
 
-
-<template name="content_preview_icons">
-  <div class="content-preview-icons content-icons">
-    <ol>
-      {{#if hasContextOfType "news"}}
-        <li>
-          <button class='news-button {{#if news}}active{{/if}}'>
-            {{> news_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if hasContextOfType "twitter"}}
-        <li>
-          <button class='twitter-button {{#if twitter}}active{{/if}}'>
-            {{> twitter_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if hasContextOfType "text"}}
-        <li>
-          <button class='text-button {{#if text}}active{{/if}}'>
-            {{> text_icon }}
-          </button>
-        </li>
-      {{/if}}
-    </ol>
+<template name="homepage_content_preview">
+  <div class="homepage-content-preview">
+    {{#if isContextOfType "news"}}
+      {{> homepage_preview_news_section}}
+    {{/if}}
+    {{#if isContextOfType "twitter"}}
+    {{/if}}
+    {{#if isContextOfType "text"}}
+      {{> display_text_section}}
+    {{/if}}
   </div>
 </template>
+
 
 <template name="stream_preview">
   <div class="stream-preview">
