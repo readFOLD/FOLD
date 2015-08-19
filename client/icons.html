@@ -493,25 +493,44 @@
   </svg>
 </template>
 
-<template name="back_arrow">
-  <svg version="1.1" class="back-arrow" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="43.791px" height="43.791px" viewBox="0 0 43.791 43.791" enable-background="new 0 0 43.791 43.791" xml:space="preserve">
-    <g>
+<template name="close_sidebar_icon">
+  <svg class="close-sidebar-icon icon" width="31px" height="44px" viewBox="0 0 31 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g fill-rule="evenodd">
       <g>
-        <g>
-          <path class="fg" d="M21.355,23.718c-0.968-1.295-1.283-2.156-0.083-3.592c2.289-2.75,4.293-5.74,6.409-8.635
-            c2.688-3.689,5.373-7.38,8.387-11.518c-5.406,0-10.285-0.038-15.161,0.057C20.37,0.04,19.729,0.711,19.339,1.23
-            C14.604,7.617,9.927,14.047,5.173,20.42c-0.862,1.154-0.769,1.947,0.076,3.073"/>
-          <path class="fg" fill-rule="evenodd" clip-rule="evenodd" d="M5.249,23.494c-0.845-1.126-0.938-1.919-0.076-3.073
-            c4.753-6.373,9.43-12.803,14.166-19.19c0.391-0.519,1.031-1.19,1.568-1.201c4.875-0.095,9.754-0.057,15.161-0.057
-            c-3.014,4.138-5.699,7.829-8.387,11.518c-2.115,2.896-4.12,5.885-6.409,8.635c-1.2,1.436-0.885,2.297,0.083,3.592"/>
-        </g>
-        <path class="fg" d="M5.249,20.296c-0.845,1.126-0.938,1.919-0.076,3.074c4.753,6.372,9.43,12.803,14.166,19.188
-          c0.391,0.521,1.031,1.194,1.568,1.202c4.875,0.095,9.754,0.057,15.161,0.057c-3.014-4.139-5.699-7.83-8.387-11.52
-          c-2.115-2.898-4.12-5.885-6.409-8.632c-1.2-1.44-0.885-2.299,0.083-3.592"/>
+        <rect class='fg' x="0" y="0" width="4" height="44"></rect>
+        <rect class='fg' x="4" y="0" width="20" height="4"></rect>
+        <rect class='fg' x="4" y="40" width="20" height="4"></rect>
+        <rect class='fg' x="6" y="20" width="17" height="3" rx="10"></rect>
+        <polygon class='fg' transform="translate(25.500000, 21.500000) rotate(90.000000) translate(-25.500000, -21.500000) " points="25.5 16 31 27 20 27 "></polygon>
       </g>
     </g>
-    </svg>
+  </svg>
+</template>
+
+<template name="close_sidebar_chunky_icon">
+  <svg class="close-sidebar-chunky-icon icon" width="33px" height="44px" viewBox="0 0 33 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g fill-rule="evenodd">
+      <g>
+        <rect class='fg' x="0" y="0" width="6" height="44"></rect>
+        <rect class='fg' x="4" y="0" width="20" height="6"></rect>
+        <rect class='fg' x="4" y="38" width="20" height="6"></rect>
+        <rect class='fg' x="7" y="20" width="17" height="5" rx="10"></rect>
+        <polygon class='fg' transform="translate(27.000000, 22.500000) rotate(90.000000) translate(-27.000000, -22.500000) " points="27 16 34 29 20 29 "></polygon>
+      </g>
+    </g>
+  </svg>
+</template>
+
+<template name="back_arrow_icon">
+  <svg class="back-arrow-icon icon" width="23px" height="20px" viewBox="0 0 23 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g fill-rule="evenodd">
+      <g>
+        <path class='fg' d="M1.53935103,11.4900005 L1.53935103,11.4900005 L22.5639452,11.4863925 C22.8049874,11.4863925 23,10.8423663 23,10.0440984 C23,9.24583062 22.8049874,8.60000038 22.5639452,8.60000038 L22.5639452,8.60000038 L1.53935103,8.60270637 C1.29858126,8.60270637 1.10329627,9.24853661 1.10329627,10.0459024 C1.10329627,10.8432683 1.29885362,11.4900005 1.53935103,11.4900005 L1.53935103,11.4900005 L1.53935103,11.4900005 Z"></path>
+        <path class='fg' d="M12.9191785,7.48221565 C13.0764874,7.48221565 13.2037565,6.83818941 13.2037565,6.03992159 C13.2037565,5.24165377 13.0764874,4.59582353 12.9191785,4.59582353 L-0.80188879,4.59852953 C-0.959019922,4.59852953 -0.99227268,5.24255571 -0.99227268,6.03992153 C-0.99227268,6.83728735 -0.958842172,7.48582364 -0.80188879,7.48582364 L12.9191785,7.48221565 Z" transform="translate(6.105742, 6.040824) rotate(-45.000000) translate(-6.105742, -6.040824) "></path>
+        <path class='fg' d="M12.9205043,15.49562 C13.0778132,15.49562 13.2050823,14.8515937 13.2050823,14.0533259 C13.2050823,13.2550581 13.0778132,12.6092279 12.9205043,12.6092279 L-0.800562991,12.6119339 C-0.957694123,12.6119339 -1,13.1773779 -1,13.9747437 C-1,14.7721095 -0.957516373,15.499228 -0.800562991,15.499228 L12.9205043,15.49562 Z" transform="translate(6.102541, 14.054228) rotate(45.000000) translate(-6.102541, -14.054228) "></path>
+      </g>
+    </g>
+  </svg>
 
 </template>
 
