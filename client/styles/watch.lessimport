@@ -448,7 +448,7 @@
   .size(24px);
   padding: 0;
   top: 14px;
-  right: 7px;
+  left: 13px;
   position: absolute;
   background: transparent;
   .fg{
