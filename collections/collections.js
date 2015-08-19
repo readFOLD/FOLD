@@ -210,7 +210,6 @@ Deepstream = (function() {
         return that.contextOfType(type)
       })
       .flatten()
-      .tap(function(a){console.log(a)})
       .sortBy('addedAt')
       .last()
       .value()

@@ -467,7 +467,7 @@
           </div>
           <div>
             <span class="date">Updated {{dateInPast savedAt}}</span>
-            <span class="username">{{curatorName}}</span>
+            <span class="curator-name">{{curatorName}}</span>
           </div>
 
         </div>
@@ -483,9 +483,10 @@
       {{> homepage_preview_news_section}}
     {{/if}}
     {{#if isContextOfType "twitter"}}
+      {{> homepage_preview_twitter_section}}
     {{/if}}
     {{#if isContextOfType "text"}}
-      {{> display_text_section}}
+      {{> homepage_preview_text_section}}
     {{/if}}
   </div>
 </template>

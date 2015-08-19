@@ -4,6 +4,7 @@
 @darker-color: #212121;
 @dark-color: #303030;
 @dark-medium-color: #424242;
+@a-bit-dark-medium-color: #525252;
 @medium-color: #9B9B9B;
 @light-color: #F4F4F4;
 @light-transparent-color: rgba(244,244,244,0.75);

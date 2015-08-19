@@ -548,9 +548,10 @@ div.logo-title {
         .center-over-parent-div;
         .size(100px);
       }
-    }
-    img{
-      .size-to-fit;
+      img{
+        .size-to-fit;
+
+      }
     }
 
     .content{
@@ -560,9 +561,13 @@ div.logo-title {
       .content-preview-icons{
         right: @content-section-width;
         margin-top: 20px;
+        button.active{
+          background-color: @a-bit-dark-medium-color;
+        }
       }
       padding-left: 10px;
       padding-right: 10px;
+      background-color: @a-bit-dark-medium-color;
       top: 0;
       right: 0;
       position: absolute;
@@ -598,7 +603,7 @@ div.logo-title {
       .size(14px);
     }
   }
-  .views, .username, .favorited{
+  .views, .curator-name, .favorited{
     float:right;
   }
 
@@ -610,10 +615,61 @@ div.logo-title {
 }
 
 .homepage-preview-news-section{
+  @heading-size: 20px;
+  padding-top: 6px;
+  padding-bottom: 6px;
   .news-source{
-    font-size: 20px;
+    font-size: @heading-size;
+  }
+  .provider-image{
+    .size(@heading-size);
+    padding-right: 3px;
   }
 }
+
+.homepage-preview-text-section{
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.homepage-preview-twitter-section{
+  background-color: @dark-color;
+  .center-over-parent-div;
+  padding: 6px;
+  line-height: normal;
+  font-size: 12px;
+  width: calc(100% ~"-" 12px) ;
+  .user-info{
+    height: 24px;
+    img{
+      height: 100%;
+    }
+    .prof-pic{
+      display: inline-block;
+      height: 100%;
+      float: left;
+      margin-right: 10px;
+    }
+    .username{
+      display: inline-block;
+      font-weight: bold;
+      .screenname{
+        font-weight: normal;
+      }
+    }
+  }
+  .tweet{
+    margin-top: 10px;
+    margin-bottom: 12px;
+  }
+  .actions{
+    height: 14px;
+    span{
+      float: right;
+    }
+  }
+}
+
 
 .stream-preview{
   display: inline-block;
