@@ -71,7 +71,7 @@
 </template>
 
 <template name="context_anchor_go_back">
-  <li class="back"><button type="button">{{> back_arrow}}back</button></li>
+  <li class="back"><button type="button">{{> back_arrow_icon}}back</button></li>
 </template>
 
 <template name="context_anchor_new_card_option">
@@ -745,6 +745,6 @@
 
 <template name="exit_search_button">
   {{#if showExitSearchButton}}
-    <button class="exit-search-button">{{> close_circle}}</button>
+    <button class="exit-search-button">{{> back_arrow_icon}}</button>
   {{/if}}
 </template>
