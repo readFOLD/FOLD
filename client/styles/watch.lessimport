@@ -124,6 +124,7 @@
   border-bottom: 1px solid @medium-color;
   .content-icons {
     right: @right-section-width;
+    z-index: 999;
   }
 
   &.collapsed{
@@ -137,7 +138,6 @@
 
 .content-icons {
   position: absolute;
-  z-index: 999;
   margin-top: @circle-diameter;
 
   //height: @contentIconBannerHeight;
