@@ -349,7 +349,7 @@
 }
 
 
-.large-context-browser{
+.overlay-context-browser{
   .full-overlay;
   background-color: rgba(25,25,25,0.7);
   .context-area {

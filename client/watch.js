@@ -336,7 +336,7 @@ Template.watch.helpers({
   },
   showRightSection: function(){
     var mediaDataType = Session.get('mediaDataType');
-    return !Session.get('largeContextMode') && (mediaDataType && (Session.get("curateMode") || this.hasContextOfType(mediaDataType)));
+    return !Session.get('soloOverlayContextMode') && (mediaDataType && (Session.get("curateMode") || this.hasContextOfType(mediaDataType)));
   },
   expandMainSection: function(){
     var mediaDataType = Session.get('mediaDataType');
@@ -352,11 +352,11 @@ Template.watch.helpers({
     var mediaDataType = Session.get('mediaDataType');
     return Session.get("curateMode") && (Session.get("searchingMedia") || (mediaDataType && this.contextOfType(mediaDataType).length === 0)) && mediaDataType && mediaDataType !== 'stream';
   },
-  largeContextMode: function(){
-    return Session.get('largeContextMode');
+  soloOverlayContextMode: function(){
+    return Session.get('soloOverlayContextMode');
   },
   PiP: function(){
-    return Session.get('largeContextMode');
+    return Session.get('soloOverlayContextMode');
   },
   streamTitleElement: function(){
     if (Session.get('curateMode')) {
@@ -538,7 +538,7 @@ Template.watch.events({
     notifyFeature('Success!! Favoriting streams: coming soon!');
   },
   'click .PiP-overlay': function(e,t){
-    Session.set('largeContextMode', false)
+    Session.set('soloOverlayContextMode', false)
   }
 });
 
@@ -579,7 +579,7 @@ Template.context_browser.helpers({
       return true
     }
   },
-  soloContextMode: function(){
+  soloSidebarContextMode: function(){
     return Session.get('currentContext') && _.contains(['text', 'news'], Session.get('mediaDataType'))
   }
 });
@@ -604,7 +604,7 @@ Template.context_browser.events({
     if(_.contains(['image', 'video', 'map', 'news', 'text', 'wikipedia'], this.type)){
       setCurrentContextIdOfType(this.type, this._id);
       if(_.contains(['image', 'video', 'map'], this.type)){
-        Session.set('largeContextMode', true);
+        Session.set('soloOverlayContextMode', true);
       }
     }
 
@@ -615,7 +615,7 @@ Template.context_browser.events({
 });
 
 
-Template.large_context_browser.helpers({
+Template.overlay_context_browser.helpers({
   mediaTypeForDisplay: function(){
     return _s.capitalize(Session.get('mediaDataType'));
   },
@@ -654,7 +654,7 @@ Template.large_context_browser.helpers({
 });
 
 
-Template.large_context_browser.onRendered(function(){
+Template.overlay_context_browser.onRendered(function(){
   document.body.style.overflow = 'hidden';
   $(window).scrollTop(0);
 
@@ -666,16 +666,16 @@ Template.large_context_browser.onRendered(function(){
 
 });
 
-Template.large_context_browser.onDestroyed(function(){
+Template.overlay_context_browser.onDestroyed(function(){
   document.body.style.overflow = 'auto';
   if(Session.get('mediaDataType') === 'video'){
     mainPlayer.unMute(); // TODO - only unmute if was unmuted before created
   }
 });
 
-Template.large_context_browser.events({
+Template.overlay_context_browser.events({
   'click .close': function(){
-    Session.set('largeContextMode', false);
+    Session.set('soloOverlayContextMode', false);
   },
   'click .add-new-context': function(){
     Session.set('searchingMedia', true);

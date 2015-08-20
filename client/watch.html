@@ -185,8 +185,8 @@
       </div>
     {{/if}}
 
-    {{#if largeContextMode}}
-      {{> large_context_browser}}
+    {{#if soloOverlayContextMode}}
+      {{> overlay_context_browser}}
     {{/if}}
 
     {{> signin_overlay}}
@@ -197,7 +197,7 @@
 <template name="context_browser">
   <div class="context-browser">
     <div class="browse-buttons">
-      {{#if soloContextMode}}
+      {{#if soloSidebarContextMode}}
         <button class="switch-to-list-mode">{{> list_icon}}</button>
       {{/if}}
       <span class="type">{{mediaTypeForDisplay}}</span>
@@ -212,7 +212,7 @@
       {{/if}}
     </div>
     <div class="context-area">
-      {{#if soloContextMode}}
+      {{#if soloSidebarContextMode}}
         {{#with currentContext}}
           {{> solo_context_section}}
         {{/with}}
@@ -225,8 +225,8 @@
   </div>
 </template>
 
-<template name="large_context_browser">
-  <div class="large-context-browser" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+<template name="overlay_context_browser">
+  <div class="overlay-context-browser" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
     <button class="close">{{> close_circle}}</button>
     <div class="context-area">
       <div class="count">{{mediaTypeForDisplay}} {{currentNum}} of {{totalNum}}</div>
@@ -251,7 +251,7 @@
   <div
       class="narrative-section context-section list-item-context-section {{#if type}}{{type}}-card{{/if}}" data-index="{{index}}">
     <div class="clickable">
-      {{> Template.dynamic template=listModeTemplate}}
+      {{> Template.dynamic template=listModeItemTemplate}}
     </div>
       {{#if curateMode}}
         <button class="delete-current-context">{{> close_circle}}</button>
