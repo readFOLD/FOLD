@@ -420,7 +420,7 @@ div.logo-title {
     height: 510px;
     width: 80%;
 
-    background-color: @black-color;
+    background-color: @homepage-shade-0;
 
     top: 50%;
     left: 50%;

@@ -677,7 +677,7 @@
 
 @top-row-height: 60px;
 .top-row{
-  background-color: @black-color;
+  background-color: @top-row-color;
   height: @top-row-height;
   .box-shadow(0px 2px 12px 0px rgba(0,0,0,0.75));
   position: relative;

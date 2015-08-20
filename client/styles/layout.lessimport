@@ -3,6 +3,8 @@
 
 
 @black-color: #030303;
+@top-row-color: @black-color;
+@homepage-shade-0: @top-row-color;
 @dark-text-color: @black-color;
 
 

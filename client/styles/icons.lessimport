@@ -106,6 +106,6 @@ svg.deepstream-logo{
     fill: @action-color;
   }
   .bg{
-    fill: @black-color;
+    fill: @top-row-color;
   }
 }
