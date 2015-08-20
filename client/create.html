@@ -420,41 +420,6 @@
   </div>
 </template>
 
-<template name="create_gif_section">
-  <div class="search-section-title">Add a Gif</div>
-  {{> exit_search_button}}
-  <div class="create-section">
-    <div class="search-section" style="{{#if addingDescription}}display: none;{{/if}}">
-      <div class="tabs">
-        <ul>
-          {{#each dataSources}}
-            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
-          {{/each}}
-        </ul>
-      </div>
-      {{> search_form}}
-      <ol class="search-results-container">
-        {{#each results}}
-          <li class="tile {{#if isFocused}}focused{{/if}}">
-            <img src="{{thumbnailUrl}}">
-          </li>
-        {{/each}}
-        {{#if loading}}
-          {{> loading_icon}}
-        {{/if}}
-        {{#if noMoreResults}}
-          {{noMoreResults}}
-        {{/if}}
-      </ol>
-      {{#if showAddButton}}
-        <button type="submit" class="add-button">
-          Add
-        </button>
-      {{/if}}
-    </div>
-  </div>
-</template>
-
 <template name="create_map_section">
   <div class="search-section-title">Add a Map</div>
   {{> exit_search_button}}

@@ -222,7 +222,6 @@ var searchAPI = function(query) {
 
 var createTemplateNames = [
   'create_image_section',
-  'create_gif_section',
   'create_video_section',
   'create_stream_section',
   'create_twitter_section',
@@ -334,7 +333,7 @@ Template.create_image_section.onCreated(function(){
     changed: function (id, changes) { // upload stream updated
       if (changes.public_id){ // if upload successful
         var doc = _cloudinary.findOne(id);
-        var cardModel = doc.format === 'gif' ? GifBlock : ImageBlock;
+        var cardModel = ImageBlock;
         // TO-DO consider how to do attribution
         that.uploadStatus.set('Upload successful');
         that.focusResult.set(new cardModel({
@@ -394,8 +393,6 @@ Template.create_image_section.onCreated(searchTemplateCreatedBoilerplate('image'
 Template.create_image_section.onRendered(searchTemplateRenderedBoilerplate());
 
 
-Template.create_gif_section.onCreated(searchTemplateCreatedBoilerplate('gif', 'giphy'));
-Template.create_gif_section.onRendered(searchTemplateRenderedBoilerplate());
 
 Template.create_audio_section.onCreated(searchTemplateCreatedBoilerplate('audio', 'soundcloud'));
 Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
@@ -404,7 +401,7 @@ var dataSourcesByType = {
   'stream': [{source: 'all_streaming_services', 'display': 'All'}],
   'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}, {source: 'cloudinary', display: 'Upload Your Own'}],
   'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
-  'gif': [{source: 'giphy', display: 'Giphy'}],
+  //'gif': [{source: 'giphy', display: 'Giphy'}],
   'video': [{source: 'youtube', display: 'Youtube'}, {source: 'vimeo', display: 'Vimeo'}],
   'audio': [{source: 'soundcloud', display: 'SoundCloud'}],
   'twitter': [{source: 'twitter', display: 'Twitter'}],
@@ -560,7 +557,7 @@ Template.create_link_section.onCreated(function() {
               reference = {};
           }
 
-          cardModel = source === 'giphy' ? GifBlock : ImageBlock;
+          cardModel = ImageBlock;
 
           that.focusResult.set(new cardModel(addPropertiesToBaseline({
             reference: reference,
@@ -596,7 +593,7 @@ Template.create_link_section.onCreated(function() {
             case 'Giphy':
               source = 'giphy';
               var info = result.url.match(/\/media\/(.*)?\/giphy/);
-              that.focusResult.set(new GifBlock(addPropertiesToBaseline({
+              that.focusResult.set(new ImageBlock(addPropertiesToBaseline({
                 reference: {
                   id: info[1]
                 },
@@ -633,7 +630,7 @@ Template.create_link_section.helpers({
   image: function() {
     var preview = Template.instance().focusResult.get();
     if (preview) {
-      return (preview.type === 'image' || preview.type === 'gif');
+      return preview.type === 'image';
     }
   },
   video: function() {

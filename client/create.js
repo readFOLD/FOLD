@@ -594,9 +594,6 @@ Template.content_icons.events({
   'click .image-button': function(d, t) {
     Session.set('mediaDataType', 'image');
   },
-  'click .gif-button': function(d, t) {
-    Session.set('mediaDataType', 'gif');
-  },
   'click .news-button': function(d, t) {
     Session.set('mediaDataType', 'news');
   },

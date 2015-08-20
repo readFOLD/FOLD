@@ -556,13 +556,13 @@ ImageBlock = (function (_super) {
 
   ImageBlock.prototype.showVideo = function () {
     return this.webMUrl() || this.mp4Url();
-  },
+  };
 
-      ImageBlock.prototype.webMUrl = function () {
-        if (this.source === 'imgur' && this.reference.hasWebM) {
-          return '//i.imgur.com/' + this.reference.id + '.webm';
-        }
-      };
+  ImageBlock.prototype.webMUrl = function () {
+    if (this.source === 'imgur' && this.reference.hasWebM) {
+      return '//i.imgur.com/' + this.reference.id + '.webm';
+    }
+  };
 
   ImageBlock.prototype.mp4Url = function () {
     if (this.source === 'imgur' && this.reference.hasMP4) {
@@ -580,6 +580,8 @@ ImageBlock = (function (_super) {
         return '//i.imgur.com/' + this.reference.id + '.' + this.reference.fileExtension;
       case 'flickr':
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg'
+      case 'giphy':
+        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif';
       case 'embedly':
         return this.reference.url;
       case 'cloudinary':
@@ -632,7 +634,9 @@ ImageBlock = (function (_super) {
           return '//i.imgur.com/' + this.reference.id + '.' + this.reference.fileExtension;
         }
       case 'flickr':
-        return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg'
+        return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '.jpg';
+      case 'giphy':
+        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif';
       case 'embedly':
         return this.reference.url;
       case 'cloudinary':
@@ -648,6 +652,8 @@ ImageBlock = (function (_super) {
         return '//i.imgur.com/' + this.reference.id + 't' + '.' + this.reference.fileExtension;
       case 'flickr':
         return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_t' + '.jpg';
+      case 'giphy':
+        return '//media4.giphy.com/media/' + this.reference.id + '/200_d.gif';
       case 'embedly':
         return this.reference.thumbnailUrl;
       case 'cloudinary':
@@ -663,72 +669,6 @@ ImageBlock = (function (_super) {
   return ImageBlock;
 
 })(ContextBlock);
-
-GifBlock = (function (_super) {
-  __extends(GifBlock, _super);
-
-  function GifBlock(doc) {
-    GifBlock.__super__.constructor.call(this, doc);
-    this.type = 'gif';
-  };
-
-
-  GifBlock.prototype.isGiphy = function () {
-    return (this.source === 'giphy');
-  };
-
-  GifBlock.prototype.showVideo = function () {
-    return this.webMUrl() || this.mp4Url();
-  };
-
-  GifBlock.prototype.webMUrl = function () {
-    if (this.source === 'cloudinary') {
-      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id + '.webm';
-    }
-  };
-
-  GifBlock.prototype.mp4Url = function () {
-    if (this.source === 'cloudinary') {
-      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id + '.mp4';
-    }
-  };
-
-  GifBlock.prototype.url = function () {
-    switch (this.source) {
-      case 'giphy':
-        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif';
-      case 'cloudinary':
-        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id;
-    }
-  };
-
-  GifBlock.prototype.previewUrl = function () {
-    switch (this.source) {
-      case 'giphy':
-        return '//media4.giphy.com/media/' + this.reference.id + '/giphy.gif';
-      case 'cloudinary':
-        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_limit,h_300,w_520/' + this.reference.id + '.jpg';
-    }
-  };
-
-  GifBlock.prototype.thumbnailUrl = function () {
-    switch (this.source) {
-      case 'giphy':
-        return '//media4.giphy.com/media/' + this.reference.id + '/200_d.gif';
-      case 'cloudinary':
-        // f_auto is slightly worse quality but less bandwidth
-        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/f_auto,c_limit,h_150,w_260/' + this.reference.id;
-    }
-  };
-
-  GifBlock.prototype.anchorMenuSnippet = function () {
-    return this.description || this.reference.title || this.reference.description || this.reference.id;
-  };
-
-  return GifBlock;
-
-})(ContextBlock);
-
 
 
 MapBlock = (function (_super) {
