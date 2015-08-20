@@ -43,26 +43,6 @@ if (Meteor.isClient) {
 }
 
 
-this.ContextBlocks.deny({
-  insert: function() {
-    return true;
-  },
-  update: function() {
-    return true
-  },
-  remove: function() {
-    return true
-  }
-});
-
-Schema.ContextBlocksExtension = new SimpleSchema({
-  streamShortId: {
-    type: String
-  }
-});
-
-this.ContextBlocks.attachSchema(Schema.ContextBlocksExtension);
-
 
 var analyticsSchema = new SimpleSchema({
   byConnection: {
@@ -150,141 +130,6 @@ this.StoryHistories = new Mongo.Collection("story_histories");
 
 
 
-// DEEPSTREAM
-
-Deepstream = (function() {
-  function Deepstream(doc) {
-    _.extend(this, doc);
-    var that = this;
-    this.streams = _.map(this.streams, function(stream){
-      return new Stream(stream);
-    });
-    this.contextBlocks = _.map(this.contextBlocks, function(contextBlock){
-      return newTypeSpecificContextBlock(contextBlock);
-    });
-  }
-
-  Deepstream.prototype.contextCountOfType = function(type) {
-    return this.contextBlocks.reduce(function(count, contextBlock){
-      if(contextBlock.type === type){
-        count++;
-      }
-      return count;
-    }, 0)
-  };
-
-  Deepstream.prototype.countContextTypes = function(){
-    return _.chain(this.contextBlocks).pluck('type').countBy(_.identity).value()
-  };
-
-  Deepstream.prototype.contextOfType = function(type) {
-    if (type === 'stream'){
-      return []; // streams aren't context
-    }
-    return _.chain(this.contextBlocks)
-      .where({type : type})
-      .value();
-  };
-
-  Deepstream.prototype.hasContextOfType = function(type) {
-    if(type === 'chat'){
-      return true // TODO this is a hack
-    }
-    return this.contextOfType(type).length;
-  };
-
-  Deepstream.prototype.mostRecentContext = function() {
-    return this.contextBlocks ? _.last(_.sortBy(this.contextBlocks, 'addedAt')) : null;
-  };
-
-  Deepstream.prototype.mostRecentContextOfType = function(type) {
-    if(this.hasContextOfType(type)){
-      return this.contextBlocks ? _.last(_.sortBy(this.contextOfType(type), 'addedAt')) : null;
-    }
-  };
-
-  Deepstream.prototype.mostRecentContextOfTypes = function(types) {
-    var that = this;
-    return _.chain(types)
-      .map(function(type){
-        return that.contextOfType(type)
-      })
-      .flatten()
-      .sortBy('addedAt')
-      .last()
-      .value()
-  };
-
-  Deepstream.prototype.nextContext = function(contextId) {
-    if(!this.contextBlocks){
-      return null;
-    }
-    var contextBlock = _.findWhere(this.contextBlocks, {_id: contextId});
-    if(!contextBlock){
-      return null;
-    }
-    var type = contextBlock.type;
-    var contextOfType = this.contextOfType(type);
-    if (contextOfType.length < 2){
-      return null;
-    }
-    var index = _.indexOf(contextOfType, contextBlock);
-    if (index < contextOfType.length - 1){
-      return contextOfType[index + 1];
-    } else {
-      return _.first(contextOfType);
-    }
-  };
-  Deepstream.prototype.previousContext = function(contextId) {
-    if(!this.contextBlocks){
-      return null;
-    }
-    var contextBlock = _.findWhere(this.contextBlocks, {_id: contextId});
-    if(!contextBlock){
-      return null;
-    }
-    var type = contextBlock.type;
-    var contextOfType = this.contextOfType(type);
-    if (contextOfType.length < 2){
-      return null;
-    }
-    var index = _.indexOf(contextOfType, contextBlock);
-    if (index > 0){
-      return contextOfType[index - 1];
-    } else {
-      return _.last(contextOfType);
-    }
-  };
-
-  Deepstream.prototype.activeStream = function(){
-    return this.getStream(this.activeStreamId);
-  };
-
-  Deepstream.prototype.getStream = function(id){
-    return _.findWhere(this.streams, {_id: id});
-  };
-
-  Deepstream.prototype.watchPath = function(){
-    return '/watch/' + this.userPathSegment + '/' + this.streamPathSegment;
-  };
-
-  Deepstream.prototype.curatePath = function(){
-    return '/curate/' + this.userPathSegment + '/' + this.streamPathSegment;
-  };
-
-  Deepstream.prototype.previewUrl = function(){
-    var activeStream = this.activeStream();
-    return activeStream ? activeStream.previewUrl() : null;
-  };
-  Deepstream.prototype.userStreamSwitchAllowed = function(){
-    return !this.disallowUserStreamSwitch;
-  };
-
-  return Deepstream;
-
-})();
-
-
 this.Deepstreams = new Mongo.Collection("deepstreams", {
   transform: function(doc) {
     return new Deepstream(doc);
@@ -292,6 +137,311 @@ this.Deepstreams = new Mongo.Collection("deepstreams", {
 });
 
 this.Deepstreams.allow({
+  insert: function () {
+    return true;
+  },
+  update: function () {
+    return true
+  },
+  remove: function () {
+    return true;
+  }
+});
+
+
+ContextBlocks = new Mongo.Collection("context_blocks", {
+  transform: newTypeSpecificContextBlock
+});
+
+if(!this.Schema){
+  Schema = {};
+}
+
+Schema.ContextReferenceProfile = new SimpleSchema({
+  id: {
+    type: String,
+    optional: true
+  },
+
+  creationDate: {
+    type: String,
+    optional: true
+  },
+
+  username: {
+    type: String,
+    optional: true
+  },
+
+  userId: {
+    type: String,
+    optional: true
+  },
+
+  source: {
+    type: String,
+    optional: true
+  },
+
+  artworkUrl: {
+    type: String,
+    optional: true
+  },
+
+  previewImage: {
+    type: String,
+    optional: true
+  },
+
+  title: {
+    type: String,
+    optional: true,
+    defaultValue: ''
+  },
+
+  description: {
+    type: String,
+    optional: true,
+    defaultValue: ''
+  },
+  fileExtension: {
+    type: String,
+    optional: true
+  },
+
+  // Image
+
+
+  flickrFarm: {
+    type: String,
+    optional: true
+  },
+  flickrSecret: {
+    type: String,
+    optional: true
+  },
+  flickrServer: {
+    type: String,
+    optional: true
+  },
+  uploadDate: {
+    type: Date,
+    optional: true
+  },
+  ownerName: {
+    type: String,
+    optional: true
+  },
+
+  hasWebM: {
+    type: Boolean,
+    optional: true
+  },
+
+  hasMP4: {
+    type: Boolean,
+    optional: true
+  },
+
+
+
+  // Image upload
+  width: {
+    type: Number,
+    optional: true
+  },
+  height: {
+    type: Number,
+    optional: true
+  },
+
+  // twitter
+  retweet: {
+    type: String,
+    optional: true
+  },
+  creationDate: {
+    type: String,
+    optional: true
+  },
+  username: {
+    type: String,
+    optional: true
+  },
+  screenname: {
+    type: String,
+    optional: true
+  },
+  userId: {
+    type: String,
+    optional: true
+  },
+  userPic: {
+    type: String,
+    optional: true
+  },
+  text: {
+    type: String,
+    optional: true
+  },
+  entities: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  extendedEntities: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  retweetedStatus: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+
+  // Link
+  title: { type: String, optional: true },
+  thumbnailUrl: { type: String, optional: true },
+  url: { type: String, optional: true },
+  originalUrl: { type: String, optional: true },
+  providerName: { type: String, optional: true },
+  providerUrl: { type: String, optional: true },
+  authorUrl: { type: String, optional: true },
+  authorName: { type: String, optional: true },
+  thumbnailHeight: { type: Number, optional: true },
+  thumbnailWidth: { type: Number, optional: true },
+  embedlyType: { type: String, optional: true },
+  imageOnLeft: { type: Boolean, optional: true },
+
+  // Rich or Extract
+  html: { type: String, optional: true },
+
+  // OEC
+  oecYear: {
+    type: String,
+    optional: true
+  },
+  oecCountry: {
+    type: String,
+    optional: true
+  },
+  oecDirection: {
+    type: String,
+    optional: true
+  },
+
+  mapQuery: {
+    type: String,
+    optional: true
+  },
+  mapType: {
+    type: String,
+    allowedValues: ['roadmap', 'satellite'],
+    defaultValue: 'satellite',
+    optional: true,
+    autoform: {
+      afFieldInput: {
+        firstOption: false,
+        options: 'allowed'
+      }
+    }
+  }
+
+});
+
+Schema.ContextBlocks = new SimpleSchema({
+  streamShortId: {
+    type: String
+  },
+  authorId: {
+    type: String
+  },
+  type: {
+    type: String
+  },
+  source: {
+    type: String,
+    optional: true
+  },
+  fromEmbedly: {
+    type: Boolean,
+    optional: true
+  },
+  version: {
+    type: String,
+    optional: true
+  },
+  savedAt: {
+    type: Date,
+    optional: true
+  },
+  publishedAt: {
+    type: Date,
+    optional: true
+  },
+  createdAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: new Date};
+      } else {
+        this.unset();
+      }
+    },
+    optional: true // optional because only added this fieldjust before launch
+  },
+  fullDetails: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  description: {
+    type: String,
+    optional: true
+  },
+  content: {
+    type: String,
+    trim: false,
+    label: " ",
+    optional: true,
+    autoform: {
+      afFieldInput: {
+        type: "textarea",
+        rows: 10,
+        "class": "text-input"
+      }
+    }
+  },
+  published: {
+    type: Boolean,
+    defaultValue: false
+  },
+  everPublished: {
+    type: Boolean,
+    defaultValue: false
+  },
+  reference: {
+    type: Schema.ContextReferenceProfile,
+    optional: true
+  },
+
+  searchQuery: {
+    type:String,
+    optional:true
+  },
+  searchOption: {
+    type: String,
+    optional:true
+  }
+});
+
+ContextBlocks.attachSchema(Schema.ContextBlocks);
+
+
+this.ContextBlocks.deny({
   insert: function() {
     return true;
   },
@@ -299,7 +449,12 @@ this.Deepstreams.allow({
     return true
   },
   remove: function() {
-    return true;
+    return true
   }
 });
 
+this.Streams = new Mongo.Collection("streams", {
+  transform: function(doc) {
+    return new Stream(doc);
+  }
+});
