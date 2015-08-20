@@ -157,7 +157,7 @@ Template.watch.onCreated(function () {
     if(FlowRouter.subsReady()) {
       var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
       var currentContextId = Session.get("currentContextIdByType")[Session.get('mediaDataType')];
-      Session.set("currentContext", _.findWhere(deepstream.contextBlocks, {_id: currentContextId}));
+      setCurrentContext(_.findWhere(deepstream.contextBlocks, {_id: currentContextId}));
     }
   });
 
@@ -336,7 +336,7 @@ Template.watch.helpers({
   },
   showRightSection: function(){
     var mediaDataType = Session.get('mediaDataType');
-    return !Session.get('soloOverlayContextMode') && (mediaDataType && (Session.get("curateMode") || this.hasContextOfType(mediaDataType)));
+    return !soloOverlayContextModeActive() && (mediaDataType && (Session.get("curateMode") || this.hasContextOfType(mediaDataType)));
   },
   expandMainSection: function(){
     var mediaDataType = Session.get('mediaDataType');
@@ -353,10 +353,10 @@ Template.watch.helpers({
     return Session.get("curateMode") && (Session.get("searchingMedia") || (mediaDataType && this.contextOfType(mediaDataType).length === 0)) && mediaDataType && mediaDataType !== 'stream';
   },
   soloOverlayContextMode: function(){
-    return Session.get('soloOverlayContextMode');
+    return soloOverlayContextModeActive();
   },
   PiP: function(){
-    return Session.get('soloOverlayContextMode');
+    return soloOverlayContextModeActive();
   },
   streamTitleElement: function(){
     if (Session.get('curateMode')) {
@@ -538,7 +538,7 @@ Template.watch.events({
     notifyFeature('Success!! Favoriting streams: coming soon!');
   },
   'click .PiP-overlay': function(e,t){
-    Session.set('soloOverlayContextMode', false)
+    clearCurrentContext();
   }
 });
 
@@ -550,37 +550,9 @@ Template.context_browser.helpers({
   contextOfCurrentType: function(){
     return this.contextOfType(Session.get('mediaDataType'));
   },
-  totalNum: function(){
-    return this.contextOfType(Session.get('mediaDataType')).length;
-  },
-  currentNum: function(){
-    var cBlocks = this.contextOfType(Session.get('mediaDataType'));
-    return _.indexOf(cBlocks, _.findWhere(cBlocks, {_id: Session.get('currentContext')._id})) + 1;
-  },
-  currentContext: function(){
-    var currentContext = Session.get('currentContext');
-    if (currentContext){
-      return newTypeSpecificContextBlock(currentContext);
-    }
-  },
-  disableRightButton: function(){
-    var currentContext = Session.get('currentContext');
-    if (currentContext){
-      return !this.nextContext(Session.get("currentContext")._id);
-    } else {
-      return true
-    }
-  },
-  disableLeftButton: function(){
-    var currentContext = Session.get('currentContext');
-    if (currentContext){
-      return !this.previousContext(Session.get("currentContext")._id);
-    } else {
-      return true
-    }
-  },
   soloSidebarContextMode: function(){
-    return Session.get('currentContext') && _.contains(['text', 'news'], Session.get('mediaDataType'))
+    var currentContext = getCurrentContext();
+    return currentContext && currentContext.soloModeLocation === 'sidebar';
   }
 });
 
@@ -597,17 +569,13 @@ Template.context_browser.events({
     });
   },
   'click .context-section .clickable': function(e, t){
-    console.log(this)
+
     if ($(e.target).is('textarea')) { // don't go to big browser when its time to edit context
       return
     }
     if(this.soloModeLocation){
       setCurrentContextIdOfType(this.type, this._id);
-      if(this.soloModeLocation === 'overlay'){
-        Session.set('soloOverlayContextMode', true);
-      }
     }
-
   },
   'click .switch-to-list-mode': function(){
     setCurrentContextIdOfType(Session.get('mediaDataType'), null);
@@ -619,34 +587,25 @@ Template.overlay_context_browser.helpers({
   mediaTypeForDisplay: function(){
     return _s.capitalize(Session.get('mediaDataType'));
   },
-  contextOfCurrentType: function(){
-    return this.contextOfType(Session.get('mediaDataType'));
-  },
   totalNum: function(){
     return this.contextOfType(Session.get('mediaDataType')).length;
   },
   currentNum: function(){
     var cBlocks = this.contextOfType(Session.get('mediaDataType'));
-    return _.indexOf(cBlocks, _.findWhere(cBlocks, {_id: Session.get('currentContext')._id})) + 1;
-  },
-  currentContext: function(){
-    var currentContext = Session.get('currentContext');
-    if (currentContext){
-      return newTypeSpecificContextBlock(currentContext);
-    }
+    return _.indexOf(cBlocks, _.findWhere(cBlocks, {_id: getCurrentContext()._id})) + 1;
   },
   disableRightButton: function(){
-    var currentContext = Session.get('currentContext');
+    var currentContext = getCurrentContext();
     if (currentContext){
-      return !this.nextContext(Session.get("currentContext")._id);
+      return !this.nextContext(getCurrentContext()._id);
     } else {
       return true
     }
   },
   disableLeftButton: function(){
-    var currentContext = Session.get('currentContext');
+    var currentContext = getCurrentContext();
     if (currentContext){
-      return !this.previousContext(Session.get("currentContext")._id);
+      return !this.previousContext(getCurrentContext()._id);
     } else {
       return true
     }
@@ -675,7 +634,7 @@ Template.overlay_context_browser.onDestroyed(function(){
 
 Template.overlay_context_browser.events({
   'click .close': function(){
-    Session.set('soloOverlayContextMode', false);
+    clearCurrentContext();
   },
   'click .add-new-context': function(){
     Session.set('searchingMedia', true);
@@ -686,10 +645,10 @@ Template.overlay_context_browser.events({
     });
   },
   'click .right': function(){
-    setCurrentContextIdOfType(Session.get('mediaDataType'), this.nextContext(Session.get("currentContext")._id)._id);
+    setCurrentContextIdOfType(Session.get('mediaDataType'), this.nextContext(getCurrentContext()._id)._id);
   },
   'click .left': function(){
-    setCurrentContextIdOfType(Session.get('mediaDataType'), this.previousContext(Session.get("currentContext")._id)._id);
+    setCurrentContextIdOfType(Session.get('mediaDataType'), this.previousContext(getCurrentContext()._id)._id);
   }
 });
 

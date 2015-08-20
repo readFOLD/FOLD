@@ -158,3 +158,23 @@ var i = 0;
 window.count = function(){
   return i++;
 };
+
+window.getCurrentContext = function(){
+  var currentContext = Session.get("currentContext");
+  if (currentContext){
+    return newTypeSpecificContextBlock(currentContext); // session will only store the vanilla object
+  }
+};
+
+window.setCurrentContext = function(contextBlock){
+  Session.set("currentContext", contextBlock);
+};
+
+window.clearCurrentContext = function(){
+  Session.set("currentContext", null);
+};
+
+window.soloOverlayContextModeActive = function(){
+  var currentContext = getCurrentContext();
+  return currentContext && currentContext.soloModeLocation === 'overlay';
+}

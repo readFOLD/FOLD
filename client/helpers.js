@@ -22,7 +22,9 @@ Handlebars.registerHelper("dateInPast", function(date) {
 });
 
 
-
+Handlebars.registerHelper("currentContext", function(){
+  return getCurrentContext()
+});
 
 
 Handlebars.registerHelper("hasContext", function(v) {
