@@ -218,7 +218,7 @@
         {{/with}}
       {{else}}
         {{#each contextOfCurrentType}}
-          {{> preview_context_section}}
+          {{> list_item_context_section}}
         {{/each}}
       {{/if}}
     </div>
@@ -247,44 +247,11 @@
   </div>
 </template>
 
-<template name="preview_context_section">
+<template name="list_item_context_section">
   <div
-      class="narrative-section context-section preview-context-section {{#if type}}{{type}}-card{{/if}}" data-index="{{index}}">
+      class="narrative-section context-section list-item-context-section {{#if type}}{{type}}-card{{/if}}" data-index="{{index}}">
     <div class="clickable">
-      {{#if type}}
-        {{#if text}}
-          {{> preview_text_section}}
-        {{/if}}
-        {{#if image}}
-          {{> preview_image_section}}
-        {{/if}}
-        {{#if gif}}
-          {{> display_image_section}}
-        {{/if}}
-        {{#if map}}
-
-          {{> preview_map_section}}
-
-        {{/if}}
-        {{#if audio}}
-          {{> display_audio_section}}
-        {{/if}}
-        {{#if video}}
-          {{> preview_video_section}}
-
-        {{/if}}
-        {{#if twitter}}
-          {{> display_twitter_section}}
-        {{/if}}
-        {{#if link}}
-          {{> display_link_section}}
-        {{/if}}
-        {{#if news}}
-          {{> preview_news_section}}
-        {{/if}}
-      {{else}}
-        {{> display_broken_section}}
-      {{/if}}
+      {{> Template.dynamic template=listModeTemplate}}
     </div>
       {{#if curateMode}}
         <button class="delete-current-context">{{> close_circle}}</button>

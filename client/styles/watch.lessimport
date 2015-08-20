@@ -458,7 +458,7 @@
 
 
 
-.preview-context-section{
+.list-item-context-section{
   line-height: 0;
   margin-bottom: 20px;
   .video-preview{
