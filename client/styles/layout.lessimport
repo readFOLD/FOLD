@@ -792,9 +792,6 @@ div.text-section {
 }
 
 
-.viz-section {
-  .size-to-fit;
-}
 .audio-section {
   .size-to-fit;
 }

@@ -333,8 +333,6 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
   }
 };
 
-Template.display_viz_section.helpers(horizontalBlockHelpers);
-
 Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
 //Template.display_image_section.onCreated(editableDescriptionDestroyedBoilerplate('editHorizontalBlockDescription'));
 Template.display_image_section.helpers(horizontalBlockHelpers);

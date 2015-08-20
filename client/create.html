@@ -455,44 +455,6 @@
   </div>
 </template>
 
-<template name="create_viz_section">
-  <div class="create-section">
-    <div class="tabs">
-      <ul>
-        {{#each dataSources}}
-          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
-        {{/each}}
-      </ul>
-    </div>
-    <select class="countries">
-      {{#each countries}}
-        <option class="countries" data-id="{{this.id}}" {{selectedIf isSelectedCountry}}>
-          {{this.name}}
-        </option>
-      {{/each}}
-    </select>
-    <select class="years">
-      {{#each years}}
-        <option class="year" data-category="{{this}}" {{selectedIf isSelectedYear}}>
-          {{this}}
-        </option>
-      {{/each}}
-    </select>
-
-    {{#if addingContext}}
-      <div class="viz-result-container">
-        <iframe width="{{cardWidth}}" height="315" src="{{url}}" frameborder="0" ></iframe>
-      </div>
-    {{/if}}
-
-    {{#if showAddButton}}
-      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-        Add
-      </button>
-    {{/if}}
-  </div>
-</template>
-
 <template name="create_map_section">
   <div class="search-section-title">Add a Map</div>
   {{> exit_search_button}}

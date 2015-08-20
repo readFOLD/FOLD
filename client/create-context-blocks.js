@@ -228,7 +228,6 @@ var createTemplateNames = [
   'create_twitter_section',
   'create_map_section',
   'create_audio_section',
-  'create_viz_section',
   'create_news_section',
   'create_link_section'
 ];
@@ -420,73 +419,6 @@ _.each(dataSourcesByType, function(dataSources, type){
   Template[templateName].helpers({dataSources: dataSources});
 });
 
-
-Template.create_viz_section.onCreated(function() {
-  this.type = 'viz';
-  Session.set('newHorizontalDataSource', 'oec');
-
-  this.directions = ['import', 'export'];
-  this.countries = VizBlock.countries;
-  this.years = [1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012];
-
-  this.selectedCountry = new ReactiveVar(_.sample(this.countries).id);
-  this.selectedDirection = new ReactiveVar('export');
-  this.selectedYear = new ReactiveVar(2012);
-
-  this.focusResult = new ReactiveVar();
-
-  var that = this;
-  this.autorun(function() {
-    var oecYear = that.selectedYear.get();
-    var oecCountryCode = that.selectedCountry.get();
-    var oecDirection = that.selectedDirection.get();
-
-    that.focusResult.set(new VizBlock({
-      reference: {
-        oecCountry: oecCountryCode,
-        oecYear: oecYear,
-        oecDirection: oecDirection
-      },
-      authorId : Meteor.user()._id,
-      type: that.type,
-      source: Session.get('newHorizontalDataSource')
-    }));
-  });
-});
-
-
-Template.create_viz_section.onRendered(function() {
-  $("select").selectOrDie({size: 8});
-});
-
-Template.create_viz_section.helpers({
-    cardWidth: function() { return Session.get('cardWidth') - 40; } ,
-    directions: function() { return Template.instance().directions; },
-    countries: function() { return Template.instance().countries; },
-    years: function() { return Template.instance().years; },
-    selectedYear: function() { return Template.instance().selectedYear.get(); },
-    selectedCountry: function() { return Template.instance().selectedCountry.get(); },
-    selectedDirection: function() { return Template.instance().selectedDirection.get(); },
-    isSelectedYear: function() { return (this == Template.instance().selectedYear.get()); },
-    isSelectedCountry: function() { return (this.id === Template.instance().selectedCountry.get()); },
-    isSelectedDirection: function() { return (this === Template.instance().selectedDirection.get()); },
-    url: function() {
-      var preview = Template.instance().focusResult.get();
-      if (preview) {
-        return preview.url()
-      }
-    }
-  }
-);
-
-Template.create_viz_section.events({
-  "change select.countries": function(e, t) {
-    t.selectedCountry.set($(e.target).find('option:selected').data('id'));
-  },
-  "change select.years": function(e, t) {
-    t.selectedYear.set($(e.target).val());
-  }
-})
 
 Template.create_news_section.onCreated(function() {
   this.type = 'link';

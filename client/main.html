@@ -87,21 +87,6 @@
   </div>
 </template>
 
-<template name="display_viz_section">
-  <div class="viz-section">
-    {{#if selected}}
-      <iframe width="100%" height="100%" src="{{url}}" frameborder="0" ></iframe>
-    {{else}}
-      <div class="icon-only-preview">
-        {{> viz_icon}}
-      </div>
-    {{/if}}
-    {{{annotation}}}
-  </div>
-</template>
-
-
-
 
 <template name="display_audio_section">
   <div class="audio-section">
