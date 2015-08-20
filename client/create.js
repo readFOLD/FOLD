@@ -600,9 +600,6 @@ Template.content_icons.events({
   'click .twitter-button': function(d, t) {
     Session.set('mediaDataType', 'twitter');
   },
-  'click .viz-button': function(d, t) {
-    Session.set('mediaDataType', 'viz');
-  },
   'click .audio-button': function(d, t) {
     Session.set('mediaDataType', 'audio');
   },

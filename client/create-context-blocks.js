@@ -400,7 +400,6 @@ Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
 var dataSourcesByType = {
   'stream': [{source: 'all_streaming_services', 'display': 'All'}],
   'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}, {source: 'cloudinary', display: 'Upload Your Own'}],
-  'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
   //'gif': [{source: 'giphy', display: 'Giphy'}],
   'video': [{source: 'youtube', display: 'Youtube'}, {source: 'vimeo', display: 'Vimeo'}],
   'audio': [{source: 'soundcloud', display: 'SoundCloud'}],
