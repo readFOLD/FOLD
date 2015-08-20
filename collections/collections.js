@@ -22,7 +22,6 @@ var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match
 
 cleanVerticalSectionContent = function(html) {
 
-
   var initialClean = $.htmlClean(html, _.extend({}, _.omit(cleanHtmlOptions, 'allowedTags'), {allowEmpty: ['div']})); // do all cleaning except tag removal. allowEmpty means <div><br></div> turns into <div></div> instead of being deleted entirely
   
   var linebreakClean = initialClean

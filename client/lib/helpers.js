@@ -125,17 +125,11 @@ window.typeHelpers = {
   image: function() {
     return this.type === "image";
   },
-  gif: function() {
-    return this.type === "gif";
-  },
   map: function() {
     return this.type === "map";
   },
   video: function() {
     return this.type === "video";
-  },
-  viz: function() {
-    return this.type === "viz";
   },
   twitter: function() {
     return this.type === "twitter";

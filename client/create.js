@@ -323,17 +323,6 @@ window.hideNewHorizontalUI = function() {
   return Session.set("addingContext", null);
 };
 
-var defaultContextType = 'video';
-
-var toggleHorizontalUI = function(forceBool) {
-
-  if (!Session.get("addingContext")) {
-    Session.set('mediaDataType', defaultContextType);
-    showNewHorizontalUI()
-  } else {
-    hideNewHorizontalUI()
-  }
-};
 
 Template.stream_search.events({
   'mouseenter .horizontal-narrative-section': function() {
@@ -344,9 +333,6 @@ Template.stream_search.events({
   }
 });
 
-Template.add_context.onCreated(function() {
-  Session.setDefault('mediaDataType', defaultContextType);
-});
 
 contextHelpers = ({
   type: function() {
@@ -361,9 +347,6 @@ contextHelpers = ({
   image: function() {
     return Session.get('mediaDataType') === "image";
   },
-  gif: function() {
-    return Session.get('mediaDataType') === "gif";
-  },
   news: function() {
     return Session.get('mediaDataType') === "news";
   },
@@ -375,9 +358,6 @@ contextHelpers = ({
   },
   twitter: function() {
     return Session.get('mediaDataType') === "twitter";
-  },
-  viz: function() {
-    return Session.get('mediaDataType') === "viz";
   },
   audio: function() {
     return Session.get('mediaDataType') === "audio";
@@ -402,9 +382,6 @@ Template.content_icons.helpers({
   show_image_icon: function () {
     return this.showAll || Session.get("curateMode") || this.hasContextOfType("image");
   },
-  show_gif_icon: function () {
-    return this.showAll || Session.get("curateMode") || this.hasContextOfType("gif");
-  },
   show_news_icon: function () {
     return this.showAll || Session.get("curateMode") || this.hasContextOfType("news");
   },
@@ -416,9 +393,6 @@ Template.content_icons.helpers({
   },
   show_twitter_icon: function () {
     return this.showAll || Session.get("curateMode") || this.hasContextOfType("twitter");
-  },
-  show_viz_icon: function () {
-    return this.showAll || Session.get("curateMode") || this.hasContextOfType("viz");
   },
   show_audio_icon: function () {
     return this.showAll || Session.get("curateMode") || this.hasContextOfType("audio");
@@ -434,12 +408,6 @@ Template.content_icons.helpers({
   }
 });
 
-Template.add_context.helpers({
-  left: function() {
-    var addBlockWidth = 75;
-    return addBlockWidth + Session.get("verticalLeft") + Session.get("cardWidth") + 2 * Session.get("separation");
-  }
-});
 
 Template.content_icons.events({
   'click .stream-button': function(d, t) {
@@ -608,16 +576,5 @@ Template.link_twitter.events({
 //Template.publish_overlay.helpers({
 //  'keywordsString': function(){
 //    return (this.keywords || []).toString();
-//  }
-//});
-//
-//Template.publish_overlay.events({
-//  'click .header-upload': function(e, t) {
-//    Meteor.setTimeout(function(){
-//      $('body,html').animate({
-//        scrollTop: 0
-//        }, 500, 'easeInExpo')}
-//      , 1500)
-//    analytics.track('Click upload header inside publish dialog');
 //  }
 //});

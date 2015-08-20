@@ -1,11 +1,5 @@
 var throttledResize;
 
-UI.registerHelper('selectedIf', function(val) {
-  return val ? 'selected' : '';
-});
-
-Session.set("separation", 10);
-
 var windowSizeDep = new Tracker.Dependency();
 
 Meteor.startup(function(){
@@ -17,21 +11,11 @@ Meteor.startup(function(){
     // Safari changes window size in a weird way that jquery doesn't register correctly when scroll up vs down
     Session.set("windowHeight", Meteor.Device.isPhone() && !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/) ? window.innerHeight : $(window).height());
 
-    Session.set("minimapMaxHeight", Session.get("windowHeight") - 592);
-
     Session.set("windowWidth", windowWidth);
 
     if (Meteor.Device.isPhone()) {
       document.body.style.overflowX = "hidden";
       $('body').css('max-width', windowWidth);
-    }
-  });
-
-  Tracker.autorun(function(){
-    if (Session.get('mobileContextView')){
-      document.body.style.overflowY = "hidden";
-    } else {
-      document.body.style.overflowY = "auto"; // TODO is this helping?
     }
   });
 
@@ -52,140 +36,35 @@ window.hammerSwipeOptions = {
 };
 
 
-window.updateCurrentY = function() {
-  var actualY, h, i, maxScroll, readMode, scrollTop, stickyBody, stickyTitle, vertTop, _i, _len, _ref;
-  scrollTop = $(document).scrollTop();
-  Session.set("scrollTop", scrollTop);
-  $("div.logo").addClass("visible");
-
-  if (scrollTop >= (200 - 32)) {
-    Session.set("sticky", true);
-  } else {
-    Session.set("sticky", false);
-  }
-  stickyBody = 90;
-  stickyTitle = 120;
-  maxScroll = 230;
-  readMode = 250;
-  $("div#banner-overlay").css({
-    opacity: Math.min(1.0, scrollTop / maxScroll)
-  });
-  $("article.content").css({
-    opacity: 0.5 + Math.min(1.0, scrollTop / maxScroll) / 2
-  });
-  if (scrollTop >= stickyTitle) {
-    $("div.title-author").css({
-      "margin-top": "0px"
-    });
-    $("div.title-author").addClass("fixed");
-  } else {
-    $("div.title-author").css({
-      "margin-top": "125px"
-    });
-    $("div.title-author").removeClass("fixed");
-  }
-  if (scrollTop >= stickyBody) {
-    $("div.horizontal-context").addClass("fixed");
-    $("div.vertical-narrative").addClass("fixed");
-    $("div.vertical-narrative").removeClass("free-scroll");
-
-    if (scrollTop >= maxScroll) {
-      $("div.vertical-narrative").removeClass("fixed");
-      $("div.vertical-narrative").addClass("free-scroll");
-
-    }
-  } else {
-    $("div.horizontal-context").removeClass("fixed");
-    $("div.vertical-narrative").removeClass("fixed");
-    $("div.vertical-narrative").removeClass("free-scroll");
-  }
-  if (scrollTop >= maxScroll) {
-    $("div.title-overlay, div#banner-overlay").addClass("fixed");
-    $("div.logo").addClass("visible");
-    Session.set("pastHeader", true);
-  } else {
-    $("div.title-overlay, div#banner-overlay").removeClass("fixed");
-    Session.set("pastHeader", false);
-    if (scrollTop > 25){
-      $("div.logo").removeClass("visible");
-    }
-
-  }
-  if (scrollTop >= readMode) {
-    var selectOffset = - 90;
-    _ref = _.map(window.getVerticalHeights(), function(height){ return height + selectOffset});
-    for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-      h = _ref[i];
-      if (scrollTop < h) {
-        break;
-      }
-    }
-    actualY = i - 1;
-    if (Session.get('currentY') !== actualY) {
-      Session.set("currentX", 0);
-      return Session.set("currentY", actualY);
-    }
-  }
-};
-
-Tracker.autorun(function(){
-  if(!Session.get('pastHeader')){
-    Session.set('currentY', null);
-    Session.set('currentX', null);
-  }
-});
-
-Tracker.autorun(function(){
-  var currentYId = Session.get("currentYId");
-  if (currentYId){
-    Session.set("currentX", Session.get("currentXByYId")[currentYId] || 0);
-  }
-});
-
-Meteor.startup(function() {
-  var throttledUpdate;
-  Session.setDefault("filterOpen", false);
-  Session.setDefault("filter", "curated");
-  Session.setDefault("category", "all");
-  Session.setDefault("pastY", []);
-  Session.setDefault("pastX", []);
-  Session.setDefault("currentY", void 0);
-  Session.setDefault("previousY", void 0);
-  Session.setDefault("currentX", void 0);
-  throttledUpdate = _.throttle(window.updateCurrentY, 20);
-  return $(document).scroll(throttledUpdate);
-});
-
-
-window.trackingInfoFromStory = function(story){
-  return _.chain(story)
-    .pick([
-      '_id',
-      'authorDisplayUsername',
-      'authorId',
-      'authorName',
-      'authorUsername',
-      'createdAt',
-      'editorsPick',
-      'editorsPickAt',
-      'firstPublishedAt',
-      'headerImageFormat',
-      'keywords',
-      'narrativeRightsReserved',
-      'publishedAt',
-      'savedAt',
-      'shortId',
-      'title'])
-    .extend(story.published ? {
-      'numberOfContextBlocks': story.contextBlockIds.length,
-      'numberOfVerticalSections': story.verticalSections.length,
-      'favorites': story.favoritedTotal,
-      'numberofKeywords': story.keywords.length,
-      'titleLength': story.title.length
-    } : {})
-    .extend(story.countContextTypes ? story.countContextTypes() : {}) // TODO Fix
-    .value();
-};
+//window.trackingInfoFromStory = function(story){
+//  return _.chain(story)
+//    .pick([
+//      '_id',
+//      'authorDisplayUsername',
+//      'authorId',
+//      'authorName',
+//      'authorUsername',
+//      'createdAt',
+//      'editorsPick',
+//      'editorsPickAt',
+//      'firstPublishedAt',
+//      'headerImageFormat',
+//      'keywords',
+//      'narrativeRightsReserved',
+//      'publishedAt',
+//      'savedAt',
+//      'shortId',
+//      'title'])
+//    .extend(story.published ? {
+//      'numberOfContextBlocks': story.contextBlockIds.length,
+//      'numberOfVerticalSections': story.verticalSections.length,
+//      'favorites': story.favoritedTotal,
+//      'numberofKeywords': story.keywords.length,
+//      'titleLength': story.title.length
+//    } : {})
+//    .extend(story.countContextTypes ? story.countContextTypes() : {}) // TODO Fix
+//    .value();
+//};
 
 
 //Template.story_header.onRendered(function() {
@@ -207,46 +86,6 @@ window.trackingInfoFromStory = function(story){
 //});
 
 
-//Template.story_title.helpers({
-//  storyTitleDiv: function(){
-//    if (Session.get('read')) {
-//      return '<div class="story-title">' + _.escape(this.title) + '</div>';
-//    } else {
-//      // this is contenteditable in edit mode
-//      return '<div class="story-title" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
-//    }
-//  }
-//});
-
-//Template.vertical_section_block.helpers({
-//  notFirst: function() {
-//    return !Session.equals("currentY", 0);
-//  },
-//  verticalSelected: function() {
-//    return Session.equals("currentY", this.index) && Session.get("pastHeader");
-//  },
-//  validTitle: function() {
-//    return this.title === !"title";
-//  },
-//  titleDiv: function() {
-//    if (Session.get('read')) {
-//      return '<div class="title" dir="auto">' + _.escape(this.title) + '</div>';
-//    } else {
-//      // this is contenteditable in edit mode
-//      return '<div class="title editable" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
-//    }
-//  },
-//  // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
-//  contentDiv: function() {
-//    if (Session.get('read')) {
-//      return '<div class="content" dir="auto">' + cleanVerticalSectionContent(this.content) + '</div>';
-//    } else {
-//      // nonReactiveContent preserves browser undo functionality across saves
-//      // this is contenteditable in edit mode
-//      return '<div class="content editable fold-editable" placeholder="Type your text here." contenteditable="true" dir="auto">' + cleanVerticalSectionContent(Template.instance().semiReactiveContent.get()) + '</div>';
-//    }
-//  }
-//});
 
 editableDescriptionCreatedBoilerplate = function() {
   this.editing = new ReactiveVar(false);
@@ -271,39 +110,6 @@ editableDescriptionCreatedBoilerplate = function() {
 //  }
 //};
 
-
-
-// TODO get swipes on context cards to work
-//Template.horizontal_section_block.onRendered(function(){
-//  //
-//  if(Meteor.Device.isPhone()) {
-//    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swipeleft',function(){
-//        window.goRightOneCard();
-//      }
-//    );
-//
-//    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swiperight',function(){
-//        window.goLeftOneCard();
-//      }
-//    );
-//  }
-//});
-
-//Template.horizontal_section_block.events({
-//  'click .mobile-context-back-button': function(e, t){
-//    Session.set('mobileContextView', false);
-//    analytics.track('Click mobile back button');
-//  }
-//});
-
-//Template.horizontal_section_block.helpers(horizontalBlockHelpers);
-//
-//// Magic layout function
-//Template.horizontal_section_block.helpers({
-//  lastUpdate: function() {
-//    Session.get('lastUpdate');
-//  }
-//});
 
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 
@@ -482,58 +288,7 @@ Template.editors_pick_button.events({
   }
 });
 
-//Template.display_twitter_section.events({
-//  "click .show-image" : function(e, template) {
-//    template.$('.twitter-text-section').toggleClass('transparent');
-//  },
-//  "click .image-section" : function(e, template) {
-//    template.$('.twitter-text-section').removeClass('transparent');
-//  },
-//  "mouseenter .twitter-section" : function(e, template) {
-//    if (template.data.imgUrl) {
-//      template.$('.twitter-text-section').addClass('show-corner');
-//      template.$('.flag').addClass('show-corner');
-//    }
-//  },
-//  "mouseleave .twitter-section" : function(e, template) {
-//    if (template.data.imgUrl) {
-//      template.$('.twitter-text-section').removeClass('show-corner');
-//      template.$('.flag').removeClass('show-corner');
-//    }
-//  }
-//});
 
-
-Tracker.autorun(function(){
-  var story = Session.get('story');
-  var currentY = Session.get("currentY");
-  if (story && (currentY != null)) {
-    Session.set('currentVerticalSection', story.verticalSections[currentY]);
-  } else {
-    Session.set('currentVerticalSection', null);
-  }
-});
-
-Tracker.autorun(function() {
-  var verticalSection = Session.get('currentVerticalSection');
-  if (verticalSection) {
-    return Session.set('currentYId', verticalSection._id);
-  } else {
-    return Session.set('currentYId', null);
-  }
-});
-
-Tracker.autorun(function() {
-  var verticalSection = Session.get('currentVerticalSection');
-  var currentX = Session.get('currentX');
-  if (verticalSection) {
-    var currentContextBlockId = verticalSection.contextBlocks[currentX];
-    if (currentContextBlockId) {
-      return Session.set('currentXId', currentContextBlockId);
-    }
-  }
-  return Session.set('currentXId', null);
-});
 
 
 

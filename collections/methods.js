@@ -78,12 +78,6 @@ var assertOwner = function(userId, doc) {
   }
 };
 
-var swapArrayElements = function(arr, x, y){
-  var b = arr[y];
-  arr[y] = arr[x];
-  arr[x] = b;
-};
-
 // only the curator may update the stream
 var updateStream = function(selector, modifier, options) {
   if (_.isEmpty(modifier)){
@@ -95,16 +89,6 @@ var updateStream = function(selector, modifier, options) {
   return Deepstreams.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
 };
 
-// only the author may update the story
-var updateContextBlocks = function(selector, modifier, options) {
-  if (_.isEmpty(modifier)){
-    return
-  }
-  modifier.$set = _.extend(modifier.$set || {}, {savedAt: new Date});
-  selector.authorId = this.userId; // this.userId must be the user (use via .call or .apply)
-
-  return ContextBlocks.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
-};
 
 Meteor.methods({
   addContextToStream: function(streamShortId, contextBlock){ // TODO find a way to pick id safely to avoid potential collisions. Context block id uniqueness is currently not enforced.
@@ -359,132 +343,6 @@ Meteor.methods({
       }
     });
   },
-  //insertVerticalSection: function(storyId, index, verticalSectionId) { // TO-DO find a good way to generate this id in a trusted way
-  //  check(storyId, String);
-  //  check(index, Number);
-  //  var newSection = {
-  //    _id: verticalSectionId,
-  //    contextBlocks: [],
-  //    title: "",
-  //    content: "",
-  //    hasTitle: false
-  //  };
-  //
-  //  var numUpdated = updateStory.call(this, {_id: storyId }, {
-  //    $push: {
-  //      'draftStory.verticalSections': {
-  //        $position: index,
-  //        $each: [newSection]
-  //      }
-  //    }
-  //  });
-  //
-  //  if (Meteor.isClient && numUpdated){
-  //    goToY(index);
-  //  }
-  //
-  //  return numUpdated;
-  //},
-  //moveVerticalSectionUpOne: function(storyId, index) {
-  //  check(storyId, String);
-  //  check(index, Number);
-  //  if (!index){
-  //    throw new Meteor.Error('Must have a positive index')
-  //  }
-  //
-  //  var selector = { _id: storyId };
-  //  var story = Stories.findOne(selector, {fields:
-  //    {
-  //      'draftStory.verticalSections': 1,
-  //      'authorId': 1
-  //    }
-  //  });
-  //
-  //  assertOwner(this.userId, story);
-  //
-  //  var verticalSections = story.draftStory.verticalSections;
-  //
-  //  swapArrayElements(verticalSections, index, index - 1);
-  //
-  //  var numUpdated = updateStory.call(this, { _id: storyId }, {
-  //    $set: {
-  //      'draftStory.verticalSections': verticalSections
-  //    }
-  //  });
-  //
-  //  if (Meteor.isClient && numUpdated) {
-  //    goToY(index - 1);
-  //  }
-  //
-  //  return numUpdated
-  //},
-  //moveVerticalSectionDownOne: function(storyId, index) {
-  //  check(storyId, String);
-  //  check(index, Number);
-  //
-  //  var selector = { _id: storyId };
-  //  var story = Stories.findOne(selector, {fields:
-  //    {
-  //      'draftStory.verticalSections': 1,
-  //      'authorId': 1
-  //    }
-  //  });
-  //
-  //  assertOwner(this.userId, story);
-  //
-  //  var verticalSections = story.draftStory.verticalSections;
-  //
-  //
-  //  if ((index + 1) >= verticalSections.length){
-  //    throw new Meteor.Error('Index too high')
-  //  }
-  //
-  //  swapArrayElements(verticalSections, index, index + 1);
-  //
-  //  var numUpdated = updateStory.call(this, { _id: storyId }, {
-  //    $set: {
-  //      'draftStory.verticalSections': verticalSections
-  //    }
-  //  })
-  //
-  //  if (Meteor.isClient && numUpdated) {
-  //    goToY(index + 1);
-  //  }
-  //
-  //  return numUpdated
-  //},
-  //deleteVerticalSection: function(storyId, index) {
-  //  check(storyId, String);
-  //  check(index, Number);
-  //
-  //  var selector = { _id: storyId };
-  //  var story = Stories.findOne(selector, {fields:
-  //    {
-  //      'draftStory.verticalSections': 1,
-  //      'authorId': 1
-  //    }
-  //  });
-  //
-  //  assertOwner(this.userId, story);
-  //
-  //  var verticalSections = story.draftStory.verticalSections;
-  //
-  //  if (index < 0 || index >= story.draftStory.verticalSections){
-  //    throw new Meteor.Error('Index too high')
-  //  }
-  //
-  //  var contextBlocks = verticalSections[index].contextBlocks;
-  //
-  //  if (contextBlocks){ // TO-DO Remix. Check if remixed etc..
-  //    ContextBlocks.remove({_id: {$in: contextBlocks}, authorId: this.userId})
-  //  }
-  //
-  //  return updateStory.call(this, { _id: storyId }, {
-  //    $pull: {
-  //      'draftStory.verticalSections': {_id: verticalSections[index]._id}
-  //    }
-  //  })
-  //},
   favoriteStory: function(storyId) {
     check(storyId, String);
     return changeFavorite.call(this, storyId, true);

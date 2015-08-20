@@ -1,52 +1,3 @@
-//Template.watch.onRendered(function(){
-//  console.log('watch is rendered')
-//  var tag = document.createElement('script');
-//
-//  tag.src = "https://www.youtube.com/iframe_api";
-//  var firstScriptTag = document.getElementsByTagName('script')[0];
-//  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-//  console.log(firstScriptTag)
-//
-//// 3. This function creates an <iframe> (and YouTube player)
-////    after the API code downloads.
-//  var player;
-//  window.onYouTubeIframeAPIReady = function() {
-//    console.log('api ready')
-//    player = new YT.Player('player-div', {
-//      height: '390',
-//      width: '640',
-//      videoId: 'M7lc1UVf-VE',
-//      events: {
-//        'onReady': onPlayerReady,
-//        'onStateChange': onPlayerStateChange
-//      }
-//    });
-//    banana = player;
-//  }
-//
-//  YT.load()
-//
-//// 4. The API will call this function when the video player is ready.
-//  onPlayerReady = function(event) {
-//    console.log(3333);
-//    event.target.playVideo();
-//  }
-//
-//// 5. The API calls this function when the player's state changes.
-////    The function indicates that when playing a video (state=1),
-////    the player should play for six seconds and then stop.
-//  var done = false;
-//  onPlayerStateChange = function(event) {
-//    if (event.data == YT.PlayerState.PLAYING && !done) {
-//      setTimeout(stopVideo, 6000);
-//      done = true;
-//    }
-//  }
-//})
-
-
-
-
 var ytScriptLoaded = false;
 
 var ytApiReady = new ReactiveVar(false);
@@ -133,9 +84,9 @@ Template.watch.onCreated(function () {
   this.autorun(function(){ // TODO confirm user is curator
     if(FlowRouter.subsReady() && that.data.onCuratePage()){
       if ((user = Meteor.user())) { // if there is a user
-        //if (user && data && user._id !== data.authorId) { // if they don't own the story take them to story not found
-        //  return this.render("story_not_found");
-        //}
+        if (user && data && user._id !== data.curatorId) { // if they don't own the stream take them to stream not found
+          return this.render("stream_not_found");
+        }
         var accessPriority = Meteor.user().accessPriority; // TODO update for Deepstream
         if (!accessPriority || accessPriority > window.createAccessLevel){
           //FlowRouter.withReplaceState(function(){
@@ -263,8 +214,7 @@ Template.watch.onRendered(function(){
             var ustreamPlayer = UstreamEmbed(that.mainStreamElementId);
 
             ustreamPlayer.getProperty('content', function(){
-              console.log('98493849')
-              console.log('content')
+              console.log('content is')
               console.log(arguments)
               //Meteor.setTimeout(onMainPlayerReady, 1000);
 

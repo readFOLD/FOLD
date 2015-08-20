@@ -38,19 +38,8 @@ Handlebars.registerHelper("signingIn", function() {
   return Session.get("signingIn");
 });
 
-Handlebars.registerHelper("currentYId", function() {
-  return Session.get("currentYId");
-});
-
 Handlebars.registerHelper("addingContext", function() {
   return Session.get("addingContext");
-});
-
-Handlebars.registerHelper("editingThisContext", function() {
-  var editingContext = Session.get("editingContext");
-  if (editingContext){
-    return editingContext === this._id;
-  }
 });
 
 Handlebars.registerHelper("isContextOfType", function(type) {
@@ -63,13 +52,6 @@ Handlebars.registerHelper("isCurator", function() {
   return Meteor.user() && Meteor.user()._id === this.curatorId;
 });
 
-Handlebars.registerHelper("cardWidth", function() {
-  if (Session.get("narrativeView")) {
-    return 800;
-  }
-  return Session.get("cardWidth");
-});
-
 Handlebars.registerHelper("windowWidth", function() {
   return Session.get("windowWidth");
 });
@@ -78,9 +60,6 @@ Handlebars.registerHelper("windowHeight", function() {
   return Session.get("windowHeight");
 });
 
-Handlebars.registerHelper("verticalLeft", function() {
-  return Session.get("verticalLeft");
-});
 
 Handlebars.registerHelper("profileImage", function(user, size) {
   var diameter;
