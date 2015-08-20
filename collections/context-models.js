@@ -388,9 +388,10 @@ VideoBlock = (function (_super) {
     return this.reference.title;
   };
 
-  VideoBlock.prototype.listModeItemTemplate = 'preview_video_section';
-  VideoBlock.prototype.soloModeTemplate = 'display_video_section';
   VideoBlock.prototype.soloModeLocation = 'overlay';
+  VideoBlock.prototype.soloModeTemplate = 'display_video_section';
+  VideoBlock.prototype.listModeItemTemplate = 'preview_video_section';
+  VideoBlock.prototype.countListModeViewAsRead = true;
 
   return VideoBlock;
 
@@ -430,9 +431,10 @@ AudioBlock = (function (_super) {
   };
 
 
-  AudioBlock.prototype.listModeItemTemplate = 'display_audio_section';
-  AudioBlock.prototype.soloModeTemplate = 'display_audio_section';
   AudioBlock.prototype.soloModeLocation = null;
+  AudioBlock.prototype.soloModeTemplate = 'display_audio_section';
+  AudioBlock.prototype.listModeItemTemplate = 'display_audio_section';
+  AudioBlock.prototype.countListModeViewAsRead = true;
 
   return AudioBlock;
 
@@ -548,9 +550,10 @@ TwitterBlock = (function (_super) {
     });
   };
 
-  TwitterBlock.prototype.listModeItemTemplate = 'display_twitter_section';
-  TwitterBlock.prototype.soloModeTemplate = null;
   TwitterBlock.prototype.soloModeLocation = null;
+  TwitterBlock.prototype.soloModeTemplate = null;
+  TwitterBlock.prototype.listModeItemTemplate = 'display_twitter_section';
+  TwitterBlock.prototype.countListModeViewAsRead = true;
 
   return TwitterBlock;
 
@@ -679,9 +682,10 @@ ImageBlock = (function (_super) {
     return this.description || this.reference.title || this.reference.description || this.reference.id;
   };
 
-  ImageBlock.prototype.listModeItemTemplate = 'preview_image_section';
-  ImageBlock.prototype.soloModeTemplate = 'display_image_section';
   ImageBlock.prototype.soloModeLocation = 'overlay';
+  ImageBlock.prototype.soloModeTemplate = 'display_image_section';
+  ImageBlock.prototype.listModeItemTemplate = 'preview_image_section';
+  ImageBlock.prototype.countListModeViewAsRead = true;
 
   return ImageBlock;
 
@@ -725,9 +729,10 @@ MapBlock = (function (_super) {
     }
   };
 
-  MapBlock.prototype.listModeItemTemplate = 'preview_map_section';
-  MapBlock.prototype.soloModeTemplate = 'display_map_section';
   MapBlock.prototype.soloModeLocation = 'overlay';
+  MapBlock.prototype.soloModeTemplate = 'display_map_section';
+  MapBlock.prototype.listModeItemTemplate = 'preview_map_section';
+  MapBlock.prototype.countListModeViewAsRead = true;
 
   return MapBlock;
 
@@ -758,9 +763,10 @@ TextBlock = (function (_super) {
     return this.content;
   };
 
-  TextBlock.prototype.listModeItemTemplate = 'preview_text_section';
-  TextBlock.prototype.soloModeTemplate = 'display_text_section';
   TextBlock.prototype.soloModeLocation = 'sidebar';
+  TextBlock.prototype.soloModeTemplate = 'display_text_section';
+  TextBlock.prototype.listModeItemTemplate = 'preview_text_section';
+  TextBlock.prototype.countListModeViewAsRead = false;
 
   return TextBlock;
 
@@ -807,9 +813,10 @@ LinkBlock = (function (_super) {
 
   };
 
-  LinkBlock.prototype.listModeItemTemplate = 'display_link_section';
-  LinkBlock.prototype.soloModeTemplate = null;
   LinkBlock.prototype.soloModeLocation = null;
+  LinkBlock.prototype.soloModeTemplate = null;
+  LinkBlock.prototype.listModeItemTemplate = 'display_link_section';
+  LinkBlock.prototype.countListModeViewAsRead = true;
 
   return LinkBlock;
 
@@ -867,9 +874,10 @@ NewsBlock = (function (_super) {
     return this.title();
   };
 
-  NewsBlock.prototype.listModeItemTemplate = 'preview_news_section';
-  NewsBlock.prototype.soloModeTemplate = 'display_news_section';
   NewsBlock.prototype.soloModeLocation = 'sidebar';
+  NewsBlock.prototype.soloModeTemplate = 'display_news_section';
+  NewsBlock.prototype.listModeItemTemplate = 'preview_news_section';
+  NewsBlock.prototype.countListModeViewAsRead = false;
 
   return NewsBlock;
 
