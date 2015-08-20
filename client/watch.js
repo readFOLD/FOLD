@@ -544,6 +544,11 @@ Template.watch.events({
     Session.set('saveState', 'saving');
     return Meteor.call('updateStreamTitle', template.data.shortId(), streamTitle, basicErrorHandler)
   },
+  'paste [contenteditable]': window.plainTextPaste,
+  'drop [contenteditable]': function(e){
+    e.preventDefault();
+    return false;
+  },
   'blur .stream-description[contenteditable]': function(e,template) {
     streamDescription = $.trim(template.$('div.stream-description').text());
     Session.set('saveState', 'saving');
