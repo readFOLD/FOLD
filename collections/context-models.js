@@ -314,6 +314,10 @@ Stream = (function (_super) {
     }
   };
 
+  Stream.prototype.searchList = true;
+  Stream.prototype.searchListTemplate = 'create_stream_section';
+  Stream.prototype.searchSoloTemplate = 'create_stream_section';
+
 
   return Stream;
 
@@ -392,6 +396,11 @@ VideoBlock = (function (_super) {
   VideoBlock.prototype.soloModeTemplate = 'display_video_section';
   VideoBlock.prototype.listModeItemTemplate = 'preview_video_section';
   VideoBlock.prototype.countListModeViewAsRead = true;
+  VideoBlock.prototype.searchList = true;
+  VideoBlock.prototype.searchListTemplate = 'create_video_section';
+  VideoBlock.prototype.searchSoloTemplate = 'create_video_section';
+  VideoBlock.prototype.homepagePreview = false;
+  VideoBlock.prototype.homepagePreviewTemplate = null;
 
   return VideoBlock;
 
@@ -435,6 +444,11 @@ AudioBlock = (function (_super) {
   AudioBlock.prototype.soloModeTemplate = 'display_audio_section';
   AudioBlock.prototype.listModeItemTemplate = 'display_audio_section';
   AudioBlock.prototype.countListModeViewAsRead = true;
+  AudioBlock.prototype.searchList = true;
+  AudioBlock.prototype.searchListTemplate = 'create_audio_section';
+  AudioBlock.prototype.searchSoloTemplate = 'create_audio_section';
+  AudioBlock.prototype.homepagePreview = false;
+  AudioBlock.prototype.homepagePreviewTemplate = null;
 
   return AudioBlock;
 
@@ -554,6 +568,11 @@ TwitterBlock = (function (_super) {
   TwitterBlock.prototype.soloModeTemplate = null;
   TwitterBlock.prototype.listModeItemTemplate = 'display_twitter_section';
   TwitterBlock.prototype.countListModeViewAsRead = true;
+  TwitterBlock.prototype.searchList = true;
+  TwitterBlock.prototype.searchListTemplate = 'create_twitter_section';
+  TwitterBlock.prototype.searchSoloTemplate = 'create_twitter_section';
+  TwitterBlock.prototype.homepagePreview = true;
+  TwitterBlock.prototype.homepagePreviewTemplate = 'homepage_preview_twitter_section';
 
   return TwitterBlock;
 
@@ -686,6 +705,11 @@ ImageBlock = (function (_super) {
   ImageBlock.prototype.soloModeTemplate = 'display_image_section';
   ImageBlock.prototype.listModeItemTemplate = 'preview_image_section';
   ImageBlock.prototype.countListModeViewAsRead = true;
+  ImageBlock.prototype.searchList = true;
+  ImageBlock.prototype.searchListTemplate = 'create_image_section';
+  ImageBlock.prototype.searchSoloTemplate = 'create_image_section';
+  ImageBlock.prototype.homepagePreview = false;
+  ImageBlock.prototype.homepagePreviewTemplate = null;
 
   return ImageBlock;
 
@@ -733,6 +757,11 @@ MapBlock = (function (_super) {
   MapBlock.prototype.soloModeTemplate = 'display_map_section';
   MapBlock.prototype.listModeItemTemplate = 'preview_map_section';
   MapBlock.prototype.countListModeViewAsRead = true;
+  MapBlock.prototype.searchList = false;
+  MapBlock.prototype.searchListTemplate = null;
+  MapBlock.prototype.searchSoloTemplate = 'create_map_section';
+  MapBlock.prototype.homepagePreview = false;
+  MapBlock.prototype.homepagePreviewTemplate = null;
 
   return MapBlock;
 
@@ -767,6 +796,11 @@ TextBlock = (function (_super) {
   TextBlock.prototype.soloModeTemplate = 'display_text_section';
   TextBlock.prototype.listModeItemTemplate = 'preview_text_section';
   TextBlock.prototype.countListModeViewAsRead = false;
+  TextBlock.prototype.searchList = false;
+  TextBlock.prototype.searchListTemplate = null;
+  TextBlock.prototype.searchSoloTemplate = 'create_text_section';
+  TextBlock.prototype.homepagePreview = true;
+  TextBlock.prototype.homepagePreviewTemplate = 'homepage_preview_twitter_section';
 
   return TextBlock;
 
@@ -817,6 +851,11 @@ LinkBlock = (function (_super) {
   LinkBlock.prototype.soloModeTemplate = null;
   LinkBlock.prototype.listModeItemTemplate = 'display_link_section';
   LinkBlock.prototype.countListModeViewAsRead = true;
+  LinkBlock.prototype.searchList = false;
+  LinkBlock.prototype.searchListTemplate = null;
+  LinkBlock.prototype.searchSoloTemplate = 'create_link_section';
+  LinkBlock.prototype.homepagePreview = false;
+  LinkBlock.prototype.homepagePreviewTemplate = null;
 
   return LinkBlock;
 
@@ -878,6 +917,11 @@ NewsBlock = (function (_super) {
   NewsBlock.prototype.soloModeTemplate = 'display_news_section';
   NewsBlock.prototype.listModeItemTemplate = 'preview_news_section';
   NewsBlock.prototype.countListModeViewAsRead = false;
+  NewsBlock.prototype.searchList = false;
+  NewsBlock.prototype.searchListTemplate = null;
+  NewsBlock.prototype.searchSoloTemplate = 'create_news_section';
+  NewsBlock.prototype.homepagePreview = true;
+  NewsBlock.prototype.homepagePreviewTemplate = 'homepage_preview_twitter_section';
 
   return NewsBlock;
 

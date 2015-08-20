@@ -63,7 +63,7 @@ window.mainPlayer = {
         throw new Meteor.Error('main player has no active stream source')
     }
   }
-}
+};
 
 Template.watch.onCreated(function () {
   if(!ytScriptLoaded){
@@ -84,9 +84,9 @@ Template.watch.onCreated(function () {
   this.autorun(function(){ // TODO confirm user is curator
     if(FlowRouter.subsReady() && that.data.onCuratePage()){
       if ((user = Meteor.user())) { // if there is a user
-        if (user && data && user._id !== data.curatorId) { // if they don't own the stream take them to stream not found
-          return this.render("stream_not_found");
-        }
+        //if (user && data && user._id !== data.curatorId) { // if they don't own the stream take them to stream not found
+        //  return this.render("stream_not_found");
+        //}
         var accessPriority = Meteor.user().accessPriority; // TODO update for Deepstream
         if (!accessPriority || accessPriority > window.createAccessLevel){
           //FlowRouter.withReplaceState(function(){

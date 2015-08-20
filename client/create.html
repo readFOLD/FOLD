@@ -95,16 +95,10 @@
 
 <template name="add_context">
   <div class="add-context narrative-section selected editing">
-    {{#if type}}
-      {{#if chat}}{{> unimplemented_chat_section}}{{/if}}
-      {{#if link}}{{> create_link_section}}{{/if}}
-      {{#if text}}{{> create_text_section}}{{/if}}
-      {{#if audio}}{{> create_audio_section}}{{/if}}
-      {{#if image}}{{> create_image_section}}{{/if}}
-      {{#if news}}{{> create_news_section}}{{/if}}
-      {{#if map}}{{> create_map_section}}{{/if}}
-      {{#if video}}{{> create_video_section}}{{/if}}
-      {{#if twitter}}{{> create_twitter_section}}{{/if}}
+    {{#if listMode}}
+      {{> Template.dynamic template=searchListTemplate}}
+    {{else}}
+      {{> Template.dynamic template=searchSoloTemplate}}
     {{/if}}
   </div>
 </template>

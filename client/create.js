@@ -370,7 +370,18 @@ contextHelpers = ({
   }
 });
 
-Template.add_context.helpers(contextHelpers);
+Template.add_context.helpers({
+  listMode: function(){
+    return emptyContextBlockOfCurrentMediaDataType().searchList;
+  },
+  searchListTemplate: function(){
+    return emptyContextBlockOfCurrentMediaDataType().searchListTemplate;
+  },
+  searchSoloTemplate: function(){
+    return emptyContextBlockOfCurrentMediaDataType().searchSoloTemplate;
+  }
+});
+
 Template.content_icons.helpers(contextHelpers);
 Template.content_icons.helpers({
   show_stream_icon: function () {

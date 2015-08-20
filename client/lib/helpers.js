@@ -177,4 +177,9 @@ window.clearCurrentContext = function(){
 window.soloOverlayContextModeActive = function(){
   var currentContext = getCurrentContext();
   return currentContext && currentContext.soloModeLocation === 'overlay';
-}
+};
+
+
+window.emptyContextBlockOfCurrentMediaDataType = function(){
+  return newTypeSpecificContextBlock({type: Session.get('mediaDataType')});
+};
