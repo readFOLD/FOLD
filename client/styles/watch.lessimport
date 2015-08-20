@@ -653,7 +653,7 @@
   line-height: 40px;
   font-size: 14px;
   font-weight: medium;
-  color: @black-color;
+  color: @dark-text-color;
   a{
     pointer-events: all;
   }

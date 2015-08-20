@@ -1,5 +1,11 @@
 
+
+
+
 @black-color: #030303;
+@dark-text-color: @black-color;
+
+
 @darkerer-color: #181818;
 @darker-color: #212121;
 @dark-color: #303030;
@@ -185,7 +191,7 @@ html {
 }
 
 .action-button{
-  color: black;
+  color: @dark-text-color;
   background-color: @action-color;
   &:hover {
     background-color: @dark-action-color;
@@ -483,10 +489,7 @@ footer{
   }
   button{
     padding: 10px 12px 10px 12px;
-    background-color: @action-color;
-    &:hover {
-      background-color: @dark-color;
-    }
+    .action-button;
   }
 }
 
@@ -511,95 +514,6 @@ hr {
   width: 100%;
 }
 
-@nonMobileNarrativeSectionPadding: 30px;
-
-.vertical-narrative-section {
-  padding: @nonMobileNarrativeSectionPadding;
-
-  @media @mobile {
-    padding: 20px;
-  }
-  cursor: default;
-
-  a {
-    cursor: auto;
-    padding: 0 4px;
-  }
-  &.selected {
-    cursor: text;
-    a {
-      // moved background-transition to specific cases so everything doesn't need to animate when a new card becomes selected
-      cursor: pointer;
-      background-color: @unselected-background-color;
-      color: inherit;
-      &:hover {
-        background-color: @medium-color;
-        .background-transition;
-      }
-      &.active {
-        background-color: @action-color;
-        .background-transition;
-        color: white;
-      }
-      &.placeholder {
-        background-color: @panel-color;
-        .background-transition;
-        color: white;
-      }
-    }
-  }
-}
-
-.narrative-section {
-  display: inline-block;
-  &.new-section{
-    padding: 0 15px;
-  }
-  background-color: @white-color;
-
-  div.vertical-nav-container {
-    position: absolute;
-    top: 24px;
-    right: 15px;
-
-    img.arrow {
-      margin-right: 5px;
-      display: inline;
-      border-radius: 17.5px;
-      cursor: pointer;
-      &:hover {
-        background-color: @action-color;
-      }
-    }
-  }
-
-  @normalContentHeight: 232px;
-  @titleHeight: 23px;
-  @titleMarginBottom: 25px;
-
-  div.title {
-    line-height: @titleHeight;
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: @titleMarginBottom;
-  }
-
-  div.content {
-    overflow: hidden;
-    word-wrap: break-word;
-    .content-font;
-    min-height: @normalContentHeight + @titleHeight + @titleMarginBottom;
-    &.minimized {
-      height: 0;
-      display: none;
-    }
-  }
-  &.has-title {
-    .content {
-      min-height: @normalContentHeight;
-    }
-  }
-}
 
 div.image-section {
   .size-to-fit;
@@ -1100,9 +1014,6 @@ div.horizontal-context {
   .full-overlay;
   z-index: 111111;
   background-color: rgba(48,48,48,0.87);
-  .close{
-    color:@black-color;
-  }
 
   .signin-buttons{
     margin:auto;
@@ -1131,7 +1042,7 @@ div.horizontal-context {
 .title-description-overlay{
   .full-overlay;
   background-color: rgba(255,255,255,0.8);
-  color: @black-color;
+  color: @dark-text-color;
   .title-description-inputs{
     margin:auto;
     display:block;

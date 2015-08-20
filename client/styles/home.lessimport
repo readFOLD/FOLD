@@ -133,7 +133,7 @@ div.logo-title {
   div.title {
     float: right;
     margin-top: 5px;
-    color: @black-color;
+    color: @dark-text-color;
     height: 100%;
     margin-left: 10px;
     .name{
@@ -488,7 +488,6 @@ div.action-items {
     width: 100%;
     text-align: center;
   }
-  color: @black-color;
 
   button{
     text-transform: uppercase;
@@ -496,29 +495,21 @@ div.action-items {
     padding: 0px 10px;
     min-width: 100px;
     .size-to-fit;
-    &:hover {
-      background-color: @dark-action-color;
-    }
+    .action-button;
   }
 
   a {
     min-width: 100px;
     .size-to-fit;
-    &:hover {
-      background-color: @dark-action-color;
-    }
+    .action-button;
   }
 
   .create-deepstream {
-    background-color: @action-color;
-    &:hover {
-      background-color: @dark-action-color;
-    }
+    .action-button;
   }
 
   li {
     height: @height;
-    background-color: @action-color;
     @media @not-mobile{
       float: left;
     }

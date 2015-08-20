@@ -85,148 +85,6 @@ div.upload-header-image {
   color: @light-color;
 }
 
-div.floating-story-buttons {
-  border-radius: 3px;
-  color: white;
-  vertical-align: middle;
-  button {
-    float: left;
-    text-align: center;
-  }
-  .favorite-button, .share-button {
-    cursor: pointer;
-    background-color: @dark-color;
-    height: 40px;
-    width: 40px;
-    margin: 0px;
-
-    &:hover {
-      background-color: @action-color;
-    }
-  }
-  .favorite-button{
-    button{
-      .size-to-fit;
-      margin: auto;
-      svg{
-        width: 20px;
-        height: 20px;
-      }
-    }
-    float: left;
-    font-size: 0;
-    margin-right: 10px;
-    .favorite{
-      .fg {
-        fill: @medium-color;
-      }
-    }
-  }
-  .share-button{
-    padding-left: 10px;
-    padding-top: 9px;
-    float: left;
-
-    button {
-      width: 20px;
-      height: 20px;
-    }
-
-    &.active {
-      background-color: @action-color;
-    }
-
-    .fg {
-      fill: @light-color;
-    }
-
-    &:hover{
-      .fg{
-        fill: @light-color;
-      }
-    }
-  }
-
-  .sharing-tooltip {
-    position: relative;
-    top: 55px;
-    left: 55px;
-    float: left;
-    background-color: @dark-color;
-    color: white;
-    width: 190px;
-    border-radius: 3px;
-    li {
-      cursor: pointer;
-      padding: 6px 15px;
-      width: 100%;
-      height: 40px;
-      line-height: 30px;
-      &:hover {
-        background-color: @action-color;
-      }
-      i {
-        float: left;
-        line-height: 30px;
-      }
-      span {
-        float: right;        
-      }
-    }
-
-    &:after {
-      bottom: 100%;
-      left: 80%;
-      border: solid transparent;
-      content: " ";
-      height: 0;
-      width: 0;
-      position: absolute;
-      pointer-events: none;
-      border-bottom-color: @dark-color;
-      border-width: 10px;
-      margin-left: -8px;
-    }
-  }
-
-  button.button {
-    background-color: @dark-color;
-    color: @light-color;
-    cursor: pointer;
-    padding: 5px 15px;
-    font-size: 14px;
-    &:not(:last-child) {
-      margin-right: 13px;
-    }
-    height: 40px;
-
-    &:hover {
-      background-color: @action-color;
-      color: @dark-color;
-    }
-  }
-  position: fixed;
-  top: 115px;
-  right: 13px;
-  z-index: 27;
-
-  .saved-text{
-    float: left;
-    color: @black-color;
-    text-transform: uppercase;
-    margin-right: 15px;
-    margin-top: 23px;
-    font-size: 13px;
-  }
-
-  .publish-story{
-    width: 140px;
-  }
-
-  .link-to-edit{
-    width: 126px;
-  }
-}
 
 
 textarea {
@@ -674,7 +532,7 @@ div.add-context {
     button.add-button, button.add-desc-button, button.back-button {
       position: relative;
       left: calc(100%~"-" 90px);
-      background-color: @action-color;
+      .action-button;
       height: @newCardBottomButtonHeight;
       width: 90px;
       margin-top: 12px;
@@ -690,10 +548,6 @@ div.add-context {
 
       &.enabled {
         cursor: pointer;
-      }
-
-      &:hover{
-        background-color: @dark-color;
       }
     }
 
