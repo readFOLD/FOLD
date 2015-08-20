@@ -601,9 +601,9 @@ Template.context_browser.events({
     if ($(e.target).is('textarea')) { // don't go to big browser when its time to edit context
       return
     }
-    if(_.contains(['image', 'video', 'map', 'news', 'text', 'wikipedia'], this.type)){
+    if(this.soloModeLocation){
       setCurrentContextIdOfType(this.type, this._id);
-      if(_.contains(['image', 'video', 'map'], this.type)){
+      if(this.soloModeLocation === 'overlay'){
         Session.set('soloOverlayContextMode', true);
       }
     }

@@ -390,6 +390,7 @@ VideoBlock = (function (_super) {
 
   VideoBlock.prototype.listModeItemTemplate = 'preview_video_section';
   VideoBlock.prototype.soloModeTemplate = 'display_video_section';
+  VideoBlock.prototype.soloModeLocation = 'overlay';
 
   return VideoBlock;
 
@@ -431,6 +432,7 @@ AudioBlock = (function (_super) {
 
   AudioBlock.prototype.listModeItemTemplate = 'display_audio_section';
   AudioBlock.prototype.soloModeTemplate = 'display_audio_section';
+  AudioBlock.prototype.soloModeLocation = null;
 
   return AudioBlock;
 
@@ -548,6 +550,7 @@ TwitterBlock = (function (_super) {
 
   TwitterBlock.prototype.listModeItemTemplate = 'display_twitter_section';
   TwitterBlock.prototype.soloModeTemplate = null;
+  TwitterBlock.prototype.soloModeLocation = null;
 
   return TwitterBlock;
 
@@ -678,6 +681,7 @@ ImageBlock = (function (_super) {
 
   ImageBlock.prototype.listModeItemTemplate = 'preview_image_section';
   ImageBlock.prototype.soloModeTemplate = 'display_image_section';
+  ImageBlock.prototype.soloModeLocation = 'overlay';
 
   return ImageBlock;
 
@@ -723,6 +727,7 @@ MapBlock = (function (_super) {
 
   MapBlock.prototype.listModeItemTemplate = 'preview_map_section';
   MapBlock.prototype.soloModeTemplate = 'display_map_section';
+  MapBlock.prototype.soloModeLocation = 'overlay';
 
   return MapBlock;
 
@@ -755,6 +760,7 @@ TextBlock = (function (_super) {
 
   TextBlock.prototype.listModeItemTemplate = 'preview_text_section';
   TextBlock.prototype.soloModeTemplate = 'display_text_section';
+  TextBlock.prototype.soloModeLocation = 'sidebar';
 
   return TextBlock;
 
@@ -803,6 +809,7 @@ LinkBlock = (function (_super) {
 
   LinkBlock.prototype.listModeItemTemplate = 'display_link_section';
   LinkBlock.prototype.soloModeTemplate = null;
+  LinkBlock.prototype.soloModeLocation = null;
 
   return LinkBlock;
 
@@ -862,6 +869,7 @@ NewsBlock = (function (_super) {
 
   NewsBlock.prototype.listModeItemTemplate = 'preview_news_section';
   NewsBlock.prototype.soloModeTemplate = 'display_news_section';
+  NewsBlock.prototype.soloModeLocation = 'sidebar';
 
   return NewsBlock;
 
