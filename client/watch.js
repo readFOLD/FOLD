@@ -579,7 +579,7 @@ Template.context_browser.helpers({
       return true
     }
   },
-  singleContextMode: function(){
+  soloContextMode: function(){
     return Session.get('currentContext') && _.contains(['text', 'news'], Session.get('mediaDataType'))
   }
 });
@@ -693,7 +693,7 @@ Template.large_context_browser.events({
   }
 });
 
-Template.full_context_section.helpers(horizontalBlockHelpers);
+Template.solo_context_section.helpers(horizontalBlockHelpers);
 Template.preview_context_section.helpers(horizontalBlockHelpers);
 
 // TODO remove and have an about section

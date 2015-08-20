@@ -314,6 +314,7 @@ Stream = (function (_super) {
     }
   };
 
+
   return Stream;
 
 })(ContextBlock);
@@ -387,6 +388,9 @@ VideoBlock = (function (_super) {
     return this.reference.title;
   };
 
+  VideoBlock.prototype.listModeTemplate = 'display_video_section';
+  VideoBlock.prototype.soloModeTemplate = 'display_video_section';
+
   return VideoBlock;
 
 })(ContextBlock);
@@ -424,6 +428,9 @@ AudioBlock = (function (_super) {
     return this.reference.title;
   };
 
+
+  AudioBlock.prototype.listModeTemplate = 'display_audio_section';
+  AudioBlock.prototype.soloModeTemplate = 'display_audio_section';
 
   return AudioBlock;
 
@@ -538,6 +545,9 @@ TwitterBlock = (function (_super) {
       targetBlank: true
     });
   };
+
+  TwitterBlock.prototype.listModeTemplate = 'display_twitter_section';
+  TwitterBlock.prototype.soloModeTemplate = 'display_twitter_section';
 
   return TwitterBlock;
 
@@ -666,6 +676,9 @@ ImageBlock = (function (_super) {
     return this.description || this.reference.title || this.reference.description || this.reference.id;
   };
 
+  ImageBlock.prototype.listModeTemplate = 'display_image_section';
+  ImageBlock.prototype.soloModeTemplate = 'display_image_section';
+
   return ImageBlock;
 
 })(ContextBlock);
@@ -708,6 +721,9 @@ MapBlock = (function (_super) {
     }
   };
 
+  MapBlock.prototype.listModeTemplate = 'display_map_section';
+  MapBlock.prototype.soloModeTemplate = 'display_map_section';
+
   return MapBlock;
 
 })(ContextBlock);
@@ -736,6 +752,9 @@ TextBlock = (function (_super) {
   TextBlock.prototype.anchorMenuSnippet = function () {
     return this.content;
   };
+
+  TextBlock.prototype.listModeTemplate = 'display_text_section';
+  TextBlock.prototype.soloModeTemplate = 'display_text_section';
 
   return TextBlock;
 
@@ -779,7 +798,12 @@ LinkBlock = (function (_super) {
 
   LinkBlock.prototype.anchorMenuSnippet = function () {
     return this.title();
+
   };
+
+  LinkBlock.prototype.listModeTemplate = 'display_link_section';
+  LinkBlock.prototype.soloModeTemplate = 'display_link_section';
+
   return LinkBlock;
 
 })(ContextBlock);
@@ -835,6 +859,10 @@ NewsBlock = (function (_super) {
   NewsBlock.prototype.anchorMenuSnippet = function () {
     return this.title();
   };
+
+  NewsBlock.prototype.listModeTemplate = 'display_news_section';
+  NewsBlock.prototype.soloModeTemplate = 'display_news_section';
+
   return NewsBlock;
 
 })(ContextBlock);

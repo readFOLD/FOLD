@@ -197,7 +197,7 @@
 <template name="context_browser">
   <div class="context-browser">
     <div class="browse-buttons">
-      {{#if singleContextMode}}
+      {{#if soloContextMode}}
         <button class="switch-to-list-mode">{{> list_icon}}</button>
       {{/if}}
       <span class="type">{{mediaTypeForDisplay}}</span>
@@ -212,9 +212,9 @@
       {{/if}}
     </div>
     <div class="context-area">
-      {{#if singleContextMode}}
+      {{#if soloContextMode}}
         {{#with currentContext}}
-          {{> full_context_section}}
+          {{> solo_context_section}}
         {{/with}}
       {{else}}
         {{#each contextOfCurrentType}}
@@ -232,7 +232,7 @@
       <div class="count">{{mediaTypeForDisplay}} {{currentNum}} of {{totalNum}}</div>
       {{#unless disableLeftButton}}<button class="left" disabled="{{disableLeftButton}}">{{> scroll_left_icon}}</button>{{/unless}}
       {{#with currentContext}}
-        {{> full_context_section}}
+        {{> solo_context_section}}
       {{/with}}
       {{#unless disableRightButton}}<button class="right" disabled="{{disableRightButton}}">{{> scroll_right_icon}}</button>{{/unless}}
     </div>
@@ -240,40 +240,10 @@
 </template>
 
 
-<template name="full_context_section">
+<template name="solo_context_section">
   <div
       class="narrative-section context-section {{#if type}}{{type}}-card{{/if}}" data-index="{{index}}">
-      {{#if type}}
-        {{#if text}}
-          {{> display_text_section}}
-        {{/if}}
-        {{#if image}}
-          {{> display_image_section}}
-        {{/if}}
-        {{#if gif}}
-          {{> display_image_section}}
-        {{/if}}
-        {{#if map}}
-          {{> display_map_section}}
-        {{/if}}
-        {{#if audio}}
-          {{> display_audio_section}}
-        {{/if}}
-        {{#if video}}
-          {{> display_video_section}}
-        {{/if}}
-        {{#if twitter}}
-          {{> display_twitter_section}}
-        {{/if}}
-        {{#if link}}
-          {{> display_link_section}}
-        {{/if}}
-        {{#if news}}
-          {{> display_news_section}}
-        {{/if}}
-      {{else}}
-        {{> display_broken_section}}
-      {{/if}}
+    {{> Template.dynamic template=soloModeTemplate}}
   </div>
 </template>
 
