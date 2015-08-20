@@ -100,12 +100,3 @@ svg.mobile-back-icon{
 i.loading-icon{
   color: @action-color;
 }
-
-svg.deepstream-logo{
-  .fg{
-    fill: @action-color;
-  }
-  .bg{
-    fill: @top-row-color;
-  }
-}
