@@ -179,8 +179,6 @@ Template.homepage_preview_text_section.helpers(horizontalBlockHelpers);
 Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
 
 
-Template.type_specific_icon.helpers(typeHelpers);
-
 Template.share_button.onCreated(function() {
   this.tooltipShown = new ReactiveVar(false);
 });

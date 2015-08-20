@@ -118,34 +118,28 @@ window.pluralizeMediaType = function(mediaType){
   }
 }
 
-window.typeHelpers = {
-  text: function() {
-    return this.type === "text";
-  },
-  image: function() {
-    return this.type === "image";
-  },
-  map: function() {
-    return this.type === "map";
-  },
-  video: function() {
-    return this.type === "video";
-  },
-  twitter: function() {
-    return this.type === "twitter";
-  },
-  audio: function() {
-    return this.type === "audio";
-  },
-  link: function() {
-    return this.type === "link";
-  },
-  news: function() {
-    return this.type === "news";
-  }
-};
+window.contextTypes = [
+  "stream",
+  "text",
+  "image",
+  "map",
+  "video",
+  "twitter",
+  "audio",
+  "link",
+  "news",
+  "chat"
+];
 
-window.horizontalBlockHelpers = _.extend({}, typeHelpers, {
+//window.typeHelpers = _.object(contextTypes, _.map(contextTypes, function(type) {
+//  return function() {
+//    return this.type === type;
+//  };
+//}));
+
+
+
+window.horizontalBlockHelpers = _.extend({}, {
   selected: function(){
     return true;
   },
@@ -183,3 +177,7 @@ window.soloOverlayContextModeActive = function(){
 window.emptyContextBlockOfCurrentMediaDataType = function(){
   return newTypeSpecificContextBlock({type: Session.get('mediaDataType')});
 };
+
+window.emptyContextBlocksOfAllTypes = function(){
+
+}

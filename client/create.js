@@ -334,41 +334,11 @@ Template.stream_search.events({
 });
 
 
-contextHelpers = ({
-  type: function() {
-    return Session.get('mediaDataType');
-  },
-  stream: function() {
-    return Session.get('mediaDataType') === "stream";
-  },
-  text: function() {
-    return Session.get('mediaDataType') === "text";
-  },
-  image: function() {
-    return Session.get('mediaDataType') === "image";
-  },
-  news: function() {
-    return Session.get('mediaDataType') === "news";
-  },
-  map: function() {
-    return Session.get('mediaDataType') === "map";
-  },
-  video: function() {
-    return Session.get('mediaDataType') === "video";
-  },
-  twitter: function() {
-    return Session.get('mediaDataType') === "twitter";
-  },
-  audio: function() {
-    return Session.get('mediaDataType') === "audio";
-  },
-  link: function() {
-    return Session.get('mediaDataType') === "link";
-  },
-  chat: function() {
-    return Session.get('mediaDataType') === "chat";
-  }
-});
+window.contextHelpers = _.object(contextTypes, _.map(contextTypes, function(type) {
+  return function() {
+    return Session.get('mediaDataType') === type;
+  };
+}));
 
 Template.add_context.helpers({
   listMode: function(){
@@ -383,33 +353,19 @@ Template.add_context.helpers({
 });
 
 Template.content_icons.helpers(contextHelpers);
+Template.content_icons.helpers(
+  _.object(_.map(contextTypes, function(type){
+      return 'show_' + type + '_icon'
+    })
+    , _.map(contextTypes, function(type) {
+      return function() {
+        return this.showAll || Session.get("curateMode") || this.hasContextOfType(type);      };
+    }))
+);
+
 Template.content_icons.helpers({
   show_stream_icon: function () {
     return Session.get("curateMode");
-  },
-  show_text_icon: function () {
-    return this.showAll || Session.get("curateMode") || this.hasContextOfType("text");
-  },
-  show_image_icon: function () {
-    return this.showAll || Session.get("curateMode") || this.hasContextOfType("image");
-  },
-  show_news_icon: function () {
-    return this.showAll || Session.get("curateMode") || this.hasContextOfType("news");
-  },
-  show_map_icon: function () {
-    return this.showAll || Session.get("curateMode") || this.hasContextOfType("map");
-  },
-  show_video_icon: function () {
-    return this.showAll || Session.get("curateMode") || this.hasContextOfType("video");
-  },
-  show_twitter_icon: function () {
-    return this.showAll || Session.get("curateMode") || this.hasContextOfType("twitter");
-  },
-  show_audio_icon: function () {
-    return this.showAll || Session.get("curateMode") || this.hasContextOfType("audio");
-  },
-  show_link_icon: function () {
-    return this.showAll || Session.get("curateMode") || this.hasContextOfType("link");
   },
   show_chat_icon: function () {
     return true;
@@ -420,39 +376,15 @@ Template.content_icons.helpers({
 });
 
 
-Template.content_icons.events({
-  'click .stream-button': function(d, t) {
-    return Session.set('mediaDataType', 'stream');
-  },
-  'click .text-button': function(d, t) {
-    Session.set('mediaDataType', 'text');
-  },
-  'click .map-button': function(d, t) {
-    Session.set('mediaDataType', 'map');
-  },
-  'click .video-button': function(d, t) {
-    Session.set('mediaDataType', 'video');
-  },
-  'click .image-button': function(d, t) {
-    Session.set('mediaDataType', 'image');
-  },
-  'click .news-button': function(d, t) {
-    Session.set('mediaDataType', 'news');
-  },
-  'click .twitter-button': function(d, t) {
-    Session.set('mediaDataType', 'twitter');
-  },
-  'click .audio-button': function(d, t) {
-    Session.set('mediaDataType', 'audio');
-  },
-  'click .link-button': function(d, t) {
-    Session.set('mediaDataType', 'link');
-  },
-  'click .chat-button': function(d, t) {
-    notifyFeature("Chat: coming soon!");
-    return Session.set('mediaDataType', 'chat');
-  }
-});
+Template.content_icons.events(_.object(_.map(contextTypes, function(type){
+    return 'click .' + type + '-button'
+  })
+  , _.map(contextTypes, function(type) {
+    return function() {
+      return Session.set('mediaDataType', type);
+    };
+  }))
+);
 
 Template.add_context.events({
   'mouseenter .search-results-container': function() {
