@@ -800,7 +800,7 @@ TextBlock = (function (_super) {
   TextBlock.prototype.searchListTemplate = null;
   TextBlock.prototype.searchSoloTemplate = 'create_text_section';
   TextBlock.prototype.homepagePreview = true;
-  TextBlock.prototype.homepagePreviewTemplate = 'homepage_preview_twitter_section';
+  TextBlock.prototype.homepagePreviewTemplate = 'homepage_preview_text_section';
 
   return TextBlock;
 
@@ -921,7 +921,7 @@ NewsBlock = (function (_super) {
   NewsBlock.prototype.searchListTemplate = null;
   NewsBlock.prototype.searchSoloTemplate = 'create_news_section';
   NewsBlock.prototype.homepagePreview = true;
-  NewsBlock.prototype.homepagePreviewTemplate = 'homepage_preview_twitter_section';
+  NewsBlock.prototype.homepagePreviewTemplate = 'homepage_preview_news_section';
 
   return NewsBlock;
 

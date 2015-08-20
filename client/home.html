@@ -292,15 +292,7 @@
 
 <template name="homepage_content_preview">
   <div class="homepage-content-preview">
-    {{#if isContextOfType "news"}}
-      {{> homepage_preview_news_section}}
-    {{/if}}
-    {{#if isContextOfType "twitter"}}
-      {{> homepage_preview_twitter_section}}
-    {{/if}}
-    {{#if isContextOfType "text"}}
-      {{> homepage_preview_text_section}}
-    {{/if}}
+    {{> Template.dynamic template=homepagePreviewTemplate}}
   </div>
 </template>
 
