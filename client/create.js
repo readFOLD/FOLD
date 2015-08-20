@@ -300,20 +300,7 @@ window.refreshContentDep = new Tracker.Dependency();
 //  }
 //});
 //
-//Template.story_title.events({
-//  'paste [contenteditable]': window.plainTextPaste,
-//  'drop': function(e){
-//    e.preventDefault();
-//    return false;
-//  },
-//  'blur .story-title[contenteditable]': function(e,template) {
-//    storyId = Session.get('storyId');
-//    storyTitle = $.trim(template.$('div.story-title').text());
-//
-//    Session.set('saveState', 'saving');
-//    return Meteor.call('updateStoryTitle', storyId, storyTitle, saveCallback)
-//  }
-//});
+
 
 
 var scrollToRelativePosition = function(offset) {
