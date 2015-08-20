@@ -334,11 +334,6 @@ Template.stream_search.events({
 });
 
 
-window.contextHelpers = _.object(contextTypes, _.map(contextTypes, function(type) {
-  return function() {
-    return Session.get('mediaDataType') === type;
-  };
-}));
 
 Template.add_context.helpers({
   listMode: function(){
@@ -376,10 +371,10 @@ Template.content_icons.helpers({
 });
 
 
-Template.content_icons.events(_.object(_.map(contextTypes, function(type){
+Template.content_icons.events(_.object(_.map(contextTypesPlusChat, function(type){
     return 'click .' + type + '-button'
   })
-  , _.map(contextTypes, function(type) {
+  , _.map(contextTypesPlusChat, function(type) {
     return function() {
       return Session.set('mediaDataType', type);
     };
@@ -521,3 +516,7 @@ Template.link_twitter.events({
 //    return (this.keywords || []).toString();
 //  }
 //});
+
+Template.unimplemented_chat_section.onCreated(function(){
+  notifyFeature('Chat: coming soon!');
+});

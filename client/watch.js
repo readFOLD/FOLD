@@ -350,7 +350,7 @@ Template.watch.helpers({
   },
   showContextSearch: function(){
     var mediaDataType = Session.get('mediaDataType');
-    return Session.get("curateMode") && (Session.get("searchingMedia") || (mediaDataType && this.contextOfType(mediaDataType).length === 0)) && mediaDataType && mediaDataType !== 'stream';
+    return Session.get("curateMode") && (Session.get("searchingMedia") || (mediaDataType && this.contextOfType(mediaDataType).length === 0)) && mediaDataType && !_.contains(['stream', 'chat'], mediaDataType) ;
   },
   soloOverlayContextMode: function(){
     return soloOverlayContextModeActive();

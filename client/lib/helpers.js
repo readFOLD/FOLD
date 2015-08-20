@@ -116,7 +116,7 @@ window.pluralizeMediaType = function(mediaType){
     default:
       return mediaType + 's'
   }
-}
+};
 
 window.contextTypes = [
   "stream",
@@ -127,9 +127,11 @@ window.contextTypes = [
   "twitter",
   "audio",
   "link",
-  "news",
-  "chat"
+  "news"
 ];
+
+window.contextTypesPlusChat = _.union(contextTypes, ['chat']);
+
 
 //window.typeHelpers = _.object(contextTypes, _.map(contextTypes, function(type) {
 //  return function() {
@@ -178,6 +180,9 @@ window.emptyContextBlockOfCurrentMediaDataType = function(){
   return newTypeSpecificContextBlock({type: Session.get('mediaDataType')});
 };
 
-window.emptyContextBlocksOfAllTypes = function(){
 
-}
+window.contextHelpers = _.object(contextTypesPlusChat, _.map(contextTypesPlusChat, function(type) {
+  return function() {
+    return Session.get('mediaDataType') === type;
+  };
+}));
