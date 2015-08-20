@@ -28,14 +28,6 @@ Meteor.startup(function(){
   $(window).resize(throttledResize);
 });
 
-
-window.hammerSwipeOptions = {
-  pointers:	1,
-  threshold: 8,
-  velocity:	0.35 // 0.65
-};
-
-
 //window.trackingInfoFromStory = function(story){
 //  return _.chain(story)
 //    .pick([
