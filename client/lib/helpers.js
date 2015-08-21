@@ -59,7 +59,7 @@ window.checkValidPasswordConfirmation = function(p1, p2) {
 };
 
 window.checkValidUsername = function(username) {
-  var usernameRegex = /^[a-zA-Z0-9-_]+$/;
+  var usernameRegex = /^[a-zA-Z0-9_]+$/;
   if (username.length === 0 ) {
     return { status: false, message: 'Please enter a username' };
   } else if (username.length < 3) {
@@ -67,7 +67,7 @@ window.checkValidUsername = function(username) {
   } else if (username.length > 15) {
   	return { status: false, message: 'Too long (maximum 15 chars)' };
   } else if (!username.match(usernameRegex)) {
-    return { status: false, message: 'Please only use letters, numbers, -, and _' };
+    return { status: false, message: 'Please only use letters, numbers, and _' };
   } else {
     return { status: true, message: false };
   }
