@@ -211,7 +211,7 @@ div.logo-title {
     padding: @padding;
   }
   display: inline-block;
-  background-color: @dark-medium-color;
+  background-color: @homepage-shade-4;
   .image-and-content{
     position: relative;
     .live-indicator{
@@ -242,12 +242,12 @@ div.logo-title {
         right: @content-section-width;
         margin-top: 20px;
         button.active{
-          background-color: @a-bit-dark-medium-color;
+          background-color: @homepage-shade-5;
         }
       }
       padding-left: 10px;
       padding-right: 10px;
-      background-color: @a-bit-dark-medium-color;
+      background-color: @homepage-shade-5;
       top: 0;
       right: 0;
       position: absolute;
@@ -269,7 +269,7 @@ div.logo-title {
     font-size: 18px;
   }
   .small-stream-info, .views{
-    color: @medium-color;
+    color: @deemphasized-light-text-color;
     font-size: 14px;
   }
   .small-stream-info{
@@ -363,7 +363,7 @@ div.logo-title {
   }
   height: 200px;
   width: 375px;
-  background-color: @dark-medium-color;
+  background-color: @homepage-shade-4;
   margin-right: 30px;
   margin-bottom: 50px;
   position: relative;
@@ -388,7 +388,7 @@ div.logo-title {
     top: 70px;
     right: 10px;
     font-size: 14px;
-    color: @medium-color;
+    color: @deemphasized-light-text-color;
   }
   .title{
     .ellipsis-text;
@@ -398,7 +398,7 @@ div.logo-title {
   }
   .small-stream-info{
     width: 100%;
-    color: @medium-color;
+    color: @deemphasized-light-text-color;
   }
   .username, .views{
     display: inline-block;
@@ -572,7 +572,7 @@ div.action-items {
       display: inline-block;
       min-width: 100px;
       button {
-        color: @medium-color;
+        color: @deemphasized-light-text-color;
       }
 
       &.selected, &:hover {

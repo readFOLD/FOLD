@@ -1,21 +1,26 @@
 @black-color: #030303;
 @dark-color: #303030;
+@dark-medium-color: #424242;
+@medium-color: #9B9B9B;
+
 
 
 @top-row-color: @black-color;
 @dark-text-color: @black-color;
 @background-color: @dark-color;
+@alt-background-color: @dark-medium-color;
+@annotation-color: @medium-color;
+@deemphasized-light-text-color: @medium-color;
 
 
 @homepage-shade-0: @top-row-color;
 @homepage-shade-1: #181818;
 @homepage-shade-2: #212121;
-@homepage-shade-3: @dark-color;
+@homepage-shade-3: @background-color;
+@homepage-shade-4: @alt-background-color;
+@homepage-shade-5: #525252;
 
 
-@dark-medium-color: #424242;
-@a-bit-dark-medium-color: #525252;
-@medium-color: #9B9B9B;
 @light-color: #F4F4F4;
 @light-transparent-color: rgba(244,244,244,0.75);
 @white-color: #D8D8D8;
@@ -642,20 +647,6 @@ div.text-section {
 .audio-section {
   .size-to-fit;
 }
-.icon-only-preview {
-  .size-to-fit;
-  text-align: center;
-
-  background-color: @medium-color;
-
-  svg {
-    @iconSize: 100px;
-    height: @iconSize;
-    width: @iconSize;
-    position: relative;
-    top: calc(50% ~"-" @iconSize / 2);
-  }
-}
 
 
 div.twitter-section{
@@ -760,7 +751,7 @@ div.horizontal-context {
 
   .text-content{
     color: black;
-    background-color: @medium-color;
+    background-color: @annotation-color;
 
   }
   textarea.text-content {
@@ -935,25 +926,6 @@ div.horizontal-context {
   }
 }
 
-.mobile-progress-header{
-  text-align: center;
-  position: absolute;
-  width: 100%;
-  background-color: rgba(50,50,50,0.6);
-  color: @medium-color;
-  z-index: 1000;
-}
-
-.mobile-context-back-button{
-  @size: 38px;
-  @bottom-margin: 20px;
-  float:right;
-  .size(@size);
-  padding: 0;
-  position: relative;
-  margin-right: 0px;
-  margin-top: -1 * @size - @bottom-margin;
-}
 
 div.tagsinput {
   font-family: Muli;

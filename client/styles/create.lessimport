@@ -107,7 +107,6 @@ textarea {
 
     color: @background-color;
     line-height: 27px;
-    font-size: @content-font-size;
   }
 }
 

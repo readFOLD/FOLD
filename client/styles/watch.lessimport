@@ -1,6 +1,6 @@
 [contenteditable], textarea{
   &:hover{
-    outline: 1px dotted @medium-color;
+    outline: 1px dotted @annotation-color;
   }
 }
 
@@ -116,7 +116,7 @@
   height: 100%;
   float: left;
   position: relative;
-  background-color: @dark-medium-color;
+  background-color: @alt-background-color;
   display: inline-block;
   z-index: 10;
   width: @right-section-width;
@@ -146,7 +146,7 @@
   //  height: @circle-diameter;
   //}
   li:not(:first-child){
-    border-top: 1px solid @dark-medium-color;
+    border-top: 1px solid @alt-background-color;
   }
   button {
     padding-top: 5px;
@@ -155,7 +155,7 @@
     background-color: inherit;
     &.active, &:hover{
       &:not(:disabled){
-        background-color: @dark-medium-color;
+        background-color: @alt-background-color;
         .bg{
           stroke: @medium-color;
         }
