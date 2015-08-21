@@ -15,9 +15,9 @@ div.home-top {
   width: 100%;
   z-index: 10;
   //border-bottom: 1px solid @medium-color;
-  -webkit-box-shadow: 0 2px 8px -6px @dark-color;
-  -moz-box-shadow: 0 2px 8px -6px @dark-color;
-  box-shadow: 0 2px 8px -6px @dark-color;
+  -webkit-box-shadow: 0 2px 8px -6px @homepage-shade-3;
+  -moz-box-shadow: 0 2px 8px -6px @homepage-shade-3;
+  box-shadow: 0 2px 8px -6px @homepage-shade-3;
 
  /* div.user-image {
     position: absolute;
@@ -186,7 +186,7 @@ div.logo-title {
 }
 
 .streams-container{
-  background-color: @darker-color;
+  background-color: @homepage-shade-2;
   padding-top: 20px;
 }
 
@@ -313,7 +313,7 @@ div.logo-title {
 }
 
 .homepage-preview-twitter-section{
-  background-color: @dark-color;
+  background-color: @homepage-shade-3;
   .center-over-parent-div;
   padding: 6px;
   line-height: normal;
@@ -431,7 +431,7 @@ div.logo-title {
       padding-top: 20px;
       padding-left: 30px;
       padding-right: 30px;
-      background-color: @darker-color;
+      background-color: @homepage-shade-2;
 
       .text{
         text-align: left;
@@ -555,7 +555,7 @@ div.action-items {
   height: 60px;
   padding-top: 10px;
   padding-left: 65px;
-  background-color: @darkerer-color;
+  background-color: @homepage-shade-1;
   padding-right: 15px;
   position: relative;
 
@@ -592,7 +592,7 @@ div.action-items {
     height: 40px;
     width: 300px;
     float: right;
-    background-color: @dark-color;
+    background-color: @homepage-shade-3;
     .stream-search-icon{
       display: inline-block;
       background-color: inherit;

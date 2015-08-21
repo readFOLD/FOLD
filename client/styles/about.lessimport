@@ -118,7 +118,7 @@ a.underline{
   text-align: center;
   font-size: 12px;
   padding: 15px;
-  background-color: @dark-color;
+  background-color: @background-color;
   z-index: 5;
   a {
       color: @action-color;

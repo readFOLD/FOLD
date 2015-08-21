@@ -80,11 +80,6 @@ div.upload-header-image {
   z-index: 100;
 }
 
-.confirm-publish{
-  background-color: @dark-color;
-  color: @light-color;
-}
-
 
 
 textarea {
@@ -110,7 +105,7 @@ textarea {
     margin-top: 10px;
     padding: 18px;
 
-    color: @dark-color;
+    color: @background-color;
     line-height: 27px;
     font-size: @content-font-size;
   }
@@ -573,7 +568,7 @@ div.add-context {
     margin-bottom: 30px;
 
     &.image-section {
-      background-color: @dark-color;
+      background-color: @background-color;
     }
 
     &.link-section {

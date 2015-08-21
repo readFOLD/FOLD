@@ -15,27 +15,7 @@
 svg.icon {
   .size-to-fit;
 }
-svg.add-card-icon{
-  height:44px;
-  width:44px;
-}
-svg.remix-icon{
-  .bg{
-    fill: @remix-color;
-  }
-}
-svg.remix-icon-square{
-  rect{
-    fill: @remix-color;
-  }
-}
-svg.browse-arrow {
-  height: 60px;
-  width: 60px;
-  .fg{
-    fill: @dark-color;
-  }
-}
+
 svg.search-icon {
   height: 15px;
   width: 15px;

@@ -1,16 +1,18 @@
-
-
-
-
 @black-color: #030303;
-@top-row-color: @black-color;
-@homepage-shade-0: @top-row-color;
-@dark-text-color: @black-color;
-
-
-@darkerer-color: #181818;
-@darker-color: #212121;
 @dark-color: #303030;
+
+
+@top-row-color: @black-color;
+@dark-text-color: @black-color;
+@background-color: @dark-color;
+
+
+@homepage-shade-0: @top-row-color;
+@homepage-shade-1: #181818;
+@homepage-shade-2: #212121;
+@homepage-shade-3: @dark-color;
+
+
 @dark-medium-color: #424242;
 @a-bit-dark-medium-color: #525252;
 @medium-color: #9B9B9B;
@@ -19,7 +21,6 @@
 @white-color: #D8D8D8;
 
 @live-color: #C90523;
-@background-color: @dark-color;
 @action-color: #F6C406;
 @dark-action-color: #dea406;
 @inactive-color: #DDDDDD;
@@ -39,24 +40,9 @@
 
 @selected-background-color: white;
 
-@remix-bar-height: 40px;
+
 @horizontal-content-height: 300px;
 
-@content-font-size: 16.5px;
-@content-line-height: 26px;
-
-@mobile-content-font-size: 15.5px;
-@mobile-content-line-height: 24px;
-
-.content-font{
-  font-size: @content-font-size;
-  line-height: @content-line-height;
-  @media @mobile {
-    font-size: @mobile-content-font-size;
-    line-height: @mobile-content-line-height;
-  }
-  color: @dark-color;
-}
 
 html {
   -webkit-text-size-adjust: 100%;
@@ -566,62 +552,7 @@ div.image-section {
   }
 }
 
-div.broken-section {
-  height: @horizontal-content-height;
-  width: 100%;
-  background-color: @inactive-color;
-  position: relative;
-}
 
-div.vertical-narrative {
-  position: absolute;
-  @media @mobile{
-    .left-transition;
-  }
-  top: 427px;
-  margin-top: -65px;
-  z-index: 10;
-  float: left;
-  width: 400px;
-  &.fixed {
-    position: fixed;
-    top: 334px;
-  }
-
-  &.free-scroll{
-    top: 557px;
-  }
-
-  .narrative-section {
-    position: relative;
-    .width-transition;
-    .height-transition;
-    overflow-y: hidden;
-    width: 100%;
-    min-height: @horizontal-content-height + @remix-bar-height;
-//    opacity: 0.25;
-    color: @unselected-text-color;
-    background-color: @unselected-background-color;
-    &.read {
-      margin-bottom: 12px;
-    }
-    // box-shadow: 3px 3px @medium-color;
-
-    &.selected {
-      color: @dark-color;
-      opacity: 1.0;
-      background-color: @selected-background-color;
-      p {
-        cursor: text;
-      }
-    }
-  }
-
-}
-
-div.oec-section {
-  background-color: white;
-}
 
 div.link-section {
   position: relative;
@@ -738,7 +669,7 @@ div.twitter-section{
     background-color: inherit;
   }
   div.twitter-text-section {
-    background-color: @dark-color;
+    background-color: @background-color;
     a {
       &:hover {
         color: @action-color;
@@ -790,21 +721,7 @@ div.twitter-section{
   }
 }
 
-@fixed-banner-height: 100px;
-div#banner-overlay {
-  width: 100%;
-  height: 350px;
-  background-color: @dark-color;
-  opacity: 0.0;
-  position: absolute;
-
-  &.fixed {
-    height: @fixed-banner-height;
-  }
-}
-
 @horizontal-context-margin-top: 23px;
-@horizontal-context-top: @fixed-banner-height + 106px - @horizontal-context-margin-top;
 div.horizontal-context {
   float: right;
   top: 350px;
@@ -812,18 +729,6 @@ div.horizontal-context {
   margin-top: @horizontal-context-margin-top;
   margin-bottom: 500px;
   .size-to-fit;
-
-  &.fixed {
-    .top-transition;
-    position: fixed;
-    top: @horizontal-context-top;
-    @media @mobile {
-      top: 60px;
-    }
-    &.editing {
-      top: 90px;
-    }
-  }
 
   div.button-options {
     z-index: 30;
@@ -926,63 +831,6 @@ div.horizontal-context {
       margin-left: -@context-count-size/2- 8px;
       display: inline;
     }
-  }
-}
-
-
-.context-section{
-  @unselected-opacity: 0.25;
-  .left-transition;
-  //position: absolute;
-  //height: @horizontal-content-height;
-  // box-shadow: 3px 3px #848484;
-  //pointer-events: none;
-
-  //min-width: 400px;
-  width: 100%;
-  background-color: transparent;
-  // display: none;
-
-  @media @mobile {
-    visibility: hidden;
-  }
-
-  @fullHeight: 500px;
-
-  &.text {
-    opacity: 1;
-    background-color: @unselected-background-color;
-    color: @unselected-text-color;
-    .remix-bar{
-      opacity: @unselected-opacity;
-    }
-    &.selected{
-      .remix-bar{
-        opacity: 1;
-      }
-      background-color: @selected-background-color;
-      color: @dark-color;
-    }
-    height: @fullHeight;
-  }
-
-  div#index {
-    position: absolute;
-    top: -25px;
-  }
-
-  div.content {
-    margin-top: 0px;
-  }
-
-  div.caption {
-    font-size: 12px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-  }
-
-  &.new-section {
-    opacity: 1.0;
   }
 }
 

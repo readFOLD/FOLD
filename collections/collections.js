@@ -316,19 +316,8 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   // Rich or Extract
   html: { type: String, optional: true },
 
-  // OEC
-  oecYear: {
-    type: String,
-    optional: true
-  },
-  oecCountry: {
-    type: String,
-    optional: true
-  },
-  oecDirection: {
-    type: String,
-    optional: true
-  },
+
+  // Map
 
   mapQuery: {
     type: String,
@@ -404,15 +393,7 @@ Schema.ContextBlocks = new SimpleSchema({
   content: {
     type: String,
     trim: false,
-    label: " ",
-    optional: true,
-    autoform: {
-      afFieldInput: {
-        type: "textarea",
-        rows: 10,
-        "class": "text-input"
-      }
-    }
+    optional: true
   },
   published: {
     type: Boolean,
