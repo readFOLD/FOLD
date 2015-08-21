@@ -2,6 +2,7 @@
 @dark-color: #303030;
 @dark-medium-color: #424242;
 @medium-color: #9B9B9B;
+@light-color: #F4F4F4;
 
 
 
@@ -11,6 +12,8 @@
 @alt-background-color: @dark-medium-color;
 @annotation-color: @medium-color;
 @deemphasized-light-text-color: @medium-color;
+@light-icon-color: @light-color;
+
 
 
 @homepage-shade-0: @top-row-color;
@@ -21,7 +24,6 @@
 @homepage-shade-5: #525252;
 
 
-@light-color: #F4F4F4;
 @light-transparent-color: rgba(244,244,244,0.75);
 @white-color: #D8D8D8;
 
@@ -59,11 +61,11 @@ html {
     fill: @dark-color;
   }
   .fg{
-    fill: @light-color;
+    fill: @light-icon-color;
   }
   .fg-stroke{
     fill: none;
-    stroke: @light-color;
+    stroke: @light-icon-color;
   }
   .active{
     .bg{
@@ -85,7 +87,7 @@ html {
 
 .inverted-icon-colors {
   .bg{
-    fill:  @light-color;
+    fill:  @light-icon-color;
   }
   .fg{
     fill: @dark-color;
@@ -103,12 +105,6 @@ html {
       .bg{
         fill: @action-color;
       }
-    }
-  }
-
-  .back-arrow{
-    .fg{
-      fill: @light-color;
     }
   }
 }

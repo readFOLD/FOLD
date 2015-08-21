@@ -1,17 +1,5 @@
 .standard-icon-colors;
 
-.active{
-  .bg{
-    fill: @action-color;
-  }
-}
-
-.back-arrow{
-  .fg{
-    fill: @light-color;
-  }
-}
-
 svg.icon {
   .size-to-fit;
 }
@@ -61,17 +49,17 @@ svg.mobile-back-icon{
   .star-button;
   .pick{
     .fg{
-      fill: @light-color;
+      fill: @medium-color;
       &:hover{
-        fill: saturate(@remix-color, 80%);;
+        fill: saturate(@live-color, 80%);;
       }
     }
   }
   .unpick{
     .fg{
-      fill: @remix-color;
+      fill: @live-color;
       &:hover{
-        fill: fade(@remix-color, 80%);
+        fill: fade(@live-color, 80%);
       }
     }
   }

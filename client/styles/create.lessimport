@@ -8,7 +8,7 @@ input[type=file] {
   &::before {
     display: inline-block;
     background: @dark-color;
-    color: @light-color;
+    color: @medium-color;
     outline: none;
     white-space: nowrap;
     -webkit-user-select: none;
@@ -56,7 +56,7 @@ input[type=file] {
     }
     &::before {
       display: inline-block;
-      color: @light-color;
+      color: @medium-color;
       outline: none;
       -webkit-user-select: none;
       cursor: pointer;
@@ -68,7 +68,7 @@ input[type=file] {
     }
     &:hover::before {
       background-color: @dark-color;
-      color: @light-color;
+      color: @medium-color;
     }
   }
 }
@@ -178,29 +178,6 @@ div.add-context {
     height: calc(100% ~"-" @contentIconBannerHeight);
   }
 
-  // Dropdowns
-  div.create-section {
-    select {
-      padding-bottom: 10px;
-    }
-    .sod_select {
-
-      padding: 10px 5px;
-      // background-color: @dark-color;
-      // color: @light-color;
-      &:before, &:after {
-        right: 11px;
-        top: 14px;
-      }
-      .sod_option {
-        padding: 10px 5px;
-      }
-    }    
-  }
-
-  div.create-section.unimplemented {
-    font-weight: bold;
-  }
 
   div.tabs {
     border-bottom: 1px solid @medium-color;
@@ -252,7 +229,7 @@ div.add-context {
     .search-trigger, .search-input-container, input, .search-button {
       font-size: 12px;
       height: @searchInputHeight;
-      color: @light-color;
+      color: @dark-color;
       position: absolute;
       float: left;
     }
@@ -360,7 +337,7 @@ div.add-context {
       cursor: pointer;
 
       &:hover {
-        background: @light-color; 
+        background: @dark-color;
       }
       &.focused {
         background: @medium-color; 
@@ -648,7 +625,7 @@ div.context-anchor-menu {
 
   .back-arrow{
     .fg{
-      fill: @light-color;
+      fill: @medium-color;
     }
   }
   button{
