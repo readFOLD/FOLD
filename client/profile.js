@@ -11,6 +11,17 @@ formatDate = function(date) {
 };
 
 
+Template.my_stories.events({
+  'click .unpublish': function(){
+    if (confirm('Are you sure you want to unpublish this story?')){
+      Meteor.call('unpublishStory', this._id, function(err, result) {
+        if(err){
+          notifyError('Unpublish failed.');
+        }
+      });
+    }
+  }
+});
 Template.my_stories.helpers({
   publishedStories: function() {
     if (Meteor.user()) {

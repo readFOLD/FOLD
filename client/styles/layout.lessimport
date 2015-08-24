@@ -1,4 +1,3 @@
-
 @black-color: #1D1D1D;
 @dark-color: #323232;
 @medium-color: #CCCCCB;
@@ -11,6 +10,7 @@
 @inactive-color: #DDDDDD;
 @placeholder-color: #acacac;
 @danger-color: #ff1b0c;
+@less-danger-color: #ba200c;
 @panel-color: #585094;
 @remix-color: #EA1D75;
 @favorite-color: #FFD600;

@@ -117,6 +117,12 @@
     {{#each publishedStories}}
       <div class="story" data-story-id="{{_id}}">
         {{> _story_preview_content}}
+        <div class="my-stories-buttons">
+          <div class="button-group">
+            <button class="unpublish">Unpublish</button>
+            <button class="delete">Delete</button>
+          </div>
+        </div>
       </div>
     {{/each}}
   </div>
@@ -126,6 +132,11 @@
       {{#each unpublishedStories}}
           <div class="story" data-story-id="{{_id}}">
             {{> _story_preview_content useDraftStory=true draftStory=draftStory}}
+            <div class="my-stories-buttons">
+              <div class="button-group">
+                <button class="delete">Delete</button>
+              </div>
+            </div>
           </div>
       {{/each}}
     {{/if}}

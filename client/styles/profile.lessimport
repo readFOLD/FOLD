@@ -128,3 +128,24 @@ div.user-profile {
 
 }
 
+.my-stories-buttons{
+  position: absolute;
+  width: 100%;
+  bottom: 12px;
+  padding-top: 70px;
+  button{
+    color: white;
+    padding: 10px;
+  }
+  .button-group{
+    float:right;
+  }
+  .unpublish{
+    background-color: @panel-color;
+    margin-right: 10px;
+  }
+  .delete{
+    background-color: @less-danger-color;
+    margin-right: 15px;
+  }
+}
