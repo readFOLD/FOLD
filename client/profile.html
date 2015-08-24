@@ -112,20 +112,22 @@
 </template>
 
 <template name="my_stories">
-  <h1>My Drafts</h1>
-  {{#each writtenStories}}
+  <div class="published-stories">
+    <h1>Published Stories</h1>
+    {{#each publishedStories}}
       <div class="story" data-story-id="{{_id}}">
-        {{> _story_preview_content useDraftStory=true draftStory=draftStory}}
-        <!--<div class="dates">-->
-          <!--<p>Last Edited: {{lastEditDate}}</p>-->
-          <!--<p>-->
-            <!--{{#if published}}-->
-              <!--Published On: {{lastPublishDate}}-->
-              <!--{{else}}-->
-              <!--Unpublished-->
-            <!--{{/if}}-->
-          <!--</p>-->
-        <!--</div>-->
+        {{> _story_preview_content}}
       </div>
-  {{/each}}
+    {{/each}}
+  </div>
+  <div class="unpublished-stories">
+    {{#if unpublishedStories}}
+      <h1>Drafts</h1>
+      {{#each unpublishedStories}}
+          <div class="story" data-story-id="{{_id}}">
+            {{> _story_preview_content useDraftStory=true draftStory=draftStory}}
+          </div>
+      {{/each}}
+    {{/if}}
+    </div>
 </template>

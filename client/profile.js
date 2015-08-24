@@ -12,10 +12,19 @@ formatDate = function(date) {
 
 
 Template.my_stories.helpers({
-  writtenStories: function() {
+  publishedStories: function() {
     if (Meteor.user()) {
       return Stories.find({
-        authorId: Meteor.user()._id
+        authorId: Meteor.user()._id,
+        published : true
+      });
+    }
+  },
+  unpublishedStories: function() {
+    if (Meteor.user()) {
+      return Stories.find({
+        authorId: Meteor.user()._id,
+        published : false
       });
     }
   },

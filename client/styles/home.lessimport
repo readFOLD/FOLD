@@ -363,6 +363,12 @@ div.stories {
     &.profile {
       min-height: 400px
     }
+
+    // my stories page
+    .published-stories, .unpublished-stories{
+      width: 100%;
+      display: inline-block;
+    }
   }
 
 
