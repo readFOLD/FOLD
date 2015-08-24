@@ -141,11 +141,17 @@ div.user-profile {
     float:right;
   }
   .unpublish{
-    background-color: @panel-color;
     margin-right: 10px;
+    background-color: @panel-color;
+    &:hover{
+      background-color: darken(@panel-color, 10%);
+    }
   }
   .delete{
-    background-color: @less-danger-color;
     margin-right: 15px;
+    background-color: @less-danger-color;
+    &:hover{
+      background-color: darken(@less-danger-color, 10%);
+    }
   }
 }
