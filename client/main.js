@@ -325,11 +325,12 @@ Template.story.helpers({
 
 Template.story_title.helpers({
   storyTitleDiv: function(){
+    var initialClasses = Session.get('showDraft') ? 'story-title notranslate' : 'story-title';
     if (Session.get('read')) {
-      return '<div class="story-title">' + _.escape(this.title) + '</div>';
+      return '<div class="' + initialClasses + '">' + _.escape(this.title) + '</div>';
     } else {
       // this is contenteditable in edit mode
-      return '<div class="story-title notranslate" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
+      return '<div class="notranslate ' + initialClasses + '" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
     }
   }
 });
@@ -345,21 +346,23 @@ Template.vertical_section_block.helpers({
     return this.title === !"title";
   },
   titleDiv: function() {
+    var initialClasses = Session.get('showDraft') ? 'title notranslate' : 'title';
     if (Session.get('read')) {
-      return '<div class="title" dir="auto">' + _.escape(this.title) + '</div>';
+      return '<div class="' + initialClasses + '" dir="auto">' + _.escape(this.title) + '</div>';
     } else {
       // this is contenteditable in edit mode
-      return '<div class="title editable notranslate" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
+      return '<div class="editable ' + initialClasses + '" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
     }
   },
   // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
   contentDiv: function() {
+    var initialClasses = Session.get('showDraft') ? 'content notranslate' : 'content';
     if (Session.get('read')) {
-      return '<div class="content" dir="auto">' + cleanVerticalSectionContent(this.content) + '</div>';
+      return '<div class="' + initialClasses + '" dir="auto">' + cleanVerticalSectionContent(this.content) + '</div>';
     } else {
       // nonReactiveContent preserves browser undo functionality across saves
       // this is contenteditable in edit mode
-      return '<div class="content editable fold-editable notranslate" placeholder="Type your text here." contenteditable="true" dir="auto">' + cleanVerticalSectionContent(Template.instance().semiReactiveContent.get()) + '</div>';
+      return '<div class="editable fold-editable ' + initialClasses + '" placeholder="Type your text here." contenteditable="true" dir="auto">' + cleanVerticalSectionContent(Template.instance().semiReactiveContent.get()) + '</div>';
     }
   }
 });
