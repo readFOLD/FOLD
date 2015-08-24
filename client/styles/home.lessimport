@@ -157,6 +157,9 @@ div.home-top {
         margin: auto;
         display: inline-block;
       }
+      .text{
+        max-width: 200px;
+      }
       img.profile-picture {
         margin:auto;
         margin-right: 2px;
