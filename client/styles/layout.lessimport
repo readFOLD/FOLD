@@ -40,6 +40,12 @@
   color: @dark-color;
 }
 
+.ellipsis-text{
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;

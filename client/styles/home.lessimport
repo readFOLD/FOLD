@@ -275,6 +275,7 @@ div.stories {
     //padding: 33px 25px;
     padding-left: 25px;
     div.pull-left {
+      width: 100%;
       div.author-image {
         display: inline-block;
         float: left;
@@ -290,15 +291,19 @@ div.stories {
       }
 
       div.author-name-date {
+        @margin: 20px;
         font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
         display: inline-block;
-        margin-left: 20px;
+        margin-left: @margin;
         margin-top: -9px;
         & > div {
           line-height: 24px;
           font-size: 14px;
         }
+        width: calc(100% ~"-"  @profile-picture-size ~"-" @margin * 2);
         div.author-name {
+          .ellipsis-text;
+          width: 100%;
           margin-top: 12px;
           font-size: 15px;
         }
