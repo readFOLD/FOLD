@@ -118,6 +118,37 @@ var updateContextBlocks = function(selector, modifier, options) {
   return ContextBlocks.update(selector, modifier, _.defaults({}, options, {removeEmptyStrings: false}));
 };
 
+var unpublishStory = function(storyId) {
+  check(storyId, String);
+  if (!this.userId) {
+    throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to unpublish a story');
+  }
+
+  var story = Stories.findOne({_id: storyId, authorId: this.userId});
+
+  if (!story) {
+    throw new Meteor.Error('story not found by author to unpublish. story: ' + storyId + '  userId: ' + this.userId);
+  }
+
+  var contextBlockIds = story.contextBlockIds;
+
+  // update contextblocks so they are ready for unpublish
+  // TODO REMIX. Might need to do something different if remixed.
+  var numCBlocksUpdated = updateContextBlocks.call(this, {_id: {$in: contextBlockIds}}, {
+    $set: {
+      'published': false
+    }
+  }, {multi: true});
+
+  if (numCBlocksUpdated !== contextBlockIds.length) {
+    throw new Meteor.Error('context blocks failed to update on unpublish ' + storyId + '. Maybe some are missing. Or are not by author. Number of ids: ' + contextBlockIds.length + ' Number of blocks updated: ' + numCBlocksUpdated);
+  }
+
+  return updateStory.call(this, {_id: storyId}, {
+    $set: {published: false}
+  });
+};
+
 Meteor.methods({
   addContextToStory: function(storyId, storyShortId, contextBlock, verticalIndex){
     check(storyId, String);
@@ -514,6 +545,25 @@ Meteor.methods({
     return updateStory.call(this, { _id: storyId }, {
       $set: setObject
     });
+  },
+  unpublishStory: unpublishStory,
+  deleteStory: function(storyId){
+    check(storyId, String);
+    if (!this.userId) {
+      throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to delete a story');
+    }
+
+    var story = Stories.findOne({_id: storyId, authorId: this.userId});
+
+    if (!story) {
+      throw new Meteor.Error('story not found by author to delete. story: ' + storyId + '  userId: ' + this.userId);
+    }
+
+    if (story.published){
+      var unpublishedStory = unpublishStory(this, storyId);
+    }
+
+    // CHECK IF UNPUBLISH WORKED AND THEN ACTUALLY DELETE STORY
   },
   favoriteStory: function(storyId) {
     check(storyId, String);
