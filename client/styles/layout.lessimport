@@ -23,7 +23,7 @@
 @homepage-shade-4: @alt-background-color;
 @homepage-shade-5: #525252;
 
-
+@dark-transparent-color: rgba(48, 48, 48, 0.87);
 @light-transparent-color: rgba(244,244,244,0.75);
 @white-color: #D8D8D8;
 
@@ -826,7 +826,6 @@ div.horizontal-context {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: rgba(255,255,255,0.4);
   z-index: 999999999;
   vertical-align: middle;
 }
@@ -838,7 +837,6 @@ div.horizontal-context {
   left: 0;
   .close{
     float: right;
-    background-color: rgba(0,0,0,0);
     .size(36px);
     padding: 0;
     font-size: 22px;
@@ -850,7 +848,7 @@ div.horizontal-context {
 .signin-overlay{
   .full-overlay;
   z-index: 111111;
-  background-color: rgba(48,48,48,0.87);
+  background-color: @dark-transparent-color;
 
   .signin-buttons{
     margin:auto;
@@ -878,7 +876,7 @@ div.horizontal-context {
 
 .title-description-overlay{
   .full-overlay;
-  background-color: rgba(255,255,255,0.8);
+  background-color: @light-transparent-color;
   color: @dark-text-color;
   .title-description-inputs{
     margin:auto;

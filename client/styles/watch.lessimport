@@ -34,9 +34,7 @@
         position: relative;
         padding: 0;
       }
-      .active, &:hover{
-        .box-shadow(0px 8px 12px 0px rgba(0,0,0,0.75));
-      }
+      .preview-hover;
       .active-overlay{
         position:absolute;
         padding-top: 25%;
@@ -45,7 +43,7 @@
         text-align: center;
         font-size: 28px;
         font-weight: bold;
-        background-color: rgba(100,100,100,0.6);
+        background-color: @light-transparent-color;
       }
 
     }
@@ -141,7 +139,7 @@
   margin-top: @circle-diameter;
 
   //height: @contentIconBannerHeight;
-  background-color: rgba(255,255,255,0.5);
+  background-color: @light-transparent-color;
   //li{
   //  height: @circle-diameter;
   //}
@@ -228,7 +226,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(50,50,50,0.75);
+  background-color: @dark-transparent-color;
 
   padding-top: 70px;
   padding-left: 170px;
@@ -351,7 +349,7 @@
 
 .overlay-context-browser{
   .full-overlay;
-  background-color: rgba(25,25,25,0.7);
+  background-color: @dark-transparent-color;
   .context-area {
     margin-left: @PiP-width + 2 * @left-margin;
     margin-right: @PiP-width + 2 * @left-margin;
@@ -642,7 +640,7 @@
 
 .bottom-overlay{
   pointer-events: none;
-  background-color: rgba(255,255,255,0.5);
+  background-color: @light-transparent-color;
   position: absolute;
   left: 25%;
   bottom: 0;

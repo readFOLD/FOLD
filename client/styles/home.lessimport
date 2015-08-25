@@ -411,7 +411,7 @@ div.logo-title {
 
 .stream-preview-screen-overlay{
   .full-overlay;
-  background-color: rgba(48,48,48,0.87);
+  background-color: @dark-transparent-color;
   .preview-box{
     margin:auto;
     display:block;
