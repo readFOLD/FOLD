@@ -73,41 +73,13 @@ input[type=file] {
   }
 }
 
-div.upload-header-image {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 100;
-}
-
-
-
-textarea {
-  border: none;
-  overflow: auto;
-  outline: none;
-  resize: none;
-  &:focus{
-    outline-offset: 0;
-  }
-  padding: 0px;
-
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  font-size: 14px;
-  width: 100%;
-  word-wrap: break-word;
-
-  &.text-input {
-    max-height: 300px;
-    max-width: 476px;
-    margin-top: 10px;
-    padding: 18px;
-
-    color: @background-color;
-    line-height: 27px;
-  }
+textarea.text-input {
+  max-height: 300px;
+  max-width: 476px;
+  margin-top: 10px;
+  padding: 18px;
+  color: @background-color;
+  line-height: 27px;
 }
 
 svg{
@@ -116,10 +88,11 @@ svg{
 
 div.create-section.link-twitter{
   text-align: center;
-}
-.link-twitter-button{
-  height: 50px;
-  padding: 8px;
+  button{
+    .action-button;
+    height: 50px;
+    padding: 8px;
+  }
 }
 
 @newCardBottomButtonHeight: 35px;
@@ -138,8 +111,10 @@ div.add-context {
     padding-left: 22px;
     padding-right: 22px;
     height: calc(100% ~"-" @contentIconBannerHeight);
+    .search-section {
+      height: 100%;
+    }
   }
-
 
   div.tabs {
     margin-bottom: 15px;
@@ -180,13 +155,10 @@ div.add-context {
     @searchInputWidth: calc(100% ~"-" @searchTriggerWidth ~"-" @innerElementPadding);
 
     position: relative;
-    width: 0%;
     overflow: hidden;
     min-width: calc(@searchTriggerWidth+@innerElementPadding);
-    height: @searchInputHeight; 
-
-    .transition(width 0.3s);
-
+    height: @searchInputHeight;
+    width: 100%;
     -webkit-backface-visibility: hidden;        
 
     .search-trigger, .search-input-container, input, .search-button {
@@ -214,7 +186,6 @@ div.add-context {
       background: @dark-color;
       width: @searchInputWidth;
       left: @searchTriggerWidth+10px;
-      display: none;
     }
 
     .search-button {
@@ -231,21 +202,12 @@ div.add-context {
     position: relative;
     margin-top: 20px;
     margin-bottom: 40px;
-
     .pill-radios;
   }
 
   .twitter .search-radios {
-      margin-bottom: 0px
-    }
-
-
-  .search-outside-input-container.search-open {
-    width: 100%;
-    input {
-      display:block;
-    }
-  }  
+    margin-bottom: 0px
+  }
 
   .news-preview.search-results-container {
     height: calc(100% ~"-" @searchFormHeight ~"-" 40px);
@@ -339,10 +301,9 @@ div.add-context {
       }
     }
     
-    
     @searchResultWidth: @aspectRatio * (@searchResultHeight - (2 * @innerElementPadding));
     @smallThumbnailWidth: .8*@searchResultHeight - (2 * @innerElementPadding);
-    div.thumbnail {
+    div.thumbnail { // link-section
       img{   
         width: @searchResultWidth;
         height: @searchResultHeight - @innerElementPadding;
@@ -362,32 +323,8 @@ div.add-context {
           margin-left: -@searchResultWidth;
         }
       }    
-    }    
-     
-    @focusedThumbnailHeight: (2 * @searchResultHeight) - (2 * @innerElementPadding);
-    @focusedThumbnailWidth: @aspectRatio * @focusedThumbnailHeight;
-    
-    div.focused-search-result { 
-      height: @searchResultHeight*3.2;
-      background: #e7e7e7;   
-    }    
-    
-    div.focused-thumbnail {    
-      padding-top: @innerElementPadding;
-      margin-left: 10px;  
+    }
 
-      iframe {
-        &.video {
-          width: @focusedThumbnailWidth;
-          height: @focusedThumbnailHeight;        
-        }
-        &.audio {
-          width: calc(100% ~"-" 10px);
-          height: @focusedThumbnailHeight
-        }
-      }
-    }    
-       
     @textAreaHeight: 75px;   
     div.info{    
       position: relative;   
@@ -445,9 +382,6 @@ div.add-context {
     .info.focused {
       top: 10px;
       left: 10px;
-      //left: 20px + @focusedThumbnailWidth;
-      //max-width: calc(100% ~"-" 30px ~"-" @focusedThumbnailWidth);
-      //max-height: @focusedSearchResultHeight - 10px;
       width: calc(100% ~"-" 30px);
       max-width: 100%;
       .descr {
@@ -458,7 +392,7 @@ div.add-context {
     }  
   }
 
-    button.add-button, button.add-desc-button, button.back-button {
+    button.add-button {
       position: relative;
       left: calc(100%~"-" 90px);
       .action-button;
@@ -474,25 +408,7 @@ div.add-context {
       &:not(:last-child) {
         margin-right: 10px;
       }
-
-      &.enabled {
-        cursor: pointer;
-      }
     }
-
-    button.add-desc-button {
-      left: calc(100%~"-" 120px);
-      width: 120px;
-    }
-    button.back-button {
-      margin-left: -100px;
-    }
-}
-
-.create-map-section{
-  iframe{
-    // outline: 1px solid #e0e1e2;
-  }
 }
 
 .create-link-section {
@@ -530,34 +446,5 @@ div.add-context {
     left:0;
     top:0;
     z-index: 100;
-  }
-}
-
-.create-section {
-  .search-section, .add-desc-section {
-    height: 100%;
-  }
-
-  .image-preview {
-    max-height: calc(100% ~"-" @newCardBottomButtonHeight + 10px); // 10 px is effectively the min margin from the botton of window
-
-    .image-section {
-      height: 300px;      
-    }
-  }
-
-  form.desc-form {
-    position: relative;
-    top: -300px;
-    textarea {
-      background-color: rgba(0, 0, 0, 0.8);
-      opacity: 0.8;
-      color: white;
-      margin-top: 0px;
-      padding: 8px;
-      font-size: 14px;
-      line-height: 20px;
-      text-align: start;
-    }
   }
 }

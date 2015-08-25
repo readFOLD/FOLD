@@ -151,9 +151,6 @@ Template.watch.onCreated(function () {
       var mostRecentContext =  deepstream.mostRecentContext();
       if (mostRecentContext){
         Session.set("mediaDataType", mostRecentContext.type);
-        //var currentContextIdByType = {};
-        //currentContextIdByType[mostRecentContext.type] = mostRecentContext._id;
-        //Session.set("currentContextIdByType", currentContextIdByType);
       } else {
         Session.set("mediaDataType", defaultContextType);
       }

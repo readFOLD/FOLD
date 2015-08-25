@@ -290,7 +290,7 @@
 
 .stream-search{
   .search-radios{
-    display: none; // TODO remove
+    display: none;
   }
 }
 
@@ -400,7 +400,7 @@
   }
 }
 
-.browse-buttons{
+.context-browser-header-row{
   // background-color: @dark-color;
   width: 100%;
   height: 48px;
@@ -742,10 +742,6 @@
   }
 }
 
-
-.link-twitter-button{
-  .action-button;
-}
 
 .create-section.unimplemented{
   text-align: center;
