@@ -3,6 +3,8 @@
 @dark-medium-color: #424242;
 @medium-color: #9B9B9B;
 @light-color: #F4F4F4;
+@white-color: #D8D8D8;
+
 
 
 
@@ -13,6 +15,8 @@
 @annotation-color: @medium-color;
 @deemphasized-light-text-color: @medium-color;
 @light-icon-color: @light-color;
+@white-icon-color: @white-color;
+@light-text-color: @white-color;
 
 
 
@@ -25,7 +29,7 @@
 
 @dark-transparent-color: rgba(48, 48, 48, 0.87);
 @light-transparent-color: rgba(244,244,244,0.75);
-@white-color: #D8D8D8;
+
 
 @live-color: #C90523;
 @action-color: #F6C406;
@@ -121,7 +125,7 @@ html {
     display: none;
   }
   label {
-    color: @white-color;
+    color: @light-text-color;
     font-size:12px;
     font-weight:bold;
     padding:0 15px;
@@ -451,35 +455,13 @@ body {
   //potential option for card text
   // font-family: 'Alegreya Sans' , sans-serif;
   margin: 0;
-  color: @white-color;
+  color: @light-text-color;
   background-color: @background-color;
   transition: color 0.25s ease;
   transition: background-color 0.25s ease;
 
   line-height: 23px;
   font-size: 15px;
-}
-
-footer{
-  @height: 500px;
-  position:absolute;
-  left: 0;
-  right:0;
-  bottom:-@height;
-  height: @height;
-  display: inline-block;
-  text-align: center;
-  .write-prompt{
-    background-color: @white-color;
-    height: 142px;
-  }
-  p{
-    margin-top: 0;
-  }
-  button{
-    padding: 10px 12px 10px 12px;
-    .action-button;
-  }
 }
 
 hr {
@@ -624,7 +606,6 @@ div.link-section {
 
     padding-right: 10px;
     text-align: right;
-    //background-color: @white-color;
     a {
       color: @action-color;
     }
@@ -781,55 +762,6 @@ div.horizontal-context {
   }
 }
 
-@context-count-size: 30px;
-
-.context-count {
-  margin-left: 7px;
-  position: absolute;
-  top: -0.5 * @context-count-size;
-  width: 100%;
-}
-.context-count-text{
-  display: none;
-}
-
-.context-count-icon {
-  display: inline;
-  svg{
-    margin-left: 7px;
-    .bg{
-      fill: @action-color;
-    }
-    .size(@context-count-size);
-  }
-
-  &:hover{
-    .fg{
-      display: none;
-    }
-    .context-count-text {
-      font-family: 'Roboto', sans-serif;
-      font-size: 14px;
-      position: absolute;
-      cursor: default;
-      color: @white-color;
-      //font-weight: 800;
-      margin-top: 4px;
-      margin-left: -@context-count-size/2- 8px;
-      display: inline;
-    }
-  }
-}
-
-
-.publish-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 999999999;
-  vertical-align: middle;
-}
-
 .full-overlay{
   z-index: 99999;
   position: fixed;
@@ -938,7 +870,7 @@ div.tagsinput span.tag {
   padding-right: 10px;
   text-decoration:none;
   background: @action-color;
-  color: @white-color;
+  color: @light-text-color;
   margin-right: 8px;
   margin-bottom:5px;
 }

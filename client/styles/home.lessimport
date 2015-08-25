@@ -59,7 +59,7 @@ div.deepstreams-and-streams {
 .stream-type-selector{
   @height: 46px;
   li {
-    color: @white-color;
+    color: @light-text-color;
     height: auto;
     display:inline-block;
     font-size:18px;
@@ -107,7 +107,7 @@ div.deepstreams-and-streams {
     line-height:@height;
     padding:0 15px;
 
-    color: @white-color;
+    color: @light-text-color;
     background-color: transparent;
   }
 
@@ -150,7 +150,7 @@ div.logo-title {
     .slogan{
       font-size: 12px;
       line-height: 20px;
-      color: @white-color;
+      color: @light-text-color;
     }
   }
 
@@ -546,7 +546,7 @@ div.action-items {
       float: none;
       display: block;
       margin:0;
-      border-top: 1px solid @white-color;
+      border-top: 1px solid @light-text-color;
     }
   }
 }
@@ -576,9 +576,9 @@ div.action-items {
       }
 
       &.selected, &:hover {
-        border-bottom: 2px solid @white-color;
+        border-bottom: 2px solid @light-text-color;
         button {
-          color: @white-color;
+          color: @light-text-color;
         }
       }
     }
@@ -599,13 +599,13 @@ div.action-items {
       width: 30px;
       padding: 10px;
       .fg{
-        fill: @white-color;
+        fill: @white-icon-color;
       }
     }
     input[type=search]{
       height: 100%;
       background-color: inherit;
-      color: @white-color;
+      color: @light-text-color;
     }
   }
 
