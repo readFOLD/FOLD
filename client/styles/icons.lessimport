@@ -10,20 +10,6 @@ svg.search-icon {
   margin-top: 2px;
 }
 
-svg.babyburger-icon{
-  .size(20px);
-  &:hover {
-    .bg{
-      fill: @action-color;
-    }
-  }
-}
-
-svg.mobile-back-icon{
-  .bg{
-    fill: @action-color;
-  }
-}
 
 .star-button{
   @height: 25px;
