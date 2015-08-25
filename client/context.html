@@ -1,35 +1,3 @@
-<head>
-  <title>Deepstream</title>
-  <link rel="apple-touch-icon" href="https://res.cloudinary.com/fold/image/upload/v1/static/FOLD-apple-touch-icon.png">
-  <link rel="shortcut icon" href="https://res.cloudinary.com/fold/image/upload/v1/static/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
-
-  <meta name="description" content="A reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories." />
-
-  <!-- Twitter Card data -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="@streamdeeper">
-  <meta name="twitter:title" content="Deepstream">
-  <meta name="twitter:description" content="Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.">
-  <meta name="twitter:creator" content="@streamdeeper">
-  <meta name="twitter:image" content="https://res.cloudinary.com/fold/image/upload/v1/static/FOLD_twitter_image.png">
-
-  <!-- Open Graph data -->
-  <meta name="fragment" content="!">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://readfold.com">
-  <meta property="og:image" content="http://res.cloudinary.com/fold/image/upload/v1/static/FOLD_fb_image.png">
-  <meta property="og:image:secure_url" content="https://res.cloudinary.com/fold/image/upload/v1/static/FOLD_fb_image.png">
-  <meta property="og:title" content="Deepstream">
-  <meta property="og:description" content="Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.">
-</head>
-
-
-<!--
-  Templates used in reading, creating, and editing
--->
-
-<!-- Display Templates -->
 <template name="display_text_section">
   <div class="text-section" dir="auto">
     {{{annotation}}}
@@ -181,7 +149,7 @@
               </a>
               {{#if retweetUser}}
                 <a href="{{retweet_url}}" target="_blank">
-                <i class="fa fa-retweet"></i>@{{retweetUser}}</a>
+                  <i class="fa fa-retweet"></i>@{{retweetUser}}</a>
               {{/if}}
               <a href="{{tweet_url}}" target="_blank">{{date}}</a>
             </span>
@@ -257,56 +225,44 @@
 </template>
 
 
-<template name="share_button">
-  {{#if tooltipShown}}
-  <div class="sharing-tooltip">
-    <ul>
-      <li class="share-facebook">
-        <i class="fa fa-facebook"></i>
-        <span>Share on Facebook</span>
-      </li>
-      <li class="share-twitter">
-        <i class="fa fa-twitter"></i>
-        <span>Share on Twitter</span>
-      </li>
-    </ul>
-  </div>
-  {{/if}}
-  <div class="share-button {{#if tooltipShown}}active{{/if}}">
-    <button type='button' class='share'>{{> share_icon }}</button>
+
+<template name="preview_image_section">
+  <div class="show-full">
+    {{> display_image_section}}
   </div>
 </template>
 
-<template name="favorite_button">
-    <div class="favorite-button">
-        {{#if userFavorited}}
-            <button type='button' class='unfavorite'>{{> favorite_icon }}</button>
-        {{else}}
-            <button type='button' class='favorite'>{{> favorite_icon }}</button>
-        {{/if}}
-        {{favoritedTotal}}
+<template name="preview_video_section">
+  <div class="show-full">
+    <div class="video-preview">
+      <img src="{{previewUrl}}"/>
+      {{> play_video_icon}}
     </div>
+    {{{annotation}}}
+  </div>
 </template>
 
-<template name="editors_pick_button">
-    <div class="editors-pick-button">
-        {{#if editorsPick}}
-            <button type='button' class='unpick'>{{> favorite_icon }}</button>
-        {{else}}
-            <button type='button' class='pick'>{{> favorite_icon }}</button>
-        {{/if}}
+<template name="preview_map_section">
+  <div class="show-full">
+    <div class="map-preview">
+      <img src="{{previewUrl 200 310}}"/>
     </div>
+    {{{annotation}}}
+  </div>
 </template>
 
-<template name="stats">
-  {{> serverFacts}}
+<template name="preview_text_section">
+  <div class="show-full">
+    <div class="text-preview" dir="auto">
+      {{content}}
+    </div>
+  </div>
 </template>
 
-<template name="loading_page">
-  <div class="loading-page" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
-    <div class="centered-loading-icon">
-      Loading...
-      <!--{{> loading_icon}}-->
+<template name="preview_news_section">
+  <div class="show-full">
+    <div class="news-preview">
+      {{title}} - {{providerName}}
     </div>
   </div>
 </template>

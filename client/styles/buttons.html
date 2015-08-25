@@ -1,0 +1,40 @@
+<template name="share_button">
+  {{#if tooltipShown}}
+    <div class="sharing-tooltip">
+      <ul>
+        <li class="share-facebook">
+          <i class="fa fa-facebook"></i>
+          <span>Share on Facebook</span>
+        </li>
+        <li class="share-twitter">
+          <i class="fa fa-twitter"></i>
+          <span>Share on Twitter</span>
+        </li>
+      </ul>
+    </div>
+  {{/if}}
+  <div class="share-button {{#if tooltipShown}}active{{/if}}">
+    <button type='button' class='share'>{{> share_icon }}</button>
+  </div>
+</template>
+
+<template name="favorite_button">
+  <div class="favorite-button">
+    {{#if userFavorited}}
+      <button type='button' class='unfavorite'>{{> favorite_icon }}</button>
+    {{else}}
+      <button type='button' class='favorite'>{{> favorite_icon }}</button>
+    {{/if}}
+    {{favoritedTotal}}
+  </div>
+</template>
+
+<template name="editors_pick_button">
+  <div class="editors-pick-button">
+    {{#if editorsPick}}
+      <button type='button' class='unpick'>{{> favorite_icon }}</button>
+    {{else}}
+      <button type='button' class='pick'>{{> favorite_icon }}</button>
+    {{/if}}
+  </div>
+</template>
