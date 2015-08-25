@@ -356,5 +356,3 @@ Template.my_streams.helpers({
     }
   }
 });
-
-

@@ -237,6 +237,8 @@ _.each(createTemplateNames, function(templateName){
   });
 });
 
+Template.create_text_section.helpers(createBlockHelpers);
+
 Template.create_stream_section.helpers(createBlockHelpers);
 Template.create_stream_section.events(createBlockEvents);
 

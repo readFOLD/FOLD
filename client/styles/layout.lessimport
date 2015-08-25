@@ -381,6 +381,7 @@ input {
   font-family: inherit;
   outline: none;
   font-size: 14px;
+  color: @light-text-color;
 }
 
 

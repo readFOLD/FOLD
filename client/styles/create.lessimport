@@ -130,7 +130,6 @@ div.add-context {
   section {
     padding: 0;
   }
-  color: black;
 
   @contentIconBannerHeight: 80px;
 
@@ -143,7 +142,6 @@ div.add-context {
 
 
   div.tabs {
-    border-bottom: 1px solid @medium-color;
     margin-bottom: 15px;
     ul {
       margin: 0;
@@ -158,11 +156,13 @@ div.add-context {
         font-weight: bold;
         text-transform: uppercase;
         display: inline-block;
-        min-width: 100px;
-        border-bottom: 2px solid white;
+        min-width: 80px;
+        color: @deemphasized-light-text-color;
+        border-bottom: 2px solid @deemphasized-light-text-color;
 
         &.selected, &:hover {
-          border-bottom: 2px solid @action-color;
+          color: @light-text-color;
+          border-bottom: 2px solid @light-text-color;
         }
       }
     }
@@ -192,7 +192,6 @@ div.add-context {
     .search-trigger, .search-input-container, input, .search-button {
       font-size: 12px;
       height: @searchInputHeight;
-      color: @dark-color;
       position: absolute;
       float: left;
     }
@@ -279,7 +278,6 @@ div.add-context {
   }
 
   ol.search-results-container {   
-    background-color: @white-color;
     width: 100%;
     max-height: calc(100% ~"-" @searchFormHeight ~"-" 83px);
     overflow-y: scroll;
@@ -290,12 +288,9 @@ div.add-context {
     @aspectRatio: 4/3;
     @searchResultHeight: 94px;
     @thumbnailHeight: 90px;    
-    @thumbnailWidth: 120px; 
+    @thumbnailWidth: 120px;
     
     li {
-      border-top: 1px solid #e7e7e7;  
-      border-right: none;
-      border-left: none; 
       white-space: normal;
       cursor: pointer;
 
