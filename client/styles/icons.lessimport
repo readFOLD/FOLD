@@ -41,10 +41,6 @@ svg.mobile-back-icon{
   }
 }
 
-.share-button{
-  .star-button;
-}
-
 .editors-pick-button{
   .star-button;
   .pick{
