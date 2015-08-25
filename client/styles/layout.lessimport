@@ -838,56 +838,6 @@ div.horizontal-context {
   }
 }
 
-
-div.tagsinput {
-  font-family: Muli;
-  font-size: 15px;
-  border:1px solid #CCC;
-  background: #FFF;
-  padding:5px;
-  overflow-y: auto;
-}
-
-div.tagsinput span.tag {
-  display: block;
-  float: left;
-  padding: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  text-decoration:none;
-  background: @action-color;
-  color: @light-text-color;
-  margin-right: 8px;
-  margin-bottom:5px;
-}
-
-div.tagsinput span.tag a {
-  opacity: .8;
-}
-
-div.tagsinput input {
-  width:80px;
-  margin:0px;
-  border:1px solid transparent;
-  padding:5px;
-  background: transparent;
-  color: #000;
-  outline:0px;
-  margin-right:5px;
-  margin-bottom:5px;
-}
-
-div.tagsinput div {
-  display:block;
-  float: left;
-}
-
-.tags_clear {
-  clear: both;
-  width: 100%;
-  height: 0px;
-}
-
 .not_valid {background: #FBD8DB !important;
   color: #90111A !important;}
 

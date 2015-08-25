@@ -165,20 +165,7 @@ Template.link_twitter.events({
     analytics.track('Click Link Twitter');
   }
 });
-//
-//Template.publish_overlay.onRendered(function(){
-//  this.$('#story-tags-input').tagsInput({
-//    minInputWidth: '80px',
-//    width: '100%',
-//    height: '83px'
-//  });
-//});
-//
-//Template.publish_overlay.helpers({
-//  'keywordsString': function(){
-//    return (this.keywords || []).toString();
-//  }
-//});
+
 
 Template.unimplemented_chat_section.onCreated(function(){
   notifyFeature('Chat: coming soon!');
