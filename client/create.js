@@ -5,13 +5,6 @@ var saveUpdatedSelection = function () {
   $(window.selectedNode).closest('.content').blur();
 };
 
-window.plainTextPaste = function(e) {
-  var clipboardData = (e.originalEvent || e).clipboardData;
-  e.preventDefault();
-  return document.execCommand('insertText', false, clipboardData.getData('text/plain'));
-};
-
-
 window.saveCallback =  function(err, success, cb) {
   var saveUIUpdateDelay = 300;
   setTimeout(function(){
