@@ -81,17 +81,25 @@ Template.watch.onCreated(function () {
     ytApiReady.set(true);
   };
 
+  // confirm stream exists
+  this.autorun(function(){
+    if (FlowRouter.subsReady() && !Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false})){
+      return FlowLayout.render("stream_not_found");
+    }
+  });
+
+  // confirm user is curator if on curate page
   this.autorun(function(){ // TODO confirm user is curator
     if(FlowRouter.subsReady() && that.data.onCuratePage()){
+      var stream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
+
       if ((user = Meteor.user())) { // if there is a user
-        //if (user && data && user._id !== data.curatorId) { // if they don't own the stream take them to stream not found
-        //  return this.render("stream_not_found");
-        //}
+        if (!stream || user._id !== stream.curatorId) { // if they don't own the stream take them to stream not found
+          return FlowLayout.render("stream_not_found");
+        }
         var accessPriority = Meteor.user().accessPriority; // TODO update for Deepstream
         if (!accessPriority || accessPriority > window.createAccessLevel){
-          //FlowRouter.withReplaceState(function(){
-            FlowRouter.go('/');
-          //})
+          FlowRouter.go(stream.watchPath());
           notifyInfo("Creating and editing streams is temporarily disabled, possibly because things blew up (in a good way). Sorry about that! We'll have everything back up as soon as we can. Until then, why not check out some of the other great content authors in the community have written?")
         }
       } else if (Meteor.loggingIn()) {
@@ -99,14 +107,13 @@ Template.watch.onCreated(function () {
       } else {
         Session.set('signingIn', true); // if there is no user, take them to the signin page
         Session.set('signingInFrom', setSigningInFrom());
-        FlowRouter.go('/'); // TODO this should probably be the corresponding watch page
+        FlowRouter.go(stream.watchPath());
       }
     }
   });
 
   this.autorun(function(){
     Session.set("streamShortId", that.data.shortId());
-
   });
 
   this.autorun(function() { // when change media data type, leave search mode, unless doing streams, then always search
@@ -120,6 +127,9 @@ Template.watch.onCreated(function () {
     }
   });
 
+  var defaultContextType = 'image';
+
+  // march through creation steps, or setup most recent context type to display when arrive on page if past curation
   this.autorun(function(){
     if(FlowRouter.subsReady()){
       var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
@@ -132,27 +142,27 @@ Template.watch.onCreated(function () {
           Session.set("searchingMedia", true);
           return
         } else if (reactiveDeepstream.creationStep === 'add_cards') {
-          Session.set("mediaDataType", 'image');
+          Session.set("mediaDataType", defaultContextType);
           Session.set("searchingMedia", true);
           return
         }
-
       }
+
       // else
       var mostRecentContext =  deepstream.mostRecentContext();
       if (mostRecentContext){
         Session.set("mediaDataType", mostRecentContext.type);
-        var currentContextIdByType = {};
-        currentContextIdByType[mostRecentContext.type] = mostRecentContext._id;
-        Session.set("currentContextIdByType", currentContextIdByType);
+        //var currentContextIdByType = {};
+        //currentContextIdByType[mostRecentContext.type] = mostRecentContext._id;
+        //Session.set("currentContextIdByType", currentContextIdByType);
       } else {
-        Session.set("mediaDataType", null);
-        Session.set("currentContextIdByType", {});
+        Session.set("mediaDataType", defaultContextType);
       }
       Session.set("searchingMedia", false);
     }
   });
 
+  // set context as mediaDataType or currentContextIdByType changes
   this.autorun(function(){
     if(FlowRouter.subsReady()) {
       var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
@@ -164,6 +174,7 @@ Template.watch.onCreated(function () {
   this.activeStream = new ReactiveVar();
   this.userControlledActiveStreamId = new ReactiveVar();
 
+  // switch between streams
   this.autorun(function(){ // TO-DO Performance, don't rerun on every stream switch, only get fields needed
     if(FlowRouter.subsReady()) {
       var userControlledActiveStreamId = that.userControlledActiveStreamId.get();
@@ -212,37 +223,11 @@ Template.watch.onRendered(function(){
           this.mainPlayerUSApiActivated = true;
           Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
             var ustreamPlayer = UstreamEmbed(that.mainStreamElementId);
-
-            ustreamPlayer.getProperty('content', function(){
-              console.log('content is')
-              console.log(arguments)
-              //Meteor.setTimeout(onMainPlayerReady, 1000);
-
-            })
-
-            ustreamPlayer.addListener('content', function() {
-              console.log('content changed')
-              console.log(arguments)
-            });
-
-            ustreamPlayer.addListener('syncedMeta', function() {
-              console.log('syncedMeta changed')
-              console.log(arguments)
-              //Meteor.setTimeout(onMainPlayerReady, 1000);
-            });
-
-            ustreamPlayer.addListener('playing', function() {
-              console.log('playing changed')
-              console.log(arguments)
-              //Meteor.setTimeout(onMainPlayerReady, 1000);
-            });
-
             mainPlayer._ustreamPlayer = ustreamPlayer;
           }, 1000);
         }
         Meteor.setTimeout(onMainPlayerReady, 4000); // TODO, this is a hack. Is there any way to know that the player is ready?
         mainPlayer.activeStreamSource = 'ustream';
-
       }
     }
   });
@@ -259,16 +244,6 @@ Template.watch.onRendered(function(){
   });
 
   onMainPlayerReady = function(event){
-    console.log('Player Ready')
-
-    //that.autorun(function(){ // TO-DO, if uncomment this, ensure it only gets started once, not everytime video switches
-    //  if(Session.get('mainPlayerMuted')){
-    //    mainPlayer.mute();
-    //  } else {
-    //    mainPlayer.unMute();
-    //  }
-    //});
-
     mainPlayer.play();
   };
 
@@ -361,7 +336,7 @@ Template.watch.helpers({
   streamTitleElement: function(){
     if (Session.get('curateMode')) {
       // this is contenteditable in curate mode
-      return '<div class="stream-title" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
+      return '<div class="stream-title notranslate" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
     } else {
       return '<div class="stream-title">' + _.escape(this.title) + '</div>';
     }
@@ -369,7 +344,7 @@ Template.watch.helpers({
   streamDescriptionElement: function(){
     if (Session.get('curateMode')) {
       // this is contenteditable in curate mode
-      return '<div class="stream-description" placeholder="Enter a description" contenteditable="true" dir="auto">' + _.escape(this.description) + '</div>';
+      return '<div class="stream-description notranslate" placeholder="Enter a description" contenteditable="true" dir="auto">' + _.escape(this.description) + '</div>';
     } else {
       return '<div class="stream-description">' + _.escape(this.description) + '</div>';
     }
@@ -689,4 +664,4 @@ window.setCurrentContextIdOfTypeToMostRecent = function(){
     currentContextIdByType[type] = mostRecentOfThisType._id;
     Session.set("currentContextIdByType", currentContextIdByType)
   }
-}
+};
