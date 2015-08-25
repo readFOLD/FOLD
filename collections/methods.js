@@ -560,10 +560,18 @@ Meteor.methods({
     }
 
     if (story.published){
-      var unpublishedStory = unpublishStory(this, storyId);
+      var unpublishSuccessful = unpublishStory(this, storyId);
+      if (!unpublishSuccessful) {
+        throw new Meteor.Error('unpublish failed' + storyId + '  userId: ' + this.userId);
+      }
     }
 
-    // CHECK IF UNPUBLISH WORKED AND THEN ACTUALLY DELETE STORY
+    return updateStory.call(this, { _id: storyId }, {
+      $set: {
+        deleted: true,
+        deletedAt: new Date
+      }
+    });
   },
   favoriteStory: function(storyId) {
     check(storyId, String);

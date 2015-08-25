@@ -15,8 +15,17 @@ Template.my_stories.events({
   'click .unpublish': function(){
     if (confirm('Are you sure you want to unpublish this story?')){
       Meteor.call('unpublishStory', this._id, function(err, result) {
-        if(err){
+        if(err || !result){
           notifyError('Unpublish failed.');
+        }
+      });
+    }
+  },
+  'click .delete': function(){
+    if (confirm('Are you sure you want to delete this story? This cannot be undone.')){
+      Meteor.call('deleteStory', this._id, function(err, result) {
+        if(err || !result){
+          notifyError('Delete failed.');
         }
       });
     }
