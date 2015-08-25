@@ -182,7 +182,7 @@ Template.user_stories.helpers({
   },
   publishedStories: function() {
     var limit = Template.instance().seeAllPublished.get() ? 0 : numStoriesToDisplay; //when limit=0 -> no limit on stories
-    return Stories.find({authorUsername : this.user.username, published : true}, {
+    return Stories.find({authorId : this.user._id, published : true}, {
       sort: {
         publishedAt: -1
       }, 
@@ -190,10 +190,10 @@ Template.user_stories.helpers({
     })
   },
   showAllPublishedButton: function() {
-    return Stories.find({authorUsername : this.user.username, published : true}).count() > numStoriesToDisplay
+    return Stories.find({authorId : this.user._id, published : true}).count() > numStoriesToDisplay
   },
   hasPublished: function() {
-    return Stories.findOne({authorUsername : this.user.username, published : true})
+    return Stories.findOne({authorId : this.user._id, published : true})
   },
   unpublishedMessage: function () {
     var user = Meteor.user();
