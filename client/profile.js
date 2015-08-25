@@ -13,21 +13,29 @@ formatDate = function(date) {
 
 Template.my_stories.events({
   'click .unpublish': function(){
+    var that = this;
     if (confirm('Are you sure you want to unpublish this story?')){
-      Meteor.call('unpublishStory', this._id, function(err, result) {
-        if(err || !result){
-          notifyError('Unpublish failed.');
-        }
-      });
+      $('.story[data-story-id=' + that._id + ']').fadeOut(500, function(){
+        Meteor.call('unpublishStory', that._id, function(err, result) {
+          if(err || !result){
+            notifyError('Unpublish failed.');
+          }
+        });
+      })
+
     }
   },
   'click .delete': function(){
+    var that = this;
     if (confirm('Are you sure you want to delete this story? This cannot be undone.')){
-      Meteor.call('deleteStory', this._id, function(err, result) {
-        if(err || !result){
-          notifyError('Delete failed.');
-        }
-      });
+      $('.story[data-story-id=' + that._id + ']').fadeOut(500, function(){
+        Meteor.call('deleteStory', that._id, function(err, result) {
+          if(err || !result){
+            notifyError('Delete failed.');
+          }
+        });
+      })
+
     }
   }
 });
