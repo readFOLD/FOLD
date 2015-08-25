@@ -188,7 +188,7 @@ Template.watch.onRendered(function(){
   this.mainPlayerYTApiActivated = false;
   this.mainPlayerUSApiActivated = false;
 
-
+  // activate jsAPIs for main stream
   this.autorun(function(){
     if(ytApiReady.get() && FlowRouter.subsReady()){
       var activeStream = that.activeStream.get();
@@ -223,6 +223,7 @@ Template.watch.onRendered(function(){
     }
   });
 
+  // focus on title when title/description overlay appears
   this.autorun(function(){
     if(FlowRouter.subsReady()) {
       var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {fields: {creationStep: 1}});
@@ -279,27 +280,6 @@ Template.watch.helpers({
   showTutorial: function(){
     return _.contains(['find_stream', 'add_cards', 'go_on_air'], this.creationStep)
   },
-  onFindStreamStep: function(){
-    return this.creationStep == 'find_stream';
-  },
-  onAddCardsStep: function(){
-    return this.creationStep == 'add_cards';
-  },
-  onGoOnAirStep: function(){
-    return this.creationStep == 'go_on_air';
-  },
-  titleLength: function(){
-    return  Template.instance().titleLength.get();
-  },
-  titleMax: function(){
-    return titleMax;
-  },
-  descriptionLength: function(){
-    return Template.instance().descriptionLength.get();
-  },
-  descriptionMax: function(){
-    return descriptionMax;
-  },
   showRightSection: function(){
     var mediaDataType = Session.get('mediaDataType');
     return !soloOverlayContextModeActive() && (mediaDataType && (Session.get("curateMode") || this.hasContextOfType(mediaDataType)));
@@ -355,12 +335,6 @@ var basicErrorHandler = function(err){
   }
 };
 
-
-Template.watch.onCreated(function(){
-  this.titleLength = new ReactiveVar(0);
-  this.descriptionLength = new ReactiveVar(0);
-});
-
 Template.watch.events({
   'click .set-main-stream': function(e, t){
     if(Session.get('curateMode')){
@@ -369,66 +343,12 @@ Template.watch.events({
       t.userControlledActiveStreamId.set(this._id);
     }
   },
-  'click .mute': function(){
-    Session.set('mainPlayerMuted', true);
-  },
-  'click .unmute': function(){
-    Session.set('mainPlayerMuted', false);
-  },
   'click .preview': function(e,t){
     t.userControlledActiveStreamId.set(null); // so that stream selection doesn't switch
     Session.set('curateMode', false);
   },
   'click .return-to-curate': function(){
     Session.set('curateMode', true);
-  },
-  'keypress .set-title': function(e, t){
-    if (e.keyCode === 13){
-      e.preventDefault();
-      $('.set-description').focus();
-    }
-  },
-  'keypress .set-description': function(e, t){
-    if (e.keyCode === 13){
-      e.preventDefault();
-      $('#publish-with-title-description').submit();
-    }
-  },
-  'keyup .set-title': function(e, t){
-    t.titleLength.set($(e.currentTarget).val().length);
-  },
-  'keyup .set-description': function(e, t){
-    t.descriptionLength.set($(e.currentTarget).val().length);
-  },
-  'submit #publish-with-title-description': function(e, t){
-    e.preventDefault();
-    var title = t.$('.set-title').val();
-    var description = t.$('.set-description').val();
-    Meteor.call('publishStream', t.data.shortId(), title, description, function(err){
-      if(err){
-        basicErrorHandler(err);
-      } else {
-        notifySuccess("Congratulations! Your Deep Stream is now on air!");
-      }
-    });
-  },
-  'click .find-stream .text': function(e, t){
-    Meteor.call('goToFindStreamStep', t.data.shortId(), basicErrorHandler);
-  },
-  'click .add-cards .text': function(e, t){
-    Meteor.call('goToAddCardsStep', t.data.shortId(), basicErrorHandler);
-  },
-  'click .go-on-air .text': function(e, t){
-    Meteor.call('goToPublishStreamStep', t.data.shortId(), basicErrorHandler);
-  },
-  'click .find-stream button': function(e, t){
-    Meteor.call('skipFindStreamStep', t.data.shortId(), basicErrorHandler);
-  },
-  'click .add-cards button': function(e, t){
-    Meteor.call('skipAddCardsStep', t.data.shortId(), basicErrorHandler);
-  },
-  'click .title-description-overlay .close': function(e, t){
-    Meteor.call('goBackFromTitleDescriptionStep', t.data.shortId(), basicErrorHandler);
   },
   'click .publish': function(e, t){
     if (this.creationStep === 'go_on_air') {
@@ -507,7 +427,6 @@ Template.watch.events({
     clearCurrentContext();
   }
 });
-
 
 Template.context_browser.helpers({
   mediaTypeForDisplay: function(){
@@ -638,5 +557,92 @@ Template.exit_search_button.helpers({
 Template.exit_search_button.events({
   'click .exit-search-button': function(){
     return Session.set('searchingMedia', false);
+  }
+});
+
+
+Template.title_description_overlay.onCreated(function(){
+  this.titleLength = new ReactiveVar(this.title ? this.title.length : 0);
+  this.descriptionLength = new ReactiveVar(this.description ? this.description.length : 0);
+});
+
+Template.title_description_overlay.helpers({
+  titleLength: function(){
+    return  Template.instance().titleLength.get();
+  },
+  titleMax: function(){
+    return titleMax;
+  },
+  descriptionLength: function(){
+    return Template.instance().descriptionLength.get();
+  },
+  descriptionMax: function(){
+    return descriptionMax;
+  }
+});
+
+Template.title_description_overlay.events({
+  'keypress .set-title': function(e, t){
+    if (e.keyCode === 13){
+      e.preventDefault();
+      $('.set-description').focus();
+    }
+  },
+  'keypress .set-description': function(e, t){
+    if (e.keyCode === 13){
+      e.preventDefault();
+      $('#publish-with-title-description').submit();
+    }
+  },
+  'keyup .set-title': function(e, t){
+    t.titleLength.set($(e.currentTarget).val().length);
+  },
+  'keyup .set-description': function(e, t){
+    t.descriptionLength.set($(e.currentTarget).val().length);
+  },
+  'submit #publish-with-title-description': function(e, t){
+    e.preventDefault();
+    var title = t.$('.set-title').val();
+    var description = t.$('.set-description').val();
+    Meteor.call('publishStream', this.shortId, title, description, function(err){
+      if(err){
+        basicErrorHandler(err);
+      } else {
+        notifySuccess("Congratulations! Your Deep Stream is now on air!");
+      }
+    });
+  }
+});
+
+Template.creation_tutorial.helpers({
+  onFindStreamStep: function(){
+    return this.creationStep == 'find_stream';
+  },
+  onAddCardsStep: function(){
+    return this.creationStep == 'add_cards';
+  },
+  onGoOnAirStep: function(){
+    return this.creationStep == 'go_on_air';
+  }
+});
+
+Template.creation_tutorial.events({
+  'click .find-stream .text': function(e, t){
+    Meteor.call('goToFindStreamStep', this.shortId, basicErrorHandler);
+  },
+  'click .add-cards .text': function(e, t){
+    Meteor.call('goToAddCardsStep', this.shortId, basicErrorHandler);
+  },
+  'click .go-on-air .text': function(e, t){
+    Meteor.call('goToPublishStreamStep', this.shortId, basicErrorHandler);
+  },
+  'click .find-stream button': function(e, t){
+    Meteor.call('skipFindStreamStep', this.shortId, basicErrorHandler);
+  },
+  'click .add-cards button': function(e, t){
+    Meteor.call('skipAddCardsStep', this.shortId, basicErrorHandler);
+  },
+  'click .title-description-overlay .close': function(e, t){
+    Meteor.call('goBackFromTitleDescriptionStep', this.shortId, basicErrorHandler);
   }
 });
