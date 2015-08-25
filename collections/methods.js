@@ -141,7 +141,6 @@ Meteor.methods({
       // TODO something
       if (Meteor.isClient){
         Session.set("searchingMedia", false);
-        setCurrentContextIdOfType(contextBlock.type, contextBlock._id);
       }
     } else {
       throw new Meteor.Error('Stream not updated')

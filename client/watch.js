@@ -136,7 +136,6 @@ Template.watch.onCreated(function () {
       var reactiveDeepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {fields: {creationStep: 1}});
 
       if(that.data.onCuratePage()){
-        Session.set("currentContextIdByType", {});
         if (_.contains(['find_stream'], reactiveDeepstream.creationStep)){
           Session.set("mediaDataType", 'stream');
           Session.set("searchingMedia", true);
@@ -162,14 +161,6 @@ Template.watch.onCreated(function () {
     }
   });
 
-  // set context as mediaDataType or currentContextIdByType changes
-  this.autorun(function(){
-    if(FlowRouter.subsReady()) {
-      var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
-      var currentContextId = Session.get("currentContextIdByType")[Session.get('mediaDataType')];
-      setCurrentContext(_.findWhere(deepstream.contextBlocks, {_id: currentContextId}));
-    }
-  });
 
   this.activeStream = new ReactiveVar();
   this.userControlledActiveStreamId = new ReactiveVar();
@@ -549,11 +540,11 @@ Template.context_browser.events({
       return
     }
     if(this.soloModeLocation){
-      setCurrentContextIdOfType(this.type, this._id);
+      setCurrentContext(this);
     }
   },
   'click .switch-to-list-mode': function(){
-    setCurrentContextIdOfType(Session.get('mediaDataType'), null);
+    setCurrentContext(null);
   }
 });
 
@@ -620,10 +611,10 @@ Template.overlay_context_browser.events({
     });
   },
   'click .right': function(){
-    setCurrentContextIdOfType(Session.get('mediaDataType'), this.nextContext(getCurrentContext()._id)._id);
+    setCurrentContext(Session.get('mediaDataType'), this.nextContext(getCurrentContext()._id));
   },
   'click .left': function(){
-    setCurrentContextIdOfType(Session.get('mediaDataType'), this.previousContext(getCurrentContext()._id)._id);
+    setCurrentContext(Session.get('mediaDataType'), this.previousContext(getCurrentContext()._id));
   }
 });
 
@@ -649,19 +640,3 @@ Template.exit_search_button.events({
     return Session.set('searchingMedia', false);
   }
 });
-
-window.setCurrentContextIdOfType = function(type, contextId){
-  var currentContextIdByType = Session.get("currentContextIdByType");
-  currentContextIdByType[type] = contextId;
-  Session.set("currentContextIdByType", currentContextIdByType)
-};
-
-window.setCurrentContextIdOfTypeToMostRecent = function(){
-  var type = Session.get("mediaDataType");
-  var mostRecentOfThisType = Deepstreams.findOne({shortId: Session.get("streamShortId")}).mostRecentContextOfType(type); // TODO simplify
-  var currentContextIdByType = Session.get("currentContextIdByType");
-  if (mostRecentOfThisType){
-    currentContextIdByType[type] = mostRecentOfThisType._id;
-    Session.set("currentContextIdByType", currentContextIdByType)
-  }
-};
