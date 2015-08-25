@@ -187,16 +187,6 @@
           stroke: none;
         }
       }
-
-      &:hover {
-
-        //.fg{
-        //  fill: @dark-action-color;
-        //}
-        //.bg{
-        //  fill: rgba(100,100,100,0.75);
-        //}
-      }
     }
   }
 

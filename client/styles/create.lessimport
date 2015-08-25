@@ -114,14 +114,6 @@ svg{
   transition: fill 0.25s ease;
 }
 
-.new-section {
-  &:hover {
-    .bg{
-      fill: @action-color;
-    }
-  }
-}
-
 div.create-section.link-twitter{
   text-align: center;
 }
@@ -139,21 +131,6 @@ div.add-context {
     padding: 0;
   }
   color: black;
-
-  .new-section {
-    height: @horizontal-content-height;
-    font-size: 55px;
-    line-height: @horizontal-content-height;
-    text-align: center;
-    width: 75px;
-    z-index: 30;
-    // box-shadow: 3px 3px #848484;
-  }
-
-  div.input-label {
-    margin-top: 12px;
-    margin-bottom: 10px;
-  }
 
   @contentIconBannerHeight: 80px;
 
@@ -599,6 +576,7 @@ div.anchor-menu {
   display: none;
   overflow: scroll;
 }
+
 div.context-anchor-menu {
   span{
     overflow: hidden;
@@ -624,14 +602,4 @@ div.context-anchor-menu {
     position:relative;
   }
 
-  div.bottom-bar{
-    .box-shadow(0px -8px 12px 0px rgba(0,0,0,0.75));
-  }
-}
-div.bottom-bar{
-  position:relative;
-  height: 5px;
-  width: 100%;
-  background-color: @panel-color;
-  z-index: 9000;
 }
