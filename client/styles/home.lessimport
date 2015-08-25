@@ -64,7 +64,6 @@ div.deepstreams-and-streams {
     display:inline-block;
     font-size:18px;
     font-weight:bold;
-    line-height:@height;
 
     text-align:center;
     background-color: @inactive-pill-color;
@@ -105,6 +104,7 @@ div.deepstreams-and-streams {
     }
   }
   button{
+    line-height:@height;
     padding:0 15px;
 
     color: @white-color;
