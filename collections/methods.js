@@ -95,24 +95,10 @@ Meteor.methods({
     check(streamShortId, String);
     check(contextBlock, Object);
 
-    //if (!Stories.find({_id: storyId, authorId: this.userId},{ fields:{ _id: 1 }}).count()){
-    //  throw new Meteor.Error("User doesn't own story")
-    //}
-
-    // TO-DO Remix. When add remix, will need another method or modify this one
-    //var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {
-    //  storyId: storyId,
-    //  storyShortId: storyShortId,
-    //  authorId: Meteor.user()._id,
-    //  savedAt: new Date
-    //}));
-
     var pushObject, pushSelectorString;
     pushSelectorString = 'contextBlocks';
     pushObject = {};
     pushObject[pushSelectorString] = _.extend({}, contextBlock, {
-      //storyId: storyId,
-      //storyShortId: storyShortId,
       authorId: Meteor.user()._id,
       addedAt: new Date,
       savedAt: new Date
@@ -156,18 +142,10 @@ Meteor.methods({
     check(streamShortId, String);
     check(stream, Object);
 
-    //if (!Stories.find({_id: storyId, authorId: this.userId},{ fields:{ _id: 1 }}).count()){
-    //  throw new Meteor.Error("User doesn't own story")
-    //}
-
-    //delete contextBlock._id;
-
     var pushObject, pushSelectorString, success;
     pushSelectorString = 'streams';
     pushObject = {};
     pushObject[pushSelectorString] = _.extend({}, stream, {
-      //storyId: storyId,
-      //storyShortId: storyShortId,
       authorId: Meteor.user()._id,
       addedAt: new Date
     });
@@ -219,10 +197,6 @@ Meteor.methods({
             $('.stream[data-stream-reference-id="' + stream.reference.id + '"]').removeClass('justAdded');
           }, 1300);
         }, 0);
-        //window.hideNewHorizontalUI();
-
-        //var story = Stories.findOne(storyId, fields);
-        //goToX(_.indexOf(story.draftStory.verticalSections[verticalIndex].contextBlocks, contextId.toString()))
       }
     } else {
       throw new Meteor.Error('Stream not updated');
