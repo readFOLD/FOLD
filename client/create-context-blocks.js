@@ -442,11 +442,10 @@ Template.create_news_section.onCreated(function() {
         reference: {
           title: result.title,
           description: result.description,
-          content: result.content,
+          content: cleanNewsHtml(result.content),
           topImage: result.images[0],
           providerName: result.provider_name,
           providerIconUrl: result.favicon_url
-          // TODO add more
         },
         source: 'embedly'
       }));

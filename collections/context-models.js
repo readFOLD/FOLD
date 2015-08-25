@@ -861,6 +861,20 @@ LinkBlock = (function (_super) {
 
 })(ContextBlock);
 
+
+if(Meteor.isClient){
+  var cleanNewsHtmlOptions = {
+    allowedTags: ['p'], // only allow p
+    format: false,
+    removeAttrs: ['class', 'id']
+  };
+
+  window.cleanNewsHtml = function(html){
+    return $.htmlClean(html, cleanNewsHtmlOptions);
+  };
+}
+
+
 NewsBlock = (function (_super) {
   __extends(NewsBlock, _super);
 
@@ -878,7 +892,7 @@ NewsBlock = (function (_super) {
   };
 
   NewsBlock.prototype.html = function () {
-    return this.reference.content;
+    return cleanNewsHtml(this.reference.content);
   };
 
   NewsBlock.prototype.headerImageUrl = function () {
