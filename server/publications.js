@@ -9,6 +9,10 @@ Stories._ensureIndex({
 });
 
 Stories._ensureIndex({
+  deleted: 1
+});
+
+Stories._ensureIndex({
   authorId: 1
 });
 
@@ -69,6 +73,10 @@ var previewStoryFields = {
   storyPathSegment: 1,
   title: 1
 };
+
+
+// add preview fields again but nested under draftStory. also authorUsername until migrate
+var previewStoryFieldsWithDraft = _.extend({}, previewStoryFields, _.chain(previewStoryFields).keys().map(function(fieldName){return 'draftStory.' + fieldName}).object(_.values(previewStoryFields)).value(), {'authorUsername': 1});
 
 Meteor.publish("curatedStoriesPub", function(options) {
   options = options ? options : {};
@@ -150,17 +158,15 @@ Meteor.publish("readStoryPub", function(userPathSegment, shortId) {
     shortId: shortId,
     published: true
   }, {
-    fields: {
-      draftStory: 0,
-      history: 0
-    }
+    fields: readStoryFields
   });
 });
 
 Meteor.publish("createStoryPub", function(userPathSegment, shortId) {
   return Stories.find({
     userPathSegment: userPathSegment,
-    shortId: shortId
+    shortId: shortId,
+    deleted: {$ne: true}
   }, {
     fields: {
       history: 0
@@ -174,7 +180,8 @@ Meteor.publish("contextBlocksPub", function(storyShortId) {
   }
   return ContextBlocks.find({
     storyShortId: storyShortId,
-    authorId: this.userId
+    authorId: this.userId,
+    deleted: {$ne: true}
   },{
     fields : {
       fullDetails: 0
@@ -226,10 +233,7 @@ Meteor.publish("userProfilePub", function(username) { // includes user profile a
       },
       published: true
     }, {
-      fields : {
-        history: 0,
-        draftStory: 0
-      },
+      fields : previewStoryFields,
       limit: 100 // initial limit
   })]
 });
@@ -243,10 +247,7 @@ Meteor.publish("userStoriesPub", function(username) { // only published stories
     authorUsername: username,
     published: true
   },{
-    fields : {
-      history: 0,
-      draftStory: 0
-    },
+    fields : previewStoryFields,
     limit: 100 // initial limit
   });
 });
@@ -254,11 +255,10 @@ Meteor.publish("userStoriesPub", function(username) { // only published stories
 Meteor.publish("myStoriesPub", function() {
   if (this.userId) {
     return Stories.find({
-      authorId: this.userId
+      authorId: this.userId,
+      deleted: {$ne: true}
     }, {
-      fields: {
-        history: 0
-      },
+      fields: previewStoryFieldsWithDraft,
       limit: 1000 // initial limit
     });
   } else {
