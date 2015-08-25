@@ -369,6 +369,9 @@ Template.vertical_section_block.helpers({
 
 Template.vertical_narrative.helpers({
   verticalSectionsWithIndex: function() {
+    if(!this.verticalSections){ // catch error coming from my_stories for some reason
+      return
+    }
     return this.verticalSections.map(function(v, i) {
       return _.extend(v, {
         index: i
@@ -592,6 +595,9 @@ Template.horizontal_context.helpers({
   },
   horizontalSections: function() {
     var that = this;
+    if(!this.verticalSections){ // catch error coming from my_stories for some reason
+      return
+    }
     return this.verticalSections.map(function(verticalSection, verticalIndex) {
       var sortedContext, unsortedContext;
 
