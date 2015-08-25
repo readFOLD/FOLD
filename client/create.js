@@ -312,16 +312,6 @@ var scrollToRelativePosition = function(offset) {
   }
 };
 
-var showNewHorizontalUI = function() {
-  scrollToRelativePosition(350 + 29);
-  Session.set("addingContext", Session.get('currentYId'));
-  return Session.set("editingContext", null);
-};
-
-window.hideNewHorizontalUI = function() {
-  scrollToRelativePosition(350 + 29 - 93);
-  return Session.set("addingContext", null);
-};
 
 
 Template.stream_search.events({
@@ -486,11 +476,7 @@ window.addContext = function(contextBlock) {
 //      analytics.track('Confirm delete horizontal');
 //    }
 //  },
-//  "click .edit": function(e, t) {
-//    Session.set('editingContext', this._id);
-//    Session.set('addingContext', false);
-//    analytics.track('Click edit horizontal');
-//  }
+
 //});
 
 Template.link_twitter.events({

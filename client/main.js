@@ -83,25 +83,6 @@ editableDescriptionCreatedBoilerplate = function() {
   this.editing = new ReactiveVar(false);
 };
 
-//editableDescriptionDestroyedBoilerplate = function(meteorMethod) {
-  //return function(){
-  //  if(document.body){
-  //    document.body.style.overflow = 'auto';
-  //  }
-  //  console.log(this)
-
-
-    //var that = this;
-    //if (!Session.get('read') && !Session.get('addingContext')) {
-    //  var textContent = this.$('textarea[name=content]').val();
-    //  Session.set('saveState', 'saving');
-    //  Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
-    //    saveCallback(err, numDocs);
-    //  });
-    //}
-//  }
-//};
-
 
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 

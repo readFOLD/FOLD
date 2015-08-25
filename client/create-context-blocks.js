@@ -93,10 +93,6 @@ var createBlockEvents = {
     if (e.which === 13){
       addFocusResult.apply(this,arguments);
     }
-  },
-  "click .cancel": function() {
-    Session.set('addingContext', false);
-    return Session.set('editingContext', null);
   }
 };
 
@@ -303,7 +299,7 @@ searchTemplateRenderedBoilerplate  = function() {
     // search when initially arrive and when source changes (if there aren't already results)
     this.autorun(function(){
       Session.get('newHorizontalDataSource');
-      if (Session.get('addingContext') && that.getSearchInput().query && !that.existingSearchResults({reactive: false}).count()) {
+      if (that.getSearchInput().query && !that.existingSearchResults({reactive: false}).count()) {
         that.search();
       }
     });

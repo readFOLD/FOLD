@@ -184,7 +184,6 @@ Template.watch.onCreated(function () {
 Template.watch.onRendered(function(){
   var that = this;
 
-
   this.mainPlayerYTApiActivated = false;
   this.mainPlayerUSApiActivated = false;
 
