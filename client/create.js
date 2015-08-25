@@ -110,59 +110,6 @@ Template.add_context.events({
   }
 });
 
-window.findPlaceholderLink = function(verticalSectionIndex){
-  return $('.vertical-narrative-section[data-vertical-index="' + verticalSectionIndex + '"]').find('a.placeholder');
-};
-
-var removePlaceholderLinks = function(){
-  return $('.vertical-narrative-section').find('a.placeholder').contents().unwrap();
-};
-
-Template.context_anchor_new_card_option.events = {
-  "mousedown": function(e) {
-    e.preventDefault();
-    hideFoldEditor();
-    removePlaceholderLinks();
-    var placeholderHrefToken = '#LinkToNextCard';
-
-    document.execCommand('createLink', false, placeholderHrefToken);
-    var placeholderAnchorElement = $('a[href="' + placeholderHrefToken +'"]'); // find temporary anchor
-    placeholderAnchorElement.attr('href', 'javascript:void(0);'); // get rid of temporary href
-
-    placeholderAnchorElement.addClass('placeholder');
-
-    showNewHorizontalUI();
-    analytics.track('Click add new card inside fold editor');
-  }
-};
-
-Template.context_anchor_option.events = {
-  "mousedown": function (e) {
-    var contextId, link;
-    e.preventDefault();
-    hideFoldEditor();
-    contextId = this._id;
-
-    // need to create temporary link because want to take advantage of createLink browser functionality
-    // but the link really gets interacted with via the 'data-context-id' attribute
-    var temporaryHrefToken = '#OhSuChToken';
-    document.execCommand('createLink', false, temporaryHrefToken);
-    var temporaryAnchorElement = $('a[href="' + temporaryHrefToken +'"]'); // find temporary anchor
-    temporaryAnchorElement.attr('href', 'javascript:void(0);'); // get rid of temporary href
-    temporaryAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
-    temporaryAnchorElement.attr('data-context-type', this.type);
-    temporaryAnchorElement.attr('data-context-source', this.source);
-
-    temporaryAnchorElement.addClass('active'); // add active class because we go to this context and if we're already there it won't get the class
-
-    //temporaryAnchorElement.data({contextId: contextId});
-    saveUpdatedSelection();
-    goToContext(contextId);
-    analytics.track('Click add link to context option inside fold editor');
-    return false;
-  }
-};
-
 window.addStream = function(stream) {
   Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
   Session.set('saveState', 'saving');
