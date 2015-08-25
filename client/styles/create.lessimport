@@ -538,10 +538,6 @@ div.add-context {
   }
 }
 
-@fold-editor-row-height: 55px;
-
-
-
 .create-section {
   .search-section, .add-desc-section {
     height: 100%;
@@ -569,37 +565,4 @@ div.add-context {
       text-align: start;
     }
   }
-}
-
-
-div.anchor-menu {
-  display: none;
-  overflow: scroll;
-}
-
-div.context-anchor-menu {
-  span{
-    overflow: hidden;
-    width: calc(~"100% - 30px");
-    display: inline-block;
-    text-overflow: ellipsis;
-  }
-  display: none;
-  width: 100%;
-
-  .back-arrow{
-    .fg{
-      fill: @medium-color;
-    }
-  }
-  button{
-    .text-align-start;
-  }
-  .context-anchor-list{
-    max-height: 3.9 * @fold-editor-row-height;
-    overflow: scroll;
-    z-index: 8000;
-    position:relative;
-  }
-
 }
