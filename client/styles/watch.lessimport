@@ -308,14 +308,14 @@
   .context-section{
     position: relative;
     &:hover{
-      .delete-current-context{
+      .delete-context{
         display: inline-block;
         opacity: 1;
       }
     }
   }
 
-  .delete-current-context{
+  .delete-context{
     .opacity-transition;
     opacity: 0;
     .size(20px);

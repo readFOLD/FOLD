@@ -447,9 +447,14 @@ Template.context_browser.events({
   'click .add-new-context': function(){
     Session.set('searchingMedia', true);
   },
-  'click .delete-current-context': function(){
-    Meteor.call('removeContextFromStream', Session.get("streamShortId"), this._id, function(err){
-      // TODO SOMETHING
+  'click .delete-context': function(e, t){
+    var that = this;
+    console.log(that._id)
+
+    t.$('[data-context-id=' + that._id + ']').fadeOut(500, function() {
+      Meteor.call('removeContextFromStream', Session.get("streamShortId"), that._id, function(err){
+        // TODO SOMETHING
+      });
     });
   },
   'click .context-section .clickable': function(e, t){
@@ -519,14 +524,6 @@ Template.overlay_context_browser.onDestroyed(function(){
 Template.overlay_context_browser.events({
   'click .close': function(){
     clearCurrentContext();
-  },
-  'click .add-new-context': function(){
-    Session.set('searchingMedia', true);
-  },
-  'click .delete-current-context': function(){
-    Meteor.call('removeContextFromStream', Session.get("streamShortId"), this._id, function(err){
-      // TODO SOMETHING
-    });
   },
   'click .right': function(){
     setCurrentContext(Session.get('mediaDataType'), this.nextContext(getCurrentContext()._id));

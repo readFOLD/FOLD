@@ -679,10 +679,10 @@ Template.create_map_section.helpers({
       return preview.url()
     }
   },
-  previewUrl: function() {
+  previewUrl: function(height, width) {
     var preview = Template.instance().focusResult.get();
     if (preview) {
-      return preview.previewUrl()
+      return preview.previewUrl(height, width);
     }
   }
 });

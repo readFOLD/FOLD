@@ -233,19 +233,19 @@
 
 <template name="solo_context_section">
   <div
-      class="narrative-section context-section {{#if type}}{{type}}-card{{/if}}" data-index="{{index}}">
+      class="narrative-section context-section {{#if type}}{{type}}-card{{/if}}" data-context-id="{{_id}}">
     {{> Template.dynamic template=soloModeTemplate}}
   </div>
 </template>
 
 <template name="list_item_context_section">
   <div
-      class="narrative-section context-section list-item-context-section {{#if type}}{{type}}-card{{/if}}" data-index="{{index}}">
+      class="narrative-section context-section list-item-context-section {{#if type}}{{type}}-card{{/if}}" data-context-id="{{_id}}">
     <div class="clickable">
       {{> Template.dynamic template=listModeItemTemplate}}
     </div>
       {{#if curateMode}}
-        <button class="delete-current-context">{{> close_circle}}</button>
+        <button class="delete-context">{{> close_circle}}</button>
       {{/if}}
   </div>
 </template>
