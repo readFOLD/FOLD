@@ -63,7 +63,7 @@ window.mainPlayer = {
         throw new Meteor.Error('main player has no active stream source')
     }
   }
-}
+};
 
 Template.watch.onCreated(function () {
   if(!ytScriptLoaded){
@@ -81,17 +81,25 @@ Template.watch.onCreated(function () {
     ytApiReady.set(true);
   };
 
+  // confirm stream exists
+  this.autorun(function(){
+    if (FlowRouter.subsReady() && !Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false})){
+      return FlowLayout.render("stream_not_found");
+    }
+  });
+
+  // confirm user is curator if on curate page
   this.autorun(function(){ // TODO confirm user is curator
     if(FlowRouter.subsReady() && that.data.onCuratePage()){
+      var stream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
+
       if ((user = Meteor.user())) { // if there is a user
-        if (user && data && user._id !== data.curatorId) { // if they don't own the stream take them to stream not found
-          return this.render("stream_not_found");
+        if (!stream || user._id !== stream.curatorId) { // if they don't own the stream take them to stream not found
+          return FlowLayout.render("stream_not_found");
         }
         var accessPriority = Meteor.user().accessPriority; // TODO update for Deepstream
         if (!accessPriority || accessPriority > window.createAccessLevel){
-          //FlowRouter.withReplaceState(function(){
-            FlowRouter.go('/');
-          //})
+          FlowRouter.go(stream.watchPath());
           notifyInfo("Creating and editing streams is temporarily disabled, possibly because things blew up (in a good way). Sorry about that! We'll have everything back up as soon as we can. Until then, why not check out some of the other great content authors in the community have written?")
         }
       } else if (Meteor.loggingIn()) {
@@ -99,14 +107,13 @@ Template.watch.onCreated(function () {
       } else {
         Session.set('signingIn', true); // if there is no user, take them to the signin page
         Session.set('signingInFrom', setSigningInFrom());
-        FlowRouter.go('/'); // TODO this should probably be the corresponding watch page
+        FlowRouter.go(stream.watchPath());
       }
     }
   });
 
   this.autorun(function(){
     Session.set("streamShortId", that.data.shortId());
-
   });
 
   this.autorun(function() { // when change media data type, leave search mode, unless doing streams, then always search
@@ -120,50 +127,42 @@ Template.watch.onCreated(function () {
     }
   });
 
+  var defaultContextType = 'image';
+
+  // march through creation steps, or setup most recent context type to display when arrive on page if past curation
   this.autorun(function(){
     if(FlowRouter.subsReady()){
       var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
       var reactiveDeepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {fields: {creationStep: 1}});
 
       if(that.data.onCuratePage()){
-        Session.set("currentContextIdByType", {});
         if (_.contains(['find_stream'], reactiveDeepstream.creationStep)){
           Session.set("mediaDataType", 'stream');
           Session.set("searchingMedia", true);
           return
         } else if (reactiveDeepstream.creationStep === 'add_cards') {
-          Session.set("mediaDataType", 'image');
+          Session.set("mediaDataType", defaultContextType);
           Session.set("searchingMedia", true);
           return
         }
-
       }
+
       // else
       var mostRecentContext =  deepstream.mostRecentContext();
       if (mostRecentContext){
         Session.set("mediaDataType", mostRecentContext.type);
-        var currentContextIdByType = {};
-        currentContextIdByType[mostRecentContext.type] = mostRecentContext._id;
-        Session.set("currentContextIdByType", currentContextIdByType);
       } else {
-        Session.set("mediaDataType", null);
-        Session.set("currentContextIdByType", {});
+        Session.set("mediaDataType", defaultContextType);
       }
       Session.set("searchingMedia", false);
     }
   });
 
-  this.autorun(function(){
-    if(FlowRouter.subsReady()) {
-      var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
-      var currentContextId = Session.get("currentContextIdByType")[Session.get('mediaDataType')];
-      Session.set("currentContext", _.findWhere(deepstream.contextBlocks, {_id: currentContextId}));
-    }
-  });
 
   this.activeStream = new ReactiveVar();
   this.userControlledActiveStreamId = new ReactiveVar();
 
+  // switch between streams
   this.autorun(function(){ // TO-DO Performance, don't rerun on every stream switch, only get fields needed
     if(FlowRouter.subsReady()) {
       var userControlledActiveStreamId = that.userControlledActiveStreamId.get();
@@ -182,11 +181,10 @@ Template.watch.onCreated(function () {
 Template.watch.onRendered(function(){
   var that = this;
 
-
   this.mainPlayerYTApiActivated = false;
   this.mainPlayerUSApiActivated = false;
 
-
+  // activate jsAPIs for main stream
   this.autorun(function(){
     if(ytApiReady.get() && FlowRouter.subsReady()){
       var activeStream = that.activeStream.get();
@@ -212,41 +210,16 @@ Template.watch.onRendered(function(){
           this.mainPlayerUSApiActivated = true;
           Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
             var ustreamPlayer = UstreamEmbed(that.mainStreamElementId);
-
-            ustreamPlayer.getProperty('content', function(){
-              console.log('content is')
-              console.log(arguments)
-              //Meteor.setTimeout(onMainPlayerReady, 1000);
-
-            })
-
-            ustreamPlayer.addListener('content', function() {
-              console.log('content changed')
-              console.log(arguments)
-            });
-
-            ustreamPlayer.addListener('syncedMeta', function() {
-              console.log('syncedMeta changed')
-              console.log(arguments)
-              //Meteor.setTimeout(onMainPlayerReady, 1000);
-            });
-
-            ustreamPlayer.addListener('playing', function() {
-              console.log('playing changed')
-              console.log(arguments)
-              //Meteor.setTimeout(onMainPlayerReady, 1000);
-            });
-
             mainPlayer._ustreamPlayer = ustreamPlayer;
           }, 1000);
         }
         Meteor.setTimeout(onMainPlayerReady, 4000); // TODO, this is a hack. Is there any way to know that the player is ready?
         mainPlayer.activeStreamSource = 'ustream';
-
       }
     }
   });
 
+  // focus on title when title/description overlay appears
   this.autorun(function(){
     if(FlowRouter.subsReady()) {
       var deepstream = Deepstreams.findOne({shortId: that.data.shortId()}, {fields: {creationStep: 1}});
@@ -259,16 +232,6 @@ Template.watch.onRendered(function(){
   });
 
   onMainPlayerReady = function(event){
-    console.log('Player Ready')
-
-    //that.autorun(function(){ // TO-DO, if uncomment this, ensure it only gets started once, not everytime video switches
-    //  if(Session.get('mainPlayerMuted')){
-    //    mainPlayer.mute();
-    //  } else {
-    //    mainPlayer.unMute();
-    //  }
-    //});
-
     mainPlayer.play();
   };
 
@@ -313,30 +276,9 @@ Template.watch.helpers({
   showTutorial: function(){
     return _.contains(['find_stream', 'add_cards', 'go_on_air'], this.creationStep)
   },
-  onFindStreamStep: function(){
-    return this.creationStep == 'find_stream';
-  },
-  onAddCardsStep: function(){
-    return this.creationStep == 'add_cards';
-  },
-  onGoOnAirStep: function(){
-    return this.creationStep == 'go_on_air';
-  },
-  titleLength: function(){
-    return  Template.instance().titleLength.get();
-  },
-  titleMax: function(){
-    return titleMax;
-  },
-  descriptionLength: function(){
-    return Template.instance().descriptionLength.get();
-  },
-  descriptionMax: function(){
-    return descriptionMax;
-  },
   showRightSection: function(){
     var mediaDataType = Session.get('mediaDataType');
-    return !Session.get('largeContextMode') && (mediaDataType && (Session.get("curateMode") || this.hasContextOfType(mediaDataType)));
+    return !soloOverlayContextModeActive() && (mediaDataType && (Session.get("curateMode") || this.hasContextOfType(mediaDataType)));
   },
   expandMainSection: function(){
     var mediaDataType = Session.get('mediaDataType');
@@ -350,18 +292,18 @@ Template.watch.helpers({
   },
   showContextSearch: function(){
     var mediaDataType = Session.get('mediaDataType');
-    return Session.get("curateMode") && (Session.get("searchingMedia") || (mediaDataType && this.contextOfType(mediaDataType).length === 0)) && mediaDataType && mediaDataType !== 'stream';
+    return Session.get("curateMode") && (Session.get("searchingMedia") || (mediaDataType && this.contextOfType(mediaDataType).length === 0)) && mediaDataType && !_.contains(['stream', 'chat'], mediaDataType) ;
   },
-  largeContextMode: function(){
-    return Session.get('largeContextMode');
+  soloOverlayContextMode: function(){
+    return soloOverlayContextModeActive();
   },
   PiP: function(){
-    return Session.get('largeContextMode');
+    return soloOverlayContextModeActive();
   },
   streamTitleElement: function(){
     if (Session.get('curateMode')) {
       // this is contenteditable in curate mode
-      return '<div class="stream-title" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
+      return '<div class="stream-title notranslate" placeholder="Title" contenteditable="true" dir="auto">' + _.escape(this.title) + '</div>';
     } else {
       return '<div class="stream-title">' + _.escape(this.title) + '</div>';
     }
@@ -369,7 +311,7 @@ Template.watch.helpers({
   streamDescriptionElement: function(){
     if (Session.get('curateMode')) {
       // this is contenteditable in curate mode
-      return '<div class="stream-description" placeholder="Enter a description" contenteditable="true" dir="auto">' + _.escape(this.description) + '</div>';
+      return '<div class="stream-description notranslate" placeholder="Enter a description" contenteditable="true" dir="auto">' + _.escape(this.description) + '</div>';
     } else {
       return '<div class="stream-description">' + _.escape(this.description) + '</div>';
     }
@@ -389,12 +331,6 @@ var basicErrorHandler = function(err){
   }
 };
 
-
-Template.watch.onCreated(function(){
-  this.titleLength = new ReactiveVar(0);
-  this.descriptionLength = new ReactiveVar(0);
-});
-
 Template.watch.events({
   'click .set-main-stream': function(e, t){
     if(Session.get('curateMode')){
@@ -403,66 +339,12 @@ Template.watch.events({
       t.userControlledActiveStreamId.set(this._id);
     }
   },
-  'click .mute': function(){
-    Session.set('mainPlayerMuted', true);
-  },
-  'click .unmute': function(){
-    Session.set('mainPlayerMuted', false);
-  },
   'click .preview': function(e,t){
     t.userControlledActiveStreamId.set(null); // so that stream selection doesn't switch
     Session.set('curateMode', false);
   },
   'click .return-to-curate': function(){
     Session.set('curateMode', true);
-  },
-  'keypress .set-title': function(e, t){
-    if (e.keyCode === 13){
-      e.preventDefault();
-      $('.set-description').focus();
-    }
-  },
-  'keypress .set-description': function(e, t){
-    if (e.keyCode === 13){
-      e.preventDefault();
-      $('#publish-with-title-description').submit();
-    }
-  },
-  'keyup .set-title': function(e, t){
-    t.titleLength.set($(e.currentTarget).val().length);
-  },
-  'keyup .set-description': function(e, t){
-    t.descriptionLength.set($(e.currentTarget).val().length);
-  },
-  'submit #publish-with-title-description': function(e, t){
-    e.preventDefault();
-    var title = t.$('.set-title').val();
-    var description = t.$('.set-description').val();
-    Meteor.call('publishStream', t.data.shortId(), title, description, function(err){
-      if(err){
-        basicErrorHandler(err);
-      } else {
-        notifySuccess("Congratulations! Your Deep Stream is now on air!");
-      }
-    });
-  },
-  'click .find-stream .text': function(e, t){
-    Meteor.call('goToFindStreamStep', t.data.shortId(), basicErrorHandler);
-  },
-  'click .add-cards .text': function(e, t){
-    Meteor.call('goToAddCardsStep', t.data.shortId(), basicErrorHandler);
-  },
-  'click .go-on-air .text': function(e, t){
-    Meteor.call('goToPublishStreamStep', t.data.shortId(), basicErrorHandler);
-  },
-  'click .find-stream button': function(e, t){
-    Meteor.call('skipFindStreamStep', t.data.shortId(), basicErrorHandler);
-  },
-  'click .add-cards button': function(e, t){
-    Meteor.call('skipAddCardsStep', t.data.shortId(), basicErrorHandler);
-  },
-  'click .title-description-overlay .close': function(e, t){
-    Meteor.call('goBackFromTitleDescriptionStep', t.data.shortId(), basicErrorHandler);
   },
   'click .publish': function(e, t){
     if (this.creationStep === 'go_on_air') {
@@ -538,10 +420,9 @@ Template.watch.events({
     notifyFeature('Success!! Favoriting streams: coming soon!');
   },
   'click .PiP-overlay': function(e,t){
-    Session.set('largeContextMode', false)
+    clearCurrentContext();
   }
 });
-
 
 Template.context_browser.helpers({
   mediaTypeForDisplay: function(){
@@ -550,37 +431,9 @@ Template.context_browser.helpers({
   contextOfCurrentType: function(){
     return this.contextOfType(Session.get('mediaDataType'));
   },
-  totalNum: function(){
-    return this.contextOfType(Session.get('mediaDataType')).length;
-  },
-  currentNum: function(){
-    var cBlocks = this.contextOfType(Session.get('mediaDataType'));
-    return _.indexOf(cBlocks, _.findWhere(cBlocks, {_id: Session.get('currentContext')._id})) + 1;
-  },
-  currentContext: function(){
-    var currentContext = Session.get('currentContext');
-    if (currentContext){
-      return newTypeSpecificContextBlock(currentContext);
-    }
-  },
-  disableRightButton: function(){
-    var currentContext = Session.get('currentContext');
-    if (currentContext){
-      return !this.nextContext(Session.get("currentContext")._id);
-    } else {
-      return true
-    }
-  },
-  disableLeftButton: function(){
-    var currentContext = Session.get('currentContext');
-    if (currentContext){
-      return !this.previousContext(Session.get("currentContext")._id);
-    } else {
-      return true
-    }
-  },
-  singleContextMode: function(){
-    return Session.get('currentContext') && _.contains(['text', 'news'], Session.get('mediaDataType'))
+  soloSidebarContextMode: function(){
+    var currentContext = getCurrentContext();
+    return currentContext && currentContext.soloModeLocation === 'sidebar';
   }
 });
 
@@ -591,62 +444,54 @@ Template.context_browser.events({
   'click .add-new-context': function(){
     Session.set('searchingMedia', true);
   },
-  'click .delete-current-context': function(){
-    Meteor.call('removeContextFromStream', Session.get("streamShortId"), this._id, function(err){
-      // TODO SOMETHING
+  'click .delete-context': function(e, t){
+    var that = this;
+    console.log(that._id)
+
+    t.$('[data-context-id=' + that._id + ']').fadeOut(500, function() {
+      Meteor.call('removeContextFromStream', Session.get("streamShortId"), that._id, function(err){
+        // TODO SOMETHING
+      });
     });
   },
   'click .context-section .clickable': function(e, t){
-    console.log(this)
+
     if ($(e.target).is('textarea')) { // don't go to big browser when its time to edit context
       return
     }
-    if(_.contains(['image', 'video', 'map', 'news', 'text', 'wikipedia'], this.type)){
-      setCurrentContextIdOfType(this.type, this._id);
-      if(_.contains(['image', 'video', 'map'], this.type)){
-        Session.set('largeContextMode', true);
-      }
+    if(this.soloModeLocation){
+      setCurrentContext(this);
     }
-
   },
   'click .switch-to-list-mode': function(){
-    setCurrentContextIdOfType(Session.get('mediaDataType'), null);
+    setCurrentContext(null);
   }
 });
 
 
-Template.large_context_browser.helpers({
+Template.overlay_context_browser.helpers({
   mediaTypeForDisplay: function(){
     return _s.capitalize(Session.get('mediaDataType'));
-  },
-  contextOfCurrentType: function(){
-    return this.contextOfType(Session.get('mediaDataType'));
   },
   totalNum: function(){
     return this.contextOfType(Session.get('mediaDataType')).length;
   },
   currentNum: function(){
     var cBlocks = this.contextOfType(Session.get('mediaDataType'));
-    return _.indexOf(cBlocks, _.findWhere(cBlocks, {_id: Session.get('currentContext')._id})) + 1;
-  },
-  currentContext: function(){
-    var currentContext = Session.get('currentContext');
-    if (currentContext){
-      return newTypeSpecificContextBlock(currentContext);
-    }
+    return _.indexOf(cBlocks, _.findWhere(cBlocks, {_id: getCurrentContext()._id})) + 1;
   },
   disableRightButton: function(){
-    var currentContext = Session.get('currentContext');
+    var currentContext = getCurrentContext();
     if (currentContext){
-      return !this.nextContext(Session.get("currentContext")._id);
+      return !this.nextContext(getCurrentContext()._id);
     } else {
       return true
     }
   },
   disableLeftButton: function(){
-    var currentContext = Session.get('currentContext');
+    var currentContext = getCurrentContext();
     if (currentContext){
-      return !this.previousContext(Session.get("currentContext")._id);
+      return !this.previousContext(getCurrentContext()._id);
     } else {
       return true
     }
@@ -654,7 +499,7 @@ Template.large_context_browser.helpers({
 });
 
 
-Template.large_context_browser.onRendered(function(){
+Template.overlay_context_browser.onRendered(function(){
   document.body.style.overflow = 'hidden';
   $(window).scrollTop(0);
 
@@ -666,35 +511,27 @@ Template.large_context_browser.onRendered(function(){
 
 });
 
-Template.large_context_browser.onDestroyed(function(){
+Template.overlay_context_browser.onDestroyed(function(){
   document.body.style.overflow = 'auto';
   if(Session.get('mediaDataType') === 'video'){
     mainPlayer.unMute(); // TODO - only unmute if was unmuted before created
   }
 });
 
-Template.large_context_browser.events({
+Template.overlay_context_browser.events({
   'click .close': function(){
-    Session.set('largeContextMode', false);
-  },
-  'click .add-new-context': function(){
-    Session.set('searchingMedia', true);
-  },
-  'click .delete-current-context': function(){
-    Meteor.call('removeContextFromStream', Session.get("streamShortId"), this._id, function(err){
-      // TODO SOMETHING
-    });
+    clearCurrentContext();
   },
   'click .right': function(){
-    setCurrentContextIdOfType(Session.get('mediaDataType'), this.nextContext(Session.get("currentContext")._id)._id);
+    setCurrentContext(Session.get('mediaDataType'), this.nextContext(getCurrentContext()._id));
   },
   'click .left': function(){
-    setCurrentContextIdOfType(Session.get('mediaDataType'), this.previousContext(Session.get("currentContext")._id)._id);
+    setCurrentContext(Session.get('mediaDataType'), this.previousContext(getCurrentContext()._id));
   }
 });
 
-Template.full_context_section.helpers(horizontalBlockHelpers);
-Template.preview_context_section.helpers(horizontalBlockHelpers);
+Template.solo_context_section.helpers(horizontalBlockHelpers);
+Template.list_item_context_section.helpers(horizontalBlockHelpers);
 
 // TODO remove and have an about section
 Template.banner_buttons.events({
@@ -716,18 +553,89 @@ Template.exit_search_button.events({
   }
 });
 
-window.setCurrentContextIdOfType = function(type, contextId){
-  var currentContextIdByType = Session.get("currentContextIdByType");
-  currentContextIdByType[type] = contextId;
-  Session.set("currentContextIdByType", currentContextIdByType)
-};
 
-window.setCurrentContextIdOfTypeToMostRecent = function(){
-  var type = Session.get("mediaDataType");
-  var mostRecentOfThisType = Deepstreams.findOne({shortId: Session.get("streamShortId")}).mostRecentContextOfType(type); // TODO simplify
-  var currentContextIdByType = Session.get("currentContextIdByType");
-  if (mostRecentOfThisType){
-    currentContextIdByType[type] = mostRecentOfThisType._id;
-    Session.set("currentContextIdByType", currentContextIdByType)
+Template.title_description_overlay.onCreated(function(){
+  this.titleLength = new ReactiveVar(this.title ? this.title.length : 0);
+  this.descriptionLength = new ReactiveVar(this.description ? this.description.length : 0);
+});
+
+Template.title_description_overlay.helpers({
+  titleLength: function(){
+    return  Template.instance().titleLength.get();
+  },
+  titleMax: function(){
+    return titleMax;
+  },
+  descriptionLength: function(){
+    return Template.instance().descriptionLength.get();
+  },
+  descriptionMax: function(){
+    return descriptionMax;
   }
-}
+});
+
+Template.title_description_overlay.events({
+  'keypress .set-title': function(e, t){
+    if (e.keyCode === 13){
+      e.preventDefault();
+      $('.set-description').focus();
+    }
+  },
+  'keypress .set-description': function(e, t){
+    if (e.keyCode === 13){
+      e.preventDefault();
+      $('#publish-with-title-description').submit();
+    }
+  },
+  'keyup .set-title': function(e, t){
+    t.titleLength.set($(e.currentTarget).val().length);
+  },
+  'keyup .set-description': function(e, t){
+    t.descriptionLength.set($(e.currentTarget).val().length);
+  },
+  'submit #publish-with-title-description': function(e, t){
+    e.preventDefault();
+    var title = t.$('.set-title').val();
+    var description = t.$('.set-description').val();
+    Meteor.call('publishStream', this.shortId, title, description, function(err){
+      if(err){
+        basicErrorHandler(err);
+      } else {
+        notifySuccess("Congratulations! Your Deep Stream is now on air!");
+      }
+    });
+  }
+});
+
+Template.creation_tutorial.helpers({
+  onFindStreamStep: function(){
+    return this.creationStep == 'find_stream';
+  },
+  onAddCardsStep: function(){
+    return this.creationStep == 'add_cards';
+  },
+  onGoOnAirStep: function(){
+    return this.creationStep == 'go_on_air';
+  }
+});
+
+Template.creation_tutorial.events({
+  'click .find-stream .text': function(e, t){
+    Meteor.call('goToFindStreamStep', this.shortId, basicErrorHandler);
+  },
+  'click .add-cards .text': function(e, t){
+    Meteor.call('goToAddCardsStep', this.shortId, basicErrorHandler);
+  },
+  'click .go-on-air .text': function(e, t){
+    Meteor.call('goToPublishStreamStep', this.shortId, basicErrorHandler);
+  },
+  'click .find-stream button': function(e, t){
+    Meteor.call('skipFindStreamStep', this.shortId, basicErrorHandler);
+  },
+  'click .add-cards button': function(e, t){
+    Meteor.call('skipAddCardsStep', this.shortId, basicErrorHandler);
+  },
+  'click .title-description-overlay .close': function(e, t){
+    Meteor.call('goBackFromTitleDescriptionStep', this.shortId, basicErrorHandler);
+  }
+});

@@ -8,16 +8,24 @@ $.cloudinary.config({
 
 window.isHighDensity = ((window.matchMedia && (window.matchMedia('only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)').matches || window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)').matches)) || (window.devicePixelRatio && window.devicePixelRatio > 1.3));
 
+window.trimInput = function(val) {
+  return val.replace(/^\s*|\s*$/g, "");
+};
+
+
+window.plainTextPaste = function(e) {
+  var clipboardData = (e.originalEvent || e).clipboardData;
+  e.preventDefault();
+  return document.execCommand('insertText', false, clipboardData.getData('text/plain'));
+};
+
+
 window.isValidPassword = function(p) {
   if (p.length >= 6) {
     return true;
   } else {
     return false;
   }
-};
-
-window.trimInput = function(val) {
-  return val.replace(/^\s*|\s*$/g, "");
 };
 
 window.checkValidEmail = function(email) {
@@ -116,36 +124,32 @@ window.pluralizeMediaType = function(mediaType){
     default:
       return mediaType + 's'
   }
-}
-
-window.typeHelpers = {
-  text: function() {
-    return this.type === "text";
-  },
-  image: function() {
-    return this.type === "image";
-  },
-  map: function() {
-    return this.type === "map";
-  },
-  video: function() {
-    return this.type === "video";
-  },
-  twitter: function() {
-    return this.type === "twitter";
-  },
-  audio: function() {
-    return this.type === "audio";
-  },
-  link: function() {
-    return this.type === "link";
-  },
-  news: function() {
-    return this.type === "news";
-  }
 };
 
-window.horizontalBlockHelpers = _.extend({}, typeHelpers, {
+window.contextTypes = [
+  "stream",
+  "text",
+  "image",
+  "map",
+  "video",
+  "twitter",
+  "audio",
+  "link",
+  "news"
+];
+
+window.contextTypesPlusChat = _.union(contextTypes, ['chat']);
+
+
+//window.typeHelpers = _.object(contextTypes, _.map(contextTypes, function(type) {
+//  return function() {
+//    return this.type === type;
+//  };
+//}));
+
+
+
+window.horizontalBlockHelpers = _.extend({}, {
   selected: function(){
     return true;
   },
@@ -158,3 +162,35 @@ var i = 0;
 window.count = function(){
   return i++;
 };
+
+window.getCurrentContext = function(){
+  var currentContext = Session.get("currentContext");
+  if (currentContext){
+    return newTypeSpecificContextBlock(currentContext); // session will only store the vanilla object
+  }
+};
+
+window.setCurrentContext = function(contextBlock){
+  Session.set("currentContext", contextBlock);
+};
+
+window.clearCurrentContext = function(){
+  Session.set("currentContext", null);
+};
+
+window.soloOverlayContextModeActive = function(){
+  var currentContext = getCurrentContext();
+  return currentContext && currentContext.soloModeLocation === 'overlay';
+};
+
+
+window.emptyContextBlockOfCurrentMediaDataType = function(){
+  return newTypeSpecificContextBlock({type: Session.get('mediaDataType')});
+};
+
+
+window.contextHelpers = _.object(contextTypesPlusChat, _.map(contextTypesPlusChat, function(type) {
+  return function() {
+    return Session.get('mediaDataType') === type;
+  };
+}));

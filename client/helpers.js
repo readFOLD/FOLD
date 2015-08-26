@@ -6,10 +6,6 @@ Handlebars.registerHelper("log", function(v) {
   return console.log(v);
 });
 
-Handlebars.registerHelper("mainPlayerMuted", function() {
-  return Session.get("mainPlayerMuted");
-});
-
 Handlebars.registerHelper("curateMode", function() {
   return Session.get("curateMode");
 });
@@ -22,7 +18,9 @@ Handlebars.registerHelper("dateInPast", function(date) {
 });
 
 
-
+Handlebars.registerHelper("currentContext", function(){
+  return getCurrentContext()
+});
 
 
 Handlebars.registerHelper("hasContext", function(v) {
@@ -36,10 +34,6 @@ Handlebars.registerHelper("saving", function() {
 
 Handlebars.registerHelper("signingIn", function() {
   return Session.get("signingIn");
-});
-
-Handlebars.registerHelper("addingContext", function() {
-  return Session.get("addingContext");
 });
 
 Handlebars.registerHelper("isContextOfType", function(type) {
@@ -59,7 +53,6 @@ Handlebars.registerHelper("windowWidth", function() {
 Handlebars.registerHelper("windowHeight", function() {
   return Session.get("windowHeight");
 });
-
 
 Handlebars.registerHelper("profileImage", function(user, size) {
   var diameter;

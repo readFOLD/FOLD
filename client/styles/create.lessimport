@@ -8,7 +8,7 @@ input[type=file] {
   &::before {
     display: inline-block;
     background: @dark-color;
-    color: @light-color;
+    color: @medium-color;
     outline: none;
     white-space: nowrap;
     -webkit-user-select: none;
@@ -56,7 +56,7 @@ input[type=file] {
     }
     &::before {
       display: inline-block;
-      color: @light-color;
+      color: @medium-color;
       outline: none;
       -webkit-user-select: none;
       cursor: pointer;
@@ -68,214 +68,31 @@ input[type=file] {
     }
     &:hover::before {
       background-color: @dark-color;
-      color: @light-color;
+      color: @medium-color;
     }
   }
 }
 
-div.upload-header-image {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 100;
-}
-
-.confirm-publish{
-  background-color: @dark-color;
-  color: @light-color;
-}
-
-div.floating-story-buttons {
-  border-radius: 3px;
-  color: white;
-  vertical-align: middle;
-  button {
-    float: left;
-    text-align: center;
-  }
-  .favorite-button, .share-button {
-    cursor: pointer;
-    background-color: @dark-color;
-    height: 40px;
-    width: 40px;
-    margin: 0px;
-
-    &:hover {
-      background-color: @action-color;
-    }
-  }
-  .favorite-button{
-    button{
-      .size-to-fit;
-      margin: auto;
-      svg{
-        width: 20px;
-        height: 20px;
-      }
-    }
-    float: left;
-    font-size: 0;
-    margin-right: 10px;
-    .favorite{
-      .fg {
-        fill: @medium-color;
-      }
-    }
-  }
-  .share-button{
-    padding-left: 10px;
-    padding-top: 9px;
-    float: left;
-
-    button {
-      width: 20px;
-      height: 20px;
-    }
-
-    &.active {
-      background-color: @action-color;
-    }
-
-    .fg {
-      fill: @light-color;
-    }
-
-    &:hover{
-      .fg{
-        fill: @light-color;
-      }
-    }
-  }
-
-  .sharing-tooltip {
-    position: relative;
-    top: 55px;
-    left: 55px;
-    float: left;
-    background-color: @dark-color;
-    color: white;
-    width: 190px;
-    border-radius: 3px;
-    li {
-      cursor: pointer;
-      padding: 6px 15px;
-      width: 100%;
-      height: 40px;
-      line-height: 30px;
-      &:hover {
-        background-color: @action-color;
-      }
-      i {
-        float: left;
-        line-height: 30px;
-      }
-      span {
-        float: right;        
-      }
-    }
-
-    &:after {
-      bottom: 100%;
-      left: 80%;
-      border: solid transparent;
-      content: " ";
-      height: 0;
-      width: 0;
-      position: absolute;
-      pointer-events: none;
-      border-bottom-color: @dark-color;
-      border-width: 10px;
-      margin-left: -8px;
-    }
-  }
-
-  button.button {
-    background-color: @dark-color;
-    color: @light-color;
-    cursor: pointer;
-    padding: 5px 15px;
-    font-size: 14px;
-    &:not(:last-child) {
-      margin-right: 13px;
-    }
-    height: 40px;
-
-    &:hover {
-      background-color: @action-color;
-      color: @dark-color;
-    }
-  }
-  position: fixed;
-  top: 115px;
-  right: 13px;
-  z-index: 27;
-
-  .saved-text{
-    float: left;
-    color: @black-color;
-    text-transform: uppercase;
-    margin-right: 15px;
-    margin-top: 23px;
-    font-size: 13px;
-  }
-
-  .publish-story{
-    width: 140px;
-  }
-
-  .link-to-edit{
-    width: 126px;
-  }
-}
-
-
-textarea {
-  border: none;
-  overflow: auto;
-  outline: none;
-  resize: none;
-  &:focus{
-    outline-offset: 0;
-  }
-  padding: 0px;
-
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  font-size: 14px;
-  width: 100%;
-  word-wrap: break-word;
-
-  &.text-input {
-    max-height: 300px;
-    max-width: 476px;
-    margin-top: 10px;
-    padding: 18px;
-
-    color: @dark-color;
-    line-height: 27px;
-    font-size: @content-font-size;
-  }
+textarea.text-input {
+  max-height: 300px;
+  max-width: 476px;
+  margin-top: 10px;
+  padding: 18px;
+  color: @background-color;
+  line-height: 27px;
 }
 
 svg{
   transition: fill 0.25s ease;
 }
 
-.new-section {
-  &:hover {
-    .bg{
-      fill: @action-color;
-    }
-  }
-}
-
 div.create-section.link-twitter{
   text-align: center;
-}
-.link-twitter-button{
-  height: 50px;
-  padding: 8px;
+  button{
+    .action-button;
+    height: 50px;
+    padding: 8px;
+  }
 }
 
 @newCardBottomButtonHeight: 35px;
@@ -286,72 +103,20 @@ div.add-context {
   section {
     padding: 0;
   }
-  color: black;
-
-  .new-section {
-    height: @horizontal-content-height;
-    font-size: 55px;
-    line-height: @horizontal-content-height;
-    text-align: center;
-    width: 75px;
-    z-index: 30;
-    // box-shadow: 3px 3px #848484;
-  }
-
-  div.input-label {
-    margin-top: 12px;
-    margin-bottom: 10px;
-  }
 
   @contentIconBannerHeight: 80px;
-
-
-  .horizontal-new-section {
-    position: absolute;
-    background-color: @white-color;
-    svg{
-      .transition(transform 0.2s ease, fill 0.25s ease);
-    }
-    &.editing{
-      svg{
-        .transform(rotate(-45deg));
-      }
-    }
-  }
 
   div.create-section {
     padding-top: 22px;
     padding-left: 22px;
     padding-right: 22px;
     height: calc(100% ~"-" @contentIconBannerHeight);
-  }
-
-  // Dropdowns
-  div.create-section {
-    select {
-      padding-bottom: 10px;
+    .search-section {
+      height: 100%;
     }
-    .sod_select {
-
-      padding: 10px 5px;
-      // background-color: @dark-color;
-      // color: @light-color;
-      &:before, &:after {
-        right: 11px;
-        top: 14px;
-      }
-      .sod_option {
-        padding: 10px 5px;
-      }
-    }    
-  }
-
-  div.create-section.unimplemented {
-    font-weight: bold;
   }
 
   div.tabs {
-    border-bottom: 1px solid @medium-color;
     margin-bottom: 15px;
     ul {
       margin: 0;
@@ -366,11 +131,13 @@ div.add-context {
         font-weight: bold;
         text-transform: uppercase;
         display: inline-block;
-        min-width: 100px;
-        border-bottom: 2px solid white;
+        min-width: 80px;
+        color: @deemphasized-light-text-color;
+        border-bottom: 2px solid @deemphasized-light-text-color;
 
         &.selected, &:hover {
-          border-bottom: 2px solid @action-color;
+          color: @light-text-color;
+          border-bottom: 2px solid @light-text-color;
         }
       }
     }
@@ -388,19 +155,15 @@ div.add-context {
     @searchInputWidth: calc(100% ~"-" @searchTriggerWidth ~"-" @innerElementPadding);
 
     position: relative;
-    width: 0%;
     overflow: hidden;
     min-width: calc(@searchTriggerWidth+@innerElementPadding);
-    height: @searchInputHeight; 
-
-    .transition(width 0.3s);
-
+    height: @searchInputHeight;
+    width: 100%;
     -webkit-backface-visibility: hidden;        
 
     .search-trigger, .search-input-container, input, .search-button {
       font-size: 12px;
       height: @searchInputHeight;
-      color: @light-color;
       position: absolute;
       float: left;
     }
@@ -423,7 +186,6 @@ div.add-context {
       background: @dark-color;
       width: @searchInputWidth;
       left: @searchTriggerWidth+10px;
-      display: none;
     }
 
     .search-button {
@@ -440,21 +202,12 @@ div.add-context {
     position: relative;
     margin-top: 20px;
     margin-bottom: 40px;
-
     .pill-radios;
   }
 
   .twitter .search-radios {
-      margin-bottom: 0px
-    }
-
-
-  .search-outside-input-container.search-open {
-    width: 100%;
-    input {
-      display:block;
-    }
-  }  
+    margin-bottom: 0px
+  }
 
   .news-preview.search-results-container {
     height: calc(100% ~"-" @searchFormHeight ~"-" 40px);
@@ -487,7 +240,6 @@ div.add-context {
   }
 
   ol.search-results-container {   
-    background-color: @white-color;
     width: 100%;
     max-height: calc(100% ~"-" @searchFormHeight ~"-" 83px);
     overflow-y: scroll;
@@ -498,17 +250,14 @@ div.add-context {
     @aspectRatio: 4/3;
     @searchResultHeight: 94px;
     @thumbnailHeight: 90px;    
-    @thumbnailWidth: 120px; 
+    @thumbnailWidth: 120px;
     
     li {
-      border-top: 1px solid #e7e7e7;  
-      border-right: none;
-      border-left: none; 
       white-space: normal;
       cursor: pointer;
 
       &:hover {
-        background: @light-color; 
+        background: @dark-color;
       }
       &.focused {
         background: @medium-color; 
@@ -552,10 +301,9 @@ div.add-context {
       }
     }
     
-    
     @searchResultWidth: @aspectRatio * (@searchResultHeight - (2 * @innerElementPadding));
     @smallThumbnailWidth: .8*@searchResultHeight - (2 * @innerElementPadding);
-    div.thumbnail {
+    div.thumbnail { // link-section
       img{   
         width: @searchResultWidth;
         height: @searchResultHeight - @innerElementPadding;
@@ -575,32 +323,8 @@ div.add-context {
           margin-left: -@searchResultWidth;
         }
       }    
-    }    
-     
-    @focusedThumbnailHeight: (2 * @searchResultHeight) - (2 * @innerElementPadding);
-    @focusedThumbnailWidth: @aspectRatio * @focusedThumbnailHeight;
-    
-    div.focused-search-result { 
-      height: @searchResultHeight*3.2;
-      background: #e7e7e7;   
-    }    
-    
-    div.focused-thumbnail {    
-      padding-top: @innerElementPadding;
-      margin-left: 10px;  
+    }
 
-      iframe {
-        &.video {
-          width: @focusedThumbnailWidth;
-          height: @focusedThumbnailHeight;        
-        }
-        &.audio {
-          width: calc(100% ~"-" 10px);
-          height: @focusedThumbnailHeight
-        }
-      }
-    }    
-       
     @textAreaHeight: 75px;   
     div.info{    
       position: relative;   
@@ -658,9 +382,6 @@ div.add-context {
     .info.focused {
       top: 10px;
       left: 10px;
-      //left: 20px + @focusedThumbnailWidth;
-      //max-width: calc(100% ~"-" 30px ~"-" @focusedThumbnailWidth);
-      //max-height: @focusedSearchResultHeight - 10px;
       width: calc(100% ~"-" 30px);
       max-width: 100%;
       .descr {
@@ -671,10 +392,10 @@ div.add-context {
     }  
   }
 
-    button.add-button, button.add-desc-button, button.back-button {
+    button.add-button {
       position: relative;
       left: calc(100%~"-" 90px);
-      background-color: @action-color;
+      .action-button;
       height: @newCardBottomButtonHeight;
       width: 90px;
       margin-top: 12px;
@@ -687,29 +408,7 @@ div.add-context {
       &:not(:last-child) {
         margin-right: 10px;
       }
-
-      &.enabled {
-        cursor: pointer;
-      }
-
-      &:hover{
-        background-color: @dark-color;
-      }
     }
-
-    button.add-desc-button {
-      left: calc(100%~"-" 120px);
-      width: 120px;
-    }
-    button.back-button {
-      margin-left: -100px;
-    }
-}
-
-.create-map-section{
-  iframe{
-    // outline: 1px solid #e0e1e2;
-  }
 }
 
 .create-link-section {
@@ -719,7 +418,7 @@ div.add-context {
     margin-bottom: 30px;
 
     &.image-section {
-      background-color: @dark-color;
+      background-color: @background-color;
     }
 
     &.link-section {
@@ -748,79 +447,4 @@ div.add-context {
     top:0;
     z-index: 100;
   }
-}
-
-@fold-editor-row-height: 55px;
-
-
-
-.create-section {
-  .search-section, .add-desc-section {
-    height: 100%;
-  }
-
-  .image-preview {
-    max-height: calc(100% ~"-" @newCardBottomButtonHeight + 10px); // 10 px is effectively the min margin from the botton of window
-
-    .image-section {
-      height: 300px;      
-    }
-  }
-
-  form.desc-form {
-    position: relative;
-    top: -300px;
-    textarea {
-      background-color: rgba(0, 0, 0, 0.8);
-      opacity: 0.8;
-      color: white;
-      margin-top: 0px;
-      padding: 8px;
-      font-size: 14px;
-      line-height: 20px;
-      text-align: start;
-    }
-  }
-}
-
-
-div.anchor-menu {
-  display: none;
-  overflow: scroll;
-}
-div.context-anchor-menu {
-  span{
-    overflow: hidden;
-    width: calc(~"100% - 30px");
-    display: inline-block;
-    text-overflow: ellipsis;
-  }
-  display: none;
-  width: 100%;
-
-  .back-arrow{
-    .fg{
-      fill: @light-color;
-    }
-  }
-  button{
-    .text-align-start;
-  }
-  .context-anchor-list{
-    max-height: 3.9 * @fold-editor-row-height;
-    overflow: scroll;
-    z-index: 8000;
-    position:relative;
-  }
-
-  div.bottom-bar{
-    .box-shadow(0px -8px 12px 0px rgba(0,0,0,0.75));
-  }
-}
-div.bottom-bar{
-  position:relative;
-  height: 5px;
-  width: 100%;
-  background-color: @panel-color;
-  z-index: 9000;
 }

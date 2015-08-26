@@ -93,10 +93,6 @@ var createBlockEvents = {
     if (e.which === 13){
       addFocusResult.apply(this,arguments);
     }
-  },
-  "click .cancel": function() {
-    Session.set('addingContext', false);
-    return Session.set('editingContext', null);
   }
 };
 
@@ -241,6 +237,8 @@ _.each(createTemplateNames, function(templateName){
   });
 });
 
+Template.create_text_section.helpers(createBlockHelpers);
+
 Template.create_stream_section.helpers(createBlockHelpers);
 Template.create_stream_section.events(createBlockEvents);
 
@@ -303,7 +301,7 @@ searchTemplateRenderedBoilerplate  = function() {
     // search when initially arrive and when source changes (if there aren't already results)
     this.autorun(function(){
       Session.get('newHorizontalDataSource');
-      if (Session.get('addingContext') && that.getSearchInput().query && !that.existingSearchResults({reactive: false}).count()) {
+      if (that.getSearchInput().query && !that.existingSearchResults({reactive: false}).count()) {
         that.search();
       }
     });
@@ -446,11 +444,10 @@ Template.create_news_section.onCreated(function() {
         reference: {
           title: result.title,
           description: result.description,
-          content: result.content,
+          content: cleanNewsHtml(result.content),
           topImage: result.images[0],
           providerName: result.provider_name,
           providerIconUrl: result.favicon_url
-          // TODO add more
         },
         source: 'embedly'
       }));
@@ -682,10 +679,10 @@ Template.create_map_section.helpers({
       return preview.url()
     }
   },
-  previewUrl: function() {
+  previewUrl: function(height, width) {
     var preview = Template.instance().focusResult.get();
     if (preview) {
-      return preview.previewUrl()
+      return preview.previewUrl(height, width);
     }
   }
 });

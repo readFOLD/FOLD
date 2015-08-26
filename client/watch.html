@@ -18,37 +18,12 @@
             {{{streamDescriptionElement}}}
           </div>
         </div>
-          <!--{{#if mainPlayerMuted}}-->
-        <!--<button class="unmute">Un-mute</button>-->
-          <!--{{else}}-->
-        <!--<button class="mute">Mute</button>-->
-          <!--{{/if}}-->
       </div>
-
 
       <div class="main-section {{#if expandMainSection}}expanded{{/if}}">
         <div class="main-stream {{#if expandMainSection}}expanded{{/if}} {{#if PiP}}PiP{{/if}}">
           {{#if showTutorial}}
-            <div class="tutorial">
-              <div class="tutorial-step find-stream {{#if onFindStreamStep}}active{{/if}}">
-                <div class="text">
-                  <span class="number">Step 1:</span><span class="instruction">Find streams that you want to curate on the right.</span>
-                </div>
-                <button>Skip this step ></button>
-              </div>
-              <div class="tutorial-step add-cards {{#if onAddCardsStep}}active{{/if}}">
-                <div class="text">
-                  <span class="number">Step 2:</span><span class="instruction">Add cards on the right to give viewers more information.</span>
-                </div>
-                <button>Skip this step ></button>
-              </div>
-              <div class="tutorial-step go-on-air {{#if onGoOnAirStep}}active{{/if}}">
-                <div class="text">
-                  <span class="number">Step 3:</span><span class="instruction">Put your Deep Stream on air!</span>
-                </div>
-                <button class="publish">Publish!</button>
-              </div>
-            </div>
+            {{> creation_tutorial}}
           {{/if}}
           {{#if streamUrl}}
             <div class="main-stream-iframe-holder {{#if PiP}}PiP{{/if}}">
@@ -58,9 +33,10 @@
             </div>
             {{#unless PiP}}
               {{#with activeStream}}
-                <div class="bottom-overlay"><span class="stream-url">Livestream:  <a href="{{sourceUrl}}"
-                                                                                     target="_blank">{{sourceUrl}}</a></span><span
-                    class="stream-username">Streamer:  {{username}}</span></div>
+                <div class="bottom-overlay">
+                  <span class="stream-url">Livestream:  <a href="{{sourceUrl}}" target="_blank">{{sourceUrl}}</a></span>
+                  <span class="stream-username">Streamer:  {{username}}</span>
+                </div>
               {{/with}}
             {{/unless}}
           {{/if}}
@@ -155,56 +131,159 @@
 
         </div>
       </div>
-
     </div>
 
-
     <!--Fixed sections-->
-
-
-
     {{#if showTitleDescriptionEditOverlay}}
-      <div class="title-description-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
-        <button class="close">✕</button>
-        <div class="title-description-inputs">
-          <form id="publish-with-title-description" action="action">
-            <label for="title">Enter a title for your Deep Stream:</label>
-            <input type="text" name="title" value="{{title}}" class="set-title" autofocus="autofocus">
-
-            <div class="character-count">{{titleLength}} / {{titleMax}}</div>
-            <label for="description">Enter a description:</label>
-            <textarea name="description" value="{{description}}" class="set-description" rows="3"></textarea>
-
-            <div class="character-count">{{descriptionLength}} / {{descriptionMax}}</div>
-            <div class="button-area">
-              <button type="submit">Publish!</button>
-            </div>
-
-          </form>
-        </div>
-      </div>
+      {{> title_description_overlay}}
     {{/if}}
-
-    {{#if largeContextMode}}
-      {{> large_context_browser}}
+    {{#if soloOverlayContextMode}}
+      {{> overlay_context_browser}}
     {{/if}}
-
     {{> signin_overlay}}
     {{> banner_buttons}}
   {{/with}}
 </template>
 
+
+<template name="content_icons">
+  <div class="content-icons">
+    <ol>
+      {{#if show_stream_icon}}
+        <li>
+          <button class='stream-button {{#if stream}}active{{/if}}'>
+            {{> stream_icon }}
+          </button>
+        </li>
+        <hr>
+      {{/if}}
+      {{#if show_news_icon}}
+        <li>
+          <button class='news-button {{#if news}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> news_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if show_twitter_icon}}
+        <li>
+          <button class='twitter-button {{#if twitter}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> twitter_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if show_text_icon}}
+        <li>
+          <button class='text-button {{#if text}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> text_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if show_map_icon}}
+        <li>
+          <button class='map-button {{#if map}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> map_icon }}
+          </button>
+        </li>
+
+      {{/if}}
+      {{#if show_image_icon}}
+        <li>
+          <button class='image-button {{#if image}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> image_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if show_wikipedia_icon}}
+        <li>
+          <button class='wikipedia-button {{#if wikipedia}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> wikipedia_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if show_video_icon}}
+        <li>
+          <button class='video-button {{#if video}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> video_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if show_audio_icon}}
+        <li>
+          <button class='audio-button {{#if audio}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> audio_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if show_link_icon}}
+        <li>
+          <button class='link-button {{#if link}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> link_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if show_chat_icon}}
+        <li>
+          <button class='chat-button {{#if chat}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> chat_icon }}
+          </button>
+        </li>
+      {{/if}}
+    </ol>
+
+  </div>
+</template>
+
+<template name="creation_tutorial">
+  <div class="tutorial">
+    <div class="tutorial-step find-stream {{#if onFindStreamStep}}active{{/if}}">
+      <div class="text">
+        <span class="number">Step 1:</span><span class="instruction">Find streams that you want to curate on the right.</span>
+      </div>
+      <button>Skip this step ></button>
+    </div>
+    <div class="tutorial-step add-cards {{#if onAddCardsStep}}active{{/if}}">
+      <div class="text">
+        <span class="number">Step 2:</span><span class="instruction">Add cards on the right to give viewers more information.</span>
+      </div>
+      <button>Skip this step ></button>
+    </div>
+    <div class="tutorial-step go-on-air {{#if onGoOnAirStep}}active{{/if}}">
+      <div class="text">
+        <span class="number">Step 3:</span><span class="instruction">Put your Deep Stream on air!</span>
+      </div>
+      <button class="publish">Publish!</button>
+    </div>
+  </div>
+</template>
+
+<template name="title_description_overlay">
+  <div class="title-description-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+    <button class="close">✕</button>
+    <div class="title-description-inputs">
+      <form id="publish-with-title-description" action="action">
+        <label for="title">Enter a title for your Deep Stream:</label>
+        <input type="text" name="title" value="{{title}}" class="set-title" autofocus="autofocus">
+
+        <div class="character-count">{{titleLength}} / {{titleMax}}</div>
+        <label for="description">Enter a description:</label>
+        <textarea name="description" value="{{description}}" class="set-description" rows="3"></textarea>
+
+        <div class="character-count">{{descriptionLength}} / {{descriptionMax}}</div>
+        <div class="button-area">
+          <button type="submit">Publish!</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
 <template name="context_browser">
   <div class="context-browser">
-    <div class="browse-buttons">
-      {{#if singleContextMode}}
+    <div class="context-browser-header-row">
+      {{#if soloSidebarContextMode}}
         <button class="switch-to-list-mode">{{> list_icon}}</button>
       {{/if}}
       <span class="type">{{mediaTypeForDisplay}}</span>
-
-      <!--<span class="count">{{currentNum}} of {{totalNum}}</span>-->
-      <!--<button class="left" disabled="{{disableLeftButton}}">{{> left_arrow}}</button>-->
-      <!--<button class="right" disabled="{{disableRightButton}}">{{> right_arrow}}</button>-->
       {{#if curateMode}}
         <button class="add-new-context">{{> add_icon}}</button>
       {{else}}
@@ -212,27 +291,27 @@
       {{/if}}
     </div>
     <div class="context-area">
-      {{#if singleContextMode}}
+      {{#if soloSidebarContextMode}}
         {{#with currentContext}}
-          {{> full_context_section}}
+          {{> solo_context_section}}
         {{/with}}
       {{else}}
         {{#each contextOfCurrentType}}
-          {{> preview_context_section}}
+          {{> list_item_context_section}}
         {{/each}}
       {{/if}}
     </div>
   </div>
 </template>
 
-<template name="large_context_browser">
-  <div class="large-context-browser" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+<template name="overlay_context_browser">
+  <div class="overlay-context-browser" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
     <button class="close">{{> close_circle}}</button>
     <div class="context-area">
       <div class="count">{{mediaTypeForDisplay}} {{currentNum}} of {{totalNum}}</div>
       {{#unless disableLeftButton}}<button class="left" disabled="{{disableLeftButton}}">{{> scroll_left_icon}}</button>{{/unless}}
       {{#with currentContext}}
-        {{> full_context_section}}
+        {{> solo_context_section}}
       {{/with}}
       {{#unless disableRightButton}}<button class="right" disabled="{{disableRightButton}}">{{> scroll_right_icon}}</button>{{/unless}}
     </div>
@@ -240,129 +319,22 @@
 </template>
 
 
-<template name="full_context_section">
-  <div
-      class="narrative-section context-section {{#if type}}{{type}}-card{{/if}}" data-index="{{index}}">
-      {{#if type}}
-        {{#if text}}
-          {{> display_text_section}}
-        {{/if}}
-        {{#if image}}
-          {{> display_image_section}}
-        {{/if}}
-        {{#if gif}}
-          {{> display_image_section}}
-        {{/if}}
-        {{#if map}}
-          {{> display_map_section}}
-        {{/if}}
-        {{#if audio}}
-          {{> display_audio_section}}
-        {{/if}}
-        {{#if video}}
-          {{> display_video_section}}
-        {{/if}}
-        {{#if twitter}}
-          {{> display_twitter_section}}
-        {{/if}}
-        {{#if link}}
-          {{> display_link_section}}
-        {{/if}}
-        {{#if news}}
-          {{> display_news_section}}
-        {{/if}}
-      {{else}}
-        {{> display_broken_section}}
-      {{/if}}
+<template name="solo_context_section">
+  <div class="narrative-section context-section {{#if type}}{{type}}-card{{/if}}" data-context-id="{{_id}}">
+    {{> Template.dynamic template=soloModeTemplate}}
   </div>
 </template>
 
-<template name="preview_context_section">
-  <div
-      class="narrative-section context-section preview-context-section {{#if type}}{{type}}-card{{/if}}" data-index="{{index}}">
+<template name="list_item_context_section">
+  <div class="narrative-section context-section list-item-context-section {{#if type}}{{type}}-card{{/if}}" data-context-id="{{_id}}">
     <div class="clickable">
-      {{#if type}}
-        {{#if text}}
-          {{> preview_text_section}}
-        {{/if}}
-        {{#if image}}
-          {{> preview_image_section}}
-        {{/if}}
-        {{#if gif}}
-          {{> display_image_section}}
-        {{/if}}
-        {{#if map}}
-
-          {{> preview_map_section}}
-
-        {{/if}}
-        {{#if audio}}
-          {{> display_audio_section}}
-        {{/if}}
-        {{#if video}}
-          {{> preview_video_section}}
-
-        {{/if}}
-        {{#if twitter}}
-          {{> display_twitter_section}}
-        {{/if}}
-        {{#if link}}
-          {{> display_link_section}}
-        {{/if}}
-        {{#if news}}
-          {{> preview_news_section}}
-        {{/if}}
-      {{else}}
-        {{> display_broken_section}}
-      {{/if}}
+      {{> Template.dynamic template=listModeItemTemplate}}
     </div>
-      {{#if curateMode}}
-        <button class="delete-current-context">{{> close_circle}}</button>
-      {{/if}}
+    {{#if curateMode}}
+      <button class="delete-context">{{> close_circle}}</button>
+    {{/if}}
   </div>
 </template>
-
-<template name="preview_image_section">
-  <div class="show-full">
-    {{> display_image_section}}
-  </div>
-</template>
-
-<template name="preview_video_section">
-  <div class="show-full">
-    <div class="video-preview">
-      <img src="{{previewUrl}}"/>
-      {{> play_video_icon}}
-    </div>
-    {{{annotation}}}
-  </div>
-</template>
-
-<template name="preview_map_section">
-  <div class="show-full">
-    <div class="map-preview">
-      <img src="{{previewUrl 200 310}}"/>
-    </div>
-    {{{annotation}}}
-  </div>
-</template>
-
-<template name="preview_text_section">
-  <div class="show-full">
-    <div class="text-preview" dir="auto">
-      {{content}}
-    </div>
-  </div>
-</template>
-
-<template name="preview_news_section">
-  <div class="show-full">
-    <div class="news-preview">
-      {{title}} - {{providerName}}
-    </div>
-  </div>
-</template>
-
 
 <template name="settings_menu">
   <div class="settings-menu">

@@ -28,14 +28,6 @@ Meteor.startup(function(){
   $(window).resize(throttledResize);
 });
 
-
-window.hammerSwipeOptions = {
-  pointers:	1,
-  threshold: 8,
-  velocity:	0.35 // 0.65
-};
-
-
 //window.trackingInfoFromStory = function(story){
 //  return _.chain(story)
 //    .pick([
@@ -90,25 +82,6 @@ window.hammerSwipeOptions = {
 editableDescriptionCreatedBoilerplate = function() {
   this.editing = new ReactiveVar(false);
 };
-
-//editableDescriptionDestroyedBoilerplate = function(meteorMethod) {
-  //return function(){
-  //  if(document.body){
-  //    document.body.style.overflow = 'auto';
-  //  }
-  //  console.log(this)
-
-
-    //var that = this;
-    //if (!Session.get('read') && !Session.get('addingContext')) {
-    //  var textContent = this.$('textarea[name=content]').val();
-    //  Session.set('saveState', 'saving');
-    //  Meteor.call(meteorMethod, that._id, textContent, function (err, numDocs) {
-    //    saveCallback(err, numDocs);
-    //  });
-    //}
-//  }
-//};
 
 
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
@@ -186,8 +159,6 @@ Template.preview_text_section.helpers(horizontalBlockHelpers);
 Template.homepage_preview_text_section.helpers(horizontalBlockHelpers);
 Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
 
-
-Template.type_specific_icon.helpers(typeHelpers);
 
 Template.share_button.onCreated(function() {
   this.tooltipShown = new ReactiveVar(false);

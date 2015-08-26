@@ -1,201 +1,13 @@
-<template name="fold_editor">
-  <div id="fold-editor">
-    <div id="fold-editor-button-group">
-      <button type="button" class="bold-button {{#if boldActive}}active{{/if}}">
-        {{> bold_icon }}
-      </button>
-      <button type="button" class="italic-button {{#if italicActive}}active{{/if}}">
-        {{> italic_icon }}
-      </button>
-      <button type="button" class="underline-button {{#if underlineActive}}active{{/if}}">
-        {{> underline_icon }}
-      </button>
-      <button type="button" class="anchor-button {{#if anchorActive}}active{{/if}}">
-        {{> link_card_icon }}
-      </button>
-    </div>
-  {{> anchor_menu}}
-  </div>
-</template>
-
-<template name="fold_link_remover">
-  <div id="fold-link-remover">
-    <div id="fold-editor-button-group">
-      <button type="button" class="remove-link-button">
-        {{> delete_icon}}
-      </button>
-    </div>
-  </div>
-</template>
-
-<template name="anchor_menu">
-  <div class="anchor-menu">
-    <ol>
-      <li class="link-to-card">
-        <button type="button">
-          {{> link_icon}} Link to existing card
-        </button>
-      </li>
-      {{> context_anchor_new_card_option }}
-    </ol>
-    <div class="bottom-bar"></div>
-  </div>
-</template>
-
-<template name="context_anchor_menu">
-  <div class="context-anchor-menu">
-    {{> context_anchor_menu_contents}}
-  </div>
-</template>
-
-<template name="context_anchor_menu_contents">
-  <div class="context-anchor-menu-contents">
-    <div class="context-anchor-list">
-      <ol>
-        {{> context_anchor_go_back}}
-        {{#each data}}
-          {{#if type}}
-            <li>
-              {{> context_anchor_option}}
-            </li>
-          {{/if}}
-        {{/each}}
-      </ol>
-    </div>
-    <div class="bottom-bar"></div>
-  </div>
-</template>
-
-<template name="context_anchor_option">
-  <button type="button">{{> type_specific_icon}}<span class="text">{{anchorMenuSnippet}}</span></button>
-</template>
-
-<template name="context_anchor_go_back">
-  <li class="back"><button type="button">{{> back_arrow_icon}}back</button></li>
-</template>
-
-<template name="context_anchor_new_card_option">
-  <li class="new-card">
-    <button type="button">
-      {{> add_card_icon}}Add new card
-    </button>
-  </li>
-</template>
-
-<!--<template name="right_arrow">-->
-  <!--<span class="pull-right">-->
-    <!--&gt;-->
-  <!--</span>-->
-<!--</template>-->
-
-
-
 <!--DEEPSTREAM-->
-
-
 <template name="add_context">
   <div class="add-context narrative-section selected editing">
-    {{#if type}}
-      {{#if chat}}{{> unimplemented_chat_section}}{{/if}}
-      {{#if link}}{{> create_link_section}}{{/if}}
-      {{#if text}}{{> create_text_section}}{{/if}}
-      {{#if audio}}{{> create_audio_section}}{{/if}}
-      {{#if image}}{{> create_image_section}}{{/if}}
-      {{#if news}}{{> create_news_section}}{{/if}}
-      {{#if map}}{{> create_map_section}}{{/if}}
-      {{#if video}}{{> create_video_section}}{{/if}}
-      {{#if twitter}}{{> create_twitter_section}}{{/if}}
+    {{#if listMode}}
+      {{> Template.dynamic template=searchListTemplate}}
+    {{else}}
+      {{> Template.dynamic template=searchSoloTemplate}}
     {{/if}}
   </div>
 </template>
-
-<template name="content_icons">
-  <div class="content-icons">
-    <ol>
-      {{#if show_stream_icon}}
-        <li>
-          <button class='stream-button {{#if stream}}active{{/if}}'>
-            {{> stream_icon }}
-          </button>
-        </li>
-        <hr>
-      {{/if}}
-      {{#if show_news_icon}}
-        <li>
-          <button class='news-button {{#if news}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> news_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_twitter_icon}}
-        <li>
-          <button class='twitter-button {{#if twitter}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> twitter_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_text_icon}}
-        <li>
-          <button class='text-button {{#if text}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> text_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_map_icon}}
-        <li>
-          <button class='map-button {{#if map}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> map_icon }}
-          </button>
-        </li>
-
-      {{/if}}
-      {{#if show_image_icon}}
-        <li>
-          <button class='image-button {{#if image}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> image_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_wikipedia_icon}}
-        <li>
-          <button class='wikipedia-button {{#if wikipedia}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> wikipedia_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_video_icon}}
-        <li>
-          <button class='video-button {{#if video}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> video_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_audio_icon}}
-        <li>
-          <button class='audio-button {{#if audio}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> audio_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_link_icon}}
-        <li>
-          <button class='link-button {{#if link}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> link_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_chat_icon}}
-        <li>
-          <button class='chat-button {{#if chat}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> chat_icon }}
-          </button>
-        </li>
-      {{/if}}
-    </ol>
-
-  </div>
-</template>
-
 
 <template name="stream_search">
   <div class="add-context stream-search narrative-section selected editing">
@@ -207,7 +19,7 @@
 <template name="search_form">
   <div class="search-form">
     <form>
-      <div class="search-outside-input-container search-open">
+      <div class="search-outside-input-container">
         <div class="search-trigger">{{#if searchInputLabel}}{{searchInputLabel}}{{else}}Search{{/if}}</div>
         <div class="search-input-container">
           <input type="search" placeholder={{placeholder}} autofocus="autofocus" dir="auto">
@@ -433,7 +245,7 @@
     </div>
     {{> search_form option1='satellite' label1='Satellite' option2='roadmap' label2='Roadmap' placeholderType='locations'}}
     <div class="map-result-container">
-      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
+      <img src="{{previewUrl 200 310}}"/>
     </div>
     {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">

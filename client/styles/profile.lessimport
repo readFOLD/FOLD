@@ -30,7 +30,7 @@ div.profile-section {
 div.user-profile {
   position: fixed;
   padding:20px;
-  background-color: @white-color;
+  background-color: @background-color;
   width: @profile-width;
   max-width: 340px;
   min-height: 700px;

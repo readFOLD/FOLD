@@ -82,27 +82,18 @@ a.green {
 }
 
 .save-profile-button, .reset-button {
-	margin-top: 20px;
-	width: 100px;
-    background-color: @action-color;
-    color: @black-color;
-    height: @button-height;
+  margin-top: 20px;
+  width: 100px;
+  .action-button;
+  height: @button-height;
 
-    &:hover {
-    	background-color: @dark-action-color;
-    }
 }
 
 .login-button, .signup-button, .save-profile-button, .reset-button, .twitter-signin {
-	margin-top: 20px;
-	width: 180px;
-    background-color: @action-color;
-    color: @black-color;
-    height: @button-height;
-
-    &:hover {
-    	background-color: @dark-action-color;
-    }
+  margin-top: 20px;
+  width: 180px;
+  height: @button-height;
+  .action-button;
 }
 
 .login-button{
@@ -165,14 +156,11 @@ div.sign-up-options {
   margin: auto;
   width: 350px;
   a{
-    background-color: @action-color;
+    .action-button;
     height: @button-height;
     display: inline-block;
-    color: @black-color;
     text-align: center;
     line-height: @button-height;
-    &:hover {
-      background-color: @dark-action-color;
-    }
+
   }
 }

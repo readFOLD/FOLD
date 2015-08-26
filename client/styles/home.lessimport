@@ -15,9 +15,9 @@ div.home-top {
   width: 100%;
   z-index: 10;
   //border-bottom: 1px solid @medium-color;
-  -webkit-box-shadow: 0 2px 8px -6px @dark-color;
-  -moz-box-shadow: 0 2px 8px -6px @dark-color;
-  box-shadow: 0 2px 8px -6px @dark-color;
+  -webkit-box-shadow: 0 2px 8px -6px @homepage-shade-3;
+  -moz-box-shadow: 0 2px 8px -6px @homepage-shade-3;
+  box-shadow: 0 2px 8px -6px @homepage-shade-3;
 
  /* div.user-image {
     position: absolute;
@@ -59,7 +59,7 @@ div.deepstreams-and-streams {
 .stream-type-selector{
   @height: 46px;
   li {
-    color: @white-color;
+    color: @light-text-color;
     height: auto;
     display:inline-block;
     font-size:18px;
@@ -107,7 +107,7 @@ div.deepstreams-and-streams {
     line-height:@height;
     padding:0 15px;
 
-    color: @white-color;
+    color: @light-text-color;
     background-color: transparent;
   }
 
@@ -133,7 +133,7 @@ div.logo-title {
   div.title {
     float: right;
     margin-top: 5px;
-    color: @black-color;
+    color: @dark-text-color;
     height: 100%;
     margin-left: 10px;
     .name{
@@ -150,7 +150,7 @@ div.logo-title {
     .slogan{
       font-size: 12px;
       line-height: 20px;
-      color: @white-color;
+      color: @light-text-color;
     }
   }
 
@@ -186,7 +186,7 @@ div.logo-title {
 }
 
 .streams-container{
-  background-color: @darker-color;
+  background-color: @homepage-shade-2;
   padding-top: 20px;
 }
 
@@ -211,7 +211,7 @@ div.logo-title {
     padding: @padding;
   }
   display: inline-block;
-  background-color: @dark-medium-color;
+  background-color: @homepage-shade-4;
   .image-and-content{
     position: relative;
     .live-indicator{
@@ -242,12 +242,12 @@ div.logo-title {
         right: @content-section-width;
         margin-top: 20px;
         button.active{
-          background-color: @a-bit-dark-medium-color;
+          background-color: @homepage-shade-5;
         }
       }
       padding-left: 10px;
       padding-right: 10px;
-      background-color: @a-bit-dark-medium-color;
+      background-color: @homepage-shade-5;
       top: 0;
       right: 0;
       position: absolute;
@@ -269,7 +269,7 @@ div.logo-title {
     font-size: 18px;
   }
   .small-stream-info, .views{
-    color: @medium-color;
+    color: @deemphasized-light-text-color;
     font-size: 14px;
   }
   .small-stream-info{
@@ -313,7 +313,7 @@ div.logo-title {
 }
 
 .homepage-preview-twitter-section{
-  background-color: @dark-color;
+  background-color: @homepage-shade-3;
   .center-over-parent-div;
   padding: 6px;
   line-height: normal;
@@ -363,7 +363,7 @@ div.logo-title {
   }
   height: 200px;
   width: 375px;
-  background-color: @dark-medium-color;
+  background-color: @homepage-shade-4;
   margin-right: 30px;
   margin-bottom: 50px;
   position: relative;
@@ -388,7 +388,7 @@ div.logo-title {
     top: 70px;
     right: 10px;
     font-size: 14px;
-    color: @medium-color;
+    color: @deemphasized-light-text-color;
   }
   .title{
     .ellipsis-text;
@@ -398,7 +398,7 @@ div.logo-title {
   }
   .small-stream-info{
     width: 100%;
-    color: @medium-color;
+    color: @deemphasized-light-text-color;
   }
   .username, .views{
     display: inline-block;
@@ -411,7 +411,7 @@ div.logo-title {
 
 .stream-preview-screen-overlay{
   .full-overlay;
-  background-color: rgba(48,48,48,0.87);
+  background-color: @dark-transparent-color;
   .preview-box{
     margin:auto;
     display:block;
@@ -420,7 +420,7 @@ div.logo-title {
     height: 510px;
     width: 80%;
 
-    background-color: @black-color;
+    background-color: @homepage-shade-0;
 
     top: 50%;
     left: 50%;
@@ -431,7 +431,7 @@ div.logo-title {
       padding-top: 20px;
       padding-left: 30px;
       padding-right: 30px;
-      background-color: @darker-color;
+      background-color: @homepage-shade-2;
 
       .text{
         text-align: left;
@@ -488,7 +488,6 @@ div.action-items {
     width: 100%;
     text-align: center;
   }
-  color: @black-color;
 
   button{
     text-transform: uppercase;
@@ -496,29 +495,21 @@ div.action-items {
     padding: 0px 10px;
     min-width: 100px;
     .size-to-fit;
-    &:hover {
-      background-color: @dark-action-color;
-    }
+    .action-button;
   }
 
   a {
     min-width: 100px;
     .size-to-fit;
-    &:hover {
-      background-color: @dark-action-color;
-    }
+    .action-button;
   }
 
   .create-deepstream {
-    background-color: @action-color;
-    &:hover {
-      background-color: @dark-action-color;
-    }
+    .action-button;
   }
 
   li {
     height: @height;
-    background-color: @action-color;
     @media @not-mobile{
       float: left;
     }
@@ -555,7 +546,7 @@ div.action-items {
       float: none;
       display: block;
       margin:0;
-      border-top: 1px solid @white-color;
+      border-top: 1px solid @light-text-color;
     }
   }
 }
@@ -564,7 +555,7 @@ div.action-items {
   height: 60px;
   padding-top: 10px;
   padding-left: 65px;
-  background-color: @darkerer-color;
+  background-color: @homepage-shade-1;
   padding-right: 15px;
   position: relative;
 
@@ -581,13 +572,13 @@ div.action-items {
       display: inline-block;
       min-width: 100px;
       button {
-        color: @medium-color;
+        color: @deemphasized-light-text-color;
       }
 
       &.selected, &:hover {
-        border-bottom: 2px solid @white-color;
+        border-bottom: 2px solid @light-text-color;
         button {
-          color: @white-color;
+          color: @light-text-color;
         }
       }
     }
@@ -601,20 +592,20 @@ div.action-items {
     height: 40px;
     width: 300px;
     float: right;
-    background-color: @dark-color;
+    background-color: @homepage-shade-3;
     .stream-search-icon{
       display: inline-block;
       background-color: inherit;
       width: 30px;
       padding: 10px;
       .fg{
-        fill: @white-color;
+        fill: @white-icon-color;
       }
     }
     input[type=search]{
       height: 100%;
       background-color: inherit;
-      color: @white-color;
+      color: @light-text-color;
     }
   }
 
