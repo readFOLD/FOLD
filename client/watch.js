@@ -127,7 +127,6 @@ Template.watch.onCreated(function () {
     }
   });
 
-  var defaultContextType = 'image';
 
   // march through creation steps, or setup most recent context type to display when arrive on page if past curation
   this.autorun(function(){
@@ -141,7 +140,7 @@ Template.watch.onCreated(function () {
           Session.set("searchingMedia", true);
           return
         } else if (reactiveDeepstream.creationStep === 'add_cards') {
-          Session.set("mediaDataType", defaultContextType);
+          Session.set("mediaDataType", 'image');
           Session.set("searchingMedia", true);
           return
         }
@@ -152,7 +151,7 @@ Template.watch.onCreated(function () {
       if (mostRecentContext){
         Session.set("mediaDataType", mostRecentContext.type);
       } else {
-        Session.set("mediaDataType", defaultContextType);
+        Session.set("mediaDataType", 'chat'); // default to chat if there is no media
       }
       Session.set("searchingMedia", false);
     }
@@ -245,6 +244,7 @@ Template.watch.onRendered(function(){
 
 var titleMax = 60;
 var descriptionMax = 270;
+
 
 Template.watch.helpers({
   activeStream: function(){
@@ -434,12 +434,22 @@ Template.context_browser.helpers({
   soloSidebarContextMode: function(){
     var currentContext = getCurrentContext();
     return currentContext && currentContext.soloModeLocation === 'sidebar';
+  },
+  showCloseSidebarIcon: function(){
+    return Session.get('mediaDataType') && !soloOverlayContextModeActive();
+  },
+  showOpenSidebarIcon: function(){
+    return !Session.get('mediaDataType') && !soloOverlayContextModeActive();
   }
 });
 
 Template.context_browser.events({
   'click .close': function(){
+    Session.set('previousMediaDataType', Session.get('mediaDataType'));
     Session.set('mediaDataType', null);
+  },
+  'click .open': function(){
+    Session.set('mediaDataType', Session.get('previousMediaDataType'));
   },
   'click .add-new-context': function(){
     Session.set('searchingMedia', true);

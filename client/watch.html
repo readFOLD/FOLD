@@ -287,7 +287,13 @@
       {{#if curateMode}}
         <button class="add-new-context">{{> add_icon}}</button>
       {{else}}
-        <button class="close">{{> close_sidebar_icon}}</button>
+        {{#if showCloseSidebarIcon}}
+          <button class="close">{{> close_sidebar_icon}}</button>
+        {{else}}
+          {{#if showOpenSidebarIcon}}
+            <button class="open">{{> open_sidebar_icon}}</button>
+          {{/if}}
+        {{/if}}
       {{/if}}
     </div>
     <div class="context-area">

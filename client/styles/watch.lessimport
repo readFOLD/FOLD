@@ -401,7 +401,7 @@
     top: 8px;
     position: absolute;
   }
-  .close, .add-new-context{
+  .close, .open, .add-new-context{
     right: 4px;
   }
 
