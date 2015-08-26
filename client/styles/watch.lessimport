@@ -22,6 +22,7 @@
     li{
       float: left;
       margin-left: 20px;
+      line-height: 0;
       button{
         background-color: inherit;
         color: @light-text-color;
@@ -34,7 +35,7 @@
         position: relative;
         padding: 0;
       }
-      .preview-hover;
+      .hover-shadow;
       .active-overlay{
         position:absolute;
         padding-top: 25%;
@@ -220,11 +221,6 @@
   padding-left: 170px;
   padding-right: 100px;
 }
-
-
-// DEEPSTREAM
-
-
 
 .tutorial-step{
 
