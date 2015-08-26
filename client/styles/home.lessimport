@@ -241,8 +241,10 @@ div.logo-title {
       .content-preview-icons{
         right: @content-section-width;
         margin-top: 20px;
-        button.active{
-          background-color: @homepage-shade-5;
+        button {
+          &.active, &:hover{
+            background-color: @homepage-shade-5;
+          }
         }
       }
       padding-left: 10px;
