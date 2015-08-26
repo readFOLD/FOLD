@@ -45,11 +45,15 @@ div.signup, div.login, div.user_profile {
   width: 100%;
 }
 
-div.deepstreams-and-streams {
-  //@profile-section: 400px;
+div.deepstreams-and-streams-and-selector {
   padding-top: 150px;
   width: 100%;
   height: 100%;
+}
+div.deepstreams-and-streams {
+  li:nth-child(even) {
+    background-color: @homepage-shade-2;
+  }
 }
 
 .stream-type-selector-container{
@@ -174,19 +178,11 @@ div.logo-title {
   }
 }
 
-
-
-
-
-// DEEPSTREAM
-
-
 .deepstreams-container, .streams-container{
   padding-left: 100px;
 }
 
 .streams-container{
-  background-color: @homepage-shade-2;
   padding-top: 20px;
 }
 
