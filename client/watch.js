@@ -65,7 +65,7 @@ window.mainPlayer = {
   }
 };
 
-Template.watch.onCreated(function () {
+Template.watch_page.onCreated(function () {
   if(!ytScriptLoaded){
     $.getScript('https://www.youtube.com/iframe_api', function () {});
     ytScriptLoaded = true;
@@ -177,7 +177,7 @@ Template.watch.onCreated(function () {
 
 });
 
-Template.watch.onRendered(function(){
+Template.watch_page.onRendered(function(){
   var that = this;
 
   this.mainPlayerYTApiActivated = false;
@@ -246,7 +246,7 @@ var titleMax = 60;
 var descriptionMax = 270;
 
 
-Template.watch.helpers({
+Template.watch_page.helpers({
   activeStream: function(){
     return Template.instance().activeStream.get();
   },
@@ -331,7 +331,7 @@ var basicErrorHandler = function(err){
   }
 };
 
-Template.watch.events({
+Template.watch_page.events({
   'click .set-main-stream': function(e, t){
     if(Session.get('curateMode')){
       Meteor.call('setActiveStream', t.data.shortId(), this._id ,basicErrorHandler);
@@ -426,7 +426,7 @@ Template.watch.events({
 
 Template.context_browser.helpers({
   mediaTypeForDisplay: function(){
-    return pluralizeMediaType(Session.get('mediaDataType')).toUpperCase();
+    return pluralizeMediaType(Session.get('mediaDataType') || Session.get('previousMediaDataType')).toUpperCase();
   },
   contextOfCurrentType: function(){
     return this.contextOfType(Session.get('mediaDataType'));
