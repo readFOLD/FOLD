@@ -653,6 +653,7 @@ div.twitter-section{
       display: table-cell;
       vertical-align: bottom;
       position: relative;
+      line-height: normal;
       div.title {
         margin-bottom: 20px;
         div.prof_pic {
