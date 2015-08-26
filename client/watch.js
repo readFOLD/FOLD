@@ -446,7 +446,6 @@ Template.context_browser.events({
   },
   'click .delete-context': function(e, t){
     var that = this;
-    console.log(that._id)
 
     t.$('[data-context-id=' + that._id + ']').fadeOut(500, function() {
       Meteor.call('removeContextFromStream', Session.get("streamShortId"), that._id, function(err){
