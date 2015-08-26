@@ -4,20 +4,23 @@
 @medium-color: #9B9B9B;
 @light-color: #F4F4F4;
 @white-color: #D8D8D8;
-@dark-transparent-color: rgba(48, 48, 48, 0.87);
+@dark-transparent-color: rgba(40, 40, 40, 0.87);
 @light-transparent-color: rgba(244,244,244,0.75);
 
-
 @top-row-color: @black-color;
-@dark-text-color: @black-color;
+@annotation-color: @medium-color;
+
 @background-color: @dark-color;
 @alt-background-color: @dark-medium-color;
-@annotation-color: @medium-color;
+
+@dark-text-color: @black-color;
+@light-text-color: @white-color;
 @deemphasized-light-text-color: @medium-color;
+
+@dark-icon-color: @dark-color;
+@alt-dark-icon-color: @dark-medium-color;
 @light-icon-color: @light-color;
 @white-icon-color: @white-color;
-@light-text-color: @white-color;
-
 
 @homepage-shade-0: @top-row-color;
 @homepage-shade-1: #181818;
@@ -48,7 +51,7 @@ html {
 
 .standard-icon-colors {
   .bg{
-    fill: @dark-color;
+    fill: @dark-icon-color;
   }
   .fg{
     fill: @light-icon-color;

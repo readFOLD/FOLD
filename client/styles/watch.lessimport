@@ -325,6 +325,9 @@
 .overlay-context-browser{
   .full-overlay;
   background-color: @dark-transparent-color;
+  .bg{
+    fill: @alt-dark-icon-color;
+  }
   .context-area {
     margin-left: @PiP-width + 2 * @left-margin;
     margin-right: @PiP-width + 2 * @left-margin;
@@ -374,14 +377,24 @@
     max-height: @mainSectionHeight;
   }
 
-  .video-section, .map-section{
+  .video-section, .map-section, .image-section{
     height: @mainSectionHeight;
+    background-color: @black-color;
   }
   .image-section{
-    max-height: @mainSectionHeight;
+    display: flex;
+    flex-direction: column;
+    .image-container{
+      flex: auto;
+      position: relative;
+    }
+    img{
+      .center-over-parent-div;
+    }
   }
   div.text-content{
     border-top: 1px solid @black-color;
+
   }
 }
 

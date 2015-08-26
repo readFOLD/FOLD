@@ -15,7 +15,9 @@
     {{#if showVideo}}
       {{> looping_video}}
     {{else}}
-      <img src="{{url}}" />
+      <div class="image-container">
+        <img src="{{url}}" />
+      </div>
       {{#if isGiphy}}<img class="giphy-logo" src="{{c.url 'static/giphy_logo.png'}}" />{{/if}}
       {{#if isFlickr}}
         <div class="attribution">
