@@ -372,16 +372,10 @@
   .context-area{
     height: 100%;
   }
-  .context-section{
-    height: 100%;
-    max-height: @mainSectionHeight;
-  }
 
   .video-section, .map-section, .image-section{
     height: @mainSectionHeight;
     background-color: @black-color;
-  }
-  .image-section{
     display: flex;
     flex-direction: column;
     .image-container{
