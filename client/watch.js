@@ -532,10 +532,10 @@ Template.overlay_context_browser.events({
     clearCurrentContext();
   },
   'click .right': function(){
-    setCurrentContext(Session.get('mediaDataType'), this.nextContext(getCurrentContext()._id));
+    setCurrentContext(this.nextContext(getCurrentContext()._id));
   },
   'click .left': function(){
-    setCurrentContext(Session.get('mediaDataType'), this.previousContext(getCurrentContext()._id));
+    setCurrentContext(this.previousContext(getCurrentContext()._id));
   }
 });
 
