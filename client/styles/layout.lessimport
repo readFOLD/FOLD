@@ -725,13 +725,12 @@ div.horizontal-context {
   }
   div.active-display {
     z-index: 20;
-    .size-to-fit;
   }
 
   .text-content{
     color: black;
     background-color: @annotation-color;
-
+    line-height: 20px;
   }
   textarea.text-content {
     padding: 8px;
@@ -755,7 +754,6 @@ div.horizontal-context {
   div.text-content {
     @font-size: 14px;
     font-size: @font-size;
-    line-height: 20px;
     .text-align-start;
     width: 100%;
     padding: 8px;

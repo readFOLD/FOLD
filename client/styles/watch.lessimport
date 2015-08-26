@@ -382,6 +382,15 @@
       flex: auto;
       position: relative;
     }
+    .active-display{
+      flex: auto;
+      position: relative;
+    }
+    iframe{
+      .size-to-fit;
+      position: absolute;
+      left: 0;
+    }
     img{
       .center-over-parent-div;
     }
