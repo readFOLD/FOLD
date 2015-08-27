@@ -487,6 +487,11 @@
     padding: @padding;
     background-color: @dark-color;
   }
+  .map-preview{
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
 }
 
 

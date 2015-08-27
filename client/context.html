@@ -247,7 +247,9 @@
 <template name="preview_map_section">
   <div class="show-full">
     <div class="map-preview">
-      <img src="{{previewUrl 200 310}}"/>
+      <img src="{{previewUrl height width}}"/>
+    </div>
+    <div class="map-preview-placeholder" style="height: {{height}}px; width: {{width}}px;">
     </div>
     {{{annotation}}}
   </div>

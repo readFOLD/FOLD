@@ -132,6 +132,10 @@ Template.display_twitter_section.events(editableDescriptionEventsBoilerplate('ed
 Template.display_map_section.helpers(horizontalBlockHelpers);
 Template.display_map_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
+Template.preview_map_section.helpers({
+  width: 310,
+  height: 200
+});
 Template.preview_map_section.helpers(horizontalBlockHelpers);
 Template.preview_map_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
