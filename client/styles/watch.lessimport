@@ -156,8 +156,10 @@
     &.active, &:hover{
       &:not(:disabled){
         background-color: @alt-background-color;
-        .bg{
-          stroke: @medium-color;
+        &:not(.stream-button) {
+          .bg {
+            stroke: @medium-color;
+          }
         }
         .fg{
           fill: @medium-color;
