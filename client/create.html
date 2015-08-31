@@ -131,8 +131,6 @@
         {{/if}}
       {{/if}}
     {{/if}}
-
-
     {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
         Add
@@ -176,8 +174,6 @@
         {{/with}}
       {{/if}}
     {{/if}}
-
-
     {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
         Add
@@ -284,64 +280,99 @@
   <button class="go-back-button">{{> back_arrow_icon}}</button>
   {{#if twitterUser}}
     <div class="create-section twitter">
-      <div class="tabs">
-        <ul>
-          {{#each dataSources}}
-            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
-          {{/each}}
-        </ul>
-      </div>
-      {{> search_form option1='all' label1='All tweets' option2='user' label2='User' option3= 'favorites' label3='Favorites'}}
-      <ol class="search-results-container">
-        {{#each results}}
-          <li class="{{#if isFocused}}focused{{/if}}">
-            <div class="search-result {{#if imgUrl}}image{{/if}}">
-              <div class="thumbnail">
-                <a href="//twitter.com/{{screenname}}" target="_blank">
-                  <img class="small" src="{{userpic}}">
-                </a>
-              </div>
-              <div class="info twitter">
-                <div class="content-title">{{username}}
-                  <span>
-                    <a href="//twitter.com/{{screenname}}" target="_blank">@{{screenname}}</a>
-                    </span>
+      <div class="hiding-div {{#if showSingleResult}}hide{{/if}}">
+
+        <div class="tabs">
+          <ul>
+            {{#each dataSources}}
+              <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+            {{/each}}
+          </ul>
+        </div>
+        {{> search_form option1='all' label1='All tweets' option2='user' label2='User' option3= 'favorites' label3='Favorites'}}
+        <ol class="search-results-container">
+          {{#each results}}
+            <li class="{{#if isFocused}}focused{{/if}}">
+              <div class="search-result {{#if imgUrl}}image{{/if}}">
+                <div class="thumbnail">
+                  <a href="//twitter.com/{{screenname}}" target="_blank">
+                    <img class="small" src="{{userpic}}">
+                  </a>
                 </div>
-                <div class="tweet" dir="auto">{{{formattedTweet}}}
-                </div>
-                {{#if imgUrl}}
-                  <div>
-                    <img src="{{imgUrl}}" class="tweet-image">
-                  </div>
-                {{/if}}
-                <div class="descr">
+                <div class="info twitter">
+                  <div class="content-title">{{username}}
                     <span>
-                      <a href={{twitter_url}} target="_blank"><i class="fa fa-twitter"></i></a>
-                      {{#if retweetUser}}
-                        <a href={{retweet_url}} target="_blank">
-                          <i class="fa fa-retweet"></i> @{{retweetUser}}</a>
-                      {{/if}}
-                      <a href={{tweet_url}} target="_blank">{{date}}</a>
-                    </span>
+                      <a href="//twitter.com/{{screenname}}" target="_blank">@{{screenname}}</a>
+                      </span>
+                  </div>
+                  <div class="tweet" dir="auto">{{{formattedTweet}}}
+                  </div>
+                  {{#if imgUrl}}
+                    <div>
+                      <img src="{{imgUrl}}" class="tweet-image">
+                    </div>
+                  {{/if}}
+                  <div class="descr">
+                      <span>
+                        <a href={{twitter_url}} target="_blank"><i class="fa fa-twitter"></i></a>
+                        {{#if retweetUser}}
+                          <a href={{retweet_url}} target="_blank">
+                            <i class="fa fa-retweet"></i> @{{retweetUser}}</a>
+                        {{/if}}
+                        <a href={{tweet_url}} target="_blank">{{date}}</a>
+                      </span>
+                  </div>
                 </div>
+              </div>
+            </li>
+          {{/each}}
+          <li class="loading-icon">
+            {{#if loading}}
+              {{> loading_icon}}
+            {{/if}}
+            {{#if noMoreResults}}
+              {{noMoreResults}}
+            {{/if}}
+          </li>
+        </ol>
+      </div>
+      {{#with focusResult}}
+        <div class="single-result">
+          <div class="twitter-section">
+          <div class="twitter-text-section {{#if imgUrl}}image{{/if}} ">
+            <div class='tweet-card'>
+              <div class='title'>
+                <div class='prof_pic'>
+                  <a href="{{user_url}}" target="_blank">
+                    <img src="{{userpic}}">
+                  </a>
+                </div>
+                <div class='username'>
+                  <div>{{username}}
+                  </div>
+                  <div class="screenname"><a href="{{user_url}}" target="_blank">@{{screenname}}</a>
+                  </div>
+                </div>
+              </div>
+              <div class="tweet" dir="auto">{{{formattedTweet}}}
+              </div>
+              <div class="info">
               </div>
             </div>
-          </li>
-        {{/each}}
-        <li class="loading-icon">
-          {{#if loading}}
-            {{> loading_icon}}
+          </div>
+          {{#if imgUrl}}
+            <div class='image-section'>
+              <img src='{{imgUrl}}'>
+            </div>
           {{/if}}
-          {{#if noMoreResults}}
-            {{noMoreResults}}
-          {{/if}}
-        </li>
-      </ol>
-      {{#if showAddButton}}
+          </div>
+
+
+        </div>
         <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
           Add
         </button>
-      {{/if}}
+      {{/with}}
     </div>
   {{else}}
     <div class="create-section link-twitter">
