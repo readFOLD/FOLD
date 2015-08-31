@@ -694,11 +694,14 @@
     top: 15px;
   }
   .stream-description{
+
+    @lineHeight: 18px;
+    line-height: @lineHeight;
+    min-height: 3 * @lineHeight - 2px;
+    font-size: 14px;
+    font-weight: normal;
     position: absolute;
     left: 30px;
-    font-size: 14px;
-    line-height: 18px;
-    font-weight: normal;
     padding-right: 10px;
     width: @right-section-width - 50px;
   }

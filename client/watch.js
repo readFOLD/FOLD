@@ -331,6 +331,12 @@ var basicErrorHandler = function(err){
   }
 };
 
+var saveStreamTitle = function(template){
+  streamTitle = $.trim(template.$('div.stream-title').text());
+  Session.set('saveState', 'saving');
+  return Meteor.call('updateStreamTitle', template.data.shortId(), streamTitle, basicErrorHandler)
+};
+
 Template.watch_page.events({
   'click .set-main-stream': function(e, t){
     if(Session.get('curateMode')){
@@ -372,9 +378,13 @@ Template.watch_page.events({
     }
   },
   'blur .stream-title[contenteditable]': function(e,template) {
-    streamTitle = $.trim(template.$('div.stream-title').text());
-    Session.set('saveState', 'saving');
-    return Meteor.call('updateStreamTitle', template.data.shortId(), streamTitle, basicErrorHandler)
+    saveStreamTitle(template);
+  },
+  'keypress .stream-title[contenteditable]': function(e,template) {
+    if (e.keyCode === 13){ // return
+      e.preventDefault();
+      saveStreamTitle(template);
+    }
   },
   'paste [contenteditable]': window.plainTextPaste,
   'drop [contenteditable]': function(e){
@@ -384,7 +394,7 @@ Template.watch_page.events({
   'blur .stream-description[contenteditable]': function(e,template) {
     streamDescription = $.trim(template.$('div.stream-description').text());
     Session.set('saveState', 'saving');
-    return Meteor.call('updateStreamDescription', template.data.shortId(), streamDescription, basicErrorHandler)
+    return Meteor.call('updateStreamDescription', template.data.shortId(), streamDescription, basicErrorHandler);
   },
   'click .allow-user-stream-switch': function(e,t){
     return Meteor.call('allowUserStreamSwitch', t.data.shortId(), basicErrorHandler)
