@@ -222,7 +222,7 @@ div.add-context {
   }
 
   .news-preview.search-results-container {
-    height: calc(100% ~"-" @searchFormHeight ~"-" 40px);
+    height: calc(100% ~"-" @searchFormHeight ~"-" 100px);
   }
   .twitter .search-results-container {
     height: calc(100% ~"-" @searchFormHeight ~"-" 126px);
@@ -251,12 +251,15 @@ div.add-context {
     overflow-y: scroll;
   }
 
+  .search-results-container{
+    margin-top: 15px;
+  }
+
   ol.search-results-container {   
     width: 100%;
     max-height: calc(100% ~"-" @searchFormHeight ~"-" 83px);
     overflow-y: scroll;
     overflow-x: ellipsis;
-    margin-top: 15px;  
     list-style-type: none;
      
     @aspectRatio: 4/3;

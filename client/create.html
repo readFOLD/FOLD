@@ -165,7 +165,10 @@
       {{else}}
         {{#with focusResult}}
           <div class="news-preview search-results-container">
-            <div class="news-section focused">
+            <div class="news-section">
+              {{#if headerImageUrl}}
+                <img class="news-header-image" src="{{headerImageUrl}}"/>
+              {{/if}}
               <h4 class="news-title">{{title}}</h4>
               <div class="news-html">{{{html}}}</div>
             </div>
