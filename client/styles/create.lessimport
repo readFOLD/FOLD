@@ -408,6 +408,35 @@ div.add-context {
       }
     }  
   }
+  .single-result{
+    .info{
+      .content-title {
+        font-weight: 500;
+        font-size: 20px;
+        margin-bottom: 5px;
+        overflow: hidden;
+        line-height: normal;
+      }
+
+      .date, .user {
+        font-size: 14px;
+        display: inline-block;
+      }
+
+      .date {
+        float: right;
+        position: relative;
+        //top: -@textAreaHeight*0.32;
+      }
+      .descr{
+        @lineHeight: 16px;
+        overflow: hidden;
+        font-size: 14px;
+        line-height: @lineHeight;
+        max-height: @lineHeight * 8;
+      }
+    }
+  }
 
     button.add-button {
       position: absolute;

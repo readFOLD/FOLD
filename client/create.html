@@ -403,11 +403,7 @@
           <li>
             <div class="{{#if isFocused}}focused-{{/if}}search-result">
               <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
-                {{#if isFocused}}
-                  <iframe class="video" src="{{url}}"></iframe>
-                {{else}}
-                  <img src="{{thumbnailUrl}}">
-                {{/if}}
+              <img src="{{thumbnailUrl}}">
               </div>
               <div class="info {{#if isFocused}}focused{{/if}}">
                 <div class="content-title">{{title}}</div>
@@ -430,7 +426,7 @@
     </div>
     {{#with focusResult}}
       <div class="single-result">
-        <iframe class="video" src="{{url}}"></iframe>
+        <iframe class="video" width="100%" height="200" src="{{url}}"></iframe>
         <div class="info">
           <div class="content-title">{{title}}</div>
           <div class="descr">{{caption}}</div>
@@ -490,55 +486,66 @@
 <template name="create_audio_section">
   <div class="search-section-title">Add an Audio Clip</div>
   <button class="go-back-button">{{> back_arrow_icon}}</button>
-  <div class="create-section audio">
-    <div class="tabs">
-      <ul>
-        {{#each dataSources}}
-          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
-        {{/each}}
-      </ul>
-    </div>
-    {{> search_form}}
-    <ol class="search-results-container">
-      {{#each results}}
-        <li>
-          <div class="{{#if isFocused}}focused-{{/if}}search-result">
-            <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
-              {{#if isFocused}}
-                <iframe class="audio" width="100%" src="{{url}}"></iframe>
-              {{else}}
-                <div class="thumbnail">
-                  {{#if artworkUrl}}
-                    <img class="square" src="{{artworkUrl}}" />
-                  {{else}}
-                    <img class="square" src="https://addons.opera.com/media/extensions/45/11645/0.5-rev2/icons/icon_64x64.png" />
-                  {{/if}}
-                </div>
-                <div class="info {{#if isFocused}}focused{{/if}}">
-                  <div class="content-title">{{reference.title}}</div>
-                  <div class="descr">{{reference.description}}</div>
-                  <div class="user">{{reference.username}}</div>
-                  <div class="date">{{reference.creationDate}}</div>
-                </div>
-              {{/if}}
+    <div class="create-section audio">
+      <div class="hiding-div {{#if showSingleResult}}hide{{/if}}">
+      <div class="tabs">
+        <ul>
+          {{#each dataSources}}
+            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{> search_form}}
+      <ol class="search-results-container">
+        {{#each results}}
+          <li>
+            <div class="{{#if isFocused}}focused-{{/if}}search-result">
+              <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
+                {{#if isFocused}}
+                  <iframe class="audio" width="100%" src="{{url}}"></iframe>
+                {{else}}
+                  <div class="thumbnail">
+                    {{#if artworkUrl}}
+                      <img class="square" src="{{artworkUrl}}" />
+                    {{else}}
+                      <img class="square" src="https://addons.opera.com/media/extensions/45/11645/0.5-rev2/icons/icon_64x64.png" />
+                    {{/if}}
+                  </div>
+                  <div class="info">
+                    <div class="content-title">{{reference.title}}</div>
+                    <div class="descr">{{reference.description}}</div>
+                    <div class="user">{{reference.username}}</div>
+                    <div class="date">{{reference.creationDate}}</div>
+                  </div>
+                {{/if}}
+              </div>
             </div>
-          </div>
+          </li>
+        {{/each}}
+        <li class="loading-icon">
+          {{#if loading}}
+            {{> loading_icon}}
+          {{/if}}
+          {{#if noMoreResults}}
+            {{noMoreResults}}
+          {{/if}}
         </li>
-      {{/each}}
-      <li class="loading-icon">
-        {{#if loading}}
-          {{> loading_icon}}
-        {{/if}}
-        {{#if noMoreResults}}
-          {{noMoreResults}}
-        {{/if}}
-      </li>
-    </ol>
-    {{#if showAddButton}}
-      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-        Add
-      </button>
-    {{/if}}
+      </ol>
+    </div>
+      {{#with focusResult}}
+        <div class="single-result">
+          <iframe class="audio" width="100%" src="{{url}}"></iframe>
+          <div class="info">
+            <div class="content-title">{{reference.title}}</div>
+            <div class="descr">{{reference.description}}</div>
+            <div class="user">{{reference.username}}</div>
+            <div class="date">{{reference.creationDate}}</div>
+          </div>
+          <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+            Add
+          </button>
+        </div>
+      {{/with}}
   </div>
 </template>
 
