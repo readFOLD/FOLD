@@ -50,10 +50,8 @@ div.deepstreams-and-streams-and-selector {
   width: 100%;
   height: 100%;
 }
-div.deepstreams-and-streams {
-  li:nth-child(even) {
-    background-color: @homepage-shade-2;
-  }
+div.deepstreams-and-streams > ol > li:nth-child(even) {
+  background-color: @homepage-shade-2;
 }
 
 .stream-type-selector-container{
