@@ -449,6 +449,12 @@ Template.create_news_section.onCreated(function() {
         that.noMoreResults.set('No results found');
         return
       }
+
+      if(result && !result.content){
+        that.noMoreResults.set('No article found to display'); // TODO make this a link card or something
+        return
+      }
+
       that.noMoreResults.set(false);
 
       that.focusResult.set(new NewsBlock({
