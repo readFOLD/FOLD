@@ -410,22 +410,16 @@ div.add-context {
   }
 
     button.add-button {
-      position: relative;
-      left: calc(100%~"-" 90px);
+      position: absolute;
+      right: 15px;
+      bottom: 15px;
       text-transform: uppercase;
       .action-button;
       height: @newCardBottomButtonHeight;
       width: 90px;
-      margin-top: 12px;
-      margin-bottom: 15px;
       text-align: center;
       font-size: 12px;
       line-height: 35px;
-      cursor: pointer;
-
-      &:not(:last-child) {
-        margin-right: 10px;
-      }
     }
 }
 
