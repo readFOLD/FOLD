@@ -488,7 +488,7 @@ hr {
 }
 
 
-div.image-section {
+div.image-section, .image-preview {
   .size-to-fit;
   position: relative;
   background-color: transparent;

@@ -209,7 +209,7 @@ Schema.ContextReferenceProfile = new SimpleSchema({
 
 
 
-  // Image upload
+  // Image upload, Imgur
   width: {
     type: Number,
     optional: true

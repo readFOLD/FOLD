@@ -112,6 +112,18 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
   }
 };
 
+var imagePlaceholderHeight = function(){
+  return this.heightAtGivenWidth(310);
+};
+
+Template.preview_image_section.helpers({
+  height: imagePlaceholderHeight,
+  width: 310,
+  usePlaceholder: imagePlaceholderHeight
+});
+Template.preview_image_section.helpers(horizontalBlockHelpers);
+Template.preview_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+
 Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
 //Template.display_image_section.onCreated(editableDescriptionDestroyedBoilerplate('editHorizontalBlockDescription'));
 Template.display_image_section.helpers(horizontalBlockHelpers);

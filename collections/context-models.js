@@ -167,7 +167,9 @@ ContextBlock.searchMappings = {
           fileExtension: e.link.substring(e.link.lastIndexOf('.') + 1),
           title: e.title,
           hasMP4: e.mp4 ? true : false,
-          hasWebM: e.webm ? true : false
+          hasWebM: e.webm ? true : false,
+          height: e.height,
+          width: e.width
         }
       }
     }
@@ -699,6 +701,15 @@ ImageBlock = (function (_super) {
 
   ImageBlock.prototype.anchorMenuSnippet = function () {
     return this.description || this.reference.title || this.reference.description || this.reference.id;
+  };
+
+  ImageBlock.prototype.heightAtGivenWidth = function(width){
+    var height;
+    if (height = this.reference.height){
+      return height * width / this.reference.width;
+    } else {
+      return null;
+    }
   };
 
   ImageBlock.prototype.soloModeLocation = 'overlay';

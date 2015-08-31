@@ -230,7 +230,27 @@
 
 <template name="preview_image_section">
   <div class="show-full">
-    {{> display_image_section}}
+    <div class="image-preview {{#if usePlaceholder}}has-placeholder{{/if}}">
+      {{#if showVideo}}
+        {{> looping_video}}
+      {{else}}
+        <div class="image-container">
+          <img src="{{url}}" />
+        </div>
+        {{#if isGiphy}}<img class="giphy-logo" src="{{c.url 'static/giphy_logo.png'}}" />{{/if}}
+        {{#if isFlickr}}
+          <div class="attribution">
+            <i class="fa fa-flickr"></i>
+            {{#if ownerName}}<a href="//flickr.com/{{ownerName}}" target="_blank">{{ownerName}}</a><span class="separator">·</span>{{/if}}<a href="{{webUrl}}" target="_blank">{{#if uploadDate}}{{uploadDate}}{{else}}source{{/if}}</a>
+          </div>
+        {{/if}}
+      {{/if}}
+    </div>
+    {{#if usePlaceholder}}
+      <div class="preview-placeholder" style="height: {{height}}px; width: {{width}}px;">
+      </div>
+    {{/if}}
+    {{{annotation}}}
   </div>
 </template>
 
@@ -249,7 +269,7 @@
     <div class="map-preview">
       <img src="{{previewUrl height width}}"/>
     </div>
-    <div class="map-preview-placeholder" style="height: {{height}}px; width: {{width}}px;">
+    <div class="preview-placeholder" style="height: {{height}}px; width: {{width}}px;">
     </div>
     {{{annotation}}}
   </div>
