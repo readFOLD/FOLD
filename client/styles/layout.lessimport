@@ -727,39 +727,40 @@ div.horizontal-context {
   div.active-display {
     z-index: 20;
   }
+}
 
-  .text-content{
-    color: black;
-    background-color: @annotation-color;
-    line-height: 20px;
+div.text-content {
+  @font-size: 14px;
+  font-size: @font-size;
+  .text-align-start;
+  width: 100%;
+  padding: 8px;
+  min-height: 36px;
+}
+
+.text-content{
+  color: black;
+  background-color: @annotation-color;
+  line-height: 20px;
+}
+
+textarea.text-content {
+  padding: 8px;
+  display: block;
+  &::-webkit-input-placeholder {
+    color: @dark-medium-color;
   }
-  textarea.text-content {
-    padding: 8px;
-    display: block;
-    &::-webkit-input-placeholder {
-      color: @dark-medium-color;
-    }
 
-    &:-moz-placeholder { /* Firefox 18- */
-      color: @dark-medium-color;
-    }
-
-    &::-moz-placeholder {  /* Firefox 19+ */
-      color: @dark-medium-color;
-    }
-
-    &:-ms-input-placeholder {
-      color: @dark-medium-color;
-    }
+  &:-moz-placeholder { /* Firefox 18- */
+    color: @dark-medium-color;
   }
-  div.text-content {
-    @font-size: 14px;
-    font-size: @font-size;
-    .text-align-start;
-    width: 100%;
-    padding: 8px;
-    min-height: 36px;
 
+  &::-moz-placeholder {  /* Firefox 19+ */
+    color: @dark-medium-color;
+  }
+
+  &:-ms-input-placeholder {
+    color: @dark-medium-color;
   }
 }
 

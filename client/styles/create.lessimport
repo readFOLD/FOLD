@@ -73,15 +73,6 @@ input[type=file] {
   }
 }
 
-textarea.text-input {
-  max-height: 300px;
-  max-width: 476px;
-  margin-top: 10px;
-  padding: 18px;
-  color: @background-color;
-  line-height: 27px;
-}
-
 svg{
   transition: fill 0.25s ease;
 }
@@ -92,6 +83,12 @@ div.create-section.link-twitter{
     .action-button;
     height: 50px;
     padding: 8px;
+  }
+}
+
+.create-section .text-result-container {
+  textarea{
+    max-height: 350px;
   }
 }
 
@@ -397,6 +394,7 @@ div.add-context {
     button.add-button {
       position: relative;
       left: calc(100%~"-" 90px);
+      text-transform: uppercase;
       .action-button;
       height: @newCardBottomButtonHeight;
       width: 90px;

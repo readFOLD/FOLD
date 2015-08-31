@@ -399,7 +399,6 @@
   }
   div.text-content{
     border-top: 1px solid @black-color;
-
   }
 }
 
