@@ -54,7 +54,7 @@
 
 <template name="create_text_section">
   <div class="search-section-title">Add Text</div>
-  {{> exit_search_button}}
+  <button class="go-back-button">{{> back_arrow_icon}}</button>
   <div class="create-section">
     <div class="tabs">
       <ul>
@@ -74,7 +74,7 @@
 
 <template name="create_link_section">
   <div class="search-section-title">Add a Link</div>
-  {{> exit_search_button}}
+  <button class="go-back-button">{{> back_arrow_icon}}</button>
   <div class="create-section create-link-section">
     <div class="tabs">
       <ul>
@@ -141,7 +141,7 @@
 
 <template name="create_news_section">
   <div class="search-section-title">Add a News Story</div>
-  {{> exit_search_button}}
+  <button class="go-back-button">{{> back_arrow_icon}}</button>
   <div class="create-section create-news-section">
     <div class="tabs">
       <ul>
@@ -183,9 +183,9 @@
 
 <template name="create_image_section">
   <div class="search-section-title">Add an Image</div>
-  {{> exit_search_button}}
-  <div class="create-section">
-    <div class="search-section" style="{{#if addingDescription}}display: none;{{/if}}">
+  <button class="go-back-button">{{> back_arrow_icon}}</button>
+  <div class="create-section create-image-section">
+    <div class="search-section {{#unless uploadMode}}{{#if showSingleResult}}hide{{/if}}{{/unless}}">
       <div class="tabs">
         <ul>
           {{#each dataSources}}
@@ -207,6 +207,11 @@
           {{/if}}
           <img width="250" src="{{uploadPreview}}">
         </div>
+        {{#if showAddButton}}
+          <button type="submit" class="add-button">
+            Add
+          </button>
+        {{/if}}
       {{else}}
         {{> search_form}}
         <ol class="search-results-container">
@@ -223,18 +228,26 @@
           {{/if}}
         </ol>
       {{/if}}
-      {{#if showAddButton}}
-        <button type="submit" class="add-button">
-          Add
-        </button>
-      {{/if}}
+
     </div>
+    {{#unless uploadMode}}
+      {{#with focusResult}}
+        {{#if showAddButton}}
+          <div class="single-result">
+            <img src="{{url}}">
+            <button type="submit" class="add-button">
+              Add
+            </button>
+          </div>
+        {{/if}}
+      {{/with}}
+    {{/unless}}
   </div>
 </template>
 
 <template name="create_map_section">
   <div class="search-section-title">Add a Map</div>
-  {{> exit_search_button}}
+  <button class="go-back-button">{{> back_arrow_icon}}</button>
   <div class="create-section create-map-section">
     <div class="tabs">
       <ul>
@@ -263,7 +276,7 @@
 
 <template name="create_twitter_section">
   <div class="search-section-title">Add a Tweet</div>
-  {{> exit_search_button}}
+  <button class="go-back-button">{{> back_arrow_icon}}</button>
   {{#if twitterUser}}
     <div class="create-section twitter">
       <div class="tabs">
@@ -338,56 +351,67 @@
 
 <template name="create_video_section">
   <div class="search-section-title">Add a Video</div>
-  {{> exit_search_button}}
+  <button class="go-back-button">{{> back_arrow_icon}}</button>
   <div class="create-section">
-    <div class="tabs">
-      <ul>
-        {{#each dataSources}}
-          <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+    <div class="hiding-div {{#if showSingleResult}}hide{{/if}}">
+      <div class="tabs">
+        <ul>
+          {{#each dataSources}}
+            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{> search_form}}
+      <ol class="search-results-container">
+        {{#each results}}
+          <li>
+            <div class="{{#if isFocused}}focused-{{/if}}search-result">
+              <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
+                {{#if isFocused}}
+                  <iframe class="video" src="{{url}}"></iframe>
+                {{else}}
+                  <img src="{{thumbnailUrl}}">
+                {{/if}}
+              </div>
+              <div class="info {{#if isFocused}}focused{{/if}}">
+                <div class="content-title">{{title}}</div>
+                <div class="descr">{{caption}}</div>
+                <div class="user">{{username}}</div>
+                <div class="date">{{creationDate}}</div>
+              </div>
+            </div>
+          </li>
         {{/each}}
-      </ul>
-    </div>
-    {{> search_form}}
-    <ol class="search-results-container">
-      {{#each results}}
-        <li>
-          <div class="{{#if isFocused}}focused-{{/if}}search-result">
-            <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
-              {{#if isFocused}}
-                <iframe class="video" src="{{url}}"></iframe>
-              {{else}}
-                <img src="{{thumbnailUrl}}">
-              {{/if}}
-            </div>
-            <div class="info {{#if isFocused}}focused{{/if}}">
-              <div class="content-title">{{title}}</div>
-              <div class="descr">{{caption}}</div>
-              <div class="user">{{username}}</div>
-              <div class="date">{{creationDate}}</div>
-            </div>
-          </div>
+        <li class="loading-icon">
+          {{#if loading}}
+            {{> loading_icon}}
+          {{/if}}
+          {{#if noMoreResults}}
+            {{noMoreResults}}
+          {{/if}}
         </li>
-      {{/each}}
-      <li class="loading-icon">
-        {{#if loading}}
-          {{> loading_icon}}
-        {{/if}}
-        {{#if noMoreResults}}
-          {{noMoreResults}}
-        {{/if}}
-      </li>
-    </ol>
-    {{#if showAddButton}}
-      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-        Add
-      </button>
-    {{/if}}
+      </ol>
+    </div>
+    {{#with focusResult}}
+      <div class="single-result">
+        <iframe class="video" src="{{url}}"></iframe>
+        <div class="info">
+          <div class="content-title">{{title}}</div>
+          <div class="descr">{{caption}}</div>
+          <div class="user">{{username}}</div>
+          <div class="date">{{creationDate}}</div>
+        </div>
+        <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+          Add
+        </button>
+      </div>
+    {{/with}}
   </div>
 </template>
 
 <template name="create_stream_section">
   <div class="search-section-title">Add Streams</div>
-  {{> exit_search_button}}
+  <button class="go-back-button">{{> back_arrow_icon}}</button>
   <div class="create-section add-stream-section">
     {{> search_form}}
     <ol class="search-results-container">
@@ -429,7 +453,7 @@
 
 <template name="create_audio_section">
   <div class="search-section-title">Add an Audio Clip</div>
-  {{> exit_search_button}}
+  <button class="go-back-button">{{> back_arrow_icon}}</button>
   <div class="create-section audio">
     <div class="tabs">
       <ul>
@@ -482,8 +506,8 @@
   </div>
 </template>
 
-<template name="exit_search_button">
-  {{#if showExitSearchButton}}
-    <button class="exit-search-button">{{> back_arrow_icon}}</button>
+<template name="back_to_results_button">
+  {{#if showBackToResultsButton}}
+    <button class="go-back-button">{{> back_arrow_icon}}</button>
   {{/if}}
 </template>

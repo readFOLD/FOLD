@@ -4,6 +4,9 @@ var createBlockHelpers = {
   showAddButton: function(){
     return Template.instance().focusResult.get() ? true : false;
   },
+  showSingleResult: function(){
+    return Template.instance().focusResult.get() ? true : false
+  },
   isFocused: function () {
     var focusResult = Template.instance().focusResult.get();
     if (_.isObject(focusResult)) {
@@ -70,6 +73,7 @@ var addFocusResult = function(d, template) {
 
 var createBlockEvents = {
   "click .data-source": function(d, template) {
+    template.focusResult.set(null);
     Session.set('newHorizontalDataSource', this.source);
   },
 
@@ -92,6 +96,14 @@ var createBlockEvents = {
   "keydown .text-content.editable": function(e, t) {
     if (e.which === 13){
       addFocusResult.apply(this,arguments);
+    }
+  },
+  'click .go-back-button': function(e, t){
+    var focusResult = t.focusResult.get();
+    if (focusResult && focusResult.searchList) { // if at the single-mode of a list
+      return t.focusResult.set(null);
+    } else {
+      return Session.set('searchingMedia', false);
     }
   }
 };
@@ -277,6 +289,7 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
     this.autorun(function(){
       searchDep.depend();
       that.noMoreResults.set(false);
+      that.focusResult.set(null);
     });
   };
 };
@@ -369,6 +382,9 @@ Template.create_image_section.helpers({
   },
   uploadPreview: function(){
     return Template.instance().uploadPreview.get();
+  },
+  previewUrl: function(){
+
   }
 });
 

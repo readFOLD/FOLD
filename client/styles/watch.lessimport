@@ -432,7 +432,7 @@
   line-height: @contextBroserHeaderRowHeight;
 }
 
-.exit-search-button{
+.go-back-button{
   .size(24px);
   padding: 0;
   top: 12px;

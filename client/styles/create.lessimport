@@ -92,6 +92,15 @@ div.create-section.link-twitter{
   }
 }
 
+.create-image-section{
+  .single-result{
+    img{
+      max-width: 100%;
+      max-height: 70%;
+    }
+  }
+}
+
 @newCardBottomButtonHeight: 35px;
 
 
@@ -112,6 +121,9 @@ div.add-context {
     height: 100%;
     flex: auto;
     .search-section {
+      height: 100%;
+    }
+    .hiding-div{
       height: 100%;
     }
   }
