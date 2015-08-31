@@ -466,10 +466,6 @@
     cursor: pointer;
   }
 
-  .link-section{
-    line-height: 18px;
-    background-color: @dark-color;
-  }
   .news-preview, .text-preview{
     width: 100%;
     @lineHeight: 18px;
@@ -491,6 +487,12 @@
     left: 0;
     top: 0;
   }
+}
+
+
+.link-section{
+  line-height: 18px;
+  background-color: @dark-color;
 }
 
 

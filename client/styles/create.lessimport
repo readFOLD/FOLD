@@ -428,7 +428,6 @@ div.add-context {
 
 .create-link-section {
   .preview-section {
-    height: 300px;
     margin-top: 30px;
     margin-bottom: 30px;
 
@@ -438,7 +437,6 @@ div.add-context {
 
     &.link-section {
       border: 1px solid @medium-color;
-      border-bottom: 7px solid @action-color;      
     }
 
     &.placeholder{

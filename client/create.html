@@ -96,7 +96,7 @@
       {{/if}}
       {{#if link}}
         {{#with preview}}
-          <div class="link-section preview-section {{#if isFocused}}focused{{/if}}">
+          <div class="link-section preview-section">
             <div class="transparent-cover"></div>
             <a href="{{url}}" target="_blank">
               <div class="top">
@@ -111,7 +111,9 @@
               </div>
             </a>
             <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
-            <a class="bottom" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+            <div class="bottom">
+              <a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+            </div>
           </div>
         {{/with}}
       {{else}}
