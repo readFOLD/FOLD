@@ -135,6 +135,13 @@ Template.display_audio_section.events(editableDescriptionEventsBoilerplate('edit
 Template.display_video_section.helpers(horizontalBlockHelpers);
 Template.display_video_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
+Template.preview_video_section.helpers({
+  height: function() {
+    return this.previewHeightAtGivenWidth(310);
+  },
+  width: 310
+});
+
 Template.preview_video_section.helpers(horizontalBlockHelpers);
 Template.preview_video_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 

@@ -394,6 +394,14 @@ VideoBlock = (function (_super) {
     return this.reference.title;
   };
 
+  VideoBlock.prototype.previewHeightAtGivenWidth = function(width){
+    if (this.source === 'youtube') {
+      return Math.floor(width * 360 / 480);
+    } else if (this.source === 'vimeo') {
+      return Math.floor(width * 359 / 640);
+    }
+  };
+
   VideoBlock.prototype.soloModeLocation = 'overlay';
   VideoBlock.prototype.soloModeTemplate = 'display_video_section';
   VideoBlock.prototype.listModeItemTemplate = 'preview_video_section';
