@@ -286,10 +286,12 @@
   display: flex;
   flex-flow: column;
 
+  @contextAreaPadding: 20px;
   .context-area{
     overflow-y: scroll;
     flex: auto;
-    padding: 20px;
+    padding: @contextAreaPadding;
+    height: 100%;
   }
   .context-section{
     position: relative;
@@ -297,6 +299,19 @@
       .delete-context{
         display: inline-block;
         opacity: 1;
+      }
+    }
+    &.news-card:not(.list-item-context-section){
+      height: calc(100% ~"-" 2 * @contextAreaPadding + 8px); // not clear why the fudge factor is needed but it is
+      display: flex;
+      flex-flow: column;
+      .news-section{
+        flex: auto;
+      }
+      .text-content{
+        width: calc(100% ~"+" 2 * @contextAreaPadding);
+        margin-left: -@contextAreaPadding;
+        margin-bottom: -@contextAreaPadding;
       }
     }
   }
