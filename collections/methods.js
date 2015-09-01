@@ -124,9 +124,13 @@ Meteor.methods({
 
     if (numUpdated){
 
-      // TODO something
+
       if (Meteor.isClient){
-        Session.set("searchingMedia", false);
+        Session.set("searchingMedia", false); // leave search mode
+        var typeSpecificContextBlock = newTypeSpecificContextBlock(contextBlock);
+        if(typeSpecificContextBlock.soloModeLocation === 'sidebar'){
+          setCurrentContext(typeSpecificContextBlock); // if single context is in sidebar, show that instead of default list mode
+        }
       }
     } else {
       throw new Meteor.Error('Stream not updated')
