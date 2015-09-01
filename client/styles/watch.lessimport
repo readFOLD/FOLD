@@ -331,7 +331,12 @@
   }
 }
 
-.text-section{
+.text-section, .text-result-container{
+  .text-content{
+    background-color: @alt-background-color;
+    color: @light-text-color;
+    font-size: 15px;
+  }
   textarea{
     max-height: 440px; // TODO hack
   }

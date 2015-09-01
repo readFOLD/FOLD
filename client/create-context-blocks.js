@@ -71,6 +71,15 @@ var addFocusResult = function(d, template) {
   }
 };
 
+var goBack = function(e, t) {
+  var focusResult = t.focusResult.get();
+  if (focusResult && focusResult.searchList) { // if at the single-mode of a list
+    return t.focusResult.set(null);
+  } else {
+    return Session.set('searchingMedia', false);
+  }
+};
+
 var createBlockEvents = {
   "click .data-source": function(d, template) {
     template.focusResult.set(null);
@@ -98,14 +107,7 @@ var createBlockEvents = {
       addFocusResult.apply(this,arguments);
     }
   },
-  'click .go-back-button': function(e, t){
-    var focusResult = t.focusResult.get();
-    if (focusResult && focusResult.searchList) { // if at the single-mode of a list
-      return t.focusResult.set(null);
-    } else {
-      return Session.set('searchingMedia', false);
-    }
-  }
+  'click .go-back-button': goBack
 };
 
 var getSearchInput = function(){
@@ -726,7 +728,8 @@ Template.create_text_section.events({
       authorId: Meteor.user()._id,
       source: 'plaintext'
     }));
-  }
+  },
+  'click .go-back-button': goBack
 });
 
 Template.create_twitter_section.helpers({

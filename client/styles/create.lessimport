@@ -90,6 +90,7 @@ div.create-section.link-twitter{
   textarea{
     max-height: 350px;
   }
+  padding: 1px; // so textarea outline can be seen
 }
 
 .create-image-section{
