@@ -164,18 +164,19 @@ window.count = function(){
 };
 
 window.getCurrentContext = function(){
-  var currentContext = Session.get("currentContext");
-  if (currentContext){
+  var currentContextId = Session.get("currentContextId");
+  if (currentContextId){
+    var currentContext = Deepstreams.findOne({shortId: Session.get("streamShortId")}).getContextById(currentContextId)
     return newTypeSpecificContextBlock(currentContext); // session will only store the vanilla object
   }
 };
 
 window.setCurrentContext = function(contextBlock){
-  Session.set("currentContext", contextBlock);
+  Session.set("currentContextId", contextBlock._id);
 };
 
 window.clearCurrentContext = function(){
-  Session.set("currentContext", null);
+  Session.set("currentContextId", null);
 };
 
 window.soloOverlayContextModeActive = function(){

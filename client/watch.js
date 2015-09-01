@@ -483,7 +483,7 @@ Template.context_browser.events({
     }
   },
   'click .switch-to-list-mode': function(){
-    setCurrentContext(null);
+    clearCurrentContext();
   }
 });
 

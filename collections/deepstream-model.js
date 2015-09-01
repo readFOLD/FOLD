@@ -64,6 +64,10 @@ Deepstream = (function() {
       .value()
   };
 
+  Deepstream.prototype.getContextById = function(contextId){
+    return _.findWhere(this.contextBlocks, {_id: contextId});
+  };
+
   Deepstream.prototype.nextContext = function(contextId) {
     if(!this.contextBlocks){
       return null;

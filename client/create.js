@@ -93,7 +93,7 @@ Template.content_icons.events(_.object(_.map(contextTypesPlusChat, function(type
 
 Template.content_icons.events({
   'click button': function() {
-    setCurrentContext(null); // clear current context whenever click on a context button
+    clearCurrentContext(); // clear current context whenever click on a context button
   }
 });
 
