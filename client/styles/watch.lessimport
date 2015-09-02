@@ -137,7 +137,7 @@
 .content-icons {
   position: absolute;
   width: @contentIconWidth;
-  margin-top: 20px;
+  margin-top: 40px;
 
   //height: @contentIconBannerHeight;
   background-color: @light-transparent-color;
