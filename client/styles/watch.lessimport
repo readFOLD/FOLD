@@ -466,6 +466,18 @@
   .video-preview{
     position: relative;
     vertical-align: top;
+    .info{
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-shadow: 1px 1px @dark-color;
+      .title{
+        max-width: 95%;
+        line-height: normal;
+        .ellipsis-text;
+        float: right;
+      }
+    }
     svg{
       opacity: 0.7;
       .center-over-parent-div;
