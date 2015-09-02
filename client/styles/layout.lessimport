@@ -186,6 +186,11 @@ html {
   text-overflow: ellipsis;
 }
 
+.padding-sides(@padding){
+  padding-left: @padding;
+  padding-right: @padding;
+}
+
 
 // http://asimpleframe.com/
 @font-face {

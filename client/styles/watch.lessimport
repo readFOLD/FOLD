@@ -464,24 +464,26 @@
   line-height: 0;
   margin-bottom: 20px;
   .video-preview{
+    @playIconSize: 60px;
     position: relative;
     vertical-align: top;
     .info{
       position: absolute;
-      bottom: 0;
+      bottom: calc(50% ~"-" @playIconSize / 2 ~"-" 25px);
       width: 100%;
       text-shadow: 1px 1px @dark-color;
+      text-align: center;
+      .padding-sides(5px);
+
       .title{
-        max-width: 95%;
         line-height: normal;
         .ellipsis-text;
-        float: right;
       }
     }
     svg{
       opacity: 0.7;
       .center-over-parent-div;
-      .size(60px);
+      .size(@playIconSize);
     }
     img{
       width: 100%;
