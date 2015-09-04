@@ -30,8 +30,11 @@ Deepstream = (function() {
     if (type === 'stream'){
       return []; // streams aren't context
     }
+
     return _.chain(this.contextBlocks)
       .where({type : type})
+      .sortBy('date')
+      .sortBy('rank')
       .value();
   };
 

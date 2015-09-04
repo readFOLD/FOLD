@@ -5755,6 +5755,7 @@ if (Deepstreams.find().count() === 0) {
     "type": "image",
     "authorId": curatorId,
     "searchQuery": "the blue marble",
+    "rank": 1,
     "nextPage": 1,
     "ordinalId": 507,
     "fullDetails": {
