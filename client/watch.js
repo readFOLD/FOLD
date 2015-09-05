@@ -294,6 +294,9 @@ Template.watch_page.helpers({
     var mediaDataType = Session.get('mediaDataType');
     return Session.get("curateMode") && (Session.get("searchingMedia") || (mediaDataType && this.contextOfType(mediaDataType).length === 0)) && mediaDataType && !_.contains(['stream', 'chat'], mediaDataType) ;
   },
+  showPreviewEditButton: function(){
+    return this.onAir || this.creationStep === 'go_on_air';
+  },
   soloOverlayContextMode: function(){
     return soloOverlayContextModeActive();
   },

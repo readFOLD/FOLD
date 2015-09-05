@@ -118,9 +118,13 @@
                   <button class="microphone">{{> microphone_icon}}</button>
                   <button class="webcam">{{> webcam_icon}}</button>
                 </div>
-                <button class="preview">Preview</button>
+                {{#if showPreviewEditButton}}
+                  <button class="preview">Preview</button>
+                {{/if}}
               {{else}}
-                <button class="return-to-curate">Edit</button>
+                {{#if showPreviewEditButton}}
+                  <button class="return-to-curate">Edit</button>
+                {{/if}}
               {{/if}}
             {{else}}
               <a href="{{curatePath}}">
