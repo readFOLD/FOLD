@@ -434,6 +434,32 @@ Template.watch_page.events({
   }
 });
 
+
+Template.context_browser.onRendered(function(){
+  // make context sortable
+  var sortableOuterDiv = '.context-area';
+  var sortableListItem = '.list-item-context-section';
+  var that = this;
+  that.$(sortableOuterDiv).sortable({
+    items: sortableListItem,
+    stop: function(){
+      var newOrder = that.$(sortableOuterDiv).sortable('toArray', {attribute: 'data-context-id'});
+      Meteor.call('reorderContext', Session.get('streamShortId'), newOrder, saveCallback);
+    }
+  });
+  that.$(sortableOuterDiv).disableSelection();
+
+  Tracker.autorun(function () {
+    if(Session.get('curateMode')){
+      that.$(sortableOuterDiv).sortable('enable');
+    } else {
+      that.$(sortableOuterDiv).sortable('disable');
+    }
+  })
+
+});
+
+
 Template.context_browser.helpers({
   mediaTypeForDisplay: function(){
     return pluralizeMediaType(Session.get('mediaDataType') || Session.get('previousMediaDataType')).toUpperCase();

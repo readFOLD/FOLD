@@ -298,6 +298,18 @@ Meteor.methods({
     check(content, String);
     return updateStream.call(this, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.content": content}});
   },
+  reorderContext: function(shortId, ordering){
+    check(shortId, String);
+    check(ordering, [String]);
+
+    var that = this;
+    var numberUpdated = 0;
+    _.each(ordering, function(contextId, i){
+      numberUpdated += updateStream.call(that, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.rank": i + 1}});
+    });
+
+    return numberUpdated;
+  },
   allowUserStreamSwitch: function(shortId){
     check(shortId, String);
     this.unblock();

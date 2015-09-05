@@ -325,6 +325,10 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
+  rank: {
+    type: Number,
+    optional: true
+  },
   savedAt: {
     type: Date,
     optional: true
