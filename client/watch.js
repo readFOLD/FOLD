@@ -350,6 +350,9 @@ Template.watch_page.events({
   },
   'click .preview': function(e,t){
     t.userControlledActiveStreamId.set(null); // so that stream selection doesn't switch
+    if(Session.equals('mediaDataType', 'stream')){ // so context browser doesn't just close if streams was selected
+      Session.set('mediaDataType', 'chat')
+    }
     Session.set('curateMode', false);
   },
   'click .return-to-curate': function(){
