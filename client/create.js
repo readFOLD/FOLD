@@ -119,13 +119,15 @@ window.addContext = function(contextBlock) {
   Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
   Session.set('saveState', 'saving');
 
-  Meteor.setTimeout(function(){
-    $('.context-section textarea').focus();
+  contextBlock._id = Random.id(9);
+  contextBlock.rank = 0; // places above existing ranked context
+
+  Meteor.setTimeout(function(){ // scroll to top and focus annotation box
+    $('.context-area').scrollTop(0);
+    $('.context-section[data-context-id=' + contextBlock._id + '] textarea').focus();
   });
 
 
-  contextBlock._id = Random.id(9);
-  contextBlock.rank = 0; // places above existing ranked context
 
   Meteor.call('addContextToStream', Session.get("streamShortId"), contextBlock, function(err, contextId){
     saveCallback(err, contextId);
