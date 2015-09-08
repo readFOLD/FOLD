@@ -44,7 +44,7 @@ var runJobs = function(){
   refreshUStreamDB();
 };
 
-var jobIntervalInSeconds = process.env.JOB_INTERVAL * 1000 || 10 * 60 * 1000; // default is every 10 minutes
+var jobIntervalInSeconds = parseInt(process.env.JOB_INTERVAL) * 1000 || 10 * 60 * 1000; // default is every 10 minutes
 
 if (process.env.PROCESS_TYPE === 'worker'){
   Meteor.setInterval(runJobs, jobIntervalInSeconds);
