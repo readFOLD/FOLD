@@ -44,10 +44,10 @@ var runJobs = function(){
   refreshUStreamDB();
 };
 
-var jobIntervalInSeconds = parseInt(process.env.JOB_INTERVAL) * 1000 || 10 * 60 * 1000; // default is every 10 minutes
+var jobIntervalInSeconds = parseInt(process.env.JOB_INTERVAL) || 10 * 60; // default is every 10 minutes
 
 if (process.env.PROCESS_TYPE === 'worker'){
-  Meteor.setInterval(runJobs, jobIntervalInSeconds);
+  Meteor.setInterval(runJobs, jobIntervalInSeconds * 1000);
 } else if (process.env.NODE_ENV === 'development'){ // run jobs on startup in developement
   // load UStreams into database
   Meteor.startup(function(){
