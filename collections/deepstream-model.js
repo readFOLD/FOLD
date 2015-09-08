@@ -34,6 +34,7 @@ Deepstream = (function() {
     return _.chain(this.contextBlocks)
       .where({type : type})
       .sortBy('date')
+      .reverse()
       .sortBy('rank')
       .value();
   };

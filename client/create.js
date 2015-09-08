@@ -125,6 +125,7 @@ window.addContext = function(contextBlock) {
 
 
   contextBlock._id = Random.id(9);
+  contextBlock.rank = null; // places above existing ranked context
 
   Meteor.call('addContextToStream', Session.get("streamShortId"), contextBlock, function(err, contextId){
     saveCallback(err, contextId);
