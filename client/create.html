@@ -443,43 +443,50 @@
 
 <template name="create_stream_section">
   <div class="search-section-title">Add Streams</div>
-  <button class="go-back-button">{{> back_arrow_icon}}</button>
+  {{#if showSingleResult}}<button class="go-back-button">{{> back_arrow_icon}}</button>{{/if}}
   <div class="create-section add-stream-section">
-    {{> search_form}}
-    <ol class="search-results-container">
-      {{#each results}}
-        <li>
-          <div class="{{#if isFocused}}focused-{{/if}}search-result">
-            <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
-              {{#if isFocused}}
-                <iframe class="video" src="{{url}}"></iframe>
-              {{else}}
+    <div class="hiding-div {{#if showSingleResult}}hide{{/if}}">
+      {{> search_form}}
+      <ol class="search-results-container">
+        {{#each results}}
+          <li>
+            <div class="{{#if isFocused}}focused-{{/if}}search-result">
+              <div class="{{#if isFocused}}focused-{{/if}}thumbnail">
                 <img src="{{thumbnailUrl}}">
-              {{/if}}
+              </div>
+              <div class="info {{#if isFocused}}focused{{/if}}">
+                <div class="content-title">{{title}}</div>
+                <div class="descr">{{caption}}</div>
+                <div class="user">{{username}}</div>
+                <div class="date">{{creationDate}}</div>
+              </div>
             </div>
-            <div class="info {{#if isFocused}}focused{{/if}}">
-              <div class="content-title">{{title}}</div>
-              <div class="descr">{{caption}}</div>
-              <div class="user">{{username}}</div>
-              <div class="date">{{creationDate}}</div>
-            </div>
-          </div>
+          </li>
+        {{/each}}
+        <li class="loading-icon">
+          {{#if loading}}
+            {{> loading_icon}}
+          {{/if}}
+          {{#if noMoreResults}}
+            {{noMoreResults}}
+          {{/if}}
         </li>
-      {{/each}}
-      <li class="loading-icon">
-        {{#if loading}}
-          {{> loading_icon}}
-        {{/if}}
-        {{#if noMoreResults}}
-          {{noMoreResults}}
-        {{/if}}
-      </li>
-    </ol>
-    {{#if showAddButton}}
-      <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
-        Add
-      </button>
-    {{/if}}
+      </ol>
+    </div>
+    {{#with focusResult}}
+      <div class="single-result">
+        <iframe class="video" width="100%" height="200" src="{{url}}"></iframe>
+        <div class="info">
+          <div class="content-title">{{title}}</div>
+          <div class="descr">{{caption}}</div>
+          <div class="user">{{username}}</div>
+          <div class="date">{{creationDate}}</div>
+        </div>
+        <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
+          Add
+        </button>
+      </div>
+    {{/with}}
   </div>
 </template>
 

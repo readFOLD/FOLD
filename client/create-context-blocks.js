@@ -64,7 +64,7 @@ var addFocusResult = function(d, template) {
 
     template.focusResult.set(focusResult);
     if(template.addingFunction){
-      template.addingFunction(focusResult);
+      template.addingFunction(focusResult, template);
     } else {
       addContext(focusResult);
     }
@@ -262,7 +262,7 @@ Template.create_stream_section.onCreated(function(){
 
 Template.create_stream_section.events({
   "dblclick .search-results-container li:not(.loading-icon)": function (d, template) {
-    addStream(this);
+    addStream(this, template);
   }
 });
 

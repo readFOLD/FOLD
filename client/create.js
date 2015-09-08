@@ -106,9 +106,10 @@ Template.add_context.events({
   }
 });
 
-window.addStream = function(stream) {
+window.addStream = function(stream, template) {
   Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
   Session.set('saveState', 'saving');
+  template.focusResult.set(null);
 
   Meteor.call('addStreamToStream', Session.get("streamShortId"), stream, function(err, streamId){
     saveCallback(err, streamId);
