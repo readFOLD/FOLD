@@ -471,7 +471,8 @@ Template.create_news_section.onCreated(function() {
           content: cleanNewsHtml(result.content),
           topImage: result.images[0],
           providerName: result.provider_name,
-          providerIconUrl: result.favicon_url
+          providerIconUrl: result.favicon_url,
+          publicationDate: new Date(result.published)
         },
         source: 'embedly'
       }));

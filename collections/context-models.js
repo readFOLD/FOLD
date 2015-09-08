@@ -17,11 +17,6 @@ var getIdFromUrl = function(url){
   return _.chain(url.split('/')).compact().last().value().match(/[\d]*/)[0]
 };
 
-var parseDate = function(date) {
-  return date.substring(0,10).replace( /(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1");
-};
-
-
 ContextBlock = (function () {
   function ContextBlock(doc) {
     _.extend(this, doc);
@@ -39,7 +34,7 @@ youtubeMapFn = function (e) {
       id: e.videoId,
       username: e.channelTitle,
       userId: e.channelId,
-      creationDate: parseDate(e.publishedAt)
+      creationDate: new Date(e.publishedAt)
     },
     source: 'youtube'
   }
@@ -57,7 +52,7 @@ ustreamMapFn = function (e) { // this is post-insert from pre-loading ustream re
       previewUrl: e.imageUrl.medium,
       totalViews: e.totalViews,
       userId: e.userId,
-      creationDate: parseDate(e.createdAt) // TODO: is this a correct way to parse these dates... at all...
+      creationDate: new Date(e.createdAt)
     },
     source: 'ustream'
   }
@@ -115,7 +110,7 @@ ContextBlock.searchMappings = {
           description: e.description,
           id: getIdFromUrl(e.uri),
           username: e.user.name,
-          creationDate: parseDate(e.created_time),
+          creationDate: new Date(e.created_time),
           previewImage: getIdFromUrl(e.pictures.uri)
         }
       }
@@ -131,7 +126,7 @@ ContextBlock.searchMappings = {
           id: e.id,
           username: e.channelTitle,
           userId: e.user_id,
-          creationDate: parseDate(e.created_at),
+          creationDate: new Date(e.created_at),
           artworkUrl: e.artwork_url
         }
       }
@@ -150,7 +145,7 @@ ContextBlock.searchMappings = {
           username: e.user.name,
           screenname: e.user.screen_name,
           userPic: e.user.profile_image_url_https,
-          creationDate: e.created_at.substring(0, 19)
+          creationDate: new Date(e.created_at.substring(0, 19))
         }
       };
       return item;

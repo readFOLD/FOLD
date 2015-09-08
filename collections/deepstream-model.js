@@ -41,7 +41,7 @@ Deepstream = (function() {
 
   Deepstream.prototype.hasContextOfType = function(type) {
     if(type === 'chat'){
-      return true // TODO this is a hack
+      return true; // TO-DO this is a hack
     }
     return this.contextOfType(type).length;
   };
