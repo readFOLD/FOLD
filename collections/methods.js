@@ -160,6 +160,8 @@ Meteor.methods({
 
     deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields:{'activeStreamId' : 1, 'creationStep': 1, 'streams': 1}});
 
+    var numberOfStreamsBeforeAdd = deepstream.streams.length;
+
     modifierObject['$set'] = {};
 
     // make stream active if none is active
@@ -190,7 +192,7 @@ Meteor.methods({
 
       // TODO something
       if (Meteor.isClient){
-        if(deepstream.streams.length === 2) { // this is the second stream to be added
+        if(numberOfStreamsBeforeAdd === 1) { // this is the second stream to be added
           window.notifySuccess("You just added a second stream. Now you can switch between streams and all your viewers will see that change!");
         }
 
