@@ -91,9 +91,23 @@ var updateStreamStatuses = function(){
   Deepstreams.find({}, {fields: {streams : 1}}).forEach(updateStreamStatus);
 };
 
+var updateDeepstreamStatuses = function(){
+
+  // TODO only check active stream when in director mode
+  // TODO restrict to published?
+
+  var dsLive = Deepstreams.update({'streams.live': true}, {$set: {live: true}}, {multi: true});
+  var dsDead = Deepstreams.update({'streams': {$not : {$elemMatch : {live: true}}}}, {$set: {live: false}}, {multi: true});
+
+  console.log(dsLive + ' deepstreams are live');
+  console.log(dsDead + ' deepstreams are dead');
+
+};
+
 var runJobs = function(){
   refreshUStreamDB();
   updateStreamStatuses();
+  updateDeepstreamStatuses();
   // ????findMoreRecentUStreamEmbedForDeadChannels????
   // ????findMoreRecentBambuserEmbedForDeadChannels????
 };

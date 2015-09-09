@@ -242,7 +242,9 @@
             <img src="{{previewUrl}}"/>
             {{> play_video_icon}}
           </div>
-          <div class="live-indicator">LIVE</div>
+          {{#if live}}
+            <div class="live-indicator">LIVE</div>
+          {{/if}}
         </a>
         <div class="content">
           <div class="content-preview-icons content-icons">
