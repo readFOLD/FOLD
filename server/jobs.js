@@ -60,9 +60,9 @@ var updateStreamStatus = function(deepstream){
         // TODO
         break;
       case 'youtube':
+        console.log('check youtube')
 
         // TODO maybe only if we think youtube video is live
-        console.log('lalala')
         // TODO check youtube videos at API and update with live or not live
         Meteor.call('youtubeVideoInfo', streamSourceId, function(err, videos){  // TODO this request can be done in a batch for all youtube videos we have...
           if(err){
@@ -105,9 +105,19 @@ var updateDeepstreamStatuses = function(){
 };
 
 var runJobs = function(){
+  var startTime = Date.now();
   refreshUStreamDB();
+  var ustreamRefreshTime = Date.now() - startTime;
   updateStreamStatuses();
+  var streamUpdateTime = Date.now() - startTime - ustreamRefreshTime;
   updateDeepstreamStatuses();
+  var deepstreamUpdateTime = Date.now() - startTime - streamUpdateTime - ustreamRefreshTime;
+
+
+  console.log('ustream refresh time: ' + (ustreamRefreshTime / 1000) + ' seconds');
+  console.log('stream update time: ' + (streamUpdateTime / 1000) + ' seconds');
+  console.log('deepstream update time: ' + (deepstreamUpdateTime / 1000) + ' seconds');
+  console.log('Total time to run jobs: ' + ((Date.now() - startTime) / 1000) + ' seconds');
   // ????findMoreRecentUStreamEmbedForDeadChannels????
   // ????findMoreRecentBambuserEmbedForDeadChannels????
 };
