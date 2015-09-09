@@ -44,22 +44,43 @@ var updateStreamStatus = function(deepstream){
   // TODO track how many streams are live and update deepstream accordingly
   var ustream;
   _.each(deepstream.streams, function(stream){
+    var streamSourceId = stream.reference.id;
     switch(stream.source){
       case 'ustream':
         console.log('check ustream')
-        if(ustream = Streams.findOne({'id' : stream.reference.id})){
+        if(ustream = Streams.findOne({'id' : streamSourceId})){
           // TODO update views and such
-          Deepstreams.update({_id: deepstream._id, 'streams.reference.id': stream.reference.id}, {$set : {'streams.$.live': true}});
+          Deepstreams.update({_id: deepstream._id, 'streams.reference.id': streamSourceId}, {$set : {'streams.$.live': true}});
         } else {
           // TODO update views and such
-          Deepstreams.update({_id: deepstream._id, 'streams.reference.id': stream.reference.id}, {$set : {'streams.$.live': false}});
+          Deepstreams.update({_id: deepstream._id, 'streams.reference.id': streamSourceId}, {$set : {'streams.$.live': false}});
         }
         break;
       case 'bambuser':
         // TODO
         break;
       case 'youtube':
+
+        // TODO maybe only if we think youtube video is live
+        console.log('lalala')
         // TODO check youtube videos at API and update with live or not live
+        Meteor.call('youtubeVideoInfo', streamSourceId, function(err, videos){  // TODO this request can be done in a batch for all youtube videos we have...
+          if(err){
+            throw(err) // TODO must this be in setTimeout??
+          }
+          var video = videos[0];
+          if(video){
+            if(video.snippet.liveBroadcastContent === 'live'){
+              // TODO update views and such (statistis.viewCount)
+              // and current viewers liveStreamingDetails.concurrentViewers
+            } else {
+              // TODO update views and such
+              Deepstreams.update({_id: deepstream._id, 'streams.reference.id': streamSourceId}, {$set : {'streams.$.live': false}});
+            } // video isn't live
+          } else { // video not found, so not live
+            Deepstreams.update({_id: deepstream._id, 'streams.reference.id': streamSourceId}, {$set : {'streams.$.live': false}});
+          }
+        });
         break;
 
     }

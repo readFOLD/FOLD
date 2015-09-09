@@ -61,7 +61,7 @@
       <div class="footer-section">
         {{#if showStreamSwitcher}}
           <ol class="streams-list">
-            {{#each streams}}
+            {{#each livestreams}}
               <li data-stream-reference-id="{{reference.id}}" class="stream">
                 <button class="set-main-stream {{#if active}}active{{/if}}">
                   {{#if active}}
@@ -78,6 +78,18 @@
                 </button>
               </li>
             {{/if}}
+            <li class="live-dead-divider">
+            </li>
+            {{#each deadstreams}}
+              <li data-stream-reference-id="{{reference.id}}" class="stream">
+                <button class="set-main-stream {{#if active}}active{{/if}}">
+                  {{#if active}}
+                    <div class="active-overlay">ON AIR</div>
+                  {{/if}}
+                  <img src="{{thumbnailUrl}}">
+                </button>
+              </li>
+            {{/each}}
           </ol>
         {{/if}}
         <div class="stream-stats-and-share">

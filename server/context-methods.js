@@ -678,5 +678,40 @@ Meteor.methods({
       'nextPage': nextPageToken,
       'items': items
     }
+  },
+  youtubeVideoInfo: function (ids, page) {
+    var res;
+    var nextPageToken;
+
+    check(ids, Match.OneOf(String, [String]));
+    var idsString = _.flatten([ids]).join(',');
+    this.unblock();
+    requestParams = {
+      part: 'snippet,liveStreamingDetails,statistics', //fileDetails might have recording location
+      id: idsString,
+      maxResults: 50,
+      key: GOOGLE_API_SERVER_KEY
+    };
+
+    if (page) {
+      requestParams['pageToken'] = page;
+    }
+    res = HTTP.get('https://www.googleapis.com/youtube/v3/videos', {
+      params: requestParams
+    });
+
+    items = res.data.items;
+
+
+    if (items.length) {
+      nextPageToken = res.data.nextPageToken || 'end';
+    } else {
+      nextPageToken = 'end';
+    }
+
+    return {
+      'nextPage': nextPageToken,
+      'items': items
+    }
   }
 });

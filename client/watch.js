@@ -324,6 +324,12 @@ Template.watch_page.helpers({
   },
   settingsMenuOpen: function(){
     return Template.instance().settingsMenuOpen.get();
+  },
+  livestreams: function(){
+    return _.where(this.streams, { live: true });
+  },
+  deadstreams: function(){
+    return _.where(this.streams, { live: false });
   }
 });
 
