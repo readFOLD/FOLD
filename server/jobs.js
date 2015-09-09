@@ -64,15 +64,19 @@ var updateStreamStatus = function(deepstream){
 
         // TODO maybe only if we think youtube video is live
         // TODO check youtube videos at API and update with live or not live
-        Meteor.call('youtubeVideoInfo', streamSourceId, function(err, videos){  // TODO this request can be done in a batch for all youtube videos we have...
+        Meteor.call('youtubeVideoInfo', streamSourceId, function(err, data){  // TODO this request can be done in a batch for all youtube videos we have...
           if(err){
             throw(err) // TODO must this be in setTimeout??
           }
+          var videos = data.items;
           var video = videos[0];
           if(video){
             if(video.snippet.liveBroadcastContent === 'live'){
               // TODO update views and such (statistis.viewCount)
               // and current viewers liveStreamingDetails.concurrentViewers
+              // TODO, this line below shouldn't be necessary since youtube doesn't go live again after it's dead, we think...
+              Deepstreams.update({_id: deepstream._id, 'streams.reference.id': streamSourceId}, {$set : {'streams.$.live': true}});
+
             } else {
               // TODO update views and such
               Deepstreams.update({_id: deepstream._id, 'streams.reference.id': streamSourceId}, {$set : {'streams.$.live': false}});
