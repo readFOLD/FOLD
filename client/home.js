@@ -232,7 +232,7 @@ Template.deepstreams.helpers({
   streams: function () {
     if (FlowRouter.subsReady()) {
       var selector = {onAir: true};
-      var sort = {};
+      var sort = { live: -1 };
       switch (Session.get('homeStreamListMode')) {
         case 'best':
           _.extend(selector, {
