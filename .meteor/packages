@@ -37,3 +37,4 @@ meteorhacks:flow-layout
 momentjs:moment
 meteorhacks:search-source
 meteorhacks:fast-render
+peerlibrary:async
