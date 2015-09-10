@@ -1,5 +1,4 @@
 var refreshUStreamDB = function(){
-  Streams.remove({}); // TODO don't erase db until new ones loaded
 
   var allUStreamsLoaded = false;
 
@@ -29,8 +28,10 @@ var refreshUStreamDB = function(){
         totalViews: parseInt(doc.totalViews)
       });
       Streams.insert(doc);
-    })
+    });
 
+    Streams.remove({ current: true }); // remove previous batch
+    Streams.update({} , { $set: {current: true  }}, {multi: true}); // recent batch is now loaded
   };
 
 
@@ -66,12 +67,16 @@ var updateStreamStatus = function(deepstream){
         // TODO check youtube videos at API and update with live or not live
         Meteor.call('youtubeVideoInfo', streamSourceId, function(err, data){  // TODO this request can be done in a batch for all youtube videos we have...
           if(err){
-            throw(err) // TODO must this be in setTimeout??
+            throw(err);
           }
           var videos = data.items;
           var video = videos[0];
+          console.log('youtube video info')
+          console.log(streamSourceId)
           if(video){
+            //console.log(video.snippet)
             if(video.snippet.liveBroadcastContent === 'live'){
+              console.log('LIIIIIIVE')
               // TODO update views and such (statistis.viewCount)
               // and current viewers liveStreamingDetails.concurrentViewers
               // TODO, this line below shouldn't be necessary since youtube doesn't go live again after it's dead, we think...
@@ -79,9 +84,11 @@ var updateStreamStatus = function(deepstream){
 
             } else {
               // TODO update views and such
+              console.log('DEEEAAAADDD')
               Deepstreams.update({_id: deepstream._id, 'streams.reference.id': streamSourceId}, {$set : {'streams.$.live': false}});
             } // video isn't live
           } else { // video not found, so not live
+            console.log('NOT FOUUUUUND')
             Deepstreams.update({_id: deepstream._id, 'streams.reference.id': streamSourceId}, {$set : {'streams.$.live': false}});
           }
         });

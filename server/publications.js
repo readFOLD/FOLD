@@ -74,7 +74,7 @@ Meteor.publish("deepstreamsOnAir", function() {
 });
 
 Meteor.publish("bestStreams", function() {
-  return Streams.find({}, {
+  return Streams.find({ current: true }, {
     sort: {
       currentViewers: -1
     },
@@ -82,7 +82,7 @@ Meteor.publish("bestStreams", function() {
   });
 });
 Meteor.publish("mostRecentStreams", function() {
-  return Streams.find({}, {
+  return Streams.find({ current: true }, {
     sort: {
       createdAt: -1
     },
