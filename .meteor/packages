@@ -38,3 +38,4 @@ momentjs:moment
 meteorhacks:search-source
 meteorhacks:fast-render
 peerlibrary:async
+mikowals:batch-insert
