@@ -202,29 +202,20 @@ var runJobs = function(){
   // ????findMoreRecentBambuserEmbedForDeadChannels????
 };
 
-var jobIntervalInSeconds = parseInt(process.env.JOB_INTERVAL) || 20; // default is every 10 minutes
+var jobIntervalInSeconds = parseInt(process.env.JOB_INTERVAL) || 5 * 60; // default is every 5 minutes
 
 
-Meteor.startup(function() {
-  Meteor.setTimeout(function(){
-    while(true){
-      runJobs();
-      Meteor._sleepForMs(jobIntervalInSeconds * 1000)
-    }
+if (process.env.PROCESS_TYPE === 'worker'){ // if a worker process
+  Meteor.startup(function() {
+    Meteor.setTimeout(function(){
+      while(true){
+        runJobs();
+        Meteor._sleepForMs(jobIntervalInSeconds * 1000)
+      }
+    });
   });
-});
-
-//if (process.env.PROCESS_TYPE === 'worker'){ // if a worker process
-//  Meteor.startup(function() {
-//    Meteor.setTimeout(function(){
-//      while(true){
-//        runJobs();
-//        Meteor._sleepForMs(jobIntervalInSeconds * 1000)
-//      }
-//    });
-//  });
-//} else if (process.env.NODE_ENV === 'development'){ // however, in developement, run jobs on startup
-//  Meteor.startup(function(){
-//    Meteor.setTimeout(runJobs)
-//  });
-//}
+} else if (process.env.NODE_ENV === 'development'){ // however, in developement, run jobs on startup
+  Meteor.startup(function(){
+    Meteor.setTimeout(runJobs)
+  });
+}
