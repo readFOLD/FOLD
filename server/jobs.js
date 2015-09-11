@@ -1,4 +1,4 @@
-var numUStreamPagesGuess = 30; // starting guess
+var numUStreamPagesGuess = 60; // starting guess
 
 var refreshUStreamDB = Meteor.wrapAsync(function(finalCallback){
   var numUStreamPagesGuesses = [];
