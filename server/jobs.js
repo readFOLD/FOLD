@@ -1,45 +1,113 @@
-var refreshUStreamDB = function(){
+var numUStreamPagesGuess = 30; // starting guess
+
+var refreshUStreamDB = Meteor.wrapAsync(function(finalCallback){
+  var numUStreamPagesGuesses = [];
 
   var allUStreamsLoaded = false;
 
-  var page = 1;
 
   var maxUStreamPages = parseInt(process.env.MAX_USTREAM_PAGES) || parseInt(Meteor.settings.MAX_USTREAM_PAGES) || 999999999999;
 
-  var ustreamInsertCallback = function(error, result){
+  var ustreamInsertCallback = function(error, result, page, cb){
+    console.log('Received ustream response for page: ' + page);
+
     if(error){
       allUStreamsLoaded = true;
-      throw error
+      console.log('Error returned from ustream on page: ' + localCurrentPage)
+      return cb();
     }
 
     if(!result.items || !result.items.length){
       allUStreamsLoaded = true;
-      console.log((page - 1) + ' ustream pages loaded');
-      return
+      numUStreamPagesGuesses.push(page - 1);
+      return cb();
     }
+    Streams.batchInsert(_.map(result.items, function(doc) {
 
-    console.log('ustreams loaded')
-    _.each(result.items, function(doc) {
-
-      _.extend(doc, {
+      return _.extend(doc, {
         _source: 'ustream',
         username: doc.user.userName,
         currentViewers: parseInt(doc.viewersNow),
         totalViews: parseInt(doc.totalViews)
       });
-      Streams.insert(doc);
-    });
+    }));
 
-    Streams.remove({ current: true }); // remove previous batch
-    Streams.update({} , { $set: {current: true  }}, {multi: true}); // recent batch is now loaded
+    console.log('Added ustreams to database for page: ' + page);
+    return cb();
   };
 
 
-  while(!allUStreamsLoaded && page <= maxUStreamPages){
-    Meteor.call('ustreamVideoSearchList', undefined, undefined, page, ustreamInsertCallback);
-    page += 1;
-  }
-};
+  var numAsyncUStreamPages = Math.min(numUStreamPagesGuess, maxUStreamPages);
+  var waitBetweenUStreamCalls = 10; // ms
+  var currentPage;
+  console.log('Current guess for number of UStream pages: ' + numUStreamPagesGuess);
+  console.log('Begin async ustream calls')
+  async.each(_.range(numAsyncUStreamPages), function(i, cb){
+    Meteor.setTimeout(function(){
+      currentPage = i+1;
+      console.log('Async ustream call for page: ' + currentPage);
+      var localCurrentPage = currentPage;
+
+      Meteor.call('ustreamVideoSearchList', undefined, undefined, currentPage, function(err, result){
+        try{
+          ustreamInsertCallback(err, result, localCurrentPage, cb);
+        } catch(err){
+          console.log('Error in async ustream callback page: ' + localCurrentPage)
+          console.error(err)
+          return cb();
+        }
+      });
+    }, waitBetweenUStreamCalls * i)
+  }, function(err){
+      console.log('Finish async ustream calls');
+      if(err){
+        finalCallback(err);
+      } else {
+        console.log('Begin sync ustream calls');
+        currentPage += 1;
+
+        while(!allUStreamsLoaded && currentPage <= maxUStreamPages){
+          console.log('Sync ustream call for page: ' + currentPage);
+
+          Meteor.call('ustreamVideoSearchList', undefined, undefined, currentPage, function(err, result){
+            ustreamInsertCallback(err, result, currentPage, function(err){
+              if(err){
+                return finalCallback(err);
+              }
+            })
+          });
+          currentPage += 1;
+        }
+        if(allUStreamsLoaded){
+          console.log("BBBBBBBB")
+          console.log(numUStreamPagesGuesses)
+          numUStreamPagesGuess = _.min(numUStreamPagesGuesses)
+        } else {
+          console.log("CCCCCCC")
+          console.log(currentPage)
+          numUStreamPagesGuess = currentPage - 1;
+        }
+        console.log('Finish sync ustream calls');
+        console.log('UStream API calls complete!');
+        console.log((currentPage - 1) + ' ustream pages loaded');
+
+
+        try{
+          Streams.update({} , { $inc: {oneIfCurrent: 1 }}, {multi: true}); // recent batch is now loaded
+
+          Streams.remove({ oneIfCurrent: 2 }); // remove previous batch
+
+        } catch (err) {
+          finalCallback(err);
+        }
+
+        console.log('UStream results refreshed');
+        return finalCallback();
+      }
+    }
+  );
+
+});
 
 var updateStreamStatus = function(deepstream){
   // TODO track how many streams are live and update deepstream accordingly
@@ -116,6 +184,7 @@ var updateDeepstreamStatuses = function(){
 };
 
 var runJobs = function(){
+  console.log('calllled run jobs')
   var startTime = Date.now();
   refreshUStreamDB();
   var ustreamRefreshTime = Date.now() - startTime;
@@ -133,12 +202,17 @@ var runJobs = function(){
   // ????findMoreRecentBambuserEmbedForDeadChannels????
 };
 
-var jobIntervalInSeconds = parseInt(process.env.JOB_INTERVAL) || 10 * 60; // default is every 10 minutes
+var jobWaitInSeconds = parseInt(process.env.JOB_WAIT) || 5 * 60; // default is every 5 minutes
+
 
 if (process.env.PROCESS_TYPE === 'worker'){ // if a worker process
   Meteor.startup(function() {
-    Meteor.setTimeout(runJobs, 0); // run jobs immediately
-    Meteor.setInterval(runJobs, jobIntervalInSeconds * 1000); // then run them at interval
+    Meteor.setTimeout(function(){
+      while(true){
+        runJobs();
+        Meteor._sleepForMs(jobWaitInSeconds * 1000)
+      }
+    });
   });
 } else if (process.env.NODE_ENV === 'development'){ // however, in developement, run jobs on startup
   Meteor.startup(function(){

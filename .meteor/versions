@@ -58,6 +58,7 @@ meteorhacks:npm@1.4.0
 meteorhacks:picker@1.0.3
 meteorhacks:search-source@1.4.0
 meteorhacks:subs-manager@1.5.2
+mikowals:batch-insert@1.1.9
 minifiers@1.1.5
 minimongo@1.0.8
 mobile-status-bar@1.0.3
@@ -72,6 +73,7 @@ oauth@1.1.4
 oauth1@1.1.4
 observe-sequence@1.0.6
 ordered-dict@1.0.3
+peerlibrary:async@0.9.2_1
 percolatestudio:segment.io@1.1.1_1
 random@1.0.3
 reactive-dict@1.1.0
