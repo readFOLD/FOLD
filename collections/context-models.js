@@ -281,7 +281,7 @@ Stream = (function (_super) {
     if (this.source === 'youtube') {
       return '//www.youtube.com/embed/' + this.reference.id + '?enablejsapi=1&modestbranding=1&rel=0&iv_load_policy=3&autohide=1';
     } else if (this.source === 'ustream') {
-      return 'https://www.ustream.tv/embed/' + this.reference.id + '?v=3&wmode=direct';
+      return 'https://www.ustream.tv/embed/' + this.reference.id + '?html5ui';
     } else if (this.source === 'bambuser') {
       return '//embed.bambuser.com/broadcast/' + this.reference.id + '?chat=0';
     }
