@@ -202,7 +202,7 @@ var runJobs = function(){
   // ????findMoreRecentBambuserEmbedForDeadChannels????
 };
 
-var jobIntervalInSeconds = parseInt(process.env.JOB_INTERVAL) || 5 * 60; // default is every 5 minutes
+var jobWaitInSeconds = parseInt(process.env.JOB_WAIT) || 5 * 60; // default is every 5 minutes
 
 
 if (process.env.PROCESS_TYPE === 'worker'){ // if a worker process
@@ -210,7 +210,7 @@ if (process.env.PROCESS_TYPE === 'worker'){ // if a worker process
     Meteor.setTimeout(function(){
       while(true){
         runJobs();
-        Meteor._sleepForMs(jobIntervalInSeconds * 1000)
+        Meteor._sleepForMs(jobWaitInSeconds * 1000)
       }
     });
   });
