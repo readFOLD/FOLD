@@ -1,4 +1,5 @@
 var numUStreamPagesGuess = 60; // starting guess
+var guessBias = 1;
 
 var refreshUStreamDB = Meteor.wrapAsync(function(finalCallback){
   var numUStreamPagesGuesses = [];
@@ -19,7 +20,7 @@ var refreshUStreamDB = Meteor.wrapAsync(function(finalCallback){
 
     if(!result.items || !result.items.length){
       allUStreamsLoaded = true;
-      numUStreamPagesGuesses.push(page - 1);
+      numUStreamPagesGuesses.push(page - 1 + guessBias);
       return cb();
     }
     Streams.batchInsert(_.map(result.items, function(doc) {
