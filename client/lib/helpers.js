@@ -40,7 +40,7 @@ window.checkValidEmail = function(email) {
 
 window.checkValidName = function(name) {
   if (name.length === 0 ) {
-    return { status: false, message: 'Please enter your name' };
+    return { status: false, message: 'Please enter your first and last name' };
   } else if (name.length > 127 ) {
     return { status: false, message: 'Too long (maximum 127 characters)' };
   } else {
