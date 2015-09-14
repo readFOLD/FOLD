@@ -14,7 +14,8 @@ var refreshUStreamDB = Meteor.wrapAsync(function(finalCallback){
 
     if(error){
       allUStreamsLoaded = true;
-      console.log('Error returned from ustream on page: ' + localCurrentPage)
+      console.log('Error returned from ustream on page: ' + page);
+      console.error(error);
       return cb();
     }
 
@@ -80,12 +81,8 @@ var refreshUStreamDB = Meteor.wrapAsync(function(finalCallback){
           currentPage += 1;
         }
         if(allUStreamsLoaded){
-          console.log("BBBBBBBB")
-          console.log(numUStreamPagesGuesses)
           numUStreamPagesGuess = _.min(numUStreamPagesGuesses)
         } else {
-          console.log("CCCCCCC")
-          console.log(currentPage)
           numUStreamPagesGuess = currentPage - 1;
         }
         console.log('Finish sync ustream calls');
@@ -94,9 +91,9 @@ var refreshUStreamDB = Meteor.wrapAsync(function(finalCallback){
 
 
         try{
-          Streams.update({} , { $inc: {oneIfCurrent: 1 }}, {multi: true}); // recent batch is now loaded
+          Streams.update({_source: 'ustream'}, { $inc: {oneIfCurrent: 1 }}, {multi: true}); // recent batch is now loaded
 
-          Streams.remove({ oneIfCurrent: {$gt: 1 }}); // remove previous batch
+          Streams.remove({_source: 'ustream', oneIfCurrent: {$gt: 1 }}); // remove previous batch
 
         } catch (err) {
           finalCallback(err);

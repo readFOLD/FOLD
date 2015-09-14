@@ -598,17 +598,20 @@ Meteor.methods({
   bambuserVideoSearchList: function (query, option, page) {
     var res;
     var nextPageToken;
-    check(query, String);
+    check(query, Match.Optional(String));
     this.unblock();
     requestParams = {
-      tag: query.replace(' ', ','),
       type: 'live', // or archived. default is both
-      limit: 10,
+      limit: 50,
       api_key: BAMBUSER_API_KEY
       // username,
       // max_age,
       // geo_distace/lat/lon
     };
+
+    if (query){
+      requestParams.tag = query.replace(' ', ',');
+    }
 
 
     page = page || 0;

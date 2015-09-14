@@ -64,10 +64,12 @@ bambuserMapFn = function (e) {
       title: e.title,
       id: e.vid,
       username: e.username,
-      currentViewers: e.currentViewers,
+      //currentViewers: e.currentViewers,
       totalViews: e.totalViews,
       userId: e.owner.uid,
-      creationDate: new Date(e.created)
+      creationDate: new Date(e.created),
+      tags: e.tags,
+      previewUrl: e.preview
     },
     source: 'bambuser'
   }
@@ -239,34 +241,39 @@ Stream = (function (_super) {
   };
 
   Stream.prototype.caption = function () {
-    //if (this.source === 'youtube') {
+    if (_.contains('youtube', 'ustream'), this.source) {
       return this.reference.description;
-    //}
+    }
   };
 
   Stream.prototype.username = function () {
-    //if (this.source === 'youtube') {
-      return this.reference.username;
-    //}
+    return this.reference.username;
   };
 
   Stream.prototype.currentViewers = function () {
-    if(this.source ==='youtube'){ // TODO get this for each video
-      return 431;
+    switch (this.source){
+      case 'youtube':
+        return 431;
+      case 'ustream':
+        return this.reference.currentViewers;
+      case 'bambuser':
+        return null
     }
-    return this.reference.currentViewers;
   };
   Stream.prototype.totalViews = function () {
-    if(this.source ==='youtube'){ // TODO get this for each video
-      return 59274;
+    switch (this.source){
+      case 'youtube':
+        return 59274;
+      case 'ustream':
+        return this.reference.totalViews;
+      case 'bambuser':
+        return this.reference.totalViews;
     }
-    return this.reference.totalViews;
   };
 
+
   Stream.prototype.creationDate = function () {
-    if (this.source === 'youtube') {
-      return this.reference.creationDate
-    }
+    return this.reference.creationDate
   };
 
   Stream.prototype.autoplayUrl = function(){
@@ -288,18 +295,24 @@ Stream = (function (_super) {
   };
 
   Stream.prototype.previewUrl = function () {
-    if (this.source === 'youtube') {
-      return '//img.youtube.com/vi/' + this.reference.id + '/0.jpg';
-    } else {
-      return this.reference.previewUrl;
+    switch (this.source){
+      case 'youtube':
+        return '//img.youtube.com/vi/' + this.reference.id + '/0.jpg';
+      case 'ustream':
+        return this.reference.previewUrl;
+      case 'bambuser':
+        return this.reference.previewUrl;
     }
   };
 
   Stream.prototype.thumbnailUrl = function () {
-    if (this.source === 'youtube') {
-      return '//i.ytimg.com/vi/' + this.reference.id + '/default.jpg';
-    } else {
-      return this.reference.thumbnailUrl;
+    switch (this.source){
+      case 'youtube':
+        return '//i.ytimg.com/vi/' + this.reference.id + '/default.jpg';
+      case 'ustream':
+        return this.reference.thumbnailUrl;
+      case 'bambuser':
+        return this.reference.previewUrl;
     }
   };
 
@@ -308,6 +321,9 @@ Stream = (function (_super) {
       return 'https://www.youtube.com/watch?v=' + this.reference.id;
     } else if (this.source === 'ustream') {
       return 'https://www.ustream.tv/channel/' + this.reference.id;
+    } else if (this.source === 'bambuser'){
+      return 'http://bambuser.com/v/' + this.reference.id;
+
     }
   };
 
