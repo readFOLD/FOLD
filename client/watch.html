@@ -365,10 +365,10 @@
         <button class="set-current-context-as-default">Set current item as default view</button>
       </li>
       <li>
-        {{#if userStreamSwitchAllowed}}
-          <button class="disallow-user-stream-switch">Turn Director Mode On</button>
+        {{#if directorMode}}
+          <button class="director-mode-off">Turn Director Mode Off</button>
         {{else}}
-          <button class="allow-user-stream-switch">Turn Director Mode Off</button>
+          <button class="director-mode-on">Turn Director Mode On</button>
         {{/if}}
       </li>
       <li>

@@ -134,7 +134,7 @@ Deepstream = (function() {
     return activeStream ? activeStream.previewUrl() : null;
   };
   Deepstream.prototype.userStreamSwitchAllowed = function(){
-    return !this.disallowUserStreamSwitch;
+    return !this.directorMode;
   };
 
   return Deepstream;

@@ -408,11 +408,11 @@ Template.watch_page.events({
     Session.set('saveState', 'saving');
     return Meteor.call('updateStreamDescription', template.data.shortId(), streamDescription, basicErrorHandler);
   },
-  'click .allow-user-stream-switch': function(e,t){
-    return Meteor.call('allowUserStreamSwitch', t.data.shortId(), basicErrorHandler)
+  'click .director-mode-off': function(e,t){
+    return Meteor.call('directorModeOff', t.data.shortId(), basicErrorHandler)
   },
-  'click .disallow-user-stream-switch': function(e,t){
-    return Meteor.call('disallowUserStreamSwitch', t.data.shortId(), basicErrorHandler)
+  'click .director-mode-on': function(e,t){
+    return Meteor.call('directorModeOn', t.data.shortId(), basicErrorHandler)
   },
   'click .set-current-context-as-default': function(e,t){
     notifyFeature('Default view settings: coming soon!');

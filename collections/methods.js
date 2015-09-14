@@ -316,25 +316,25 @@ Meteor.methods({
 
     return numberUpdated;
   },
-  allowUserStreamSwitch: function(shortId){
+  directorModeOff: function(shortId){
     check(shortId, String);
     this.unblock();
     return updateStream.call(this, {
       shortId: shortId
     }, {
       $set: {
-        disallowUserStreamSwitch: false
+        directorMode: false
       }
     });
   },
-  disallowUserStreamSwitch: function(shortId){
+  directorModeOn: function(shortId){
     check(shortId, String);
     this.unblock();
     return updateStream.call(this, {
       shortId: shortId
     }, {
       $set: {
-        disallowUserStreamSwitch: true
+        directorMode: true
       }
     });
   },
