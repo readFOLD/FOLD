@@ -206,7 +206,7 @@ var runJobs = function(){
 var jobWaitInSeconds = parseInt(process.env.JOB_WAIT) || 5 * 60; // default is every 5 minutes
 
 
-if (process.env.PROCESS_TYPE === 'worker'){ // if a worker process
+if (process.env.PROCESS_TYPE === 'stream_worker'){ // if a worker process
   Meteor.startup(function() {
     Meteor.setTimeout(function(){
       while(true){
