@@ -504,10 +504,10 @@ Meteor.methods({
   streamSearchList: function(query, option, page){
     var youtubeResults;
     if (!page) {
-      page = {
-        ustream: 0
-      }
+      page = {};
     }
+    page.ustream = page.ustream || 0;
+    page.bambuser = page.bambuser || 0;
 
     if (page.youtube !== 'end'){
       youtubeResults = searchYouTube.call(this, query, 'live', page.youtube || null);
@@ -521,18 +521,50 @@ Meteor.methods({
       }
     }
 
-    var ustreams;
+    //var ustreams;
+    //
+    //if(page.ustream !== 'end'){
+    //
+    //  // ustream
+    //  var limit = 1;
+    //  var options = {
+    //    limit: limit,
+    //    sort: {
+    //      currentViewers: -1
+    //    },
+    //    skip: page.ustream * limit
+    //  };
+    //
+    //  function buildRegExp(query) {
+    //    // this is a dumb implementation
+    //    var parts = query.trim().split(/[ \-\:]+/);
+    //    return new RegExp("(" + parts.join('|') + ")", "ig");
+    //  }
+    //
+    //  var regExp = buildRegExp(query);
+    //  var selector = {$or: [
+    //    {title: regExp},
+    //    {description: regExp},
+    //    {username: regExp}
+    //    //{ $text: { $search: query, $language: 'en' } }
+    //  ]};
+    //  ustreams = Streams.find(selector, options).fetch();
+    //} else {
+    //  ustreams = [];
+    //}
 
-    if(page.ustream !== 'end'){
+    var bambuserStreams;
 
-      // ustream
-      var limit = 50;
+    if(page.bambuser !== 'end'){
+
+      // bambuser
+      var limit = 1;
       var options = {
         limit: limit,
         sort: {
-          currentViewers: -1
+          totalViews: -1
         },
-        skip: page.ustream * limit
+        skip: page.bambuser * limit
       };
 
       function buildRegExp(query) {
@@ -544,13 +576,13 @@ Meteor.methods({
       var regExp = buildRegExp(query);
       var selector = {$or: [
         {title: regExp},
-        {description: regExp},
+        {tags: regExp},
         {username: regExp}
         //{ $text: { $search: query, $language: 'en' } }
-      ]};
-      ustreams = Streams.find(selector, options).fetch();
+      ], _source: 'bambuser'};
+      bambuserStreams = Streams.find(selector, options).fetch();
     } else {
-      ustreams = [];
+      bambuserStreams = [];
     }
 
 
@@ -561,17 +593,23 @@ Meteor.methods({
       youtube: youtubeResults.nextPage
     };
 
-    if(ustreams.length){
-      nextPage.ustream = page.ustream + 1;
+    //if(ustreams.length){
+    //  nextPage.ustream = page.ustream + 1;
+    //} else {
+    //  nextPage.ustream = 'end';
+    //}
+
+    if(bambuserStreams.length){
+      nextPage.bambuser = page.bambuser + 1;
     } else {
-      nextPage.ustream = 'end';
+      nextPage.bambuser = 'end';
     }
 
     var allSourcesExhausted = _.chain(nextPage)
         .values()
         .uniq()
         .every(function(v){
-          return v == 'end'
+          return v === 'end'
         })
         .value();
 
@@ -579,20 +617,33 @@ Meteor.methods({
       nextPage = 'end';
     }
 
+    console.log(1111)
+    console.log(bambuserStreams)
+    console.log(bambuserStreams.length)
+    console.log(2222)
+
 
     // mix streams from various sources
 
-    var items = _.chain(youtubeResults.items)
-        .zip(ustreams)
-        .flatten()
-        .compact()
-        .value();
+    //var items = _.chain(youtubeResults.items)
+    //  .zip(bambuserStreams)
+    //  //.zip(ustreams)
+    //  .flatten()
+    //  .compact()
+    //  .value();
 
+    //console.log('YESYESYES')
+    //console.log(items[1])
 
-    return {
-      items: items,
+    var a = {
+      item1: bambuserStreams[0],
+      items: bambuserStreams,
       nextPage: nextPage
     }
+
+    console.log(33333)
+    console.log(a)
+    return a;
   },
   youtubeVideoSearchList: searchYouTube,
   bambuserVideoSearchList: function (query, option, page) {
@@ -619,13 +670,10 @@ Meteor.methods({
     if (page) {
       requestParams['page'] = page;
     }
+
     res = HTTP.get('http://api.bambuser.com/broadcast.json', {
       params: requestParams
     });
-
-    console.log('aaaaaaaaaaa')
-    console.log(res)
-
 
     items = res.data.result;
 

@@ -129,6 +129,9 @@ Template.home.onCreated(function () {
     that.loadingStreamResults.set(true);
     that.noMoreStreamResults.set(null);
     Meteor.call('streamSearchList', query, function (err, results) {
+      console.log(results)
+      return
+      console.log('THIS DOESN"T HAPPEN')
       that.loadingStreamResults.set(false);
       if (err) {
         that.noMoreStreamResults.set('No more results'); // TO-DO - surface error to user?
@@ -144,8 +147,11 @@ Template.home.onCreated(function () {
         return;
       }
       _.chain(items)
+        .each(function(e){
+          console.log(e._source)
+        })
         .map(ContextBlock.searchMappings['all_streaming_services'].mapFn || _.identity)
-        .each(function (item, i) {
+        .map(function (item, i) {
           _.extend(item, {
             type: "stream",
             //authorId: Meteor.user() ? Meteor.user()._id : ,
