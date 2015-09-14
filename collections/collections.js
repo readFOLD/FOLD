@@ -402,8 +402,4 @@ this.ContextBlocks.deny({
   }
 });
 
-this.Streams = new Mongo.Collection("streams", {
-  transform: function(doc) {
-    return new Stream(doc);
-  }
-});
+this.Streams = new Mongo.Collection("streams");
