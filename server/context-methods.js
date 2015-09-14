@@ -567,7 +567,7 @@ Meteor.methods({
         skip: page.bambuser * limit
       };
 
-      function buildRegExp(query) {
+      var buildRegExp = function(query) {
         // this is a dumb implementation
         var parts = query.trim().split(/[ \-\:]+/);
         return new RegExp("(" + parts.join('|') + ")", "ig");
@@ -634,15 +634,17 @@ Meteor.methods({
 
     //console.log('YESYESYES')
     //console.log(items[1])
+    var string = (JSON.stringify(bambuserStreams[0]));
+    var parsedString = (JSON.parse(string))
 
     var a = {
+      parsedString: parsedString,
       item1: bambuserStreams[0],
       items: bambuserStreams,
       nextPage: nextPage
     }
 
-    console.log(33333)
-    console.log(a)
+    console.log(888888888)
     return a;
   },
   youtubeVideoSearchList: searchYouTube,
