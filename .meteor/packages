@@ -30,7 +30,6 @@ email
 browser-policy
 reload
 meteorhacks:subs-manager
-force-ssl
 fold:user-system@=0.1.1
 meteorhacks:flow-router
 meteorhacks:flow-layout
