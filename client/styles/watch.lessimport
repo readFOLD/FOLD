@@ -430,7 +430,7 @@
 }
 
 
-@contextBroserHeaderRowHeight: 48px;
+@contextBrowserHeaderRowHeight: 48px;
 
 .context-browser-header-row{
   button{
@@ -455,8 +455,8 @@
   font-size: 20px;
   font-weight: bold;
   border-bottom: 1px solid @medium-color;
-  height: @contextBroserHeaderRowHeight;
-  line-height: @contextBroserHeaderRowHeight;
+  height: @contextBrowserHeaderRowHeight;
+  line-height: @contextBrowserHeaderRowHeight;
 }
 
 .go-back-button{

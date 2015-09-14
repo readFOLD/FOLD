@@ -119,7 +119,7 @@ div.add-context {
     padding-top: 22px;
     padding-left: 22px;
     padding-right: 22px;
-    height: 100%;
+    height: calc(100% ~'-' @contextBrowserHeaderRowHeight);
     flex: auto;
     .search-section {
       height: 100%;

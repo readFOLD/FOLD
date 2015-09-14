@@ -192,8 +192,12 @@ Meteor.methods({
 
       // TODO something
       if (Meteor.isClient){
-        if(numberOfStreamsBeforeAdd === 1) { // this is the second stream to be added
+        if(numberOfStreamsBeforeAdd === 1 && !duplicateStream) { // this is the second stream to be added
           window.notifySuccess("You just added a second stream. Now you can switch between streams and all your viewers will see that change!");
+        }
+
+        if (duplicateStream){
+          window.notifyInfo("This stream has already been added.")
         }
 
         // briefly add the justAdded class so that user knows it was added to the bottom
