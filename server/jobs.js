@@ -107,6 +107,118 @@ var refreshUStreamDB = Meteor.wrapAsync(function(finalCallback){
 
 });
 
+var numBambuserPagesGuess = 60; // starting guess
+
+
+var refreshBambuserDB = Meteor.wrapAsync(function(finalCallback){
+  var numUStreamPagesGuesses = [];
+
+  var allUStreamsLoaded = false;
+
+
+  var maxUStreamPages = parseInt(process.env.MAX_USTREAM_PAGES) || parseInt(Meteor.settings.MAX_USTREAM_PAGES) || 999999999999;
+
+  var bambuserInsertCallback = function(error, result, page, cb){
+    console.log('Received ustream response for page: ' + page);
+
+    if(error){
+      allUStreamsLoaded = true;
+      console.log('Error returned from ustream on page: ' + page)
+      console.error(error);
+      return cb();
+    }
+
+    console.log(result)
+
+    if(!result.items || !result.items.length){
+      allUStreamsLoaded = true;
+      numUStreamPagesGuesses.push(page - 1 + guessBias);
+      return cb();
+    }
+    Streams.batchInsert(_.map(result.items, function(doc) {
+
+      return _.extend(doc, {
+        _source: 'bambuser',
+        username: doc.userName,
+        //currentViewers: parseInt(doc.views), // no current viewers metric for bambuser
+        totalViews: parseInt(doc.views_total)
+      });
+    }));
+
+    console.log('Added ustreams to database for page: ' + page);
+    return cb();
+  };
+
+
+  var numAsyncUStreamPages = Math.min(numBambuserPagesGuess, maxUStreamPages);
+  var waitBetweenUStreamCalls = 10; // ms
+  var currentPage;
+  console.log('Current guess for number of UStream pages: ' + numBambuserPagesGuess);
+  console.log('Begin async ustream calls')
+  async.each(_.range(numAsyncUStreamPages), function(i, cb){
+      Meteor.setTimeout(function(){
+        currentPage = i+1;
+        console.log('Async ustream call for page: ' + currentPage);
+        var localCurrentPage = currentPage;
+
+        Meteor.call('bambuserVideoSearchList', undefined, undefined, currentPage, function(err, result){
+          try{
+            bambuserInsertCallback(err, result, localCurrentPage, cb);
+          } catch(err){
+            console.log('Error in async ustream callback page: ' + localCurrentPage)
+            console.error(err)
+            return cb();
+          }
+        });
+      }, waitBetweenUStreamCalls * i)
+    }, function(err){
+      console.log('Finish async ustream calls');
+      if(err){
+        finalCallback(err);
+      } else {
+        console.log('Begin sync ustream calls');
+        currentPage += 1;
+
+        while(!allUStreamsLoaded && currentPage <= maxUStreamPages){
+          console.log('Sync ustream call for page: ' + currentPage);
+
+          Meteor.call('bambuserVideoSearchList', undefined, undefined, currentPage, function(err, result){
+            bambuserInsertCallback(err, result, currentPage, function(err){
+              if(err){
+                return finalCallback(err);
+              }
+            })
+          });
+          currentPage += 1;
+        }
+        if(allUStreamsLoaded){
+          numBambuserPagesGuess = _.min(numUStreamPagesGuesses)
+        } else {
+          numBambuserPagesGuess = currentPage - 1;
+        }
+        console.log('Finish sync ustream calls');
+        console.log('UStream API calls complete!');
+        console.log((currentPage - 1) + ' ustream pages loaded');
+
+
+        try{
+          Streams.update({_source: 'bambuser'}, { $inc: {oneIfCurrent: 1 }}, {multi: true}); // recent batch is now loaded
+
+          Streams.remove({_source: 'bambuser', oneIfCurrent: {$gt: 1 }}); // remove previous batch
+
+        } catch (err) {
+          finalCallback(err);
+        }
+
+        console.log('UStream results refreshed');
+        return finalCallback();
+      }
+    }
+  );
+
+});
+
+
 var updateStreamStatus = function(deepstream){
   // TODO track how many streams are live and update deepstream accordingly
   var ustream;
@@ -186,6 +298,8 @@ var runJobs = function(){
   var startTime = Date.now();
   refreshUStreamDB();
   var ustreamRefreshTime = Date.now() - startTime;
+  console.log('BABMUSER')
+  refreshBambuserDB();
   updateStreamStatuses();
   var streamUpdateTime = Date.now() - startTime - ustreamRefreshTime;
   updateDeepstreamStatuses();
