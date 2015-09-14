@@ -35,7 +35,9 @@
         position: relative;
         padding: 0;
       }
-      .hover-shadow;
+      &:not(.placeholder){
+        .hover-shadow;
+      }
       .active-overlay{
         position:absolute;
         padding-top: 25%;

@@ -574,7 +574,7 @@ div.action-items {
       button {
         color: @deemphasized-light-text-color;
       }
-
+      border-bottom: 2px solid transparent;
       &.selected, &:hover {
         border-bottom: 2px solid @light-text-color;
         button {

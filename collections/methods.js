@@ -144,7 +144,12 @@ Meteor.methods({
   },
   addStreamToStream: function(streamShortId, stream){
     check(streamShortId, String);
-    check(stream, Object);
+    if (Meteor.isServer){
+      check(stream, Object);
+    } else {
+      check(stream, Match.Any); // TODO this should be Object or Stream but that doesn't seem to work out clientside...
+    }
+
 
     var pushObject, pushSelectorString, success;
     pushSelectorString = 'streams';

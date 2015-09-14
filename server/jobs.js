@@ -96,7 +96,7 @@ var refreshUStreamDB = Meteor.wrapAsync(function(finalCallback){
         try{
           Streams.update({} , { $inc: {oneIfCurrent: 1 }}, {multi: true}); // recent batch is now loaded
 
-          Streams.remove({ oneIfCurrent: 2 }); // remove previous batch
+          Streams.remove({ oneIfCurrent: {$gt: 1 }}); // remove previous batch
 
         } catch (err) {
           finalCallback(err);

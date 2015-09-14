@@ -70,6 +70,14 @@
                   <img src="{{thumbnailUrl}}">
                 </button>
               </li>
+            {{else}}
+              {{#unless curateMode}}
+                <li class="placeholder">
+                  <button>
+                    There are no live streams right now
+                  </button>
+                </li>
+              {{/unless}}
             {{/each}}
             {{#if curateMode}}
               <li class="add-stream">
@@ -180,13 +188,6 @@
           </button>
         </li>
       {{/if}}
-      {{#if show_twitter_icon}}
-        <li>
-          <button class='twitter-button {{#if twitter}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> twitter_icon }}
-          </button>
-        </li>
-      {{/if}}
       {{#if show_text_icon}}
         <li>
           <button class='text-button {{#if text}}active{{/if}}' disabled='{{disableAllButStream}}'>
@@ -220,6 +221,13 @@
         <li>
           <button class='video-button {{#if video}}active{{/if}}' disabled='{{disableAllButStream}}'>
             {{> video_icon }}
+          </button>
+        </li>
+      {{/if}}
+      {{#if show_twitter_icon}}
+        <li>
+          <button class='twitter-button {{#if twitter}}active{{/if}}' disabled='{{disableAllButStream}}'>
+            {{> twitter_icon }}
           </button>
         </li>
       {{/if}}
