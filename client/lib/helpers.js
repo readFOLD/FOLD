@@ -85,6 +85,21 @@ window.incrementReactiveVar = function(rv){
   return rv.set(rv.get() + 1);
 };
 
+// from https://bambuser.com/api/player_javascript
+window.getFlashMovie = function(id) {
+  if (navigator.appName.indexOf("Microsoft Internet") == -1) {
+    if (document.embeds && document.embeds[id])
+      return document.embeds[id];
+  } else {
+    return document.getElementById(id);
+  }
+
+  if (window.document[id]) {
+    return window.document[id];
+  }
+  return document.getElementById(id);
+};
+
 window.textContentHelper = function() {
   var textContent, rows, placeholder;
   if (this.type === 'text'){

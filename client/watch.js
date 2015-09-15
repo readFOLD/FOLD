@@ -11,6 +11,9 @@ window.mainPlayer = {
       case 'ustream':
         this._ustreamPlayer.callMethod('play');
         break;
+      case 'bambuser':
+        this._bambuserPlayer.playBroadcast();
+        break;
       default:
         throw new Meteor.Error('main player has no active stream source')
     }
@@ -22,6 +25,9 @@ window.mainPlayer = {
         break;
       case 'ustream':
         this._ustreamPlayer.callMethod('pause');
+        break;
+      case 'bambuser':
+        this._bambuserPlayer.pauseBroadcast();
         break;
       default:
         throw new Meteor.Error('main player has no active stream source')
@@ -35,6 +41,9 @@ window.mainPlayer = {
       case 'ustream':
         this._ustreamPlayer.callMethod('stop');
         break;
+      case 'bambuser':
+        this._bambuserPlayer.pauseBroadcast();
+        break;
       default:
         throw new Meteor.Error('main player has no active stream source')
     }
@@ -47,11 +56,14 @@ window.mainPlayer = {
       case 'ustream':
         this._ustreamPlayer.callMethod('volume', 0);
         break;
+      case 'bambuser':
+        this._bambuserPlayer.mute();
+        break;
       default:
         throw new Meteor.Error('main player has no active stream source')
     }
   },
-  unMute: function(){
+  unmute: function(){
     switch(this.activeStreamSource){
       case 'youtube':
         this._youTubePlayer.unMute();
@@ -59,11 +71,15 @@ window.mainPlayer = {
       case 'ustream':
         this._ustreamPlayer.callMethod('volume', 100); // TO-DO return volume to wherever they were before mute
         break;
+      case 'bambuser':
+        this._bambuserPlayer.unmute();
+        break;
       default:
         throw new Meteor.Error('main player has no active stream source')
     }
   }
 };
+
 
 Template.watch_page.onCreated(function () {
   if(!ytScriptLoaded){
@@ -72,13 +88,22 @@ Template.watch_page.onCreated(function () {
   }
 
   this.mainStreamIFrameId = Random.id(8);
+  this.mainStreamFlashPlayerId = Random.id(8);
+
+
 
   var that = this;
 
   this.settingsMenuOpen = new ReactiveVar();
 
+
   window.onYouTubeIframeAPIReady = function() {
     ytApiReady.set(true);
+  };
+
+  window.bambuserPlayerReady = function(){
+    console.log('Bambuser player ready');
+    mainPlayer._bambuserPlayer = getFlashMovie(that.mainStreamFlashPlayerId);
   };
 
   // confirm stream exists
@@ -187,34 +212,42 @@ Template.watch_page.onRendered(function(){
   this.autorun(function(){
     if(ytApiReady.get() && FlowRouter.subsReady()){
       var activeStream = that.activeStream.get();
-      if (activeStream && activeStream.source === 'youtube'){
-        if ( !this.mainPlayerYTApiActivated ){
-          console.log('activate the yt api!!')
-          this.mainPlayerYTApiActivated = true;
-          Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
-            var youTubePlayer = new YT.Player(that.mainStreamIFrameId, {
-              events: {
-                'onReady': onMainPlayerReady,
-                'onStateChange': onMainPlayerStateChange
-              }
-            });
-            mainPlayer._youTubePlayer = youTubePlayer;
-          }, 1000);
-        }
-        mainPlayer.activeStreamSource = 'youtube';
-
-      } else if (activeStream && activeStream.source === 'ustream'){
-        if ( !this.mainPlayerUSApiActivated ){
-          console.log('activate the ustream api!!')
-          this.mainPlayerUSApiActivated = true;
-          Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
-            var ustreamPlayer = UstreamEmbed(that.mainStreamIFrameId);
-            mainPlayer._ustreamPlayer = ustreamPlayer;
-          }, 1000);
-        }
-        Meteor.setTimeout(onMainPlayerReady, 4000); // TODO, this is a hack. Is there any way to know that the player is ready?
-        mainPlayer.activeStreamSource = 'ustream';
+      if(!activeStream){
+        return
       }
+      switch(activeStream.source){
+        case 'youtube':
+          if ( !this.mainPlayerYTApiActivated ){
+            console.log('activate the yt api!!')
+            this.mainPlayerYTApiActivated = true;
+            Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
+              var youTubePlayer = new YT.Player(that.mainStreamIFrameId, {
+                events: {
+                  'onReady': onMainPlayerReady,
+                  'onStateChange': onMainPlayerStateChange
+                }
+              });
+              mainPlayer._youTubePlayer = youTubePlayer;
+            }, 1000);
+          }
+          mainPlayer.activeStreamSource = 'youtube';
+          break;
+        case 'ustream':
+          if ( !this.mainPlayerUSApiActivated ){
+            console.log('activate the ustream api!!')
+            this.mainPlayerUSApiActivated = true;
+            Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
+              var ustreamPlayer = UstreamEmbed(that.mainStreamIFrameId);
+              mainPlayer._ustreamPlayer = ustreamPlayer;
+            }, 1000);
+          }
+          Meteor.setTimeout(onMainPlayerReady, 4000); // TODO, this is a hack. Is there any way to know that the player is ready?
+          mainPlayer.activeStreamSource = 'ustream';
+          break;
+        case 'bambuser':
+          mainPlayer.activeStreamSource = 'bambuser';
+      }
+
     }
   });
 
@@ -256,10 +289,13 @@ Template.watch_page.helpers({
   mainStreamIFrameId: function(){
     return Template.instance().mainStreamIFrameId;
   },
+  mainStreamFlashPlayerId: function(){
+    return Template.instance().mainStreamFlashPlayerId;
+  },
   mainStreamInIFrame: function(){
     return _.contains(['ustream', 'youtube'], Template.instance().activeStream.get().source);
   },
-  mainStreamInFlashObject: function(){
+  mainStreamInFlashPlayer: function(){
     return _.contains(['bambuser'], Template.instance().activeStream.get().source);
   },
   onCuratePage: function(){
@@ -279,7 +315,7 @@ Template.watch_page.helpers({
   flashVars: function(){
     var activeStream = Template.instance().activeStream.get();
     if(activeStream){
-      return activeStream.flashVars()
+      return activeStream.flashVars() + '&callback=bambuserPlayerReady'
     }
   },
   showTitleDescriptionEditOverlay: function(){
@@ -583,7 +619,7 @@ Template.overlay_context_browser.onRendered(function(){
 Template.overlay_context_browser.onDestroyed(function(){
   document.body.style.overflow = 'auto';
   if(Session.get('mediaDataType') === 'video'){
-    mainPlayer.unMute(); // TODO - only unmute if was unmuted before created
+    mainPlayer.unmute(); // TODO - only unmute if was unmuted before created
   }
 });
 
