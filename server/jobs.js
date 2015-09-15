@@ -91,15 +91,6 @@ var refreshUStreamDB = Meteor.wrapAsync(function(finalCallback){
         console.log((currentPage - 1) + ' ustream pages loaded');
 
 
-        try{
-          Streams.update({_streamSource: 'ustream'}, { $inc: {oneIfCurrent: 1 }}, {multi: true}); // recent batch is now loaded
-
-          Streams.remove({_streamSource: 'ustream', oneIfCurrent: {$gt: 1 }}); // remove previous batch
-
-        } catch (err) {
-          finalCallback(err);
-        }
-
         console.log('UStream results refreshed');
         return finalCallback();
       }
@@ -202,16 +193,6 @@ var refreshBambuserDB = Meteor.wrapAsync(function(finalCallback){
         console.log('UStream API calls complete!');
         console.log((currentPage - 1) + ' ustream pages loaded');
 
-
-        try{
-          Streams.update({_streamSource: 'bambuser'}, { $inc: {oneIfCurrent: 1 }}, {multi: true}); // recent batch is now loaded
-
-          Streams.remove({_streamSource: 'bambuser', oneIfCurrent: {$gt: 1 }}); // remove previous batch
-
-        } catch (err) {
-          finalCallback(err);
-        }
-
         console.log('UStream results refreshed');
         return finalCallback();
       }
@@ -278,6 +259,11 @@ var updateStreamStatus = function(deepstream){
   });
 };
 
+var cycleStreamsCollection = function(){
+  Streams.update({}, { $inc: {oneIfCurrent: 1 }}, {multi: true}); // recent batch is now loaded
+  Streams.remove({oneIfCurrent: {$gt: 1 }}); // remove previous batch
+};
+
 var updateStreamStatuses = function(){
   Deepstreams.find({}, {fields: {streams : 1}}).forEach(updateStreamStatus);
 };
@@ -302,6 +288,7 @@ var runJobs = function(){
   var ustreamRefreshTime = Date.now() - startTime;
   console.log('BABMUSER')
   refreshBambuserDB();
+  cycleStreamsCollection();
   updateStreamStatuses();
   var streamUpdateTime = Date.now() - startTime - ustreamRefreshTime;
   updateDeepstreamStatuses();
