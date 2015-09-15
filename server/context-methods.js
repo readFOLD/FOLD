@@ -547,7 +547,7 @@ Meteor.methods({
         {description: regExp},
         {username: regExp}
         //{ $text: { $search: query, $language: 'en' } }
-      ]};
+      ], _streamSource: 'ustream'};
       ustreams = Streams.find(selector, options).fetch();
     } else {
       ustreams = [];
