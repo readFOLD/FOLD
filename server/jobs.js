@@ -127,15 +127,19 @@ var refreshBambuserDB = Meteor.wrapAsync(function(finalCallback){
       numUStreamPagesGuesses.push(page - 1 + guessBias);
       return cb();
     }
-    Streams.batchInsert(_.map(result.items, function(doc) {
+    Streams.batchInsert(_.map(result.items, function (doc) {
 
-      return _.extend(doc, {
+      _.extend(doc, {
         _streamSource: 'bambuser',
         username: doc.userName,
         //currentViewers: parseInt(doc.views), // no current viewers metric for bambuser
         totalViews: parseInt(doc.views_total),
+        lengthSecs: doc.length,
         live: true
       });
+      delete doc.length; // this only causes problems
+      return doc;
+
     }));
 
     console.log('Added bambusers to database for page: ' + page);
