@@ -119,11 +119,11 @@ var refreshBambuserDB = Meteor.wrapAsync(function(finalCallback){
   var maxUStreamPages = parseInt(process.env.MAX_USTREAM_PAGES) || parseInt(Meteor.settings.MAX_USTREAM_PAGES) || 999999999999;
 
   var bambuserInsertCallback = function(error, result, page, cb){
-    console.log('Received ustream response for page: ' + page);
+    console.log('Received bambuser response for page: ' + page);
 
     if(error){
       allUStreamsLoaded = true;
-      console.log('Error returned from ustream on page: ' + page)
+      console.log('Error returned from bambuser on page: ' + page)
       console.error(error);
       return cb();
     }
@@ -145,7 +145,7 @@ var refreshBambuserDB = Meteor.wrapAsync(function(finalCallback){
       });
     }));
 
-    console.log('Added ustreams to database for page: ' + page);
+    console.log('Added bambusers to database for page: ' + page);
     return cb();
   };
 
@@ -154,33 +154,33 @@ var refreshBambuserDB = Meteor.wrapAsync(function(finalCallback){
   var waitBetweenUStreamCalls = 10; // ms
   var currentPage;
   console.log('Current guess for number of UStream pages: ' + numBambuserPagesGuess);
-  console.log('Begin async ustream calls')
+  console.log('Begin async bambuser calls')
   async.each(_.range(numAsyncUStreamPages), function(i, cb){
       Meteor.setTimeout(function(){
-        currentPage = i+1;
-        console.log('Async ustream call for page: ' + currentPage);
+        currentPage = i;
+        console.log('Async bambuser call for page: ' + currentPage);
         var localCurrentPage = currentPage;
 
         Meteor.call('bambuserVideoSearchList', undefined, undefined, currentPage, function(err, result){
           try{
             bambuserInsertCallback(err, result, localCurrentPage, cb);
           } catch(err){
-            console.log('Error in async ustream callback page: ' + localCurrentPage)
+            console.log('Error in async bambuser callback page: ' + localCurrentPage)
             console.error(err)
             return cb();
           }
         });
       }, waitBetweenUStreamCalls * i)
     }, function(err){
-      console.log('Finish async ustream calls');
+      console.log('Finish async bambuser calls');
       if(err){
         finalCallback(err);
       } else {
-        console.log('Begin sync ustream calls');
+        console.log('Begin sync bambuser calls');
         currentPage += 1;
 
-        while(!allUStreamsLoaded && currentPage <= maxUStreamPages){
-          console.log('Sync ustream call for page: ' + currentPage);
+        while(!allUStreamsLoaded && currentPage < maxUStreamPages){
+          console.log('Sync bambuser call for page: ' + currentPage);
 
           Meteor.call('bambuserVideoSearchList', undefined, undefined, currentPage, function(err, result){
             bambuserInsertCallback(err, result, currentPage, function(err){

@@ -87,6 +87,7 @@ ContextBlock.searchMappings = {
         case 'ustream':
           return ustreamMapFn(e);
         default:
+          console.error(e);
           throw new Meteor.Error('Unknown stream source')
       }
     }

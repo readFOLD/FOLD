@@ -328,7 +328,7 @@ Template.streams.helpers({
           return SearchResults.find({
             searchQuery: Session.get('homeStreamListQuery'),
             searchOption: "homepage_search"
-          })
+          }).map(function(stream){ return new Stream(stream)});
       }
     }
   }

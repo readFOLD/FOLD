@@ -504,10 +504,10 @@ Meteor.methods({
   streamSearchList: function(query, option, page){
     var youtubeResults;
     if (!page) {
-      page = {
-        ustream: 0
-      }
+      page = {};
     }
+    page.ustream = page.ustream || 0;
+    page.bambuser = page.bambuser || 0;
 
     if (page.youtube !== 'end'){
       youtubeResults = searchYouTube.call(this, query, 'live', page.youtube || null);
@@ -553,6 +553,38 @@ Meteor.methods({
       ustreams = [];
     }
 
+    var bambuserStreams;
+
+    if(page.bambuser !== 'end'){
+
+      // bambuser
+      var limit = 50;
+      var options = {
+        limit: limit,
+        sort: {
+          totalViews: -1
+        },
+        skip: page.bambuser * limit
+      };
+
+      var buildRegExp = function(query) {
+        // this is a dumb implementation
+        var parts = query.trim().split(/[ \-\:]+/);
+        return new RegExp("(" + parts.join('|') + ")", "ig");
+      }
+
+      var regExp = buildRegExp(query);
+      var selector = {$or: [
+        {title: regExp},
+        {tags: regExp},
+        {username: regExp}
+        //{ $text: { $search: query, $language: 'en' } }
+      ], _source: 'bambuser'};
+      bambuserStreams = Streams.find(selector, options).fetch();
+    } else {
+      bambuserStreams = [];
+    }
+
 
 
     // compile nextPage for each source
@@ -567,11 +599,17 @@ Meteor.methods({
       nextPage.ustream = 'end';
     }
 
+    if(bambuserStreams.length){
+      nextPage.bambuser = page.bambuser + 1;
+    } else {
+      nextPage.bambuser = 'end';
+    }
+
     var allSourcesExhausted = _.chain(nextPage)
         .values()
         .uniq()
         .every(function(v){
-          return v == 'end'
+          return v === 'end'
         })
         .value();
 
@@ -579,20 +617,23 @@ Meteor.methods({
       nextPage = 'end';
     }
 
-
     // mix streams from various sources
 
     var items = _.chain(youtubeResults.items)
-        .zip(ustreams)
-        .flatten()
-        .compact()
-        .value();
+      .zip(bambuserStreams)
+      .zip(ustreams)
+      .flatten()
+      .compact()
+      .value();
 
-
-    return {
+    var a = {
       items: items,
       nextPage: nextPage
     }
+
+    console.log(888888888)
+    console.log(a)
+    return a;
   },
   youtubeVideoSearchList: searchYouTube,
   bambuserVideoSearchList: function (query, option, page) {
@@ -619,13 +660,10 @@ Meteor.methods({
     if (page) {
       requestParams['page'] = page;
     }
+
     res = HTTP.get('http://api.bambuser.com/broadcast.json', {
       params: requestParams
     });
-
-    console.log('aaaaaaaaaaa')
-    console.log(res)
-
 
     items = res.data.result;
 
