@@ -631,8 +631,6 @@ Meteor.methods({
       nextPage: nextPage
     }
 
-    console.log(888888888)
-    console.log(a)
     return a;
   },
   youtubeVideoSearchList: searchYouTube,
