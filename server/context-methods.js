@@ -667,7 +667,6 @@ Meteor.methods({
 
     if (items && items.length) {
       nextPageToken = page + 1;
-      console.log(items[0])
     } else {
       nextPageToken = 'end';
     }
