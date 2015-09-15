@@ -145,7 +145,7 @@ var updateStreamStatus = function (deepstream) {
     var streamSourceUsername = stream.reference.username;
     switch (stream.source) {
       case 'ustream':
-        console.log('check ustream')
+        console.log('check ustream');
         if (stream = Streams.findOne({'id': streamSourceId})) {
           // TODO update views and such
           Deepstreams.update({
@@ -161,7 +161,7 @@ var updateStreamStatus = function (deepstream) {
         }
         break;
       case 'bambuser':
-        console.log('check bambuser')
+        console.log('check bambuser');
         if (stream = Streams.findOne({'username': streamSourceUsername})) {
           // TODO update title and views and such. These might actually change...
           Deepstreams.update({
@@ -177,7 +177,7 @@ var updateStreamStatus = function (deepstream) {
         }
         break;
       case 'youtube':
-        console.log('check youtube')
+        console.log('check youtube');
 
         // TODO maybe only if we think youtube video is live
         // TODO check youtube videos at API and update with live or not live
