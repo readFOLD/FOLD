@@ -111,9 +111,7 @@ window.addStream = function(stream, template) {
   Session.set('saveState', 'saving');
   template.focusResult.set(null);
 
-  var livestream = _.extend({}, stream, {live: true});
-
-  Meteor.call('addStreamToStream', Session.get("streamShortId"), livestream, function(err, streamId){
+  Meteor.call('addStreamToStream', Session.get("streamShortId"), stream, function(err, streamId){
     saveCallback(err, streamId);
   });
 };

@@ -30,7 +30,8 @@ var refreshUStreamDB = Meteor.wrapAsync(function(finalCallback){
         _source: 'ustream',
         username: doc.user.userName,
         currentViewers: parseInt(doc.viewersNow),
-        totalViews: parseInt(doc.totalViews)
+        totalViews: parseInt(doc.totalViews),
+        live: true
       });
     }));
 
@@ -141,7 +142,8 @@ var refreshBambuserDB = Meteor.wrapAsync(function(finalCallback){
         _source: 'bambuser',
         username: doc.userName,
         //currentViewers: parseInt(doc.views), // no current viewers metric for bambuser
-        totalViews: parseInt(doc.views_total)
+        totalViews: parseInt(doc.views_total),
+        live: true
       });
     }));
 

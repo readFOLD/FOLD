@@ -36,6 +36,7 @@ youtubeMapFn = function (e) {
       userId: e.channelId,
       creationDate: new Date(e.publishedAt)
     },
+    live: e.liveBroadcastContent === 'live',
     source: 'youtube'
   }
 };
@@ -54,6 +55,7 @@ ustreamMapFn = function (e) { // this is post-insert from pre-loading ustream re
       userId: e.userId,
       creationDate: new Date(e.createdAt)
     },
+    live: e.live,
     source: 'ustream'
   }
 };
@@ -71,6 +73,7 @@ bambuserMapFn = function (e) {
       tags: e.tags,
       previewUrl: e.preview
     },
+    live: e.live,
     source: 'bambuser'
   }
 };
