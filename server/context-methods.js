@@ -521,44 +521,44 @@ Meteor.methods({
       }
     }
 
-    //var ustreams;
-    //
-    //if(page.ustream !== 'end'){
-    //
-    //  // ustream
-    //  var limit = 1;
-    //  var options = {
-    //    limit: limit,
-    //    sort: {
-    //      currentViewers: -1
-    //    },
-    //    skip: page.ustream * limit
-    //  };
-    //
-    //  function buildRegExp(query) {
-    //    // this is a dumb implementation
-    //    var parts = query.trim().split(/[ \-\:]+/);
-    //    return new RegExp("(" + parts.join('|') + ")", "ig");
-    //  }
-    //
-    //  var regExp = buildRegExp(query);
-    //  var selector = {$or: [
-    //    {title: regExp},
-    //    {description: regExp},
-    //    {username: regExp}
-    //    //{ $text: { $search: query, $language: 'en' } }
-    //  ]};
-    //  ustreams = Streams.find(selector, options).fetch();
-    //} else {
-    //  ustreams = [];
-    //}
+    var ustreams;
+
+    if(page.ustream !== 'end'){
+
+      // ustream
+      var limit = 50;
+      var options = {
+        limit: limit,
+        sort: {
+          currentViewers: -1
+        },
+        skip: page.ustream * limit
+      };
+
+      function buildRegExp(query) {
+        // this is a dumb implementation
+        var parts = query.trim().split(/[ \-\:]+/);
+        return new RegExp("(" + parts.join('|') + ")", "ig");
+      }
+
+      var regExp = buildRegExp(query);
+      var selector = {$or: [
+        {title: regExp},
+        {description: regExp},
+        {username: regExp}
+        //{ $text: { $search: query, $language: 'en' } }
+      ]};
+      ustreams = Streams.find(selector, options).fetch();
+    } else {
+      ustreams = [];
+    }
 
     var bambuserStreams;
 
     if(page.bambuser !== 'end'){
 
       // bambuser
-      var limit = 1;
+      var limit = 50;
       var options = {
         limit: limit,
         sort: {
@@ -593,11 +593,11 @@ Meteor.methods({
       youtube: youtubeResults.nextPage
     };
 
-    //if(ustreams.length){
-    //  nextPage.ustream = page.ustream + 1;
-    //} else {
-    //  nextPage.ustream = 'end';
-    //}
+    if(ustreams.length){
+      nextPage.ustream = page.ustream + 1;
+    } else {
+      nextPage.ustream = 'end';
+    }
 
     if(bambuserStreams.length){
       nextPage.bambuser = page.bambuser + 1;
@@ -617,34 +617,22 @@ Meteor.methods({
       nextPage = 'end';
     }
 
-    console.log(1111)
-    console.log(bambuserStreams)
-    console.log(bambuserStreams.length)
-    console.log(2222)
-
-
     // mix streams from various sources
 
-    //var items = _.chain(youtubeResults.items)
-    //  .zip(bambuserStreams)
-    //  //.zip(ustreams)
-    //  .flatten()
-    //  .compact()
-    //  .value();
-
-    //console.log('YESYESYES')
-    //console.log(items[1])
-    var string = (JSON.stringify(bambuserStreams[0]));
-    var parsedString = (JSON.parse(string))
+    var items = _.chain(youtubeResults.items)
+      .zip(bambuserStreams)
+      .zip(ustreams)
+      .flatten()
+      .compact()
+      .value();
 
     var a = {
-      parsedString: parsedString,
-      item1: bambuserStreams[0],
-      items: bambuserStreams,
+      items: items,
       nextPage: nextPage
     }
 
     console.log(888888888)
+    console.log(a)
     return a;
   },
   youtubeVideoSearchList: searchYouTube,
