@@ -85,7 +85,7 @@ var generateFetchFunction = function(serviceInfo){
     console.log('Begin async ' + serviceName + ' calls')
     async.each(_.range(numAsyncPages), function (i, cb) {
         Meteor.setTimeout(function () {
-          currentPage = i + 1;
+          currentPage = i + startingPage;
           console.log('Async ' + serviceName + ' call for page: ' + currentPage);
           var localCurrentPage = currentPage;
 
