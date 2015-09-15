@@ -103,7 +103,7 @@
   }
 
 }
-.main-stream-iframe-holder{
+.main-stream-container{
   .size-to-fit;
   &.PiP{
     position: fixed;
@@ -117,6 +117,13 @@
 
 .main-stream-iframe{
   .size-to-fit;
+}
+
+.main-stream-flash-object{
+  .size-to-fit;
+  embed{
+    .size-to-fit;
+  }
 }
 
 @contentIconWidth: 53px;

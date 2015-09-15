@@ -26,9 +26,12 @@
             {{> creation_tutorial}}
           {{/if}}
           {{#if streamUrl}}
-            <div class="main-stream-iframe-holder {{#if PiP}}PiP{{/if}}">
-              <iframe id="{{mainStreamElementId}}" class="main-stream-iframe" src="{{streamUrl}}" frameborder="0"
+            <div class="main-stream-container {{#if PiP}}PiP{{/if}}">
+              <iframe id="{{mainStreamIFrameId}}" class="main-stream-iframe {{#unless mainStreamInIFrame}}hide{{/unless}}" src="{{#if mainStreamInIFrame}}{{streamUrl}}{{/if}}" frameborder="0"
                       allowfullscreen></iframe>
+              <object id="bplayer" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" class="main-stream-flash-object {{#unless mainStreamInFlashObject}}hide{{/unless}}">
+                <embed name="bplayer" src="//static.bambuser.com/r/player.swf" type="application/x-shockwave-flash" flashvars="{{#if mainStreamInFlashObject}}{{flashVars}}{{/if}}" allowfullscreen="true" allowscriptaccess="always" wmode="opaque"/><param name="movie" value="//static.bambuser.com/r/player.swf"/><param name="flashvars" value="{{#if mainStreamInFlashObject}}{{flashVars}}{{/if}}"/><param name="allowfullscreen" value="true"/><param name="allowscriptaccess" value="always"/><param name="wmode" value="opaque"/>
+              </object>
               {{#if PiP}}<div class="PiP-overlay"></div>{{/if}}
             </div>
             {{#unless PiP}}

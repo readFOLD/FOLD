@@ -71,7 +71,7 @@ Template.watch_page.onCreated(function () {
     ytScriptLoaded = true;
   }
 
-  this.mainStreamElementId = Random.id(8);
+  this.mainStreamIFrameId = Random.id(8);
 
   var that = this;
 
@@ -192,7 +192,7 @@ Template.watch_page.onRendered(function(){
           console.log('activate the yt api!!')
           this.mainPlayerYTApiActivated = true;
           Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
-            var youTubePlayer = new YT.Player(that.mainStreamElementId, {
+            var youTubePlayer = new YT.Player(that.mainStreamIFrameId, {
               events: {
                 'onReady': onMainPlayerReady,
                 'onStateChange': onMainPlayerStateChange
@@ -208,7 +208,7 @@ Template.watch_page.onRendered(function(){
           console.log('activate the ustream api!!')
           this.mainPlayerUSApiActivated = true;
           Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
-            var ustreamPlayer = UstreamEmbed(that.mainStreamElementId);
+            var ustreamPlayer = UstreamEmbed(that.mainStreamIFrameId);
             mainPlayer._ustreamPlayer = ustreamPlayer;
           }, 1000);
         }
@@ -253,8 +253,14 @@ Template.watch_page.helpers({
   active: function(){ // inside #each streams
     return this._id === Template.instance().activeStream.get()._id;
   },
-  mainStreamElementId: function(){
-    return Template.instance().mainStreamElementId;
+  mainStreamIFrameId: function(){
+    return Template.instance().mainStreamIFrameId;
+  },
+  mainStreamInIFrame: function(){
+    return _.contains(['ustream', 'youtube'], Template.instance().activeStream.get().source);
+  },
+  mainStreamInFlashObject: function(){
+    return _.contains(['bambuser'], Template.instance().activeStream.get().source);
   },
   onCuratePage: function(){
     return Template.instance().data.onCuratePage ? Template.instance().data.onCuratePage() : null;
@@ -268,6 +274,12 @@ Template.watch_page.helpers({
     var activeStream = Template.instance().activeStream.get();
     if(activeStream){
       return activeStream.url()
+    }
+  },
+  flashVars: function(){
+    var activeStream = Template.instance().activeStream.get();
+    if(activeStream){
+      return activeStream.flashVars()
     }
   },
   showTitleDescriptionEditOverlay: function(){

@@ -28,7 +28,6 @@ var servicesToFetch = [
     mapFn: function (doc) {
       _.extend(doc, {
         _streamSource: 'bambuser',
-        username: doc.userName,
         //currentViewers: parseInt(doc.views), // no current viewers metric for bambuser
         totalViews: parseInt(doc.views_total),
         lengthSecs: doc.length,
@@ -143,6 +142,7 @@ var updateStreamStatus = function (deepstream) {
   var ustream;
   _.each(deepstream.streams, function (stream) {
     var streamSourceId = stream.reference.id;
+    var streamSourceUsername = stream.reference.username;
     switch (stream.source) {
       case 'ustream':
         console.log('check ustream')
@@ -162,14 +162,14 @@ var updateStreamStatus = function (deepstream) {
         break;
       case 'bambuser':
         console.log('check bambuser')
-        if (stream = Streams.findOne({'id': streamSourceId})) {
-          // TODO update views and such
+        if (stream = Streams.findOne({'username': streamSourceUsername})) {
+          // TODO update title and views and such. These might actually change...
           Deepstreams.update({
             _id: deepstream._id,
             'streams.reference.id': streamSourceId
           }, {$set: {'streams.$.live': true}});
         } else {
-          // TODO update views and such
+          // TODO update title and views and such
           Deepstreams.update({
             _id: deepstream._id,
             'streams.reference.id': streamSourceId

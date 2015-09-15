@@ -16,6 +16,7 @@ BrowserPolicy.content.allowFrameOrigin('*');
 BrowserPolicy.content.allowFontOrigin('*.gstatic.com');
 BrowserPolicy.content.allowFontOrigin('*.bootstrapcdn.com');
 BrowserPolicy.content.allowFontOrigin('*.googleapis.com');
+BrowserPolicy.content.allowFontOrigin('*.bambuser.com');
 
 // allow scripts from everywhere (we already don't allow inline above)
 BrowserPolicy.content.allowScriptOrigin('*');
@@ -24,8 +25,8 @@ BrowserPolicy.content.allowScriptOrigin('*');
 BrowserPolicy.content.allowStyleOrigin('*.bootstrapcdn.com');
 BrowserPolicy.content.allowStyleOrigin('*.googleapis.com');
 
-// disallow objects (until we need them)
-BrowserPolicy.content.disallowObject();
+// allow objects from specific sources only
+BrowserPolicy.content.allowObjectOrigin('*.bambuser.com');
 
 // allow connect everywhere
 BrowserPolicy.content.allowConnectOrigin('*');

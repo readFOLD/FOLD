@@ -65,11 +65,11 @@ bambuserMapFn = function (e) {
     reference: {
       title: e.title,
       id: e.vid,
-      username: e.username,
+      username: e.username, // for some reason, username always comes back null
       //currentViewers: e.currentViewers,
       totalViews: e.totalViews,
       userId: e.owner.uid,
-      creationDate: new Date(e.created),
+      creationDate: new Date(parseInt(e.created)),
       tags: e.tags,
       previewUrl: e.preview
     },
@@ -304,6 +304,11 @@ Stream = (function (_super) {
     }
   };
 
+  Stream.prototype.flashVars = function(){
+    //return 'vid=' + Template.instance().activeStream.get().reference.id + '&autostart=yes';
+    return 'username=' + this.reference.username + '&autostart=yes';
+  }
+
   Stream.prototype.previewUrl = function () {
     switch (this.source){
       case 'youtube':
@@ -332,8 +337,7 @@ Stream = (function (_super) {
     } else if (this.source === 'ustream') {
       return 'https://www.ustream.tv/channel/' + this.reference.id;
     } else if (this.source === 'bambuser'){
-      return 'http://bambuser.com/v/' + this.reference.id;
-
+      return 'http://bambuser.com/channel/' + this.reference.username;
     }
   };
 
