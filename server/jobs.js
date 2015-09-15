@@ -21,7 +21,7 @@ var servicesToFetch = [
     serviceName: 'bambuser',
     methodName: 'bambuserVideoSearchList',
     startingPage: 0,
-    initialPagesGuess: 5,
+    initialPagesGuess: 3,
     guessBias: 1,
     maxPages: parseInt(process.env.MAX_BAMBUSER_PAGES) || parseInt(Meteor.settings.MAX_BAMBUSER_PAGES) || 1000,
     asyncWaitTime: 10,
@@ -129,7 +129,7 @@ var generateFetchFunction = function(serviceInfo){
           console.log((currentPage - 1) + ' ' + serviceName + ' pages loaded');
 
 
-          console.log(serviceName + ' results refreshed');
+          console.log(serviceName + ' results loaded');
           return finalCallback();
         }
       }
@@ -146,7 +146,7 @@ var updateStreamStatus = function (deepstream) {
     switch (stream.source) {
       case 'ustream':
         console.log('check ustream')
-        if (ustream = Streams.findOne({'id': streamSourceId})) {
+        if (stream = Streams.findOne({'id': streamSourceId})) {
           // TODO update views and such
           Deepstreams.update({
             _id: deepstream._id,
@@ -161,7 +161,20 @@ var updateStreamStatus = function (deepstream) {
         }
         break;
       case 'bambuser':
-        // TODO
+        console.log('check bambuser')
+        if (stream = Streams.findOne({'id': streamSourceId})) {
+          // TODO update views and such
+          Deepstreams.update({
+            _id: deepstream._id,
+            'streams.reference.id': streamSourceId
+          }, {$set: {'streams.$.live': true}});
+        } else {
+          // TODO update views and such
+          Deepstreams.update({
+            _id: deepstream._id,
+            'streams.reference.id': streamSourceId
+          }, {$set: {'streams.$.live': false}});
+        }
         break;
       case 'youtube':
         console.log('check youtube')
@@ -174,12 +187,8 @@ var updateStreamStatus = function (deepstream) {
           }
           var videos = data.items;
           var video = videos[0];
-          console.log('youtube video info')
-          console.log(streamSourceId)
           if (video) {
-            //console.log(video.snippet)
             if (video.snippet.liveBroadcastContent === 'live') {
-              console.log('LIIIIIIVE')
               // TODO update views and such (statistis.viewCount)
               // and current viewers liveStreamingDetails.concurrentViewers
               // TODO, this line below shouldn't be necessary since youtube doesn't go live again after it's dead, we think...
@@ -190,7 +199,6 @@ var updateStreamStatus = function (deepstream) {
 
             } else {
               // TODO update views and such
-              console.log('DEEEAAAADDD')
               Deepstreams.update({
                 _id: deepstream._id,
                 'streams.reference.id': streamSourceId
