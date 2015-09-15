@@ -74,7 +74,7 @@ if (Deepstreams.find().count() === 0) {
           "channelTitle": "TarongaSydney",
           "liveBroadcastContent": "live",
           "videoId": "2CZSczxa9qQ",
-          "_source": "youtube"
+          "_streamSource": "youtube"
         },
         "_id": "vebZTBjhH5fRt4wGA",
         "addedAt": new Date("2015-08-12T21:28:03.401Z")
@@ -1560,7 +1560,7 @@ if (Deepstreams.find().count() === 0) {
         "channelTitle": "",
         "liveBroadcastContent": "live",
         "videoId": "-XizvosHgHQ",
-        "_source": "youtube"
+        "_streamSource": "youtube"
       },
       "_id": "W3cXyemikMnXMCisj",
       "authorId": curatorId,
@@ -2046,7 +2046,7 @@ if (Deepstreams.find().count() === 0) {
           "userName": "nysenate",
           "url": "http://www.ustream.tv/user/nysenate"
         },
-        "_source": "ustream",
+        "_streamSource": "ustream",
         "username": "nysenate",
         "currentViewers": 0,
         "type": "stream"
@@ -5697,7 +5697,7 @@ if (Deepstreams.find().count() === 0) {
         "userName": "NASAtelevision",
         "url": "http://www.ustream.tv/user/NASAtelevision"
       },
-      "_source": "ustream",
+      "_streamSource": "ustream",
       "username": "NASAtelevision",
       "currentViewers": 1645,
       "type": "stream"

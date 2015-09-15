@@ -82,17 +82,23 @@ ContextBlock.searchMappings = {
   all_streaming_services: {
     methodName: 'streamSearchList',
     mapFn: function (e) {
-      switch (e._source) {
+      var stream;
+      switch (e._streamSource) {
         case 'youtube':
-          return youtubeMapFn(e);
+          stream = youtubeMapFn(e);
+          break;
         case 'bambuser':
-          return bambuserMapFn(e);
+          stream = bambuserMapFn(e);
+          break;
         case 'ustream':
-          return ustreamMapFn(e);
+          stream = ustreamMapFn(e);
+          break;
         default:
           console.error(e);
           throw new Meteor.Error('Unknown stream source')
       }
+      delete stream._streamSource; // this was only for internal use
+      return stream;
     }
   },
   youtube: {

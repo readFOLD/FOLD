@@ -512,7 +512,7 @@ Meteor.methods({
     if (page.youtube !== 'end'){
       youtubeResults = searchYouTube.call(this, query, 'live', page.youtube || null);
       _.each(youtubeResults.items, function(item){
-        _.extend(item, { _source: 'youtube'})
+        _.extend(item, { _streamSource: 'youtube'})
       });
     } else { // youtube results are over
       youtubeResults = {
@@ -579,7 +579,7 @@ Meteor.methods({
         {tags: regExp},
         {username: regExp}
         //{ $text: { $search: query, $language: 'en' } }
-      ], _source: 'bambuser'};
+      ], _streamSource: 'bambuser'};
       bambuserStreams = Streams.find(selector, options).fetch();
     } else {
       bambuserStreams = [];

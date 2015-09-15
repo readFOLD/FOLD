@@ -27,7 +27,7 @@ var refreshUStreamDB = Meteor.wrapAsync(function(finalCallback){
     Streams.batchInsert(_.map(result.items, function(doc) {
 
       return _.extend(doc, {
-        _source: 'ustream',
+        _streamSource: 'ustream',
         username: doc.user.userName,
         currentViewers: parseInt(doc.viewersNow),
         totalViews: parseInt(doc.totalViews),
@@ -92,9 +92,9 @@ var refreshUStreamDB = Meteor.wrapAsync(function(finalCallback){
 
 
         try{
-          Streams.update({_source: 'ustream'}, { $inc: {oneIfCurrent: 1 }}, {multi: true}); // recent batch is now loaded
+          Streams.update({_streamSource: 'ustream'}, { $inc: {oneIfCurrent: 1 }}, {multi: true}); // recent batch is now loaded
 
-          Streams.remove({_source: 'ustream', oneIfCurrent: {$gt: 1 }}); // remove previous batch
+          Streams.remove({_streamSource: 'ustream', oneIfCurrent: {$gt: 1 }}); // remove previous batch
 
         } catch (err) {
           finalCallback(err);
@@ -139,7 +139,7 @@ var refreshBambuserDB = Meteor.wrapAsync(function(finalCallback){
     Streams.batchInsert(_.map(result.items, function(doc) {
 
       return _.extend(doc, {
-        _source: 'bambuser',
+        _streamSource: 'bambuser',
         username: doc.userName,
         //currentViewers: parseInt(doc.views), // no current viewers metric for bambuser
         totalViews: parseInt(doc.views_total),
@@ -204,9 +204,9 @@ var refreshBambuserDB = Meteor.wrapAsync(function(finalCallback){
 
 
         try{
-          Streams.update({_source: 'bambuser'}, { $inc: {oneIfCurrent: 1 }}, {multi: true}); // recent batch is now loaded
+          Streams.update({_streamSource: 'bambuser'}, { $inc: {oneIfCurrent: 1 }}, {multi: true}); // recent batch is now loaded
 
-          Streams.remove({_source: 'bambuser', oneIfCurrent: {$gt: 1 }}); // remove previous batch
+          Streams.remove({_streamSource: 'bambuser', oneIfCurrent: {$gt: 1 }}); // remove previous batch
 
         } catch (err) {
           finalCallback(err);
