@@ -55,7 +55,7 @@ ustreamMapFn = function (e) { // this is post-insert from pre-loading ustream re
       totalViews: e.totalViews,
       userId: e.user.id,
       creationDate: e.creationDate,
-      lastStreamedAt: new Date(e.lastStreamedAt)
+      lastStreamedAt: e.lastStreamedAt
     },
     live: e.live,
     source: 'ustream'

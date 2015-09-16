@@ -1,3 +1,20 @@
+Date.prototype.stdTimezoneOffset = function() {
+  var jan = new Date(this.getFullYear(), 0, 1);
+  var jul = new Date(this.getFullYear(), 6, 1);
+  return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+};
+
+Date.prototype.dst = function() {
+  return this.getTimezoneOffset() < this.stdTimezoneOffset();
+};
+
+
+// assume that daylight savings time wherever server is is the same as it is for ustream
+// ustream apparently uses timestamps that match whatever time it happened to be in SF, but contain no timezone or dst info
+var convertUStreamDateToUTC = function(ustreamDateString){
+  return new Date(ustreamDateString + " " + (new Date().dst() ? 'PDT' : 'PST'))
+};
+
 var servicesToFetch = [
   {
     serviceName: 'ustream',
@@ -8,14 +25,18 @@ var servicesToFetch = [
     maxPages: parseInt(process.env.MAX_USTREAM_PAGES) || parseInt(Meteor.settings.MAX_USTREAM_PAGES) || 1000,
     asyncWaitTime: 10,
     mapFn: function (doc) {
-      return _.extend(doc, {
+      _.extend(doc, {
         _streamSource: 'ustream',
         username: doc.user.userName,
-        creationDate: new Date(doc.createdAt),
+        creationDate: convertUStreamDateToUTC(doc.createdAt),
+        lastStreamedAt: convertUStreamDateToUTC(doc.lastStreamedAt),
         currentViewers: parseInt(doc.viewersNow),
         totalViews: parseInt(doc.totalViews),
+        createdAtInUStreamTime: doc.createdAt, // save this in case we need it later
         live: true
       })
+      delete doc.createdAt; // this is an awful thing with no timezone info, we renamed it to make that clear
+      return doc
     }
   },
   {
