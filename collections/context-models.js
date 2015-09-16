@@ -54,7 +54,8 @@ ustreamMapFn = function (e) { // this is post-insert from pre-loading ustream re
       previewUrl: e.imageUrl.medium,
       totalViews: e.totalViews,
       userId: e.user.id,
-      creationDate: new Date(e.createdAt)
+      creationDate: e.creationDate,
+      lastStreamedAt: new Date(e.lastStreamedAt)
     },
     live: e.live,
     source: 'ustream'
@@ -69,7 +70,7 @@ bambuserMapFn = function (e) {
       username: e.username, // for some reason, username always comes back null
       totalViews: e.totalViews,
       userId: e.owner.uid,
-      creationDate: new Date(parseInt(e.created)),
+      creationDate: e.creationDate,
       tags: e.tags,
       previewUrl: e.preview
     },

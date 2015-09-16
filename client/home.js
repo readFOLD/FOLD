@@ -305,7 +305,7 @@ Template.streams.helpers({
         case 'most_recent':
           return Streams.find({}, {
             sort: {
-              createdAt: -1
+              creationDate: -1
             },
             limit: 20,
             reactive: false

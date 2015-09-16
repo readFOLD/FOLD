@@ -509,6 +509,10 @@ Schema.Deepstreams = new SimpleSchema({
           creationDate: {
             type: Date
           },
+          lastStreamedAt: {
+            type: Date,
+            optional: true
+          },
           noPreview: {
             type: Boolean,
             optional: true

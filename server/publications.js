@@ -121,7 +121,7 @@ Meteor.publish("mostRecentStreams", function() {
   }
   return Streams.find({ oneIfCurrent: 1 }, {
     sort: {
-      createdAt: -1
+      creationDate: -1
     },
     limit: 20
   });

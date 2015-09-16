@@ -11,6 +11,7 @@ var servicesToFetch = [
       return _.extend(doc, {
         _streamSource: 'ustream',
         username: doc.user.userName,
+        creationDate: new Date(doc.createdAt),
         currentViewers: parseInt(doc.viewersNow),
         totalViews: parseInt(doc.totalViews),
         live: true
@@ -29,6 +30,7 @@ var servicesToFetch = [
       _.extend(doc, {
         _streamSource: 'bambuser',
         id: doc.vid,
+        creationDate: new Date(parseInt(doc.created) * 1000),
         //currentViewers: parseInt(doc.views), // no current viewers metric for bambuser
         totalViews: parseInt(doc.views_total),
         lengthSecs: doc.length,
