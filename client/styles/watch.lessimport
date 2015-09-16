@@ -778,9 +778,6 @@
   text-align: center;
 }
 
-
-// TODO Refactor
-
 .news-section{
   height: 100%;
   line-height: 23px;

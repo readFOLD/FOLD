@@ -120,11 +120,9 @@ Meteor.methods({
       });
     }
 
-    var numUpdated = updateStream.call(this, { shortId: streamShortId }, modifierObject); // TODO, make it so can't easily add the same one twice (savedAt and addedAt are different)
+    var numUpdated = updateStream.call(this, { shortId: streamShortId }, modifierObject);
 
     if (numUpdated){
-
-
       if (Meteor.isClient){
         Session.set("searchingMedia", false); // leave search mode
         var typeSpecificContextBlock = newTypeSpecificContextBlock(contextBlock);
@@ -147,7 +145,7 @@ Meteor.methods({
     if (Meteor.isServer){
       check(stream, Object);
     } else {
-      check(stream, Match.Any); // TODO this should be Object or Stream but that doesn't seem to work out clientside...
+      check(stream, Match.Any); // this should be Object or Stream but that doesn't seem to work out clientside...
     }
 
 
@@ -190,12 +188,11 @@ Meteor.methods({
     if(duplicateStream){
       success = true; // it's already done!
     } else {
-      success = updateStream.call(this, { shortId: streamShortId }, modifierObject); // TODO, make it so can't easily add the same one twice (addedAt is different)
+      success = updateStream.call(this, { shortId: streamShortId }, modifierObject);
     }
 
     if (success) {
 
-      // TODO something
       if (Meteor.isClient){
         if(numberOfStreamsBeforeAdd === 1 && !duplicateStream) { // this is the second stream to be added
           window.notifySuccess("You just added a second stream. Now you can switch between streams and all your viewers will see that change!");
@@ -277,7 +274,7 @@ Meteor.methods({
     if(title){ // if title, description included
       check(title, String);
       check(description, String);
-      var streamPathSegment = _s.slugify(title.toLowerCase() || 'deep-stream')+ '-' + shortId;
+      var streamPathSegment = generateStreamPathSegment(shortId, title);
       setObject.title = title;
       setObject.description = description;
       setObject.streamPathSegment = streamPathSegment;
@@ -292,8 +289,7 @@ Meteor.methods({
   updateStreamTitle: function(shortId, title){
     check(shortId, String);
     check(title, String);
-    // TODO DRY
-    var streamPathSegment = _s.slugify(title.toLowerCase() || 'deep-stream') + '-' + shortId;
+    var streamPathSegment = generateStreamPathSegment(shortId, title);
     return updateStream.call(this, {shortId: shortId}, {$set: {'title' : title, 'streamPathSegment' : streamPathSegment }});
   },
   updateStreamDescription: function(shortId, description){
@@ -373,7 +369,7 @@ Meteor.methods({
       throw new Meteor.Error('user does not have create access. userId: ' + this.userId);
     }
 
-    var streamPathSegment = _s.slugify('new-deep-stream') + '-' + shortId;  // TODO DRY
+    var streamPathSegment = generateStreamPathSegment(shortId);
     var userPathSegment= user.displayUsername;
 
     Deepstreams.insert({

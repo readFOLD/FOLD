@@ -453,7 +453,7 @@ Template.create_news_section.onCreated(function() {
       }
 
       if(result && !result.content){
-        that.noMoreResults.set('No article found to display'); // TODO make this a link card or something
+        that.noMoreResults.set('No article found to display'); // TO-DO make this a link card or something?
         return
       }
 

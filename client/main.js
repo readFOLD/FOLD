@@ -54,7 +54,7 @@ Meteor.startup(function(){
 //      'numberofKeywords': story.keywords.length,
 //      'titleLength': story.title.length
 //    } : {})
-//    .extend(story.countContextTypes ? story.countContextTypes() : {}) // TODO Fix
+//    .extend(story.countContextTypes ? story.countContextTypes() : {})
 //    .value();
 //};
 

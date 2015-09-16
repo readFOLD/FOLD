@@ -138,7 +138,6 @@ var generateFetchFunction = function(serviceInfo){
 };
 
 var updateStreamStatus = function (deepstream) {
-  // TODO track how many streams are live and update deepstream accordingly
   var ustream;
   _.each(deepstream.streams, function (stream) {
     var streamSourceId = stream.reference.id;
@@ -180,8 +179,7 @@ var updateStreamStatus = function (deepstream) {
         console.log('check youtube');
 
         // TODO maybe only if we think youtube video is live
-        // TODO check youtube videos at API and update with live or not live
-        Meteor.call('youtubeVideoInfo', streamSourceId, function (err, data) {  // TODO this request can be done in a batch for all youtube videos we have...
+        Meteor.call('youtubeVideoInfo', streamSourceId, function (err, data) { // TODO this request can be done in a batch for all youtube videos we have...
           if (err) {
             throw(err);
           }
@@ -191,7 +189,7 @@ var updateStreamStatus = function (deepstream) {
             if (video.snippet.liveBroadcastContent === 'live') {
               // TODO update views and such (statistis.viewCount)
               // and current viewers liveStreamingDetails.concurrentViewers
-              // TODO, this line below shouldn't be necessary since youtube doesn't go live again after it's dead, we think...
+              // TO-DO, this line below shouldn't be necessary since youtube doesn't go live again after it's dead, we think...
               Deepstreams.update({
                 _id: deepstream._id,
                 'streams.reference.id': streamSourceId
@@ -230,7 +228,7 @@ var updateStreamStatuses = function () {
 var updateDeepstreamStatuses = function () {
 
   // TODO only check active stream when in director mode
-  // TODO restrict to published?
+  // TO-DO performance. restrict to published?
 
   var dsLive = Deepstreams.update({'streams.live': true}, {$set: {live: true}}, {multi: true});
   var dsDead = Deepstreams.update({'streams': {$not: {$elemMatch: {live: true}}}}, {$set: {live: false}}, {multi: true});

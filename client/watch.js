@@ -114,7 +114,7 @@ Template.watch_page.onCreated(function () {
   });
 
   // confirm user is curator if on curate page
-  this.autorun(function(){ // TODO confirm user is curator
+  this.autorun(function(){
     if(FlowRouter.subsReady() && that.data.onCuratePage()){
       var stream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
 
@@ -122,7 +122,7 @@ Template.watch_page.onCreated(function () {
         if (!stream || user._id !== stream.curatorId) { // if they don't own the stream take them to stream not found
           return FlowLayout.render("stream_not_found");
         }
-        var accessPriority = Meteor.user().accessPriority; // TODO update for Deepstream
+        var accessPriority = Meteor.user().accessPriority;
         if (!accessPriority || accessPriority > window.createAccessLevel){
           FlowRouter.go(stream.watchPath());
           notifyInfo("Creating and editing streams is temporarily disabled, possibly because things blew up (in a good way). Sorry about that! We'll have everything back up as soon as we can. Until then, why not check out some of the other great content authors in the community have written?")
@@ -424,7 +424,6 @@ Template.watch_page.events({
         }
       });
     } // TODO handle if in the middle of creation (or just disable button or something)
-
   },
   'click .unpublish': function(e, t){
     Meteor.call('unpublishStream', t.data.shortId(), basicErrorHandler);
@@ -554,9 +553,7 @@ Template.context_browser.events({
     var that = this;
 
     t.$('[data-context-id=' + that._id + ']').fadeOut(500, function() {
-      Meteor.call('removeContextFromStream', Session.get("streamShortId"), that._id, function(err){
-        // TODO SOMETHING
-      });
+      Meteor.call('removeContextFromStream', Session.get("streamShortId"), that._id, basicErrorHandler);
     });
   },
   'click .context-section .clickable': function(e, t){
