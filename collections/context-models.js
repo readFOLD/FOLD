@@ -157,7 +157,7 @@ ContextBlock.searchMappings = {
           username: e.user.name,
           screenname: e.user.screen_name,
           userPic: e.user.profile_image_url_https,
-          creationDate: new Date(e.created_at.substring(0, 19))
+          creationDate: new Date(e.created_at)
         }
       };
       return item;
