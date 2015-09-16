@@ -976,6 +976,10 @@ NewsBlock = (function (_super) {
     return this.title();
   };
 
+  NewsBlock.prototype.publicationDate = function(){
+    return this.reference.publishedOffset ? new Date(this.reference.publishedMs + this.reference.publishedOffset) : new Date(this.reference.publishedMs);
+  };
+
   NewsBlock.prototype.soloModeLocation = 'sidebar';
   NewsBlock.prototype.soloModeTemplate = 'display_news_section';
   NewsBlock.prototype.listModeItemTemplate = 'preview_news_section';

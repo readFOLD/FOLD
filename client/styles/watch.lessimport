@@ -798,6 +798,10 @@
   }
 }
 
+.news-title{
+  margin-bottom: 5px;
+}
+
 .create-section {
   .news-section {
     height: 100%;

@@ -269,8 +269,12 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     type: String,
     optional: true
   },
-  publicationDate: {
-    type: Date,
+  publishedMs: {
+    type: Number,
+    optional: true
+  },
+  publishedOffset: {
+    type: Number,
     optional: true
   },
   'topImage.url': {

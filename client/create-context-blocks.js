@@ -472,7 +472,8 @@ Template.create_news_section.onCreated(function() {
           topImage: result.images[0],
           providerName: result.provider_name,
           providerIconUrl: result.favicon_url,
-          publicationDate: new Date(result.published)
+          publishedMs: result.published,
+          publishedOffset: result.offset
         },
         source: 'embedly'
       }));
