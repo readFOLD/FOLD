@@ -197,8 +197,8 @@ div.logo-title {
 }
 
 .deepstream-preview{
-  @width: 560px;
-  @stream-image-width: 350px;
+  @width: 500px;
+  @stream-image-width: 290px;
   @padding: 12px;
   @content-section-width: @width - @stream-image-width - 2 * @padding;
 
