@@ -22,7 +22,7 @@ var servicesToFetch = [
     methodName: 'bambuserVideoSearchList',
     startingPage: 0,
     initialPagesGuess: 3,
-    guessBias: 1,
+    guessBias: 0,
     maxPages: parseInt(process.env.MAX_BAMBUSER_PAGES) || parseInt(Meteor.settings.MAX_BAMBUSER_PAGES) || 1000,
     asyncWaitTime: 10,
     mapFn: function (doc) {
