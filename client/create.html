@@ -357,6 +357,15 @@
               <div class="tweet" dir="auto">{{{formattedTweet}}}
               </div>
               <div class="info">
+                <span>
+                  <a href="{{twitter_url}}" target="_blank"><i class="fa fa-twitter"></i>
+                  </a>
+                  {{#if retweetUser}}
+                    <a href="{{retweet_url}}" target="_blank">
+                      <i class="fa fa-retweet"></i>@{{retweetUser}}</a>
+                  {{/if}}
+                  <a href="{{tweet_url}}" target="_blank">{{date}}</a>
+                </span>
               </div>
             </div>
           </div>
