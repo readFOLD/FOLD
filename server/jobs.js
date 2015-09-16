@@ -28,6 +28,7 @@ var servicesToFetch = [
     mapFn: function (doc) {
       _.extend(doc, {
         _streamSource: 'bambuser',
+        id: doc.vid,
         //currentViewers: parseInt(doc.views), // no current viewers metric for bambuser
         totalViews: parseInt(doc.views_total),
         lengthSecs: doc.length,
