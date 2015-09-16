@@ -91,8 +91,9 @@
                 </button>
               </li>
             {{/if}}
-            <li class="live-dead-divider">
-            </li>
+            {{#if deadstreams.length}}
+              <li class="live-dead-divider"></li>
+            {{/if}}
             {{#each deadstreams}}
               <li data-stream-reference-id="{{reference.id}}" class="stream">
                 <button class="set-main-stream {{#if active}}active{{/if}}">

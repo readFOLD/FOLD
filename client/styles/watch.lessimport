@@ -1,16 +1,16 @@
-[contenteditable], textarea{
-  &:hover{
-    outline: 1px dotted @annotation-color;
-  }
-}
+@right-section-width: 350px;
+@PiP-width: 250px;
+@PiP-height: 150px;
+@left-margin: 10px;
+@live-indicator-width: 88px;
 
 .watch{
   .stream-title{
     display: inline-block;
     font-size: 36px;
     line-height: normal;
-    margin-left: 10px;
-    min-width: 400px;
+    margin-left: @left-margin;
+    min-width: calc(100% ~"-" (@right-section-width + 3 * @left-margin + @live-indicator-width));
   }
   .streams-list{
     .stream.justAdded{
@@ -75,10 +75,6 @@
   }
 }
 
-@right-section-width: 350px;
-@PiP-width: 250px;
-@PiP-height: 150px;
-@left-margin: 10px;
 
 .main-stream{
   height: 100%;
@@ -765,7 +761,7 @@
   font-weight: bold;
   height: 42px;
   line-height: 42px;
-  width: 88px;
+  width: @live-indicator-width;
   text-align: center;
 }
 

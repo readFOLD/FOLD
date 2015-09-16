@@ -490,6 +490,11 @@ hr {
   border-top: 1px solid @dark-color;
 }
 
+[contenteditable], textarea{
+  &:hover{
+    outline: 1px dotted @annotation-color;
+  }
+}
 
 .full-page-width{
   overflow: hidden;

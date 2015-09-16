@@ -117,7 +117,6 @@ window.addStream = function(stream, template) {
 };
 
 window.addContext = function(contextBlock) {
-  Session.set('query', null); // clear query so it doesn't seem like you're editing this card next time open the new card menu
   Session.set('saveState', 'saving');
 
   contextBlock._id = Random.id(9);

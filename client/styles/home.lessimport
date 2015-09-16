@@ -61,7 +61,7 @@ div.deepstreams-and-streams > ol > li:nth-child(even) {
 .stream-type-selector{
   @height: 46px;
   li {
-    color: @light-text-color;
+    color: @deemphasized-light-text-color;
     height: auto;
     display:inline-block;
     font-size:18px;
@@ -100,16 +100,17 @@ div.deepstreams-and-streams > ol > li:nth-child(even) {
 
     &:hover {
       background-color: @hover-pill-color;
+      color: @light-text-color;
     }
     &.selected {
       background-color: @active-pill-color;
+      color: @light-text-color;
     }
   }
   button{
     line-height:@height;
     padding:0 15px;
 
-    color: @light-text-color;
     background-color: transparent;
   }
 
