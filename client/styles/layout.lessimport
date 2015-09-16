@@ -377,7 +377,7 @@ input {
   font-family: inherit;
   outline: none;
   font-size: 14px;
-  color: @light-text-color;
+  color: @dark-text-color;
 }
 
 
@@ -400,6 +400,7 @@ input[type="search"] {
   border: none;
   padding-left: 6px;
   padding-right: 6px;
+  color: @light-text-color;
 }
 
 input[type="search"]::-webkit-search-decoration,
