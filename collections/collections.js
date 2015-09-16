@@ -50,7 +50,7 @@ var deepAnalyticsSchema = new SimpleSchema({
 });
 
 Schema.DeepstreamStats = new SimpleSchema({
-  storyId: {
+  streamId: {
     type: String
   },
   deepAnalytics: {

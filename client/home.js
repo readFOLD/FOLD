@@ -1,21 +1,4 @@
-var formatDate, weekDays, formatDateNice, monthNames;
 
-weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-// Friday 2/20/2015 20:29:22
-formatDate = function (date) {
-  var hms;
-  hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-  return weekDays[date.getDay()] + " " + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
-};
-
-// February 7th, 2015
-formatDateNice = function (date) {
-  var hms;
-  hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-  return monthNames[(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear();
-};
 
 loginWithTwitter = function () {
   Session.set('signingInWithTwitter', true);
@@ -302,7 +285,6 @@ Template.deepstream_preview.events({
 Template.streams.helpers({
   streams: function () {
     if (FlowRouter.subsReady()) {
-      var sort = {};
       switch (Session.get('homeStreamListMode')) {
         case 'best':
           return Streams.find({}, {

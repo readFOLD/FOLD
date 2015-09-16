@@ -181,6 +181,7 @@ Template.display_text_section.helpers(horizontalBlockHelpers);
 Template.preview_text_section.helpers(horizontalBlockHelpers);
 Template.homepage_preview_text_section.helpers(horizontalBlockHelpers);
 Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
+
 //
 //Template.share_button.events({
 //  'click': function(e, t) {

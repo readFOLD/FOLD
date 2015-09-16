@@ -191,20 +191,6 @@ html {
   padding-right: @padding;
 }
 
-
-// http://asimpleframe.com/
-@font-face {
-    font-family: 'Alright Sans';
-    src: url("/alright_sans_bold.woff");
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: 'Alright Sans';
-    src: url("/alright_sans.woff");
-    font-weight: normal;
-}
-
 @font-face {
   font-family: 'Muli';
   font-style: normal;

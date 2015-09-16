@@ -18,21 +18,18 @@ Template.reset_password_form.events({
     var password = t.$('#reset-password-password').val();
     var passwordConfirm = t.$('#reset-password-password-confirm').val();
 
-    if (_.isEmpty(password)) {
-      t.message.set('Please fill in all required fields.');
-      return;
+    var result = checkValidPassword(password);
+    if (!result.status) {
+      t.message.set(result.message);
+      return
     }
 
-    if (!isValidPassword(password)) {
-      t.message.set('Please enter a valid password.');
-      return;
+    var result2 = checkValidPasswordConfirmation(password, passwordConfirm);
+    if (!result2.status) {
+      t.message.set(result2.message);
+      return
     }
 
-    if (password !== passwordConfirm) {
-      t.message.set('Your two passwords are not equivalent.');
-      return;
-    }
- 
     Accounts.resetPassword(Session.get('resetPasswordToken'), password, function(err) {
       if (err) {
         t.message.set('We are sorry but something went wrong.');

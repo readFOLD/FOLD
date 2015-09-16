@@ -16,6 +16,8 @@ var reservedUsernames = _.sortBy([
   'huynh',
   'nathaliehuynh',
   'readfold',
+  'deepstream',
+  'deep_stream',
   'civic',
   'civicmedia',
 

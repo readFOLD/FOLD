@@ -67,7 +67,6 @@ bambuserMapFn = function (e) {
       title: e.title,
       id: e.vid,
       username: e.username, // for some reason, username always comes back null
-      //currentViewers: e.currentViewers,
       totalViews: e.totalViews,
       userId: e.owner.uid,
       creationDate: new Date(parseInt(e.created)),

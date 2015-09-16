@@ -81,7 +81,7 @@ var checkPasswordFields = function(e, t) {
   var p1 = $("#signup-password").val();
   var p2 = $("#signup-password2").val();
 
-  var result = checkValidPassword(p1, p2);
+  var result = checkValidPassword(p1);
   if (!result.status) {
     t.passwordError.set(result.message);
   } else {
