@@ -1,33 +1,31 @@
-var isDST = false; // default in case request fails
-var DSTChecked = false;
-
-// assume that daylight savings time wherever server is is the same as it is for ustream whenever that video happened to be recorded
 // ustream apparently uses timestamps that match whatever time it happened to be in SF, but contain no timezone or dst info
-var convertUStreamDateToUTC = function(ustreamDateString){
-  return new Date(ustreamDateString + " " + (isDST ? 'PDT' : 'PST'))
+
+var dstObject = {
+  2011: ['March 13', 	'November 6'],
+  2012: ['March 11', 	'November 4'],
+  2013: ['March 10',  'November 3'],
+  2014: ['March 9', 'November 2'],
+  2015: ['March 8', 'November 1'],
+  2016: ['March 13', 	'November 6'],
+  2017: ['March 12', 	'November 5'],
+  2018: ['March 11', 	'November 4']
 };
 
-var checkDSTOnceOnly = function(){
-  if(DSTChecked){ // only check once per worker (per day)
-    return;
+var defaultYear = 2018;
+
+var convertUStreamDateToUTC = function(ustreamDateString){
+  var proposedDate = new Date(ustreamDateString + ' PDT'); // assume PDT to start
+  var year = proposedDate.getFullYear();
+
+  var dstDates = dstObject[year];
+  if(!dstDates){
+    dstDates = dstObject[defaultYear];
+    console.error('NO DST information available for year ' + year + '. Please add this year to the codebase. Defaulting to ' + defaultYear);
   }
-  console.log("Checking DST Status");
-  var requestParams = {
-    location: "37.7833,-122.4167",
-    timestamp: Date.now()/1000,
-    key: Meteor.settings.GOOGLE_API_SERVER_KEY
-  };
 
-  timezoneRes = HTTP.get('https://maps.googleapis.com/maps/api/timezone/json?parameters', {
-    params: requestParams
-  });
+  var dst = proposedDate > new Date(dstDates[0] + ' ' + year + ' 03:00:00 PDT') && proposedDate < new Date(dstDates[1] + ' ' + year + ' 02:00:00 PDT');
 
-  DSTChecked = true;
-
-  if (timezoneRes.data.dstOffset){
-    isDST = true;
-  }
-  console.log("DST Status is: " + isDST);
+  return new Date(ustreamDateString + " " + (dst ? 'PDT' : 'PST'))
 };
 
 
@@ -279,9 +277,8 @@ var updateDeepstreamStatuses = function () {
 };
 
 var runJobs = function () {
-  console.log('Running jobs...')
+  console.log('Running jobs...');
   var startTime = Date.now();
-  checkDSTOnceOnly();
   var previousTimepoint = Date.now();
 
   var timeLogs = [];
