@@ -502,6 +502,13 @@ Meteor.methods({
     };
   },
   streamSearchList: function(query, option, page){
+    if(!this.userId){ // TO-DO Launch remove
+      return {
+        items: [],
+        nextPage: 'end'
+      };
+    }
+
     var youtubeResults;
     if (!page) {
       page = {};
@@ -626,12 +633,10 @@ Meteor.methods({
       .compact()
       .value();
 
-    var a = {
+    return {
       items: items,
       nextPage: nextPage
     }
-
-    return a;
   },
   youtubeVideoSearchList: searchYouTube,
   bambuserVideoSearchList: function (query, option, page) {

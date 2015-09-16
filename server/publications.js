@@ -4,23 +4,23 @@ Deepstreams._ensureIndex({
   unique: 1
 });
 
-//Stories._ensureIndex({
-//  published: 1
+Deepstreams._ensureIndex({
+  onAir: 1
+});
+
+//Deepstreams._ensureIndex({
+//  curatorId: 1
 //});
-//
-//Stories._ensureIndex({
-//  authorId: 1
-//});
-//
+
 Meteor.users._ensureIndex({
   username: 1
 });
 
 
-Streams._ensureIndex({
-  title: "text",
-  description: "text"
-});
+//Streams._ensureIndex({
+//  title: "text",
+//  description: "text"
+//});
 
 
 //var readStoryFields = {
@@ -69,11 +69,45 @@ Streams._ensureIndex({
 //  title: 1
 //};
 
-Meteor.publish("deepstreamsOnAir", function() {
-  return Deepstreams.find({onAir: true});
+Meteor.publish("deepstreamsOnAir", function(options) {
+  options = options ? options : {};
+  _.defaults(options, {page: 0});
+
+  if(!this.userId){ // TO-DO Launch remove
+    return this.ready();
+  }
+  return Deepstreams.find({
+    onAir: true
+  }, {
+    sort: {
+      live: -1
+    },
+    skip: options.page * PUB_SIZE,
+    limit: PUB_SIZE
+  });
 });
 
+//Meteor.publish("curatedStoriesPub", function(options) {
+//  options = options ? options : {};
+//  _.defaults(options, {page: 0});
+//
+//  return Stories.find({
+//    published: true,
+//    editorsPick: true
+//  }, {
+//    fields: options.preview ? previewStoryFields : readStoryFields,
+//    skip: options.page * PUB_SIZE,
+//    sort: {
+//      editorsPickAt: -1
+//    },
+//    limit: PUB_SIZE
+//  });
+//});
+
 Meteor.publish("bestStreams", function() {
+  if(!this.userId){ // TO-DO Launch remove
+    return this.ready();
+  }
   return Streams.find({ oneIfCurrent: 1 }, {
     sort: {
       currentViewers: -1
@@ -82,6 +116,9 @@ Meteor.publish("bestStreams", function() {
   });
 });
 Meteor.publish("mostRecentStreams", function() {
+  if(!this.userId){ // TO-DO Launch remove
+    return this.ready();
+  }
   return Streams.find({ oneIfCurrent: 1 }, {
     sort: {
       createdAt: -1
@@ -92,6 +129,9 @@ Meteor.publish("mostRecentStreams", function() {
 
 
 Meteor.publish("singleDeepstream", function(userPathSegment, shortId) {
+  if(!this.userId){ // TO-DO Launch remove
+    return this.ready();
+  }
   check(shortId, String);
   return Deepstreams.find({userPathSegment: userPathSegment, shortId: shortId});
 });
@@ -100,22 +140,22 @@ Meteor.publish("myDeepstreams", function() {
   return Deepstreams.find({curatorId: this.userId});
 });
 
-Meteor.publish("curatedStoriesPub", function(options) {
-  options = options ? options : {};
-  _.defaults(options, {page: 0});
-
-  return Stories.find({
-    published: true,
-    editorsPick: true
-  }, {
-    fields: options.preview ? previewStoryFields : readStoryFields,
-    skip: options.page * PUB_SIZE,
-    sort: {
-      editorsPickAt: -1
-    },
-    limit: PUB_SIZE
-  });
-});
+//Meteor.publish("curatedStoriesPub", function(options) {
+//  options = options ? options : {};
+//  _.defaults(options, {page: 0});
+//
+//  return Stories.find({
+//    published: true,
+//    editorsPick: true
+//  }, {
+//    fields: options.preview ? previewStoryFields : readStoryFields,
+//    skip: options.page * PUB_SIZE,
+//    sort: {
+//      editorsPickAt: -1
+//    },
+//    limit: PUB_SIZE
+//  });
+//});
 
 
 Meteor.publish("userData", function () {
