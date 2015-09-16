@@ -1,14 +1,23 @@
 // ustream apparently uses timestamps that match whatever time it happened to be in SF, but contain no timezone or dst info
 
 var dstObject = {
-  2011: ['March 13', 	'November 6'],
-  2012: ['March 11', 	'November 4'],
-  2013: ['March 10',  'November 3'],
+  2003: ['April 6', 'October 26'],
+  2004: ['April 4', 'October 31'],
+  2005: ['April 3', 'October 30'],
+  2006: ['April 2', 'October 29'],
+  2007: ['March 11', 'November 4'],
+  2008: ['March 9', 'November 2'],
+  2009: ['March 8', 'November 1'],
+  2010: ['March 14', 'November 7'],
+  2011: ['March 13', 'November 6'],
+  2012: ['March 11', 'November 4'],
+  2013: ['March 10', 'November 3'],
   2014: ['March 9', 'November 2'],
   2015: ['March 8', 'November 1'],
-  2016: ['March 13', 	'November 6'],
-  2017: ['March 12', 	'November 5'],
-  2018: ['March 11', 	'November 4']
+  2016: ['March 13', 'November 6'],
+  2017: ['March 12', 'November 5'],
+  2018: ['March 11', 'November 4'],
+  2019: ['March 10', 'November 3']
 };
 
 var defaultYear = 2018;
