@@ -263,7 +263,7 @@ Stream = (function (_super) {
   Stream.prototype.currentViewers = function () {
     switch (this.source){
       case 'youtube':
-        return 431;
+        return this.reference.currentViewers;
       case 'ustream':
         return this.reference.currentViewers;
       case 'bambuser':
@@ -273,7 +273,7 @@ Stream = (function (_super) {
   Stream.prototype.totalViews = function () {
     switch (this.source){
       case 'youtube':
-        return 59274;
+        return this.reference.totalViews;
       case 'ustream':
         return this.reference.totalViews;
       case 'bambuser':

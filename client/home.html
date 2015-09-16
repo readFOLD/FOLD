@@ -313,7 +313,9 @@
         <div class="title">{{title}}</div>
         <div class="small-stream-info">
           <div class="username">{{username}}</div>
-          <div class="views">{{totalViews}} Views</div>
+          {{#if totalViews}}
+            <div class="views">{{totalViews}} Views</div>
+          {{/if}}
         </div>
       </div>
     </button>
