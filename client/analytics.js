@@ -13,7 +13,9 @@ window.trackTiming = function(category, str, time){  // mobile safari doesn't ha
   analytics.track(str, {time: time});
 
   analytics.ready(function(){
-    ga('send', 'timing', category, str, time);
+    if (window.ga){
+      window.ga('send', 'timing', category, str, time);
+    }
   });
 };
 

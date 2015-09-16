@@ -106,34 +106,45 @@ Template.watch_page.onCreated(function () {
     mainPlayer._bambuserPlayer = getFlashMovie(that.mainStreamFlashPlayerId);
   };
 
-  // confirm stream exists
-  this.autorun(function(){
-    if (FlowRouter.subsReady() && !Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false})){
-      return FlowLayout.render("stream_not_found");
-    }
-  });
 
-  // confirm user is curator if on curate page
+  // confirm stream exists confirm user is curator if on curate page. forward curators to curate if they are on watch page
   this.autorun(function(){
-    if(FlowRouter.subsReady() && that.data.onCuratePage()){
+    if(FlowRouter.subsReady()){
       var stream = Deepstreams.findOne({shortId: that.data.shortId()}, {reactive: false});
+      var user = Meteor.user();
 
-      if ((user = Meteor.user())) { // if there is a user
-        if (!stream || user._id !== stream.curatorId) { // if they don't own the stream take them to stream not found
-          return FlowLayout.render("stream_not_found");
-        }
-        var accessPriority = Meteor.user().accessPriority;
-        if (!accessPriority || accessPriority > window.createAccessLevel){
-          FlowRouter.go(stream.watchPath());
-          notifyInfo("Creating and editing streams is temporarily disabled, possibly because things blew up (in a good way). Sorry about that! We'll have everything back up as soon as we can. Until then, why not check out some of the other great content authors in the community have written?")
-        }
-      } else if (Meteor.loggingIn()) {
-        return
-      } else {
-        Session.set('signingIn', true); // if there is no user, take them to the signin page
-        Session.set('signingInFrom', setSigningInFrom());
-        FlowRouter.go(stream.watchPath());
+      if(!stream){
+        return FlowLayout.render("stream_not_found");
       }
+
+      if (that.data.onCuratePage()){
+        if ((user = Meteor.user())) { // if there is a user
+          if (user._id !== stream.curatorId) { // if they don't own the stream take them to stream not found
+            return FlowLayout.render("stream_not_found");
+          }
+          var accessPriority = Meteor.user().accessPriority;
+          if (!accessPriority || accessPriority > window.createAccessLevel){
+            FlowRouter.withReplaceState(function(){
+              FlowRouter.go(stream.watchPath());
+            });
+            notifyInfo("Creating and editing streams is temporarily disabled, possibly because things blew up (in a good way). Sorry about that! We'll have everything back up as soon as we can. Until then, why not check out some of the other great content authors in the community have written?")
+          }
+        } else if (Meteor.loggingIn()) {
+          return
+        } else {
+          Session.set('signingIn', true); // if there is no user, take them to the signin page
+          Session.set('signingInFrom', setSigningInFrom());
+
+          FlowRouter.withReplaceState(function(){
+            FlowRouter.go(stream.watchPath());
+          });
+        }
+      } else if (user && user._id === stream.curatorId){
+        FlowRouter.withReplaceState(function(){
+          FlowRouter.go(stream.curatePath());
+        });
+      }
+
     }
   });
 
