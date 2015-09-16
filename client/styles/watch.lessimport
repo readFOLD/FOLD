@@ -49,6 +49,19 @@
         background-color: @light-transparent-color;
       }
 
+      .mini-live-indicator{
+        background-color: @live-color;
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 13px;
+        font-weight: bold;
+        height: 18px;
+        line-height: 18px;
+        width: 36px;
+        text-align: center;
+      }
+
       &.live-dead-divider{
         height: @streamPreviewHeight * .8;
         margin-top: @streamPreviewHeight * .1;

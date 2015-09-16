@@ -127,8 +127,6 @@ window.addContext = function(contextBlock) {
     $('.context-section[data-context-id=' + contextBlock._id + '] textarea').focus();
   });
 
-
-
   Meteor.call('addContextToStream', Session.get("streamShortId"), contextBlock, function(err, contextId){
     saveCallback(err, contextId);
   });
