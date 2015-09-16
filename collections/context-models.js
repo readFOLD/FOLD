@@ -34,7 +34,8 @@ youtubeMapFn = function (e) {
       id: e.videoId,
       username: e.channelTitle,
       userId: e.channelId,
-      creationDate: new Date(e.publishedAt)
+      creationDate: new Date(e.publishedAt),
+      noPreview: !e.thumbnails
     },
     live: e.liveBroadcastContent === 'live',
     source: 'youtube'
@@ -52,7 +53,7 @@ ustreamMapFn = function (e) { // this is post-insert from pre-loading ustream re
       thumbnailUrl: e.imageUrl.small,
       previewUrl: e.imageUrl.medium,
       totalViews: e.totalViews,
-      userId: e.userId,
+      userId: e.user.id,
       creationDate: new Date(e.createdAt)
     },
     live: e.live,
@@ -305,15 +306,19 @@ Stream = (function (_super) {
   };
 
   Stream.prototype.flashVars = function(){
-    //return 'vid=' + Template.instance().activeStream.get().reference.id + '&autostart=yes';
-    return 'username=' + this.reference.username + '&autostart=yes';
-  }
+    if (this.source === 'bambuser') {
+      //return 'vid=' + Template.instance().activeStream.get().reference.id + '&autostart=yes';
+      return 'username=' + this.reference.username + '&autostart=yes';
+    }
+  };
 
   Stream.prototype.previewUrl = function () {
     switch (this.source){
       case 'youtube':
+        // TO-DO - if this.noPreview, show something nice instead of blank youtube thing
         return '//img.youtube.com/vi/' + this.reference.id + '/0.jpg';
       case 'ustream':
+        // TO-DO - if contains /images/defaults, show something nice instead of blank ustream thing
         return this.reference.previewUrl;
       case 'bambuser':
         return this.reference.previewUrl;
