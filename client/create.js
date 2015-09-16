@@ -43,7 +43,9 @@ Template.stream_search.events({
   }
 });
 
-
+Template.stream_search.onDestroyed(function(){
+  document.body.style.overflow='auto';
+});
 
 Template.add_context.helpers({
   listMode: function(){
@@ -104,6 +106,10 @@ Template.add_context.events({
   'mouseleave .search-results-container': function(){
     document.body.style.overflow='auto';
   }
+});
+
+Template.add_context.onDestroyed(function(){
+  document.body.style.overflow='auto';
 });
 
 window.addStream = function(stream, template) {
