@@ -244,6 +244,8 @@ Template.deepstreams.helpers({
       }
       return Deepstreams.find(selector, {
         sort: sort
+      }, {
+        reactive: false
       });
     }
   },
@@ -291,7 +293,8 @@ Template.streams.helpers({
             sort: {
               currentViewers: -1
             },
-            limit: 20
+            limit: 20,
+            reactive: false
           }).map(function(stream){
             return _.extend({_id: stream._id}, ContextBlock.searchMappings['all_streaming_services'].mapFn(stream));
           }).map(function(stream){ return new Stream(stream)}); // TODO refactor all this so that streams make a bit more sense
@@ -301,7 +304,8 @@ Template.streams.helpers({
             sort: {
               createdAt: -1
             },
-            limit: 20
+            limit: 20,
+            reactive: false
           }).map(function(stream){
             return _.extend({_id: stream._id}, ContextBlock.searchMappings['all_streaming_services'].mapFn(stream));
           }).map(function(stream){ return new Stream(stream)});
