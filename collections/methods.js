@@ -109,7 +109,7 @@ Meteor.methods({
       '$addToSet' : pushObject
     };
 
-    deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields:{'creationStep': 1}});
+    var deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields:{'creationStep': 1}});
 
     modifierObject['$set'] = {};
 
@@ -266,8 +266,13 @@ Meteor.methods({
   publishStream: function(shortId, title, description){
     check(shortId, String);
 
-    // TODO add onAir at... OR change it all to published
-    var setObject = {creationStep: null, onAir: true };
+    var deepstream = Deepstreams.findOne({shortId: shortId}, {fields:{firstOnAirAt: 1}});
+
+    var setObject = {creationStep: null, onAir: true, onAirSince: new Date };
+
+    if(!deepstream.firstOnAirAt){
+      setObject.firstOnAirAt = new Date;
+    }
 
     if(title){ // if title, description included
       check(title, String);
@@ -282,8 +287,7 @@ Meteor.methods({
   },
   unpublishStream: function(shortId){
     check(shortId, String);
-    // TODO maybe change it all to published
-    return updateStream.call(this, {shortId: shortId}, {$set: {onAir: false }});
+    return updateStream.call(this, {shortId: shortId}, {$set: { onAir: false, lastOnAirAt: new Date, onAirSince: null }});
   },
   updateStreamTitle: function(shortId, title){
     check(shortId, String);
@@ -373,8 +377,6 @@ Meteor.methods({
     var userPathSegment= user.displayUsername;
 
     Deepstreams.insert({
-      onAir: false,
-      createdAt: new Date,
       savedAt: new Date,
       userPathSegment: userPathSegment,
       streamPathSegment: streamPathSegment,

@@ -6,7 +6,7 @@ SimpleSchema.debug = true; // TODO Remove after launch
 
 if(!this.Schema){
   Schema = {};
-};
+}
 
 var analyticsSchema = new SimpleSchema({
   byConnection: {
@@ -27,20 +27,8 @@ var analyticsSchema = new SimpleSchema({
   }
 });
 
-this.StoryStats = new Mongo.Collection("story_stats");
+this.DeepstreamStats = new Mongo.Collection("story_stats");
 
-
-this.StoryStats.deny({
-  insert: function() {
-    return true;
-  },
-  update: function() {
-    return true
-  },
-  remove: function() {
-    return true
-  }
-});
 
 var deepAnalyticsSchema = new SimpleSchema({
   uniqueViewersByConnection: {
@@ -61,7 +49,7 @@ var deepAnalyticsSchema = new SimpleSchema({
   }
 });
 
-Schema.StoryStats = new SimpleSchema({
+Schema.DeepstreamStats = new SimpleSchema({
   storyId: {
     type: String
   },
@@ -87,47 +75,11 @@ Schema.StoryStats = new SimpleSchema({
   }
 });
 
-this.StoryStats.attachSchema(Schema.StoryStats);
+this.DeepstreamStats.attachSchema(Schema.DeepstreamStats);
 
-
-this.StoryHistories = new Mongo.Collection("story_histories");
-
-
-
-this.Deepstreams = new Mongo.Collection("deepstreams", {
-  transform: function(doc) {
-    return new Deepstream(doc);
-  }
-});
-
-this.Deepstreams.allow({
-  insert: function () {
-    return true;
-  },
-  update: function () {
-    return true
-  },
-  remove: function () {
-    return true;
-  }
-});
-
-
-ContextBlocks = new Mongo.Collection("context_blocks", {
-  transform: newTypeSpecificContextBlock
-});
-
-if(!this.Schema){
-  Schema = {};
-}
 
 Schema.ContextReferenceProfile = new SimpleSchema({
   id: {
-    type: String,
-    optional: true
-  },
-
-  creationDate: {
     type: String,
     optional: true
   },
@@ -146,6 +98,7 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     type: String,
     optional: true
   },
+
 
   artworkUrl: {
     type: String,
@@ -170,6 +123,12 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   },
   fileExtension: {
     type: String,
+    optional: true
+  },
+
+  // Youtube
+  noPreview: {
+    type: Boolean,
     optional: true
   },
 
@@ -225,7 +184,7 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
   creationDate: {
-    type: String,
+    type: Date,
     optional: true
   },
   username: {
@@ -299,12 +258,38 @@ Schema.ContextReferenceProfile = new SimpleSchema({
         options: 'allowed'
       }
     }
+  },
+
+  // Embedly extract (news)
+  content: {
+    type: String,
+    optional: true
+  },
+  providerIconUrl: {
+    type: String,
+    optional: true
+  },
+  publicationDate: {
+    type: Date,
+    optional: true
+  },
+  'topImage.url': {
+    type: String,
+    optional: true
+  },
+  'topImage.height': {
+    type: Number,
+    optional: true
+  },
+  'topImage.width': {
+    type: Number,
+    optional: true
   }
 
 });
 
 Schema.ContextBlocks = new SimpleSchema({
-  streamShortId: {
+  _id: {
     type: String
   },
   authorId: {
@@ -333,22 +318,8 @@ Schema.ContextBlocks = new SimpleSchema({
     type: Date,
     optional: true
   },
-  publishedAt: {
-    type: Date,
-    optional: true
-  },
-  createdAt: {
-    type: Date,
-    autoValue: function() {
-      if (this.isInsert) {
-        return new Date;
-      } else if (this.isUpsert) {
-        return {$setOnInsert: new Date};
-      } else {
-        this.unset();
-      }
-    },
-    optional: true // optional because only added this fieldjust before launch
+  addedAt: {
+    type: Date
   },
   fullDetails: {
     type: Object,
@@ -364,19 +335,10 @@ Schema.ContextBlocks = new SimpleSchema({
     trim: false,
     optional: true
   },
-  published: {
-    type: Boolean,
-    defaultValue: false
-  },
-  everPublished: {
-    type: Boolean,
-    defaultValue: false
-  },
   reference: {
     type: Schema.ContextReferenceProfile,
     optional: true
   },
-
   searchQuery: {
     type:String,
     optional:true
@@ -387,19 +349,190 @@ Schema.ContextBlocks = new SimpleSchema({
   }
 });
 
-ContextBlocks.attachSchema(Schema.ContextBlocks);
+this.Streams = new Mongo.Collection("streams");
 
 
-this.ContextBlocks.deny({
-  insert: function() {
-    return true;
-  },
-  update: function() {
-    return true
-  },
-  remove: function() {
-    return true
+
+this.Deepstreams = new Mongo.Collection("deepstreams", {
+  transform: function(doc) {
+    return new Deepstream(doc);
   }
 });
 
-this.Streams = new Mongo.Collection("streams");
+
+Schema.Deepstreams = new SimpleSchema({
+  shortId: {
+    type: String
+  },
+  userPathSegment: {
+    type: String
+  },
+  streamPathSegment: {
+    type: String
+  },
+  activeStreamId: {
+    type: String,
+    optional: true
+  },
+  creationStep: {
+    type: String,
+    allowedValues: CREATION_STEPS,
+    optional: true
+  },
+  curatorId: {
+    type: String
+  },
+  curatorName: {
+    type: String
+  },
+  curatorDisplayUsername: {
+    type: String
+  },
+  curatorUsername: {
+    type: String
+  },
+  description: {
+    type: String,
+    defaultValue: ''
+  },
+  title: {
+    type: String,
+    defaultValue: ''
+  },
+  savedAt: {
+    type: Date
+  },
+  live: {
+    type: Boolean,
+    defaultValue: true
+  },
+  onAir: {
+    type: Boolean,
+    defaultValue: false
+  },
+  onAirSince: {
+    type: Date,
+    optional: true
+  },
+  firstOnAirAt: {
+    type: Date,
+    optional: true
+  },
+  lastOnAirAt: {
+    type: Date,
+    optional: true
+  },
+  directorMode: {
+    type: Boolean,
+    defaultValue: false
+  },
+  createdAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: new Date};
+      } else {
+        this.unset();
+      }
+    },
+    optional: true // optional because only added this fieldjust before launch
+  },
+  contextBlocks: {
+    type: [Schema.ContextBlocks],
+    defaultValue: [],
+    minCount: 0,
+    maxCount: 1000
+  },
+  streams: {
+    type: [new SimpleSchema({
+      _id: {
+        type: String
+      },
+      addedAt: {
+        type: Date
+      },
+      authorId: {
+        type: String
+      },
+      type: {
+        type: String
+      },
+      source: {
+        type: String,
+        optional: true
+      },
+      live: {
+        type: Boolean
+      },
+      searchQuery: {
+        type:String,
+        optional:true
+      },
+      searchOption: {
+        type: String,
+        optional:true
+      },
+      fullDetails: {
+        type: Object,
+        optional: true,
+        blackbox: true
+      },
+      reference: {
+        type: new SimpleSchema({
+          id: {
+            type: String
+          },
+          title: {
+            type: String
+          },
+          description: {
+            type: String,
+            optional: true
+          },
+          tags: {
+            type: [String],
+            optional: true
+          },
+          username: {
+            type: String
+          },
+          userId: {
+            type: String,
+            optional: true
+          },
+          creationDate: {
+            type: Date
+          },
+          noPreview: {
+            type: Boolean,
+            optional: true
+          },
+          previewUrl: {
+            type: String,
+            optional: true
+          },
+          thumbnailUrl: {
+            type: String,
+            optional: true
+          },
+          totalViews: {
+            type: Number,
+            optional: true
+          },
+          currentViewers:{
+            type: Number,
+            optional: true
+          }
+        }),
+        optional: true
+      }
+    })],
+    defaultValue: [],
+    minCount: 0,
+    maxCount: 100
+  }
+});
+
+this.Deepstreams.attachSchema(Schema.Deepstreams);
