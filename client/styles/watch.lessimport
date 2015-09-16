@@ -3,6 +3,8 @@
 @PiP-height: 150px;
 @left-margin: 10px;
 @live-indicator-width: 88px;
+@contextBrowserHeaderRowHeight: 48px;
+
 
 .watch{
   .stream-title{
@@ -135,7 +137,7 @@
   }
 }
 
-@contentIconWidth: 53px;
+@contentIconWidth: 50px;
 
 
 .right-section{
@@ -163,7 +165,7 @@
 .content-icons {
   position: absolute;
   width: @contentIconWidth;
-  margin-top: 40px;
+  margin-top: @contextBrowserHeaderRowHeight;
 
   //height: @contentIconBannerHeight;
   background-color: @light-transparent-color;
@@ -448,7 +450,6 @@
 }
 
 
-@contextBrowserHeaderRowHeight: 48px;
 
 .context-browser-header-row{
   button{
