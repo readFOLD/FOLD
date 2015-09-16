@@ -1,19 +1,35 @@
-Date.prototype.stdTimezoneOffset = function() {
-  var jan = new Date(this.getFullYear(), 0, 1);
-  var jul = new Date(this.getFullYear(), 6, 1);
-  return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
-};
+var isDST = false; // default in case request fails
+var DSTChecked = false;
 
-Date.prototype.dst = function() {
-  return this.getTimezoneOffset() < this.stdTimezoneOffset();
-};
-
-
-// assume that daylight savings time wherever server is is the same as it is for ustream
+// assume that daylight savings time wherever server is is the same as it is for ustream whenever that video happened to be recorded
 // ustream apparently uses timestamps that match whatever time it happened to be in SF, but contain no timezone or dst info
 var convertUStreamDateToUTC = function(ustreamDateString){
-  return new Date(ustreamDateString + " " + (new Date().dst() ? 'PDT' : 'PST'))
+  return new Date(ustreamDateString + " " + (isDST ? 'PDT' : 'PST'))
 };
+
+var checkDSTOnceOnly = function(){
+  if(DSTChecked){ // only check once per worker (per day)
+    return;
+  }
+  console.log("Checking DST Status");
+  var requestParams = {
+    location: "37.7833,-122.4167",
+    timestamp: Date.now()/1000,
+    key: Meteor.settings.GOOGLE_API_SERVER_KEY
+  };
+
+  timezoneRes = HTTP.get('https://maps.googleapis.com/maps/api/timezone/json?parameters', {
+    params: requestParams
+  });
+
+  DSTChecked = true;
+
+  if (timezoneRes.data.dstOffset){
+    isDST = true;
+  }
+  console.log("DST Status is: " + isDST);
+};
+
 
 var servicesToFetch = [
   {
@@ -265,6 +281,7 @@ var updateDeepstreamStatuses = function () {
 var runJobs = function () {
   console.log('Running jobs...')
   var startTime = Date.now();
+  checkDSTOnceOnly();
   var previousTimepoint = Date.now();
 
   var timeLogs = [];
