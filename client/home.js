@@ -175,6 +175,13 @@ Template.home.helpers({
   }
 });
 
+var getHomepageStreamSearchResults = function() {
+  return SearchResults.find({
+    searchQuery: Session.get('homeStreamListQuery'),
+    searchOption: "homepage_search"
+  });
+};
+
 Template.home.events({
   "submit .stream-search-form": function (e, t) {
     e.preventDefault();
@@ -182,11 +189,7 @@ Template.home.events({
     Session.set('homeStreamListQuery', query);
     Session.set('homeStreamListMode', 'search');
 
-    // TODO DRY
-    if(SearchResults.find({
-      searchQuery: Session.get('homeStreamListQuery'),
-      searchOption: "homepage_search"
-    }).count() === 0){
+    if(getHomepageStreamSearchResults().count() === 0){
       t.streamSearch(query);
     } else {
       t.noMoreStreamResults.set(null);
@@ -311,10 +314,7 @@ Template.streams.helpers({
           }).map(function(stream){ return new Stream(stream)});
           break;
         case 'search':
-          return SearchResults.find({
-            searchQuery: Session.get('homeStreamListQuery'),
-            searchOption: "homepage_search"
-          }).map(function(stream){ return new Stream(stream)});
+          return getHomepageStreamSearchResults().map(function(stream){ return new Stream(stream)});
       }
     }
   }
