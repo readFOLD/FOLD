@@ -461,6 +461,13 @@
   .close, .open, .add-new-context{
     right: 4px;
   }
+  .close, .open, .add-new-context, .go-back-button{
+    &:hover{
+      .fg{
+        fill: @white-icon-color;
+      }
+    }
+  }
 
   .switch-to-list-mode{
     width: 40px;

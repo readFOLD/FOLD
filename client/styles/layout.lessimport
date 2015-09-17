@@ -2,8 +2,9 @@
 @dark-color: #303030;
 @dark-medium-color: #424242;
 @medium-color: #9B9B9B;
-@light-color: #F4F4F4;
-@white-color: #D8D8D8;
+@light-color: #D8D8D8;
+@white-color: #F4F4F4;
+
 @dark-transparent-color: rgba(40, 40, 40, .9);
 @light-transparent-color: rgba(244,244,244,0.75);
 
@@ -14,7 +15,7 @@
 @alt-background-color: @dark-medium-color;
 
 @dark-text-color: @black-color;
-@light-text-color: @white-color;
+@light-text-color: @light-color;
 @deemphasized-light-text-color: @medium-color;
 
 @dark-icon-color: @dark-color;

@@ -37,7 +37,7 @@ div.login, div.reset-password, div.recover-password {
     margin-bottom: 0px;
   }
   .divider {
-    border-right: @white-color 2px;
+    border-right: @light-color 2px;
   }
 }
 
