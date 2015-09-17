@@ -7,7 +7,7 @@ Reload._onMigrate('deepstream', function (retry) {
   if (readyToMigrate.get()) {
     return [true, {codeReloaded: true}];
   } else {
-    if (FlowRouter.getRouteName() === 'edit') {
+    if (Meteor.settings['public'].NODE_ENV !== 'development') { // FlowRouter.getRouteName() === 'curate'
       notifyDeploy("We've just made an improvement! Click here to sync up the latest code.", true);
       analytics.track('Reload notification happened', {label: 'Reload on click'});
       $('.migration-notification').click(function () {
