@@ -70,3 +70,6 @@ Handlebars.registerHelper("profileImage", function(user, size) {
     }
   }
 });
+
+Handlebars.registerHelper("formatDate", window.formatDate);
+Handlebars.registerHelper("formatDateNice", window.formatDateNice);
