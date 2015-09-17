@@ -183,6 +183,7 @@ div.logo-title {
 
 .streams-container{
   padding-top: 20px;
+  min-height: 250px;
 }
 
 .hover-shadow{
