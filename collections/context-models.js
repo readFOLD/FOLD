@@ -22,6 +22,10 @@ ContextBlock = (function () {
     _.extend(this, doc);
   }
 
+  ContextBlock.prototype.creationDateString = function () {
+    return formatDate(this.reference.creationDate);
+  };
+
   return ContextBlock;
 })();
 
