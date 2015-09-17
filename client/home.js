@@ -263,6 +263,9 @@ Template.deepstream_preview.onCreated(function(){
 });
 
 Template.deepstream_preview.helpers({
+  title: function () {
+    return this.title || '(untitled)';
+  },
   linkPath: function () {
     return Template.instance().data.linkToCurate ? this.curatePath() : this.watchPath();
   },
