@@ -500,7 +500,8 @@ Schema.Deepstreams = new SimpleSchema({
             optional: true
           },
           username: {
-            type: String
+            type: String,
+            optional: true // youtube sometimes doesn't have channel title, which we call username
           },
           userId: {
             type: String,
