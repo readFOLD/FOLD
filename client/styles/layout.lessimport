@@ -386,11 +386,11 @@ input[type="text"], input[type="password"], input[type="email"] {
   font-family: 'Roboto', sans-serif;
   margin-top: 5px;
   margin-bottom: 15px;
-  height: 55px;
+  height: 45px;
   border: none;
   border-bottom: 5px solid transparent;
-  padding-left: 18px;
-  font-size: 17px;
+  padding-left: 15px;
+  font-size: 16px;
 }
 
 input[type="search"] {
@@ -781,6 +781,7 @@ textarea.text-content {
 
 .signin-overlay{
   .full-overlay;
+  overflow-y: scroll;
   z-index: 111111;
   background-color: @dark-transparent-color;
 

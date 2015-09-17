@@ -2,7 +2,7 @@
 
 div.login, div.reset-password, div.recover-password {
   width: 100%;
-  padding-top: 100px;
+  padding-top: 50px;
   height: auto;
   margin-bottom: 45px;
   @media @mobile {
@@ -10,6 +10,7 @@ div.login, div.reset-password, div.recover-password {
   }
 }
 .login {
+  min-height: 750px;
   text-align: center;
   font-weight: bold;
   label {
@@ -21,14 +22,19 @@ div.login, div.reset-password, div.recover-password {
   #login-form{
     .vertical-divider {
       margin-top: 40px;
-      margin-bottom: 40px;
+      margin-bottom: 35px;
     }
   }
   .sign-up-options{
     .vertical-divider {
-      margin-top: 20px;
-      margin-bottom: 40px;
+      margin-top: 10px;
+      margin-bottom: 35px;
     }
+  }
+
+  p{
+    margin-top: 10px;
+    margin-bottom: 0px;
   }
   .divider {
     border-right: @white-color 2px;
@@ -61,6 +67,8 @@ form {
   span.error {
     float: right;
     color: red;
+    line-height: 0;
+    margin-top: -4px;
   }
 
   div.error {
