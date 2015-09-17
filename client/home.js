@@ -222,7 +222,7 @@ Template.deepstreams.helpers({
       switch (Session.get('homeStreamListMode')) {
         case 'best':
           _.extend(selector, {
-            editorsPick: true
+            //editorsPick: true // TODO launch uncomment
           });
           _.extend(sort, {
             editorsPickAt: -1
