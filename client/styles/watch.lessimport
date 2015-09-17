@@ -232,8 +232,11 @@
     }
     button{
       .size(20px);
-      background: @light-icon-color;
       padding: 3px;
+      background: @light-icon-color;
+      &:hover {
+        background: @white-icon-color;
+      }
     }
   }
 }
@@ -460,8 +463,6 @@
   }
   .close, .open, .add-new-context{
     right: 4px;
-  }
-  .close, .open, .add-new-context, .go-back-button{
     &:hover{
       .fg{
         fill: @white-icon-color;
@@ -491,6 +492,11 @@
   top: 12px;
   left: 13px;
   position: absolute;
+  &:hover{
+    .fg{
+      fill: @white-icon-color;
+    }
+  }
 }
 
 

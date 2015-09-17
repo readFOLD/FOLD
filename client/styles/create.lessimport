@@ -205,6 +205,11 @@ div.add-context {
       background: @dark-color;
       left: calc(100% ~"-" @searchButtonWidth);
       padding: 7.5px 13px 7.5px 40px;
+      &:hover{
+        .fg{
+          fill: @white-icon-color;
+        }
+      }
     }
 
   }
