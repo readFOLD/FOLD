@@ -2,23 +2,36 @@
 
 div.login, div.reset-password, div.recover-password {
   width: 100%;
-  padding-top: 240px;
+  padding-top: 100px;
   height: auto;
   margin-bottom: 45px;
   @media @mobile {
     padding-top: 200px;
   }
 }
-.login{
+.login {
   text-align: center;
   font-weight: bold;
-  label{
+  label {
     display: none;
   }
-  .vertical-divider{
-    margin-top: 40px;
-    margin-bottom: 40px;
+  .vertical-divider {
     font-size: 18px;
+  }
+  #login-form{
+    .vertical-divider {
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+  }
+  .sign-up-options{
+    .vertical-divider {
+      margin-top: 20px;
+      margin-bottom: 40px;
+    }
+  }
+  .divider {
+    border-right: @white-color 2px;
   }
 }
 
@@ -71,11 +84,14 @@ h1.login-header {
   font-size: 26px;
 }
 
-form#signup-form {
-	width: 350px;
-	margin-left: 75px;
-	margin-top: 55px;
+.signup{
+  form#signup-form {
+    width: 350px;
+    margin-left: 75px;
+    margin-top: 55px;
+  }
 }
+
 
 a.green {
   color: @action-color;
@@ -89,13 +105,17 @@ a.green {
 
 }
 
-.login-button, .signup-button, .save-profile-button, .reset-button, .twitter-signin {
+.login-button, .signup-button, .save-profile-button, .reset-button, .twitter-signin, .twitter-signup {
   margin-top: 20px;
   width: 180px;
   height: @button-height;
   .action-button;
 }
 
+.twitter-signup{
+  font-size: 14px;
+  margin-bottom: 10px;
+}
 .login-button{
   margin-bottom: 10px;
 }
@@ -155,12 +175,11 @@ div.divider {
 div.sign-up-options {
   margin: auto;
   width: 350px;
-  a{
-    .action-button;
-    height: @button-height;
-    display: inline-block;
-    text-align: center;
-    line-height: @button-height;
-
-  }
+  //a{
+  //  .action-button;
+  //  height: @button-height;
+  //  display: inline-block;
+  //  text-align: center;
+  //  line-height: @button-height;
+  //}
 }

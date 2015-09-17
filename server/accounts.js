@@ -1,6 +1,13 @@
+checkSignupCode = function(code){
+  if (!code || code.toLowerCase().trim() !== 'civic'){
+    throw new Meteor.Error("Deepstream is open only to select users ahead of our launch. If you'd like to watch or curate a deepstream, please email us at deepstream@media.mit.edu and ask for the *secret code*");
+  }
+}
+
 Accounts.validateNewUser(function(user) {
   if (user.username){ // only if an email user. if twitter user will do this later
     if (user.emails && user.emails[0]){
+      checkSignupCode(user.signupCode);
       checkUserSignup(user.username, user.emails[0].address);
     } else {
       throw new Meteor.Error('Please enter your email')
@@ -23,6 +30,10 @@ Accounts.onCreateUser(function(options, user) {
     user.profile = options.profile;
   } else {
     user.profile = {};
+  }
+
+  if (options.signupCode) {
+    user.signupCode = options.signupCode;
   }
 
   if (user.username === 'author') {

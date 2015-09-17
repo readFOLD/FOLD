@@ -92,10 +92,14 @@
         <!-- profile image here -->
       {{/if}}
 
+      <!--TO-DO LAUNCH REMOVE-->
+      <label for="signupCode"> Signup code </label>
+      <input name="signupCode" type="text" placeholder="Secret code for Beta">
+
       {{#if signupError}}<div class="error">{{signupError}}</div>{{/if}}
 
       <p>By creating an account, I accept Deepstream’s <a href="/terms" target='_blank' class='green'>Terms of Service</a> and <a href="/privacy" target='_blank' class='green'>Privacy Policy</a>.</p>
-      <div class="signup-button-container"><button type="submit" class="signup-button">{{#if emailUser}}CREATE ACCOUNT USING EMAIL{{else}}CREATE ACCOUNT USING TWITTER{{/if}}</button></div>
+      <div class="signup-button-container"><button type="submit" class="signup-button">{{#if emailUser}}SIGN UP{{else}}CREATE ACCOUNT USING TWITTER{{/if}}</button></div>
       {{#if disableSignup}}
         {{>loading_icon}}
       {{/if}}

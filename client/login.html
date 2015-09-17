@@ -47,42 +47,44 @@
 <template name="login_form">
   <div class="login">
 
-  <div class="login-left">
-    <h1 class="login-header">EXISTING ACCOUNT</h1>
-    <form id="login-form" action="action">
-      <button type="button" class="twitter-signin">LOG IN WITH TWITTER</button>
-      <div class="vertical-divider">OR</div>
-      <label for="username"> Username or Email </label>
-      <input name="username" type="text" placeholder="Username or email" autofocus="autofocus" required>
-      <label for="password"> Password </label>
-      <input name="password" type="password" placeholder="Password" required>
+    <div class="login-left">
+      <div class="sign-up-options">
+        <h1 class="login-header">CREATE NEW ACCOUNT</h1>
 
-      {{#if loginError}}
-        <div class="error">
-          {{loginError}}
-        </div>
-      {{/if}}
-
-      <button type="submit" class="login-button">LOG IN</button>
-      {{#if loggingIn}}
-        {{> loading_icon}}
-      {{/if}}
-      <div>
-        <a href="/recover-password" class="recover-password-link">Lost password?</a>
+        <button type="button" class="twitter-signup">SIGN UP USING TWITTER</button>
+        <div>(allows you to embed tweets)</div>
+        <div class="vertical-divider">OR</div>
+        {{> signup_form emailUser=true}}
       </div>
-    </form>
-  </div>
-  <div class="divider">
-  </div>
-  <div class="login-right">
-    <div class="sign-up-options">
-      <h1 class="login-header">NEW ACCOUNT</h1>
-      <a class="signup-button" href="/signup">
-        SIGN UP
-      </a>
-      <!-- add "create an account with twitter" to double down-->
+    </div>
+    <div class="divider">
+    </div>
+    <div class="login-right">
+      <h1 class="login-header">EXISTING ACCOUNT</h1>
+
+      <form id="login-form" action="action">
+        <button type="button" class="twitter-signin">LOG IN WITH TWITTER</button>
+        <div class="vertical-divider">OR</div>
+        <label for="username"> Username or Email </label>
+        <input name="username" type="text" placeholder="Username or email" autofocus="autofocus" required>
+        <label for="password"> Password </label>
+        <input name="password" type="password" placeholder="Password" required>
+
+        {{#if loginError}}
+          <div class="error">
+            {{loginError}}
+          </div>
+        {{/if}}
+
+        <button type="submit" class="login-button">LOG IN</button>
+        {{#if loggingIn}}
+          {{> loading_icon}}
+        {{/if}}
+        <div>
+          <a href="/recover-password" class="recover-password-link">Lost password?</a>
+        </div>
+      </form>
     </div>
 
-  </div>
   </div>
 </template>

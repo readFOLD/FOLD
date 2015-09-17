@@ -8,7 +8,8 @@ if (Meteor.users.find().count() === 0) {
     accessPriority: 1,
     profile: {
       name: 'Dr Stream'
-    }
+    },
+    signupCode: 'civic'
   });
   Accounts.createUser({
     email: 'test@example.com',
@@ -16,7 +17,8 @@ if (Meteor.users.find().count() === 0) {
     password: 'password',
     profile: {
       name: 'Wonderful Tester'
-    }
+    },
+    signupCode: 'civic'
   });
 }
 

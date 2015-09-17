@@ -69,7 +69,7 @@ Template.signin_overlay.events({
     closeSignInOverlay();
     analytics.track('Click close sign-in overlay');
   },
-  "click .twitter-signin": function (d) {
+  "click .twitter-signin, click .twitter-signup": function (d) {
     closeSignInOverlay();
     loginWithTwitter();
     analytics.track('Click login with Twitter');
@@ -86,7 +86,7 @@ Template.signup_page.events({
     loginWithTwitter();
     analytics.track('Click sign up with Twitter');
   }
-})
+});
 
 // DEEPSTREAM
 
