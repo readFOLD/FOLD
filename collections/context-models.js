@@ -981,7 +981,9 @@ NewsBlock = (function (_super) {
   };
 
   NewsBlock.prototype.publicationDate = function(){
-    return this.reference.publishedOffset ? new Date(this.reference.publishedMs + this.reference.publishedOffset) : new Date(this.reference.publishedMs);
+    if(this.reference.publishedMs){
+      return this.reference.publishedOffset ? new Date(this.reference.publishedMs + this.reference.publishedOffset) : new Date(this.reference.publishedMs);
+    }
   };
 
   NewsBlock.prototype.soloModeLocation = 'sidebar';
