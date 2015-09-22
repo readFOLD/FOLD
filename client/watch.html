@@ -67,7 +67,7 @@
         {{#if showStreamSwitcher}}
           <ol class="streams-list">
             {{#each livestreams}}
-              <li data-stream-reference-id="{{reference.id}}" class="stream">
+              <li data-stream-reference-id="{{reference.id}}" data-stream-id="{{_id}}" class="stream">
                 <button class="set-main-stream {{#if active}}active{{/if}}">
                   {{#if active}}
                     <div class="active-overlay">ON AIR</div>
@@ -75,8 +75,12 @@
                   <div class="mini-live-indicator">
                     LIVE
                   </div>
+
                   <img src="{{thumbnailUrl}}">
                 </button>
+                {{#if curateMode}}
+                  <button class="delete-stream">{{> close_circle}}</button>
+                {{/if}}
               </li>
             {{else}}
               {{#unless curateMode}}

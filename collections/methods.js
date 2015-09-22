@@ -215,7 +215,48 @@ Meteor.methods({
     }
     return stream._id;
   },
+  removeStreamFromStream: function(shortId, streamId) {
+    check(shortId, String);
+    check(streamId, String);
 
+    var deepstream = Deepstreams.findOne({shortId: shortId}, {fields: { 'streams._id':1, 'streams.live':1, activeStreamId: 1 }});
+
+    if (!deepstream){
+      throw new Meteor.Error('Deepstream not found')
+    }
+
+    var modifier = {
+      $pull: {
+        streams: {
+          _id: streamId
+        }
+      }
+    };
+
+    if (streamId === deepstream.activeStreamId){ // if removing active stream
+      var newActiveStream = _.chain(deepstream.streams)
+        .reject(function(stream){
+          return stream._id === streamId;
+        })
+        .sortBy('addedAt')
+        .sortBy('live')
+        .last()
+        .value();
+      modifier['$set'] = {
+        activeStreamId: newActiveStream ? newActiveStream._id : null // set to another recent stream, preferably live
+      }
+    }
+
+    var numUpdated = updateStream.call(this, {
+      shortId: shortId
+    }, modifier);
+
+    if (!numUpdated){
+      throw new Meteor.Error('Stream not updated')
+    }
+
+    return numUpdated;
+  },
   removeContextFromStream: function(shortId, contextId) {
     check(shortId, String);
     check(contextId, String);

@@ -295,7 +295,10 @@ Template.watch_page.helpers({
     return Template.instance().activeStream.get();
   },
   active: function(){ // inside #each streams
-    return this._id === Template.instance().activeStream.get()._id;
+    var activeStream = Template.instance().activeStream.get();
+    if (activeStream){
+      return this._id === activeStream._id;
+    }
   },
   mainStreamIFrameId: function(){
     return Template.instance().mainStreamIFrameId;
@@ -411,6 +414,19 @@ Template.watch_page.events({
       Meteor.call('setActiveStream', t.data.shortId(), this._id ,basicErrorHandler);
     } else {
       t.userControlledActiveStreamId.set(this._id);
+    }
+  },
+  'click .delete-stream': function(e, t){
+    var that = this;
+    var streamElement = t.$('[data-stream-id=' + that._id + ']');
+    streamElement.addClass('to-delete');
+    if(confirm('Are you sure you want to delete this stream?'))
+    {
+      streamElement.fadeOut(500, function() {
+        Meteor.call('removeStreamFromStream', Session.get("streamShortId"), that._id, basicErrorHandler);
+      });
+    } else {
+      streamElement.removeClass('to-delete');
     }
   },
   'click .preview': function(e,t){

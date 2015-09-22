@@ -25,7 +25,8 @@
       float: left;
       margin-left: 20px;
       line-height: 0;
-      button{
+      position: relative;
+      .set-main-stream, .show-stream-search{
         background-color: inherit;
         color: @light-text-color;
         img{
@@ -71,6 +72,29 @@
         border-left: 1px solid @medium-color;
       }
 
+    }
+
+
+    li.stream {
+      &:hover, &.to-delete {
+        .delete-stream {
+          display: inline-block;
+          opacity: 1;
+        }
+      }
+    }
+    .delete-stream{
+      .opacity-transition;
+      opacity: 0;
+      .size(18px);
+      padding:0;
+      svg{
+        .size-to-fit;
+      }
+      position: absolute;
+      z-index: 8888;
+      right: 1px;
+      top: 1px;
     }
 
 
@@ -332,6 +356,20 @@
         opacity: 1;
       }
     }
+
+    .delete-context{
+      .opacity-transition;
+      opacity: 0;
+      .size(20px);
+      padding:0;
+      svg{
+        .size-to-fit;
+      }
+      position: absolute;
+      z-index: 8888;
+      right: 2px;
+      top: 2px;
+    }
     &.news-card:not(.list-item-context-section){
       height: calc(100% ~"-" 2 * @contextAreaPadding + 8px); // not clear why the fudge factor is needed but it is
       display: flex;
@@ -347,19 +385,7 @@
     }
   }
 
-  .delete-context{
-    .opacity-transition;
-    opacity: 0;
-    .size(20px);
-    padding:0;
-    svg{
-      .size-to-fit;
-    }
-    position: absolute;
-    z-index: 8888;
-    right: 2px;
-    top: 2px;
-  }
+
 }
 
 .text-section, .text-result-container{
