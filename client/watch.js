@@ -275,7 +275,7 @@ Template.watch_page.onRendered(function(){
   });
 
   onMainPlayerReady = function(event){
-    mainPlayer.play();
+    mainPlayer.play(); // if streamUrl uses autoplayUrl, this is effectively a fallback
   };
 
 
@@ -323,7 +323,7 @@ Template.watch_page.helpers({
   streamUrl: function(){
     var activeStream = Template.instance().activeStream.get();
     if(activeStream){
-      return activeStream.url()
+      return activeStream.autoplayUrl();
     }
   },
   flashVars: function(){
