@@ -61,16 +61,6 @@ html {
     fill: none;
     stroke: @light-icon-color;
   }
-  .active{
-    .bg{
-      fill: @action-color;
-    }
-    .remix-icon{
-      .bg{
-        fill: @action-color;
-      }
-    }
-  }
 
   .back-arrow{
     .fg{
@@ -89,17 +79,6 @@ html {
   .fg-stroke{
     fill: none;
     stroke: @dark-color;
-  }
-
-  .active{
-    .bg{
-      fill: @action-color;
-    }
-    .remix-icon{
-      .bg{
-        fill: @action-color;
-      }
-    }
   }
 }
 
@@ -298,6 +277,13 @@ html {
   .transition(top 0.2s ease-in);
 }
 
+.grayscale(@value: 1) {
+  -webkit-filter: grayscale(@value);
+  -moz-filter: grayscale(@value);
+  -o-filter: grayscale(@value);
+  -ms-filter: grayscale(@value);
+  filter: grayscale(@value);
+}
 
 .no-select {
   -webkit-touch-callout: none;

@@ -67,11 +67,8 @@
         {{#if showStreamSwitcher}}
           <ol class="streams-list">
             {{#each livestreams}}
-              <li data-stream-reference-id="{{reference.id}}" data-stream-id="{{_id}}" class="stream">
+              <li data-stream-reference-id="{{reference.id}}" data-stream-id="{{_id}}" class="stream {{#if active}}active{{/if}}">
                 <button class="set-main-stream {{#if active}}active{{/if}}">
-                  {{#if active}}
-                    <div class="active-overlay">ON AIR</div>
-                  {{/if}}
                   <div class="mini-live-indicator">
                     LIVE
                   </div>

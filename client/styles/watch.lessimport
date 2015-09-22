@@ -15,9 +15,21 @@
     min-width: calc(100% ~"-" (@right-section-width + 3 * @left-margin + @live-indicator-width));
   }
   .streams-list{
-    .stream.justAdded{
-      button{
-        outline: 4px solid green;
+    .stream {
+      &:not(.active) {
+        img{
+          .grayscale();
+        }
+      }
+      &.active {
+        .set-main-stream {
+          outline: 1px solid @live-color;
+        }
+      }
+      &.justAdded {
+        .set-main-stream {
+          outline: 4px solid green;
+        }
       }
     }
     @streamPreviewHeight: 90px;
@@ -41,20 +53,11 @@
       &:not(.placeholder){
         .hover-shadow;
       }
-      .active-overlay{
-        position:absolute;
-        padding-top: 25%;
-        .size-to-fit;
-        color: #c90523;
-        text-align: center;
-        font-size: 28px;
-        font-weight: bold;
-        background-color: @light-transparent-color;
-      }
 
       .mini-live-indicator{
         background-color: @live-color;
         position: absolute;
+        z-index: 10;
         left: 0;
         top: 0;
         font-size: 13px;
@@ -92,7 +95,7 @@
         .size-to-fit;
       }
       position: absolute;
-      z-index: 8888;
+      z-index: 10;
       right: 1px;
       top: 1px;
     }
