@@ -72,7 +72,6 @@
                   <div class="mini-live-indicator">
                     LIVE
                   </div>
-
                   <img src="{{thumbnailUrl}}">
                 </button>
                 {{#if curateMode}}
@@ -99,13 +98,13 @@
               <li class="live-dead-divider"></li>
             {{/if}}
             {{#each deadstreams}}
-              <li data-stream-reference-id="{{reference.id}}" class="stream">
+              <li data-stream-reference-id="{{reference.id}}" data-stream-id="{{_id}}" class="stream {{#if active}}active{{/if}}">
                 <button class="set-main-stream {{#if active}}active{{/if}}">
-                  {{#if active}}
-                    <div class="active-overlay">ON AIR</div>
-                  {{/if}}
                   <img src="{{thumbnailUrl}}">
                 </button>
+                {{#if curateMode}}
+                  <button class="delete-stream">{{> close_circle}}</button>
+                {{/if}}
               </li>
             {{/each}}
           </ol>
