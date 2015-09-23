@@ -219,17 +219,22 @@ Meteor.methods({
     check(shortId, String);
     check(streamId, String);
 
-    var deepstream = Deepstreams.findOne({shortId: shortId}, {fields: { 'streams._id':1, 'streams.live':1, activeStreamId: 1 }});
+    var deepstream = Deepstreams.findOne({shortId: shortId}, {fields: { 'streams':1, activeStreamId: 1 }, transform: null});
 
     if (!deepstream){
       throw new Meteor.Error('Deepstream not found')
     }
+
+    var streamToDelete = _.extend(_.findWhere(deepstream.streams, {_id: streamId}), {deletedAt: new Date});
+
 
     var modifier = {
       $pull: {
         streams: {
           _id: streamId
         }
+      }, $push: {
+        'deleted.streams': streamToDelete
       }
     };
 
@@ -260,6 +265,16 @@ Meteor.methods({
   removeContextFromStream: function(shortId, contextId) {
     check(shortId, String);
     check(contextId, String);
+
+    var deepstream = Deepstreams.findOne({shortId: shortId}, {fields: { 'contextBlocks':1 }, transform: null});
+
+    if (!deepstream){
+      throw new Meteor.Error('Deepstream not found')
+    }
+
+    var contextToDelete = _.extend(_.findWhere(deepstream.contextBlocks, {_id: contextId}), {deletedAt: new Date});
+
+
     var numUpdated = updateStream.call(this, {
       shortId: shortId
     }, {
@@ -267,6 +282,8 @@ Meteor.methods({
         contextBlocks: {
           _id: contextId
         }
+      }, $push: {
+        'deleted.contextBlocks': contextToDelete
       }
     });
 

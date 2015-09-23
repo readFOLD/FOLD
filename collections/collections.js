@@ -325,6 +325,10 @@ Schema.ContextBlocks = new SimpleSchema({
   addedAt: {
     type: Date
   },
+  deletedAt: {
+    type: Date,
+    optional: true
+  },
   fullDetails: {
     type: Object,
     optional: true,
@@ -355,6 +359,98 @@ Schema.ContextBlocks = new SimpleSchema({
 
 this.Streams = new Mongo.Collection("streams");
 
+Schema.Streams = new SimpleSchema({
+  _id: {
+    type: String
+  },
+  addedAt: {
+    type: Date
+  },
+  deletedAt: {
+    type: Date,
+    optional: true
+  },
+  authorId: {
+    type: String
+  },
+  type: {
+    type: String
+  },
+  source: {
+    type: String,
+    optional: true
+  },
+  live: {
+    type: Boolean
+  },
+  searchQuery: {
+    type:String,
+    optional:true
+  },
+  searchOption: {
+    type: String,
+    optional:true
+  },
+  fullDetails: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  reference: {
+    type: new SimpleSchema({
+      id: {
+        type: String
+      },
+      title: {
+        type: String
+      },
+      description: {
+        type: String,
+        optional: true
+      },
+      tags: {
+        type: [String],
+        optional: true
+      },
+      username: {
+        type: String,
+        optional: true // youtube sometimes doesn't have channel title, which we call username
+      },
+      userId: {
+        type: String,
+        optional: true
+      },
+      creationDate: {
+        type: Date
+      },
+      lastStreamedAt: {
+        type: Date,
+        optional: true
+      },
+      noPreview: {
+        type: Boolean,
+        optional: true
+      },
+      previewUrl: {
+        type: String,
+        optional: true
+      },
+      thumbnailUrl: {
+        type: String,
+        optional: true
+      },
+      totalViews: {
+        type: Number,
+        optional: true
+      },
+      currentViewers:{
+        type: Number,
+        optional: true
+      }
+    }),
+    optional: true
+  }
+});
 
 
 this.Deepstreams = new Mongo.Collection("deepstreams", {
@@ -449,96 +545,24 @@ Schema.Deepstreams = new SimpleSchema({
     minCount: 0,
     maxCount: 1000
   },
+
   streams: {
-    type: [new SimpleSchema({
-      _id: {
-        type: String
-      },
-      addedAt: {
-        type: Date
-      },
-      authorId: {
-        type: String
-      },
-      type: {
-        type: String
-      },
-      source: {
-        type: String,
-        optional: true
-      },
-      live: {
-        type: Boolean
-      },
-      searchQuery: {
-        type:String,
-        optional:true
-      },
-      searchOption: {
-        type: String,
-        optional:true
-      },
-      fullDetails: {
-        type: Object,
-        optional: true,
-        blackbox: true
-      },
-      reference: {
-        type: new SimpleSchema({
-          id: {
-            type: String
-          },
-          title: {
-            type: String
-          },
-          description: {
-            type: String,
-            optional: true
-          },
-          tags: {
-            type: [String],
-            optional: true
-          },
-          username: {
-            type: String,
-            optional: true // youtube sometimes doesn't have channel title, which we call username
-          },
-          userId: {
-            type: String,
-            optional: true
-          },
-          creationDate: {
-            type: Date
-          },
-          lastStreamedAt: {
-            type: Date,
-            optional: true
-          },
-          noPreview: {
-            type: Boolean,
-            optional: true
-          },
-          previewUrl: {
-            type: String,
-            optional: true
-          },
-          thumbnailUrl: {
-            type: String,
-            optional: true
-          },
-          totalViews: {
-            type: Number,
-            optional: true
-          },
-          currentViewers:{
-            type: Number,
-            optional: true
-          }
-        }),
-        optional: true
-      }
-    })],
+    type: [Schema.Streams],
     defaultValue: [],
+    minCount: 0,
+    maxCount: 100
+  },
+  deleted: {
+    type: Object,
+    optional: true
+  },
+  'deleted.contextBlocks': {
+    type: [Schema.ContextBlocks],
+    minCount: 0,
+    maxCount: 1000
+  },
+  'deleted.streams': {
+    type: [Schema.Streams],
     minCount: 0,
     maxCount: 100
   }
