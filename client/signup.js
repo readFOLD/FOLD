@@ -151,7 +151,7 @@ Template.signup_form.events({
     });
 
     if (Meteor.user()) { // if just finishing signup and already created a user via twitter
-      Meteor.call('updateInitialTwitterUserInfoIncludingSignupCode', userInfo, function (err) {
+      Meteor.call('updateInitialTwitterUserInfo', userInfo, function (err) {
         t.disableSignup.set(false);
         if (err) {
           t.signupError.set(err.reason || err.error);
