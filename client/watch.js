@@ -417,13 +417,12 @@ Template.watch_page.events({
     }
   },
   'click .delete-stream': function(e, t){
-    var that = this;
-    var streamElement = t.$('[data-stream-id=' + that._id + ']');
+    var streamElement = t.$('[data-stream-id=' + this._id + ']');
     streamElement.addClass('to-delete');
     if(confirm('Are you sure you want to delete this stream?'))
     {
-      streamElement.fadeOut(500, function() {
-        Meteor.call('removeStreamFromStream', Session.get("streamShortId"), that._id, basicErrorHandler);
+      streamElement.fadeOut(500, () => {
+        Meteor.call('removeStreamFromStream', Session.get("streamShortId"), this._id, basicErrorHandler);
       });
     } else {
       streamElement.removeClass('to-delete');
