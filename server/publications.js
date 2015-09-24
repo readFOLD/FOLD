@@ -23,6 +23,40 @@ Meteor.users._ensureIndex({
 //});
 
 
+var deepstreamFields = {
+  analytics: 0,
+  deleted: 0,
+  'contextBlocks.fullDetails': 0,
+  'contextBlocks.authorId': 0,
+  'contextBlocks.savedAt': 0,
+  'contextBlocks.searchQuery': 0,
+  'streams.fullDetails': 0,
+  'streams.authorId': 0,
+  'streams.searchQuery': 0
+};
+
+// TODO do more in initial job so don't send so much over. then this will be simpler
+var streamFields = {
+  id: 1,
+  title: 1,
+  description: 1,
+  username: 1,
+  lastStreamedAt: 1,
+  currentViewers: 1,
+  totalViews: 1,
+  status: 1,
+  _streamSource: 1,
+  lengthSecs: 1,
+  'imageUrl.small': 1,
+  'imageUrl.medium': 1,
+  'owner.uid': 1,
+  'user.id': 1,
+  'tags': 1,
+  'preview': 1,
+  creationDate: 1,
+  live: 1
+};
+
 //var readStoryFields = {
 //  draftStory: 0,
 //  history: 0,
@@ -81,6 +115,7 @@ Meteor.publish("deepstreamsOnAir", function(options) {
     sort: {
       live: -1
     },
+    fields: deepstreamFields,
     skip: options.page * PUB_SIZE,
     limit: PUB_SIZE
   });
@@ -111,7 +146,8 @@ Meteor.publish("bestStreams", function() {
     sort: {
       currentViewers: -1
     },
-    limit: 20
+    limit: 20,
+    fields: streamFields
   });
 });
 Meteor.publish("mostRecentStreams", function() {
@@ -122,7 +158,8 @@ Meteor.publish("mostRecentStreams", function() {
     sort: {
       creationDate: -1
     },
-    limit: 20
+    limit: 20,
+    fields: streamFields
   });
 });
 
@@ -132,11 +169,15 @@ Meteor.publish("singleDeepstream", function(userPathSegment, shortId) {
     return this.ready();
   }
   check(shortId, String);
-  return Deepstreams.find({userPathSegment: userPathSegment, shortId: shortId});
+  return Deepstreams.find({userPathSegment: userPathSegment, shortId: shortId},{
+    fields: deepstreamFields
+  });
 });
 
 Meteor.publish("myDeepstreams", function() {
-  return Deepstreams.find({curatorId: this.userId});
+  return Deepstreams.find({curatorId: this.userId}, {
+    fields: deepstreamFields
+  });
 });
 
 //Meteor.publish("curatedStoriesPub", function(options) {
