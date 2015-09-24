@@ -86,7 +86,7 @@ editableDescriptionCreatedBoilerplate = function() {
 
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 
-    "blur .text-content.editable": function(d, template) {
+    "blur .text-content.editable" (d, template) {
       var that = this;
       if (Session.get('curateMode')) {
         var textContent = template.$('textarea[name=content]').val();
@@ -94,13 +94,13 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
         Meteor.call(meteorMethod, Session.get('streamShortId'),that._id, textContent, saveCallback);
       }
     },
-    "mouseenter .text-content.editable": function(d, template) {
+    "mouseenter .text-content.editable" (d, template) {
       document.body.style.overflow = 'hidden';
     },
-    "mouseleave .text-content.editable": function(d, template) {
+    "mouseleave .text-content.editable" (d, template) {
       document.body.style.overflow = 'auto';
     },
-    "keypress .image-section .text-content.editable": function(e, template) { // save on Enter
+    "keypress .image-section .text-content.editable" (e, template) { // save on Enter
       var that = this;
       if (Session.get('curateMode') && e.which === 13 ) {
         e.preventDefault();
@@ -136,7 +136,7 @@ Template.display_video_section.helpers(horizontalBlockHelpers);
 Template.display_video_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
 Template.preview_video_section.helpers({
-  height: function() {
+  height () {
     return this.previewHeightAtGivenWidth(310);
   },
   width: 310
@@ -165,7 +165,7 @@ Template.display_news_section.events(editableDescriptionEventsBoilerplate('editH
 Template.display_link_section.helpers(horizontalBlockHelpers);
 Template.display_link_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 Template.display_link_section.events({
-  'click a': function (e, t) {
+  'click a' (e, t) {
     var url = e.currentTarget.href;
     analytics.track('Click external link in link card', {
       label: url,
@@ -184,10 +184,10 @@ Template.display_text_section.events(editableDescriptionEventsBoilerplate('editT
 
 //
 //Template.share_button.events({
-//  'click': function(e, t) {
+//  'click' (e, t) {
 //    t.tooltipShown.set(!t.tooltipShown.get());
 //  },
-//  'click .share-facebook': function(e, t) {
+//  'click .share-facebook' (e, t) {
 //    var width  = 575;
 //    var height = 400;
 //    var left   = ($(window).width()  - width)  / 2;
@@ -202,7 +202,7 @@ Template.display_text_section.events(editableDescriptionEventsBoilerplate('editT
 //    Meteor.call('countStoryShare', this._id, 'facebook');
 //    analytics.track('Share on Facebook');
 //  },
-//  'click .share-twitter': function(e, t) {
+//  'click .share-twitter' (e, t) {
 //    var title = $(".story-title").text();
 //    var width  = 575;
 //    var height = 400;
@@ -222,13 +222,13 @@ Template.display_text_section.events(editableDescriptionEventsBoilerplate('editT
 
 
 Template.favorite_button.helpers({
-  userFavorited: function() {
+  userFavorited () {
     return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
   }
 });
 
 Template.favorite_button.events({
-  "click .favorite": function() {
+  "click .favorite" () {
     if(!Meteor.user()){
       return notifyInfo('Please sign up or log in to favorite stories');
     }
@@ -242,7 +242,7 @@ Template.favorite_button.events({
 
     });
   },
-  "click .unfavorite": function() {
+  "click .unfavorite" () {
     return Meteor.call('unfavoriteStory', this._id, function(err) {
       if (err) {
         notifyError(err);
@@ -255,7 +255,7 @@ Template.favorite_button.events({
 });
 
 Template.editors_pick_button.events({
-  "click .pick": function() {
+  "click .pick" () {
     return Meteor.call('designateEditorsPick', this._id, function(err) {
       if (err) {
         notifyError(err);
@@ -263,7 +263,7 @@ Template.editors_pick_button.events({
       }
     });
   },
-  "click .unpick": function() {
+  "click .unpick" () {
     return Meteor.call('stripEditorsPick', this._id, function(err) {
       if (err) {
         notifyError(err);
@@ -278,7 +278,7 @@ Template.editors_pick_button.events({
 
 
 Template.create_deepstream.events({
-  'click': function(){
+  'click' (){
 
     if (Meteor.user()){
       var accessPriority = Meteor.user().accessPriority;

@@ -27,7 +27,7 @@ var makeTwitterCall = function (apiCall, params) {
 };
 
 Meteor.methods({
-  updateInitialTwitterUserInfo: function (userInfo) {
+  updateInitialTwitterUserInfo (userInfo) {
     check(userInfo, Object);
 
     var user = Meteor.user();
@@ -78,7 +78,7 @@ Meteor.methods({
       }
     });
   },
-  setBioFromTwitter: function () {
+  setBioFromTwitter () {
     var user = Meteor.user();
     if (user && user.profile && user.services.twitter) {
       var res;

@@ -86,7 +86,7 @@ bambuserMapFn = function (e) {
 ContextBlock.searchMappings = {
   all_streaming_services: {
     methodName: 'streamSearchList',
-    mapFn: function (e) {
+    mapFn (e) {
       var stream;
       switch (e._streamSource) {
         case 'youtube':
@@ -120,7 +120,7 @@ ContextBlock.searchMappings = {
   },
   vimeo: {
     methodName: 'vimeoVideoSearchList',
-    mapFn: function (e) {
+    mapFn (e) {
       return {
         reference: {
           title: e.name,
@@ -135,7 +135,7 @@ ContextBlock.searchMappings = {
   },
   soundcloud: {
     methodName: 'soundcloudAudioSearchList',
-    mapFn: function (e) {
+    mapFn (e) {
       return {
         reference: {
           title: e.title,
@@ -151,7 +151,7 @@ ContextBlock.searchMappings = {
   },
   twitter: {
     methodName: 'twitterSearchList',
-    mapFn: function (e) {
+    mapFn (e) {
       var item = {
         reference: {
           text: e.text,
@@ -170,7 +170,7 @@ ContextBlock.searchMappings = {
   },
   imgur: {
     methodName: 'imgurImageSearchList',
-    mapFn: function (e) {
+    mapFn (e) {
       return {
         reference: {
           id: e.id,
@@ -188,7 +188,7 @@ ContextBlock.searchMappings = {
   },
   flickr: {
     methodName: 'flickrImageSearchList',
-    mapFn: function (e) {
+    mapFn (e) {
       var username, uploadDate, title;
       if (e.media) {
         //if single image result
@@ -219,7 +219,7 @@ ContextBlock.searchMappings = {
   },
   giphy: {
     methodName: 'giphyGifSearchList',
-    mapFn: function (e) {
+    mapFn (e) {
       return {
         reference: {
           id: e.id,

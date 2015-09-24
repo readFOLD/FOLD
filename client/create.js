@@ -35,10 +35,10 @@ var scrollToRelativePosition = function(offset) {
 
 
 Template.stream_search.events({
-  'mouseenter .horizontal-narrative-section': function() {
+  'mouseenter .horizontal-narrative-section' () {
     document.body.style.overflow = 'hidden';
   },
-  'mouseleave .horizontal-narrative-section': function(){
+  'mouseleave .horizontal-narrative-section' (){
     document.body.style.overflow='auto';
   }
 });
@@ -48,13 +48,13 @@ Template.stream_search.onDestroyed(function(){
 });
 
 Template.add_context.helpers({
-  listMode: function(){
+  listMode (){
     return emptyContextBlockOfCurrentMediaDataType().searchList;
   },
-  searchListTemplate: function(){
+  searchListTemplate (){
     return emptyContextBlockOfCurrentMediaDataType().searchListTemplate;
   },
-  searchSoloTemplate: function(){
+  searchSoloTemplate (){
     return emptyContextBlockOfCurrentMediaDataType().searchSoloTemplate;
   }
 });
@@ -71,13 +71,13 @@ Template.content_icons.helpers(
 );
 
 Template.content_icons.helpers({
-  show_stream_icon: function () {
+  show_stream_icon () {
     return Session.get("curateMode");
   },
-  show_chat_icon: function () {
+  show_chat_icon () {
     return true;
   },
-  disableAllButStream: function (){
+  disableAllButStream (){
     return _.contains(['find_stream'], this.creationStep);
   }
 });
@@ -94,16 +94,16 @@ Template.content_icons.events(_.object(_.map(contextTypesPlusChat, function(type
 );
 
 Template.content_icons.events({
-  'click button': function() {
+  'click button' () {
     clearCurrentContext(); // clear current context whenever click on a context button
   }
 });
 
 Template.add_context.events({
-  'mouseenter .search-results-container': function() {
+  'mouseenter .search-results-container' () {
     document.body.style.overflow = 'hidden';
   },
-  'mouseleave .search-results-container': function(){
+  'mouseleave .search-results-container' (){
     document.body.style.overflow='auto';
   }
 });
@@ -141,7 +141,7 @@ window.addContext = function(contextBlock) {
 
 
 Template.link_twitter.events({
-  "click button": function() {
+  "click button" () {
     Meteor.linkWithTwitter({
       requestPermissions: ['user']
     }, function (err) {

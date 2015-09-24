@@ -91,7 +91,7 @@ var updateStream = function(selector, modifier, options) {
 
 
 Meteor.methods({
-  addContextToStream: function(streamShortId, contextBlock){ // TODO find a way to pick id safely to avoid potential collisions. Context block id uniqueness is currently not enforced.
+  addContextToStream (streamShortId, contextBlock){ // TODO find a way to pick id safely to avoid potential collisions. Context block id uniqueness is currently not enforced.
     check(streamShortId, String);
     check(contextBlock, Object);
 
@@ -135,12 +135,12 @@ Meteor.methods({
     }
     return contextBlock._id;
   },
-  setActiveStream: function(streamShortId, streamId){
+  setActiveStream (streamShortId, streamId){
     check(streamShortId, String);
     check(streamId, String);
     return updateStream.call(this,{shortId: streamShortId}, {$set: {activeStreamId: streamId}});
   },
-  addStreamToStream: function(streamShortId, stream){
+  addStreamToStream (streamShortId, stream){
     check(streamShortId, String);
     if (Meteor.isServer){
       check(stream, Object);
@@ -215,7 +215,7 @@ Meteor.methods({
     }
     return stream._id;
   },
-  removeStreamFromStream: function(shortId, streamId) {
+  removeStreamFromStream (shortId, streamId) {
     check(shortId, String);
     check(streamId, String);
 
@@ -262,7 +262,7 @@ Meteor.methods({
 
     return numUpdated;
   },
-  removeContextFromStream: function(shortId, contextId) {
+  removeContextFromStream (shortId, contextId) {
     check(shortId, String);
     check(contextId, String);
 
@@ -293,32 +293,32 @@ Meteor.methods({
 
     return numUpdated;
   },
-  goToFindStreamStep: function(shortId){
+  goToFindStreamStep (shortId){
     return updateStream.call(this, { shortId: shortId}, {$set: { creationStep: 'find_stream'}});
   },
-  goToAddCardsStep: function(shortId){
+  goToAddCardsStep (shortId){
     return updateStream.call(this, { shortId: shortId}, {$set: { creationStep: 'add_cards'}});
   },
-  goToPublishStreamStep: function(shortId){
+  goToPublishStreamStep (shortId){
     return updateStream.call(this, { shortId: shortId}, {$set: { creationStep: 'go_on_air'}});
   },
-  skipFindStreamStep: function(shortId){
+  skipFindStreamStep (shortId){
     check(shortId, String);
     return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: nextCreationStepAfter('find_stream') }});
   },
-  skipAddCardsStep: function(shortId){
+  skipAddCardsStep (shortId){
     check(shortId, String);
     return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: nextCreationStepAfter('add_cards') }});
   },
-  goBackFromTitleDescriptionStep: function(shortId){
+  goBackFromTitleDescriptionStep (shortId){
     check(shortId, String);
     return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: creationStepBefore('title_description') }});
   },
-  proceedFromGoOnAirStep: function(shortId){
+  proceedFromGoOnAirStep (shortId){
     check(shortId, String);
     return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: nextCreationStepAfter('go_on_air') }});
   },
-  publishStream: function(shortId, title, description){
+  publishStream (shortId, title, description){
     check(shortId, String);
 
     var deepstream = Deepstreams.findOne({shortId: shortId}, {fields:{firstOnAirAt: 1}});
@@ -340,34 +340,34 @@ Meteor.methods({
 
     return updateStream.call(this, {shortId: shortId}, {$set: setObject});
   },
-  unpublishStream: function(shortId){
+  unpublishStream (shortId){
     check(shortId, String);
     return updateStream.call(this, {shortId: shortId}, {$set: { onAir: false, lastOnAirAt: new Date, onAirSince: null }});
   },
-  updateStreamTitle: function(shortId, title){
+  updateStreamTitle (shortId, title){
     check(shortId, String);
     check(title, String);
     var streamPathSegment = generateStreamPathSegment(shortId, title);
     return updateStream.call(this, {shortId: shortId}, {$set: {'title' : title, 'streamPathSegment' : streamPathSegment }});
   },
-  updateStreamDescription: function(shortId, description){
+  updateStreamDescription (shortId, description){
     check(shortId, String);
     check(description, String);
     return updateStream.call(this, {shortId: shortId}, {$set: {'description' : description }});
   },
-  editHorizontalBlockDescription: function(shortId, contextId, description) {
+  editHorizontalBlockDescription (shortId, contextId, description) {
     check(shortId, String);
     check(contextId, String);
     check(description, String);
     return updateStream.call(this, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.description": description}});
   },
-  editTextSection: function(shortId, contextId, content) {
+  editTextSection (shortId, contextId, content) {
     check(shortId, String);
     check(contextId, String);
     check(content, String);
     return updateStream.call(this, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.content": content}});
   },
-  reorderContext: function(shortId, ordering){
+  reorderContext (shortId, ordering){
     check(shortId, String);
     check(ordering, [String]);
 
@@ -379,7 +379,7 @@ Meteor.methods({
 
     return numberUpdated;
   },
-  directorModeOff: function(shortId){
+  directorModeOff (shortId){
     check(shortId, String);
     this.unblock();
     return updateStream.call(this, {
@@ -390,7 +390,7 @@ Meteor.methods({
       }
     });
   },
-  directorModeOn: function(shortId){
+  directorModeOn (shortId){
     check(shortId, String);
     this.unblock();
     return updateStream.call(this, {
@@ -401,23 +401,23 @@ Meteor.methods({
       }
     });
   },
-  favoriteStory: function(storyId) {
+  favoriteStory (storyId) {
     check(storyId, String);
     return changeFavorite.call(this, storyId, true);
   },
-  unfavoriteStory: function(storyId) {
+  unfavoriteStory (storyId) {
     check(storyId, String);
     return changeFavorite.call(this, storyId, false);
   },
-  designateEditorsPick: function(storyId) {
+  designateEditorsPick (storyId) {
     check(storyId, String);
     return changeEditorsPick.call(this, storyId, true);
   },
-  stripEditorsPick: function(storyId) {
+  stripEditorsPick (storyId) {
     check(storyId, String);
     return changeEditorsPick.call(this, storyId, false);
   },
-  createDeepstream: function(shortId, initialStream) { // TO-DO find a way to generate these ids in a trusted way server without compromising UI speed
+  createDeepstream (shortId, initialStream) { // TO-DO find a way to generate these ids in a trusted way server without compromising UI speed
     var user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to create a story');

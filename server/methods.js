@@ -63,12 +63,12 @@ var countStat = function(streamId, stat, details) {
 };
 
 Meteor.methods({
-  countStoryView: function(streamId) {
+  countStoryView (streamId) {
     this.unblock();
     check(streamId, String);
     countStat.call(this, streamId, 'views');
   },
-  countStoryShare: function(streamId, service) {
+  countStoryShare (streamId, service) {
     this.unblock();
     check(streamId, String);
     countStat.call(this, streamId, 'shares', {service: service});

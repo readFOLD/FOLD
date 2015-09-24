@@ -119,7 +119,7 @@ Meteor.methods({
    output: {items: [..], nextPage: any constant value})
 
    */
-  flickrImageSearchList: function (query, option, page=1) {
+  flickrImageSearchList (query, option, page=1) {
     var items, nextPage, linkSearch, path, requestParams;
     check(query, String);
 
@@ -199,7 +199,7 @@ Meteor.methods({
       'nextPage': nextPage
     };
   },
-  imgurImageSearchList: function (query, option, page=0) {
+  imgurImageSearchList (query, option, page=0) {
     var res;
     var fullSearchItems;
     check(query, String);
@@ -259,7 +259,7 @@ Meteor.methods({
       items: urlItems.concat(fullSearchItems)
     }
   },
-  giphyGifSearchList: function (query, option, page=0) {
+  giphyGifSearchList (query, option, page=0) {
     var res;
     var items;
     var nextPage;
@@ -300,7 +300,7 @@ Meteor.methods({
       items: items
     }
   },
-  soundcloudAudioSearchList: function (query, option, page=0) {
+  soundcloudAudioSearchList (query, option, page=0) {
     var res;
     var items, nextPage, linkSearch, path, requestParams;
     check(query, String);
@@ -359,7 +359,7 @@ Meteor.methods({
       'items': items
     }
   },
-  twitterSearchList: function (query, option, page) {
+  twitterSearchList (query, option, page) {
     var res;
     var items = [];
     var isId = false;
@@ -412,7 +412,7 @@ Meteor.methods({
 
     return searchResults;
   },
-  embedlyEmbedResult: function (query) {
+  embedlyEmbedResult (query) {
     var res, requestParams;
     check(query, String);
     this.unblock();
@@ -429,7 +429,7 @@ Meteor.methods({
     });
     return res.data;
   },
-  embedlyExtractResult: function (query) {
+  embedlyExtractResult (query) {
     var res, requestParams;
     check(query, String);
     this.unblock();
@@ -446,7 +446,7 @@ Meteor.methods({
     });
     return res.data;
   },
-  vimeoVideoSearchList: function (query, option, page=1) {
+  vimeoVideoSearchList (query, option, page=1) {
     var items;
     var nextPage;
     var path = '/videos';
@@ -497,7 +497,7 @@ Meteor.methods({
       'nextPage': nextPage
     };
   },
-  streamSearchList: function(query, option, page={}){
+  streamSearchList (query, option, page={}){
     if(!this.userId){ // TO-DO Launch remove
       return {
         items: [],
@@ -633,7 +633,7 @@ Meteor.methods({
     }
   },
   youtubeVideoSearchList: searchYouTube,
-  bambuserVideoSearchList: function (query, option, page=0) {
+  bambuserVideoSearchList (query, option, page=0) {
     var res;
     var nextPageToken;
     check(query, Match.Optional(String));
@@ -673,7 +673,7 @@ Meteor.methods({
       'items': items
     }
   },
-  ustreamVideoSearchList: function (query, option, page=1) {
+  ustreamVideoSearchList (query, option, page=1) {
     var res;
     var nextPageToken;
     check(query, Match.Optional(String));
@@ -711,7 +711,7 @@ Meteor.methods({
       'items': items
     }
   },
-  youtubeVideoInfo: function (ids, page) {
+  youtubeVideoInfo (ids, page) {
     var res;
     var nextPageToken;
 

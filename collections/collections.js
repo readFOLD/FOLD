@@ -454,7 +454,7 @@ Schema.Streams = new SimpleSchema({
 
 
 this.Deepstreams = new Mongo.Collection("deepstreams", {
-  transform: function(doc) {
+  transform (doc) {
     return new Deepstream(doc);
   }
 });
@@ -528,7 +528,7 @@ Schema.Deepstreams = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    autoValue: function() {
+    autoValue () {
       if (this.isInsert) {
         return new Date;
       } else if (this.isUpsert) {

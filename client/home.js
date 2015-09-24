@@ -22,7 +22,7 @@ loginWithEmail = function () {
 };
 
 Template.login_buttons.helpers({
-  showUserInfo: function () {
+  showUserInfo () {
     return Template.instance().showUserInfo.get();
   }
 });
@@ -32,17 +32,17 @@ Template.login_buttons.onCreated(function () {
 });
 
 Template.login_buttons.events({
-  "mouseenter .user-action": function (d) {
+  "mouseenter .user-action" (d) {
     Template.instance().showUserInfo.set(true);
   },
-  "mouseleave .user-action": function (d) {
+  "mouseleave .user-action" (d) {
     Template.instance().showUserInfo.set(false);
   },
-  "click .signin": function (d) {
+  "click .signin" (d) {
     Session.set('signingIn', true);
     setSigningInFrom();
   },
-  "click .logout": function (e) {
+  "click .logout" (e) {
     e.preventDefault();
     Template.instance().showUserInfo.set(false);
     Meteor.logout();
@@ -65,16 +65,16 @@ var closeSignInOverlay = function () {
 // TO-DO close sign in overlay on esc (27) need to do on whole window though
 
 Template.signin_overlay.events({
-  "click .close": function (d) {
+  "click .close" (d) {
     closeSignInOverlay();
     analytics.track('Click close sign-in overlay');
   },
-  "click .twitter-signin, click .twitter-signup": function (d) {
+  "click .twitter-signin, click .twitter-signup" (d) {
     closeSignInOverlay();
     loginWithTwitter();
     analytics.track('Click login with Twitter');
   },
-  "click .email-signin": function (d) {
+  "click .email-signin" (d) {
     closeSignInOverlay();
     loginWithEmail();
     analytics.track('Click login with email');
@@ -82,7 +82,7 @@ Template.signin_overlay.events({
 });
 
 Template.signup_page.events({
-  "click .twitter-signin": function (d) {
+  "click .twitter-signin" (d) {
     loginWithTwitter();
     analytics.track('Click sign up with Twitter');
   }
@@ -91,10 +91,10 @@ Template.signup_page.events({
 // DEEPSTREAM
 
 Template.top_banner.helpers({
-  showBestStreams: function () {
+  showBestStreams () {
     return Session.equals('homeStreamListMode', 'best');
   },
-  showMostRecentStreams: function () {
+  showMostRecentStreams () {
     return Session.equals('homeStreamListMode', 'most_recent');
   }
 });
@@ -152,25 +152,25 @@ Template.home.onCreated(function () {
 
 
 Template.home.helpers({
-  noMoreStreamResults: function(){
+  noMoreStreamResults (){
     return Template.instance().noMoreStreamResults.get();
   },
-  loadingStreamResults: function(){
+  loadingStreamResults (){
     return Template.instance().loadingStreamResults.get();
   },
-  showDeepstreamsOnly: function(){
+  showDeepstreamsOnly (){
     return Session.equals('homeStreamListType', 'deepstreams');
   },
-  showLivestreamsOnly: function(){
+  showLivestreamsOnly (){
     return Session.equals('homeStreamListType', 'livestreams');
   },
-  showDeepstreamsAndLivestreams: function(){
+  showDeepstreamsAndLivestreams (){
     return Session.equals('homeStreamListType', 'both');
   },
-  showDeepstreams: function(){
+  showDeepstreams (){
     return Session.equals('homeStreamListType', 'both') || Session.equals('homeStreamListType', 'deepstreams');
   },
-  showLivestreams: function(){
+  showLivestreams (){
     return Session.equals('homeStreamListType', 'both') || Session.equals('homeStreamListType', 'livestreams');
   }
 });
@@ -183,7 +183,7 @@ var getHomepageStreamSearchResults = function() {
 };
 
 Template.home.events({
-  "submit .stream-search-form": function (e, t) {
+  "submit .stream-search-form" (e, t) {
     e.preventDefault();
     var query = t.$('#stream-search-input').val();
     Session.set('homeStreamListQuery', query);
@@ -195,27 +195,27 @@ Template.home.events({
       t.noMoreStreamResults.set(null);
     }
   },
-  "click .show-best-streams": function (e, t) {
+  "click .show-best-streams" (e, t) {
     t.$('#stream-search-input').val('');
     Session.set('homeStreamListMode', 'best');
   },
-  "click .show-most-recent-streams": function (e, t) {
+  "click .show-most-recent-streams" (e, t) {
     t.$('#stream-search-input').val('');
     Session.set('homeStreamListMode', 'most_recent');
   },
-  "click .show-deepstreams-only": function (e, t) {
+  "click .show-deepstreams-only" (e, t) {
     Session.set('homeStreamListType', 'deepstreams');
   },
-  "click .show-livestreams-only": function (e, t) {
+  "click .show-livestreams-only" (e, t) {
     Session.set('homeStreamListType', 'livestreams');
   },
-  "click .show-deepstreams-and-livestreams": function (e, t) {
+  "click .show-deepstreams-and-livestreams" (e, t) {
     Session.set('homeStreamListType', 'both');
   }
 });
 
 Template.deepstreams.helpers({
-  streams: function () {
+  streams () {
     if (FlowRouter.subsReady()) {
       var selector = {onAir: true};
       var sort = { live: -1 };
@@ -252,7 +252,7 @@ Template.deepstreams.helpers({
       });
     }
   },
-  subsReady: function(){
+  subsReady (){
     return FlowRouter.subsReady();
   }
 });
@@ -263,35 +263,35 @@ Template.deepstream_preview.onCreated(function(){
 });
 
 Template.deepstream_preview.helpers({
-  title: function () {
+  title () {
     return this.title || '(untitled)';
   },
-  linkPath: function () {
+  linkPath () {
     return Template.instance().data.linkToCurate ? this.curatePath() : this.watchPath();
   },
-  contentPreview: function(){
+  contentPreview (){
     return Template.instance().contentPreview.get();
   },
-  previewTypeIs: function(type){
+  previewTypeIs (type){
     var contentPreview = Template.instance().contentPreview.get();
     return contentPreview && contentPreview.type == type;
   }
 });
 
 Template.deepstream_preview.events({
-  'click .news-button': function(d, t) {
+  'click .news-button' (d, t) {
     t.contentPreview.set(this.mostRecentContextOfType('news'));
   },
-  'click .twitter-button': function(d, t) {
+  'click .twitter-button' (d, t) {
     t.contentPreview.set(this.mostRecentContextOfType('twitter'));
   },
-  'click .text-button': function(d, t) {
+  'click .text-button' (d, t) {
     t.contentPreview.set(this.mostRecentContextOfType('text'));
   }
 });
 
 Template.streams.helpers({
-  streams: function () {
+  streams () {
     if (FlowRouter.subsReady()) {
       switch (Session.get('homeStreamListMode')) {
         case 'best':
@@ -324,22 +324,22 @@ Template.streams.helpers({
 });
 
 Template.stream_preview.events({
-  'click .close': function(e,t){
+  'click .close' (e,t){
     Session.set('showPreviewOverlayForStreamId', null);
   },
-  'click .show-preview-overlay': function(e,t){
+  'click .show-preview-overlay' (e,t){
     Session.set('showPreviewOverlayForStreamId', this._id);
   }
 });
 
 Template.stream_preview.helpers({
-  'showPreviewOverlay': function(){
+  'showPreviewOverlay' (){
     return Session.equals('showPreviewOverlayForStreamId', this._id);
   }
 });
 
 Template.my_streams.helpers({
-  streams: function () {
+  streams () {
     if (FlowRouter.subsReady()) {
       return Deepstreams.find({curatorId: Meteor.user()._id});
     }

@@ -47,7 +47,7 @@ var servicesToFetch = [
     guessBias: 1,
     maxPages: parseInt(process.env.MAX_USTREAM_PAGES) || parseInt(Meteor.settings.MAX_USTREAM_PAGES) || 1000,
     asyncWaitTime: 10,
-    mapFn: function (doc) {
+    mapFn (doc) {
       _.extend(doc, {
         _streamSource: 'ustream',
         username: doc.user.userName,
@@ -70,7 +70,7 @@ var servicesToFetch = [
     guessBias: 0,
     maxPages: parseInt(process.env.MAX_BAMBUSER_PAGES) || parseInt(Meteor.settings.MAX_BAMBUSER_PAGES) || 1000,
     asyncWaitTime: 50,
-    mapFn: function (doc) {
+    mapFn (doc) {
       _.extend(doc, {
         _streamSource: 'bambuser',
         id: doc.vid,

@@ -165,7 +165,7 @@ window.contextTypesPlusChat = _.union(contextTypes, ['chat']);
 
 
 window.horizontalBlockHelpers = _.extend({}, {
-  selected: function(){
+  selected (){
     return true;
   },
   annotation: textContentHelper
