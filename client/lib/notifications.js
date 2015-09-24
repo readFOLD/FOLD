@@ -28,7 +28,7 @@ window.notifySuccess = function(message){
 
 window.notifyLogin = function(){
   var user = Meteor.user();
-  var name = user.profile.name ? user.profile.name.split(' ')[0] : user.profile.displayUsername;
+  var name = user.profile.name ? user.profile.name.split(' ')[0] : user.profile.username;
   notifySuccess('Welcome ' + name + '!');
 };
 

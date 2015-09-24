@@ -44,22 +44,11 @@ Schema.UserProfile = new SimpleSchema({
 Schema.User = new SimpleSchema({
   username: {
     type: String,
-    regEx: /^[a-z0-9_]*$/,
+    regEx: /^[a-zA-Z0-9_]*$/,
     min: 3,
     max: 15,
     optional: true,
     autoValue () {
-      if (this.isSet && typeof this.value === "string") {
-        return this.value.toLowerCase().trim();
-      } else {
-        this.unset()
-      }
-    }
-  },
-  displayUsername: { // allows for caps
-    type: String,
-    optional: true,
-    autoValue () { // TODO ensure this matches username except for capitalization
       if (this.isSet && typeof this.value === "string") {
         return this.value.trim();
       } else {

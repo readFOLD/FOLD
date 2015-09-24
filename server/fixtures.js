@@ -30,7 +30,7 @@ if (Meteor.users.find().count() === 0) {
 if (Deepstreams.find().count() === 0) {
 
   if(!curatorId){
-    curatorId = Meteor.users.findOne({username: 'curat0r'})._id
+    curatorId = Accounts.findUserByUsername('curat0r')._id
   }
   [{
     savedAt: ISODate("2015-09-17T16:49:39.049Z"),
@@ -39,7 +39,6 @@ if (Deepstreams.find().count() === 0) {
     curatorId: curatorId,
     curatorName: "Dr Stream",
     curatorUsername: "curat0r",
-    curatorDisplayUsername: "curat0r",
     shortId: "3zruKDSm",
     creationStep: null,
     description: "This is a livecam from the International Space Station. Enjoy amazing views of Earth while learning about the ISS.",
@@ -2930,7 +2929,6 @@ if (Deepstreams.find().count() === 0) {
     curatorId: "nfEArh6HDDPJH857A",
     curatorName: "Dr Stream",
     curatorUsername: "curat0r",
-    curatorDisplayUsername: "curat0r",
     shortId: "SEDsDRNb",
     creationStep: null,
     description: "Often misunderstood and maligned, sharks are some of the most amazing creatures on the planet. Watch and learn more about them",

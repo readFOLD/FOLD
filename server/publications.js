@@ -55,8 +55,7 @@ Meteor.users._ensureIndex({
 //  userPathSegment: 1,
 //  authorId: 1,
 //  authorName: 1,
-//  //authorUsername: 1, // don't need atm. can get from lowercasing the below
-//  authorDisplayUsername: 1,
+//  authorUsername: 1,
 //  //favorited: 1, // will need to add this back in for non-curated stories to use preview
 //  editorsPick: 1,
 //  editorsPickAt: 1,
@@ -164,7 +163,6 @@ Meteor.publish("userData", function () {
       {fields: {
         'accessPriority': 1,
         "services.twitter.id": 1,
-        "displayUsername": 1,
         "admin": 1,
         "profile": 1
       }});

@@ -859,13 +859,12 @@ checkUserSignup = function(username, email) {
   if(username && _.indexOf(disallowedUsernames, username.toLowerCase().trim(), true) !== -1){
     throw new Meteor.Error('username', 'Username is alrady taken.');
   }
-  var existingUser = Meteor.users.findOne( { $or: [{username: username}, {'emails.address': email}]});
-  if (existingUser) {
-    if (existingUser.username === username){
-      throw new Meteor.Error('username', 'Username is already in use.')
-    } else {
-      throw new Meteor.Error('email', 'Email is already in use.')
-    }
 
+  if (Accounts.findUserByUsername(username)){
+    throw new Meteor.Error('username', 'Username is already in use.')
   }
+  if (Accounts.findUserByEmail(email)) {
+    throw new Meteor.Error('email', 'Email is already in use.')
+  }
+
 };

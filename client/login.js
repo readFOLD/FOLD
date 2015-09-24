@@ -22,7 +22,7 @@ Template.login_form.events({
         value = input['value'];
         user_info[key]=value;
       });
-    Meteor.loginWithPassword(user_info.username.toLowerCase(), user_info.password, function(err){
+    Meteor.loginWithPassword(user_info.username, user_info.password, function(err){
       if (err) {
         template.loginError.set(err.reason); 
       } else {

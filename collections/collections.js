@@ -485,9 +485,6 @@ Schema.Deepstreams = new SimpleSchema({
   curatorName: {
     type: String
   },
-  curatorDisplayUsername: {
-    type: String
-  },
   curatorUsername: {
     type: String
   },

@@ -428,7 +428,7 @@ Meteor.methods({
     }
 
     var streamPathSegment = generateStreamPathSegment(shortId);
-    var userPathSegment= user.displayUsername;
+    var userPathSegment= user.username;
 
     Deepstreams.insert({
       savedAt: new Date,
@@ -437,7 +437,6 @@ Meteor.methods({
       curatorId: this.userId,
       curatorName: user.profile.name || user.username,
       curatorUsername: user.username,
-      curatorDisplayUsername: user.displayUsername,
       shortId: shortId,
       creationStep: CREATION_STEPS[0]
     });

@@ -32,7 +32,6 @@ Meteor.startup(function(){
 //  return _.chain(story)
 //    .pick([
 //      '_id',
-//      'authorDisplayUsername',
 //      'authorId',
 //      'authorName',
 //      'authorUsername',
