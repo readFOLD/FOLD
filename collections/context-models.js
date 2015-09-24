@@ -798,9 +798,7 @@ MapBlock = (function (_super) {
     }
   };
 
-  MapBlock.prototype.previewUrl = function (height, width) {
-    height = height || 300;
-    width = width || 520;
+  MapBlock.prototype.previewUrl = function (height=300, width=520) {
     if (this.source === 'google_maps') {
       return 'https://maps.googleapis.com/maps/api/staticmap?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&center=' + this.escape(this.reference.mapQuery) + '&maptype=' + this.escape(this.reference.mapType) + '&size=' + width + 'x' + height + '&markers=color:red|' + this.escape(this.reference.mapQuery);
     }
