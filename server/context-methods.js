@@ -119,7 +119,7 @@ Meteor.methods({
    output: {items: [..], nextPage: any constant value})
 
    */
-  flickrImageSearchList (query, option, page=1) {
+  flickrImageSearchList (query, option, page) {
     var items, nextPage, linkSearch, path, requestParams;
     check(query, String);
 
@@ -142,6 +142,7 @@ Meteor.methods({
       linkSearch = false;
     }
 
+    page = page || 1;  // flickr starts from 1
     this.unblock();
 
     if (linkSearch) {
@@ -199,12 +200,13 @@ Meteor.methods({
       'nextPage': nextPage
     };
   },
-  imgurImageSearchList (query, option, page=0) {
+  imgurImageSearchList (query, option, page) {
     var res;
     var fullSearchItems;
     check(query, String);
     this.unblock();
     var nextPage;
+    page = page || 0;
 
     var authorizationStr = "Client-ID " + IMGUR_CLIENT_ID;
 
@@ -259,12 +261,13 @@ Meteor.methods({
       items: urlItems.concat(fullSearchItems)
     }
   },
-  giphyGifSearchList (query, option, page=0) {
+  giphyGifSearchList (query, option, page) {
     var res;
     var items;
     var nextPage;
     check(query, String);
     this.unblock();
+    page = page || 0;
     requestParams = {
       q: query,
       api_key: GIPHY_API_KEY,
@@ -300,7 +303,7 @@ Meteor.methods({
       items: items
     }
   },
-  soundcloudAudioSearchList (query, option, page=0) {
+  soundcloudAudioSearchList (query, option, page) {
     var res;
     var items, nextPage, linkSearch, path, requestParams;
     check(query, String);
@@ -311,7 +314,7 @@ Meteor.methods({
       linkSearch = false;
     }
 
-    var offset = page;
+    var offset = page || 0;
     var limit = 50;
     if (linkSearch) {
       path = 'resolve';
@@ -446,7 +449,7 @@ Meteor.methods({
     });
     return res.data;
   },
-  vimeoVideoSearchList (query, option, page=1) {
+  vimeoVideoSearchList (query, option, page) {
     var items;
     var nextPage;
     var path = '/videos';
@@ -457,6 +460,7 @@ Meteor.methods({
     }
 
     this.unblock();
+    page = page || 1;
 
     var client = new Vimeo(
         VIMEO_API_KEY,
@@ -497,7 +501,7 @@ Meteor.methods({
       'nextPage': nextPage
     };
   },
-  streamSearchList (query, option, page={}){
+  streamSearchList (query, option, page){
     if(!this.userId){ // TO-DO Launch remove
       return {
         items: [],
@@ -506,7 +510,9 @@ Meteor.methods({
     }
 
     var youtubeResults;
-
+    if (!page) {
+      page = {};
+    }
     page.ustream = page.ustream || 0;
     page.bambuser = page.bambuser || 0;
 
@@ -633,7 +639,7 @@ Meteor.methods({
     }
   },
   youtubeVideoSearchList: searchYouTube,
-  bambuserVideoSearchList (query, option, page=0) {
+  bambuserVideoSearchList (query, option, page) {
     var res;
     var nextPageToken;
     check(query, Match.Optional(String));
@@ -650,6 +656,9 @@ Meteor.methods({
     if (query){
       requestParams.tag = query.replace(' ', ',');
     }
+
+
+    page = page || 0;
 
     if (page) {
       requestParams['page'] = page;
@@ -673,7 +682,7 @@ Meteor.methods({
       'items': items
     }
   },
-  ustreamVideoSearchList (query, option, page=1) {
+  ustreamVideoSearchList (query, option, page) {
     var res;
     var nextPageToken;
     check(query, Match.Optional(String));
@@ -687,6 +696,8 @@ Meteor.methods({
     var kindOfThingToSearch = 'channel'; // channel, user
     var sortBy = 'popular'; // live, recent
     var searchString = 'all'; //'title:like:' + query; // targetProperty:comparison:targetValue or all
+
+    page = page || 1;
 
     requestParams['page'] = page;
 
