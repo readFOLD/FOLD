@@ -124,8 +124,7 @@ Meteor.publish("bestStreams", function() {
     sort: {
       currentViewers: -1
     },
-    limit: 20,
-    fields: streamFields
+    limit: 20
   });
 });
 Meteor.publish("mostRecentStreams", function() {
