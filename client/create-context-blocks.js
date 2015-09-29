@@ -76,7 +76,8 @@ var goBack = function(e, t) {
   if (focusResult && focusResult.searchList) { // if at the single-mode of a list
     return t.focusResult.set(null);
   } else {
-    return Session.set('searchingMedia', false);
+    Session.set('previousMediaDataType', Session.get('mediaDataType'));
+    return Session.set('mediaDataType', null);
   }
 };
 
@@ -715,10 +716,12 @@ Template.create_map_section.helpers({
 
 Template.create_text_section.onCreated(function() {
   this.type = 'text';
+  this.focusResult = new ReactiveVar(); // just as a stub
   Session.set('newHorizontalDataSource', 'free_text');
 });
 
 Template.create_text_section.onRendered(function() {
+
   this.$('textarea').focus();
 });
 

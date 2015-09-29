@@ -180,85 +180,56 @@
 <template name="content_icons">
   <div class="content-icons">
     <ol>
-      {{#if show_stream_icon}}
-        <li>
-          <button class='stream-button {{#if stream}}active{{/if}}'>
-            {{> stream_icon }}
-          </button>
-        </li>
-        <hr>
-      {{/if}}
-      {{#if show_news_icon}}
-        <li>
-          <button class='news-button {{#if news}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> news_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_text_icon}}
-        <li>
-          <button class='text-button {{#if text}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> text_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_map_icon}}
-        <li>
-          <button class='map-button {{#if map}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> map_icon }}
-          </button>
-        </li>
-
-      {{/if}}
-      {{#if show_image_icon}}
-        <li>
-          <button class='image-button {{#if image}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> image_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_wikipedia_icon}}
-        <li>
-          <button class='wikipedia-button {{#if wikipedia}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> wikipedia_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_video_icon}}
-        <li>
-          <button class='video-button {{#if video}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> video_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_twitter_icon}}
-        <li>
-          <button class='twitter-button {{#if twitter}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> twitter_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_audio_icon}}
-        <li>
-          <button class='audio-button {{#if audio}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> audio_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_link_icon}}
-        <li>
-          <button class='link-button {{#if link}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> link_icon }}
-          </button>
-        </li>
-      {{/if}}
-      {{#if show_chat_icon}}
-        <li>
-          <button class='chat-button {{#if chat}}active{{/if}}' disabled='{{disableAllButStream}}'>
-            {{> chat_icon }}
-          </button>
-        </li>
-      {{/if}}
+      <li>
+        <button class='stream-button {{#if stream}}active{{/if}}'>
+          {{> stream_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='news-button {{#if news}}active{{/if}}' disabled='{{disableAllButStream}}'>
+          {{> news_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='text-button {{#if text}}active{{/if}}' disabled='{{disableAllButStream}}'>
+          {{> text_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='map-button {{#if map}}active{{/if}}' disabled='{{disableAllButStream}}'>
+          {{> map_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='image-button {{#if image}}active{{/if}}' disabled='{{disableAllButStream}}'>
+          {{> image_icon }}
+        </button>
+      </li>
+      <!--<li>-->
+        <!--<button class='wikipedia-button {{#if wikipedia}}active{{/if}}' disabled='{{disableAllButStream}}'>-->
+          <!--{{> wikipedia_icon }}-->
+        <!--</button>-->
+      <!--</li>-->
+      <li>
+        <button class='video-button {{#if video}}active{{/if}}' disabled='{{disableAllButStream}}'>
+          {{> video_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='twitter-button {{#if twitter}}active{{/if}}' disabled='{{disableAllButStream}}'>
+          {{> twitter_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='audio-button {{#if audio}}active{{/if}}' disabled='{{disableAllButStream}}'>
+          {{> audio_icon }}
+        </button>
+      </li>
+      <li>
+        <button class='link-button {{#if link}}active{{/if}}' disabled='{{disableAllButStream}}'>
+          {{> link_icon }}
+        </button>
+      </li>
     </ol>
 
   </div>

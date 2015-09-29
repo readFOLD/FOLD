@@ -153,8 +153,6 @@ window.contextTypes = [
   "news"
 ];
 
-window.contextTypesPlusChat = _.union(contextTypes, ['chat']);
-
 
 //window.typeHelpers = _.object(contextTypes, _.map(contextTypes, function(type) {
 //  return function() {
@@ -205,7 +203,7 @@ window.emptyContextBlockOfCurrentMediaDataType = function(){
 };
 
 
-window.contextHelpers = _.object(contextTypesPlusChat, _.map(contextTypesPlusChat, function(type) {
+window.contextHelpers = _.object(contextTypes, _.map(contextTypes, function(type) {
   return function() {
     return Session.get('mediaDataType') === type;
   };
