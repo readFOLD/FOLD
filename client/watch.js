@@ -522,6 +522,13 @@ Template.context_browser.helpers({
   contextOfCurrentType (){
     return this.contextOfType(Session.get('mediaDataType'));
   },
+  contextBlocks (){
+    return _.chain(this.contextBlocks)
+      .sortBy('date')
+      .reverse()
+      .sortBy('rank')
+      .value();
+  },
   soloSidebarContextMode (){
     var currentContext = getCurrentContext();
     return currentContext && currentContext.soloModeLocation === 'sidebar';
