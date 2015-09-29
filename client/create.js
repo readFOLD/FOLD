@@ -88,7 +88,8 @@ Template.content_icons.events(_.object(_.map(contextTypesPlusChat, function(type
   })
   , _.map(contextTypesPlusChat, function(type) {
     return function() {
-      return Session.set('mediaDataType', type);
+      Session.set('mediaDataType', type);
+      Session.set("searchingMedia", true);
     };
   }))
 );

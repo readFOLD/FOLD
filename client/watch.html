@@ -47,8 +47,8 @@
           {{/if}}
         </div>
         <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
-          {{> content_icons}}
           {{#if showContextSearch}}
+            {{> content_icons}}
             {{> add_context}}
           {{else}}
             {{#if showStreamSearch}}
@@ -314,7 +314,6 @@
       {{#if soloSidebarContextMode}}
         <button class="switch-to-list-mode">{{> list_icon}}</button>
       {{/if}}
-      <span class="type">{{mediaTypeForDisplay}}</span>
       {{#if curateMode}}
         <button class="add-new-context">{{> add_icon}}</button>
       {{else}}
@@ -333,7 +332,7 @@
           {{> solo_context_section}}
         {{/with}}
       {{else}}
-        {{#each contextOfCurrentType}}
+        {{#each contextBlocks}}
           {{> list_item_context_section}}
         {{/each}}
       {{/if}}
@@ -345,12 +344,9 @@
   <div class="overlay-context-browser" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
     <button class="close">{{> close_circle}}</button>
     <div class="context-area">
-      <div class="count">{{mediaTypeForDisplay}} {{currentNum}} of {{totalNum}}</div>
-      {{#unless disableLeftButton}}<button class="left" disabled="{{disableLeftButton}}">{{> scroll_left_icon}}</button>{{/unless}}
       {{#with currentContext}}
         {{> solo_context_section}}
       {{/with}}
-      {{#unless disableRightButton}}<button class="right" disabled="{{disableRightButton}}">{{> scroll_right_icon}}</button>{{/unless}}
     </div>
   </div>
 </template>

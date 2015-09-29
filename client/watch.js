@@ -152,18 +152,6 @@ Template.watch_page.onCreated(function () {
     Session.set("streamShortId", that.data.shortId());
   });
 
-  this.autorun(function() { // when change media data type, leave search mode, unless doing streams, then always search
-    if (Session.get("curateMode")) {
-      var mediaDataType = Session.get("mediaDataType");
-      if(mediaDataType && mediaDataType === 'stream'){
-        Session.set("searchingMedia", true);
-      } else {
-        Session.set("searchingMedia", false);
-      }
-    }
-  });
-
-
   // march through creation steps, or setup most recent context type to display when arrive on page if past curation
   this.autorun(function(){
     if(FlowRouter.subsReady()){
