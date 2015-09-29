@@ -24,11 +24,15 @@ loginWithEmail = function () {
 Template.login_buttons.helpers({
   showUserInfo () {
     return Template.instance().showUserInfo.get();
+  },
+  loggingOut () {
+    return Template.instance().loggingOut.get();
   }
 });
 
 Template.login_buttons.onCreated(function () {
-  return this.showUserInfo = new ReactiveVar(false);
+  this.showUserInfo = new ReactiveVar(false);
+  this.loggingOut = new ReactiveVar(false);
 });
 
 Template.login_buttons.events({
@@ -42,10 +46,13 @@ Template.login_buttons.events({
     Session.set('signingIn', true);
     setSigningInFrom();
   },
-  "click .logout" (e) {
+  "click .logout" (e, t) {
     e.preventDefault();
-    Template.instance().showUserInfo.set(false);
-    Meteor.logout();
+    t.showUserInfo.set(false);
+    t.loggingOut.set(true);
+    Meteor.logout(() =>
+      t.loggingOut.set(false)
+    );
   }
 });
 

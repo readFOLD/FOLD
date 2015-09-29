@@ -108,30 +108,35 @@
 
 <template name="login_buttons">
   <li class="user-action">
-
-    {{#if currentUser}}
-      <!--<a href="/profile/{{currentUser.username}}">-->
-      <a href="javascript:void(0)">
-
-        <button>
-            {{#if profileImage currentUser}}
-              <img class="profile-picture" src="{{profileImage currentUser}}"/>
-            {{/if}}
-          <span class="text">{{currentUser.profile.name}}</span>
-        </button>
-      </a>
-      {{#if showUserInfo}}
-        <ol class="user-menu">
-          <li>
-            <a href="/my_streams"><button>My streams</button></a>
-          </li>
-          <li>
-            <button class="logout">Logout</button>
-          </li>
-        </ol>
-      {{/if}}
+    {{#if loggingOut}}
+      <button>
+        Logging out...
+      </button>
     {{else}}
-      <button class="signin"> Log in / Sign up</button>
+      {{#if currentUser}}
+        <!--<a href="/profile/{{currentUser.username}}">-->
+        <a href="javascript:void(0)">
+
+          <button>
+              {{#if profileImage currentUser}}
+                <img class="profile-picture" src="{{profileImage currentUser}}"/>
+              {{/if}}
+            <span class="text">{{currentUser.profile.name}}</span>
+          </button>
+        </a>
+        {{#if showUserInfo}}
+          <ol class="user-menu">
+            <li>
+              <a href="/my_streams"><button>My streams</button></a>
+            </li>
+            <li>
+              <button class="logout">Logout</button>
+            </li>
+          </ol>
+        {{/if}}
+      {{else}}
+        <button class="signin"> Log in / Sign up</button>
+      {{/if}}
     {{/if}}
   </li>
 </template>
