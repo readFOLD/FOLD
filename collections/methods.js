@@ -124,7 +124,8 @@ Meteor.methods({
 
     if (numUpdated){
       if (Meteor.isClient){
-        Session.set("searchingMedia", false); // leave search mode
+        Session.set("mediaDataType", Session.get('mediaDataType'));
+        Session.set("mediaDataType", null); // leave search mode
         var typeSpecificContextBlock = newTypeSpecificContextBlock(contextBlock);
         if(typeSpecificContextBlock.soloModeLocation === 'sidebar'){
           setCurrentContext(typeSpecificContextBlock); // if single context is in sidebar, show that instead of default list mode

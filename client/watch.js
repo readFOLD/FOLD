@@ -152,18 +152,6 @@ Template.watch_page.onCreated(function () {
     Session.set("streamShortId", that.data.shortId());
   });
 
-  this.autorun(function() { // when change media data type, leave search mode, unless doing streams, then always search
-    if (Session.get("curateMode")) {
-      var mediaDataType = Session.get("mediaDataType");
-      if(mediaDataType && mediaDataType === 'stream'){
-        Session.set("searchingMedia", true);
-      } else {
-        Session.set("searchingMedia", false);
-      }
-    }
-  });
-
-
   // march through creation steps, or setup most recent context type to display when arrive on page if past curation
   this.autorun(function(){
     if(FlowRouter.subsReady()){
@@ -173,23 +161,12 @@ Template.watch_page.onCreated(function () {
       if(that.data.onCuratePage()){
         if (_.contains(['find_stream'], reactiveDeepstream.creationStep)){
           Session.set("mediaDataType", 'stream');
-          Session.set("searchingMedia", true);
           return
         } else if (reactiveDeepstream.creationStep === 'add_cards') {
           Session.set("mediaDataType", 'image');
-          Session.set("searchingMedia", true);
           return
         }
       }
-
-      // else
-      var mostRecentContext =  deepstream.mostRecentContext();
-      if (mostRecentContext){
-        Session.set("mediaDataType", mostRecentContext.type);
-      } else {
-        Session.set("mediaDataType", 'chat'); // default to chat if there is no media
-      }
-      Session.set("searchingMedia", false);
     }
   });
 
@@ -339,22 +316,19 @@ Template.watch_page.helpers({
     return _.contains(['find_stream', 'add_cards', 'go_on_air'], this.creationStep)
   },
   showRightSection (){
-    var mediaDataType = Session.get('mediaDataType');
-    return !soloOverlayContextModeActive() && (mediaDataType && (Session.get("curateMode") || this.hasContextOfType(mediaDataType)));
+    return !soloOverlayContextModeActive() && (Session.get("curateMode") || !Session.get('reducedView'));
   },
   expandMainSection (){
-    var mediaDataType = Session.get('mediaDataType');
-    return !(mediaDataType && (Session.get("curateMode") || this.hasContextOfType(mediaDataType)));
+    return !Session.get("curateMode") && Session.get('reducedView');
   },
   showStreamSearch (){
     return Session.get("curateMode") && Session.get('mediaDataType') === 'stream'; // always search on stream
   },
   showChat (){
-    return Session.get('mediaDataType') === 'chat';
+    return Session.get('showChat', true); // TODO this is probably not what we want
   },
   showContextSearch (){
-    var mediaDataType = Session.get('mediaDataType');
-    return Session.get("curateMode") && (Session.get("searchingMedia") || (mediaDataType && this.contextOfType(mediaDataType).length === 0)) && mediaDataType && !_.contains(['stream', 'chat'], mediaDataType) ;
+    return Session.get('mediaDataType') && Session.get("curateMode");
   },
   showPreviewEditButton (){
     return this.onAir || this.creationStep === 'go_on_air';
@@ -430,9 +404,6 @@ Template.watch_page.events({
   },
   'click .preview' (e,t){
     t.userControlledActiveStreamId.set(null); // so that stream selection doesn't switch
-    if(Session.equals('mediaDataType', 'stream')){ // so context browser doesn't just close if streams was selected
-      Session.set('mediaDataType', 'chat')
-    }
     Session.set('curateMode', false);
   },
   'click .return-to-curate' (){
@@ -458,7 +429,6 @@ Template.watch_page.events({
     if(this.creationStep && this.creationStep !== 'go_on_air'){
       Meteor.call('goToFindStreamStep', t.data.shortId(), basicErrorHandler);
     } else {
-      Session.set('searchingMedia', true);
       Session.set('mediaDataType', 'stream');
     }
   },
@@ -552,28 +522,35 @@ Template.context_browser.helpers({
   contextOfCurrentType (){
     return this.contextOfType(Session.get('mediaDataType'));
   },
+  contextBlocks (){
+    return _.chain(this.contextBlocks)
+      .sortBy('date')
+      .reverse()
+      .sortBy('rank')
+      .value();
+  },
   soloSidebarContextMode (){
     var currentContext = getCurrentContext();
     return currentContext && currentContext.soloModeLocation === 'sidebar';
   },
   showCloseSidebarIcon (){
-    return Session.get('mediaDataType') && !soloOverlayContextModeActive();
+    return !Session.get('reducedView') && !soloOverlayContextModeActive();
   },
   showOpenSidebarIcon (){
-    return !Session.get('mediaDataType') && !soloOverlayContextModeActive();
+    return Session.get('reducedView') && !soloOverlayContextModeActive();
   }
 });
 
 Template.context_browser.events({
   'click .close' (){
     Session.set('previousMediaDataType', Session.get('mediaDataType'));
-    Session.set('mediaDataType', null);
+    Session.set('reducedView', true);
   },
   'click .open' (){
-    Session.set('mediaDataType', Session.get('previousMediaDataType'));
+    Session.set('reducedView', false);
   },
   'click .add-new-context' (){
-    Session.set('searchingMedia', true);
+    Session.set('mediaDataType', Session.get('previousMediaDataType') || 'image');
   },
   'click .delete-context' (e, t){
     var that = this;

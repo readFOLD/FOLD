@@ -60,35 +60,21 @@ Template.add_context.helpers({
 });
 
 Template.content_icons.helpers(contextHelpers);
-Template.content_icons.helpers(
-  _.object(_.map(contextTypes, function(type){
-      return 'show_' + type + '_icon'
-    })
-    , _.map(contextTypes, function(type) {
-      return function() {
-        return this.showAll || Session.get("curateMode") || this.hasContextOfType(type);      };
-    }))
-);
+
 
 Template.content_icons.helpers({
-  show_stream_icon () {
-    return Session.get("curateMode");
-  },
-  show_chat_icon () {
-    return true;
-  },
   disableAllButStream (){
     return _.contains(['find_stream'], this.creationStep);
   }
 });
 
 
-Template.content_icons.events(_.object(_.map(contextTypesPlusChat, function(type){
+Template.content_icons.events(_.object(_.map(contextTypes, function(type){
     return 'click .' + type + '-button'
   })
-  , _.map(contextTypesPlusChat, function(type) {
+  , _.map(contextTypes, function(type) {
     return function() {
-      return Session.set('mediaDataType', type);
+      Session.set('mediaDataType', type);
     };
   }))
 );

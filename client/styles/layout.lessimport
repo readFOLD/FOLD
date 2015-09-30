@@ -11,8 +11,8 @@
 @top-row-color: @black-color;
 @annotation-color: @medium-color;
 
-@background-color: @dark-color;
-@alt-background-color: @dark-medium-color;
+@background-color: @black-color;
+@alt-background-color: @black-color;
 
 @dark-text-color: @black-color;
 @light-text-color: @light-color;
@@ -26,8 +26,8 @@
 @homepage-shade-0: @top-row-color;
 @homepage-shade-1: #181818;
 @homepage-shade-2: #212121;
-@homepage-shade-3: @background-color;
-@homepage-shade-4: @alt-background-color;
+@homepage-shade-3: @dark-color;
+@homepage-shade-4: @dark-medium-color;
 @homepage-shade-5: #525252;
 
 @live-color: #C90523;
