@@ -179,8 +179,7 @@ window.count = function(){
 window.getCurrentContext = function(){
   var currentContextId = Session.get("currentContextId");
   if (currentContextId){
-    var currentContext = Deepstreams.findOne({shortId: Session.get("streamShortId")}).getContextById(currentContextId)
-    return newTypeSpecificContextBlock(currentContext); // session will only store the vanilla object
+    return ContextBlocks.findOne(currentContextId);
   }
 };
 

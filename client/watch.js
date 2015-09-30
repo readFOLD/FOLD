@@ -524,9 +524,11 @@ Template.context_browser.helpers({
   },
   contextBlocks (){
     return _.chain(this.contextBlocks)
-      .sortBy('date')
       .reverse()
       .sortBy('rank')
+      .map(function(e) {
+        return ContextBlocks.findOne(e._id)
+      })
       .value();
   },
   soloSidebarContextMode (){

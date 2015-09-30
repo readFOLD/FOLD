@@ -26,13 +26,16 @@ Meteor.users._ensureIndex({
 var deepstreamFields = {
   analytics: 0,
   deleted: 0,
-  'contextBlocks.fullDetails': 0,
-  'contextBlocks.authorId': 0,
-  'contextBlocks.savedAt': 0,
-  'contextBlocks.searchQuery': 0,
   'streams.fullDetails': 0,
   'streams.authorId': 0,
   'streams.searchQuery': 0
+};
+
+var contextFields = {
+  'fullDetails': 0,
+  'authorId': 0,
+  'savedAt': 0,
+  'searchQuery': 0
 };
 
 //var readStoryFields = {
@@ -147,6 +150,16 @@ Meteor.publish("singleDeepstream", function(userPathSegment, shortId) {
   check(shortId, String);
   return Deepstreams.find({userPathSegment: userPathSegment, shortId: shortId},{
     fields: deepstreamFields
+  });
+});
+
+Meteor.publish("deepstreamContext", function(streamShortId) {
+  if(!this.userId){ // TO-DO Launch remove
+    return this.ready();
+  }
+  check(streamShortId, String);
+  return ContextBlocks.find({streamShortId: streamShortId},{
+    fields: contextFields
   });
 });
 
