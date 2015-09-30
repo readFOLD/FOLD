@@ -296,7 +296,10 @@ Schema.ContextBlocks = new SimpleSchema({
   _id: {
     type: String
   },
-  authorId: {
+  authorId: { // TODO, this needs to be able to hold multiple authors who can change it
+    type: String
+  },
+  streamShortId:{
     type: String
   },
   type: {
@@ -356,6 +359,16 @@ Schema.ContextBlocks = new SimpleSchema({
     optional:true
   }
 });
+
+this.ContextBlocks = new Mongo.Collection("context_blocks", {
+  transform (doc) {
+    return newTypeSpecificContextBlock(doc);
+  }
+});
+
+this.ContextBlocks.attachSchema(Schema.ContextBlocks);
+
+
 
 this.Streams = new Mongo.Collection("streams");
 
@@ -534,15 +547,15 @@ Schema.Deepstreams = new SimpleSchema({
         this.unset();
       }
     },
-    optional: true // optional because only added this fieldjust before launch
+    optional: true // optional because only added this field just before launch
   },
   contextBlocks: {
-    type: [Schema.ContextBlocks],
+    type: [Object],
     defaultValue: [],
     minCount: 0,
-    maxCount: 1000
+    maxCount: 1000,
+    blackbox: true // TODO this is temporary
   },
-
   streams: {
     type: [Schema.Streams],
     defaultValue: [],
@@ -554,9 +567,10 @@ Schema.Deepstreams = new SimpleSchema({
     optional: true
   },
   'deleted.contextBlocks': {
-    type: [Schema.ContextBlocks],
+    type: [Object],  // list of contextblock ids
     minCount: 0,
-    maxCount: 1000
+    maxCount: 1000,
+    blackbox: true // TODO this is temporary
   },
   'deleted.streams': {
     type: [Schema.Streams],
