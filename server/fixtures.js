@@ -2926,7 +2926,7 @@ if (Deepstreams.find().count() === 0) {
     savedAt: ISODate("2015-09-17T17:20:11.422Z"),
     userPathSegment: "curat0r",
     streamPathSegment: "amazing-sharks-SEDsDRNb",
-    curatorId: "nfEArh6HDDPJH857A",
+    curatorId: curatorId,
     curatorName: "Dr Stream",
     curatorUsername: "curat0r",
     shortId: "SEDsDRNb",
