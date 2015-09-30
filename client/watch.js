@@ -486,6 +486,14 @@ Template.watch_page.events({
   },
   'click .PiP-overlay' (e,t){
     clearCurrentContext();
+  },
+  'click .context-mini-preview' (e,t){
+    console.log(this._id)
+    $('.context-section[data-context-id=' + this._id + ']').focus();
+    var contextPosition = $('.context-section[data-context-id=' + this._id + ']').position().top;
+    console.log(contextPosition)
+    $('.context-area').scrollTop(contextPosition);
+
   }
 });
 

@@ -138,7 +138,7 @@ Template.preview_video_section.helpers({
   height () {
     return this.previewHeightAtGivenWidth(310);
   },
-  width: 310
+  width: 260
 });
 
 Template.preview_video_section.helpers(horizontalBlockHelpers);
@@ -151,7 +151,7 @@ Template.display_map_section.helpers(horizontalBlockHelpers);
 Template.display_map_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
 Template.preview_map_section.helpers({
-  width: 310,
+  width: 260,
   height: 200
 });
 Template.preview_map_section.helpers(horizontalBlockHelpers);

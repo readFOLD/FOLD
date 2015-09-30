@@ -187,6 +187,27 @@
   }
 }
 
+
+.card-column{
+  float:left;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  width: 45px;
+  height: 100%;
+  .previews-container{
+  }
+  .context-mini-preview{
+    background-color: @dark-color;
+    height: 10px;
+    width: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+
 .content-icons {
   position: absolute;
   width: @contentIconWidth;

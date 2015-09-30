@@ -47,6 +47,14 @@
           {{/if}}
         </div>
         <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
+          <div class="card-column">
+            <div class="previews-container">
+              {{#each contextBlocks}}
+                <div class="context-mini-preview"></div>
+              {{/each}}
+            </div>
+
+          </div>
           {{#if showContextSearch}}
             {{> content_icons}}
             {{> add_context}}
