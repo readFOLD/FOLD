@@ -523,7 +523,7 @@ VideoBlock = (function (_super) {
 
   VideoBlock.prototype.url = function () {
     if (this.source === 'youtube') {
-      return '//www.youtube.com/embed/' + this.reference.id;
+      return '//www.youtube.com/embed/' + this.reference.id + '?fs=0';
     } else if (this.source === 'vimeo') {
       return '//player.vimeo.com/video/' + this.reference.id;
     }
