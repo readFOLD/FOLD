@@ -588,7 +588,7 @@ Schema.Deepstreams = new SimpleSchema({
     type: [Object],  // list of contextblock ids
     minCount: 0,
     maxCount: 1000,
-    blackbox: true // TODO this is temporary
+    blackbox: true // TO-DO this is temporary
   },
   'deleted.streams': {
     type: [Schema.Streams],
