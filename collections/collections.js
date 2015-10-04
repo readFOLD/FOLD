@@ -492,8 +492,11 @@ Schema.Deepstreams = new SimpleSchema({
     allowedValues: CREATION_STEPS,
     optional: true
   },
-  curatorId: {
+  mainCuratorId: {
     type: String
+  },
+  curatorIds: {
+    type: [String]
   },
   curatorName: {
     type: String

@@ -36,7 +36,8 @@ if (Deepstreams.find().count() === 0) {
     savedAt: ISODate("2015-09-17T16:49:39.049Z"),
     userPathSegment: "curat0r",
     streamPathSegment: "international-space-station-livecam-3zruKDSm",
-    curatorId: curatorId,
+    mainCuratorId: curatorId,
+    curatorIds: [curatorId],
     curatorName: "Dr Stream",
     curatorUsername: "curat0r",
     shortId: "3zruKDSm",
@@ -163,7 +164,8 @@ if (Deepstreams.find().count() === 0) {
     savedAt: ISODate("2015-09-17T17:20:11.422Z"),
     userPathSegment: "curat0r",
     streamPathSegment: "amazing-sharks-SEDsDRNb",
-    curatorId: curatorId,
+    mainCuratorId: curatorId,
+    curatorIds: [curatorId],
     curatorName: "Dr Stream",
     curatorUsername: "curat0r",
     shortId: "SEDsDRNb",
@@ -5234,11 +5236,9 @@ if (Deepstreams.find().count() === 0) {
       description: "Great footage of Zebra Sharks in the wild"
     }
   ];
-  console.log(contextBlocksForSharks);
   contextBlocksForSharks.forEach(function(e){
-    console.log('aaaaa')
-    console.log(addContextToStream)
-    addContextToStream.call({userId: curatorId}, "SEDsDRNb", e)})
+    addContextToStream.call({userId: curatorId}, "SEDsDRNb", e)
+  });
 
 }
 

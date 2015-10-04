@@ -119,7 +119,7 @@ Template.watch_page.onCreated(function () {
 
       if (that.data.onCuratePage()){
         if ((user = Meteor.user())) { // if there is a user
-          if (user._id !== stream.curatorId) { // if they don't own the stream take them to stream not found
+          if (!_.contains(stream.curatorIds, user._id)) { // if they don't own the stream take them to stream not found
             return FlowLayout.render("stream_not_found");
           }
           var accessPriority = Meteor.user().accessPriority;
@@ -139,7 +139,7 @@ Template.watch_page.onCreated(function () {
             FlowRouter.go(stream.watchPath());
           });
         }
-      } else if (user && user._id === stream.curatorId){
+      } else if (user && _.contains(stream.curatorIds, user._id)){
         FlowRouter.withReplaceState(function(){
           FlowRouter.go(stream.curatePath());
         });

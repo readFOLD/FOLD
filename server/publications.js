@@ -11,6 +11,11 @@ Deepstreams._ensureIndex({
 //Deepstreams._ensureIndex({
 //  curatorId: 1
 //});
+//
+
+ContextBlocks._ensureIndex({
+  streamShortId: 1
+});
 
 Meteor.users._ensureIndex({
   username: 1
@@ -164,7 +169,7 @@ Meteor.publish("deepstreamContext", function(streamShortId) {
 });
 
 Meteor.publish("myDeepstreams", function() {
-  return Deepstreams.find({curatorId: this.userId}, {
+  return Deepstreams.find({curatorIds: this.userId}, {
     fields: deepstreamFields
   });
 });
