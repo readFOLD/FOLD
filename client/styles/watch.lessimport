@@ -202,10 +202,18 @@
   }
   .context-mini-preview{
     background-color: @dark-color;
-    height: 10px;
-    width: 20px;
+    height: 20px;
+    width: 35px;
     margin-top: 5px;
     margin-bottom: 5px;
+    line-height: 0;
+    position: relative;
+    svg{
+      .center-over-parent-div;
+    }
+    .bg{
+      fill: none;
+    }
   }
 }
 

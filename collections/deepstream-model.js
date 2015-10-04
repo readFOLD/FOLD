@@ -23,6 +23,29 @@ Deepstream = (function() {
     return _.chain(this.contextBlocks).pluck('type').countBy(_.identity).value()
   };
 
+  Deepstream.prototype.contextBlockSortFunction = function(cBlock){
+    let internalCBlock = _.findWhere(this.contextBlocks, {_id: cBlock._id});
+
+    if (internalCBlock){
+      return internalCBlock.rank - _.indexOf(this.contextBlocks, internalCBlock) / 10000; // break ties with order added
+    }
+  };
+
+  Deepstream.prototype.orderedInternalContext = function() {
+    var that = this;
+    return _.sortBy(this.contextBlocks, function(e){
+      return that.contextBlockSortFunction(e)
+    });
+  };
+
+  Deepstream.prototype.orderedContext = function() {
+    var that = this;
+
+    return _.sortBy(ContextBlocks.find({streamShortId: this.shortId}).fetch(), function(e){
+      return that.contextBlockSortFunction(e)
+    });
+  };
+
   Deepstream.prototype.internalContextOfType = function(type) {
     if (type === 'stream'){
       return []; // streams aren't context
@@ -32,6 +55,7 @@ Deepstream = (function() {
       .where({type : type})
       .value();
   };
+
 
   Deepstream.prototype.internalContextOfTypes = function(types) {
     var that = this;

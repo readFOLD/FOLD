@@ -488,12 +488,9 @@ Template.watch_page.events({
     clearCurrentContext();
   },
   'click .context-mini-preview' (e,t){
-    console.log(this._id)
-    $('.context-section[data-context-id=' + this._id + ']').focus();
-    var contextPosition = $('.context-section[data-context-id=' + this._id + ']').position().top;
-    console.log(contextPosition)
-    $('.context-area').scrollTop(contextPosition);
-
+    var contextToScrollTo = $('.context-section[data-context-id=' + this._id + ']');
+    var container = $('.context-area');
+    container.animate({scrollTop: (contextToScrollTo.offset().top - container.offset().top + container.scrollTop())});
   }
 });
 
@@ -528,12 +525,7 @@ Template.context_browser.helpers({
     return pluralizeMediaType(Session.get('mediaDataType') || Session.get('previousMediaDataType')).toUpperCase();
   },
   contextBlocks (){
-    return _.sortBy(ContextBlocks.find({streamShortId: Session.get('streamShortId')}).fetch(), (cBlock) => {
-      let internalCBlock = _.findWhere(this.contextBlocks, {_id: cBlock._id});
-      if (internalCBlock){
-        return internalCBlock.rank - _.indexOf(this.contextBlocks, internalCBlock) / 10000 // break ties with order added
-      }
-    });
+    return this.orderedContext();
   },
   soloSidebarContextMode (){
     var currentContext = getCurrentContext();
@@ -699,3 +691,9 @@ Template.creation_tutorial.events({
     Meteor.call('goBackFromTitleDescriptionStep', this.shortId, basicErrorHandler);
   }
 });
+
+Template.relevant_content_icon.helpers({
+  iconTemplate (){
+    return this.type + '_icon';
+  }
+})

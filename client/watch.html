@@ -45,8 +45,8 @@
         <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
           <div class="card-column">
             <div class="previews-container">
-              {{#each contextBlocks}}
-                <div class="context-mini-preview"></div>
+              {{#each orderedInternalContext}}
+                <div class="context-mini-preview">{{> relevant_content_icon}}</div>
               {{/each}}
             </div>
 
@@ -241,6 +241,10 @@
     </ol>
 
   </div>
+</template>
+
+<template name="relevant_content_icon">
+  {{> Template.dynamic template=iconTemplate}}
 </template>
 
 <template name="creation_tutorial">
