@@ -35,7 +35,6 @@ Meteor.users._ensureIndex({
 var deepstreamFields = {
   analytics: 0,
   deleted: 0,
-  'contextBlocks.addedAt': 0,
   'streams.fullDetails': 0,
   'streams.authorId': 0,
   'streams.searchQuery': 0
@@ -170,6 +169,16 @@ Meteor.publish("deepstreamContext", function(streamShortId) {
   }
   check(streamShortId, String);
   return ContextBlocks.find({streamShortId: streamShortId, deleted: {$ne: true}},{
+    fields: contextFields
+  });
+});
+
+Meteor.publish("deepstreamPreviewContext", function(streamShortId) {
+  if(!this.userId){ // TO-DO Launch remove
+    return this.ready();
+  }
+  check(streamShortId, String);
+  return ContextBlocks.find({streamShortId: streamShortId, deleted: {$ne: true}, type: {$in: ['news', 'twitter', 'text']}},{
     fields: contextFields
   });
 });

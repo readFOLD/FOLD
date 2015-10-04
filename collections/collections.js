@@ -293,9 +293,6 @@ Schema.ContextReferenceProfile = new SimpleSchema({
 });
 
 Schema.ContextBlocks = new SimpleSchema({
-  _id: {
-    type: String
-  },
   authorId: {
     type: String
   },

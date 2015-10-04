@@ -23,88 +23,47 @@ Deepstream = (function() {
     return _.chain(this.contextBlocks).pluck('type').countBy(_.identity).value()
   };
 
-  Deepstream.prototype.contextOfType = function(type) {
+  Deepstream.prototype.internalContextOfType = function(type) {
     if (type === 'stream'){
       return []; // streams aren't context
     }
 
     return _.chain(this.contextBlocks)
       .where({type : type})
-      .sortBy('date')
-      .reverse()
-      .sortBy('rank')
+      .value();
+  };
+
+  Deepstream.prototype.internalContextOfTypes = function(types) {
+    var that = this;
+    return _.chain(types)
+      .map(function(type){return that.internalContextOfType(type)})
+      .flatten()
+      .compact()
       .value();
   };
 
   Deepstream.prototype.hasContextOfType = function(type) {
-    return this.contextOfType(type).length;
-  };
-
-  Deepstream.prototype.mostRecentContext = function() {
-    return this.contextBlocks ? _.last(_.sortBy(this.contextBlocks, 'addedAt')) : null;
+    return this.internalContextOfType(type).length;
   };
 
   Deepstream.prototype.mostRecentContextOfType = function(type) {
     if(this.hasContextOfType(type)){
-      return this.contextBlocks ? _.last(_.sortBy(this.contextOfType(type), 'addedAt')) : null;
+      let id = (this.contextBlocks ? _.last(_.sortBy(this.internalContextOfType(type), 'addedAt')) : {})._id;
+      if(id){
+        return ContextBlocks.findOne(id);
+      }
     }
   };
 
   Deepstream.prototype.mostRecentContextOfTypes = function(types) {
-    var that = this;
-    return _.chain(types)
-      .map(function(type){
-        return that.contextOfType(type)
-      })
-      .flatten()
+    return _.chain(this.internalContextOfTypes(types))
       .sortBy('addedAt')
+      .map(function(internalCBlock){
+        return ContextBlocks.findOne(internalCBlock._id)
+      })
+      .compact()
       .last()
       .value()
-  };
-
-  Deepstream.prototype.getContextById = function(contextId){
-    return _.findWhere(this.contextBlocks, {_id: contextId});
-  };
-
-  Deepstream.prototype.nextContext = function(contextId) {
-    if(!this.contextBlocks){
-      return null;
-    }
-    var contextBlock = _.findWhere(this.contextBlocks, {_id: contextId});
-    if(!contextBlock){
-      return null;
-    }
-    var type = contextBlock.type;
-    var contextOfType = this.contextOfType(type);
-    if (contextOfType.length < 2){
-      return null;
-    }
-    var index = _.indexOf(contextOfType, contextBlock);
-    if (index < contextOfType.length - 1){
-      return contextOfType[index + 1];
-    } else {
-      return _.first(contextOfType);
-    }
-  };
-  Deepstream.prototype.previousContext = function(contextId) {
-    if(!this.contextBlocks){
-      return null;
-    }
-    var contextBlock = _.findWhere(this.contextBlocks, {_id: contextId});
-    if(!contextBlock){
-      return null;
-    }
-    var type = contextBlock.type;
-    var contextOfType = this.contextOfType(type);
-    if (contextOfType.length < 2){
-      return null;
-    }
-    var index = _.indexOf(contextOfType, contextBlock);
-    if (index > 0){
-      return contextOfType[index - 1];
-    } else {
-      return _.last(contextOfType);
-    }
   };
 
   Deepstream.prototype.activeStream = function(){
