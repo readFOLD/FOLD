@@ -13,10 +13,6 @@
             </div>
           {{/if}}
           {{{streamTitleElement}}}
-          <div class="about-stream">
-            <div class="icon"><i class="fa fa-info-circle"></i></div>
-            {{{streamDescriptionElement}}}
-          </div>
         </div>
       </div>
 
@@ -117,6 +113,10 @@
             {{/each}}
           </ol>
         {{/if}}
+        <div class="about-stream">
+          <div class="icon"><i class="fa fa-info-circle"></i></div>
+          {{{streamDescriptionElement}}}
+        </div>
         <div class="stream-stats-and-share">
           <div class="share-and-favorite">
             <button class="favorite-button">{{> favorite_icon}}</button>

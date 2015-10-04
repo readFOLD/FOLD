@@ -32,7 +32,7 @@
         }
       }
     }
-    @streamPreviewHeight: 90px;
+    @streamPreviewHeight: 62px;
     li{
       float: left;
       margin-left: 20px;
@@ -44,8 +44,9 @@
         img{
           .size-to-fit;
         }
+        font-size: 14px;
         border: 1px solid @light-text-color;
-        width: 120px;
+        width: 82px;
         height: @streamPreviewHeight;
         position: relative;
         padding: 0;
@@ -60,11 +61,11 @@
         z-index: 10;
         left: 0;
         top: 0;
-        font-size: 13px;
+        font-size: 11px;
         font-weight: bold;
-        height: 18px;
-        line-height: 18px;
-        width: 36px;
+        height: 13px;
+        line-height: 13px;
+        width: 28px;
         text-align: center;
       }
 
@@ -72,7 +73,7 @@
         height: @streamPreviewHeight * .8;
         margin-top: @streamPreviewHeight * .1;
         width: 0;
-        border-left: 1px solid @medium-color;
+        border-left: 2px solid @action-color;
       }
 
     }
@@ -89,7 +90,7 @@
     .delete-stream{
       .opacity-transition;
       opacity: 0;
-      .size(18px);
+      .size(14px);
       padding:0;
       svg{
         .size-to-fit;
@@ -268,6 +269,7 @@
 
 .footer-section{
   padding: 10px;
+  position: relative;
   .stream-stats-and-share{
     position: absolute;
     right: @right-section-width;
@@ -810,24 +812,25 @@
 .about-stream{
   display: inline-block;
 
-  width: @right-section-width;
-  right: 0px;
+  left: @left-margin;
+  top: 80px;
   position: absolute;
+  width: calc(100% ~"-" (@right-section-width + 50px));
   .icon{
     position: absolute;
-    top: 15px;
+    //top: 15px;
   }
   .stream-description{
 
     @lineHeight: 18px;
     line-height: @lineHeight;
-    min-height: 3 * @lineHeight - 2px;
+    min-height: @lineHeight;
     font-size: 14px;
     font-weight: normal;
     position: absolute;
     left: 30px;
     padding-right: 10px;
-    width: @right-section-width - 50px;
+    width: 100%;
   }
 }
 

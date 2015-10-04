@@ -43,7 +43,7 @@ Handlebars.registerHelper("isContextOfType", function(type) {
 Handlebars.registerHelper("UsersCollection", Meteor.users);
 
 Handlebars.registerHelper("isCurator", function() {
-  return Meteor.user() && Meteor.user()._id === this.curatorId;
+  return Meteor.user() && _.contains(this.curatorIds, Meteor.user()._id);
 });
 
 Handlebars.registerHelper("windowWidth", function() {

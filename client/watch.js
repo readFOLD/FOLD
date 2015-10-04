@@ -119,7 +119,7 @@ Template.watch_page.onCreated(function () {
 
       if (that.data.onCuratePage()){
         if ((user = Meteor.user())) { // if there is a user
-          if (user._id !== stream.curatorId) { // if they don't own the stream take them to stream not found
+          if (!_.contains(stream.curatorIds, user._id)) { // if they don't own the stream take them to stream not found
             return FlowLayout.render("stream_not_found");
           }
           var accessPriority = Meteor.user().accessPriority;
@@ -139,7 +139,7 @@ Template.watch_page.onCreated(function () {
             FlowRouter.go(stream.watchPath());
           });
         }
-      } else if (user && user._id === stream.curatorId){
+      } else if (user && _.contains(stream.curatorIds, user._id)){
         FlowRouter.withReplaceState(function(){
           FlowRouter.go(stream.curatePath());
         });
@@ -527,15 +527,13 @@ Template.context_browser.helpers({
   mediaTypeForDisplay (){
     return pluralizeMediaType(Session.get('mediaDataType') || Session.get('previousMediaDataType')).toUpperCase();
   },
-  contextOfCurrentType (){
-    return this.contextOfType(Session.get('mediaDataType'));
-  },
   contextBlocks (){
-    return _.chain(this.contextBlocks)
-      .sortBy('date')
-      .reverse()
-      .sortBy('rank')
-      .value();
+    return _.sortBy(ContextBlocks.find({streamShortId: Session.get('streamShortId')}).fetch(), (cBlock) => {
+      let internalCBlock = _.findWhere(this.contextBlocks, {_id: cBlock._id});
+      if (internalCBlock){
+        return internalCBlock.rank - _.indexOf(this.contextBlocks, internalCBlock) / 10000 // break ties with order added
+      }
+    });
   },
   soloSidebarContextMode (){
     var currentContext = getCurrentContext();
@@ -581,37 +579,6 @@ Template.context_browser.events({
   }
 });
 
-
-Template.overlay_context_browser.helpers({
-  mediaTypeForDisplay (){
-    return _s.capitalize(Session.get('mediaDataType'));
-  },
-  totalNum (){
-    return this.contextOfType(Session.get('mediaDataType')).length;
-  },
-  currentNum (){
-    var cBlocks = this.contextOfType(Session.get('mediaDataType'));
-    return _.indexOf(cBlocks, _.findWhere(cBlocks, {_id: getCurrentContext()._id})) + 1;
-  },
-  disableRightButton (){
-    var currentContext = getCurrentContext();
-    if (currentContext){
-      return !this.nextContext(getCurrentContext()._id);
-    } else {
-      return true
-    }
-  },
-  disableLeftButton (){
-    var currentContext = getCurrentContext();
-    if (currentContext){
-      return !this.previousContext(getCurrentContext()._id);
-    } else {
-      return true
-    }
-  }
-});
-
-
 Template.overlay_context_browser.onRendered(function(){
   document.body.style.overflow = 'hidden';
   $(window).scrollTop(0);
@@ -634,12 +601,6 @@ Template.overlay_context_browser.onDestroyed(function(){
 Template.overlay_context_browser.events({
   'click .close' (){
     clearCurrentContext();
-  },
-  'click .right' (){
-    setCurrentContext(this.nextContext(getCurrentContext()._id));
-  },
-  'click .left' (){
-    setCurrentContext(this.previousContext(getCurrentContext()._id));
   }
 });
 

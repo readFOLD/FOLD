@@ -11,6 +11,15 @@ Deepstreams._ensureIndex({
 //Deepstreams._ensureIndex({
 //  curatorId: 1
 //});
+//
+
+ContextBlocks._ensureIndex({
+  streamShortId: 1
+});
+
+ContextBlocks._ensureIndex({
+  deleted: 1
+});
 
 Meteor.users._ensureIndex({
   username: 1
@@ -26,13 +35,17 @@ Meteor.users._ensureIndex({
 var deepstreamFields = {
   analytics: 0,
   deleted: 0,
-  'contextBlocks.fullDetails': 0,
-  'contextBlocks.authorId': 0,
-  'contextBlocks.savedAt': 0,
-  'contextBlocks.searchQuery': 0,
   'streams.fullDetails': 0,
   'streams.authorId': 0,
   'streams.searchQuery': 0
+};
+
+var contextFields = {
+  'fullDetails': 0,
+  'authorId': 0,
+  'savedAt': 0,
+  'addedAt': 0,
+  'searchQuery': 0
 };
 
 //var readStoryFields = {
@@ -150,8 +163,28 @@ Meteor.publish("singleDeepstream", function(userPathSegment, shortId) {
   });
 });
 
+Meteor.publish("deepstreamContext", function(streamShortId) {
+  if(!this.userId){ // TO-DO Launch remove
+    return this.ready();
+  }
+  check(streamShortId, String);
+  return ContextBlocks.find({streamShortId: streamShortId, deleted: {$ne: true}},{
+    fields: contextFields
+  });
+});
+
+Meteor.publish("deepstreamPreviewContext", function(streamShortId) {
+  if(!this.userId){ // TO-DO Launch remove
+    return this.ready();
+  }
+  check(streamShortId, String);
+  return ContextBlocks.find({streamShortId: streamShortId, deleted: {$ne: true}, type: {$in: ['news', 'twitter', 'text']}},{
+    fields: contextFields
+  });
+});
+
 Meteor.publish("myDeepstreams", function() {
-  return Deepstreams.find({curatorId: this.userId}, {
+  return Deepstreams.find({curatorIds: this.userId}, {
     fields: deepstreamFields
   });
 });
