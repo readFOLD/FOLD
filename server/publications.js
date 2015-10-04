@@ -40,6 +40,7 @@ var contextFields = {
   'fullDetails': 0,
   'authorId': 0,
   'savedAt': 0,
+  'addedAt': 0,
   'searchQuery': 0
 };
 

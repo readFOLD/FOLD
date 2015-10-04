@@ -296,7 +296,7 @@ Schema.ContextBlocks = new SimpleSchema({
   _id: {
     type: String
   },
-  authorId: { // TODO, this needs to be able to hold multiple authors who can change it
+  authorId: {
     type: String
   },
   streamShortId:{
