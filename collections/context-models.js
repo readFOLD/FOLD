@@ -34,7 +34,7 @@ youtubeMapFn = function (e) {
   return {
     reference: {
       title: e.title,
-      description: e.description,
+      //description: e.description,
       id: e.videoId,
       username: e.channelTitle,
       userId: e.channelId,
@@ -50,7 +50,7 @@ ustreamMapFn = function (e) { // this is post-insert from pre-loading ustream re
   return {
     reference: {
       title: e.title,
-      description: $($.parseHTML(e.description)).text(),
+      //description: $($.parseHTML(e.description)).text(),
       id: e.id,
       username: e.username,
       currentViewers: e.currentViewers,

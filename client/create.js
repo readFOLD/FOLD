@@ -111,7 +111,6 @@ window.addStream = function(stream, template) {
 window.addContext = function(contextBlock) {
   Session.set('saveState', 'saving');
 
-  contextBlock._id = Random.id(9);
   contextBlock.rank = 0; // places above existing ranked context
 
   Meteor.setTimeout(function(){ // scroll to top and focus annotation box

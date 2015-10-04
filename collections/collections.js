@@ -299,6 +299,9 @@ Schema.ContextBlocks = new SimpleSchema({
   authorId: {
     type: String
   },
+  streamShortId:{
+    type: String
+  },
   type: {
     type: String
   },
@@ -314,16 +317,16 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  rank: {
-    type: Number,
-    optional: true
-  },
   savedAt: {
     type: Date,
     optional: true
   },
   addedAt: {
     type: Date
+  },
+  deleted: {
+    type: Boolean,
+    optional: true
   },
   deletedAt: {
     type: Date,
@@ -356,6 +359,16 @@ Schema.ContextBlocks = new SimpleSchema({
     optional:true
   }
 });
+
+this.ContextBlocks = new Mongo.Collection("context_blocks", {
+  transform (doc) {
+    return newTypeSpecificContextBlock(doc);
+  }
+});
+
+this.ContextBlocks.attachSchema(Schema.ContextBlocks);
+
+
 
 this.Streams = new Mongo.Collection("streams");
 
@@ -479,8 +492,11 @@ Schema.Deepstreams = new SimpleSchema({
     allowedValues: CREATION_STEPS,
     optional: true
   },
-  curatorId: {
+  mainCuratorId: {
     type: String
+  },
+  curatorIds: {
+    type: [String]
   },
   curatorName: {
     type: String
@@ -534,15 +550,30 @@ Schema.Deepstreams = new SimpleSchema({
         this.unset();
       }
     },
-    optional: true // optional because only added this fieldjust before launch
+    optional: true // optional because only added this field just before launch
   },
   contextBlocks: {
-    type: [Schema.ContextBlocks],
+    type: [new SimpleSchema({
+      _id: {
+        type: String
+      },
+      addedAt: {
+        type: Date
+      },
+      rank: {
+        type: Number
+      },
+      type: {
+        type: String
+      },
+      source: {
+        type: String
+      }
+    })],
     defaultValue: [],
     minCount: 0,
     maxCount: 1000
   },
-
   streams: {
     type: [Schema.Streams],
     defaultValue: [],
@@ -554,9 +585,10 @@ Schema.Deepstreams = new SimpleSchema({
     optional: true
   },
   'deleted.contextBlocks': {
-    type: [Schema.ContextBlocks],
+    type: [Object],  // list of contextblock ids
     minCount: 0,
-    maxCount: 1000
+    maxCount: 1000,
+    blackbox: true // TO-DO this is temporary
   },
   'deleted.streams': {
     type: [Schema.Streams],

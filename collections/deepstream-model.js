@@ -8,9 +8,6 @@ Deepstream = (function() {
     this.streams = _.map(this.streams, function(stream){
       return new Stream(stream);
     });
-    this.contextBlocks = _.map(this.contextBlocks, function(contextBlock){
-      return newTypeSpecificContextBlock(contextBlock);
-    });
   }
 
   Deepstream.prototype.contextCountOfType = function(type) {
