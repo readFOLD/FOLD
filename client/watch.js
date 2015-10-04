@@ -523,13 +523,17 @@ Template.context_browser.helpers({
     return this.contextOfType(Session.get('mediaDataType'));
   },
   contextBlocks (){
-    return _.chain(this.contextBlocks)
-      .reverse()
-      .sortBy('rank')
-      .map(function(e) {
-        return ContextBlocks.findOne(e._id)
-      })
-      .value();
+    return _.sortBy(ContextBlocks.find({streamShortId: Session.get('streamShortId')}).fetch(), (cBlock) => {
+      console.log(_.findWhere(this.contextBlocks, {_id: cBlock._id}))
+      return _.findWhere(this.contextBlocks, {_id: cBlock._id}).rank
+    });
+    //return _.chain(this.contextBlocks)
+    //  .reverse()
+    //  .sortBy('rank')
+    //  .map(function(e) {
+    //    return ContextBlocks.findOne(e._id)
+    //  })
+    //  .value();
   },
   soloSidebarContextMode (){
     var currentContext = getCurrentContext();

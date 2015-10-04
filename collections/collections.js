@@ -317,10 +317,6 @@ Schema.ContextBlocks = new SimpleSchema({
     type: String,
     optional: true
   },
-  rank: {
-    type: Number,
-    optional: true
-  },
   savedAt: {
     type: Date,
     optional: true
@@ -553,11 +549,24 @@ Schema.Deepstreams = new SimpleSchema({
     optional: true // optional because only added this field just before launch
   },
   contextBlocks: {
-    type: [Object],
+    type: [new SimpleSchema({
+      _id: {
+        type: String
+      },
+      rank: {
+        type: Number,
+        optional: true
+      },
+      type: {
+        type: String
+      },
+      source: {
+        type: String
+      }
+    })],
     defaultValue: [],
     minCount: 0,
-    maxCount: 1000,
-    blackbox: true // TODO this is temporary
+    maxCount: 1000
   },
   streams: {
     type: [Schema.Streams],

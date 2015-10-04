@@ -331,11 +331,18 @@ Meteor.methods({
     check(shortId, String);
     check(ordering, [String]);
 
-    var that = this;
+    console.log('lalalala')
+    console.log(ordering)
+
     var numberUpdated = 0;
-    _.each(ordering, function(contextId, i){
-      numberUpdated += updateDeepstream.call(that, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.rank": i + 1}});
+    _.each(ordering, (contextId, i) => {
+      console.log(contextId)
+      console.log(ordering[i])
+      console.log(i)
+      numberUpdated += updateDeepstream.call(this, {"shortId": shortId, "contextBlocks._id": ordering[i] }, {"$set": {"contextBlocks.$.rank": 4}});
     });
+
+    console.log('numberupdated is' + numberUpdated)
 
     return numberUpdated;
   },
