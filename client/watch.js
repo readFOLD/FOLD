@@ -525,7 +525,10 @@ Template.context_browser.helpers({
   contextBlocks (){
     return _.sortBy(ContextBlocks.find({streamShortId: Session.get('streamShortId')}).fetch(), (cBlock) => {
       console.log(_.findWhere(this.contextBlocks, {_id: cBlock._id}))
-      return _.findWhere(this.contextBlocks, {_id: cBlock._id}).rank
+      let internalCBlock = _.findWhere(this.contextBlocks, {_id: cBlock._id});
+      if (internalCBlock){
+        return internalCBlock.rank - _.indexOf(this.contextBlocks, internalCBlock) / 10000 // break ties with order added
+      }
     });
     //return _.chain(this.contextBlocks)
     //  .reverse()

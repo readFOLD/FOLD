@@ -554,8 +554,7 @@ Schema.Deepstreams = new SimpleSchema({
         type: String
       },
       rank: {
-        type: Number,
-        optional: true
+        type: Number
       },
       type: {
         type: String

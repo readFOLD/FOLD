@@ -331,20 +331,17 @@ Meteor.methods({
     check(shortId, String);
     check(ordering, [String]);
 
-    console.log('lalalala')
-    console.log(ordering)
+    // can't use Mongo position operator because also searching curatorIds array in query
+    deepstream = Deepstreams.findOne({shortId: shortId}, {fields:{'contextBlocks._id' : 1}});
 
-    var numberUpdated = 0;
-    _.each(ordering, (contextId, i) => {
-      console.log(contextId)
-      console.log(ordering[i])
-      console.log(i)
-      numberUpdated += updateDeepstream.call(this, {"shortId": shortId, "contextBlocks._id": ordering[i] }, {"$set": {"contextBlocks.$.rank": 4}});
-    });
+    var setObject = _.chain(deepstream.contextBlocks)
+      .map((cBlock, i) => {
+        return ['contextBlocks.' + i + '.rank', _.indexOf(ordering, cBlock._id) + 1];
+      })
+      .object()
+      .value();
 
-    console.log('numberupdated is' + numberUpdated)
-
-    return numberUpdated;
+    return updateDeepstream.call(this, {"shortId": shortId}, {"$set": setObject});
   },
   directorModeOff (shortId){
     check(shortId, String);
