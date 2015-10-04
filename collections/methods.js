@@ -86,7 +86,7 @@ Meteor.methods({
   setActiveStream (streamShortId, streamId){
     check(streamShortId, String);
     check(streamId, String);
-    return updateStream.call(this,{shortId: streamShortId}, {$set: {activeStreamId: streamId}});
+    return updateDeepstream.call(this,{shortId: streamShortId}, {$set: {activeStreamId: streamId}});
   },
   addStreamToStream (streamShortId, stream){
     check(streamShortId, String);
@@ -136,7 +136,7 @@ Meteor.methods({
     if(duplicateStream){
       success = true; // it's already done!
     } else {
-      success = updateStream.call(this, { shortId: streamShortId }, modifierObject);
+      success = updateDeepstream.call(this, { shortId: streamShortId }, modifierObject);
     }
 
     if (success) {
@@ -200,7 +200,7 @@ Meteor.methods({
       }
     }
 
-    var numUpdated = updateStream.call(this, {
+    var numUpdated = updateDeepstream.call(this, {
       shortId: shortId
     }, modifier);
 
@@ -223,7 +223,7 @@ Meteor.methods({
     var contextToDelete = _.extend(_.findWhere(deepstream.contextBlocks, {_id: contextId}), {deletedAt: new Date});
 
 
-    var numUpdated = updateStream.call(this, {
+    var numUpdated = updateDeepstream.call(this, {
       shortId: shortId
     }, {
       $pull: {
@@ -242,29 +242,29 @@ Meteor.methods({
     return numUpdated;
   },
   goToFindStreamStep (shortId){
-    return updateStream.call(this, { shortId: shortId}, {$set: { creationStep: 'find_stream'}});
+    return updateDeepstream.call(this, { shortId: shortId}, {$set: { creationStep: 'find_stream'}});
   },
   goToAddCardsStep (shortId){
-    return updateStream.call(this, { shortId: shortId}, {$set: { creationStep: 'add_cards'}});
+    return updateDeepstream.call(this, { shortId: shortId}, {$set: { creationStep: 'add_cards'}});
   },
   goToPublishStreamStep (shortId){
-    return updateStream.call(this, { shortId: shortId}, {$set: { creationStep: 'go_on_air'}});
+    return updateDeepstream.call(this, { shortId: shortId}, {$set: { creationStep: 'go_on_air'}});
   },
   skipFindStreamStep (shortId){
     check(shortId, String);
-    return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: nextCreationStepAfter('find_stream') }});
+    return updateDeepstream.call(this, {shortId: shortId}, {$set: {creationStep: nextCreationStepAfter('find_stream') }});
   },
   skipAddCardsStep (shortId){
     check(shortId, String);
-    return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: nextCreationStepAfter('add_cards') }});
+    return updateDeepstream.call(this, {shortId: shortId}, {$set: {creationStep: nextCreationStepAfter('add_cards') }});
   },
   goBackFromTitleDescriptionStep (shortId){
     check(shortId, String);
-    return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: creationStepBefore('title_description') }});
+    return updateDeepstream.call(this, {shortId: shortId}, {$set: {creationStep: creationStepBefore('title_description') }});
   },
   proceedFromGoOnAirStep (shortId){
     check(shortId, String);
-    return updateStream.call(this, {shortId: shortId}, {$set: {creationStep: nextCreationStepAfter('go_on_air') }});
+    return updateDeepstream.call(this, {shortId: shortId}, {$set: {creationStep: nextCreationStepAfter('go_on_air') }});
   },
   publishStream (shortId, title, description){
     check(shortId, String);
@@ -286,34 +286,46 @@ Meteor.methods({
       setObject.streamPathSegment = streamPathSegment;
     }
 
-    return updateStream.call(this, {shortId: shortId}, {$set: setObject});
+    return updateDeepstream.call(this, {shortId: shortId}, {$set: setObject});
   },
   unpublishStream (shortId){
     check(shortId, String);
-    return updateStream.call(this, {shortId: shortId}, {$set: { onAir: false, lastOnAirAt: new Date, onAirSince: null }});
+    return updateDeepstream.call(this, {shortId: shortId}, {$set: { onAir: false, lastOnAirAt: new Date, onAirSince: null }});
   },
   updateStreamTitle (shortId, title){
     check(shortId, String);
     check(title, String);
     var streamPathSegment = generateStreamPathSegment(shortId, title);
-    return updateStream.call(this, {shortId: shortId}, {$set: {'title' : title, 'streamPathSegment' : streamPathSegment }});
+    return updateDeepstream.call(this, {shortId: shortId}, {$set: {'title' : title, 'streamPathSegment' : streamPathSegment }});
   },
   updateStreamDescription (shortId, description){
     check(shortId, String);
     check(description, String);
-    return updateStream.call(this, {shortId: shortId}, {$set: {'description' : description }});
+    return updateDeepstream.call(this, {shortId: shortId}, {$set: {'description' : description }});
   },
-  editHorizontalBlockDescription (shortId, contextId, description) {
-    check(shortId, String);
+  editHorizontalBlockDescription (streamShortId, contextId, description) {
+    check(streamShortId, String);
     check(contextId, String);
     check(description, String);
-    return updateStream.call(this, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.description": description}});
+    var deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields: {'curatorIds': 1}});
+
+    if(!_.contains(deepstream.curatorIds, this.userId)){
+      throw new Meteor.Error('User not authorized to edit context in this deepstream');
+    }
+
+    return updateContextBlock.call(this, {"streamShortId": streamShortId, "_id": contextId }, {"$set": {"description": description}});
   },
   editTextSection (shortId, contextId, content) {
-    check(shortId, String);
+    check(streamShortId, String);
     check(contextId, String);
     check(content, String);
-    return updateStream.call(this, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.content": content}});
+    var deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields: {'curatorIds': 1}});
+
+    if(!_.contains(deepstream.curatorIds, this.userId)){
+      throw new Meteor.Error('User not authorized to edit context in this deepstream');
+    }
+
+    return updateContextBlock.call(this, {"streamShortId": streamShortId, "_id": contextId }, {"$set": {"content": description}});
   },
   reorderContext (shortId, ordering){
     check(shortId, String);
@@ -322,7 +334,7 @@ Meteor.methods({
     var that = this;
     var numberUpdated = 0;
     _.each(ordering, function(contextId, i){
-      numberUpdated += updateStream.call(that, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.rank": i + 1}});
+      numberUpdated += updateDeepstream.call(that, {"shortId": shortId, "contextBlocks._id": contextId }, {"$set": {"contextBlocks.$.rank": i + 1}});
     });
 
     return numberUpdated;
@@ -330,7 +342,7 @@ Meteor.methods({
   directorModeOff (shortId){
     check(shortId, String);
     this.unblock();
-    return updateStream.call(this, {
+    return updateDeepstream.call(this, {
       shortId: shortId
     }, {
       $set: {
@@ -341,7 +353,7 @@ Meteor.methods({
   directorModeOn (shortId){
     check(shortId, String);
     this.unblock();
-    return updateStream.call(this, {
+    return updateDeepstream.call(this, {
       shortId: shortId
     }, {
       $set: {
