@@ -214,16 +214,36 @@ Meteor.methods({
     check(shortId, String);
     check(contextId, String);
 
-    var deepstream = Deepstreams.findOne({shortId: shortId}, {fields: { 'contextBlocks':1 }, transform: null});
+    var deepstream = Deepstreams.findOne({shortId: shortId}, {fields: { 'contextBlocks':1, 'curatorIds': 1 }, transform: null});
+
+    var deletedAt = new Date;
 
     if (!deepstream){
       throw new Meteor.Error('Deepstream not found')
     }
 
-    var contextToDelete = _.extend(_.findWhere(deepstream.contextBlocks, {_id: contextId}), {deletedAt: new Date});
+    if(!_.contains(deepstream.curatorIds, this.userId)){
+      throw new Meteor.Error('User not authorized to remove context from this stream');
+    }
 
 
-    var numUpdated = updateDeepstream.call(this, {
+    var contextBlockUpdated = updateContextBlock.call(this, {
+      streamShortId: shortId,
+      _id: contextId
+    }, {
+      $set: {
+        deleted: true,
+        deletedAt: deletedAt
+      }
+    });
+
+    if (!contextBlockUpdated ){
+      throw new Meteor.Error('ContextBlock not updated')
+    }
+
+    var internalContextToDelete = _.extend(_.findWhere(deepstream.contextBlocks, {_id: contextId}), {deletedAt: deletedAt});
+
+    var deepstreamUpdated = updateDeepstream.call(this, {
       shortId: shortId
     }, {
       $pull: {
@@ -231,15 +251,15 @@ Meteor.methods({
           _id: contextId
         }
       }, $push: {
-        'deleted.contextBlocks': contextToDelete
+        'deleted.contextBlocks': internalContextToDelete
       }
     });
 
-    if (!numUpdated){
-      throw new Meteor.Error('Stream not updated')
+    if (!deepstreamUpdated){
+      throw new Meteor.Error('Deepstream not updated')
     }
 
-    return numUpdated;
+    return true;
   },
   goToFindStreamStep (shortId){
     return updateDeepstream.call(this, { shortId: shortId}, {$set: { creationStep: 'find_stream'}});

@@ -324,6 +324,10 @@ Schema.ContextBlocks = new SimpleSchema({
   addedAt: {
     type: Date
   },
+  deleted: {
+    type: Boolean,
+    optional: true
+  },
   deletedAt: {
     type: Date,
     optional: true
@@ -552,6 +556,9 @@ Schema.Deepstreams = new SimpleSchema({
     type: [new SimpleSchema({
       _id: {
         type: String
+      },
+      addedAt: {
+        type: Date
       },
       rank: {
         type: Number

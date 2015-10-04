@@ -17,6 +17,10 @@ ContextBlocks._ensureIndex({
   streamShortId: 1
 });
 
+ContextBlocks._ensureIndex({
+  deleted: 1
+});
+
 Meteor.users._ensureIndex({
   username: 1
 });
@@ -31,6 +35,7 @@ Meteor.users._ensureIndex({
 var deepstreamFields = {
   analytics: 0,
   deleted: 0,
+  'contextBlocks.addedAt': 0,
   'streams.fullDetails': 0,
   'streams.authorId': 0,
   'streams.searchQuery': 0
@@ -164,7 +169,7 @@ Meteor.publish("deepstreamContext", function(streamShortId) {
     return this.ready();
   }
   check(streamShortId, String);
-  return ContextBlocks.find({streamShortId: streamShortId},{
+  return ContextBlocks.find({streamShortId: streamShortId, deleted: {$ne: true}},{
     fields: contextFields
   });
 });
