@@ -230,7 +230,7 @@ Template.watch_page.onRendered(function(){
           if ( !this.mainPlayerYTApiActivated ){
             console.log('activate the yt api!!')
             this.mainPlayerYTApiActivated = true;
-            Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
+            Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait?
               var youTubePlayer = new YT.Player(that.mainStreamIFrameId, {
                 events: {
                   'onReady': onMainPlayerReady,
@@ -246,7 +246,7 @@ Template.watch_page.onRendered(function(){
           if ( !this.mainPlayerUSApiActivated ){
             console.log('activate the ustream api!!')
             this.mainPlayerUSApiActivated = true;
-            Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait???
+            Meteor.setTimeout(function(){ // TODO this is a hack. Why does it need to wait?
               var ustreamPlayer = UstreamEmbed(that.mainStreamIFrameId);
               mainPlayer._ustreamPlayer = ustreamPlayer;
             }, 1000);
@@ -283,7 +283,7 @@ Template.watch_page.onRendered(function(){
   });
 
   onMainPlayerReady = function(event){
-    mainPlayer.play(); // if streamUrl uses autoplayUrl, this is effectively a fallback
+    //mainPlayer.play(); // if streamUrl uses autoplayUrl, this is effectively a fallback
   };
 
 

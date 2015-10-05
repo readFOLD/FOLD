@@ -189,6 +189,7 @@ var updateStreamStatus = function (deepstream) {
   _.each(deepstream.streams, function (stream) {
     var streamSourceId = stream.reference.id;
     var streamSourceUsername = stream.reference.username;
+    var streamSourceChannelName = stream.reference.channelName;
     switch (stream.source) {
       case 'ustream':
         console.log('check ustream');
@@ -251,6 +252,27 @@ var updateStreamStatus = function (deepstream) {
             } // video isn't live
           } else { // video not found, so not live
             console.log('NOT FOUUUUUND')
+            Deepstreams.update({
+              _id: deepstream._id,
+              'streams.reference.id': streamSourceId
+            }, {$set: {'streams.$.live': false}});
+          }
+        });
+        break;
+      case 'twitch':
+        console.log('check twitch');
+
+        Meteor.call('twitchChannelInfo', streamSourceChannelName, function (err, data) {
+          if (err) {
+            throw(err);
+          }
+          var stream = data.items[0];
+          if (stream) {
+            Deepstreams.update({
+              _id: deepstream._id,
+              'streams.reference.id': streamSourceId
+            }, {$set: {'streams.$.live': true}});
+          } else { // no stream found, so not live
             Deepstreams.update({
               _id: deepstream._id,
               'streams.reference.id': streamSourceId

@@ -3136,7 +3136,6 @@ if (Deepstreams.find().count() === 0) {
       description: ""
     }
   ];
-  console.log(contextBlocksForISS);
   contextBlocksForISS.forEach(function(e){ addContextToStream.call({userId: curatorId}, "3zruKDSm", e)});
 
     //shark context

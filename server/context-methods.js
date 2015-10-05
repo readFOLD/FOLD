@@ -806,5 +806,23 @@ Meteor.methods({
       'nextPage': nextPageToken,
       'items': items
     }
+  },
+  twitchChannelInfo (channelName) {
+      var res;
+
+      check(channelName, String);
+      this.unblock();
+
+
+      res = HTTP.get('https://api.twitch.tv/kraken/streams/' + channelName, {
+        headers: {
+          Accept: "application/vnd.twitchtv.3+json"
+        }
+      });
+
+      return {
+        'nextPage': 'end',
+        'items': [res.data.stream]
+      }
   }
 });

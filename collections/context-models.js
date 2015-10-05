@@ -89,10 +89,10 @@ twitchMapFn = function (e) {
       title: e.channel.status,
       description: e.channel.game,
       id: e._id,
-      username: e.channel.name,
+      channelName: e.channel.name,
       currentViewers: e.viewers,
       totalViews: e.channel.views,
-      userId: e.channel.id,
+      channelId: e.channel.id,
       creationDate: new Date(e.created_at)
     },
     live: true,
@@ -286,7 +286,7 @@ Stream = (function (_super) {
   };
 
   Stream.prototype.username = function () {
-    return this.reference.username;
+    return this.reference.username || this.reference.channelName;
   };
 
   Stream.prototype.currentViewers = function () {
@@ -331,7 +331,7 @@ Stream = (function (_super) {
     } else if (this.source === 'bambuser') {
       return '//embed.bambuser.com/broadcast/' + this.reference.id + '?chat=0';
     } else if (this.source === 'twitch') {
-      return '//www.twitch.tv/' + this.reference.username + '/embed';
+      return '//www.twitch.tv/' + this.reference.channelName + '/embed';
     }
   };
 
@@ -340,7 +340,7 @@ Stream = (function (_super) {
       //return 'vid=' + Template.instance().activeStream.get().reference.id + '&autostart=yes';
       return 'username=' + this.reference.username + '&autostart=yes';
     } else if (this.source === 'twitch') {
-      return 'channel=' + this.reference.username + '&auto_play=true&start_volume=25';
+      return 'channel=' + this.reference.channelName + '&auto_play=true&start_volume=25';
     }
   };
 
@@ -355,7 +355,7 @@ Stream = (function (_super) {
       case 'bambuser':
         return this.reference.previewUrl;
       case 'twitch':
-        return "http://static-cdn.jtvnw.net/previews-ttv/live_user_" + this.reference.username + "-320x180.jpg";
+        return "http://static-cdn.jtvnw.net/previews-ttv/live_user_" + this.reference.channelName + "-320x180.jpg";
     }
   };
 
@@ -368,7 +368,7 @@ Stream = (function (_super) {
       case 'bambuser':
         return this.reference.previewUrl;
       case 'twitch':
-        return "http://static-cdn.jtvnw.net/previews-ttv/live_user_" + this.reference.username + "-80x45.jpg";
+        return "http://static-cdn.jtvnw.net/previews-ttv/live_user_" + this.reference.channelName + "-80x45.jpg";
     }
   };
 
@@ -380,7 +380,7 @@ Stream = (function (_super) {
     } else if (this.source === 'bambuser'){
       return 'http://bambuser.com/channel/' + this.reference.username;
     } else if (this.source === 'twitch'){
-      return 'http://www.twitch.tv/' + this.reference.username;
+      return 'http://www.twitch.tv/' + this.reference.channelName;
     }
   };
 

@@ -430,6 +430,14 @@ Schema.Streams = new SimpleSchema({
         type: String,
         optional: true
       },
+      channelName: {
+        type: String,
+        optional: true
+      },
+      channelId: {
+        type: String,
+        optional: true
+      },
       creationDate: {
         type: Date
       },
