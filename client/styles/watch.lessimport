@@ -201,12 +201,16 @@
   .previews-container{
   }
   .context-mini-preview{
-    background-color: @dark-color;
+
     height: 20px;
     width: 35px;
     margin-top: 5px;
     margin-bottom: 5px;
     line-height: 0;
+    background-color: @dark-color;
+    &.active{
+      background-color: @action-color;
+    }
     position: relative;
     svg{
       .center-over-parent-div;

@@ -225,3 +225,24 @@ window.formatDateNice = function (date) {
   hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
   return monthNames[(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear();
 };
+
+window.updateActiveContext = function(){
+  var contextOffsetObjects = _.map(Deepstreams.findOne({shortId: Session.get('streamShortId')}).orderedContextIds(), (id) => {
+      var e = $('.list-item-context-section[data-context-id=' + id + ']');
+      return {id: id, offset: e.offset().top, height: e.outerHeight()};
+    }
+  );
+
+  var container = $('.context-area.list-mode');
+  var containerOffset = container.offset().top;
+
+  var activeId = _.chain(contextOffsetObjects)
+    .filter((obj) => {
+      return obj.offset + obj.height / 2 > containerOffset;
+    })
+    .pluck('id')
+    .first()
+    .value();
+
+  Session.set('activeContextId', activeId);
+};

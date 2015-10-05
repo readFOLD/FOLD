@@ -38,6 +38,10 @@ Deepstream = (function() {
     });
   };
 
+  Deepstream.prototype.orderedContextIds = function() {
+    return _.pluck(this.orderedInternalContext(), '_id');
+  };
+
   Deepstream.prototype.orderedContext = function() {
     var that = this;
 

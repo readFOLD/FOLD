@@ -43,14 +43,6 @@
           {{/if}}
         </div>
         <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
-          <div class="card-column">
-            <div class="previews-container">
-              {{#each orderedInternalContext}}
-                <div class="context-mini-preview">{{> relevant_content_icon}}</div>
-              {{/each}}
-            </div>
-
-          </div>
           {{#if showContextSearch}}
             {{> content_icons}}
             {{> add_context}}
@@ -58,6 +50,13 @@
             {{#if showStreamSearch}}
               {{> stream_search}}
             {{else}}
+              <div class="card-column">
+                <div class="previews-container">
+                  {{#each orderedInternalContext}}
+                    <div class="context-mini-preview {{#if isActiveContext}}active{{/if}}">{{> relevant_content_icon}}</div>
+                  {{/each}}
+                </div>
+              </div>
               {{#if showChat}}
                 {{> unimplemented_chat_section}}
               {{else}}
@@ -309,7 +308,7 @@
         {{/if}}
       {{/if}}
     </div>
-    <div class="context-area">
+    <div class="context-area {{#unless soloSidebarContextMode}}list-mode{{/unless}}">
       {{#if soloSidebarContextMode}}
         {{#with currentContext}}
           {{> solo_context_section}}

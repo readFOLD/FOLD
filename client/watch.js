@@ -366,6 +366,9 @@ Template.watch_page.helpers({
   },
   deadstreams (){
     return _.where(this.streams, { live: false });
+  },
+  isActiveContext (){
+    return Session.equals('activeContextId', this._id);
   }
 });
 
@@ -499,6 +502,7 @@ Template.context_browser.onRendered(function(){
   // make context sortable
   var sortableOuterDiv = '.context-area';
   var sortableListItem = '.list-item-context-section';
+  updateActiveContext();
   var that = this;
   that.$(sortableOuterDiv).sortable({
     items: sortableListItem,
@@ -568,7 +572,8 @@ Template.context_browser.events({
   },
   'click .switch-to-list-mode' (){
     clearCurrentContext();
-  }
+  },
+  'scroll .context-area.list-mode': updateActiveContext
 });
 
 Template.overlay_context_browser.onRendered(function(){
