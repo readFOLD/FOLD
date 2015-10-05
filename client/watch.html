@@ -340,16 +340,17 @@
         {{/if}}
       {{/if}}
     </div>
-    <div class="context-area {{#unless soloSidebarContextMode}}list-mode{{/unless}}">
-      {{#if soloSidebarContextMode}}
+    {{#if soloSidebarContextMode}}
+      <div class="context-area">
         {{#with currentContext}}
           {{> solo_context_section}}
         {{/with}}
-      {{else}}
-        {{#each contextBlocks}}
-          {{> list_item_context_section}}
-        {{/each}}
-      {{/if}}
+      </div>
+    {{/if}}
+    <div class="context-area list-mode {{#if soloSidebarContextMode}}hide{{/if}}">
+      {{#each contextBlocks}}
+        {{> list_item_context_section}}
+      {{/each}}
     </div>
   </div>
 </template>

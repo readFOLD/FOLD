@@ -789,6 +789,8 @@ if (Deepstreams.find().count() === 0) {
         },
         providerName: "TIME",
         providerIconUrl: "https://s0.wp.com/wp-content/themes/vip/time2014/img/time-favicon.ico",
+        originalUrl: "http://time.com/4008222/soyuz-space-station/",
+        url: "http://time.com/4008222/soyuz-space-station/",
         publishedMs: 1440695840000,
         publishedOffset: null
       },
@@ -1190,7 +1192,10 @@ if (Deepstreams.find().count() === 0) {
         providerName: "USA TODAY",
         providerIconUrl: "http://www.gannett-cdn.com/sites/usatoday/images/favicon.png",
         publishedMs: null,
-        publishedOffset: null
+        publishedOffset: null,
+        originalUrl: "http://www.usatoday.com/story/news/nation-now/2015/08/10/astronauts-eat-space-salad-grown-international-space-station/31405473/",
+        url: "http://www.usatoday.com/story/news/nation-now/2015/08/10/astronauts-eat-space-salad-grown-international-space-station/31405473/",
+
       },
       source: "embedly",
       type: "news",
@@ -1447,6 +1452,8 @@ if (Deepstreams.find().count() === 0) {
         },
         providerName: "the Guardian",
         providerIconUrl: "https://assets.guim.co.uk/images/favicons/79d7ab5a729562cebca9c6a13c324f0e/32x32.ico",
+        originalUrl: "http://www.theguardian.com/science/video/2015/aug/10/cosmonauts-step-outside-international-space-station-clean-windows-video",
+        url: "http://www.theguardian.com/science/video/2015/aug/10/cosmonauts-step-outside-international-space-station-clean-windows-video",
         publishedMs: 1439213640000,
         publishedOffset: -14400000
       },
@@ -3565,6 +3572,8 @@ if (Deepstreams.find().count() === 0) {
         },
         providerName: "Washington Post",
         providerIconUrl: "https://www.washingtonpost.com/favicon.ico",
+        originalUrl: "https://www.washingtonpost.com/opinions/five-myths-about-sharks/2015/07/17/f7176a3e-29a1-11e5-a250-42bd812efc09_story.html",
+        url: "https://www.washingtonpost.com/opinions/five-myths-about-sharks/2015/07/17/f7176a3e-29a1-11e5-a250-42bd812efc09_story.html",
         publishedMs: 1437091200000,
         publishedOffset: null
       },
@@ -3925,6 +3934,8 @@ if (Deepstreams.find().count() === 0) {
         },
         providerName: "Yahoo News",
         providerIconUrl: "http://news.yahoo.com/favicon.ico",
+        url: "http://news.yahoo.com/sharks-whats-dinner-thats-big-problem-165116920.html",
+        originalUrl: "http://news.yahoo.com/sharks-whats-dinner-thats-big-problem-165116920.html",
         publishedMs: 1438347060000,
         publishedOffset: null
       },
@@ -4809,6 +4820,8 @@ if (Deepstreams.find().count() === 0) {
         },
         providerName: "WSJ",
         providerIconUrl: "http://www.wsj.com/android-chrome-192x192.png",
+        originalUrl: "http://www.wsj.com/articles/the-misunderstood-shark-1438963236",
+        url: "http://www.wsj.com/articles/the-misunderstood-shark-1438963236",
         publishedMs: 1438966800000,
         publishedOffset: -18000000
       },

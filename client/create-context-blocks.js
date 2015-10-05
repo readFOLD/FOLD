@@ -473,6 +473,8 @@ Template.create_news_section.onCreated(function() {
           topImage: result.images[0],
           providerName: result.provider_name,
           providerIconUrl: result.favicon_url,
+          url: result.url,
+          originalUrl: result.originalUrl,
           publishedMs: result.published,
           publishedOffset: result.offset
         },

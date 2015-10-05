@@ -122,8 +122,8 @@ Template.watch_page.onCreated(function () {
   };
 
   window.twitchPlayerEventCallback = function(events){
-    console.log(events)
     if(_.findWhere(events, {event: 'playerInit'})){
+      console.log('Twitch player ready');
       mainPlayer._twitchPlayer = getFlashMovie(that.mainStreamFlashPlayerId);
     }
   };
@@ -538,9 +538,12 @@ Template.watch_page.events({
     clearCurrentContext();
   },
   'click .context-mini-preview' (e,t){
-    var contextToScrollTo = $('.context-section[data-context-id=' + this._id + ']');
-    var container = $('.context-area');
-    container.animate({scrollTop: (contextToScrollTo.offset().top - container.offset().top + container.scrollTop())});
+    clearCurrentContext();
+    Meteor.setTimeout( () =>{
+      var contextToScrollTo = $('.context-section[data-context-id=' + this._id + ']');
+      var container = $('.context-area');
+      container.animate({scrollTop: (contextToScrollTo.offset().top - container.offset().top + container.scrollTop())});
+    })
   }
 });
 

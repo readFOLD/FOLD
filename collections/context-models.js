@@ -1002,12 +1002,12 @@ NewsBlock = (function (_super) {
     return this.reference.url || this.reference.originalUrl;
   };
 
-  NewsBlock.prototype.providerUrl = function () {
-    return this.reference.providerUrl;
-  };
+  //NewsBlock.prototype.providerUrl = function () {
+  //  return this.reference.providerUrl;
+  //};
 
   NewsBlock.prototype.providerTruncatedUrl = function () {
-    return this.reference.providerUrl.replace(/(https?:\/\/)?(www\.)?/, "");
+    return (this.reference.url || this.reference.originalUrl).replace(/(https?:\/\/)?(www\.)?/, "").replace(/\/.*/, "");
   };
 
   NewsBlock.prototype.anchorMenuSnippet = function () {
