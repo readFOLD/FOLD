@@ -289,6 +289,28 @@ div.logo-title {
     float:right;
   }
 
+  position: relative;
+  &:hover {
+    .delete-deepstream {
+      display: inline-block;
+      opacity: 1;
+    }
+  }
+
+  .delete-deepstream {
+    .opacity-transition;
+    opacity: 0;
+    .size(30px);
+    padding: 0;
+    svg {
+      .size-to-fit;
+    }
+    position: absolute;
+    z-index: 8888;
+    right: 2px;
+    top: 2px;
+  }
+
 }
 
 .homepage-content-preview{

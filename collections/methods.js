@@ -182,7 +182,7 @@ Meteor.methods({
           _id: streamId
         }
       }, $push: {
-        'deleted.streams': streamToDelete
+        'deletedContent.streams': streamToDelete
       }
     };
 
@@ -251,7 +251,7 @@ Meteor.methods({
           _id: contextId
         }
       }, $push: {
-        'deleted.contextBlocks': internalContextToDelete
+        'deletedContent.contextBlocks': internalContextToDelete
       }
     });
 
@@ -308,10 +308,7 @@ Meteor.methods({
 
     return updateDeepstream.call(this, {shortId: shortId}, {$set: setObject});
   },
-  unpublishStream (shortId){
-    check(shortId, String);
-    return updateDeepstream.call(this, {shortId: shortId}, {$set: { onAir: false, lastOnAirAt: new Date, onAirSince: null }});
-  },
+  unpublishStream : unpublishDeepstream,
   updateStreamTitle (shortId, title){
     check(shortId, String);
     check(title, String);
@@ -400,6 +397,33 @@ Meteor.methods({
   stripEditorsPick (storyId) {
     check(storyId, String);
     return changeEditorsPick.call(this, storyId, false);
+  },
+  deleteDeepstream: function(shortId){
+    check(shortId, String);
+    if (!this.userId) {
+      throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to delete a deepstream');
+    }
+
+    var stream = Deepstreams.findOne({shortId: shortId, curatorIds: this.userId});
+
+    if (!stream) {
+      throw new Meteor.Error('deepstream not found by curator to delete. stream short id: ' + shortId + '  userId: ' + this.userId);
+    }
+
+    if (stream.onAir){
+      var unpublishSuccessful = unpublishDeepstream.call(this, shortId);
+      if (!unpublishSuccessful) {
+        throw new Meteor.Error('unpublish failed ' + shortId + '  userId: ' + this.userId);
+      }
+    }
+
+    return updateDeepstream.call(this, { shortId: shortId }, {
+      $set: {
+        onAir: false,
+        deleted: true,
+        deletedAt: new Date
+      }
+    });
   },
   createDeepstream (shortId, initialStream) { // TO-DO find a way to generate these ids in a trusted way server without compromising UI speed
     var user = Meteor.user();

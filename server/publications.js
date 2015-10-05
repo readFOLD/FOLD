@@ -184,7 +184,7 @@ Meteor.publish("deepstreamPreviewContext", function(streamShortId) {
 });
 
 Meteor.publish("myDeepstreams", function() {
-  return Deepstreams.find({curatorIds: this.userId}, {
+  return Deepstreams.find({curatorIds: this.userId, deleted: {$ne: true}}, {
     fields: deepstreamFields
   });
 });

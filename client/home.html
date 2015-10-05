@@ -228,13 +228,14 @@
 <template name="my_streams">
   <h1>Your Deep Streams</h1>
   {{#each streams}}
-      {{> deepstream_preview linkToCurate=true deepstream=this }}
+      {{> deepstream_preview linkToCurate=true deepstream=this showDeleteButton=true }}
   {{/each}}
 </template>
 
 <template name="deepstream_preview">
+<div class="deepstream-preview">
+
   {{#with deepstream}}
-  <div class="deepstream-preview">
     <div class="deepstream">
       <div class="image-and-content">
         <a href="{{linkPath}}">
@@ -295,8 +296,15 @@
         </div>
       </a>
     </div>
-  </div>
   {{/with}}
+
+  {{#if showDeleteButton}}
+    {{#with deepstream}}
+      <button class="delete-deepstream">{{> close_circle}}</button>
+    {{/with}}
+  {{/if}}
+</div>
+
 </template>
 
 <template name="homepage_content_preview">

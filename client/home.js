@@ -367,3 +367,15 @@ Template.my_streams.helpers({
     }
   }
 });
+
+Template.my_streams.events({
+  'click .delete-deepstream': function(){
+    if (confirm('Are you sure you want to delete this deepstream? This cannot be undone.')){
+      Meteor.call('deleteDeepstream', this.shortId, function(err, result) {
+        if(err || !result){
+          notifyError('Delete failed.');
+        }
+      });
+    }
+  }
+});

@@ -524,6 +524,14 @@ Schema.Deepstreams = new SimpleSchema({
     type: Boolean,
     defaultValue: true
   },
+  deleted: {
+    type: Boolean,
+    defaultValue: false
+  },
+  deletedAt: {
+    type: Date,
+    optional: true
+  },
   onAir: {
     type: Boolean,
     defaultValue: false
@@ -585,17 +593,17 @@ Schema.Deepstreams = new SimpleSchema({
     minCount: 0,
     maxCount: 100
   },
-  deleted: {
+  deletedContent: {
     type: Object,
     optional: true
   },
-  'deleted.contextBlocks': {
+  'deletedContent.contextBlocks': {
     type: [Object],  // list of contextblock ids
     minCount: 0,
     maxCount: 1000,
     blackbox: true // TO-DO this is temporary
   },
-  'deleted.streams': {
+  'deletedContent.streams': {
     type: [Schema.Streams],
     minCount: 0,
     maxCount: 100
