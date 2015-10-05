@@ -675,9 +675,9 @@ Meteor.methods({
     // mix streams from various sources
 
     var items = _.chain(youtubeResults.items)
-      .zip(twitchResults.items)
       .zip(bambuserStreams)
       .zip(ustreams)
+      .zip(twitchResults.items)
       .flatten()
       .compact()
       .value();
