@@ -73,7 +73,8 @@ var addFocusResult = function(d, template) {
 
 var goBack = function(e, t) {
   var focusResult = t.focusResult.get();
-  if (focusResult && focusResult.searchList) { // if at the single-mode of a list
+
+  if (focusResult && (focusResult.searchList || focusResult.type === 'stream')) { // if at the single-mode of a list
     return t.focusResult.set(null);
   } else {
     Session.set('previousMediaDataType', Session.get('mediaDataType'));
@@ -254,8 +255,6 @@ _.each(createTemplateNames, function(templateName){
 
 Template.create_text_section.helpers(createBlockHelpers);
 
-Template.create_stream_section.helpers(createBlockHelpers);
-Template.create_stream_section.events(createBlockEvents);
 
 Template.create_stream_section.onCreated(function(){
   this.addingFunction = window.addStream;
