@@ -27,6 +27,7 @@ BrowserPolicy.content.allowStyleOrigin('*.googleapis.com');
 
 // allow objects from specific sources only
 BrowserPolicy.content.allowObjectOrigin('*.bambuser.com');
+BrowserPolicy.content.allowObjectOrigin('www-cdn.jtvnw.net');
 
 // allow connect everywhere
 BrowserPolicy.content.allowConnectOrigin('*');

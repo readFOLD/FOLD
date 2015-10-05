@@ -34,7 +34,7 @@ youtubeMapFn = function (e) {
   return {
     reference: {
       title: e.title,
-      //description: e.description,
+      description: e.description,
       id: e.videoId,
       username: e.channelTitle,
       userId: e.channelId,
@@ -50,7 +50,7 @@ ustreamMapFn = function (e) { // this is post-insert from pre-loading ustream re
   return {
     reference: {
       title: e.title,
-      //description: $($.parseHTML(e.description)).text(),
+      description: $($.parseHTML(e.description)).text(),
       id: e.id,
       username: e.username,
       currentViewers: e.currentViewers,
@@ -83,6 +83,23 @@ bambuserMapFn = function (e) {
   }
 };
 
+twitchMapFn = function (e) {
+  return {
+    reference: {
+      title: e.channel.status,
+      description: e.channel.game,
+      id: e._id,
+      username: e.channel.name,
+      currentViewers: e.viewers,
+      totalViews: e.channel.views,
+      userId: e.channel.id,
+      creationDate: new Date(e.created_at)
+    },
+    live: true,
+    source: 'twitch'
+  }
+};
+
 ContextBlock.searchMappings = {
   all_streaming_services: {
     methodName: 'streamSearchList',
@@ -97,6 +114,9 @@ ContextBlock.searchMappings = {
           break;
         case 'ustream':
           stream = ustreamMapFn(e);
+          break;
+        case 'twitch':
+          stream = twitchMapFn(e);
           break;
         default:
           console.error(e);
@@ -117,6 +137,10 @@ ContextBlock.searchMappings = {
   ustream: {
     methodName: 'ustreamVideoSearchList',
     mapFn: ustreamMapFn
+  },
+  twitch: {
+    methodName: 'twitchVideoSearchList',
+    mapFn: twitchMapFn
   },
   vimeo: {
     methodName: 'vimeoVideoSearchList',
@@ -306,6 +330,8 @@ Stream = (function (_super) {
       return '//www.ustream.tv/embed/' + this.reference.id + '?html5ui';
     } else if (this.source === 'bambuser') {
       return '//embed.bambuser.com/broadcast/' + this.reference.id + '?chat=0';
+    } else if (this.source === 'twitch') {
+      return '//www.twitch.tv/' + this.reference.username + '/embed';
     }
   };
 
@@ -313,6 +339,8 @@ Stream = (function (_super) {
     if (this.source === 'bambuser') {
       //return 'vid=' + Template.instance().activeStream.get().reference.id + '&autostart=yes';
       return 'username=' + this.reference.username + '&autostart=yes';
+    } else if (this.source === 'twitch') {
+      return 'channel=' + this.reference.username + '&auto_play=true&start_volume=25';
     }
   };
 
@@ -326,6 +354,8 @@ Stream = (function (_super) {
         return this.reference.previewUrl;
       case 'bambuser':
         return this.reference.previewUrl;
+      case 'twitch':
+        return "http://static-cdn.jtvnw.net/previews-ttv/live_user_" + this.reference.username + "-320x180.jpg";
     }
   };
 
@@ -337,6 +367,8 @@ Stream = (function (_super) {
         return this.reference.thumbnailUrl;
       case 'bambuser':
         return this.reference.previewUrl;
+      case 'twitch':
+        return "http://static-cdn.jtvnw.net/previews-ttv/live_user_" + this.reference.username + "-80x45.jpg";
     }
   };
 
@@ -347,6 +379,8 @@ Stream = (function (_super) {
       return 'https://www.ustream.tv/channel/' + this.reference.id;
     } else if (this.source === 'bambuser'){
       return 'http://bambuser.com/channel/' + this.reference.username;
+    } else if (this.source === 'twitch'){
+      return 'http://www.twitch.tv/' + this.reference.username;
     }
   };
 

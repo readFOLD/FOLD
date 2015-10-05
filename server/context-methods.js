@@ -108,6 +108,42 @@ var searchYouTube = function (query, option, page) {
   }
 };
 
+var searchTwitch = function (query, option, page) {
+  var res;
+  var nextPageToken;
+  check(query, Match.Optional(String));
+  this.unblock();
+  var limit = 100;
+  requestParams = {
+    limit: limit,
+    q: query
+  };
+
+  page = page || 0;
+
+  requestParams['offset'] = page;
+
+  res = HTTP.get('https://api.twitch.tv/kraken/search/streams', {
+    params: requestParams,
+    headers: {
+      Accept: "application/vnd.twitchtv.3+json"
+    }
+  });
+
+  items = res.data.streams;
+
+  if (items && items.length === limit) {
+    nextPageToken = page + 1;
+  } else {
+    nextPageToken = 'end';
+  }
+
+  return {
+    'nextPage': nextPageToken,
+    'items': items
+  }
+};
+
 Meteor.methods({
 
   ///////////////////////////////////
@@ -509,7 +545,7 @@ Meteor.methods({
       };
     }
 
-    var youtubeResults;
+    var youtubeResults, twitchResults;
     if (!page) {
       page = {};
     }
@@ -523,6 +559,18 @@ Meteor.methods({
       });
     } else { // youtube results are over
       youtubeResults = {
+        items: [],
+        nextPage: 'end'
+      }
+    }
+
+    if (page.twitch !== 'end'){
+      twitchResults = searchTwitch.call(this, query, page.twitch || null);
+      _.each(twitchResults.items, function(item){
+        _.extend(item, { _streamSource: 'twitch'})
+      });
+    } else { // twitch results are over
+      twitchResults = {
         items: [],
         nextPage: 'end'
       }
@@ -627,6 +675,7 @@ Meteor.methods({
     // mix streams from various sources
 
     var items = _.chain(youtubeResults.items)
+      .zip(twitchResults.items)
       .zip(bambuserStreams)
       .zip(ustreams)
       .flatten()
@@ -722,6 +771,7 @@ Meteor.methods({
       'items': items
     }
   },
+  twitchVideoSearchList: searchTwitch,
   youtubeVideoInfo (ids, page) {
     var res;
     var nextPageToken;

@@ -14,6 +14,9 @@ window.mainPlayer = {
       case 'bambuser':
         this._bambuserPlayer.playBroadcast();
         break;
+      case 'twitch':
+        this._twitchPlayer.playVideo();
+        break;
       default:
         throw new Meteor.Error('main player has no active stream source')
     }
@@ -28,6 +31,9 @@ window.mainPlayer = {
         break;
       case 'bambuser':
         this._bambuserPlayer.pauseBroadcast();
+        break;
+      case 'twitch':
+        this._twitchPlayer.pauseVideo();
         break;
       default:
         throw new Meteor.Error('main player has no active stream source')
@@ -44,6 +50,9 @@ window.mainPlayer = {
       case 'bambuser':
         this._bambuserPlayer.pauseBroadcast();
         break;
+      case 'twitch':
+        this._twitchPlayer.pauseVideo();
+        break;
       default:
         throw new Meteor.Error('main player has no active stream source')
     }
@@ -59,6 +68,9 @@ window.mainPlayer = {
       case 'bambuser':
         this._bambuserPlayer.mute();
         break;
+      case 'twitch':
+        this._twitchPlayer.mute();
+        break;
       default:
         throw new Meteor.Error('main player has no active stream source')
     }
@@ -73,6 +85,9 @@ window.mainPlayer = {
         break;
       case 'bambuser':
         this._bambuserPlayer.unmute();
+        break;
+      case 'twitch':
+        this._twitchPlayer.unmute();
         break;
       default:
         throw new Meteor.Error('main player has no active stream source')
@@ -104,6 +119,13 @@ Template.watch_page.onCreated(function () {
   window.bambuserPlayerReady = function(){
     console.log('Bambuser player ready');
     mainPlayer._bambuserPlayer = getFlashMovie(that.mainStreamFlashPlayerId);
+  };
+
+  window.twitchPlayerEventCallback = function(events){
+    console.log(events)
+    if(_.findWhere(events, {event: 'playerInit'})){
+      mainPlayer._twitchPlayer = getFlashMovie(that.mainStreamFlashPlayerId);
+    }
   };
 
 
@@ -234,6 +256,8 @@ Template.watch_page.onRendered(function(){
           break;
         case 'bambuser':
           mainPlayer.activeStreamSource = 'bambuser';
+        case 'twitch':
+          mainPlayer.activeStreamSource = 'twitch';
       }
 
     }
@@ -294,7 +318,7 @@ Template.watch_page.helpers({
     return _.contains(['ustream', 'youtube'], Template.instance().activeStream.get().source);
   },
   mainStreamInFlashPlayer (){
-    return _.contains(['bambuser'], Template.instance().activeStream.get().source);
+    return _.contains(['bambuser', 'twitch'], Template.instance().activeStream.get().source);
   },
   onCuratePage (){
     return Template.instance().data.onCuratePage ? Template.instance().data.onCuratePage() : null;
@@ -312,9 +336,25 @@ Template.watch_page.helpers({
   },
   flashVars (){
     var activeStream = Template.instance().activeStream.get();
-    if(activeStream){
-      return activeStream.flashVars() + '&callback=bambuserPlayerReady'
+    var addlParams;
+
+    switch(activeStream.source){
+      case 'bambuser':
+        addlParams='&callback=bambuserPlayerReady';
+        break;
+      case 'twitch':
+        addlParams='&eventsCallback=twitchPlayerEventCallback';
+        break;
     }
+    if(activeStream){
+      return activeStream.flashVars() + addlParams;
+    }
+  },
+  bambuserPlayer (){
+    return Template.instance().activeStream.get().source === 'bambuser'
+  },
+  twitchPlayer (){
+    return Template.instance().activeStream.get().source === 'twitch'
   },
   showTitleDescriptionEditOverlay (){
     return this.creationStep == 'title_description';

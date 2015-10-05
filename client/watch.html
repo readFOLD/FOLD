@@ -27,9 +27,32 @@
               <iframe id="{{mainStreamIFrameId}}" class="main-stream-iframe {{#unless mainStreamInIFrame}}hide{{/unless}}" src="{{#if mainStreamInIFrame}}{{streamUrl}}{{/if}}" frameborder="0"
                       allowfullscreen></iframe>
               {{#if mainStreamInFlashPlayer}}
-                <object id="{{mainStreamFlashPlayerId}}" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" class="main-stream-flash-object {{#unless mainStreamInFlashPlayer}}hide{{/unless}}">
-                  <embed name="{{mainStreamFlashPlayerId}}" src="//static.bambuser.com/r/player.swf" type="application/x-shockwave-flash" flashvars="{{#if mainStreamInFlashPlayer}}{{flashVars}}{{/if}}" allowfullscreen="true" allowscriptaccess="always" wmode="opaque"/><param name="movie" value="//static.bambuser.com/r/player.swf"/><param name="flashvars" value="{{#if mainStreamInFlashPlayer}}{{flashVars}}{{/if}}"/><param name="allowfullscreen" value="true"/><param name="allowscriptaccess" value="always"/><param name="wmode" value="opaque"/>
-                </object>
+                {{#if bambuserPlayer}}
+                  <object id="{{mainStreamFlashPlayerId}}" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" class="main-stream-flash-object">
+                    <embed name="{{mainStreamFlashPlayerId}}" src="//static.bambuser.com/r/player.swf" type="application/x-shockwave-flash" flashvars="{{flashVars}}" allowfullscreen="true" allowscriptaccess="always" wmode="opaque"/><param name="movie" value="//static.bambuser.com/r/player.swf"/><param name="flashvars" value="{{#if mainStreamInFlashPlayer}}{{flashVars}}{{/if}}"/><param name="allowfullscreen" value="true"/><param name="allowscriptaccess" value="always"/><param name="wmode" value="opaque"/>
+                  </object>
+                  {{else}}
+                    {{#if twitchPlayer}}
+                      <object id="{{mainStreamFlashPlayerId}}"
+                              bgcolor='#000000'
+                              data='//www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf'
+                              class="main-stream-flash-object"
+                              type='application/x-shockwave-flash'>
+
+                        <param name="allowFullScreen"
+                               value="true" />
+                        <param name="allowNetworking"
+                               value="all" />
+                        <param name="allowScriptAccess"
+                               value="always" />
+                        <param name='movie'
+                               value='//www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf' />
+                        <param name='flashvars'
+                               value='{{flashVars}}' />
+                      </object>
+                    {{/if}}
+                {{/if}}
+
               {{/if}}
               {{#if PiP}}<div class="PiP-overlay"></div>{{/if}}
             </div>
