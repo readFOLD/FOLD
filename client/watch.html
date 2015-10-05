@@ -15,8 +15,9 @@
           {{{streamTitleElement}}}
         </div>
       </div>
-
       <div class="main-section {{#if expandMainSection}}expanded{{/if}}">
+        <div class="left-section">
+
         <div class="main-stream {{#if expandMainSection}}expanded{{/if}} {{#if PiP}}PiP{{/if}}">
           {{#if showTutorial}}
             {{> creation_tutorial}}
@@ -42,132 +43,140 @@
             {{/unless}}
           {{/if}}
         </div>
-        <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
-          {{#if showContextSearch}}
-            {{> content_icons}}
-            {{> add_context}}
-          {{else}}
-            {{#if showStreamSearch}}
-              {{> stream_search}}
-            {{else}}
-              <div class="card-column">
-                <div class="previews-container">
-                  {{#each orderedInternalContext}}
-                    <div class="context-mini-preview {{#if isActiveContext}}active{{/if}}">{{> relevant_content_icon}}</div>
-                  {{/each}}
-                </div>
-              </div>
-              {{#if showChat}}
-                {{> unimplemented_chat_section}}
+        <div class="footer-section">
+          {{#if showStreamSwitcher}}
+            <div class="streams-list">
+              {{#each livestreams}}
+                <li data-stream-reference-id="{{reference.id}}" data-stream-id="{{_id}}" class="stream {{#if active}}active{{/if}}">
+                  <button class="set-main-stream {{#if active}}active{{/if}}">
+                    <div class="mini-live-indicator">
+                      LIVE
+                    </div>
+                    <img src="{{thumbnailUrl}}">
+                  </button>
+                  {{#if curateMode}}
+                    <button class="delete-stream">{{> close_circle}}</button>
+                  {{/if}}
+                </li>
               {{else}}
-                {{> context_browser}}
-              {{/if}}
-            {{/if}}
-          {{/if}}
-        </div>
-      </div>
-      <div class="footer-section">
-        {{#if showStreamSwitcher}}
-          <ol class="streams-list">
-            {{#each livestreams}}
-              <li data-stream-reference-id="{{reference.id}}" data-stream-id="{{_id}}" class="stream {{#if active}}active{{/if}}">
-                <button class="set-main-stream {{#if active}}active{{/if}}">
-                  <div class="mini-live-indicator">
-                    LIVE
-                  </div>
-                  <img src="{{thumbnailUrl}}">
-                </button>
-                {{#if curateMode}}
-                  <button class="delete-stream">{{> close_circle}}</button>
-                {{/if}}
-              </li>
-            {{else}}
-              {{#unless curateMode}}
-                <li class="placeholder">
-                  <button>
-                    There are no live streams right now
+                {{#unless curateMode}}
+                  <li class="placeholder">
+                    <button>
+                      There are no live streams right now
+                    </button>
+                  </li>
+                {{/unless}}
+              {{/each}}
+              {{#if curateMode}}
+                <li class="add-stream">
+                  <button class="show-stream-search">
+                    <span>Add Stream</span>
                   </button>
                 </li>
-              {{/unless}}
-            {{/each}}
-            {{#if curateMode}}
-              <li class="add-stream">
-                <button class="show-stream-search">
-                  Add Stream
-                </button>
-              </li>
-            {{/if}}
-            {{#if deadstreams.length}}
-              <li class="live-dead-divider"></li>
-            {{/if}}
-            {{#each deadstreams}}
-              <li data-stream-reference-id="{{reference.id}}" data-stream-id="{{_id}}" class="stream {{#if active}}active{{/if}}">
-                <button class="set-main-stream {{#if active}}active{{/if}}">
-                  <img src="{{thumbnailUrl}}">
-                </button>
-                {{#if curateMode}}
-                  <button class="delete-stream">{{> close_circle}}</button>
-                {{/if}}
-              </li>
-            {{/each}}
-          </ol>
-        {{/if}}
-        <div class="about-stream">
-          <div class="icon"><i class="fa fa-info-circle"></i></div>
-          {{{streamDescriptionElement}}}
-        </div>
-        <div class="stream-stats-and-share">
-          <div class="share-and-favorite">
-            <button class="favorite-button">{{> favorite_icon}}</button>
-            <button class="twitter-share-button">{{> twitter_share_icon}}</button>
-            <button class="facebook-share-button">{{> facebook_share_icon}}</button>
-            <button class="email-share-button">{{> email_share_icon}}</button>
-          </div>
-          <div class="stream-stats">
-            <div class="views">Views: 12,245</div>
-          </div>
-        </div>
-        <div class="curator-menu">
-          {{#unless curateMode}}
-            <div class="curator-info">
-              <div class="header">CURATOR</div>
-              <div class="rest">
-                <div class="curator-pic">
-                  {{> default_user_pic}}
-                </div>
-                <div class="curator-details">
-                  {{curatorName}}
-                </div>
-              </div>
+              {{/if}}
+              {{#if deadstreams.length}}
+                <li class="live-dead-divider"></li>
+              {{/if}}
+              {{#each deadstreams}}
+                <li data-stream-reference-id="{{reference.id}}" data-stream-id="{{_id}}" class="stream {{#if active}}active{{/if}}">
+                  <button class="set-main-stream {{#if active}}active{{/if}}">
+                    <img src="{{thumbnailUrl}}">
+                  </button>
+                  {{#if curateMode}}
+                    <button class="delete-stream">{{> close_circle}}</button>
+                  {{/if}}
+                </li>
+              {{/each}}
             </div>
-          {{/unless}}
-          {{#if isCurator}}
-            {{#if onCuratePage}}
-              {{#if curateMode}}
-                <div class="icon-button-group">
-                  <div class="settings-button-and-menu">
-                    <button class="settings-menu-button">{{> setting_icon}}</button>
-                    {{#if settingsMenuOpen}}
-                      {{> settings_menu}}
-                    {{/if}}
+          {{/if}}
+          <div class="stream-stats-and-share">
+            <div class="share-and-favorite">
+              <button class="favorite-button">{{> favorite_icon}}</button>
+              <button class="twitter-share-button">{{> twitter_share_icon}}</button>
+              <button class="facebook-share-button">{{> facebook_share_icon}}</button>
+              <button class="email-share-button">{{> email_share_icon}}</button>
+            </div>
+            <div class="stream-stats">
+              <div class="views">Views: 12,245</div>
+            </div>
+          </div>
+          <div class="about-stream">
+            <div class="icon"><i class="fa fa-info-circle"></i></div>
+            {{{streamDescriptionElement}}}
+          </div>
+        </div>
+        </div>
+
+        <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
+          <div class="top-part">
+            {{#if showContextSearch}}
+              {{> content_icons}}
+              {{> add_context}}
+            {{else}}
+              {{#if showStreamSearch}}
+                {{> stream_search}}
+              {{else}}
+                <div class="card-column">
+                  <div class="previews-container">
+                    {{#each orderedInternalContext}}
+                      <div class="context-mini-preview {{#if isActiveContext}}active{{/if}}">{{> relevant_content_icon}}</div>
+                    {{/each}}
                   </div>
                 </div>
-                {{#if showPreviewEditButton}}
-                  <button class="preview">Preview</button>
-                {{/if}}
-              {{else}}
-                {{#if showPreviewEditButton}}
-                  <button class="return-to-curate">Edit</button>
+                {{#if showChat}}
+                  {{> unimplemented_chat_section}}
+                {{else}}
+                  {{> context_browser}}
                 {{/if}}
               {{/if}}
-            {{else}}
-              <a href="{{curatePath}}">
-                <button class="curate-this-stream">Edit This <br> Deepstream</button>
-              </a>
             {{/if}}
-          {{/if}}
+          </div>
+          <div class="footer-section">
 
+            <div class="curator-menu">
+              {{#unless curateMode}}
+                <div class="curator-info">
+                  <div class="header">CURATOR</div>
+                  <div class="rest">
+                    <div class="curator-pic">
+                      {{> default_user_pic}}
+                    </div>
+                    <div class="curator-details">
+                      {{curatorName}}
+                    </div>
+                  </div>
+                </div>
+              {{/unless}}
+              {{#if isCurator}}
+                {{#if onCuratePage}}
+                  {{#if curateMode}}
+                    <div class="icon-button-group">
+                      <div class="settings-button-and-menu">
+                        <button class="settings-menu-button">{{> setting_icon}}</button>
+                        {{#if settingsMenuOpen}}
+                          {{> settings_menu}}
+                        {{/if}}
+                      </div>
+                    </div>
+                    {{#if showPreviewEditButton}}
+                      <button class="preview">Preview</button>
+                    {{/if}}
+                  {{else}}
+                    {{#if showPreviewEditButton}}
+                      <button class="return-to-curate">Edit</button>
+                    {{/if}}
+                  {{/if}}
+                {{else}}
+                  <a href="{{curatePath}}">
+                    <button class="curate-this-stream">Edit This <br> Deepstream</button>
+                  </a>
+                {{/if}}
+              {{/if}}
+
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
 

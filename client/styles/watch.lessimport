@@ -1,3 +1,4 @@
+@footer-section-height: 140px;
 @right-section-width: 350px;
 @PiP-width: 250px;
 @PiP-height: 150px;
@@ -15,6 +16,8 @@
     min-width: calc(100% ~"-" (@right-section-width + 3 * @left-margin + @live-indicator-width));
   }
   .streams-list{
+    white-space: nowrap;
+    overflow-x: scroll;
     .stream {
       &:not(.active) {
         img{
@@ -34,6 +37,7 @@
     }
     @streamPreviewHeight: 62px;
     li{
+      display: inline-block;
       float: left;
       margin-left: 20px;
       line-height: 0;
@@ -107,27 +111,33 @@
 
 }
 
-@mainSectionHeight: 545px;
-@mainSectionExpandedHeight: 645px;
+@mainStreamHeight: 545px;
+@mainStreamExpandedHeight: 645px;
 
 .main-section{
-  height: @mainSectionHeight;
+  height: @mainStreamHeight + @footer-section-height;
+  width: 100%;
+
   .height-transition;
   &.expanded{
-    height: @mainSectionExpandedHeight;
+    height: @mainStreamExpandedHeight + @footer-section-height;
   }
 }
 
+.left-section{
+  height: 100%;
+  float: left;
+  width: calc(100% ~"-" @right-section-width);
+}
 
 .main-stream{
-  height: 100%;
-  width: calc(100% ~"-" @right-section-width);
+  width: 100%;
+  height: calc(100% ~"-" @footer-section-height);
   .width-transition;
 
   &.expanded{
     width: 100%;
   }
-  float: left;
   position: relative;
   display: inline-block;
   z-index: 1;
@@ -173,11 +183,14 @@
   .width-transition;
   height: 100%;
   float: left;
-  position: relative;
   background-color: @alt-background-color;
   display: inline-block;
   z-index: 10;
   width: @right-section-width;
+  .top-part{
+    position: relative;
+    height: calc(100% ~"-" @footer-section-height);
+  }
   .content-icons {
     left: -@contentIconWidth;
     z-index: 999;
@@ -282,9 +295,15 @@
 .footer-section{
   padding: 10px;
   position: relative;
+  overflow-y: hidden;
+  height: @footer-section-height;
+  display: flex;
+  flex-direction: row;
+  .streams-list{
+    flex: 1;
+  }
+
   .stream-stats-and-share{
-    position: absolute;
-    right: @right-section-width;
     width: 100px;
     .inverted-icon-colors;
     .stream-stats{
@@ -488,7 +507,7 @@
   }
 
   .video-section, .map-section, .image-section{
-    height: @mainSectionHeight;
+    height: @mainStreamHeight;
     background-color: @black-color;
     display: flex;
     flex-direction: column;
@@ -623,7 +642,6 @@
     position: absolute;
     left: 0;
     top: 0;
-    z-index: -1;
   }
 }
 
@@ -827,7 +845,7 @@
   left: @left-margin;
   top: 80px;
   position: absolute;
-  width: calc(100% ~"-" (@right-section-width + 50px));
+  width: calc(100% ~"-" (50px));
   .icon{
     position: absolute;
     //top: 15px;
