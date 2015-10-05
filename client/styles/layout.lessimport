@@ -491,6 +491,8 @@ div.image-section, .image-preview {
   div.attribution {
     margin-top: -30px;
     line-height: 30px;
+    max-height: 30px;
+    overflow: hidden;
     padding-right: 8px;
     text-shadow: 1px 1px @dark-color;
     text-align: right;
