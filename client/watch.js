@@ -251,6 +251,13 @@ Template.watch_page.onRendered(function(){
     }
   });
 
+  this.autorun(function(){
+    let context;
+    if(context = getCurrentContext()){
+      Session.set('activeContextId', context._id);
+    }
+  });
+
   onMainPlayerReady = function(event){
     mainPlayer.play(); // if streamUrl uses autoplayUrl, this is effectively a fallback
   };
