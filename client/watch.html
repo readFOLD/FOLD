@@ -71,11 +71,14 @@
             <div class="streams-list">
               {{#each livestreams}}
                 <li data-stream-reference-id="{{reference.id}}" data-stream-id="{{_id}}" class="stream {{#if active}}active{{/if}}">
-                  <button class="set-main-stream {{#if active}}active{{/if}}">
+                  <button class="set-main-stream {{#if active}}active{{else}}inactive{{/if}}">
                     <div class="mini-live-indicator">
                       LIVE
                     </div>
                     <img src="{{thumbnailUrl}}">
+                    {{#unless active}}
+                      <div class="inactive-overlay"></div>
+                    {{/unless}}
                   </button>
                   {{#if curateMode}}
                     <button class="delete-stream">{{> close_circle}}</button>

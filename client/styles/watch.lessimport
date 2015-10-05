@@ -19,7 +19,7 @@
     white-space: nowrap;
     overflow-x: scroll;
     .stream {
-      &:not(.active) {
+      .inactive {
         img{
           .grayscale();
         }
@@ -32,6 +32,17 @@
       &.justAdded {
         .set-main-stream {
           outline: 4px solid green;
+        }
+      }
+      .inactive-overlay{
+        position:absolute;
+        padding-top: 25%;
+        .size-to-fit;
+        top: 0;
+        background-color: @dark-transparent-color;
+        opacity: 0.5;
+        &:hover{
+          opacity: 0.0;
         }
       }
     }
