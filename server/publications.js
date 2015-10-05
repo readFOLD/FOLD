@@ -36,6 +36,7 @@ var deepstreamFields = {
   analytics: 0,
   deleted: 0,
   'streams.fullDetails': 0,
+  'streams.reference.description': 0,
   'streams.authorId': 0,
   'streams.searchQuery': 0
 };
