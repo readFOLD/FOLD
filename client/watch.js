@@ -461,7 +461,12 @@ Template.watch_page.events({
   },
   'click .publish' (e, t){
     if (this.creationStep === 'go_on_air') {
-      Meteor.call('proceedFromGoOnAirStep', t.data.shortId(), basicErrorHandler);
+      if(!this.streams.length){
+        notifyError('Please add a stream before you publish your deepstream');
+        Meteor.call('goToFindStreamStep', t.data.shortId(), basicErrorHandler);
+      } else {
+        Meteor.call('proceedFromGoOnAirStep', t.data.shortId(), basicErrorHandler);
+      }
     } else if (!this.creationStep) {
       Meteor.call('publishStream', t.data.shortId(), function(err){
         if(err){
@@ -711,6 +716,9 @@ Template.title_description_overlay.events({
         notifySuccess("Congratulations! Your Deep Stream is now on air!");
       }
     });
+  },
+  'click .close' (e, t){
+    Meteor.call('goBackFromTitleDescriptionStep', this.shortId, basicErrorHandler);
   }
 });
 

@@ -289,7 +289,11 @@ Meteor.methods({
   publishStream (shortId, title, description){
     check(shortId, String);
 
-    var deepstream = Deepstreams.findOne({shortId: shortId}, {fields:{firstOnAirAt: 1}});
+    var deepstream = Deepstreams.findOne({shortId: shortId}, {fields:{"streams.length": 1, firstOnAirAt: 1}});
+
+    if(!deepstream.streams.length){
+      throw new Meteor.Error('Deepstreams must contain at least one stream before publishing')
+    }
 
     var setObject = {creationStep: null, onAir: true, onAirSince: new Date };
 
