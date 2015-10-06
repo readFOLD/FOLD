@@ -512,9 +512,6 @@ Template.watch_page.events({
   'click .director-mode-on' (e,t){
     return Meteor.call('directorModeOn', t.data.shortId(), basicErrorHandler)
   },
-  'click .set-current-context-as-default' (e,t){
-    notifyFeature('Default view settings: coming soon!');
-  },
   'mouseenter .settings-button-and-menu' (e, template){
     template.settingsMenuOpen.set(true);
   },
