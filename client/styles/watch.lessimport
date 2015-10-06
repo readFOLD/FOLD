@@ -451,7 +451,8 @@
       .news-section{
         flex: auto;
       }
-      .text-content{
+      .annotation-section{
+        border-top: 5px solid @background-color;
         width: calc(100% ~"+" 2 * @contextAreaPadding);
         margin-left: -@contextAreaPadding;
         margin-bottom: -@contextAreaPadding;
@@ -947,3 +948,20 @@
   padding-top: 40px;
 }
 
+.annotation-section{
+  background-color: @context-background-color;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-flow: row;
+  .user-pic {
+    padding-left: 2px;
+    padding-top: 7px;
+  }
+  svg{
+    .size(20px);
+  }
+  .text-content{
+    flex: auto;
+  }
+}

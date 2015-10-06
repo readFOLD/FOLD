@@ -26,7 +26,7 @@
         </div>
       {{/if}}
     {{/if}}
-    {{{annotation}}}
+    {{> annotation_section }}
   </div>
 </template>
 
@@ -50,7 +50,7 @@
     <div class="active-display">
       <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}"></iframe>
     </div>
-    {{{annotation}}}
+    {{> annotation_section }}
   </div>
 </template>
 
@@ -76,7 +76,7 @@
     <div class="preview">
       <img src="{{previewUrl}}"/>
     </div>
-    {{{annotation}}}
+    {{> annotation_section }}
   </div>
 </template>
 
@@ -92,7 +92,7 @@
     <div class="news-html">{{{html}}}</div>
     <div class="news-link"><a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a></div>
   </div>
-  {{{annotation}}}
+  {{> annotation_section }}
 </template>
 
 <template name="homepage_preview_news_section">
