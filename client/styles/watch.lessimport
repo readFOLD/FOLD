@@ -18,21 +18,19 @@
   .streams-list{
     white-space: nowrap;
     overflow-x: scroll;
+
     .stream {
+      border: 1px solid @light-text-color;
       .inactive {
         img{
           .grayscale();
         }
       }
       &.active {
-        .set-main-stream {
-          outline: 1px solid @live-color;
-        }
+        border: 1px solid @live-color;
       }
       &.justAdded {
-        .set-main-stream {
-          outline: 4px solid green;
-        }
+        outline: 4px solid green;
       }
       .inactive-overlay{
         position:absolute;
@@ -41,12 +39,61 @@
         top: 0;
         background-color: @dark-transparent-color;
         opacity: 0.5;
-        &:hover{
-          opacity: 0.0;
+
+      }
+      .lower-stream-button-overlay{
+        position: absolute;
+        z-index: 10;
+        .opacity-transition;
+        opacity: 0;
+        top: 100%;
+        padding-top: 5px;
+        width: 100%;
+        text-align: center;
+        .preview-stream, .set-main-stream{
+          width: 90%;
+          .action-button;
+          font-size: 11px;
+          height: 15px;
         }
       }
+      &:hover {
+        .lower-stream-button-overlay {
+          opacity: 1;
+        }
+        .inactive-overlay {
+          opacity: 0;
+        }
+      }
+
+      &:hover, &.to-delete {
+        .delete-stream {
+          display: inline-block;
+          opacity: 1;
+        }
+      }
+
+      .delete-stream{
+        .opacity-transition;
+        opacity: 0;
+        .size(14px);
+        padding:0;
+        svg{
+          .size-to-fit;
+        }
+        position: absolute;
+        z-index: 10;
+        right: 1px;
+        top: 1px;
+      }
+      .stream-preview-overlay-iframe{
+        position: absolute;
+        top:0;
+        left:0;
+      }
     }
-    @streamPreviewHeight: 62px;
+
+    @streamPreviewHeight: 60px;
     li{
       display: inline-block;
       float: left;
@@ -56,12 +103,11 @@
       .set-main-stream, .show-stream-search{
         background-color: inherit;
         color: @light-text-color;
-        img{
+        img, iframe{
           .size-to-fit;
         }
         font-size: 14px;
-        border: 1px solid @light-text-color;
-        width: 82px;
+        width: 80px;
         height: @streamPreviewHeight;
         position: relative;
         padding: 0;
@@ -94,27 +140,6 @@
     }
 
 
-    li.stream {
-      &:hover, &.to-delete {
-        .delete-stream {
-          display: inline-block;
-          opacity: 1;
-        }
-      }
-    }
-    .delete-stream{
-      .opacity-transition;
-      opacity: 0;
-      .size(14px);
-      padding:0;
-      svg{
-        .size-to-fit;
-      }
-      position: absolute;
-      z-index: 10;
-      right: 1px;
-      top: 1px;
-    }
 
 
   }

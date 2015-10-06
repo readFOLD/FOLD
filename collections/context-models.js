@@ -323,6 +323,19 @@ Stream = (function (_super) {
     }
   };
 
+  Stream.prototype.autoplayMuteUrl = function(){
+    switch (this.source){
+      case 'youtube':
+        return this.autoplayUrl(); // unfortunately, youtube doesn't have mute or volume parameters
+      case 'ustream':
+        return this.autoplayUrl() + '&volume=0';
+      case 'bambuser':
+        return this.autoplayUrl() + '&mute=1';
+      case 'twitch':
+        return this.autoplayUrl() + '&volume=0';
+    }
+  };
+
   Stream.prototype.url = function () {
     if (this.source === 'youtube') {
       return '//www.youtube.com/embed/' + this.reference.id + '?enablejsapi=1&modestbranding=1&rel=0&iv_load_policy=3&autohide=1';
@@ -331,7 +344,7 @@ Stream = (function (_super) {
     } else if (this.source === 'bambuser') {
       return '//embed.bambuser.com/broadcast/' + this.reference.id + '?chat=0';
     } else if (this.source === 'twitch') {
-      return '//www.twitch.tv/' + this.reference.channelName + '/embed';
+      return '//www.twitch.tv/' + this.reference.channelName + '/embed?';
     }
   };
 

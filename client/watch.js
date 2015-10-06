@@ -552,6 +552,24 @@ Template.watch_page.events({
   }
 });
 
+Template.stream_li.onCreated(function(){
+  this.previewMode = new ReactiveVar();
+});
+
+Template.stream_li.helpers({
+  active (){
+    return Template.instance().data.active;
+  },
+  previewMode (){
+    return Template.instance().previewMode.get();
+  }
+});
+
+Template.stream_li.events({
+  'click .preview-stream' (e, t){
+    return t.previewMode.set(true);
+  }
+});
 
 Template.context_browser.onRendered(function(){
   // make context sortable

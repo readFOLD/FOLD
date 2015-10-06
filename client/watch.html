@@ -70,20 +70,7 @@
           {{#if showStreamSwitcher}}
             <div class="streams-list">
               {{#each livestreams}}
-                <li data-stream-reference-id="{{reference.id}}" data-stream-id="{{_id}}" class="stream {{#if active}}active{{/if}}">
-                  <button class="set-main-stream {{#if active}}active{{else}}inactive{{/if}}">
-                    <div class="mini-live-indicator">
-                      LIVE
-                    </div>
-                    <img src="{{thumbnailUrl}}">
-                    {{#unless active}}
-                      <div class="inactive-overlay"></div>
-                    {{/unless}}
-                  </button>
-                  {{#if curateMode}}
-                    <button class="delete-stream">{{> close_circle}}</button>
-                  {{/if}}
-                </li>
+                {{> stream_li stream=this active=active}}
               {{else}}
                 {{#unless curateMode}}
                   <li class="placeholder">
@@ -104,17 +91,7 @@
                 <li class="live-dead-divider"></li>
               {{/if}}
               {{#each deadstreams}}
-                <li data-stream-reference-id="{{reference.id}}" data-stream-id="{{_id}}" class="stream {{#if active}}active{{/if}}">
-                  <button class="set-main-stream {{#if active}}active{{else}}inactive{{/if}}">
-                    <img src="{{thumbnailUrl}}">
-                    {{#unless active}}
-                      <div class="inactive-overlay"></div>
-                    {{/unless}}
-                  </button>
-                  {{#if curateMode}}
-                    <button class="delete-stream">{{> close_circle}}</button>
-                  {{/if}}
-                </li>
+                {{> stream_li stream=this active=active}}
               {{/each}}
             </div>
           {{/if}}
@@ -222,6 +199,37 @@
   {{/with}}
 </template>
 
+<template name="stream_li">
+  {{#with stream}}
+    <li data-stream-reference-id="{{reference.id}}" data-stream-id="{{_id}}" class="stream {{#if active}}active{{/if}}">
+      <button class="set-main-stream {{#if active}}active{{else}}inactive{{/if}}">
+        {{#if live}}
+          <div class="mini-live-indicator">
+            LIVE
+          </div>
+        {{/if}}
+
+        <img src="{{thumbnailUrl}}">
+        {{#unless active}}
+          <div class="inactive-overlay"></div>
+        {{/unless}}
+      </button>
+      {{#if curateMode}}
+        <button class="delete-stream">{{> close_circle}}</button>
+        {{#if directorMode}}
+          {{#unless active}}
+            {{#if previewMode}}
+                <iframe class="stream-preview-overlay-iframe" width="100%" height="100%" frameborder="0" style="border:0" src="{{autoplayMuteUrl}}" allowfullscreen></iframe>
+                <div class="lower-stream-button-overlay"><button class="set-main-stream">SET AS MAIN</button></div>
+            {{else}}
+                <div class="lower-stream-button-overlay"><button class="preview-stream">PREVIEW</button></div>
+            {{/if}}
+          {{/unless}}
+        {{/if}}
+      {{/if}}
+    </li>
+  {{/with}}
+</template>
 
 <template name="content_icons">
   <div class="content-icons">
