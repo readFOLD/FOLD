@@ -54,6 +54,10 @@ Handlebars.registerHelper("windowHeight", function() {
   return Session.get("windowHeight");
 });
 
+Handlebars.registerHelper("CONTEXT_WIDTH", function() {
+  return window.CONTEXT_WIDTH;
+});
+
 Handlebars.registerHelper("profileImage", function(user, size) {
   var diameter;
   if (size === 'large'){

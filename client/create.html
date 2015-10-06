@@ -260,7 +260,7 @@
     </div>
     {{> search_form option1='satellite' label1='Satellite' option2='roadmap' label2='Roadmap' placeholderType='locations'}}
     <div class="map-result-container">
-      <img src="{{previewUrl 200 310}}"/>
+      <img src="{{previewUrl 200 CONTEXT_WIDTH}}"/>
     </div>
     {{#if showAddButton}}
       <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">

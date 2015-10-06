@@ -111,13 +111,14 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
   }
 };
 
+
 var imagePlaceholderHeight = function(){
-  return this.heightAtGivenWidth(310);
+  return this.heightAtGivenWidth(CONTEXT_WIDTH);
 };
 
 Template.preview_image_section.helpers({
   height: imagePlaceholderHeight,
-  width: 310,
+  width: CONTEXT_WIDTH,
   usePlaceholder: imagePlaceholderHeight
 });
 Template.preview_image_section.helpers(horizontalBlockHelpers);
@@ -136,9 +137,9 @@ Template.display_video_section.events(editableDescriptionEventsBoilerplate('edit
 
 Template.preview_video_section.helpers({
   height () {
-    return this.previewHeightAtGivenWidth(310);
+    return this.previewHeightAtGivenWidth(CONTEXT_WIDTH);
   },
-  width: 260
+  width: CONTEXT_WIDTH
 });
 
 Template.preview_video_section.helpers(horizontalBlockHelpers);
@@ -151,8 +152,8 @@ Template.display_map_section.helpers(horizontalBlockHelpers);
 Template.display_map_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 
 Template.preview_map_section.helpers({
-  width: 260,
-  height: 200
+  width: 245,
+  height: 180
 });
 Template.preview_map_section.helpers(horizontalBlockHelpers);
 Template.preview_map_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));

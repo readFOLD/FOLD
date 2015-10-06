@@ -331,22 +331,24 @@
 
 <template name="context_browser">
   <div class="context-browser">
-    <div class="context-browser-header-row">
-      {{#if soloSidebarContextMode}}
-        <button class="switch-to-list-mode">{{> list_icon}}</button>
-      {{/if}}
-      {{#if curateMode}}
-        <button class="add-new-context">{{> add_icon}}</button>
-      {{else}}
-        {{#if showCloseSidebarIcon}}
-          <button class="close">{{> close_sidebar_icon}}</button>
-        {{else}}
-          {{#if showOpenSidebarIcon}}
-            <button class="open">{{> open_sidebar_icon}}</button>
-          {{/if}}
+    {{#if curateMode}}
+      <div class="context-browser-header-row">
+        {{#if soloSidebarContextMode}}
+          <button class="switch-to-list-mode">{{> list_icon}}</button>
         {{/if}}
-      {{/if}}
-    </div>
+        {{#if curateMode}}
+          <button class="add-new-context">{{> add_icon}}</button>
+        {{else}}
+          <!--{{#if showCloseSidebarIcon}}-->
+            <!--<button class="close">{{> close_sidebar_icon}}</button>-->
+          <!--{{else}}-->
+            <!--{{#if showOpenSidebarIcon}}-->
+              <!--<button class="open">{{> open_sidebar_icon}}</button>-->
+            <!--{{/if}}-->
+          <!--{{/if}}-->
+        {{/if}}
+      </div>
+    {{/if}}
     {{#if soloSidebarContextMode}}
       <div class="context-area">
         {{#with currentContext}}
@@ -388,6 +390,16 @@
     {{#if curateMode}}
       <button class="delete-context">{{> close_circle}}</button>
     {{/if}}
+  </div>
+  {{#if annotationAllowed}}
+    {{> annotation_section}}
+  {{/if}}
+</template>
+
+<template name="annotation_section">
+  <div class="annotation-section">
+    <!--{{> default_user_pic }}-->
+    {{{annotation}}}
   </div>
 </template>
 

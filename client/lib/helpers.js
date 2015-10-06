@@ -101,16 +101,18 @@ window.getFlashMovie = function(id) {
 };
 
 window.textContentHelper = function() {
-  var textContent, rows, placeholder;
+  var textContent, rows, placeholder, additionalClasses;
   if (this.type === 'text'){
     textContent = this.content || '';
     rows = 40;
     placeholder = '';
+    additionalClasses = '';
   }
   else {
     textContent = this.description || '';
     rows = 3;
     placeholder = 'Add a caption'
+    additionalClasses = 'annotation';
   }
 
   if (!Session.get('curateMode')) {
@@ -120,7 +122,7 @@ window.textContentHelper = function() {
       return ''
     }
   } else {
-    return '<textarea name="content" class="text-content editable" rows="' + rows + '" placeholder="' + placeholder +  '" dir="auto">' + _.escape(textContent) + '</textarea>';
+    return '<textarea name="content" class="text-content editable ' + additionalClasses + '" rows="' + rows + '" placeholder="' + placeholder +  '" dir="auto">' + _.escape(textContent) + '</textarea>';
   }
 };
 

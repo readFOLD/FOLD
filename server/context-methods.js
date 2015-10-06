@@ -460,7 +460,7 @@ Meteor.methods({
       url: query,
       key: EMBEDLY_KEY,
       maxheight: 300,
-      maxwidth: 310
+      maxwidth: CONTEXT_WIDTH
     };
 
     res = HTTP.get('http://api.embed.ly/1/oembed', {
@@ -477,7 +477,7 @@ Meteor.methods({
       url: query,
       key: EMBEDLY_KEY,
       maxheight: 300,
-      maxwidth: 310
+      maxwidth: CONTEXT_WIDTH
     };
 
     res = HTTP.get('http://api.embed.ly/1/extract', {

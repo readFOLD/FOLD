@@ -1,5 +1,5 @@
 @footer-section-height: 140px;
-@right-section-width: 350px;
+@right-section-width: 400px;
 @PiP-width: 250px;
 @PiP-height: 150px;
 @left-margin: 10px;
@@ -220,8 +220,9 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  width: 45px;
+  width: 70px;
   height: 100%;
+  .padding-sides(10px);
   .previews-container{
   }
   .context-mini-preview{
@@ -236,7 +237,8 @@
       background-color: @action-color;
     }
     position: relative;
-    svg{
+    .icon{
+      height: 130%;
       .center-over-parent-div;
     }
     .bg{
@@ -407,15 +409,21 @@
   display: flex;
   flex-flow: column;
 
-  @contextAreaPadding: 20px;
+  @contextAreaPadding: 10px;
   .context-area{
     overflow-y: scroll;
     flex: auto;
-    padding: @contextAreaPadding;
+    padding-left: 0;
+    padding-right: @contextAreaPadding * 2;
+    padding-top: 0;
+    padding-bottom: @contextAreaPadding * 2;
+
     height: 100%;
   }
   .context-section{
     position: relative;
+    background-color: @context-background-color;
+    padding: 10px;
     &:hover{
       .delete-context{
         display: inline-block;
@@ -547,6 +555,10 @@
 
 
 .context-browser-header-row{
+  background-color: @context-background-color;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  position: relative;
   button{
     .size(30px);
     padding: 0;
@@ -560,6 +572,9 @@
         fill: @white-icon-color;
       }
     }
+  }
+  .add-new-context{
+    .center-over-parent-div;
   }
 
   .switch-to-list-mode{
@@ -596,7 +611,10 @@
 
 .list-item-context-section{
   line-height: 0;
-  margin-bottom: 20px;
+  &:not(:first-child){
+    margin-top: 15px;
+  }
+  margin-bottom: 5px;
   .video-preview{
     @playIconSize: 60px;
     position: relative;
@@ -625,11 +643,12 @@
   }
 
   div.show-full{
+    position: relative;
     text-align: start;
     line-height: 0;
     width: 100%;
     padding: 0;
-    .preview-hover;
+    //.preview-hover;
     cursor: pointer;
   }
 
@@ -647,19 +666,22 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding: @padding;
-    background-color: @dark-color;
   }
   .map-preview, .image-preview.has-placeholder, .video-preview{
     position: absolute;
     left: 0;
     top: 0;
   }
+  .annotation{
+    border-top: 3px solid @dark-color;
+  }
 }
+
+
 
 
 .link-section{
   line-height: 18px;
-  background-color: @dark-color;
 }
 
 
@@ -681,7 +703,10 @@
     margin-left: 8px;
     margin-right: 10px;
     .bg{
-      fill: @medium-color;
+      fill: @dark-icon-color;
+    }
+    .fg{
+      fill: @light-icon-color;
     }
   }
   .curator-details{

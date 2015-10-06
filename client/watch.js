@@ -759,4 +759,8 @@ Template.relevant_content_icon.helpers({
   iconTemplate (){
     return this.type + '_icon';
   }
-})
+});
+
+Template.annotation_section.helpers({
+  annotation: textContentHelper
+});
