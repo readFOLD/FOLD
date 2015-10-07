@@ -1,3 +1,15 @@
 #!/bin/bash
-meteor --settings settings.json
+if meteor --settings settings.json
+then
+	echo
+else
+	echo "You don't have meteor installed "
+	echo "Do you want to install it?[y/N]"
+	read answer
+	if [ "$answer" == 'Y' ] 
+	then 
+		curl https://install.meteor.com/ | sh
+	        echo "You should have Meteor installed by now"
+	fi
+fi
 exit

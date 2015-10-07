@@ -55,3 +55,4 @@ npm-container
 reactive-dict
 meteorhacks:meteor-down
 meteorhacks:kadira-profiler
+bigdata:elasticsearch

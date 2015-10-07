@@ -356,6 +356,7 @@ var runJobs = function () {
   });
 
   console.log('Total time to run jobs: ' + ((Date.now() - startTime) / 1000) + ' seconds');
+
 };
 
 var jobWaitInSeconds = parseInt(process.env.JOB_WAIT) || 5 * 60; // default is every 5 minutes

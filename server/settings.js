@@ -28,3 +28,8 @@ if (Meteor.settings.CLOUDINARY_API_SECRET){
     api_secret: Meteor.settings.CLOUDINARY_API_SECRET
   });
 };
+
+ES = Meteor.npmRequire('elasticsearch');
+esClient = new ES.Client({
+                 host: 'localhost:9200'
+});
