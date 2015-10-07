@@ -31,5 +31,5 @@ if (Meteor.settings.CLOUDINARY_API_SECRET){
 
 ES = Meteor.npmRequire('elasticsearch');
 esClient = new ES.Client({
-                 host: 'localhost:9200'
+                 host: process.env.ELASTICSEARCH_URL || Meteor.settings.ELASTICSEARCH_URL || "localhost:9200"
 });
