@@ -19,8 +19,7 @@
     white-space: nowrap;
     overflow-x: scroll;
 
-    .stream {
-      border: 1px solid @light-text-color;
+    li.stream {
       .inactive {
         img{
           .grayscale();
@@ -96,7 +95,6 @@
     @streamPreviewHeight: 60px;
     li{
       display: inline-block;
-      float: left;
       margin-left: 20px;
       line-height: 0;
       position: relative;
@@ -106,6 +104,9 @@
         img, iframe{
           .size-to-fit;
         }
+        img.add-stream-text{
+          width: 70px;
+        }
         font-size: 14px;
         width: 80px;
         height: @streamPreviewHeight;
@@ -113,6 +114,7 @@
         padding: 0;
       }
       &:not(.placeholder){
+        border: 1px solid @light-text-color;
         .hover-shadow;
       }
 
@@ -142,7 +144,9 @@
 
 
 
+
   }
+
 
 
 }

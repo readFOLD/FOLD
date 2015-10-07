@@ -180,7 +180,6 @@ var generateFetchFunction = function(serviceInfo){
         }
       }
     );
-
   })
 };
 

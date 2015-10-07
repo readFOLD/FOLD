@@ -16,3 +16,4 @@ if (_.contains([true, 'true'], process.env.ALLOW_BOTS)){
 }
 
 WebApp.connectHandlers.use(Meteor.npmRequire("prerender-node"));
+
