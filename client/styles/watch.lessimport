@@ -8,6 +8,7 @@
 
 
 .watch{
+  height: 800px;
   .stream-title{
     display: inline-block;
     font-size: 36px;
