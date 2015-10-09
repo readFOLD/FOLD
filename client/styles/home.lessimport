@@ -504,7 +504,7 @@ div.action-items {
   position: absolute;
   top: 10px;
   @media @not-mobile{
-    left: 450px;
+    left: 570px;
   }
   @media @mobile{
     width: 100%;
