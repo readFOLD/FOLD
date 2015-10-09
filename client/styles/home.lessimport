@@ -141,11 +141,13 @@ div.logo-title {
     margin-left: 10px;
     .name{
       margin-top: 5px;
-      background-color: @action-color;
       line-height: 100%;
+      height: 36px;
+      img{
+        height: 100%;
+      }
       padding-left: 8px;
       padding-right: 5px;
-      padding-top: 2px;
       padding-bottom: 2px;
       //line-height: calc(100% ~"-" 6px);
       font-size: 30px;
