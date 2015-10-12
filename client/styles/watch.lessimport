@@ -294,7 +294,7 @@
     margin-left: @card-column-width;
     background-color: @context-background-color;
     width: calc(100% ~'-' (@card-column-width + @contextAreaPadding*2));
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 
 }
@@ -466,7 +466,7 @@
 @contextAreaPadding: 10px;
 
 .context-browser{
-  height: @mainStreamHeight - 20px - 20px;
+  height: @mainStreamHeight - 15px;
   overflow: hidden;
   display: flex;
   flex-flow: column;
@@ -483,7 +483,7 @@
 
   }
   .bottom-bar{
-    bottom: 0px;
+    bottom: -10px;
     height: 10px;
 
     .box-shadow(-4px -4px 12px 0px rgba(0,0,0,0.75));
@@ -644,7 +644,7 @@
   margin-right: @contextAreaPadding * 2;
   height: @contextBrowserHeaderRowHeight;
 
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   position: relative;
   button{
     .size(30px);
