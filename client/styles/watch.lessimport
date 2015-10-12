@@ -779,6 +779,7 @@
 
 .curator-menu{
   margin-top: 10px;
+  position: relative;
   padding-top: 10px;
   .padding-sides(17px);
   width: calc(100% ~'-' (@card-column-width + @contextAreaPadding*2));
@@ -822,36 +823,16 @@
     .size(30px);
     padding: 0;
   }
-}
 
-.curator-menu{
   @button-width: 75px;
 
-  button.preview{
-    .action-button;
+  .preview, .return-to-curate{
     width: @button-width;
-    position: relative;
+    position: absolute;
+    text-transform: uppercase;
     bottom: 5px;
-    text-transform: uppercase;
-  }
-
-  .return-to-curate{
     .action-button;
-    width: @button-width;
-    position: relative;
-    left: 45px;
-    bottom: 29px;
-    padding-left: 5px;
-    text-transform: uppercase;
-  }
-
-  .curate-this-stream{
-    .action-button;
-    position: relative;
-    left: 35px;
-    bottom: 35px;
-    padding-left: 5px;
-    text-transform: uppercase;
+    right: 5px;
   }
 }
 
