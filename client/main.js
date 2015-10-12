@@ -78,12 +78,12 @@ Meteor.startup(function(){
 
 
 
-editableDescriptionCreatedBoilerplate = function() {
+editableTextCreatedBoilerplate = function() {
   this.editing = new ReactiveVar(false);
 };
 
 
-editableDescriptionEventsBoilerplate = function(meteorMethod) {
+editableTextEventsBoilerplate = function(meteorMethod) {
   return { 
     "blur .text-content.editable" (d, template) {
       var that = this;
@@ -122,18 +122,18 @@ Template.preview_image_section.helpers({
   usePlaceholder: imagePlaceholderHeight
 });
 Template.preview_image_section.helpers(horizontalBlockHelpers);
-Template.preview_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+Template.preview_image_section.events(editableTextEventsBoilerplate('editContextBlockAnnotation'));
 
-Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
-//Template.display_image_section.onCreated(editableDescriptionDestroyedBoilerplate('editHorizontalBlockDescription'));
+Template.display_image_section.onCreated(editableTextCreatedBoilerplate);
+//Template.display_image_section.onCreated(editableTextDestroyedBoilerplate('editContextBlockAnnotation'));
 Template.display_image_section.helpers(horizontalBlockHelpers);
-Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+Template.display_image_section.events(editableTextEventsBoilerplate('editContextBlockAnnotation'));
 
 Template.display_audio_section.helpers(horizontalBlockHelpers);
-Template.display_audio_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+Template.display_audio_section.events(editableTextEventsBoilerplate('editContextBlockAnnotation'));
 
 Template.display_video_section.helpers(horizontalBlockHelpers);
-Template.display_video_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+Template.display_video_section.events(editableTextEventsBoilerplate('editContextBlockAnnotation'));
 
 Template.preview_video_section.helpers({
   height () {
@@ -143,27 +143,27 @@ Template.preview_video_section.helpers({
 });
 
 Template.preview_video_section.helpers(horizontalBlockHelpers);
-Template.preview_video_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+Template.preview_video_section.events(editableTextEventsBoilerplate('editContextBlockAnnotation'));
 
 Template.display_twitter_section.helpers(horizontalBlockHelpers);
-Template.display_twitter_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+Template.display_twitter_section.events(editableTextEventsBoilerplate('editContextBlockAnnotation'));
 
 Template.display_map_section.helpers(horizontalBlockHelpers);
-Template.display_map_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+Template.display_map_section.events(editableTextEventsBoilerplate('editContextBlockAnnotation'));
 
 Template.preview_map_section.helpers({
   width: 245,
   height: 180
 });
 Template.preview_map_section.helpers(horizontalBlockHelpers);
-Template.preview_map_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+Template.preview_map_section.events(editableTextEventsBoilerplate('editContextBlockAnnotation'));
 
 Template.preview_news_section.helpers(horizontalBlockHelpers);
 Template.display_news_section.helpers(horizontalBlockHelpers);
-Template.display_news_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+Template.display_news_section.events(editableTextEventsBoilerplate('editContextBlockAnnotation'));
 
 Template.display_link_section.helpers(horizontalBlockHelpers);
-Template.display_link_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+Template.display_link_section.events(editableTextEventsBoilerplate('editContextBlockAnnotation'));
 Template.display_link_section.events({
   'click a' (e, t) {
     var url = e.currentTarget.href;
@@ -175,12 +175,12 @@ Template.display_link_section.events({
   }
 });
 
-Template.display_text_section.onCreated(editableDescriptionCreatedBoilerplate);
-//Template.display_text_section.onDestroyed(editableDescriptionDestroyedBoilerplate('editTextSection'));
+Template.display_text_section.onCreated(editableTextCreatedBoilerplate);
+//Template.display_text_section.onDestroyed(editableTextDestroyedBoilerplate('editTextSection'));
 Template.display_text_section.helpers(horizontalBlockHelpers);
 Template.preview_text_section.helpers(horizontalBlockHelpers);
 Template.homepage_preview_text_section.helpers(horizontalBlockHelpers);
-Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
+Template.display_text_section.events(editableTextEventsBoilerplate('editTextSection'));
 
 //
 //Template.share_button.events({

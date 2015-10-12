@@ -109,7 +109,7 @@ window.textContentHelper = function() {
     additionalClasses = '';
   }
   else {
-    textContent = this.description || '';
+    textContent = this.annotation || '';
     rows = 3;
     placeholder = 'Add a caption'
     additionalClasses = 'annotation';
