@@ -515,7 +515,7 @@ Template.watch_page.events({
   'mouseenter .settings-button-and-menu' (e, template){
     template.settingsMenuOpen.set(true);
   },
-  'mouseleave .settings-button-and-menu' (e, template){
+  'mouseleave .settings-menu-container' (e, template){
     template.settingsMenuOpen.set(false);
   },
   'click .microphone' (e,t){
