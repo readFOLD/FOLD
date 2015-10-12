@@ -6,6 +6,8 @@
 @live-indicator-width: 88px;
 @contextBrowserHeaderRowHeight: 48px;
 @card-column-width: 70px;
+@top-row-height: 60px;
+@second-row-height: 65px;
 
 
 .watch{
@@ -275,6 +277,26 @@
   &.collapsed{
     width: 0;
   }
+
+  .settings-menu-container{
+    @margin-top:5px;
+    margin-top: @margin-top;
+    height: @top-row-height - @margin-top;
+    margin-left: @card-column-width;
+    &.visible{
+      background-color: @context-background-color;
+    }
+    width: calc(100% ~'-' (@card-column-width + @contextAreaPadding*2));
+
+  }
+  .context-timeline-switcher{
+    height: @second-row-height;
+    margin-left: @card-column-width;
+    background-color: @context-background-color;
+    width: calc(100% ~'-' (@card-column-width + @contextAreaPadding*2));
+    margin-bottom: 20px;
+  }
+
 }
 
 
@@ -444,11 +466,26 @@
 @contextAreaPadding: 10px;
 
 .context-browser{
-  height: 100%;
+  height: @mainStreamHeight - 20px - 20px;
   overflow: hidden;
   display: flex;
   flex-flow: column;
+  .top-bar, .bottom-bar{
+    width: 100%;
+    height: 10px;
+    background-color: transparent;
+    z-index: 9999;
+  }
+  .top-bar{
+    .box-shadow(-4px 4px 12px 0px rgba(0,0,0,0.75));
+  }
+  .bottom-bar{
+    bottom: 0px;
+    position: absolute;
+    z-index: 9999;
+    .box-shadow(-4px -4px 12px 0px rgba(0,0,0,0.75));
 
+  }
 
   .context-area{
     overflow-y: scroll;
@@ -462,15 +499,7 @@
 
     height: 100%;
 
-    .bottom-bar{
-      position: absolute;
-      z-index: 9999;
-      bottom: -10px;
-      width: 100%;
-      height: 10px;
-      background-color: transparent;
-      .box-shadow(-4px -4px 12px 0px rgba(0,0,0,0.75));
-    }
+
   }
   .context-section{
     position: relative;
@@ -607,9 +636,11 @@
 
 
 
-.context-browser-header-row{
+.add-new-context-row{
   background-color: @context-background-color;
   margin-right: @contextAreaPadding * 2;
+  height: @contextBrowserHeaderRowHeight;
+
   margin-bottom: 20px;
   position: relative;
   button{
@@ -620,8 +651,14 @@
   }
   .close, .open, .add-new-context{
     right: 4px;
+    .fg{
+      fill: @black-color;
+    }
+    .bg{
+      fill: @light-icon-color;
+    }
     &:hover{
-      .fg{
+      .bg{
         fill: @white-icon-color;
       }
     }
@@ -641,7 +678,6 @@
   text-align: center;
   font-size: 20px;
   font-weight: bold;
-  height: @contextBrowserHeaderRowHeight;
   line-height: @contextBrowserHeaderRowHeight;
 }
 .search-section-title{
@@ -747,7 +783,6 @@
   margin-bottom: 20px;
   margin-left: @card-column-width;
   background-color: @context-background-color;
-  display: inline-block;
   .curator-info{
     display: inline-block;
     font-weight: 500;
@@ -909,7 +944,6 @@
   z-index: 999;
 }
 
-@top-row-height: 60px;
 .top-row{
   background-color: @top-row-color;
   height: @top-row-height;
@@ -918,7 +952,6 @@
   z-index: 10;
 }
 
-@second-row-height: 65px;
 .second-row{
   padding-top: 10px;
   padding-left: @left-margin;

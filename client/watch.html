@@ -131,6 +131,7 @@
 
       <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
         <div class="top-part">
+          <div class="settings-menu-container {{#if curateMode}}visible{{/if}}"></div>
           {{#if showContextSearch}}
             {{> content_icons}}
             {{> add_context}}
@@ -146,6 +147,7 @@
                   {{/each}}
                 </div>
               </div>
+              <div class="context-timeline-switcher"></div>
               {{#if showChat}}
                 {{> unimplemented_chat_section}}
               {{else}}
@@ -356,24 +358,19 @@
 
 <template name="context_browser">
   <div class="context-browser">
+    <!--{{#if curateMode}}-->
+      <!--<div class="context-browser-header-row">-->
+        <!--{{#if curateMode}}-->
+          <!--<button class="add-new-context">{{> add_icon}}</button>-->
+      <!--</div>-->
+    <!--{{/if}}-->
     {{#if curateMode}}
-      <div class="context-browser-header-row">
-        {{#if soloSidebarContextMode}}
-          <button class="switch-to-list-mode">{{> list_icon}}</button>
-        {{/if}}
-        {{#if curateMode}}
-          <button class="add-new-context">{{> add_icon}}</button>
-        {{else}}
-        <!--{{#if showCloseSidebarIcon}}-->
-          <!--<button class="close">{{> close_sidebar_icon}}</button>-->
-            <!--{{else}}-->
-            <!--{{#if showOpenSidebarIcon}}-->
-            <!--<button class="open">{{> open_sidebar_icon}}</button>-->
-              <!--{{/if}}-->
-            <!--{{/if}}-->
-        {{/if}}
+      <div class="add-new-context-row">
+        <button class="add-new-context">{{> add_icon}}</button>
       </div>
     {{/if}}
+    <div class="top-bar"></div>
+
     {{#if soloSidebarContextMode}}
       <div class="context-area">
         {{#with currentContext}}
