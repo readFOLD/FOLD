@@ -5,9 +5,13 @@
 @left-margin: 10px;
 @live-indicator-width: 88px;
 @contextBrowserHeaderRowHeight: 48px;
+@card-column-width: 70px;
+@top-row-height: 60px;
+@second-row-height: 65px;
 
 
 .watch{
+  height: 800px;
   .stream-title{
     display: inline-block;
     font-size: 36px;
@@ -95,7 +99,9 @@
     @streamPreviewHeight: 60px;
     li{
       display: inline-block;
-      margin-left: 20px;
+      &:not(:first-child){
+        margin-left: 20px;
+      }
       line-height: 0;
       position: relative;
       .set-main-stream, .show-stream-search{
@@ -135,6 +141,7 @@
       &.live-dead-divider{
         height: @streamPreviewHeight * .8;
         margin-top: @streamPreviewHeight * .1;
+        margin-bottom: @streamPreviewHeight * .1;
         width: 0;
         border-left: 2px solid @action-color;
       }
@@ -155,8 +162,11 @@
 @mainStreamExpandedHeight: 645px;
 
 .main-section{
+  @margin-left: 20px;
   height: @mainStreamHeight + @footer-section-height;
-  width: 100%;
+  width: calc(100% ~'-' @margin-left);
+  margin-left: @margin-left;
+  max-width: (@mainStreamHeight) * 16 / 9;
 
   .height-transition;
   &.expanded{
@@ -168,11 +178,39 @@
   height: 100%;
   float: left;
   width: calc(100% ~"-" @right-section-width);
+
+  .footer-section{
+    padding-top: 10px;
+    position: relative;
+    overflow-y: hidden;
+    height: @footer-section-height;
+    display: flex;
+    flex-direction: row;
+    .streams-list{
+      flex: 1;
+    }
+
+    .stream-stats-and-share{
+      padding-left: 30px;
+      .inverted-icon-colors;
+      .stream-stats{
+        margin-top: 20px;
+      }
+      button{
+        .size(20px);
+        padding: 3px;
+        background: @light-icon-color;
+        &:hover {
+          background: @white-icon-color;
+        }
+      }
+    }
+  }
 }
 
 .main-stream{
   width: 100%;
-  height: calc(100% ~"-" @footer-section-height);
+  height: @mainStreamHeight;
   .width-transition;
 
   &.expanded{
@@ -239,6 +277,26 @@
   &.collapsed{
     width: 0;
   }
+
+  .settings-menu-container{
+    @margin-top:5px;
+    margin-top: @margin-top;
+    height: @top-row-height - @margin-top;
+    margin-left: @card-column-width;
+    &.visible{
+      background-color: @context-background-color;
+    }
+    width: calc(100% ~'-' (@card-column-width + @contextAreaPadding*2));
+
+  }
+  .context-timeline-switcher{
+    height: @second-row-height;
+    margin-left: @card-column-width;
+    background-color: @context-background-color;
+    width: calc(100% ~'-' (@card-column-width + @contextAreaPadding*2));
+    margin-bottom: 10px;
+  }
+
 }
 
 
@@ -249,7 +307,7 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  width: 70px;
+  width: @card-column-width;
   height: 100%;
   .padding-sides(10px);
   .previews-container{
@@ -334,33 +392,6 @@
 
 }
 
-.footer-section{
-  padding: 10px;
-  position: relative;
-  overflow-y: hidden;
-  height: @footer-section-height;
-  display: flex;
-  flex-direction: row;
-  .streams-list{
-    flex: 1;
-  }
-
-  .stream-stats-and-share{
-    width: 100px;
-    .inverted-icon-colors;
-    .stream-stats{
-      margin-top: 20px;
-    }
-    button{
-      .size(20px);
-      padding: 3px;
-      background: @light-icon-color;
-      &:hover {
-        background: @white-icon-color;
-      }
-    }
-  }
-}
 
 .tutorial{
   position: absolute;
@@ -432,22 +463,46 @@
   }
 }
 
+@contextAreaPadding: 10px;
+
 .context-browser{
-  height: 100%;
+  height: @mainStreamHeight - 15px;
   overflow: hidden;
   display: flex;
   flex-flow: column;
+  .top-bar, .bottom-bar{
+    width: 100%;
+    background-color: transparent;
+    z-index: 9999;
+    position: absolute;
+  }
+  .top-bar{
+    .box-shadow(-4px 4px 12px 0px rgba(0,0,0,0.75));
+    margin-top: -11px;
+    height: 9px;
 
-  @contextAreaPadding: 10px;
+  }
+  .bottom-bar{
+    bottom: -10px;
+    height: 10px;
+
+    .box-shadow(-4px -4px 12px 0px rgba(0,0,0,0.75));
+
+  }
+
   .context-area{
     overflow-y: scroll;
     flex: auto;
     padding-left: 0;
     padding-right: @contextAreaPadding * 2;
     padding-top: 0;
-    padding-bottom: @contextAreaPadding * 2;
+    //&:not(:last-child){
+    //  padding-bottom: @contextAreaPadding * 2;
+    //}
 
     height: 100%;
+
+
   }
   .context-section{
     position: relative;
@@ -584,10 +639,12 @@
 
 
 
-.context-browser-header-row{
+.add-new-context-row{
   background-color: @context-background-color;
-  margin-right: 20px;
-  margin-bottom: 20px;
+  margin-right: @contextAreaPadding * 2;
+  height: @contextBrowserHeaderRowHeight;
+
+  margin-bottom: 15px;
   position: relative;
   button{
     .size(30px);
@@ -597,8 +654,14 @@
   }
   .close, .open, .add-new-context{
     right: 4px;
+    .fg{
+      fill: @black-color;
+    }
+    .bg{
+      fill: @light-icon-color;
+    }
     &:hover{
-      .fg{
+      .bg{
         fill: @white-icon-color;
       }
     }
@@ -618,7 +681,6 @@
   text-align: center;
   font-size: 20px;
   font-weight: bold;
-  height: @contextBrowserHeaderRowHeight;
   line-height: @contextBrowserHeaderRowHeight;
 }
 .search-section-title{
@@ -716,24 +778,28 @@
 
 
 .curator-menu{
-  right: 0px;
-  position: absolute;
-  width: @right-section-width;
-  padding-left: 30px;
-  display: inline-block;
+  margin-top: 10px;
+  padding-top: 10px;
+  .padding-sides(17px);
+  width: calc(100% ~'-' (@card-column-width + @contextAreaPadding*2));
+  height: 135px;
+  margin-bottom: 20px;
+  margin-left: @card-column-width;
+  background-color: @context-background-color;
   .curator-info{
     display: inline-block;
+    font-weight: 500;
     width: @right-section-width - 100px;
+    line-height: 17px;
   }
 
   .curator-pic{
-    height: 56px;
-    width: 56px;
+    .size(70px);
     display: inline-block;
     margin-left: 8px;
     margin-right: 10px;
     .bg{
-      fill: @dark-icon-color;
+      fill: @black-color;
     }
     .fg{
       fill: @light-icon-color;
@@ -748,17 +814,13 @@
   .curator-info{
     width: 160px;
   }
-  .icon-button-group{
-    width: 160px;
-    margin-right: 45px;
-    padding-top: 25px;
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: space-between;
-    .settings-menu-button, .webcam, .microphone {
-      .size(30px);
-      padding: 0;
-    }
+  .webcam-button-container{
+    float: right;
+    margin-top: 10px;
+  }
+  .webcam, .microphone {
+    .size(30px);
+    padding: 0;
   }
 }
 
@@ -885,7 +947,6 @@
   z-index: 999;
 }
 
-@top-row-height: 60px;
 .top-row{
   background-color: @top-row-color;
   height: @top-row-height;
@@ -894,7 +955,6 @@
   z-index: 10;
 }
 
-@second-row-height: 65px;
 .second-row{
   padding-top: 10px;
   padding-left: @left-margin;

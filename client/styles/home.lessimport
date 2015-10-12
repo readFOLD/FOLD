@@ -1,5 +1,3 @@
-@topButtonRight: 20px;
-
 div.home-top {
   position: fixed;
   &.not-sticky{
@@ -508,7 +506,7 @@ div.action-items {
   position: absolute;
   top: 10px;
   @media @not-mobile{
-    right: @topButtonRight;
+    left: 570px;
   }
   @media @mobile{
     width: 100%;
@@ -552,9 +550,15 @@ div.action-items {
     button{
       line-height: @height;
     }
-    span{
+    .text{
       margin: auto;
       display: inline-block;
+      padding-right: 8px;
+    }
+    .arrow{
+      position: absolute;
+      top: -1px;
+      right: 7px;
     }
     img.profile-picture {
       margin:auto;

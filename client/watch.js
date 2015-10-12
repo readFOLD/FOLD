@@ -673,6 +673,11 @@ Template.overlay_context_browser.events({
 
 Template.solo_context_section.helpers(horizontalBlockHelpers);
 Template.list_item_context_section.helpers(horizontalBlockHelpers);
+Template.list_item_context_section.helpers({
+  showAnnotationSection () {
+    return this.annotationAllowed && (Session.get('curateMode') || this.annotation);
+  }
+});
 
 // TODO remove and have an about section
 Template.banner_buttons.events({

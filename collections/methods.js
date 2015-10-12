@@ -324,17 +324,17 @@ Meteor.methods({
     check(description, String);
     return updateDeepstream.call(this, {shortId: shortId}, {$set: {'description' : description }});
   },
-  editHorizontalBlockDescription (streamShortId, contextId, description) {
+  editContextBlockAnnotationeditContextBlockAnnotation (streamShortId, contextId, annotation) {
     check(streamShortId, String);
     check(contextId, String);
-    check(description, String);
+    check(annotation, String);
     var deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields: {'curatorIds': 1}});
 
     if(!_.contains(deepstream.curatorIds, this.userId)){
       throw new Meteor.Error('User not authorized to edit context in this deepstream');
     }
 
-    return updateContextBlock.call(this, {"streamShortId": streamShortId, "_id": contextId }, {"$set": {"description": description}});
+    return updateContextBlock.call(this, {"streamShortId": streamShortId, "_id": contextId }, {"$set": {"annotation": annotation}});
   },
   editTextSection (shortId, contextId, content) {
     check(streamShortId, String);
@@ -346,7 +346,7 @@ Meteor.methods({
       throw new Meteor.Error('User not authorized to edit context in this deepstream');
     }
 
-    return updateContextBlock.call(this, {"streamShortId": streamShortId, "_id": contextId }, {"$set": {"content": description}});
+    return updateContextBlock.call(this, {"streamShortId": streamShortId, "_id": contextId }, {"$set": {"content": content}});
   },
   reorderContext (shortId, ordering){
     check(shortId, String);

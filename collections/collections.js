@@ -334,7 +334,7 @@ Schema.ContextBlocks = new SimpleSchema({
     optional: true,
     blackbox: true
   },
-  description: {
+  annotation: {
     type: String,
     optional: true
   },

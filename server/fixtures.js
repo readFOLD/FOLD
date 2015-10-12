@@ -410,7 +410,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T15:53:08.082Z"),
       savedAt: ISODate("2015-09-17T15:53:08.082Z"),
-      description: "The Blue Marble is a famous photo of the Earth, taken by the crew of the Apollo 17 spacecraft. It became a symbol of the environmental movement, as a depiction of Earth's frailty, vulnerability, and isolation amid the vast expanse of space."
+      annotation: "The Blue Marble is a famous photo of the Earth, taken by the crew of the Apollo 17 spacecraft. It became a symbol of the environmental movement, as a depiction of Earth's frailty, vulnerability, and isolation amid the vast expanse of space."
     },
     {
       reference: {
@@ -462,7 +462,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T15:55:02.701Z"),
       savedAt: ISODate("2015-09-17T15:55:02.701Z"),
-      description: "An image of the International Space Station"
+      annotation: "An image of the International Space Station"
     },
     {
       fullDetails: {
@@ -800,7 +800,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 2,
       addedAt: ISODate("2015-09-17T15:57:02.654Z"),
       savedAt: ISODate("2015-09-17T15:57:02.654Z"),
-      description: "A detailed look at the process of docking at the ISS."
+      annotation: "A detailed look at the process of docking at the ISS."
     },
     {
       fullDetails: {
@@ -1503,7 +1503,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:02:27.359Z"),
       savedAt: ISODate("2015-09-17T16:02:27.359Z"),
-      description: "A guided tour of the ISS"
+      annotation: "A guided tour of the ISS"
     },
     {
       reference: {
@@ -2029,7 +2029,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:04:10.558Z"),
       savedAt: ISODate("2015-09-17T16:04:10.558Z"),
-      description: ""
+      annotation: ""
     },
     {
       reference: {
@@ -2278,7 +2278,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:04:59.750Z"),
       savedAt: ISODate("2015-09-17T16:04:59.750Z"),
-      description: ""
+      annotation: ""
     },
     {
       reference: {
@@ -2471,7 +2471,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:05:11.534Z"),
       savedAt: ISODate("2015-09-17T16:05:11.534Z"),
-      description: ""
+      annotation: ""
     },
     {
       reference: {
@@ -3009,7 +3009,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:05:51.678Z"),
       savedAt: ISODate("2015-09-17T16:05:51.678Z"),
-      description: ""
+      annotation: ""
     },
     {
       content: "The International Space Station (ISS) is a space station, or a habitable artificial satellite, in low Earth orbit. Its first component launched into orbit in 1998, and the ISS is now the largest artificial body in orbit and can often be seen with the naked eye from Earth. The ISS consists of pressurised modules, external trusses, solar arrays and other components. ISS components have been launched by Russian Proton and Soyuz rockets as well as American Space Shuttles.\n\nThe ISS serves as a microgravity and space environment research laboratory in which crew members conduct experiments in biology, human biology, physics, astronomy, meteorology and other fields. The station is suited for the testing of spacecraft systems and equipment required for missions to the Moon and Mars. The ISS maintains an orbit with an altitude of between 330 and 435 km (205 and 270 mi) by means of reboost manoeuvres using the engines of the Zvezda module or visiting spacecraft. It completes 15.54 orbits per day.\n\nISS is the ninth space station to be inhabited by crews, following the Soviet and later Russian Salyut, Almaz, and Mir stations as well as Skylab from the US. The station has been continuously occupied for 14 years and 319 days since the arrival of Expedition 1 on 2 November 2000. This is the longest continuous human presence in space, having surpassed the previous record of 9 years and 357 days held by Mir. The station is serviced by a variety of visiting spacecraft: Soyuz, Progress, the Automated Transfer Vehicle, the H-II Transfer Vehicle, Dragon, and Cygnus. It has been visited by astronauts, cosmonauts and space tourists from 15 different nations.\n\nAfter the US Space Shuttle program ended in 2011, Soyuz rockets became the only provider of transport for astronauts at the International Space Station, and Dragon became the only provider of bulk cargo-return-to-Earth services (downmass capability of Soyuz capsules is very limited).\n\nThe ISS programme is a joint project among five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA. The ownership and use of the space station is established by intergovernmental treaties and agreements. The station is divided into two sections, the Russian Orbital Segment (ROS) and the United States Orbital Segment (USOS), which is shared by many nations. As of January 2014, the American portion of ISS was funded until 2024. Roscosmos has endorsed the continued operation of ISS through 2024, but have proposed using elements of the Russian Orbital Segment to construct a new Russian space station called OPSEK.\n\nFrom Wikipedia\nhttps://en.wikipedia.org/wiki/International_Space_Station",
@@ -3102,7 +3102,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:11:53.832Z"),
       savedAt: ISODate("2015-09-17T16:11:53.832Z"),
-      description: "This is what it sounds like on the ISS - loud!"
+      annotation: "This is what it sounds like on the ISS - loud!"
     },
     {
       type: "link",
@@ -3140,7 +3140,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:12:43.039Z"),
       savedAt: ISODate("2015-09-17T16:12:43.039Z"),
-      description: ""
+      annotation: ""
     }
   ];
   contextBlocksForISS.forEach(function(e){ addContextToStream.call({userId: curatorId}, "3zruKDSm", e)});
@@ -4443,7 +4443,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:23:59.551Z"),
       savedAt: ISODate("2015-09-17T16:23:59.551Z"),
-      description: ""
+      annotation: ""
     },
     {
       fullDetails: {
@@ -5082,7 +5082,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:24:33.378Z"),
       savedAt: ISODate("2015-09-17T16:24:33.378Z"),
-      description: ""
+      annotation: ""
     },
     {
       streamShortId: "SEDsDRNb",
@@ -5121,7 +5121,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:25:04.472Z"),
       savedAt: ISODate("2015-09-17T16:25:04.472Z"),
-      description: "The exhibit in Long Beach that these livestreams are from"
+      annotation: "The exhibit in Long Beach that these livestreams are from"
     },
     {
       reference: {
@@ -5136,7 +5136,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:19:13.681Z"),
       savedAt: ISODate("2015-09-17T16:19:13.681Z"),
-      description: "This is the aquarium in Long Beach where the shark livestream is from"
+      annotation: "This is the aquarium in Long Beach where the shark livestream is from"
     },
     {
       reference: {
@@ -5170,7 +5170,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 1,
       addedAt: ISODate("2015-09-17T16:20:35.242Z"),
       savedAt: ISODate("2015-09-17T16:20:35.242Z"),
-      description: "Some sharks you might see in the stream: a Blacktip Reef Shark"
+      annotation: "Some sharks you might see in the stream: a Blacktip Reef Shark"
     },
     {
       reference: {
@@ -5204,7 +5204,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 2,
       addedAt: ISODate("2015-09-17T16:21:25.881Z"),
       savedAt: ISODate("2015-09-17T16:21:25.881Z"),
-      description: "Zebra Shark"
+      annotation: "Zebra Shark"
     },
     {
       reference: {
@@ -5245,7 +5245,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:22:41.487Z"),
       savedAt: ISODate("2015-09-17T16:22:41.487Z"),
-      description: "Great footage of Zebra Sharks in the wild"
+      annotation: "Great footage of Zebra Sharks in the wild"
     }
   ];
   contextBlocksForSharks.forEach(function(e){
