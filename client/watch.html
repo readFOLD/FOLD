@@ -369,7 +369,6 @@
         <button class="add-new-context">{{> add_icon}}</button>
       </div>
     {{/if}}
-    <div class="top-bar"></div>
 
     {{#if soloSidebarContextMode}}
       <div class="context-area">
@@ -377,6 +376,8 @@
           {{> solo_context_section}}
         {{/with}}
       </div>
+    {{else}}
+      <div class="top-bar"></div>
     {{/if}}
     <div class="context-area list-mode {{#if soloSidebarContextMode}}hide{{/if}}">
       {{#each contextBlocks}}
