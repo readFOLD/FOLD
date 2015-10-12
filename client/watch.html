@@ -154,50 +154,45 @@
             {{/if}}
           {{/if}}
         </div>
-        <div class="footer-section">
 
-          <div class="curator-menu">
-            {{#unless curateMode}}
-              <div class="curator-info">
-                <div class="header">CURATOR</div>
-                <div class="rest">
-                  <div class="curator-pic">
-                    {{> default_user_pic}}
-                  </div>
-                  <div class="curator-details">
-                    {{curatorName}}
-                  </div>
-                </div>
+        <div class="curator-menu">
+            <div class="curator-info">
+              <div class="curator-pic">
+                {{> default_user_pic}}
               </div>
-            {{/unless}}
-            {{#if isCurator}}
-              {{#if onCuratePage}}
-                {{#if curateMode}}
-                  <div class="icon-button-group">
-                    <div class="settings-button-and-menu">
-                      <button class="settings-menu-button">{{> setting_icon}}</button>
-                      {{#if settingsMenuOpen}}
-                        {{> settings_menu}}
-                      {{/if}}
-                    </div>
-                    <button class="webcam">{{> webcam_icon}}</button>
-                  </div>
-                  {{#if showPreviewEditButton}}
-                    <button class="preview">Preview</button>
-                  {{/if}}
-                {{else}}
-                  {{#if showPreviewEditButton}}
-                    <button class="return-to-curate">Edit</button>
-                  {{/if}}
+              <div class="curator-details">
+                <div class="header">CURATOR</div>
+                {{curatorName}}
+              </div>
+            </div>
+          <!--<div class="icon-button-group">-->
+            <!--<div class="settings-button-and-menu">-->
+              <!--<button class="settings-menu-button">{{> setting_icon}}</button>-->
+            <!--{{#if settingsMenuOpen}}-->
+          <!--{{> settings_menu}}-->
+            <!--{{/if}}-->
+          <!--</div>-->
+          <!--</div>-->
+          {{#if curateMode}}
+            <div class="webcam-button-container">
+              <button class="webcam">{{> webcam_icon}}</button>
+            </div>
+          {{/if}}
+
+          {{#if isCurator}}
+            {{#if onCuratePage}}
+              {{#if curateMode}}
+                {{#if showPreviewEditButton}}
+                  <button class="preview">Preview</button>
                 {{/if}}
               {{else}}
-                <a href="{{curatePath}}">
-                  <button class="curate-this-stream">Edit This <br> Deepstream</button>
-                </a>
+                {{#if showPreviewEditButton}}
+                  <button class="return-to-curate">Edit</button>
+                {{/if}}
               {{/if}}
             {{/if}}
+          {{/if}}
 
-          </div>
         </div>
       </div>
 
@@ -390,6 +385,7 @@
       {{#each contextBlocks}}
         {{> list_item_context_section}}
       {{/each}}
+      <div class="bottom-bar"></div>
     </div>
   </div>
 </template>
