@@ -2,7 +2,7 @@
 @right-section-width: 400px;
 @PiP-width: 250px;
 @PiP-height: 150px;
-@left-margin: 10px;
+@left-margin: 20px;
 @live-indicator-width: 88px;
 @contextBrowserHeaderRowHeight: 48px;
 @card-column-width: 70px;
@@ -16,7 +16,6 @@
     display: inline-block;
     font-size: 36px;
     line-height: normal;
-    margin-left: @left-margin;
     min-width: calc(100% ~"-" (@right-section-width + 3 * @left-margin + @live-indicator-width));
   }
   .streams-list{
@@ -162,10 +161,9 @@
 @mainStreamExpandedHeight: 645px;
 
 .main-section{
-  @margin-left: 20px;
   height: @mainStreamHeight + @footer-section-height;
-  width: calc(100% ~'-' @margin-left);
-  margin-left: @margin-left;
+  width: calc(100% ~'-' @left-margin);
+  margin-left: @left-margin;
   max-width: (@mainStreamHeight) * 16 / 9;
 
   .height-transition;
@@ -1009,6 +1007,7 @@
   background-color: @live-color;
   display: inline-block;
   font-size: 28px;
+  margin-right: 20px;
   font-weight: bold;
   height: 42px;
   line-height: 42px;
