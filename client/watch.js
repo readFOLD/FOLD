@@ -416,6 +416,9 @@ Template.watch_page.helpers({
   },
   isActiveContext (){
     return Session.equals('activeContextId', this._id);
+  },
+  showShowTimelineButton (){
+    return Session.get('curateMode');
   }
 });
 

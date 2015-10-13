@@ -315,6 +315,9 @@
       &.active {
         border-bottom: 3px solid @blue-color;
       }
+      &:disabled{
+        visibility: hidden;
+      }
     }
 
     .show-context-browser {
