@@ -121,20 +121,24 @@ var generateFetchFunction = function(serviceInfo){
         numPagesGuesses.push(page - 1 + guessBias);
         return cb();
       }
-      Streams.batchInsert(_.map(result.items, serviceInfo.mapFn));
-      
-      //elasticsearch init
-      /*
-      esClient.index({
-			index: "DeepStreams",
-			id:1
+      var mapResult = _.map(result.items, serviceInfo.mapFn);
+      Streams.batchInsert(mapResult);
+
+      //elasticsearch
+      var id=0;
+	    _.each(mapResult,function(result){
+		  esClient.create({
+				index:Meteor.settings.ELASTICSEARCH_INDEX,
+        type:"stream",
+        body:{
+          provider: result._streamSource,
+          description: result.description,
+          title: result.title
+        }
+		});
 	});
-      esClient.get({
-			index:"DeepStreams",
-			id:1
-	});
-       esClient.indices.refresh(index="DeepStreams");
-      */
+
+
       console.log('Added ' + serviceName + ' streams to database for page: ' + page);
       return cb();
     };

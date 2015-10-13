@@ -60,6 +60,10 @@ var makeTwitterCall = function(apiCall, params) {
   return res;
 };
 
+var SearchES = Meteor.wrapAsync(
+    esClient.search
+, esClient);
+
 var searchYouTube = function (query, option, page) {
   var res;
   var nextPageToken;
@@ -538,13 +542,14 @@ Meteor.methods({
     };
   },
   streamSearchList (query, option, page){
+
     if(!this.userId){ // TO-DO Launch remove
       return {
         items: [],
         nextPage: 'end'
       };
     }
-
+/*
     var youtubeResults, twitchResults;
     if (!page) {
       page = {};
@@ -671,9 +676,9 @@ Meteor.methods({
     if(allSourcesExhausted){
       nextPage = 'end';
     }
-
+*/
     // mix streams from various sources
-
+    /*
     var items = _.chain(youtubeResults.items)
       .zip(bambuserStreams)
       .zip(ustreams)
@@ -685,6 +690,23 @@ Meteor.methods({
     return {
       items: items,
       nextPage: nextPage
+    }*/
+    var  results = SearchES({
+      index: Meteor.settings.ELASTICSEARCH_INDEX,
+      type: "stream",
+      query:{
+        match:{
+          title : query
+        }
+      }
+    });
+    var items = results.hits.hits;
+    console.log(query);
+    console.log(items);
+
+    return {
+      items: items,
+      nextPage: 'end'
     }
   },
   youtubeVideoSearchList: searchYouTube,
