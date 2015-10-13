@@ -132,12 +132,14 @@
       <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
         <div class="top-part">
           <div class="settings-menu-container {{#if curateMode}}visible{{/if}}">
-            <div class="settings-button-and-menu">
-              <button class="settings-menu-button">{{> setting_icon}}</button>
-              {{#if settingsMenuOpen}}
-                {{> settings_menu}}
-              {{/if}}
-            </div>
+            {{#if curateMode}}
+              <div class="settings-button-and-menu">
+                <button class="settings-menu-button">{{> setting_icon}}</button>
+                {{#if settingsMenuOpen}}
+                  {{> settings_menu}}
+                {{/if}}
+              </div>
+            {{/if}}
           </div>
           {{#if showContextSearch}}
             {{> content_icons}}

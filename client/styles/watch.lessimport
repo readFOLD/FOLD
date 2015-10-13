@@ -279,7 +279,7 @@
   @context-timeline-switcher-height: 50px;
 
   .settings-menu-container{
-    @margin-top:5px;
+    @margin-top: 3px;
     margin-top: @margin-top;
     position: relative;
     height: @top-row-height + @second-row-height - @margin-top - @context-timeline-switcher-height;
@@ -963,7 +963,7 @@
 
 .settings-button-and-menu{
   position: absolute;
-  top: 10px;
+  top: 7px;
   right: 10px;
   button{
     .action-button;
