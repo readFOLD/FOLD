@@ -108,7 +108,7 @@ div.create-section.link-twitter{
 div.add-context {
   display: flex;
   flex-flow: column;
-  height: 100%;
+  height: @mainStreamHeight;
   position: relative;
   section {
     padding: 0;
