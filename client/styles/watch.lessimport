@@ -601,7 +601,7 @@
 
 .text-section, .text-result-container{
   .text-content{
-    background-color: @alt-background-color;
+    background-color: @context-background-color;
     color: @light-text-color;
     font-size: 15px;
   }
