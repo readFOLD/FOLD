@@ -122,7 +122,19 @@ var generateFetchFunction = function(serviceInfo){
         return cb();
       }
       Streams.batchInsert(_.map(result.items, serviceInfo.mapFn));
-
+      
+      //elasticsearch init
+      /*
+      esClient.index({
+			index: "DeepStreams",
+			id:1
+	});
+      esClient.get({
+			index:"DeepStreams",
+			id:1
+	});
+       esClient.indices.refresh(index="DeepStreams");
+      */
       console.log('Added ' + serviceName + ' streams to database for page: ' + page);
       return cb();
     };
