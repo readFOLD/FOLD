@@ -143,47 +143,49 @@
 <!--DEEPSTREAM-->
 
 <template name="home">
-  {{> top_banner showFilters="true"}}
-  <div class="deepstreams-and-streams-and-selector">
-    <div class="stream-type-selector-container">
-      <div class="stream-type-selector">
-          <ul>
-            <li class="{{#if showDeepstreamsOnly}}selected{{/if}}">
-              <button class="show-deepstreams-only">DEEPSTREAMS</button>
-            </li><li class="{{#if showDeepstreamsAndLivestreams}}selected{{/if}}">
-              <button class="show-deepstreams-and-livestreams">BOTH</button>
-            </li><li class="{{#if showLivestreamsOnly}}selected{{/if}}">
-              <button class="show-livestreams-only">LIVESTREAMS</button>
-            </li>
-          </ul>
+  <div class="home">
+    {{> top_banner showFilters="true"}}
+    <div class="deepstreams-and-streams-and-selector">
+      <div class="stream-type-selector-container">
+        <div class="stream-type-selector">
+            <ul>
+              <li class="{{#if showDeepstreamsOnly}}selected{{/if}}">
+                <button class="show-deepstreams-only">DEEPSTREAMS</button>
+              </li><li class="{{#if showDeepstreamsAndLivestreams}}selected{{/if}}">
+                <button class="show-deepstreams-and-livestreams">BOTH</button>
+              </li><li class="{{#if showLivestreamsOnly}}selected{{/if}}">
+                <button class="show-livestreams-only">LIVESTREAMS</button>
+              </li>
+            </ul>
+        </div>
       </div>
-    </div>
-    <div class="deepstreams-and-streams">
-      <ol>
-        {{#if showDeepstreams}}
-          <li>
-            <div class="deepstreams-container container">
-              <h2>DEEPSTREAMS</h2>
-              <h3>Deepstreams are livestreams that people have enhanced with great content like images, tweets, and news stories.</h3>
-              {{> deepstreams}}
-            </div>
-          </li>
-        {{/if}}
-        {{#if showLivestreams}}
-          <li>
-            <div class="streams-container container">
-              <h2>LIVESTREAMS</h2>
-              {{#if loadingStreamResults}}
-                Loading...
-              {{/if}}
-              {{#if noMoreStreamResults}}
-                {{noMoreStreamResults}}
-              {{/if}}
-              {{> streams}}
-            </div>
-          </li>
-        {{/if}}
-      </ol>
+      <div class="deepstreams-and-streams">
+        <ol>
+          {{#if showDeepstreams}}
+            <li>
+              <div class="deepstreams-container container">
+                <h2>DEEPSTREAMS</h2>
+                <h3>Deepstreams are livestreams that people have enhanced with great content like images, tweets, and news stories.</h3>
+                {{> deepstreams}}
+              </div>
+            </li>
+          {{/if}}
+          {{#if showLivestreams}}
+            <li>
+              <div class="streams-container container">
+                <h2>LIVESTREAMS</h2>
+                {{#if loadingStreamResults}}
+                  Loading...
+                {{/if}}
+                {{#if noMoreStreamResults}}
+                  {{noMoreStreamResults}}
+                {{/if}}
+                {{> streams}}
+              </div>
+            </li>
+          {{/if}}
+        </ol>
+      </div>
     </div>
   </div>
 </template>

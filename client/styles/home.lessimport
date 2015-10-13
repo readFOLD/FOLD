@@ -450,8 +450,16 @@ div.logo-title {
     left: 50%;
     transform: translate(-50%, -50%);
 
+    .main-stream{
+      height: 100%;
+      width: 70%;
+    }
+
     .right-section{
+      width: 30%;
       border: none;
+      float: right;
+      position: relative;
       padding-top: 20px;
       padding-left: 30px;
       padding-right: 30px;
@@ -581,7 +589,7 @@ div.action-items {
   }
 }
 
-.filter-row{
+.filter-row {
   height: 60px;
   padding-top: 10px;
   padding-left: 65px;
@@ -589,8 +597,8 @@ div.action-items {
   padding-right: 15px;
   position: relative;
 
-  .box-shadow(0px 2px 12px 0px rgba(0,0,0,0.55));
-  .tabs{
+  .box-shadow(0px 2px 12px 0px rgba(0, 0, 0, 0.55));
+  .tabs {
     display: inline-block;
     bottom: 0;
     position: absolute;
@@ -617,22 +625,22 @@ div.action-items {
       padding-right: 20px;
     }
   }
-  .stream-search{
+  .stream-search {
     display: inline-block;
     height: 40px;
     width: 300px;
     float: right;
     background-color: @homepage-shade-3;
-    .stream-search-icon{
+    .stream-search-icon {
       display: inline-block;
       background-color: inherit;
       width: 30px;
       padding: 10px;
-      .fg{
+      .fg {
         fill: @white-icon-color;
       }
     }
-    input[type=search]{
+    input[type=search] {
       height: 100%;
       background-color: inherit;
       color: @light-text-color;
