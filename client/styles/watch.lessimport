@@ -276,11 +276,13 @@
     width: 0;
   }
 
+  @context-timeline-switcher-height: 50px;
+
   .settings-menu-container{
     @margin-top:5px;
     margin-top: @margin-top;
     position: relative;
-    height: @top-row-height - @margin-top;
+    height: @top-row-height + @second-row-height - @margin-top - @context-timeline-switcher-height;
     margin-left: @card-column-width;
     &.visible{
       background-color: @context-background-color;
@@ -288,14 +290,66 @@
     width: calc(100% ~'-' (@card-column-width + @contextAreaPadding*2));
 
   }
-  .context-timeline-switcher{
-    height: @second-row-height;
+  .context-timeline-switcher {
+    height: @context-timeline-switcher-height;
     margin-left: @card-column-width;
     background-color: @context-background-color;
-    width: calc(100% ~'-' (@card-column-width + @contextAreaPadding*2));
+    width: calc(100%~'-'(@card-column-width + @contextAreaPadding * 2));
     margin-bottom: 10px;
-  }
+    display: flex;
+    flex-direction: row;
+    flex-flow: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+    button {
+      width: 30%;
+      padding-top: 8px;
+      padding-bottom: 5px;
+      margin-bottom: 3px;
+      text-align: center;
+      font-size: 26px;
+      line-height: 100%;
+      font-weight: bold;
+      margin-left: 1.67%;
+      margin-right: 1.67%;
+      &.active {
+        border-bottom: 3px solid @blue-color;
+      }
+    }
 
+    .show-context-browser {
+      display: inline-flex;
+      flex-flow: column;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+      .padding-sides(10px);
+      .rectangle {
+        height: 13px;
+        width: 20px;
+        &:not(:first-child) {
+          margin-top: 4px;
+        }
+        line-height: 0;
+        background-color: @medium-color;
+      }
+
+      &:hover, &.active {
+        .rectangle {
+          background-color: @white-icon-color;
+        }
+      }
+    }
+
+    .show-timeline {
+      color: @medium-color;
+
+      &:hover, .active {
+        color: @white-icon-color;
+      }
+    }
+  }
 }
 
 

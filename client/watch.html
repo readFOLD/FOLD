@@ -154,7 +154,15 @@
                   {{/each}}
                 </div>
               </div>
-              <div class="context-timeline-switcher"></div>
+              <div class="context-timeline-switcher">
+                  <button class="show-context-browser active">
+                      <div class="rectangle"></div>
+                      <div class="rectangle"></div>
+                  </button>
+                  <button class="show-timeline">
+                    #
+                  </button>
+              </div>
               {{#if showChat}}
                 {{> unimplemented_chat_section}}
               {{else}}
