@@ -546,6 +546,9 @@ Template.watch_page.events({
       var container = $('.context-area');
       container.animate({scrollTop: (contextToScrollTo.offset().top - container.offset().top + container.scrollTop())});
     })
+  },
+  'click .show-timeline' (e,t){
+    notifyFeature('Twitter timeline: Coming soon!')
   }
 });
 
