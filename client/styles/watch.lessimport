@@ -226,8 +226,8 @@
     top: 0;
     left: 0;
   }
-
 }
+
 .main-stream-container{
   .size-to-fit;
   &.PiP{
@@ -268,8 +268,7 @@
     height: calc(100% ~"-" @footer-section-height);
   }
   .content-icons {
-    left: -@contentIconWidth;
-    z-index: 999;
+    float: left;
   }
 
   &.collapsed{
@@ -391,19 +390,16 @@
 }
 
 .content-icons {
-  position: absolute;
-  width: @contentIconWidth;
+  width: @card-column-width;
+  .padding-sides(10px);
+  //width: @contentIconWidth;
   margin-top: @contextBrowserHeaderRowHeight;
-
-  //height: @contentIconBannerHeight;
-  background-color: @light-transparent-color;
-  //li{
-  //  height: @circle-diameter;
-  //}
-  li:not(:first-child){
-    border-top: 1px solid @alt-background-color;
+  li{
+    background-color: @medium-color;
   }
+
   button {
+
     padding-top: 5px;
     padding-bottom: 5px;
     .size-to-fit;
@@ -413,11 +409,11 @@
         background-color: @alt-background-color;
         &:not(.stream-button) {
           .bg {
-            stroke: @medium-color;
+            stroke: @light-icon-color;
           }
         }
         .fg{
-          fill: @medium-color;
+          fill: @light-icon-color;
         }
       }
     }
@@ -693,11 +689,12 @@
   }
 }
 
-
+.add-new-context-row, .search-section-title{
+  margin-right: @contextAreaPadding * 2;
+  background-color: @context-background-color;
+}
 
 .add-new-context-row{
-  background-color: @context-background-color;
-  margin-right: @contextAreaPadding * 2;
   height: @contextBrowserHeaderRowHeight;
 
   margin-bottom: 15px;
@@ -733,14 +730,12 @@
 
 }
 
-.context-browser-header-row, .search-section-title{
+.search-section-title{
   text-align: center;
   font-size: 20px;
   font-weight: bold;
   line-height: @contextBrowserHeaderRowHeight;
-}
-.search-section-title{
-  border-bottom: 1px solid @medium-color;
+  text-transform: uppercase;
 }
 
 .go-back-button{
@@ -749,9 +744,12 @@
   top: 12px;
   left: 13px;
   position: absolute;
+  .fg{
+    fill: @action-color;
+  }
   &:hover{
     .fg{
-      fill: @white-icon-color;
+      fill: @hover-action-color;
     }
   }
 }

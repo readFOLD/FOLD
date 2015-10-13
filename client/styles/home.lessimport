@@ -648,3 +648,54 @@ div.action-items {
   }
 
 }
+
+.home{
+
+  .content-icons {
+    position: absolute;
+    padding: 0;
+    width: @contentIconWidth;
+    left: -@contentIconWidth;
+
+    //height: @contentIconBannerHeight;
+    li{
+      background-color: @light-transparent-color;
+    }
+    li:not(:first-child){
+      border-top: 1px solid @alt-background-color;
+    }
+
+    button {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      .size-to-fit;
+      background-color: inherit;
+
+      &:disabled{
+        opacity: .3;
+        cursor: inherit;
+      }
+      svg {
+        padding: 1.5px;
+        vertical-align: top;
+        display: inline-block;
+        .bg{
+          fill: none;
+          stroke: @dark-color;
+          stroke-width: 2px;
+        }
+        .fg{
+          fill: @dark-color;
+        }
+
+        &.stream-icon{
+          .bg{
+            stroke: none;
+          }
+        }
+      }
+    }
+
+  }
+
+}
