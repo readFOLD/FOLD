@@ -694,9 +694,11 @@ Meteor.methods({
     var  results = SearchES({
       index: Meteor.settings.ELASTICSEARCH_INDEX,
       type: "stream",
-      query:{
-        match:{
-          title : query
+      body:{
+        query:{
+          match:{
+            title : query
+          }
         }
       }
     });
