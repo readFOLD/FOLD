@@ -536,7 +536,7 @@
   }
   .bottom-bar{
     bottom: -10px;
-    height: 10px;
+    height: 8px;
 
     .box-shadow(-4px -4px 12px 0px rgba(0,0,0,0.75));
 
