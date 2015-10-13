@@ -26,6 +26,11 @@ ContextBlock = (function () {
     return formatDate(this.reference.creationDate);
   };
 
+
+  ContextBlock.prototype.providerName = function() {
+    return this.source.toUpperCase().replace(/\_/, ' ');
+  };
+
   return ContextBlock;
 })();
 
@@ -471,6 +476,8 @@ VideoBlock = (function (_super) {
     }
   };
 
+
+
   VideoBlock.prototype.anchorMenuSnippet = function () {
     return this.reference.title;
   };
@@ -482,6 +489,16 @@ VideoBlock = (function (_super) {
       return Math.floor(width * 359 / 640);
     }
   };
+
+  VideoBlock.prototype.providerIconUrl = function() {
+    switch (this.source) {
+      case 'youtube':
+        return 'https://s.ytimg.com/yts/img/favicon-vflz7uhzw.ico';
+      case 'vimeo':
+        return 'https://f.vimeocdn.com/images_v6/favicon.ico';
+    }
+  };
+
 
   VideoBlock.prototype.soloModeLocation = 'overlay';
   VideoBlock.prototype.soloModeTemplate = 'display_video_section';
@@ -804,6 +821,40 @@ ImageBlock = (function (_super) {
     }
   };
 
+
+  ImageBlock.prototype.providerIconUrl = function() {
+    switch (this.source) {
+      case 'flickr':
+        return 'https://s.yimg.com/pw/favicon.ico';
+      case 'imgur':
+        return '//s.imgur.com/images/favicon-32x32.png';
+    }
+  };
+
+
+  ImageBlock.prototype.providerName = function() {
+    console.log(this)
+    console.log(this.super)
+    console.log(this.__super__)
+    switch (this.source) {
+      case 'flickr':
+        return 'https://s.yimg.com/pw/favicon.ico';
+      case 'imgur':
+        return '//s.imgur.com/images/favicon-32x32.png';
+    }
+  };
+
+  ImageBlock.prototype.providerIconUrl = function() {
+    switch (this.source) {
+      case 'flickr':
+        return 'https://s.yimg.com/pw/favicon.ico';
+      case 'imgur':
+        return '//s.imgur.com/images/favicon-32x32.png';
+    }
+  };
+
+  //
+
   ImageBlock.prototype.soloModeLocation = 'overlay';
   ImageBlock.prototype.soloModeTemplate = 'display_image_section';
   ImageBlock.prototype.listModeItemTemplate = 'preview_image_section';
@@ -856,6 +907,12 @@ MapBlock = (function (_super) {
       return 'https://maps.googleapis.com/maps/api/staticmap?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&center=' + this.escape(this.reference.mapQuery) + '&maptype=' + this.escape(this.reference.mapType) + '&size=' + width + 'x' + height + '&markers=color:red|' + this.escape(this.reference.mapQuery);
     }
   };
+
+
+  MapBlock.prototype.providerIconUrl = function() {
+    return '//www.google.com/images/branding/product/ico/maps_32dp.ico';
+  };
+
 
   MapBlock.prototype.soloModeLocation = 'overlay';
   MapBlock.prototype.soloModeTemplate = 'display_map_section';
@@ -1010,7 +1067,7 @@ NewsBlock = (function (_super) {
     return this.reference.providerName;
   };
 
-  NewsBlock.prototype.providerIconUrl= function () {
+  NewsBlock.prototype.providerIconUrl = function () {
     return this.reference.providerIconUrl;
   };
   //

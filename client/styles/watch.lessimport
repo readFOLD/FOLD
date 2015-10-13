@@ -567,6 +567,15 @@
       }
     }
 
+    .provider{
+      line-height: normal;
+      text-transform: uppercase;
+      img{
+        height: 12px;
+        margin-right: 4px;
+      }
+    }
+
     .delete-context{
       .opacity-transition;
       opacity: 0;
