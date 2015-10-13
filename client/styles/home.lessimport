@@ -656,10 +656,11 @@ div.action-items {
     padding: 0;
     width: @contentIconWidth;
     left: -@contentIconWidth;
+    background-color: @light-transparent-color;
 
     //height: @contentIconBannerHeight;
     li{
-      background-color: @light-transparent-color;
+      background-color: transparent;
     }
     li:not(:first-child){
       border-top: 1px solid @alt-background-color;
