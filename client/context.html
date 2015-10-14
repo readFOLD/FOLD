@@ -88,7 +88,7 @@
       <img class="news-header-image" src="{{headerImageUrl}}"/>
     {{/if}}
     <h4 class="news-title">{{title}}</h4>
-    <div class="news-date">{{publicationDate}}</div>
+    <div class="news-date">{{formatDate publicationDate}}</div>
     <div class="news-html">{{{html}}}</div>
     <div class="news-link"><a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a></div>
   </div>
@@ -99,7 +99,7 @@
   <div class="homepage-preview-news-section">
     <div class="news-source">{{#if providerIconUrl}}<img class="provider-image" src="{{providerIconUrl}}"/>{{/if}}{{providerName}}</div>
     <h4 class="news-title">{{title}}</h4>
-    <div class="news-date">{{publicationDate}}</div>
+    <div class="news-date">{{formatDateNice publicationDate}}</div>
     <div class="news-html">{{{html}}}</div>
   </div>
 </template>
@@ -296,7 +296,7 @@
     <h4 class="news-title">{{title}}</h4>
 
     <div class="news-preview">
-      {{text}}
+      {{introduction}}
     </div>
   </div>
 </template>
