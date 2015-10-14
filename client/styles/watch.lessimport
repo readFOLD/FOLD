@@ -769,7 +769,7 @@
 
 .add-new-context-row{
   height: @contextBrowserHeaderRowHeight;
-
+  cursor: pointer;
   margin-bottom: 15px;
   position: relative;
   button{
@@ -778,7 +778,7 @@
     top: 8px;
     position: absolute;
   }
-  .close, .open, .add-new-context{
+  .add-new-context{
     right: 4px;
     .fg{
       fill: @black-color;
@@ -786,21 +786,15 @@
     .bg{
       fill: @light-icon-color;
     }
-    &:hover{
-      .bg{
-        fill: @white-icon-color;
-      }
+    .center-over-parent-div;
+
+  }
+
+  &:hover{
+    .bg{
+      fill: @white-icon-color;
     }
   }
-  .add-new-context{
-    .center-over-parent-div;
-  }
-
-  .switch-to-list-mode{
-    width: 40px;
-    left: 4px;
-  }
-
 }
 
 .search-section-title{
@@ -826,14 +820,15 @@
     }
   }
 }
-
-
-
-.list-item-context-section{
-  line-height: 0;
+.list-item-context-plus-annotation{
   &:not(:first-child){
     margin-top: 15px;
   }
+}
+
+.list-item-context-section{
+  line-height: 0;
+
   margin-bottom: 5px;
   .video-preview{
     @playIconSize: 60px;
@@ -869,6 +864,10 @@
     width: 100%;
     padding: 0;
     //.preview-hover;
+    cursor: pointer;
+  }
+
+  &.isClickable {
     cursor: pointer;
   }
 

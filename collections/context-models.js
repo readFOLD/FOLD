@@ -31,6 +31,10 @@ ContextBlock = (function () {
     return this.source.toUpperCase().replace(/\_/, ' ');
   };
 
+  ContextBlock.prototype.hasSoloMode = function() {
+    return this.soloContextMode ? true : false;
+  };
+
   ContextBlock.prototype.hoverIconTemplate = function(){
     switch (this.soloModeLocation){
       case 'overlay':
@@ -39,6 +43,8 @@ ContextBlock = (function () {
         return 'expand_in_sidebar_icon'
     }
   };
+
+
 
   return ContextBlock;
 })();

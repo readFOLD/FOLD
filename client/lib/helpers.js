@@ -235,7 +235,7 @@ window.formatDateNice = function (date) {
 
 window.updateActiveContext = function(){
   var contextOffsetObjects = _.map(Deepstreams.findOne({shortId: Session.get('streamShortId')}).orderedContextIds(), (id) => {
-      var e = $('.list-item-context-section[data-context-id=' + id + ']');
+      var e = $('.list-item-context-plus-annotation[data-context-id=' + id + ']');
       return {id: id, offset: e.offset().top, height: e.outerHeight()};
     }
   );

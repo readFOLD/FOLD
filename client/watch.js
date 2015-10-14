@@ -577,7 +577,7 @@ Template.stream_li.events({
 Template.context_browser.onRendered(function(){
   // make context sortable
   var sortableOuterDiv = '.context-area';
-  var sortableListItem = '.list-item-context-section';
+  var sortableListItem = '.list-item-context-plus-annotation';
   updateActiveContext();
   var that = this;
   that.$(sortableOuterDiv).sortable({
@@ -627,13 +627,13 @@ Template.context_browser.events({
   'click .open' (){
     Session.set('reducedView', false);
   },
-  'click .add-new-context' (){
+  'click .add-new-context-row' (){
     Session.set('mediaDataType', Session.get('previousMediaDataType') || 'image');
   },
   'click .delete-context' (e, t){
     var that = this;
 
-    t.$('[data-context-id=' + that._id + ']').fadeOut(500, function() {
+    t.$('.list-item-context-plus-annotation[data-context-id=' + that._id + ']').fadeOut(500, function() {
       Meteor.call('removeContextFromStream', Session.get("streamShortId"), that._id, basicErrorHandler);
     });
   },
@@ -642,7 +642,7 @@ Template.context_browser.events({
     if ($(e.target).is('textarea')) { // don't go to big browser when its time to edit context
       return
     }
-    if(this.soloModeLocation){
+    if(this.hasSoloMode()){
       setCurrentContext(this);
     }
   },
