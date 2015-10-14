@@ -152,7 +152,7 @@ Template.display_map_section.helpers(horizontalBlockHelpers);
 Template.display_map_section.events(editableTextEventsBoilerplate('editContextBlockAnnotation'));
 
 Template.preview_map_section.helpers({
-  width: 245,
+  width: CONTEXT_WIDTH,
   height: 180
 });
 Template.preview_map_section.helpers(horizontalBlockHelpers);

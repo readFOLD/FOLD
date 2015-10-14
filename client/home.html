@@ -82,7 +82,7 @@
         {{#unless isPhone}}
           <li class="about-deepstream">
             <!--<a href="/about">-->
-            <a href="javascript:void(0)">
+            <a>
               <button>
                 <span class="text">About</span>
 
@@ -112,7 +112,7 @@
     {{else}}
       {{#if currentUser}}
         <!--<a href="/profile/{{currentUser.username}}">-->
-        <a href="javascript:void(0)">
+        <a>
 
           <button>
               {{#if profileImage currentUser}}
@@ -358,7 +358,7 @@
 
 
 <template name="create_deepstream">
-  <button class="create-deepstream" href="javascript:void(0);">
+  <button class="create-deepstream">
     <span class="text">Create</span>
   </button>
 </template>

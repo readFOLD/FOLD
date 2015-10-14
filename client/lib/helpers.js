@@ -216,16 +216,21 @@ var monthNames = ["January", "February", "March", "April", "May", "June", "July"
 
 // Friday 2/20/2015 20:29:22
 window.formatDate = function (date) {
-  var hms;
-  hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-  return weekDays[date.getDay()] + " " + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
+  if (date) {
+    var hms;
+    hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+    return weekDays[date.getDay()] + " " + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
+  }
 };
 
 // February 7th, 2015
 window.formatDateNice = function (date) {
-  var hms;
-  hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-  return monthNames[(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear();
+  if (date){
+    var hms;
+    hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+    return monthNames[(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear();
+  }
+
 };
 
 window.updateActiveContext = function(){

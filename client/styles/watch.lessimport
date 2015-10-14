@@ -375,9 +375,13 @@
     margin-bottom: 5px;
     line-height: 0;
     background-color: @dark-color;
+    &:hover{
+      background-color: @hover-action-color;
+    }
     &.active{
       background-color: @action-color;
     }
+
     position: relative;
     .icon{
       height: 130%;
@@ -386,6 +390,7 @@
     .bg{
       fill: none;
     }
+    cursor: pointer;
   }
 }
 
@@ -590,6 +595,33 @@
       right: 2px;
       top: 2px;
     }
+    &.news-card.list-item-context-section{
+      .provider{
+        display: inline-block;
+      }
+      .news-preview-top{
+        text-align: right;
+      }
+      .news-date{
+        text-align: left;
+        margin-top: 20px;
+      }
+      .news-title{
+        line-height: normal;
+        margin-top: 10px;
+      }
+      img{
+        max-height: 60px;
+        max-width: 120px;
+        margin-top: -40px;
+      }
+    }
+
+    &.link-card{
+      .provider{
+        display: none;
+      }
+    }
     &.news-card:not(.list-item-context-section){
       height: calc(100% ~"-" 2 * @contextAreaPadding + 8px); // not clear why the fudge factor is needed but it is
       display: flex;
@@ -609,6 +641,17 @@
 
 }
 
+.context-section{
+  .provider{
+    line-height: normal;
+    text-transform: uppercase;
+    img{
+      height: 12px;
+      margin-right: 4px;
+    }
+  }
+}
+
 .text-section, .text-result-container{
   .text-content{
     color: @light-text-color;
@@ -623,9 +666,6 @@
 .overlay-context-browser{
   .full-overlay;
   background-color: @dark-transparent-color;
-  .bg{
-    fill: @alt-dark-icon-color;
-  }
   .context-area {
     margin-left: @PiP-width + 2 * @left-margin;
     margin-right: @PiP-width + 2 * @left-margin;
@@ -660,19 +700,43 @@
   }
   .close{
     position: absolute;
-    right: 10px;
+    padding: 0;
+    right: 7px;
+    top: 3px;
     z-index: 99999999999;
-    .size(80px);
+    .size(20px);
     .fg-stroke{
-      stroke: white;
+      stroke: black;
+    }
+    .bg{
+      fill: @action-color;
+    }
+    &:hover{
+      .bg{
+        fill: @hover-action-color;
+      }
     }
   }
   .context-area{
     height: 100%;
   }
 
+  .context-section{
+    .padding-sides(10px);
+    text-align: left;
+    background-color: @context-background-color;
+  }
+
+  @topPaddingHeight: 36px;
+
+  .provider{
+    height: @topPaddingHeight - 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
   .video-section, .map-section, .image-section{
-    height: @mainStreamHeight;
+    height: @mainStreamHeight - @topPaddingHeight;
     background-color: @black-color;
     display: flex;
     flex-direction: column;
@@ -709,7 +773,7 @@
   margin-bottom: 15px;
   position: relative;
   button{
-    .size(30px);
+    .size(38px);
     padding: 0;
     top: 8px;
     position: absolute;
@@ -764,6 +828,7 @@
 }
 
 
+
 .list-item-context-section{
   line-height: 0;
   &:not(:first-child){
@@ -811,6 +876,8 @@
     width: 100%;
     @lineHeight: 18px;
     @padding: 6px;
+    padding-top: @padding;
+    padding-bottom: @padding;
     font-size: 14px;
     line-height: @lineHeight;
     min-height: @lineHeight * 1 + @padding*2;
@@ -820,7 +887,6 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: @padding;
   }
   .map-preview, .image-preview.has-placeholder, .video-preview{
     position: absolute;
@@ -1044,10 +1110,10 @@
 .about-stream{
   display: inline-block;
 
-  left: @left-margin;
+  left: 0;
   top: 80px;
   position: absolute;
-  width: calc(100% ~"-" (50px));
+  width: calc(100% ~"-" (32px));
   .icon{
     position: absolute;
     //top: 15px;
