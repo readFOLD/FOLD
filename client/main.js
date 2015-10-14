@@ -142,6 +142,9 @@ Template.preview_video_section.helpers({
   width: CONTEXT_WIDTH
 });
 
+Template.list_item_context_section.events(editableTextEventsBoilerplate('editContextBlockAnnotation'));
+
+
 Template.preview_video_section.helpers(horizontalBlockHelpers);
 Template.preview_video_section.events(editableTextEventsBoilerplate('editContextBlockAnnotation'));
 

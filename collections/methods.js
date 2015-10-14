@@ -324,7 +324,7 @@ Meteor.methods({
     check(description, String);
     return updateDeepstream.call(this, {shortId: shortId}, {$set: {'description' : description }});
   },
-  editContextBlockAnnotationeditContextBlockAnnotation (streamShortId, contextId, annotation) {
+  editContextBlockAnnotation (streamShortId, contextId, annotation) {
     check(streamShortId, String);
     check(contextId, String);
     check(annotation, String);
@@ -336,7 +336,7 @@ Meteor.methods({
 
     return updateContextBlock.call(this, {"streamShortId": streamShortId, "_id": contextId }, {"$set": {"annotation": annotation}});
   },
-  editTextSection (shortId, contextId, content) {
+  editTextSection (streamShortId, contextId, content) {
     check(streamShortId, String);
     check(contextId, String);
     check(content, String);
