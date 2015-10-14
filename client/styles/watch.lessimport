@@ -10,13 +10,22 @@
 @second-row-height: 65px;
 
 
+@mainStreamHeight: 545px;
+@mainStreamExpandedHeight: 645px;
+@mainStreamMaxWidth: (@mainStreamHeight) * 16 / 9;
+
+
 .watch{
   height: 800px;
   .stream-title{
     display: inline-block;
     font-size: 36px;
     line-height: normal;
-    min-width: calc(100% ~"-" (@right-section-width + 3 * @left-margin + @live-indicator-width));
+    height: 42px;
+    white-space: nowrap;
+    width: calc(100% ~"-" (2* @left-margin + @live-indicator-width));
+    max-width: @mainStreamMaxWidth - @left-margin - @live-indicator-width;
+    overflow: hidden;
   }
   .streams-list{
     white-space: nowrap;
@@ -157,14 +166,12 @@
 
 }
 
-@mainStreamHeight: 545px;
-@mainStreamExpandedHeight: 645px;
 
 .main-section{
   height: @mainStreamHeight + @footer-section-height;
   width: calc(100% ~'-' @left-margin);
   margin-left: @left-margin;
-  max-width: (@mainStreamHeight) * 16 / 9;
+  max-width: @mainStreamMaxWidth;
 
   .height-transition;
   &.expanded{
@@ -1142,6 +1149,7 @@
   margin-right: 20px;
   font-weight: bold;
   height: 42px;
+  float: left;
   line-height: 42px;
   width: @live-indicator-width;
   text-align: center;
