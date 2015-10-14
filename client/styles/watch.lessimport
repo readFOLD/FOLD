@@ -4,7 +4,7 @@
 @PiP-height: 150px;
 @left-margin: 20px;
 @live-indicator-width: 88px;
-@contextBrowserHeaderRowHeight: 48px;
+@context-browser-header-row-height: 51px;
 @card-column-width: 70px;
 @top-row-height: 60px;
 @second-row-height: 65px;
@@ -275,13 +275,12 @@
     width: 0;
   }
 
-  @context-timeline-switcher-height: 50px;
 
   .settings-menu-container{
     @margin-top: 3px;
     margin-top: @margin-top;
     position: relative;
-    height: @top-row-height + @second-row-height - @margin-top - @context-timeline-switcher-height;
+    height: @top-row-height + @second-row-height - @margin-top - @context-browser-header-row-height;
     margin-left: @card-column-width;
     &.visible{
       background-color: @context-background-color;
@@ -290,7 +289,7 @@
 
   }
   .context-timeline-switcher {
-    height: @context-timeline-switcher-height;
+    height: @context-browser-header-row-height;
     margin-left: @card-column-width;
     background-color: @context-background-color;
     width: calc(100%~'-'(@card-column-width + @contextAreaPadding * 2));
@@ -398,7 +397,7 @@
   width: @card-column-width;
   .padding-sides(10px);
   //width: @contentIconWidth;
-  margin-top: @contextBrowserHeaderRowHeight;
+  margin-top: @context-browser-header-row-height;
   li{
     background-color: @medium-color;
   }
@@ -772,7 +771,7 @@
 }
 
 .add-new-context-row{
-  height: @contextBrowserHeaderRowHeight;
+  height: @context-browser-header-row-height;
   cursor: pointer;
   margin-bottom: 15px;
   position: relative;
@@ -805,7 +804,7 @@
   text-align: center;
   font-size: 20px;
   font-weight: bold;
-  line-height: @contextBrowserHeaderRowHeight;
+  line-height: @context-browser-header-row-height;
   text-transform: uppercase;
 }
 
