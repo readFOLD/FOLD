@@ -549,6 +549,14 @@ AudioBlock = (function (_super) {
   };
 
 
+
+  AudioBlock.prototype.providerIconUrl = function() {
+    return '//https://a-v2.sndcdn.com/assets/images/sc-icons/favicon-2cadd14b.ico';
+  };
+
+
+
+
   AudioBlock.prototype.soloModeLocation = null;
   AudioBlock.prototype.soloModeTemplate = 'display_audio_section';
   AudioBlock.prototype.listModeItemTemplate = 'display_audio_section';
@@ -673,6 +681,13 @@ TwitterBlock = (function (_super) {
       targetBlank: true
     });
   };
+
+
+  TwitterBlock.prototype.providerIconUrl = function() {
+    return '//abs.twimg.com/favicons/favicon.ico';
+  };
+
+
 
   TwitterBlock.prototype.soloModeLocation = null;
   TwitterBlock.prototype.soloModeTemplate = null;
@@ -821,26 +836,12 @@ ImageBlock = (function (_super) {
     }
   };
 
-
-  ImageBlock.prototype.providerIconUrl = function() {
-    switch (this.source) {
-      case 'flickr':
-        return 'https://s.yimg.com/pw/favicon.ico';
-      case 'imgur':
-        return '//s.imgur.com/images/favicon-32x32.png';
-    }
-  };
-
-
   ImageBlock.prototype.providerName = function() {
-    console.log(this)
-    console.log(this.super)
-    console.log(this.__super__)
     switch (this.source) {
-      case 'flickr':
-        return 'https://s.yimg.com/pw/favicon.ico';
-      case 'imgur':
-        return '//s.imgur.com/images/favicon-32x32.png';
+      case 'cloudinary':
+        return 'Curator Upload';
+      default:
+        return _super.prototype.providerName.call(this);
     }
   };
 
@@ -1007,7 +1008,15 @@ LinkBlock = (function (_super) {
 
   LinkBlock.prototype.anchorMenuSnippet = function () {
     return this.title();
+  };
 
+
+  LinkBlock.prototype.providerName = function () {
+    return 'Free Text';
+  };
+
+  LinkBlock.prototype.providerIconUrl = function () {
+    //return this.reference.providerIconUrl;
   };
 
   LinkBlock.prototype.soloModeLocation = null;
