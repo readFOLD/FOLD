@@ -31,6 +31,15 @@ ContextBlock = (function () {
     return this.source.toUpperCase().replace(/\_/, ' ');
   };
 
+  ContextBlock.prototype.hoverIconTemplate = function(){
+    switch (this.soloModeLocation){
+      case 'overlay':
+        return 'expand_in_overlay_icon'
+      case 'sidebar':
+        return 'expand_in_sidebar_icon'
+    }
+  };
+
   return ContextBlock;
 })();
 
@@ -1017,6 +1026,10 @@ LinkBlock = (function (_super) {
 
   LinkBlock.prototype.providerIconUrl = function () {
     //return this.reference.providerIconUrl;
+  };
+
+  LinkBlock.prototype.hoverIconTemplate = function(){
+    return 'link_hover_icon'
   };
 
   LinkBlock.prototype.soloModeLocation = null;

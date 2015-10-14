@@ -416,10 +416,13 @@
        data-context-id="{{_id}}">
     <div class="clickable">
       <div class="provider">{{#if providerIconUrl}}<img class="provider-image" src="{{providerIconUrl}}"/>{{/if}}{{providerName}}</div>
+
       {{> Template.dynamic template=listModeItemTemplate}}
     </div>
     {{#if curateMode}}
       <button class="delete-context">{{> close_circle}}</button>
+    {{else}}
+      {{#if hoverIconTemplate}}<button class="hover-icon">{{> Template.dynamic template=hoverIconTemplate}}</button>{{/if}}
     {{/if}}
   </div>
   {{#if showAnnotationSection}}

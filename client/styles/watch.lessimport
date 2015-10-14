@@ -561,7 +561,7 @@
     background-color: @context-background-color;
     padding: 10px;
     &:hover{
-      .delete-context{
+      .delete-context, .hover-icon{
         display: inline-block;
         opacity: 1;
       }
@@ -576,7 +576,8 @@
       }
     }
 
-    .delete-context{
+
+    .delete-context, .hover-icon{
       .opacity-transition;
       opacity: 0;
       .size(20px);
