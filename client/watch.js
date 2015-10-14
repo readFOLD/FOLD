@@ -699,6 +699,11 @@ Template.overlay_context_browser.events({
 });
 
 Template.solo_context_section.helpers(horizontalBlockHelpers);
+Template.solo_context_section.helpers({
+  showProvider (){
+    return this.soloModeLocation === 'overlay';
+  }
+});
 Template.list_item_context_section.helpers(horizontalBlockHelpers);
 Template.list_item_context_section.helpers({
   showAnnotationSection () {
