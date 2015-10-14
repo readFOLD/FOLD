@@ -32,7 +32,7 @@ ContextBlock = (function () {
   };
 
   ContextBlock.prototype.hasSoloMode = function() {
-    return this.soloContextMode ? true : false;
+    return this.soloModeLocation ? true : false;
   };
 
   ContextBlock.prototype.hoverIconTemplate = function(){
