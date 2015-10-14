@@ -414,12 +414,7 @@ Template.watch_page.helpers({
   deadstreams (){
     return _.where(this.streams, { live: false });
   },
-  isActiveContext (){
-    return Session.equals('activeContextId', this._id);
-  },
-  showShowTimelineButton (){
-    return Session.get('curateMode');
-  }
+
 });
 
 var basicErrorHandler = function(err){
@@ -574,31 +569,57 @@ Template.stream_li.events({
   }
 });
 
-Template.context_browser.onRendered(function(){
-  // make context sortable
-  var sortableOuterDiv = '.context-area';
-  var sortableListItem = '.list-item-context-plus-annotation';
-  updateActiveContext();
-  var that = this;
-  that.$(sortableOuterDiv).sortable({
-    items: sortableListItem,
-    stop (){
-      var newOrder = that.$(sortableOuterDiv).sortable('toArray', {attribute: 'data-context-id'});
-      Meteor.call('reorderContext', Session.get('streamShortId'), newOrder, saveCallback);
-    }
-  });
-  that.$(sortableOuterDiv).disableSelection();
-
-  Tracker.autorun(function () {
-    if(Session.get('curateMode')){
-      that.$(sortableOuterDiv).sortable('enable');
-    } else {
-      that.$(sortableOuterDiv).sortable('disable');
-    }
-  })
-
+Template.context_browser_area.helpers({
+  isActiveContext (){
+    return Session.equals('activeContextId', this._id);
+  },
+  showShowTimelineButton (){
+    return Session.get('curateMode');
+  }
 });
 
+Template.context_browser_area.onRendered(function(){
+  // make context sortable
+  var sortableSets = [
+    {
+      outerDiv: '.context-area',
+      listItem: '.list-item-context-plus-annotation'
+    },{
+      outerDiv: '.previews-container',
+      listItem: '.context-mini-preview'
+    }
+  ];
+  
+  _.each(sortableSets, (sortableSet) => {
+    let sortableOuterDiv = sortableSet.outerDiv;
+    let sortableListItem = sortableSet.listItem;
+
+    this.$(sortableOuterDiv).sortable({
+      items: sortableListItem,
+      stop: () => {
+        var newOrder = this.$(sortableOuterDiv).sortable('toArray', {attribute: 'data-context-id'});
+        Meteor.call('reorderContext', Session.get('streamShortId'), newOrder, saveCallback);
+      }
+    });
+    this.$(sortableOuterDiv).disableSelection();
+
+    Tracker.autorun(function () {
+      if(Session.get('curateMode')){
+        this.$(sortableOuterDiv).sortable('enable');
+      } else {
+        this.$(sortableOuterDiv).sortable('disable');
+      }
+    })
+  });
+});
+
+
+Template.context_browser.onRendered(function() {
+  Tracker.autorun(() => {
+    this.contextBlocks;
+    updateActiveContext();
+  });
+});
 
 Template.context_browser.helpers({
   mediaTypeForDisplay (){

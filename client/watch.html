@@ -148,28 +148,8 @@
             {{#if showStreamSearch}}
               {{> stream_search}}
             {{else}}
-              <div class="card-column">
-                <div class="previews-container">
-                  {{#each orderedInternalContext}}
-                    <div
-                        class="context-mini-preview {{#if isActiveContext}}active{{/if}}">{{> relevant_content_icon}}</div>
-                  {{/each}}
-                </div>
-              </div>
-              <div class="context-timeline-switcher">
-                  <button class="show-context-browser active">
-                      <div class="rectangle"></div>
-                      <div class="rectangle"></div>
-                  </button>
-                  <button class="show-timeline" disabled='{{#unless showShowTimelineButton}}disabled{{/unless}}'>
-                    #
-                  </button>
-              </div>
-              {{#if showChat}}
-                {{> unimplemented_chat_section}}
-              {{else}}
-                {{> context_browser}}
-              {{/if}}
+              {{> context_browser_area}}
+
             {{/if}}
           {{/if}}
         </div>
@@ -364,6 +344,30 @@
       </form>
     </div>
   </div>
+</template>
+
+<template name="context_browser_area">
+  <div class="card-column">
+    <div class="previews-container">
+      {{#each orderedInternalContext}}
+        <div class="context-mini-preview {{#if isActiveContext}}active{{/if}}" data-context-id="{{_id}}">{{> relevant_content_icon}}</div>
+      {{/each}}
+    </div>
+  </div>
+  <div class="context-timeline-switcher">
+    <button class="show-context-browser active">
+      <div class="rectangle"></div>
+      <div class="rectangle"></div>
+    </button>
+    <button class="show-timeline" disabled='{{#unless showShowTimelineButton}}disabled{{/unless}}'>
+      #
+    </button>
+  </div>
+  {{#if showChat}}
+    {{> unimplemented_chat_section}}
+  {{else}}
+    {{> context_browser}}
+  {{/if}}
 </template>
 
 <template name="context_browser">
