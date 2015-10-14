@@ -740,7 +740,7 @@
   margin-bottom: 15px;
   position: relative;
   button{
-    .size(30px);
+    .size(38px);
     padding: 0;
     top: 8px;
     position: absolute;
@@ -1076,10 +1076,10 @@
 .about-stream{
   display: inline-block;
 
-  left: @left-margin;
+  left: 0;
   top: 80px;
   position: absolute;
-  width: calc(100% ~"-" (50px));
+  width: calc(100% ~"-" (32px));
   .icon{
     position: absolute;
     //top: 15px;
