@@ -701,3 +701,15 @@ div.action-items {
   }
 
 }
+
+.mailchimp-signup-form-on-homepage{
+  position: absolute;
+  .center-over-parent-div;
+  //top: 200px;
+  background-color: @homepage-shade-0;
+  input[type=submit]{
+    .action-button;
+    border: 0;
+    height: 30px;
+  }
+}
