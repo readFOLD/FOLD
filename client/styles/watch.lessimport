@@ -375,9 +375,13 @@
     margin-bottom: 5px;
     line-height: 0;
     background-color: @dark-color;
+    &:hover{
+      background-color: @hover-action-color;
+    }
     &.active{
       background-color: @action-color;
     }
+
     position: relative;
     .icon{
       height: 130%;
@@ -386,6 +390,7 @@
     .bg{
       fill: none;
     }
+    cursor: pointer;
   }
 }
 
@@ -588,6 +593,33 @@
       z-index: 8888;
       right: 2px;
       top: 2px;
+    }
+    &.news-card.list-item-context-section{
+      .provider{
+        display: inline-block;
+      }
+      .news-preview-top{
+        text-align: right;
+      }
+      .news-date{
+        text-align: left;
+        margin-top: 20px;
+      }
+      .news-title{
+        line-height: normal;
+        margin-top: 10px;
+      }
+      img{
+        max-height: 60px;
+        max-width: 120px;
+        margin-top: -40px;
+      }
+    }
+
+    &.link-card{
+      .provider{
+        display: none;
+      }
     }
     &.news-card:not(.list-item-context-section){
       height: calc(100% ~"-" 2 * @contextAreaPadding + 8px); // not clear why the fudge factor is needed but it is
@@ -810,6 +842,8 @@
     width: 100%;
     @lineHeight: 18px;
     @padding: 6px;
+    padding-top: @padding;
+    padding-bottom: @padding;
     font-size: 14px;
     line-height: @lineHeight;
     min-height: @lineHeight * 1 + @padding*2;
@@ -819,7 +853,6 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: @padding;
   }
   .map-preview, .image-preview.has-placeholder, .video-preview{
     position: absolute;

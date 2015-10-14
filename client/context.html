@@ -285,9 +285,18 @@
 </template>
 
 <template name="preview_news_section">
+  <div class="news-preview-top">
+    <div class="news-date">{{formatDateNice publicationDate}}</div>
+    {{#if headerImageUrl}}
+      <img class="news-header-image" src="{{headerImageUrl}}"/>
+    {{/if}}
+  </div>
+
   <div class="show-full">
+    <h4 class="news-title">{{title}}</h4>
+
     <div class="news-preview">
-      {{title}} - {{providerName}}
+      {{text}}
     </div>
   </div>
 </template>

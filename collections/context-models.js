@@ -551,7 +551,7 @@ AudioBlock = (function (_super) {
 
 
   AudioBlock.prototype.providerIconUrl = function() {
-    return '//https://a-v2.sndcdn.com/assets/images/sc-icons/favicon-2cadd14b.ico';
+    return 'https://a-v2.sndcdn.com/assets/images/sc-icons/favicon-2cadd14b.ico';
   };
 
 
@@ -1066,6 +1066,10 @@ NewsBlock = (function (_super) {
 
   NewsBlock.prototype.html = function () {
     return cleanNewsHtml(this.reference.content);
+  };
+
+  NewsBlock.prototype.text = function () {
+    return $($.parseHTML(this.html())).text();
   };
 
   NewsBlock.prototype.headerImageUrl = function () {
