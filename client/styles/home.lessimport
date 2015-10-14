@@ -435,6 +435,7 @@ div.logo-title {
 
 .stream-preview-screen-overlay{
   .full-overlay;
+  .full-overlay-close-button-styling;
   background-color: @dark-transparent-color;
   .preview-box{
     margin:auto;

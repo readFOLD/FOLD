@@ -766,6 +766,10 @@ textarea.text-content {
   position: fixed;
   top: 0;
   left: 0;
+
+}
+
+.full-overlay-close-button-styling{
   .close{
     float: right;
     .size(36px);
@@ -778,6 +782,7 @@ textarea.text-content {
 
 .signin-overlay{
   .full-overlay;
+  .full-overlay-close-button-styling;
   overflow-y: scroll;
   z-index: 111111;
   background-color: @dark-transparent-color;
@@ -808,6 +813,7 @@ textarea.text-content {
 
 .title-description-overlay{
   .full-overlay;
+  .full-overlay-close-button-styling;
   background-color: @light-transparent-color;
   color: @dark-text-color;
   .title-description-inputs{

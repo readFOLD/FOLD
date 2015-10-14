@@ -572,15 +572,6 @@
       }
     }
 
-    .provider{
-      line-height: normal;
-      text-transform: uppercase;
-      img{
-        height: 12px;
-        margin-right: 4px;
-      }
-    }
-
     .delete-context{
       .opacity-transition;
       opacity: 0;
@@ -640,6 +631,17 @@
 
 }
 
+.context-section{
+  .provider{
+    line-height: normal;
+    text-transform: uppercase;
+    img{
+      height: 12px;
+      margin-right: 4px;
+    }
+  }
+}
+
 .text-section, .text-result-container{
   .text-content{
     color: @light-text-color;
@@ -654,9 +656,6 @@
 .overlay-context-browser{
   .full-overlay;
   background-color: @dark-transparent-color;
-  .bg{
-    fill: @alt-dark-icon-color;
-  }
   .context-area {
     margin-left: @PiP-width + 2 * @left-margin;
     margin-right: @PiP-width + 2 * @left-margin;
@@ -691,19 +690,43 @@
   }
   .close{
     position: absolute;
-    right: 10px;
+    padding: 0;
+    right: 7px;
+    top: 3px;
     z-index: 99999999999;
-    .size(80px);
+    .size(20px);
     .fg-stroke{
-      stroke: white;
+      stroke: black;
+    }
+    .bg{
+      fill: @action-color;
+    }
+    &:hover{
+      .bg{
+        fill: @hover-action-color;
+      }
     }
   }
   .context-area{
     height: 100%;
   }
 
+  .context-section{
+    .padding-sides(10px);
+    text-align: left;
+    background-color: @context-background-color;
+  }
+
+  @topPaddingHeight: 36px;
+
+  .provider{
+    height: @topPaddingHeight - 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
   .video-section, .map-section, .image-section{
-    height: @mainStreamHeight;
+    height: @mainStreamHeight - @topPaddingHeight;
     background-color: @black-color;
     display: flex;
     flex-direction: column;
@@ -793,6 +816,7 @@
     }
   }
 }
+
 
 
 .list-item-context-section{
