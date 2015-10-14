@@ -540,9 +540,10 @@ Template.watch_page.events({
   'click .context-mini-preview' (e,t){
     clearCurrentContext();
     Meteor.setTimeout( () =>{
+      var offset = 130;
       var contextToScrollTo = $('.context-section[data-context-id=' + this._id + ']');
       var container = $('.context-area');
-      container.animate({scrollTop: (contextToScrollTo.offset().top - container.offset().top + container.scrollTop())});
+      container.animate({scrollTop: (contextToScrollTo.offset().top - container.offset().top + container.scrollTop() - offset)});
     })
   },
   'click .show-timeline' (e,t){

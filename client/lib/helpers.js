@@ -234,22 +234,34 @@ window.formatDateNice = function (date) {
 };
 
 window.updateActiveContext = function(){
-  var contextOffsetObjects = _.map(Deepstreams.findOne({shortId: Session.get('streamShortId')}).orderedContextIds(), (id) => {
-      var e = $('.list-item-context-plus-annotation[data-context-id=' + id + ']');
-      return {id: id, offset: e.offset().top, height: e.outerHeight()};
-    }
-  );
+
 
   var container = $('.context-area.list-mode');
   var containerOffset = container.offset().top;
+  var lastActivationBias = 0;
+  var currentActivationBias = 30;
+  var activeId;
 
-  var activeId = _.chain(contextOffsetObjects)
-    .filter((obj) => {
-      return obj.offset + obj.height / 2 > containerOffset;
-    })
-    .pluck('id')
-    .first()
-    .value();
+  var orderedContextIds = Deepstreams.findOne({shortId: Session.get('streamShortId')}).orderedContextIds();
+
+
+  if (container[0].scrollHeight - container.scrollTop() - container.outerHeight() - lastActivationBias <= 0 ){
+    activeId =  _.last(orderedContextIds);
+  } else {
+    var contextOffsetObjects = _.map(orderedContextIds, (id) => {
+        var e = $('.list-item-context-plus-annotation[data-context-id=' + id + ']');
+        return {id: id, offset: e.offset().top, height: e.outerHeight()};
+      }
+    );
+
+    activeId = _.chain(contextOffsetObjects)
+      .filter((obj) => {
+        return obj.offset + obj.height / 2 > containerOffset + currentActivationBias;
+      })
+      .pluck('id')
+      .first()
+      .value();
+  }
 
   Session.set('activeContextId', activeId);
 };
