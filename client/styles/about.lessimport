@@ -1,11 +1,11 @@
 div.about {
-
+  position: relative;
   div.container {
-    padding-top: 155px;
+    padding-top: 80px;
     padding-left: 50px;
+    padding-bottom: 50px;
     width: calc(100% ~"-" 50px);
     height: auto;
-    margin-bottom: 45px;
   }
 
   h1 {

@@ -711,13 +711,6 @@ Template.list_item_context_section.helpers({
   }
 });
 
-// TODO remove and have an about section
-Template.banner_buttons.events({
-  'click .about-deepstream' (){
-    notifyFeature('Coming soon!')
-  }
-});
-
 Template.title_description_overlay.onCreated(function(){
   this.titleLength = new ReactiveVar(this.title ? this.title.length : 0);
   this.descriptionLength = new ReactiveVar(this.description ? this.description.length : 0);
