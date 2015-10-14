@@ -18,9 +18,11 @@ esClient.ping({
   }
 });
 
-esClient.indices.create({ index: Meteor.settings.ELASTICSEARCH_INDEX }, function (err, resp) {
-    if (err)
-        console.log('failed to create ElasticSearch index, ' + err.message);
-    else
-        console.log('successfully created ElasticSearch index');
-});
+if (!esClient.indices.exists({index:Meteor.settings.ELASTICSEARCH_INDEX})){
+	esClient.indices.create({ index: Meteor.settings.ELASTICSEARCH_INDEX }, function (err, resp) {
+    		if (err)
+        		console.log('failed to create ElasticSearch index, ' + err.message);
+    		else
+        		console.log('successfully created ElasticSearch index');
+	});
+}
