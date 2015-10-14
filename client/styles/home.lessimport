@@ -702,14 +702,36 @@ div.action-items {
 
 }
 
-.mailchimp-signup-form-on-homepage{
+.mailchimp-signup-form-on-homepage, .mailchimp-signup-form-on-signin{
   position: absolute;
   .center-over-parent-div;
   //top: 200px;
   background-color: @homepage-shade-0;
   input[type=submit]{
     .action-button;
+    cursor: pointer;
     border: 0;
     height: 30px;
+    font-size: 15px;
+  }
+
+}
+
+.mailchimp-signup-form-on-signin {
+  padding: 20px;
+  .clear{
+    text-align: center;
+  }
+  .existing-account {
+    text-align: center;
+    .text{
+      margin: 20px;
+    }
+
+    button {
+      .action-button;
+      height: 30px;
+      font-size: 14px;
+    }
   }
 }
