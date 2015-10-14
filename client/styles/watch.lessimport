@@ -606,6 +606,10 @@
         text-align: left;
         margin-top: 20px;
       }
+      .news-author{
+        text-align: left;
+        margin-top: 20px;
+      }
       .news-title{
         line-height: normal;
         margin-top: 10px;

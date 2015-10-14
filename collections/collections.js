@@ -288,6 +288,14 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   'topImage.width': {
     type: Number,
     optional: true
+  },
+  'primaryAuthor': {
+    type: String,
+    optional: true
+  },
+  'primaryAuthorUrl': {
+    type: String,
+    optional: true
   }
 
 });

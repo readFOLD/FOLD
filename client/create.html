@@ -453,7 +453,7 @@
 
 <template name="create_stream_section">
   <div class="search-section-title">Add Streams</div>
-  {{#if showSingleResult}}<button class="go-back-button">{{> back_arrow_icon}}</button>{{/if}}
+  {{#if showBackButton}}<button class="go-back-button">{{> back_arrow_icon}}</button>{{/if}}
   <div class="create-section add-stream-section">
     <div class="hiding-div {{#if showSingleResult}}hide{{/if}}">
       {{> search_form}}

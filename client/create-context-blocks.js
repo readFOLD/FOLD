@@ -266,6 +266,12 @@ Template.create_stream_section.events({
   }
 });
 
+Template.create_stream_section.helpers({
+  "showBackButton" (d, template) {
+    return !this.creationStep === 'find_stream';
+  }
+});
+
 
 searchTemplateCreatedBoilerplate = function(type, defaultSource) {
   return function() {
@@ -459,6 +465,8 @@ Template.create_news_section.onCreated(function() {
 
       that.noMoreResults.set(false);
 
+      var primaryAuthor = result.authors[0];
+
       that.focusResult.set(new NewsBlock({
         fullDetails: result,
         authorId : Meteor.user()._id,
@@ -470,6 +478,8 @@ Template.create_news_section.onCreated(function() {
           description: result.description,
           content: cleanNewsHtml(result.content),
           topImage: result.images[0],
+          primaryAuthor: primaryAuthor ? primaryAuthor.name : undefined,
+          primaryAuthorUrl: primaryAuthor ? primaryAuthor.url : undefined,
           providerName: result.provider_name,
           providerIconUrl: result.favicon_url,
           url: result.url,

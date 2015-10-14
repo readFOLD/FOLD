@@ -1102,6 +1102,10 @@ NewsBlock = (function (_super) {
   NewsBlock.prototype.providerIconUrl = function () {
     return this.reference.providerIconUrl;
   };
+
+  NewsBlock.prototype.primaryAuthor = function () {
+    return this.reference.primaryAuthor;
+  };
   //
   //NewsBlock.prototype.imageOnLeft = function () {
   //  return !this.reference.thumbnailUrl || (this.reference.thumbnailWidth / this.reference.thumbnailHeight) <= 1.25;

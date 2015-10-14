@@ -287,6 +287,7 @@
 <template name="preview_news_section">
   <div class="news-preview-top">
     <div class="news-date">{{formatDateNice publicationDate}}</div>
+    <div class="news-author">{{primaryAuthor}}</div>
     {{#if headerImageUrl}}
       <img class="news-header-image" src="{{headerImageUrl}}"/>
     {{/if}}
