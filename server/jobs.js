@@ -56,8 +56,13 @@ var servicesToFetch = [
         currentViewers: parseInt(doc.viewersNow),
         totalViews: parseInt(doc.totalViews),
         createdAtInUStreamTime: doc.createdAt, // save this in case we need it later
-        live: true
-      })
+        live: true,
+        _es: {
+          title: e.title,
+          description: $($.parseHTML(e.description)).text(),
+          broadcaster: e.username
+        }
+      });
       delete doc.createdAt; // this is an awful thing with no timezone info, we renamed it to make that clear
       return doc
     }
@@ -78,12 +83,38 @@ var servicesToFetch = [
         //currentViewers: parseInt(doc.views), // no current viewers metric for bambuser
         totalViews: parseInt(doc.views_total),
         lengthSecs: doc.length,
-        live: true
+        live: true,
+        _es: {
+          title: e.title,
+          broadcaster: e.username,
+          keywords: e.tags
+        }
       });
       delete doc.length; // this only causes problems
       return doc;
     }
-  }
+  },
+  //{
+  //  serviceName: 'youtube',
+  //  methodName: 'youtubeVideoSearchList',
+  //  //startingPage: 0, /// WILL NEED TO GO PAGE BY PAGE for YOUTUBE, and probably do it on a separate worker
+  //  maxPages: parseInt(process.env.MAX_YOUTUBE_PAGES) || parseInt(Meteor.settings.MAX_YOUTUBE_PAGES) || 1000,
+  //  //asyncWaitTime: 50,
+  //  mapFn (doc) {
+  //    _.extend(doc, {
+  //      _streamSource: 'youtube',
+  //      id: doc.videoId,
+  //      creationDate: new Date(e.publishedAt),
+  //      live: true,
+  //      _es: {
+  //        title: e.title,
+  //        description: e.description,
+  //        broadcaster: e.channelTitle
+  //      }
+  //    });
+  //    return doc;
+  //  }
+  //}
 ];
 
 
