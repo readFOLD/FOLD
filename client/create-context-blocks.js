@@ -268,7 +268,7 @@ Template.create_stream_section.events({
 
 Template.create_stream_section.helpers({
   "showBackButton" (d, template) {
-    return !this.creationStep === 'find_stream';
+    return this.creationStep !== 'find_stream';
   }
 });
 
@@ -420,7 +420,7 @@ Template.create_audio_section.onCreated(searchTemplateCreatedBoilerplate('audio'
 Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
 
 var dataSourcesByType = {
-  'stream': [{source: 'all_streaming_services', 'display': 'All'}],
+  'stream': [{source: 'all_streaming_services', 'display': 'Livestreams'}],
   'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}, {source: 'cloudinary', display: 'Upload Your Own'}],
   //'gif': [{source: 'giphy', display: 'Giphy'}],
   'video': [{source: 'youtube', display: 'Youtube'}, {source: 'vimeo', display: 'Vimeo'}],

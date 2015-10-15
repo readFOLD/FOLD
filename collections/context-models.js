@@ -23,7 +23,7 @@ ContextBlock = (function () {
   }
 
   ContextBlock.prototype.creationDateString = function () {
-    return formatDate(this.reference.creationDate);
+    return formatDateNice(this.reference.creationDate);
   };
 
 

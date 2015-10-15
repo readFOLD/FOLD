@@ -456,6 +456,13 @@
   {{#if showBackButton}}<button class="go-back-button">{{> back_arrow_icon}}</button>{{/if}}
   <div class="create-section add-stream-section">
     <div class="hiding-div {{#if showSingleResult}}hide{{/if}}">
+      <div class="tabs">
+        <ul>
+          {{#each dataSources}}
+            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+          {{/each}}
+        </ul>
+      </div>
       {{> search_form}}
       <ol class="search-results-container">
         {{#each results}}
@@ -468,7 +475,7 @@
                 <div class="content-title">{{title}}</div>
                 <div class="descr">{{caption}}</div>
                 <div class="user">{{username}}</div>
-                <div class="date">{{creationDateString}}</div>
+                <div class="date">LIVE NOW</div>
               </div>
             </div>
           </li>
@@ -490,7 +497,7 @@
           <div class="content-title">{{title}}</div>
           <div class="descr">{{caption}}</div>
           <div class="user">{{username}}</div>
-          <div class="date">{{creationDateString}}</div>
+          <div class="date">LIVE NOW</div>
         </div>
         <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
           Add

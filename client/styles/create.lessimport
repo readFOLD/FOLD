@@ -108,7 +108,7 @@ div.create-section.link-twitter{
 div.add-context {
   display: flex;
   flex-flow: column;
-  height: @mainStreamHeight;
+  height: @mainStreamHeight + @context-browser-header-row-height - 10px;
   position: relative;
   section {
     padding: 0;
@@ -122,7 +122,6 @@ div.add-context {
     padding-right: 10px;
     height: calc(100% ~'-' @context-browser-header-row-height);
     flex: auto;
-    margin-top: 10px;
     margin-right: 20px;
     background-color: @context-background-color;
     .search-section {
@@ -149,8 +148,8 @@ div.add-context {
         text-transform: uppercase;
         display: inline-block;
         min-width: 80px;
-        color: @deemphasized-light-text-color;
-        border-bottom: 2px solid @deemphasized-light-text-color;
+        color: darken(@deemphasized-light-text-color, 7%);
+        border-bottom: 2px solid darken(@deemphasized-light-text-color, 7%);
 
         &.selected, &:hover {
           color: @light-text-color;
@@ -161,13 +160,13 @@ div.add-context {
   }
 
     
-  @searchFormHeight: 75px;   
+  @searchFormHeight: 120px; // this is a guess
   @innerElementPadding: 9px;   
      
   div.search-outside-input-container {
 
-    @searchTriggerWidth: 90px;
-    @searchButtonWidth: 66px;
+    @searchTriggerWidth: 77px;
+    @searchButtonWidth: 30px;
     @searchInputHeight: 35px; 
     @searchInputWidth: calc(100% ~"-" @searchTriggerWidth ~"-" @innerElementPadding);
 
@@ -207,8 +206,8 @@ div.add-context {
 
     .search-button {
       background: @dark-color;
-      left: calc(100% ~"-" @searchButtonWidth);
-      padding: 7.5px 13px 7.5px 40px;
+      right: 0px;
+      padding: 7.5px 13px 7.5px 10px;
       &:hover{
         .fg{
           fill: @white-icon-color;
