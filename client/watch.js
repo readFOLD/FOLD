@@ -653,11 +653,11 @@ Template.context_browser.events({
     Session.set('mediaDataType', Session.get('previousMediaDataType') || 'image');
   },
   'click .delete-context' (e, t){
-    var that = this;
-
-    t.$('.list-item-context-plus-annotation[data-context-id=' + that._id + ']').fadeOut(500, function() {
-      Meteor.call('removeContextFromStream', Session.get("streamShortId"), that._id, basicErrorHandler);
-    });
+    if(confirm('Are you sure you want to delete this ' + singularizeMediaType(this.type) + '? This cannot be undone.')){
+      t.$('.list-item-context-plus-annotation[data-context-id=' + this._id + ']').fadeOut(500, () => {
+          Meteor.call('removeContextFromStream', Session.get("streamShortId"), this._id, basicErrorHandler);
+      });
+    }
   },
   'click .context-section .clickable' (e, t){
 

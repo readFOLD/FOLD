@@ -50,3 +50,12 @@ svg.search-icon {
 i.loading-icon{
   color: @action-color;
 }
+
+.link-hover-icon, .expand-in-sidebar-icon, .expand-in-overlay-icon{
+  .fg{
+    fill: @black-color;
+  }
+  .bg{
+    fill: @medium-color;
+  }
+}

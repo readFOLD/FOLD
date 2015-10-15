@@ -598,8 +598,12 @@
       }
       position: absolute;
       z-index: 8888;
-      right: 2px;
-      top: 2px;
+      right: 5px;
+      top: 5px;
+    }
+    .delete-context{
+      right: -8px;
+      top: -10px;
     }
     &.news-card.list-item-context-section{
       .provider{
@@ -865,6 +869,12 @@
     img{
       width: 100%;
     }
+
+  }
+
+  .provider{
+    margin-top: -3px;
+    height: 24px;
   }
 
   div.show-full{

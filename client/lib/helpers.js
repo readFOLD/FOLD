@@ -143,6 +143,23 @@ window.pluralizeMediaType = function(mediaType){
   }
 };
 
+window.singularizeMediaType = function(mediaType){
+  switch(mediaType){
+    case 'news':
+      return 'story';
+    case 'text':
+      return 'text';
+    case 'chat':
+      return 'chat';
+    case 'twitter':
+      return 'tweet';
+    case 'audio':
+      return 'sound clip';
+    default:
+      return mediaType
+  }
+};
+
 window.contextTypes = [
   "stream",
   "text",
