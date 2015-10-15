@@ -288,7 +288,7 @@ if (Deepstreams.find().count() === 0) {
               url: "https://i.ytimg.com/vi/w_GQNU85cJw/hqdefault.jpg"
             }
           },
-          channelTitle: "",
+          channelTitle: "explore.org",
           liveBroadcastContent: "live",
           videoId: "w_GQNU85cJw",
           _streamSource: "youtube"

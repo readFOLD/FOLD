@@ -91,7 +91,7 @@ bambuserMapFn = function (e) {
     reference: {
       title: e.title,
       id: e.id,
-      username: e.username, // for some reason, username always comes back null
+      username: e.username,
       totalViews: e.totalViews,
       userId: e.owner.uid,
       creationDate: e.creationDate,
