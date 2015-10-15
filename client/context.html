@@ -89,8 +89,9 @@
     {{/if}}
     <h4 class="news-title">{{title}}</h4>
     <div class="news-date">{{formatDate publicationDate}}</div>
+    <div class="news-author">{{primaryAuthor}}</div>
     <div class="news-html">{{{html}}}</div>
-    <div class="news-link"><a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a></div>
+    <div class="news-link"><a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}} ></a></div>
   </div>
   {{#if showAnnotationSection}}
     {{> annotation_section}}
@@ -288,8 +289,8 @@
 
 <template name="preview_news_section">
   <div class="news-preview-top">
-    <div class="news-date">{{formatDateNice publicationDate}}</div>
     <div class="news-author">{{primaryAuthor}}</div>
+    <div class="news-date">{{formatDateNice publicationDate}}</div>
     {{#if headerImageUrl}}
       <img class="news-header-image" src="{{headerImageUrl}}"/>
     {{/if}}
