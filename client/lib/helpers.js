@@ -185,7 +185,10 @@ window.horizontalBlockHelpers = _.extend({}, {
   selected (){
     return true;
   },
-  annotation: textContentHelper
+  annotation: textContentHelper,
+  showAnnotationSection () {
+    return this.annotationAllowed && (Session.get('curateMode') || this.annotation);
+  }
 });
 
 

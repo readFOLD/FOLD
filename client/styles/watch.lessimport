@@ -637,7 +637,7 @@
       }
     }
     &.news-card:not(.list-item-context-section){
-      height: calc(100% ~"-" 2 * @contextAreaPadding + 8px); // not clear why the fudge factor is needed but it is
+      height: calc(100% ~"-" 2 * @contextAreaPadding + 39px); // not clear why the fudge factor is needed but it is
       display: flex;
       flex-flow: column;
       .news-section{
@@ -698,39 +698,6 @@
     }
   }
 
-  @browse-button-width: 70px;
-  .left, .right{
-    background: transparent;
-    height: 170px;
-    width: @browse-button-width;
-    position: absolute;
-    top: @PiP-height;
-  }
-  .left{
-    left: -@browse-button-width - @left-margin;
-  }
-  .right{
-    right: -@browse-button-width - @left-margin;
-  }
-  .close{
-    position: absolute;
-    padding: 0;
-    right: 7px;
-    top: 3px;
-    z-index: 99999999999;
-    .size(20px);
-    .fg-stroke{
-      stroke: black;
-    }
-    .bg{
-      fill: @action-color;
-    }
-    &:hover{
-      .bg{
-        fill: @hover-action-color;
-      }
-    }
-  }
   .context-area{
     height: 100%;
   }
@@ -773,6 +740,41 @@
   }
   div.text-content{
     border-top: 1px solid @black-color;
+  }
+}
+
+.overlay-context-browser, .solo-context-section{
+  .close{
+    position: absolute;
+    padding: 0;
+    right: 7px;
+    top: 3px;
+    z-index: 99999999999;
+    .size(20px);
+    .fg-stroke{
+      stroke: black;
+    }
+    .bg{
+      fill: @action-color;
+    }
+    &:hover{
+      .bg{
+        fill: @hover-action-color;
+      }
+    }
+  }
+}
+
+.overlay-context-browser{
+  .close{
+    right: 7px;
+    top: 3px;
+  }
+}
+.solo-context-section{
+  .close{
+    right: 7px;
+    top: 6px;
   }
 }
 
@@ -1201,8 +1203,11 @@
   }
   .news-source{
     font-weight: bold;
+    margin-bottom: 10px;
+    line-height: 8px;
     img{
       height: 12px;
+      margin-right: 3px;
     }
   }
 }

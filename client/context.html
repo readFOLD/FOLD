@@ -92,7 +92,9 @@
     <div class="news-html">{{{html}}}</div>
     <div class="news-link"><a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a></div>
   </div>
-  {{> annotation_section }}
+  {{#if showAnnotationSection}}
+    {{> annotation_section}}
+  {{/if}}
 </template>
 
 <template name="homepage_preview_news_section">

@@ -699,6 +699,12 @@ Template.overlay_context_browser.events({
   }
 });
 
+Template.solo_context_section.events({
+  'click .close' (){
+    clearCurrentContext();
+  }
+});
+
 Template.solo_context_section.helpers(horizontalBlockHelpers);
 Template.solo_context_section.helpers({
   showProvider (){
@@ -706,11 +712,6 @@ Template.solo_context_section.helpers({
   }
 });
 Template.list_item_context_section.helpers(horizontalBlockHelpers);
-Template.list_item_context_section.helpers({
-  showAnnotationSection () {
-    return this.annotationAllowed && (Session.get('curateMode') || this.annotation);
-  }
-});
 
 Template.title_description_overlay.onCreated(function(){
   this.titleLength = new ReactiveVar(this.title ? this.title.length : 0);

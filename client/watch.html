@@ -411,6 +411,7 @@
 
 <template name="solo_context_section">
   <div class="narrative-section context-section solo-context-section {{#if type}}{{type}}-card{{/if}}" data-context-id="{{_id}}">
+    <button class="close">{{> close_circle}}</button>
     {{#if showProvider}}
       <div class="provider">{{#if providerIconUrl}}<img class="provider-image" src="{{providerIconUrl}}"/>{{/if}}{{providerName}}</div>
     {{/if}}
