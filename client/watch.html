@@ -1,7 +1,7 @@
 <template name="watch_page">
   {{#with thisDeepstream}}
 
-    <div class="watch">
+    <div class="watch {{#if onAir}}on-air{{else}}off-air{{/if}}">
       <div class="left-section">
 
         <div class="header-section">

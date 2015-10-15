@@ -1060,6 +1060,31 @@
   }
 }
 
+.off-air{
+  .settings-menu-button{
+    animation: glow-action 2s ease infinite;
+  }
+  button.publish{
+    &:not(:hover){
+      animation: glow-action 2s ease infinite;
+    }
+  }
+  @keyframes glow-action {
+    0% {
+      background-color: @action-color;
+    }
+
+    50% {
+      background-color: @hover-action-color;
+    }
+
+    100% {
+      background-color: @action-color;
+    }
+  }
+}
+
+
 .action-items{
   font-size: 14px;
   font-weight: normal;
