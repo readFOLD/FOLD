@@ -974,6 +974,15 @@ TextBlock = (function (_super) {
     return this.content;
   };
 
+  TextBlock.prototype.providerName = function() {
+    return 'Curator Text'
+  };
+
+  TextBlock.prototype.providerIconUrl = function() {
+    return '/images/free_text_icon.svg'
+  };
+
+
   TextBlock.prototype.soloModeLocation = 'sidebar';
   TextBlock.prototype.soloModeTemplate = 'display_text_section';
   TextBlock.prototype.listModeItemTemplate = 'preview_text_section';
@@ -1031,11 +1040,11 @@ LinkBlock = (function (_super) {
 
 
   LinkBlock.prototype.providerName = function () {
-    return 'Free Text';
+    return 'Link';
   };
 
-  LinkBlock.prototype.providerIconUrl = function () {
-    //return this.reference.providerIconUrl;
+  LinkBlock.prototype.providerIconUrl = function() {
+    return '/images/link_icon.svg'
   };
 
   LinkBlock.prototype.hoverIconTemplate = function(){

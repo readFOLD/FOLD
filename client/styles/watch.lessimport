@@ -647,11 +647,6 @@
       }
     }
 
-    &.link-card{
-      .provider{
-        display: none;
-      }
-    }
     &.news-card:not(.list-item-context-section){
       height: calc(100% ~"-" 2 * @contextAreaPadding + 39px); // not clear why the fudge factor is needed but it is
       display: flex;
