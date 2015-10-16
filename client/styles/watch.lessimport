@@ -1289,6 +1289,32 @@
   iframe, video, object, embed{
     .size-to-fit;
   }
+
+  .end-curator-webcam-stream {
+    .opacity-transition;
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    z-index: 999999999999;
+    .size(20px);
+    opacity: 0;
+    padding: 0;
+    svg {
+      .size-to-fit;
+    }
+    .bg {
+      fill: @dark-color;
+    }
+    .fg {
+      fill: @light-icon-color;
+      stroke: @light-icon-color;
+    }
+  }
+  &:hover {
+    .end-curator-webcam-stream {
+      opacity: 1;
+    }
+  }
 }
 
 .webcam-setup{
