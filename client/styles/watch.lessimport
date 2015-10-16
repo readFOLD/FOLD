@@ -709,7 +709,7 @@
   background-color: @dark-transparent-color;
   .context-area {
     margin-left: @PiP-width + 2 * @left-margin;
-    margin-right: @PiP-width + 2 * @left-margin;
+    width: 789px;
     position: relative;
     top: @top-row-height + @second-row-height;
     text-align: center;

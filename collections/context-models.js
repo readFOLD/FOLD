@@ -343,10 +343,10 @@ Stream = (function (_super) {
     }
   };
 
-  Stream.prototype.autoplayMuteUrl = function(){
+  Stream.prototype.iframePreviewUrl = function(){
     switch (this.source){
       case 'youtube':
-        return this.autoplayUrl(); // unfortunately, youtube doesn't have mute or volume parameters
+        return this.autoplayUrl() + '&fs=0'; // unfortunately, youtube doesn't have mute or volume parameters
       case 'ustream':
         return this.autoplayUrl() + '&volume=0';
       case 'bambuser':
