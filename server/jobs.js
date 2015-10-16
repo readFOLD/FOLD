@@ -1,3 +1,6 @@
+var cheerio = Meteor.npmRequire('cheerio');
+
+
 // ustream apparently uses timestamps that match whatever time it happened to be in SF, but contain no timezone or dst info
 
 var dstObject = {
@@ -58,9 +61,9 @@ var servicesToFetch = [
         createdAtInUStreamTime: doc.createdAt, // save this in case we need it later
         live: true,
         _es: {
-          title: e.title,
-          description: $($.parseHTML(e.description)).text(),
-          broadcaster: e.username
+          title: doc.title,
+          description: cheerio.load('<body>' + doc.description + '</body>')('body').text(), // parse html and grab text
+          broadcaster: doc.username
         }
       });
       delete doc.createdAt; // this is an awful thing with no timezone info, we renamed it to make that clear
@@ -85,9 +88,9 @@ var servicesToFetch = [
         lengthSecs: doc.length,
         live: true,
         _es: {
-          title: e.title,
-          broadcaster: e.username,
-          keywords: e.tags
+          title: doc.title,
+          broadcaster: doc.username,
+          keywords: doc.tags
         }
       });
       delete doc.length; // this only causes problems
@@ -104,12 +107,12 @@ var servicesToFetch = [
   //    _.extend(doc, {
   //      _streamSource: 'youtube',
   //      id: doc.videoId,
-  //      creationDate: new Date(e.publishedAt),
+  //      creationDate: new Date(doc.publishedAt),
   //      live: true,
   //      _es: {
-  //        title: e.title,
-  //        description: e.description,
-  //        broadcaster: e.channelTitle
+  //        title: doc.title,
+  //        description: doc.description,
+  //        broadcaster: doc.channelTitle
   //      }
   //    });
   //    return doc;
