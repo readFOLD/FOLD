@@ -390,14 +390,14 @@ Template.watch_page.helpers({
   expandMainSection (){
     return !Session.get("curateMode") && Session.get('reducedView');
   },
-  showStreamSearch (){
-    return Session.get("curateMode") && Session.get('mediaDataType') === 'stream'; // always search on stream
+  showWebcamSetup (){
+    return Session.get("curateMode") && Session.get('mediaDataType') === 'webcam'; // always setup on webcam
   },
   showChat (){
     return Session.get('showChat', true); // TODO this is probably not what we want
   },
   showContextSearch (){
-    return Session.get('mediaDataType') && Session.get("curateMode");
+    return Session.get('mediaDataType') && Session.get("curateMode") && Session.get('mediaDataType') !=='webcam';
   },
   showPreviewEditButton (){
     return this.onAir || this.creationStep === 'go_on_air';
@@ -555,7 +555,7 @@ Template.watch_page.events({
     notifyFeature('Live audio broadcast: coming soon!');
   },
   'click .webcam' (e,t){
-    notifyFeature('Live webcam broadcast: coming soon!');
+    Session.set('mediaDataType', 'webcam');
   },
   'click .email-share-button' (e,t){
     notifyFeature('Success!! Email share: coming soon!');
@@ -612,11 +612,14 @@ Template.stream_li.events({
 });
 
 Template.context_browser_area.helpers({
-  isActiveContext (){
-    return Session.equals('activeContextId', this._id);
-  },
   showShowTimelineButton (){
     return Session.get('curateMode');
+  }
+});
+
+Template.context_card_column.helpers({
+  isActiveContext (){
+    return Session.equals('activeContextId', this._id);
   }
 });
 

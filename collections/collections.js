@@ -596,7 +596,23 @@ Schema.Deepstreams = new SimpleSchema({
     maxCount: 1000
   },
   curatorWebcamStream: {
-    type: Schema.Streams,
+    type: new SimpleSchema({
+        'reference._id': {
+          type: String,
+          optional: true
+        },
+        'reference.username': {
+          type: String,
+          optional: true
+        },
+        source: {
+          type: String
+        },
+        type: {
+          type: String,
+          defaultValue: 'stream'
+        }
+      }),
     optional: true
   },
   curatorWebcamActive: {

@@ -820,3 +820,10 @@ Template.search_form.helpers({
     }
   }
 });
+
+Template.webcam_setup.events({
+  'click .go-back-button': function(){
+    Session.set('previousMediaDataType', Session.get('mediaDataType'));
+    return Session.set('mediaDataType', null)
+  }
+});

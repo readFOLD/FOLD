@@ -145,12 +145,11 @@
             {{> content_icons}}
             {{> add_context}}
           {{else}}
-            {{#if showStreamSearch}}
-              {{> stream_search}}
-            {{else}}
-              {{> context_browser_area}}
-
-            {{/if}}
+              {{#if showWebcamSetup}}
+                {{> webcam_setup}}
+              {{else}}
+                {{> context_browser_area}}
+              {{/if}}
           {{/if}}
         </div>
 
@@ -372,13 +371,7 @@
 </template>
 
 <template name="context_browser_area">
-  <div class="card-column">
-    <div class="previews-container">
-      {{#each orderedInternalContext}}
-        <div class="context-mini-preview {{#if isActiveContext}}active{{/if}}" data-context-id="{{_id}}">{{> relevant_content_icon}}</div>
-      {{/each}}
-    </div>
-  </div>
+  {{ > context_card_column}}
   <div class="context-timeline-switcher">
     <button class="show-context-browser active">
       <div class="rectangle"></div>
@@ -393,6 +386,16 @@
   {{else}}
     {{> context_browser}}
   {{/if}}
+</template>
+
+<template name="context_card_column">
+  <div class="card-column">
+    <div class="previews-container">
+      {{#each orderedInternalContext}}
+        <div class="context-mini-preview {{#if isActiveContext}}active{{/if}}" data-context-id="{{_id}}">{{> relevant_content_icon}}</div>
+      {{/each}}
+    </div>
+  </div>
 </template>
 
 <template name="context_browser">
