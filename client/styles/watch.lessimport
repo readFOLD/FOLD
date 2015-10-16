@@ -67,6 +67,8 @@
           .action-button;
           font-size: 11px;
           height: 15px;
+          line-height: 15px;
+          padding: 0;
 
         }
         .preview-stream{
@@ -1180,7 +1182,7 @@
   display: inline-block;
 
   left: 0;
-  top: 80px;
+  top: 95px;
   position: absolute;
   width: calc(100% ~"-" (32px));
   .icon{
