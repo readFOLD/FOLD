@@ -63,7 +63,8 @@ var servicesToFetch = [
         _es: {
           title: doc.title,
           description: cheerio.load('<body>' + doc.description + '</body>')('body').text(), // parse html and grab text
-          broadcaster: doc.username
+          broadcaster: doc.username,
+          tags: []
         }
       });
       delete doc.createdAt; // this is an awful thing with no timezone info, we renamed it to make that clear
@@ -89,6 +90,7 @@ var servicesToFetch = [
         live: true,
         _es: {
           title: doc.title,
+          description: null,
           broadcaster: doc.username,
           keywords: doc.tags
         }
@@ -112,7 +114,8 @@ var servicesToFetch = [
   //      _es: {
   //        title: doc.title,
   //        description: doc.description,
-  //        broadcaster: doc.channelTitle
+  //        broadcaster: doc.channelTitle,
+  //        tags: []
   //      }
   //    });
   //    return doc;
