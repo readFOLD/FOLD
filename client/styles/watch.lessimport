@@ -1275,8 +1275,8 @@
   .opacity-transition;
   position: absolute;
   z-index: 99999999;
-  top: @top-row-height + @second-row-height;
-  left: @left-margin;
+  top: @top-row-height + @second-row-height + 10px;
+  left: @left-margin + 10px;
   height: @mainStreamHeight;
   width: @mainStreamMaxWidth;
   opacity: 0;

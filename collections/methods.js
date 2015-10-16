@@ -386,6 +386,38 @@ Meteor.methods({
       }
     });
   },
+  startCuratorWebcam (shortId, stream){
+    check(shortId, String);
+    check(stream, Object);
+
+    _.extend(stream, {type: 'stream'});
+
+    if(Meteor.isClient){
+      Session.set('mediaDataType', null);
+    }
+
+    // TODO save info on the user as a default
+
+    return updateDeepstream.call(this, {
+      shortId: shortId
+    }, {
+      $set: {
+        curatorWebcamStream: stream,
+        curatorWebcamActive: true
+      }
+    });
+  },
+  stopCuratorWebcam (shortId){
+    check(shortId, String);
+
+    return updateDeepstream.call(this, {
+      shortId: shortId
+    }, {
+      $set: {
+        curatorWebcamActive: false
+      }
+    });
+  },
   favoriteStory (storyId) {
     check(storyId, String);
     return changeFavorite.call(this, storyId, true);

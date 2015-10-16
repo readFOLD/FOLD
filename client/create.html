@@ -31,10 +31,11 @@
         <li class="instruction">When you are ready, click the red record button to start your Bambuser broadcast</li>
       </ol>
       <p class="next">Once you are broadcasting on Bambuser:</p>
-
-      <label for="bambuser-username-input">Enter your Bambuser username here</label>
-      <input id="bambuser-username-input" name="bambuser-username" type="text"/>
-      <div class="button-container"><button class="start-bambuser-webcam start-webcam">GO LIVE</button></div>
+      <form id="bambuser-webcam" action="">
+        <label for="bambuser-username-input">Enter your Bambuser username here</label>
+        <input id="bambuser-username-input" name="bambuser-username" type="text"/>
+        <div class="button-container"><button type="submit" class="start-bambuser-webcam start-webcam">GO LIVE</button></div>
+      </form>
     </div>
   </div>
 </template>

@@ -435,20 +435,6 @@ Template.watch_page.helpers({
   },
   deadstreams (){
     return _.where(this.streams, { live: false });
-  },
-  curatorWebcamActive (){
-    console.log('yesssss')
-    return true
-  },
-  curatorWebcamStream (){
-    console.log('yoyoyo')
-    return new Stream({
-      source: 'bambuser',
-      reference: {
-        id: '5858728',
-        username: 'deepstream'
-      }
-    })
   }
 });
 
@@ -854,4 +840,21 @@ Template.relevant_content_icon.helpers({
 
 Template.annotation_section.helpers({
   annotation: textContentHelper
+});
+
+Template.webcam_setup.events({
+  'submit #bambuser-webcam' (e, t){
+    console.log('cloocik')
+    e.preventDefault();
+    var bambuserUsername = t.$('input[name=bambuser-username]').val();
+    if(!bambuserUsername){
+      return notifyError('Please enter your Bambuser username')
+    }
+    Meteor.call('startCuratorWebcam', Session.get("streamShortId"), {source: 'bambuser', reference: {username: bambuserUsername}}, function(err, result){
+      if(err){
+        return basicErrorHandler(err);
+      }
+      notifySuccess('You are now narrating your DeepStream!');
+    });
+  }
 });
