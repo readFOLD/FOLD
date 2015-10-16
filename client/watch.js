@@ -418,7 +418,20 @@ Template.watch_page.helpers({
   deadstreams (){
     return _.where(this.streams, { live: false });
   },
-
+  curatorWebcamActive (){
+    console.log('yesssss')
+    return true
+  },
+  curatorWebcamStream (){
+    console.log('yoyoyo')
+    return new Stream({
+      source: 'bambuser',
+      reference: {
+        id: '5858616',
+        username: 'deepstream'
+      }
+    })
+  }
 });
 
 var basicErrorHandler = function(err){

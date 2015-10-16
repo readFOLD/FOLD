@@ -199,6 +199,16 @@
     {{/if}}
     {{> signin_overlay}}
     {{> banner_buttons}}
+    {{#if curatorWebcamActive}}
+      {{#with curatorWebcamStream}}
+        <div class="curator-webcam-stream-container">
+          <iframe
+              class="curator-webcam-stream-iframe"
+              src="{{autoplayUrl}}" frameborder="0"
+              allowfullscreen></iframe>
+        </div>
+      {{/with}}
+    {{/if}}
   {{/with}}
 </template>
 

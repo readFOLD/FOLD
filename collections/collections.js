@@ -595,6 +595,14 @@ Schema.Deepstreams = new SimpleSchema({
     minCount: 0,
     maxCount: 1000
   },
+  curatorWebcamStream: {
+    type: Schema.Streams,
+    optional: true
+  },
+  curatorWebcamActive: {
+    type: Boolean,
+    optional: true
+  },
   streams: {
     type: [Schema.Streams],
     defaultValue: [],

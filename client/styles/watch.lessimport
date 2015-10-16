@@ -1270,3 +1270,16 @@
     flex: auto;
   }
 }
+
+.curator-webcam-stream-container{
+  position: absolute;
+  z-index: 99999999;
+  top: @top-row-height + @second-row-height;
+  left: @left-margin;
+  height: @PiP-height;
+  width: @PiP-width;
+  background-color: blue;
+  iframe{
+    .size-to-fit;
+  }
+}

@@ -362,7 +362,11 @@ Stream = (function (_super) {
     } else if (this.source === 'ustream') {
       return '//www.ustream.tv/embed/' + this.reference.id + '?html5ui';
     } else if (this.source === 'bambuser') {
-      return '//embed.bambuser.com/broadcast/' + this.reference.id + '?chat=0';
+      if (this.reference.id){
+        return '//embed.bambuser.com/broadcast/' + this.reference.id + '?chat=0';
+      } else {
+        return 'http://embed.bambuser.com/channel/' + this.reference.username + '?chat=0';
+      }
     } else if (this.source === 'twitch') {
       return '//www.twitch.tv/' + this.reference.channelName + '/embed?';
     }
