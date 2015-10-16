@@ -34,10 +34,10 @@
                     <object id="{{mainStreamFlashPlayerId}}" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
                             class="main-stream-flash-object">
                       <embed name="{{mainStreamFlashPlayerId}}" src="//static.bambuser.com/r/player.swf"
-                             type="application/x-shockwave-flash" flashvars="{{flashVars}}" allowfullscreen="true"
+                             type="application/x-shockwave-flash" flashvars="{{mainStreamFlashVars}}" allowfullscreen="true"
                              allowscriptaccess="always" wmode="opaque"/>
                       <param name="movie" value="//static.bambuser.com/r/player.swf"/>
-                      <param name="flashvars" value="{{#if mainStreamInFlashPlayer}}{{flashVars}}{{/if}}"/>
+                      <param name="flashvars" value="{{#if mainStreamInFlashPlayer}}{{mainStreamFlashVars}}{{/if}}"/>
                       <param name="allowfullscreen" value="true"/>
                       <param name="allowscriptaccess" value="always"/>
                       <param name="wmode" value="opaque"/>
@@ -59,7 +59,7 @@
                         <param name='movie'
                                value='//www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf'/>
                         <param name='flashvars'
-                               value='{{flashVars}}'/>
+                               value='{{mainStreamFlashVars}}'/>
                       </object>
                     {{/if}}
                   {{/if}}
@@ -201,11 +201,24 @@
     {{> banner_buttons}}
     {{#if curatorWebcamActive}}
       {{#with curatorWebcamStream}}
+
         <div class="curator-webcam-stream-container">
-          <iframe
-              class="curator-webcam-stream-iframe"
-              src="{{autoplayUrl}}" frameborder="0"
-              allowfullscreen></iframe>
+          <object id="curator-webcam-stream" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+                  class="curator-webcam-stream-flash-object">
+            <embed name="curator-webcam-stream" src="//static.bambuser.com/r/player.swf"
+                   type="application/x-shockwave-flash" flashvars="{{curatorWebcamFlashVars}}" allowfullscreen="true"
+                   allowscriptaccess="always" wmode="opaque"/>
+            <param name="movie" value="//static.bambuser.com/r/player.swf"/>
+            <param name="flashvars" value="{{curatorWebcamFlashVars}}"/>
+            <param name="allowfullscreen" value="true"/>
+            <param name="allowscriptaccess" value="always"/>
+            <param name="wmode" value="opaque"/>
+          </object>
+
+          <!--<iframe-->
+              <!--class="curator-webcam-stream-iframe"-->
+              <!--src="{{autoplayUrl}}" frameborder="0"-->
+              <!--allowfullscreen></iframe>-->
         </div>
       {{/with}}
     {{/if}}

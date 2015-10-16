@@ -1272,14 +1272,21 @@
 }
 
 .curator-webcam-stream-container{
+  .opacity-transition;
   position: absolute;
   z-index: 99999999;
   top: @top-row-height + @second-row-height;
   left: @left-margin;
-  height: @PiP-height;
-  width: @PiP-width;
+  height: @mainStreamHeight;
+  width: @mainStreamMaxWidth;
+  opacity: 0;
+  &.ready{
+    height: @PiP-height;
+    width: @PiP-width;
+    opacity: 1;
+  }
   background-color: blue;
-  iframe{
+  iframe, video, object, embed{
     .size-to-fit;
   }
 }

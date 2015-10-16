@@ -121,6 +121,12 @@ Template.watch_page.onCreated(function () {
     mainPlayer._bambuserPlayer = getFlashMovie(that.mainStreamFlashPlayerId);
   };
 
+
+  window.bambuserCuratorWebcamPlayerReady = function(){
+    console.log('Bambuser curator webcam player ready');
+    $('.curator-webcam-stream-container').addClass('ready'); // TODO, do this correctly
+  };
+
   window.twitchPlayerEventCallback = function(events){
     if(_.findWhere(events, {event: 'playerInit'})){
       console.log('Twitch player ready');
@@ -338,7 +344,7 @@ Template.watch_page.helpers({
       return activeStream.autoplayUrl();
     }
   },
-  flashVars (){
+  mainStreamFlashVars (){
     var activeStream = Template.instance().activeStream.get();
     var addlParams;
 
@@ -353,6 +359,18 @@ Template.watch_page.helpers({
     if(activeStream){
       return activeStream.flashVars() + addlParams;
     }
+  },
+  curatorWebcamFlashVars (){
+
+    switch(this.source){
+      case 'bambuser':
+        addlParams='&callback=bambuserCuratorWebcamPlayerReady';
+        break;
+      //case 'twitch':
+      //  addlParams='&eventsCallback=twitchPlayerEventCallback';
+      //  break;
+    }
+    return this.flashVars() + addlParams;
   },
   bambuserPlayer (){
     return Template.instance().activeStream.get().source === 'bambuser'
@@ -427,7 +445,7 @@ Template.watch_page.helpers({
     return new Stream({
       source: 'bambuser',
       reference: {
-        id: '5858616',
+        id: '5858728',
         username: 'deepstream'
       }
     })
