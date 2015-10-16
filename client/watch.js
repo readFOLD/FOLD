@@ -308,6 +308,10 @@ Template.watch_page.helpers({
       return this._id === activeStream._id;
     }
   },
+  allowStreamPreview (){
+    return true;
+    //return Session.get('curateMode') && Deepstreams.findOne({shortId: Template.instance().data.shortId()}, {fields: {'directorMode': 1}}).directorMode
+  },
   mainStreamIFrameId (){
     return Template.instance().mainStreamIFrameId;
   },
@@ -561,6 +565,12 @@ Template.stream_li.helpers({
   },
   previewMode (){
     return Template.instance().previewMode.get();
+  },
+  showPreviewButton (){
+    return Template.instance().data.allowPreview;
+  },
+  disablePreviewButton (){
+    return this.source === 'twitch';
   }
 });
 
