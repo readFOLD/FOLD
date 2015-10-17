@@ -1,3 +1,6 @@
+var cheerio = Meteor.npmRequire('cheerio');
+
+
 // ustream apparently uses timestamps that match whatever time it happened to be in SF, but contain no timezone or dst info
 
 var dstObject = {
@@ -21,6 +24,8 @@ var dstObject = {
 };
 
 var defaultYear = 2018;
+
+var insertES = Meteor.wrapAsync(esClient.create, esClient);
 
 var convertUStreamDateToUTC = function(ustreamDateString){
   var proposedDate = new Date(ustreamDateString + ' PDT'); // assume PDT to start
@@ -56,8 +61,14 @@ var servicesToFetch = [
         currentViewers: parseInt(doc.viewersNow),
         totalViews: parseInt(doc.totalViews),
         createdAtInUStreamTime: doc.createdAt, // save this in case we need it later
-        live: true
-      })
+        live: true,
+        _es: {
+          title: doc.title,
+          description: cheerio.load('<body>' + doc.description + '</body>')('body').text(), // parse html and grab text
+          broadcaster: doc.username,
+          tags: []
+        }
+      });
       delete doc.createdAt; // this is an awful thing with no timezone info, we renamed it to make that clear
       return doc
     }
@@ -78,12 +89,40 @@ var servicesToFetch = [
         //currentViewers: parseInt(doc.views), // no current viewers metric for bambuser
         totalViews: parseInt(doc.views_total),
         lengthSecs: doc.length,
-        live: true
+        live: true,
+        _es: {
+          title: doc.title,
+          description: null,
+          broadcaster: doc.username,
+          tags: doc.tags
+        }
       });
       delete doc.length; // this only causes problems
       return doc;
     }
-  }
+  },
+  //{
+  //  serviceName: 'youtube',
+  //  methodName: 'youtubeVideoSearchList',
+  //  //startingPage: 0, /// WILL NEED TO GO PAGE BY PAGE for YOUTUBE, and probably do it on a separate worker
+  //  maxPages: parseInt(process.env.MAX_YOUTUBE_PAGES) || parseInt(Meteor.settings.MAX_YOUTUBE_PAGES) || 1000,
+  //  //asyncWaitTime: 50,
+  //  mapFn (doc) {
+  //    _.extend(doc, {
+  //      _streamSource: 'youtube',
+  //      id: doc.videoId,
+  //      creationDate: new Date(doc.publishedAt),
+  //      live: true,
+  //      _es: {
+  //        title: doc.title,
+  //        description: doc.description,
+  //        broadcaster: doc.channelTitle,
+  //        tags: []
+  //      }
+  //    });
+  //    return doc;
+  //  }
+  //}
 ];
 
 
@@ -121,20 +160,24 @@ var generateFetchFunction = function(serviceInfo){
         numPagesGuesses.push(page - 1 + guessBias);
         return cb();
       }
-      var mapResult = _.map(result.items, serviceInfo.mapFn);
-      Streams.batchInsert(mapResult);
+      var mapResults = _.map(result.items, serviceInfo.mapFn);
+      Streams.batchInsert(mapResults);
 
       //elasticsearch
+
       var id=0;
-	    _.each(mapResult,function(result){
-		  esClient.create({
-				index:Meteor.settings.ELASTICSEARCH_INDEX,
-        type:"stream",
-        body:{
-          provider: result._streamSource,
-          description: result.description,
-          title: result.title
-        }
+      _.each(mapResults, function(result){
+		insertES({
+			index:Meteor.settings.ELASTICSEARCH_INDEX,
+        		type:"stream",
+        		body:{
+                                doc: result,
+				source: result._streamSource,
+          			broadcaster: result._es.broadcaster,
+          			description: result._es.description,
+	  			tags : result._es.tags,
+          			title: result._es.title,
+        		}
 		});
 	});
 
@@ -196,7 +239,6 @@ var generateFetchFunction = function(serviceInfo){
         }
       }
     );
-
   })
 };
 
@@ -304,6 +346,7 @@ var updateStreamStatus = function (deepstream) {
 var cycleStreamsCollection = function () {
   Streams.update({}, {$inc: {oneIfCurrent: 1}}, {multi: true}); // recent batch is now loaded
   Streams.remove({oneIfCurrent: {$gt: 1}}); // remove previous batch
+  //esClient.indices.flush({index: Meteor.settings.ELASTICSEARCH_INDEX});
 };
 
 var updateStreamStatuses = function () {

@@ -37,7 +37,30 @@
     <div class="signin-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
       <button class="close">{{> close_circle}}</button>
 
-      {{> login_form}}
+      {{#if showLoginForm}}
+        {{> login_form}}
+      {{else}}
+        <div class="mailchimp-signup-form-on-signin">
+          <!-- Begin MailChimp Signup Form -->
+          <!--<link href="//cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">-->
+          <div id="mc_embed_signup">
+            <form action="//deepstream.us11.list-manage.com/subscribe/post?u=c5bb61c940fb52c8906a972c7&amp;id=d1c5471edf" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+              <div id="mc_embed_signup_scroll">
+                <label for="mce-EMAIL">Thanks for visiting us! We're are currently in closed Beta, but if you'd like to be notified when you can search, view livestreams, and create DeepStreams please sign up below!</label>
+                <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+                <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                <div style="position: absolute; left: -5000px;"><input type="text" name="b_c5bb61c940fb52c8906a972c7_d1c5471edf" tabindex="-1" value=""></div>
+                <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+              </div>
+            </form>
+          </div>
+
+          <div class="existing-account">
+            <div class="text">OR</div>
+            <button class="show-login-form">Click Here if You Have a Secret Code or an Existing Account</button>
+          </div>
+        </div>
+      {{/if}}
       <!--<div class="signin-buttons">-->
         <!--<ol class="user-menu">-->
           <!--<li>-->
@@ -56,11 +79,8 @@
   <div class="home-top not-sticky">
     <div class="top-row">
       <div class="logo-title">
-        <div class="logo">
-          {{> deepstream_logo}}
-        </div>
           <div class="title">
-            <div class="name">DEEP STREAM</div>
+            <div class="name">  <img src="/images/logo.png" /></div>
             <div class="slogan">Turn livestreams into something deeper</div>
 
             <!--<img src="{{c.url 'static/FOLD_TITLE.svg'}}">-->
@@ -84,8 +104,7 @@
       <ol>
         {{#unless isPhone}}
           <li class="about-deepstream">
-            <!--<a href="/about">-->
-            <a href="javascript:void(0)">
+            <a href="/about">
               <button>
                 <span class="text">About</span>
 
@@ -115,13 +134,13 @@
     {{else}}
       {{#if currentUser}}
         <!--<a href="/profile/{{currentUser.username}}">-->
-        <a href="javascript:void(0)">
+        <a>
 
           <button>
               {{#if profileImage currentUser}}
                 <img class="profile-picture" src="{{profileImage currentUser}}"/>
               {{/if}}
-            <span class="text">{{currentUser.profile.name}}</span>
+            <span class="text">{{currentUser.profile.name}}</span><span class="arrow">&#9662;</span>
           </button>
         </a>
         {{#if showUserInfo}}
@@ -146,61 +165,78 @@
 <!--DEEPSTREAM-->
 
 <template name="home">
-  {{> top_banner showFilters="true"}}
-  <div class="deepstreams-and-streams-and-selector">
-    <div class="stream-type-selector-container">
-      <div class="stream-type-selector">
-          <ul>
-            <li class="{{#if showDeepstreamsOnly}}selected{{/if}}">
-              <button class="show-deepstreams-only">DEEPSTREAMS</button>
-            </li><li class="{{#if showDeepstreamsAndLivestreams}}selected{{/if}}">
-              <button class="show-deepstreams-and-livestreams">BOTH</button>
-            </li><li class="{{#if showLivestreamsOnly}}selected{{/if}}">
-              <button class="show-livestreams-only">LIVESTREAMS</button>
-            </li>
-          </ul>
+  <div class="home">
+    {{> top_banner showFilters=currentUser}}
+    {{#if currentUser}}
+      <div class="deepstreams-and-streams-and-selector">
+        <div class="stream-type-selector-container">
+          <div class="stream-type-selector">
+              <ul>
+                <li class="{{#if showDeepstreamsOnly}}selected{{/if}}">
+                  <button class="show-deepstreams-only">DEEPSTREAMS</button>
+                </li><li class="{{#if showDeepstreamsAndLivestreams}}selected{{/if}}">
+                  <button class="show-deepstreams-and-livestreams">BOTH</button>
+                </li><li class="{{#if showLivestreamsOnly}}selected{{/if}}">
+                  <button class="show-livestreams-only">LIVESTREAMS</button>
+                </li>
+              </ul>
+          </div>
+        </div>
+        <div class="deepstreams-and-streams">
+          <ol>
+            {{#if showDeepstreams}}
+              <li>
+                <div class="deepstreams-container container">
+                  <h2>DEEPSTREAMS</h2>
+                  <h3>Deepstreams are livestreams that people have enhanced with great content like images, tweets, and news stories.</h3>
+                  {{> deepstreams}}
+                </div>
+              </li>
+            {{/if}}
+            {{#if showLivestreams}}
+              <li>
+                <div class="streams-container container">
+                  <h2>LIVESTREAMS</h2>
+                  {{#if loadingStreamResults}}
+                    Loading...
+                  {{/if}}
+                  {{#if noMoreStreamResults}}
+                    {{noMoreStreamResults}}
+                  {{/if}}
+                  {{> streams}}
+                </div>
+              </li>
+            {{/if}}
+          </ol>
+        </div>
       </div>
-    </div>
-    <div class="deepstreams-and-streams">
-      <ol>
-        {{#if showDeepstreams}}
-          <li>
-            <div class="deepstreams-container container">
-              <h2>DEEPSTREAMS</h2>
-              <h3>Deepstreams are livestreams that people have enhanced with great content like images, tweets, and news stories.</h3>
-              {{> deepstreams}}
-            </div>
-          </li>
-        {{/if}}
-        {{#if showLivestreams}}
-          <li>
-            <div class="streams-container container">
-              <h2>LIVESTREAMS</h2>
-              {{#if loadingStreamResults}}
-                Loading...
-              {{/if}}
-              {{#if noMoreStreamResults}}
-                {{noMoreStreamResults}}
-              {{/if}}
-              {{> streams}}
-            </div>
-          </li>
-        {{/if}}
-      </ol>
-    </div>
+    {{else}}
+      <div class="mailchimp-signup-form-on-homepage">
+      <!-- Begin MailChimp Signup Form -->
+      <!--<link href="//cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">-->
+      <div id="mc_embed_signup">
+        <form action="//deepstream.us11.list-manage.com/subscribe/post?u=c5bb61c940fb52c8906a972c7&amp;id=d1c5471edf" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <div id="mc_embed_signup_scroll">
+            <label for="mce-EMAIL">Thanks for visiting us! We're are currently in closed Beta, but if you'd like to be notified when you can search, view livestreams, and create DeepStreams please sign up below!</label>
+            <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+            <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+            <div style="position: absolute; left: -5000px;"><input type="text" name="b_c5bb61c940fb52c8906a972c7_d1c5471edf" tabindex="-1" value=""></div>
+            <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+          </div>
+        </form>
+      </div>
+      </div>
+
+      <!--End mc_embed_signup-->
+    {{/if}}
   </div>
 </template>
 
 <template name="logo_title">
   <div class="logo-title">
     <a href="/">
-      <div class="logo">
-        {{> deepstream_logo}}
-      </div>
-    </a>
-    <a href="/">
       <div class="title">
-        <div class="name">DEEP STREAM</div>
+        <div class="name">  <img src="/images/logo.png" /></div>
         <div class="slogan">Turn livestreams into something deeper</div>
 
         <!--<img src="{{c.url 'static/FOLD_TITLE.svg'}}">-->
@@ -364,7 +400,7 @@
 
 
 <template name="create_deepstream">
-  <button class="create-deepstream" href="javascript:void(0);">
+  <button class="create-deepstream">
     <span class="text">Create</span>
   </button>
 </template>

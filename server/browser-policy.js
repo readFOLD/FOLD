@@ -8,6 +8,7 @@ BrowserPolicy.content.allowImageOrigin('*'); // allowing all images is easiest a
 BrowserPolicy.content.allowMediaOrigin('res.cloudinary.com');
 BrowserPolicy.content.allowMediaOrigin('*.imgur.com');
 BrowserPolicy.content.allowMediaOrigin('*.giphy.com');
+BrowserPolicy.content.allowMediaOrigin('flash.media.mit.edu');
 
 // allow iframes from everywhere (needed for various browser bookmarklets)
 BrowserPolicy.content.allowFrameOrigin('*');

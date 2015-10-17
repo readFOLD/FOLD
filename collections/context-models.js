@@ -23,8 +23,28 @@ ContextBlock = (function () {
   }
 
   ContextBlock.prototype.creationDateString = function () {
-    return formatDate(this.reference.creationDate);
+    return formatDateNice(this.reference.creationDate);
   };
+
+
+  ContextBlock.prototype.providerName = function() {
+    return this.source.toUpperCase().replace(/\_/, ' ');
+  };
+
+  ContextBlock.prototype.hasSoloMode = function() {
+    return this.soloModeLocation ? true : false;
+  };
+
+  ContextBlock.prototype.hoverIconTemplate = function(){
+    switch (this.soloModeLocation){
+      case 'overlay':
+        return 'expand_in_overlay_icon'
+      case 'sidebar':
+        return 'expand_in_sidebar_icon'
+    }
+  };
+
+
 
   return ContextBlock;
 })();
@@ -71,7 +91,7 @@ bambuserMapFn = function (e) {
     reference: {
       title: e.title,
       id: e.id,
-      username: e.username, // for some reason, username always comes back null
+      username: e.username,
       totalViews: e.totalViews,
       userId: e.owner.uid,
       creationDate: e.creationDate,
@@ -323,10 +343,10 @@ Stream = (function (_super) {
     }
   };
 
-  Stream.prototype.autoplayMuteUrl = function(){
+  Stream.prototype.iframePreviewUrl = function(){
     switch (this.source){
       case 'youtube':
-        return this.autoplayUrl(); // unfortunately, youtube doesn't have mute or volume parameters
+        return this.autoplayUrl() + '&fs=0'; // unfortunately, youtube doesn't have mute or volume parameters
       case 'ustream':
         return this.autoplayUrl() + '&volume=0';
       case 'bambuser':
@@ -342,7 +362,11 @@ Stream = (function (_super) {
     } else if (this.source === 'ustream') {
       return '//www.ustream.tv/embed/' + this.reference.id + '?html5ui';
     } else if (this.source === 'bambuser') {
-      return '//embed.bambuser.com/broadcast/' + this.reference.id + '?chat=0';
+      //if (this.reference.id){
+      //  return '//embed.bambuser.com/broadcast/' + this.reference.id + '?chat=0';
+      //} else {
+        return '//embed.bambuser.com/channel/' + this.reference.username + '?chat=0';
+      //}
     } else if (this.source === 'twitch') {
       return '//www.twitch.tv/' + this.reference.channelName + '/embed?';
     }
@@ -471,6 +495,8 @@ VideoBlock = (function (_super) {
     }
   };
 
+
+
   VideoBlock.prototype.anchorMenuSnippet = function () {
     return this.reference.title;
   };
@@ -482,6 +508,16 @@ VideoBlock = (function (_super) {
       return Math.floor(width * 359 / 640);
     }
   };
+
+  VideoBlock.prototype.providerIconUrl = function() {
+    switch (this.source) {
+      case 'youtube':
+        return 'https://s.ytimg.com/yts/img/favicon-vflz7uhzw.ico';
+      case 'vimeo':
+        return 'https://f.vimeocdn.com/images_v6/favicon.ico';
+    }
+  };
+
 
   VideoBlock.prototype.soloModeLocation = 'overlay';
   VideoBlock.prototype.soloModeTemplate = 'display_video_section';
@@ -530,6 +566,14 @@ AudioBlock = (function (_super) {
   AudioBlock.prototype.anchorMenuSnippet = function () {
     return this.reference.title;
   };
+
+
+
+  AudioBlock.prototype.providerIconUrl = function() {
+    return 'https://a-v2.sndcdn.com/assets/images/sc-icons/favicon-2cadd14b.ico';
+  };
+
+
 
 
   AudioBlock.prototype.soloModeLocation = null;
@@ -656,6 +700,13 @@ TwitterBlock = (function (_super) {
       targetBlank: true
     });
   };
+
+
+  TwitterBlock.prototype.providerIconUrl = function() {
+    return '//abs.twimg.com/favicons/favicon.ico';
+  };
+
+
 
   TwitterBlock.prototype.soloModeLocation = null;
   TwitterBlock.prototype.soloModeTemplate = null;
@@ -804,6 +855,26 @@ ImageBlock = (function (_super) {
     }
   };
 
+  ImageBlock.prototype.providerName = function() {
+    switch (this.source) {
+      case 'cloudinary':
+        return 'Curator Upload';
+      default:
+        return _super.prototype.providerName.call(this);
+    }
+  };
+
+  ImageBlock.prototype.providerIconUrl = function() {
+    switch (this.source) {
+      case 'flickr':
+        return 'https://s.yimg.com/pw/favicon.ico';
+      case 'imgur':
+        return '//s.imgur.com/images/favicon-32x32.png';
+    }
+  };
+
+  //
+
   ImageBlock.prototype.soloModeLocation = 'overlay';
   ImageBlock.prototype.soloModeTemplate = 'display_image_section';
   ImageBlock.prototype.listModeItemTemplate = 'preview_image_section';
@@ -856,6 +927,12 @@ MapBlock = (function (_super) {
       return 'https://maps.googleapis.com/maps/api/staticmap?' + 'key=' + GOOGLE_API_CLIENT_KEY + '&center=' + this.escape(this.reference.mapQuery) + '&maptype=' + this.escape(this.reference.mapType) + '&size=' + width + 'x' + height + '&markers=color:red|' + this.escape(this.reference.mapQuery);
     }
   };
+
+
+  MapBlock.prototype.providerIconUrl = function() {
+    return '//www.google.com/images/branding/product/ico/maps_32dp.ico';
+  };
+
 
   MapBlock.prototype.soloModeLocation = 'overlay';
   MapBlock.prototype.soloModeTemplate = 'display_map_section';
@@ -950,7 +1027,19 @@ LinkBlock = (function (_super) {
 
   LinkBlock.prototype.anchorMenuSnippet = function () {
     return this.title();
+  };
 
+
+  LinkBlock.prototype.providerName = function () {
+    return 'Free Text';
+  };
+
+  LinkBlock.prototype.providerIconUrl = function () {
+    //return this.reference.providerIconUrl;
+  };
+
+  LinkBlock.prototype.hoverIconTemplate = function(){
+    return 'link_hover_icon'
   };
 
   LinkBlock.prototype.soloModeLocation = null;
@@ -1002,6 +1091,10 @@ NewsBlock = (function (_super) {
     return cleanNewsHtml(this.reference.content);
   };
 
+  NewsBlock.prototype.text = function () {
+    return $($.parseHTML(this.html())).text();
+  };
+
   NewsBlock.prototype.headerImageUrl = function () {
     return this.reference.topImage ? this.reference.topImage.url : null;
   };
@@ -1010,8 +1103,12 @@ NewsBlock = (function (_super) {
     return this.reference.providerName;
   };
 
-  NewsBlock.prototype.providerIconUrl= function () {
+  NewsBlock.prototype.providerIconUrl = function () {
     return this.reference.providerIconUrl;
+  };
+
+  NewsBlock.prototype.primaryAuthor = function () {
+    return this.reference.primaryAuthor;
   };
   //
   //NewsBlock.prototype.imageOnLeft = function () {

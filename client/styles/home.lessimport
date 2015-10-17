@@ -1,5 +1,3 @@
-@topButtonRight: 20px;
-
 div.home-top {
   position: fixed;
   &.not-sticky{
@@ -141,11 +139,13 @@ div.logo-title {
     margin-left: 10px;
     .name{
       margin-top: 5px;
-      background-color: @action-color;
       line-height: 100%;
+      height: 36px;
+      img{
+        height: 100%;
+      }
       padding-left: 8px;
       padding-right: 5px;
-      padding-top: 2px;
       padding-bottom: 2px;
       //line-height: calc(100% ~"-" 6px);
       font-size: 30px;
@@ -435,6 +435,7 @@ div.logo-title {
 
 .stream-preview-screen-overlay{
   .full-overlay;
+  .full-overlay-close-button-styling;
   background-color: @dark-transparent-color;
   .preview-box{
     margin:auto;
@@ -450,8 +451,16 @@ div.logo-title {
     left: 50%;
     transform: translate(-50%, -50%);
 
+    .main-stream{
+      height: 100%;
+      width: 70%;
+    }
+
     .right-section{
+      width: 30%;
       border: none;
+      float: right;
+      position: relative;
       padding-top: 20px;
       padding-left: 30px;
       padding-right: 30px;
@@ -506,7 +515,7 @@ div.action-items {
   position: absolute;
   top: 10px;
   @media @not-mobile{
-    right: @topButtonRight;
+    left: 570px;
   }
   @media @mobile{
     width: 100%;
@@ -550,9 +559,15 @@ div.action-items {
     button{
       line-height: @height;
     }
-    span{
+    .text{
       margin: auto;
       display: inline-block;
+      padding-right: 8px;
+    }
+    .arrow{
+      position: absolute;
+      top: -1px;
+      right: 7px;
     }
     img.profile-picture {
       margin:auto;
@@ -575,7 +590,7 @@ div.action-items {
   }
 }
 
-.filter-row{
+.filter-row {
   height: 60px;
   padding-top: 10px;
   padding-left: 65px;
@@ -583,8 +598,8 @@ div.action-items {
   padding-right: 15px;
   position: relative;
 
-  .box-shadow(0px 2px 12px 0px rgba(0,0,0,0.55));
-  .tabs{
+  .box-shadow(0px 2px 12px 0px rgba(0, 0, 0, 0.55));
+  .tabs {
     display: inline-block;
     bottom: 0;
     position: absolute;
@@ -611,26 +626,112 @@ div.action-items {
       padding-right: 20px;
     }
   }
-  .stream-search{
+  .stream-search {
     display: inline-block;
     height: 40px;
     width: 300px;
     float: right;
     background-color: @homepage-shade-3;
-    .stream-search-icon{
+    .stream-search-icon {
       display: inline-block;
       background-color: inherit;
       width: 30px;
       padding: 10px;
-      .fg{
+      .fg {
         fill: @white-icon-color;
       }
     }
-    input[type=search]{
+    input[type=search] {
       height: 100%;
       background-color: inherit;
       color: @light-text-color;
     }
   }
 
+}
+
+.home{
+
+  .content-icons {
+    position: absolute;
+    padding: 0;
+    width: @contentIconWidth;
+    left: -@contentIconWidth;
+    background-color: @light-transparent-color;
+
+    //height: @contentIconBannerHeight;
+    li{
+      background-color: transparent;
+    }
+    li:not(:first-child){
+      border-top: 1px solid @alt-background-color;
+    }
+
+    button {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      .size-to-fit;
+      background-color: inherit;
+
+      &:disabled{
+        opacity: .3;
+        cursor: inherit;
+      }
+      svg {
+        padding: 1.5px;
+        vertical-align: top;
+        display: inline-block;
+        .bg{
+          fill: none;
+          stroke: @dark-color;
+          stroke-width: 2px;
+        }
+        .fg{
+          fill: @dark-color;
+        }
+
+        &.stream-icon{
+          .bg{
+            stroke: none;
+          }
+        }
+      }
+    }
+
+  }
+
+}
+
+.mailchimp-signup-form-on-homepage, .mailchimp-signup-form-on-signin{
+  position: absolute;
+  .center-over-parent-div;
+  //top: 200px;
+  background-color: @homepage-shade-0;
+  input[type=submit]{
+    .action-button;
+    cursor: pointer;
+    border: 0;
+    height: 30px;
+    font-size: 15px;
+  }
+
+}
+
+.mailchimp-signup-form-on-signin {
+  padding: 20px;
+  .clear{
+    text-align: center;
+  }
+  .existing-account {
+    text-align: center;
+    .text{
+      margin: 20px;
+    }
+
+    button {
+      .action-button;
+      height: 30px;
+      font-size: 14px;
+    }
+  }
 }

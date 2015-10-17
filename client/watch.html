@@ -1,36 +1,47 @@
 <template name="watch_page">
   {{#with thisDeepstream}}
 
-    <div class="watch">
-      <div class="header-section">
-        <div class="top-row">
-          {{> logo_title}}
-        </div>
-        <div class="second-row">
-          {{#if activeStream.live}}
-            <div class="live-indicator">
-              LIVE
-            </div>
-          {{/if}}
-          {{{streamTitleElement}}}
-        </div>
-      </div>
-      <div class="main-section {{#if expandMainSection}}expanded{{/if}}">
-        <div class="left-section">
+    <div class="watch {{#if onAir}}on-air{{else}}off-air{{/if}}">
+      <div class="left-section">
 
-        <div class="main-stream {{#if expandMainSection}}expanded{{/if}} {{#if PiP}}PiP{{/if}}">
-          {{#if showTutorial}}
-            {{> creation_tutorial}}
-          {{/if}}
-          {{#if streamUrl}}
-            <div class="main-stream-container {{#if PiP}}PiP{{/if}}">
-              <iframe id="{{mainStreamIFrameId}}" class="main-stream-iframe {{#unless mainStreamInIFrame}}hide{{/unless}}" src="{{#if mainStreamInIFrame}}{{streamUrl}}{{/if}}" frameborder="0"
-                      allowfullscreen></iframe>
-              {{#if mainStreamInFlashPlayer}}
-                {{#if bambuserPlayer}}
-                  <object id="{{mainStreamFlashPlayerId}}" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" class="main-stream-flash-object">
-                    <embed name="{{mainStreamFlashPlayerId}}" src="//static.bambuser.com/r/player.swf" type="application/x-shockwave-flash" flashvars="{{flashVars}}" allowfullscreen="true" allowscriptaccess="always" wmode="opaque"/><param name="movie" value="//static.bambuser.com/r/player.swf"/><param name="flashvars" value="{{#if mainStreamInFlashPlayer}}{{flashVars}}{{/if}}"/><param name="allowfullscreen" value="true"/><param name="allowscriptaccess" value="always"/><param name="wmode" value="opaque"/>
-                  </object>
+        <div class="header-section">
+          <div class="top-row">
+            {{> logo_title}}
+          </div>
+          <div class="second-row">
+            {{#if activeStream.live}}
+              <div class="live-indicator">
+                LIVE
+              </div>
+            {{/if}}
+            {{{streamTitleElement}}}
+          </div>
+        </div>
+        <div class="main-section {{#if expandMainSection}}expanded{{/if}}">
+
+          <div class="main-stream {{#if expandMainSection}}expanded{{/if}} {{#if PiP}}PiP{{/if}}">
+            {{#if showTutorial}}
+              {{> creation_tutorial}}
+            {{/if}}
+            {{#if streamUrl}}
+              <div class="main-stream-container {{#if PiP}}PiP{{/if}}">
+                <iframe id="{{mainStreamIFrameId}}"
+                        class="main-stream-iframe {{#unless mainStreamInIFrame}}hide{{/unless}}"
+                        src="{{#if mainStreamInIFrame}}{{streamUrl}}{{/if}}" frameborder="0"
+                        allowfullscreen></iframe>
+                {{#if mainStreamInFlashPlayer}}
+                  {{#if bambuserPlayer}}
+                    <object id="{{mainStreamFlashPlayerId}}" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+                            class="main-stream-flash-object">
+                      <embed name="{{mainStreamFlashPlayerId}}" src="//static.bambuser.com/r/player.swf"
+                             type="application/x-shockwave-flash" flashvars="{{mainStreamFlashVars}}" allowfullscreen="true"
+                             allowscriptaccess="always" wmode="opaque"/>
+                      <param name="movie" value="//static.bambuser.com/r/player.swf"/>
+                      <param name="flashvars" value="{{#if mainStreamInFlashPlayer}}{{mainStreamFlashVars}}{{/if}}"/>
+                      <param name="allowfullscreen" value="true"/>
+                      <param name="allowscriptaccess" value="always"/>
+                      <param name="wmode" value="opaque"/>
+                    </object>
                   {{else}}
                     {{#if twitchPlayer}}
                       <object id="{{mainStreamFlashPlayerId}}"
@@ -40,151 +51,142 @@
                               type='application/x-shockwave-flash'>
 
                         <param name="allowFullScreen"
-                               value="true" />
+                               value="true"/>
                         <param name="allowNetworking"
-                               value="all" />
+                               value="all"/>
                         <param name="allowScriptAccess"
-                               value="always" />
+                               value="always"/>
                         <param name='movie'
-                               value='//www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf' />
+                               value='//www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf'/>
                         <param name='flashvars'
-                               value='{{flashVars}}' />
+                               value='{{mainStreamFlashVars}}'/>
                       </object>
                     {{/if}}
+                  {{/if}}
+
                 {{/if}}
-
-              {{/if}}
-              {{#if PiP}}<div class="PiP-overlay"></div>{{/if}}
-            </div>
-            {{#unless PiP}}
-              {{#with activeStream}}
-                <div class="bottom-overlay">
-                  <span class="stream-url">Livestream:  <a href="{{sourceUrl}}" target="_blank">{{sourceUrl}}</a></span>
-                  <span class="stream-username">Streamer:  {{username}}</span>
-                </div>
-              {{/with}}
-            {{/unless}}
-          {{/if}}
-        </div>
-        <div class="footer-section">
-          {{#if showStreamSwitcher}}
-            <div class="streams-list">
-              {{#each livestreams}}
-                {{> stream_li stream=this active=active}}
-              {{else}}
-                {{#unless curateMode}}
-                  <li class="placeholder">
-                    <button>
-                      There are no live streams right now
-                    </button>
-                  </li>
-                {{/unless}}
-              {{/each}}
-              {{#if curateMode}}
-                <li class="add-stream">
-                  <button class="show-stream-search">
-                    <span>Add Stream</span>
-                  </button>
-                </li>
-              {{/if}}
-              {{#if deadstreams.length}}
-                <li class="live-dead-divider"></li>
-              {{/if}}
-              {{#each deadstreams}}
-                {{> stream_li stream=this active=active}}
-              {{/each}}
-            </div>
-          {{/if}}
-          <div class="stream-stats-and-share">
-            <div class="share-and-favorite">
-              <button class="favorite-button">{{> favorite_icon}}</button>
-              <button class="twitter-share-button">{{> twitter_share_icon}}</button>
-              <button class="facebook-share-button">{{> facebook_share_icon}}</button>
-              <button class="email-share-button">{{> email_share_icon}}</button>
-            </div>
-            <div class="stream-stats">
-              <div class="views">Views: 12,245</div>
-            </div>
-          </div>
-          <div class="about-stream">
-            <div class="icon"><i class="fa fa-info-circle"></i></div>
-            {{{streamDescriptionElement}}}
-          </div>
-        </div>
-        </div>
-
-        <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
-          <div class="top-part">
-            {{#if showContextSearch}}
-              {{> content_icons}}
-              {{> add_context}}
-            {{else}}
-              {{#if showStreamSearch}}
-                {{> stream_search}}
-              {{else}}
-                <div class="card-column">
-                  <div class="previews-container">
-                    {{#each orderedInternalContext}}
-                      <div class="context-mini-preview {{#if isActiveContext}}active{{/if}}">{{> relevant_content_icon}}</div>
-                    {{/each}}
+                {{#if PiP}}
+                  <div class="PiP-overlay"></div>{{/if}}
+              </div>
+              {{#unless PiP}}
+                {{#with activeStream}}
+                  <div class="bottom-overlay">
+                    <span class="stream-url">Livestream:  <a href="{{sourceUrl}}"
+                                                             target="_blank">{{sourceUrl}}</a></span>
+                    <span class="stream-username">Streamer:  {{username}}</span>
                   </div>
-                </div>
-                {{#if showChat}}
-                  {{> unimplemented_chat_section}}
-                {{else}}
-                  {{> context_browser}}
-                {{/if}}
-              {{/if}}
+                {{/with}}
+              {{/unless}}
             {{/if}}
           </div>
           <div class="footer-section">
-
-            <div class="curator-menu">
-              {{#unless curateMode}}
-                <div class="curator-info">
-                  <div class="header">CURATOR</div>
-                  <div class="rest">
-                    <div class="curator-pic">
-                      {{> default_user_pic}}
-                    </div>
-                    <div class="curator-details">
-                      {{curatorName}}
-                    </div>
-                  </div>
-                </div>
-              {{/unless}}
-              {{#if isCurator}}
-                {{#if onCuratePage}}
-                  {{#if curateMode}}
-                    <div class="icon-button-group">
-                      <div class="settings-button-and-menu">
-                        <button class="settings-menu-button">{{> setting_icon}}</button>
-                        {{#if settingsMenuOpen}}
-                          {{> settings_menu}}
-                        {{/if}}
-                      </div>
-                      <button class="webcam">{{> webcam_icon}}</button>
-                    </div>
-                    {{#if showPreviewEditButton}}
-                      <button class="preview">Preview</button>
-                    {{/if}}
-                  {{else}}
-                    {{#if showPreviewEditButton}}
-                      <button class="return-to-curate">Edit</button>
-                    {{/if}}
-                  {{/if}}
+            {{#if showStreamSwitcher}}
+              <div class="streams-list">
+                {{#each livestreams}}
+                  {{> stream_li stream=this active=active allowPreview=allowStreamPreview}}
                 {{else}}
-                  <a href="{{curatePath}}">
-                    <button class="curate-this-stream">Edit This <br> Deepstream</button>
-                  </a>
+                  {{#unless curateMode}}
+                    <li class="placeholder">
+                      <button>
+                        There are no live streams right now
+                      </button>
+                    </li>
+                  {{/unless}}
+                {{/each}}
+                {{#if curateMode}}
+                  <li class="add-stream">
+                    <button class="show-stream-search">
+                      {{> add_stream_text}}
+                    </button>
+                  </li>
                 {{/if}}
-              {{/if}}
-
+                {{#if deadstreams.length}}
+                  <li class="live-dead-divider"></li>
+                {{/if}}
+                {{#each deadstreams}}
+                  {{> stream_li stream=this active=active allowPreview=allowStreamPreview}}
+                {{/each}}
+              </div>
+            {{/if}}
+            <div class="stream-stats-and-share">
+              <div class="share-and-favorite">
+                <button class="favorite-button">{{> favorite_icon}}</button>
+                <button class="twitter-share-button">{{> twitter_share_icon}}</button>
+                <button class="facebook-share-button">{{> facebook_share_icon}}</button>
+                <button class="email-share-button">{{> email_share_icon}}</button>
+              </div>
+              <div class="stream-stats">
+                <div class="views">Views: 12,245</div>
+              </div>
+            </div>
+            <div class="about-stream">
+              <div class="icon"><i class="fa fa-info-circle"></i></div>
+              {{{streamDescriptionElement}}}
             </div>
           </div>
+
+        </div>
+      </div>
+
+
+      <div class="right-section {{#unless showRightSection}}collapsed{{/unless}}">
+        <div class="top-part">
+          <div class="settings-menu-container {{#if curateMode}}visible{{/if}}">
+            {{#if curateMode}}
+              <div class="settings-button-and-menu">
+                <button class="settings-menu-button">{{> setting_icon}}</button>
+                {{#if settingsMenuOpen}}
+                  {{> settings_menu}}
+                {{/if}}
+              </div>
+            {{/if}}
+          </div>
+          {{#if showContextSearch}}
+            {{> content_icons}}
+            {{> add_context}}
+          {{else}}
+              {{#if showWebcamSetup}}
+                {{> webcam_setup}}
+              {{else}}
+                {{> context_browser_area}}
+              {{/if}}
+          {{/if}}
         </div>
 
+        <div class="curator-menu">
+            <div class="curator-info">
+              <div class="curator-pic">
+                {{> default_user_pic}}
+              </div>
+              <div class="curator-details">
+                <div class="header">CURATOR</div>
+                {{curatorName}}
+              </div>
+            </div>
+
+          {{#if curateMode}}
+            <div class="webcam-button-container">
+              <button class="webcam">{{> webcam_icon}}</button>
+            </div>
+          {{/if}}
+
+          {{#if isCurator}}
+            {{#if onCuratePage}}
+              {{#if curateMode}}
+                {{#if showPreviewEditButton}}
+                  <button class="preview">Preview</button>
+                {{/if}}
+              {{else}}
+                {{#if showPreviewEditButton}}
+                  <button class="return-to-curate">Edit</button>
+                {{/if}}
+              {{/if}}
+            {{/if}}
+          {{/if}}
+
+        </div>
       </div>
+
     </div>
 
     <!--Fixed sections-->
@@ -196,13 +198,36 @@
     {{/if}}
     {{> signin_overlay}}
     {{> banner_buttons}}
+    {{#if curatorWebcamActive}}
+      {{#with getCuratorWebcamStream}}
+
+        <div class="curator-webcam-stream-container">
+          <object id="curator-webcam-stream" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+                  class="curator-webcam-stream-flash-object">
+            <embed name="curator-webcam-stream" src="//static.bambuser.com/r/player.swf"
+                   type="application/x-shockwave-flash" flashvars="{{curatorWebcamFlashVars}}" allowfullscreen="true"
+                   allowscriptaccess="always" wmode="opaque"/>
+            <param name="movie" value="//static.bambuser.com/r/player.swf"/>
+            <param name="flashvars" value="{{curatorWebcamFlashVars}}"/>
+            <param name="allowfullscreen" value="true"/>
+            <param name="allowscriptaccess" value="always"/>
+            <param name="wmode" value="opaque"/>
+          </object>
+
+          <!--<iframe-->
+              <!--class="curator-webcam-stream-iframe"-->
+              <!--src="{{autoplayUrl}}" frameborder="0"-->
+              <!--allowfullscreen></iframe>-->
+        </div>
+      {{/with}}
+    {{/if}}
   {{/with}}
 </template>
 
 <template name="stream_li">
   {{#with stream}}
     <li data-stream-reference-id="{{reference.id}}" data-stream-id="{{_id}}" class="stream {{#if active}}active{{/if}}">
-      <button class="set-main-stream {{#if active}}active{{else}}inactive{{/if}}">
+      <button class="set-main-stream {{#if active}}active{{else}}inactive{{/if}} {{#if previewMode}}preview-mode{{/if}}">
         {{#if live}}
           <div class="mini-live-indicator">
             LIVE
@@ -216,15 +241,22 @@
       </button>
       {{#if curateMode}}
         <button class="delete-stream">{{> close_circle}}</button>
-        {{#if directorMode}}
-          {{#unless active}}
-            {{#if previewMode}}
-                <iframe class="stream-preview-overlay-iframe" width="100%" height="100%" frameborder="0" style="border:0" src="{{autoplayMuteUrl}}" allowfullscreen></iframe>
-                <div class="lower-stream-button-overlay"><button class="set-main-stream">SET AS MAIN</button></div>
-            {{else}}
-                <div class="lower-stream-button-overlay"><button class="preview-stream">PREVIEW</button></div>
+        {{#if showPreviewButton}}
+          {{#if previewMode}}
+            <iframe class="stream-preview-overlay-iframe" width="100%" height="100%" frameborder="0" style="border:0"
+                    src="{{iframePreviewUrl}}"></iframe>
+            <div class="lower-stream-button-overlay">
+              <button class="set-main-stream">SET AS MAIN</button>
+            </div>
+          {{else}}
+            <div class="lower-stream-button-overlay">
+            {{#if disablePreviewButton}}
+              <button class="preview-stream" disabled="disabled">NO PREVIEW</button>
+              {{else}}
+              <button class="preview-stream">PREVIEW</button>
             {{/if}}
-          {{/unless}}
+            </div>
+          {{/if}}
         {{/if}}
       {{/if}}
     </li>
@@ -260,9 +292,9 @@
         </button>
       </li>
       <!--<li>-->
-        <!--<button class='wikipedia-button {{#if wikipedia}}active{{/if}}' disabled='{{disableAllButStream}}'>-->
-          <!--{{> wikipedia_icon }}-->
-        <!--</button>-->
+      <!--<button class='wikipedia-button {{#if wikipedia}}active{{/if}}' disabled='{{disableAllButStream}}'>-->
+      <!--{{> wikipedia_icon }}-->
+      <!--</button>-->
       <!--</li>-->
       <li>
         <button class='video-button {{#if video}}active{{/if}}' disabled='{{disableAllButStream}}'>
@@ -297,7 +329,8 @@
   <div class="tutorial">
     <div class="tutorial-step find-stream {{#if onFindStreamStep}}active{{/if}}">
       <div class="text">
-        <span class="number">Step 1:</span><span class="instruction">Find streams that you want to curate on the right.</span>
+        <span class="number">Step 1:</span><span
+          class="instruction">Find streams that you want to curate on the right.</span>
       </div>
       <button>Skip this step ></button>
     </div>
@@ -337,44 +370,63 @@
   </div>
 </template>
 
+<template name="context_browser_area">
+  {{ > context_card_column}}
+  <div class="context-timeline-switcher">
+    <button class="show-context-browser active">
+      <div class="rectangle"></div>
+      <div class="rectangle"></div>
+    </button>
+    <button class="show-timeline" disabled='{{#unless showShowTimelineButton}}disabled{{/unless}}'>
+      #
+    </button>
+  </div>
+  {{#if showChat}}
+    {{> unimplemented_chat_section}}
+  {{else}}
+    {{> context_browser}}
+  {{/if}}
+</template>
+
+<template name="context_card_column">
+  <div class="card-column">
+    <div class="previews-container">
+      {{#each orderedInternalContext}}
+        <div class="context-mini-preview {{#if isActiveContext}}active{{/if}}" data-context-id="{{_id}}">{{> relevant_content_icon}}</div>
+      {{/each}}
+    </div>
+  </div>
+</template>
+
 <template name="context_browser">
   <div class="context-browser">
+
     {{#if curateMode}}
-      <div class="context-browser-header-row">
-        {{#if soloSidebarContextMode}}
-          <button class="switch-to-list-mode">{{> list_icon}}</button>
-        {{/if}}
-        {{#if curateMode}}
-          <button class="add-new-context">{{> add_icon}}</button>
-        {{else}}
-          <!--{{#if showCloseSidebarIcon}}-->
-            <!--<button class="close">{{> close_sidebar_icon}}</button>-->
-          <!--{{else}}-->
-            <!--{{#if showOpenSidebarIcon}}-->
-              <!--<button class="open">{{> open_sidebar_icon}}</button>-->
-            <!--{{/if}}-->
-          <!--{{/if}}-->
-        {{/if}}
+      <div class="add-new-context-row">
+        <button class="add-new-context">{{> add_icon}}</button>
       </div>
     {{/if}}
+
     {{#if soloSidebarContextMode}}
       <div class="context-area">
         {{#with currentContext}}
           {{> solo_context_section}}
         {{/with}}
       </div>
+    {{else}}
+      <div class="top-bar"></div>
     {{/if}}
     <div class="context-area list-mode {{#if soloSidebarContextMode}}hide{{/if}}">
       {{#each contextBlocks}}
         {{> list_item_context_section}}
       {{/each}}
+      <div class="bottom-bar"></div>
     </div>
   </div>
 </template>
 
 <template name="overlay_context_browser">
   <div class="overlay-context-browser" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
-    <button class="close">{{> close_circle}}</button>
     <div class="context-area">
       {{#with currentContext}}
         {{> solo_context_section}}
@@ -385,23 +437,33 @@
 
 
 <template name="solo_context_section">
-  <div class="narrative-section context-section {{#if type}}{{type}}-card{{/if}}" data-context-id="{{_id}}">
+  <div class="narrative-section context-section solo-context-section {{#if type}}{{type}}-card{{/if}}" data-context-id="{{_id}}">
+    <button class="close">{{> close_circle}}</button>
+    {{#if showProvider}}
+      <div class="provider">{{#if providerIconUrl}}<img class="provider-image" src="{{providerIconUrl}}"/>{{/if}}{{providerName}}</div>
+    {{/if}}
     {{> Template.dynamic template=soloModeTemplate}}
   </div>
 </template>
 
 <template name="list_item_context_section">
-  <div class="narrative-section context-section list-item-context-section {{#if type}}{{type}}-card{{/if}}" data-context-id="{{_id}}">
-    <div class="clickable">
-      {{> Template.dynamic template=listModeItemTemplate}}
+  <div class="list-item-context-plus-annotation" data-context-id="{{_id}}">
+    <div class="narrative-section context-section list-item-context-section {{#if type}}{{type}}-card{{/if}} {{#if hasSoloMode}}isClickable{{/if}}" data-context-id="{{_id}}">
+      <div class="clickable">
+        <div class="provider">{{#if providerIconUrl}}<img class="provider-image" src="{{providerIconUrl}}"/>{{/if}}{{providerName}}</div>
+        {{> Template.dynamic template=listModeItemTemplate}}
+        {{#unless curateMode}}
+          {{#if hoverIconTemplate}}<button class="hover-icon">{{> Template.dynamic template=hoverIconTemplate}}</button>{{/if}}
+        {{/unless}}
+      </div>
+      {{#if curateMode}}
+        <button class="delete-context">{{> close_circle}}</button>
+      {{/if}}
     </div>
-    {{#if curateMode}}
-      <button class="delete-context">{{> close_circle}}</button>
+    {{#if showAnnotationSection}}
+      {{> annotation_section}}
     {{/if}}
   </div>
-  {{#if annotationAllowed}}
-    {{> annotation_section}}
-  {{/if}}
 </template>
 
 <template name="annotation_section">

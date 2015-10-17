@@ -71,20 +71,36 @@ var closeSignInOverlay = function () {
 
 // TO-DO close sign in overlay on esc (27) need to do on whole window though
 
+Template.signin_overlay.onCreated(function() {
+  this.showLoginForm = new ReactiveVar();
+});
+
+Template.signin_overlay.helpers({
+  showLoginForm (){
+    return Template.instance().showLoginForm.get();
+  }
+});
+
 Template.signin_overlay.events({
-  "click .close" (d) {
+  "click .close" (e, t) {
     closeSignInOverlay();
+    t.showLoginForm.set(false);
     analytics.track('Click close sign-in overlay');
   },
-  "click .twitter-signin, click .twitter-signup" (d) {
+  "click .twitter-signin, click .twitter-signup" (e, t) {
     closeSignInOverlay();
+    t.showLoginForm.set(false);
     loginWithTwitter();
     analytics.track('Click login with Twitter');
   },
-  "click .email-signin" (d) {
+  "click .email-signin" (e, t) {
     closeSignInOverlay();
+    t.showLoginForm.set(false);
     loginWithEmail();
     analytics.track('Click login with email');
+  },
+  "click .show-login-form" (e,t) {
+    t.showLoginForm.set(true);
   }
 });
 

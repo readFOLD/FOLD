@@ -1,0 +1,10 @@
+.amaran:after{
+  content:'x';
+  font-size: 16px;
+  position: absolute;
+  top: 2px;
+  right: 9px;
+}
+.amaran{
+  cursor: pointer !important;
+}

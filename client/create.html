@@ -15,6 +15,31 @@
   </div>
 </template>
 
+<template name="webcam_setup">
+  {{> context_card_column}}
+  <div class="add-context webcam-setup narrative-section selected editing">
+    <div class="search-section-title">Webcam</div>
+    <button class="go-back-button">{{> back_arrow_icon}}</button>
+    <div class="create-section add-webcam-section">
+      <p class="intro">Your webcam can be used as a picture-in-picture video to narrate your DeepStream</p>
+      <h4 class="instructions-header">Instructions for Bambuser</h4>
+      <ol>
+        <li class="instruction">Go to <a href="bambuser.com" target="_blank">bambuser.com</a>.</li>
+        <li class="instruction">Create an account if you don't have one.</li>
+        <li class="instruction">Click on your username in the upper righthand corner</li>
+        <li class="instruction">Click <img src="/images/bambuserButton.png"/></li>
+        <li class="instruction">When you are ready, click the red record button to start your Bambuser broadcast</li>
+      </ol>
+      <p class="next">Once you are broadcasting on Bambuser:</p>
+      <form id="bambuser-webcam" action="">
+        <label for="bambuser-username-input">Enter your Bambuser username here</label>
+        <input id="bambuser-username-input" name="bambuser-username" type="text"/>
+        <div class="button-container"><button type="submit" class="start-bambuser-webcam start-webcam">GO LIVE</button></div>
+      </form>
+    </div>
+  </div>
+</template>
+
 
 <template name="search_form">
   <div class="search-form">
@@ -453,9 +478,16 @@
 
 <template name="create_stream_section">
   <div class="search-section-title">Add Streams</div>
-  {{#if showSingleResult}}<button class="go-back-button">{{> back_arrow_icon}}</button>{{/if}}
+  {{#if showBackButton}}<button class="go-back-button">{{> back_arrow_icon}}</button>{{/if}}
   <div class="create-section add-stream-section">
     <div class="hiding-div {{#if showSingleResult}}hide{{/if}}">
+      <div class="tabs">
+        <ul>
+          {{#each dataSources}}
+            <li class="data-source {{#if selected}}selected{{/if}}">{{display}}</li>
+          {{/each}}
+        </ul>
+      </div>
       {{> search_form}}
       <ol class="search-results-container">
         {{#each results}}
@@ -468,7 +500,7 @@
                 <div class="content-title">{{title}}</div>
                 <div class="descr">{{caption}}</div>
                 <div class="user">{{username}}</div>
-                <div class="date">{{creationDateString}}</div>
+                <div class="date">LIVE NOW</div>
               </div>
             </div>
           </li>
@@ -490,7 +522,7 @@
           <div class="content-title">{{title}}</div>
           <div class="descr">{{caption}}</div>
           <div class="user">{{username}}</div>
-          <div class="date">{{creationDateString}}</div>
+          <div class="date">LIVE NOW</div>
         </div>
         <button type="button" class="add-button {{#if isActive}}enabled{{/if}}">
           Add

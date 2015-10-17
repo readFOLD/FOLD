@@ -108,7 +108,8 @@ div.create-section.link-twitter{
 div.add-context {
   display: flex;
   flex-flow: column;
-  .size-to-fit;
+  height: @mainStreamHeight + @context-browser-header-row-height - 10px;
+  position: relative;
   section {
     padding: 0;
   }
@@ -116,11 +117,13 @@ div.add-context {
   @contentIconBannerHeight: 80px;
 
   div.create-section {
-    padding-top: 22px;
-    padding-left: 22px;
-    padding-right: 22px;
-    height: calc(100% ~'-' @contextBrowserHeaderRowHeight);
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: calc(100% ~'-' @context-browser-header-row-height);
     flex: auto;
+    margin-right: 20px;
+    background-color: @context-background-color;
     .search-section {
       height: 100%;
     }
@@ -145,8 +148,8 @@ div.add-context {
         text-transform: uppercase;
         display: inline-block;
         min-width: 80px;
-        color: @deemphasized-light-text-color;
-        border-bottom: 2px solid @deemphasized-light-text-color;
+        color: darken(@deemphasized-light-text-color, 7%);
+        border-bottom: 2px solid darken(@deemphasized-light-text-color, 7%);
 
         &.selected, &:hover {
           color: @light-text-color;
@@ -157,13 +160,13 @@ div.add-context {
   }
 
     
-  @searchFormHeight: 75px;   
+  @searchFormHeight: 120px; // this is a guess
   @innerElementPadding: 9px;   
      
   div.search-outside-input-container {
 
-    @searchTriggerWidth: 90px;
-    @searchButtonWidth: 66px;
+    @searchTriggerWidth: 77px;
+    @searchButtonWidth: 30px;
     @searchInputHeight: 35px; 
     @searchInputWidth: calc(100% ~"-" @searchTriggerWidth ~"-" @innerElementPadding);
 
@@ -203,8 +206,8 @@ div.add-context {
 
     .search-button {
       background: @dark-color;
-      left: calc(100% ~"-" @searchButtonWidth);
-      padding: 7.5px 13px 7.5px 40px;
+      right: 0px;
+      padding: 7.5px 13px 7.5px 10px;
       &:hover{
         .fg{
           fill: @white-icon-color;
@@ -241,6 +244,7 @@ div.add-context {
   }
 
   div.text-result-container {
+    background-color: @medium-color;
     max-height: calc(100% ~"-" @searchFormHeight ~"-" 40px);
     overflow-y: scroll;
   }
@@ -263,7 +267,7 @@ div.add-context {
 
   ol.search-results-container {   
     width: 100%;
-    max-height: calc(100% ~"-" @searchFormHeight ~"-" 83px);
+    max-height: calc(100% ~"-" @searchFormHeight);
     overflow-y: scroll;
     overflow-x: ellipsis;
     list-style-type: none;
@@ -277,11 +281,16 @@ div.add-context {
       white-space: normal;
       cursor: pointer;
 
-      &:hover {
-        background: @dark-color;
-      }
-      &.focused {
-        background: @medium-color; 
+      &:not(.loading-icon){
+        &:nth-child(even){
+          background: lighten(@black-color, 10%);
+        }
+        &:nth-child(odd){
+          background: lighten(@black-color, 5%);
+        }
+        &:hover {
+          background: @black-color;
+        }
       }
 
     }
@@ -446,7 +455,7 @@ div.add-context {
 
     button.add-button {
       position: absolute;
-      right: 15px;
+      right: 30px;
       bottom: 15px;
       text-transform: uppercase;
       .action-button;

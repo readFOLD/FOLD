@@ -288,7 +288,7 @@ if (Deepstreams.find().count() === 0) {
               url: "https://i.ytimg.com/vi/w_GQNU85cJw/hqdefault.jpg"
             }
           },
-          channelTitle: "",
+          channelTitle: "explore.org",
           liveBroadcastContent: "live",
           videoId: "w_GQNU85cJw",
           _streamSource: "youtube"
@@ -410,7 +410,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T15:53:08.082Z"),
       savedAt: ISODate("2015-09-17T15:53:08.082Z"),
-      description: "The Blue Marble is a famous photo of the Earth, taken by the crew of the Apollo 17 spacecraft. It became a symbol of the environmental movement, as a depiction of Earth's frailty, vulnerability, and isolation amid the vast expanse of space."
+      annotation: "The Blue Marble is a famous photo of the Earth, taken by the crew of the Apollo 17 spacecraft. It became a symbol of the environmental movement, as a depiction of Earth's frailty, vulnerability, and isolation amid the vast expanse of space."
     },
     {
       reference: {
@@ -462,7 +462,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T15:55:02.701Z"),
       savedAt: ISODate("2015-09-17T15:55:02.701Z"),
-      description: "An image of the International Space Station"
+      annotation: "An image of the International Space Station"
     },
     {
       fullDetails: {
@@ -779,6 +779,8 @@ if (Deepstreams.find().count() === 0) {
       fromEmbedly: true,
       version: "em1",
       reference: {
+        primaryAuthor: "Jeffrey Kluger",
+        primaryAuthorUrl: "http://time.com/author/jeffrey-kluger/",
         title: "How Astronauts Dock at the Space Station",
         description: "One of the trickiest questions for a Soyuz spacecraft approaching the International Space Station (ISS) is where to park. The ISS may be larger than a football field, but it's got only so many ways to get inside, and with crewed spacecraft and uncrewed cargo ships regularly shuttling up and down, docking ports-or at least the right docking port-can be at a premium.",
         content: "<p>One of the trickiest questions for a Soyuz spacecraft approaching the International Space Station (ISS) is where to park. The ISS may be larger than a football field, but it's got only so many ways to get inside, and with crewed spacecraft and uncrewed cargo ships regularly shuttling up and down, docking ports-or at least the right docking port-can be at a premium.</p><p>In the pre-dawn hours of Sept. 28, space station astronaut Scott Kelly, along with cosmonauts Mikhail Kornienko and Gennady Padalka, will be required to do a bit of delicate flying to sort just that kind of problem out.</p><p>The three crewmen arrived at the station on March 29, with Padalka slated to spend six months aloft, and Kelly and Kornienko scheduled for a marathon one year in space. They docked their Soyuz spacecraft at the station's Poisk module-a 16-ft. (4.8 m) Russian node that was added to the ISS in 2009 as a science lab, observation point and egress compartment for astronauts embarking on spacewalks. It's remained there ever since, and that's a concern.</p><p>The five-plus months the ship has been hanging off the station in the alternating searing heat and deep freeze of orbital space can take its toll on the hardware, and since the crews rely on the ships as their way back to Earth, NASA and the Russian space agency, Roscosmos, instituted a rule: 180 days is the maximum amount of time a Soyuz can remain aloft before detaching and returning to Earth. But Kelly and Kornienko are set to stay for 365 days-which complicates their ride home.</p><p>MORE: TIME is producing a series of documentary films about the record-breaking mission to space. Watch them here.</p><p>Their Soyuz is not the only one that's on hand. There's another one for the other three crewmembers who are currently aboard. (Another NASA-Roscosmos rule: there must always be enough seats for everyone to be able to bail out immediately in the event of an emergency.) And on September 2, a third ship, carrying three more crew members, is set to arrive for a changeover of personnel. Not all docking nodes are equal-the Poisk is a better target since it faces Earth-and that requires a little juggling. Mission rules-to say nothing of basic physics-make the job a delicate one.</p><p>At 3:09 AM EDT, the complete Padalka-Kornienko-Kelly team will climb fully suited into their Soyuz. Technically, it does not take all three men to do the job. Padalka, who is one of the most experienced Soyuz pilots extant, has joked that he could fly the thing with two cabbages in the other seats. But in the event of Soyuz emergency requiring an immediate reentry, all three men must be aboard-lest a solitary pilot come home, leaving five people aboard the ISS and only three seats on the remaining Soyuz.</p><p>The crew will then undock from the Poisk and re-dock to the nearby Zvezda module, or service module-a straight distance of only a few dozen yards. But these kinds of orbital maneuvers require care, with both the station and the Soyuz orbiting the Earth at 17,133 mph (27,572 k/h) but moving just a few feet or inches at a time relative to each other.</p><p>\"They'll undock, then back out 200 meters or so,\" says NASA TV commentator and overall space station authority Rob Navias. \"Then they'll fly around to the back end of the service module, do a lateral translation, fly retrograde, then move in for a docking at the aft end of the module.\" If that sounds like an awfully complicated way to say, essentially, that they'll back up, turn around and pull in at another door, it's less techno-babble than it is a reflection of the complexity of even the most straightforward maneuvers in space.</p><p>Two of the newly arriving crew members will be only short-timers, staying on the station for just 10 days. They'll then fly home with Padalka in the older ship, leaving the fresh one for Kelly, Kornienko and another crew member six months later.</p><p>The ISS may be the most complicated job site on-or off-the planet, but it's one that could proudly display a sign reading \"14 years without an accident.\" Playing by all the workplace safety rules will help keep that record going.</p>",
@@ -800,7 +802,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 2,
       addedAt: ISODate("2015-09-17T15:57:02.654Z"),
       savedAt: ISODate("2015-09-17T15:57:02.654Z"),
-      description: "A detailed look at the process of docking at the ISS."
+      annotation: "A detailed look at the process of docking at the ISS."
     },
     {
       fullDetails: {
@@ -1181,6 +1183,8 @@ if (Deepstreams.find().count() === 0) {
       fromEmbedly: true,
       version: "em1",
       reference: {
+        primaryAuthorUrl: "http://www.usatoday.com/staff/16735/lori-grisham/",
+        primaryAuthor: "Lori Grisham",
         title: "Astronauts ate space salad grown on International Space Station",
         description: "Astronauts on the International Space Station ate lettuce Monday grown in space, according to NASA. The astronauts said \"cheers\" before eating the lettuce, which they sampled both plain and seasoned with olive oil and balsamic vinegar. The reviews were positive. Astronaut Scott Kelly called it \"good stuff\" and said it tasted like arugula.",
         content: "<p>Astronauts on the International Space Station ate lettuce Monday grown in space, according to NASA.</p><p>The astronauts said \"cheers\" before eating the lettuce, which they sampled both plain and seasoned with olive oil and balsamic vinegar. The reviews were positive. Astronaut Scott Kelly called it \"good stuff\" and said it tasted like arugula.</p><p>NASA streamed the harvest and first taste Monday afternoon online on NASA TV. It took about an hour for the astronauts to harvest and prepare the lettuce for consumption. Kelly joked about the time saying: \"Like is often the case, the food is never ready when you're ready to eat it.\"</p><p>During the live broadcast, Kelly said this kind of research is important especially when planning longer missions in the future, like trips to Mars, when spacecraft will need to be more self-sustainable. \"Having the ability for us to grow our own food is a big step in that direction,\" he said.</p><p>This is the first time astronauts ate vegetables grown in space, but plants have been on board the station since May 2014 when ISS hosted an experiment called \"Veg-01.\" Those plants were grown and taken back to earth for safety testing, according to Jeffs.</p><p>The red romaine seeds were planted on board ISS in a small greenhouse called \"Veggie\" on July 8, William Jeffs, a spokesman for NASA Johnson Space Center, told USA TODAY Network in an email. Veggie uses LEDs to foster plant growth in space, according to a statement from NASA.</p><p>Read or Share this story: http://usat.ly/1Tg0T5B</p>",
@@ -1442,6 +1446,7 @@ if (Deepstreams.find().count() === 0) {
       fromEmbedly: true,
       version: "em1",
       reference: {
+        primaryAuthor: "Source: Reuters",
         title: "Cosmonauts step outside International Space Station to clean the windows - video",
         description: "A pair of Russian cosmonauts embark on a six-hour space walk, floating more than 200 miles above the earth's surface, to install new equipment and carry out maintenance tasks including window cleaning.",
         content: "<p>A pair of Russian cosmonauts embark on a six-hour space walk, floating more than 200 miles above the earth's surface, to install new equipment and carry out maintenance tasks including window cleaning. Station commander Gennady Padalka and flight engineer Mikhail Kornienko left the station's Pirs module at 1420 GMT, installing equipment to help crew members manoeuvre outside the ISS, before cleaning a porthole window to remove years of dirt left by exhaust fumes from visiting ships. The expedition is the 188th ISS spacewalk and the tenth for Padalka, who has spent more time in space than any other human</p>",
@@ -1503,7 +1508,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:02:27.359Z"),
       savedAt: ISODate("2015-09-17T16:02:27.359Z"),
-      description: "A guided tour of the ISS"
+      annotation: "A guided tour of the ISS"
     },
     {
       reference: {
@@ -2029,7 +2034,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:04:10.558Z"),
       savedAt: ISODate("2015-09-17T16:04:10.558Z"),
-      description: ""
+      annotation: ""
     },
     {
       reference: {
@@ -2278,7 +2283,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:04:59.750Z"),
       savedAt: ISODate("2015-09-17T16:04:59.750Z"),
-      description: ""
+      annotation: ""
     },
     {
       reference: {
@@ -2471,7 +2476,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:05:11.534Z"),
       savedAt: ISODate("2015-09-17T16:05:11.534Z"),
-      description: ""
+      annotation: ""
     },
     {
       reference: {
@@ -3009,7 +3014,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:05:51.678Z"),
       savedAt: ISODate("2015-09-17T16:05:51.678Z"),
-      description: ""
+      annotation: ""
     },
     {
       content: "The International Space Station (ISS) is a space station, or a habitable artificial satellite, in low Earth orbit. Its first component launched into orbit in 1998, and the ISS is now the largest artificial body in orbit and can often be seen with the naked eye from Earth. The ISS consists of pressurised modules, external trusses, solar arrays and other components. ISS components have been launched by Russian Proton and Soyuz rockets as well as American Space Shuttles.\n\nThe ISS serves as a microgravity and space environment research laboratory in which crew members conduct experiments in biology, human biology, physics, astronomy, meteorology and other fields. The station is suited for the testing of spacecraft systems and equipment required for missions to the Moon and Mars. The ISS maintains an orbit with an altitude of between 330 and 435 km (205 and 270 mi) by means of reboost manoeuvres using the engines of the Zvezda module or visiting spacecraft. It completes 15.54 orbits per day.\n\nISS is the ninth space station to be inhabited by crews, following the Soviet and later Russian Salyut, Almaz, and Mir stations as well as Skylab from the US. The station has been continuously occupied for 14 years and 319 days since the arrival of Expedition 1 on 2 November 2000. This is the longest continuous human presence in space, having surpassed the previous record of 9 years and 357 days held by Mir. The station is serviced by a variety of visiting spacecraft: Soyuz, Progress, the Automated Transfer Vehicle, the H-II Transfer Vehicle, Dragon, and Cygnus. It has been visited by astronauts, cosmonauts and space tourists from 15 different nations.\n\nAfter the US Space Shuttle program ended in 2011, Soyuz rockets became the only provider of transport for astronauts at the International Space Station, and Dragon became the only provider of bulk cargo-return-to-Earth services (downmass capability of Soyuz capsules is very limited).\n\nThe ISS programme is a joint project among five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA. The ownership and use of the space station is established by intergovernmental treaties and agreements. The station is divided into two sections, the Russian Orbital Segment (ROS) and the United States Orbital Segment (USOS), which is shared by many nations. As of January 2014, the American portion of ISS was funded until 2024. Roscosmos has endorsed the continued operation of ISS through 2024, but have proposed using elements of the Russian Orbital Segment to construct a new Russian space station called OPSEK.\n\nFrom Wikipedia\nhttps://en.wikipedia.org/wiki/International_Space_Station",
@@ -3102,7 +3107,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:11:53.832Z"),
       savedAt: ISODate("2015-09-17T16:11:53.832Z"),
-      description: "This is what it sounds like on the ISS - loud!"
+      annotation: "This is what it sounds like on the ISS - loud!"
     },
     {
       type: "link",
@@ -3140,7 +3145,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:12:43.039Z"),
       savedAt: ISODate("2015-09-17T16:12:43.039Z"),
-      description: ""
+      annotation: ""
     }
   ];
   contextBlocksForISS.forEach(function(e){ addContextToStream.call({userId: curatorId}, "3zruKDSm", e)});
@@ -4443,7 +4448,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:23:59.551Z"),
       savedAt: ISODate("2015-09-17T16:23:59.551Z"),
-      description: ""
+      annotation: ""
     },
     {
       fullDetails: {
@@ -4460,258 +4465,6 @@ if (Deepstreams.find().count() === 0) {
             name: "Gregory Skomal"
           }
         ],
-        images: [
-          {
-            caption: null,
-            url: "http://si.wsj.net/public/resources/images/BN-JS983_cover_G_20150806121655.jpg",
-            height: 369,
-            width: 553,
-            colors: [
-              {
-                color: [
-                  24,
-                  75,
-                  146
-                ],
-                weight: 0.5537109375
-              },
-              {
-                color: [
-                  48,
-                  133,
-                  206
-                ],
-                weight: 0.2456054688
-              },
-              {
-                color: [
-                  56,
-                  159,
-                  231
-                ],
-                weight: 0.1286621094
-              },
-              {
-                color: [
-                  107,
-                  187,
-                  222
-                ],
-                weight: 0.0458984375
-              },
-              {
-                color: [
-                  167,
-                  153,
-                  151
-                ],
-                weight: 0.026123046900000002
-              }
-            ],
-            entropy: 5.51645828786,
-            size: 14539
-          },
-          {
-            caption: null,
-            url: "http://s.wsj.net/public/resources/images/BN-KH174_SANDER_C_20150914131555.jpg",
-            height: 94,
-            width: 167,
-            colors: [
-              {
-                color: [
-                  241,
-                  227,
-                  58
-                ],
-                weight: 0.2934570312
-              },
-              {
-                color: [
-                  56,
-                  48,
-                  38
-                ],
-                weight: 0.1901855469
-              },
-              {
-                color: [
-                  189,
-                  163,
-                  153
-                ],
-                weight: 0.0954589844
-              },
-              {
-                color: [
-                  160,
-                  118,
-                  101
-                ],
-                weight: 0.091796875
-              },
-              {
-                color: [
-                  113,
-                  88,
-                  74
-                ],
-                weight: 0.0869140625
-              }
-            ],
-            entropy: 6.8207496523,
-            size: 3956
-          },
-          {
-            caption: null,
-            url: "http://m.wsj.net/video/20150917/091715ferrari/091715ferrari_167x94.jpg",
-            height: 94,
-            width: 167,
-            colors: [
-              {
-                color: [
-                  236,
-                  246,
-                  247
-                ],
-                weight: 0.3232421875
-              },
-              {
-                color: [
-                  46,
-                  49,
-                  66
-                ],
-                weight: 0.1372070312
-              },
-              {
-                color: [
-                  15,
-                  16,
-                  27
-                ],
-                weight: 0.1337890625
-              },
-              {
-                color: [
-                  150,
-                  194,
-                  229
-                ],
-                weight: 0.1005859375
-              },
-              {
-                color: [
-                  19,
-                  119,
-                  229
-                ],
-                weight: 0.0734863281
-              }
-            ],
-            entropy: 6.3676874925,
-            size: 5972
-          },
-          {
-            caption: null,
-            url: "http://m.wsj.net/video/20150917/091715seib1/091715seib1_167x94.jpg",
-            height: 94,
-            width: 167,
-            colors: [
-              {
-                color: [
-                  33,
-                  27,
-                  31
-                ],
-                weight: 0.275390625
-              },
-              {
-                color: [
-                  117,
-                  122,
-                  143
-                ],
-                weight: 0.2709960938
-              },
-              {
-                color: [
-                  88,
-                  74,
-                  85
-                ],
-                weight: 0.2165527344
-              },
-              {
-                color: [
-                  53,
-                  67,
-                  116
-                ],
-                weight: 0.09765625
-              },
-              {
-                color: [
-                  167,
-                  176,
-                  196
-                ],
-                weight: 0.0871582031
-              }
-            ],
-            entropy: 7.146128325,
-            size: 5853
-          },
-          {
-            caption: null,
-            url: "http://m.wsj.net/video/20150917/091715cactus/091715cactus_167x94.jpg",
-            height: 94,
-            width: 167,
-            colors: [
-              {
-                color: [
-                  22,
-                  26,
-                  36
-                ],
-                weight: 0.2609863281
-              },
-              {
-                color: [
-                  241,
-                  240,
-                  242
-                ],
-                weight: 0.2250976562
-              },
-              {
-                color: [
-                  92,
-                  243,
-                  252
-                ],
-                weight: 0.1335449219
-              },
-              {
-                color: [
-                  66,
-                  68,
-                  79
-                ],
-                weight: 0.07861328120000001
-              },
-              {
-                color: [
-                  81,
-                  108,
-                  133
-                ],
-                weight: 0.0610351562
-              }
-            ],
-            entropy: 6.5774836143,
-            size: 5963
-          }
-        ],
         cache_age: 86400,
         language: "English",
         app_links: [],
@@ -4722,42 +4475,6 @@ if (Deepstreams.find().count() === 0) {
         offset: -18000000,
         lead: null,
         content: "<div>\n<p>On Aug. 7, 1954, an almost 14-foot-long great white shark swam into a small harbor on Cuttyhunk Island, just west of Martha's Vineyard off the coast of Massachusetts. Within hours, two fishing guides from the island had harpooned and killed the potential menace. </p>\n<p>Almost exactly 50 years later, in September 2004, another great white shark appeared in the same area, near the neighboring island of Naushon. The reaction this time was...</p>\n</div>",
-        entities: [
-          {
-            count: 1,
-            name: "Cuttyhunk Island"
-          },
-          {
-            count: 1,
-            name: "Naushon"
-          },
-          {
-            count: 1,
-            name: "Martha"
-          },
-          {
-            count: 1,
-            name: "Massachusetts"
-          }
-        ],
-        favicon_colors: [
-          {
-            color: [
-              249,
-              249,
-              249
-            ],
-            weight: 0.837890625
-          },
-          {
-            color: [
-              16,
-              16,
-              16
-            ],
-            weight: 0.162109375
-          }
-        ],
         keywords: [
           {
             score: 14,
@@ -4810,6 +4527,8 @@ if (Deepstreams.find().count() === 0) {
       fromEmbedly: true,
       version: "em1",
       reference: {
+        primaryAuthor: "Gregory Skomal",
+        primaryAuthorUrl: null,
         title: "The Misunderstood Shark",
         description: "On Aug. 7, 1954, an almost 14-foot-long great white shark swam into a small harbor on Cuttyhunk Island, just west of Martha's Vineyard off the coast of Massachusetts. Within hours, two fishing guides from the island had harpooned and killed the potential menace.",
         content: "<p>On Aug. 7, 1954, an almost 14-foot-long great white shark swam into a small harbor on Cuttyhunk Island, just west of Martha's Vineyard off the coast of Massachusetts. Within hours, two fishing guides from the island had harpooned and killed the potential menace.</p><p>Almost exactly 50 years later, in September 2004, another great white shark appeared in the same area, near the neighboring island of Naushon. The reaction this time was...</p>",
@@ -5082,7 +4801,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:24:33.378Z"),
       savedAt: ISODate("2015-09-17T16:24:33.378Z"),
-      description: ""
+      annotation: ""
     },
     {
       streamShortId: "SEDsDRNb",
@@ -5121,7 +4840,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:25:04.472Z"),
       savedAt: ISODate("2015-09-17T16:25:04.472Z"),
-      description: "The exhibit in Long Beach that these livestreams are from"
+      annotation: "The exhibit in Long Beach that these livestreams are from"
     },
     {
       reference: {
@@ -5136,7 +4855,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:19:13.681Z"),
       savedAt: ISODate("2015-09-17T16:19:13.681Z"),
-      description: "This is the aquarium in Long Beach where the shark livestream is from"
+      annotation: "This is the aquarium in Long Beach where the shark livestream is from"
     },
     {
       reference: {
@@ -5170,7 +4889,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 1,
       addedAt: ISODate("2015-09-17T16:20:35.242Z"),
       savedAt: ISODate("2015-09-17T16:20:35.242Z"),
-      description: "Some sharks you might see in the stream: a Blacktip Reef Shark"
+      annotation: "Some sharks you might see in the stream: a Blacktip Reef Shark"
     },
     {
       reference: {
@@ -5204,7 +4923,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 2,
       addedAt: ISODate("2015-09-17T16:21:25.881Z"),
       savedAt: ISODate("2015-09-17T16:21:25.881Z"),
-      description: "Zebra Shark"
+      annotation: "Zebra Shark"
     },
     {
       reference: {
@@ -5245,7 +4964,7 @@ if (Deepstreams.find().count() === 0) {
       rank: 0,
       addedAt: ISODate("2015-09-17T16:22:41.487Z"),
       savedAt: ISODate("2015-09-17T16:22:41.487Z"),
-      description: "Great footage of Zebra Sharks in the wild"
+      annotation: "Great footage of Zebra Sharks in the wild"
     }
   ];
   contextBlocksForSharks.forEach(function(e){

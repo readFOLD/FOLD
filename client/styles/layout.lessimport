@@ -4,6 +4,7 @@
 @medium-color: #9B9B9B;
 @light-color: #D8D8D8;
 @white-color: #F4F4F4;
+@blue-color: #6F9DC3;
 
 @dark-transparent-color: rgba(40, 40, 40, .9);
 @light-transparent-color: rgba(244,244,244,0.75);
@@ -765,6 +766,10 @@ textarea.text-content {
   position: fixed;
   top: 0;
   left: 0;
+
+}
+
+.full-overlay-close-button-styling{
   .close{
     float: right;
     .size(36px);
@@ -777,6 +782,7 @@ textarea.text-content {
 
 .signin-overlay{
   .full-overlay;
+  .full-overlay-close-button-styling;
   overflow-y: scroll;
   z-index: 111111;
   background-color: @dark-transparent-color;
@@ -807,6 +813,7 @@ textarea.text-content {
 
 .title-description-overlay{
   .full-overlay;
+  .full-overlay-close-button-styling;
   background-color: @light-transparent-color;
   color: @dark-text-color;
   .title-description-inputs{

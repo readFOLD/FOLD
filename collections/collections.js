@@ -288,6 +288,14 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   'topImage.width': {
     type: Number,
     optional: true
+  },
+  'primaryAuthor': {
+    type: String,
+    optional: true
+  },
+  'primaryAuthorUrl': {
+    type: String,
+    optional: true
   }
 
 });
@@ -334,7 +342,7 @@ Schema.ContextBlocks = new SimpleSchema({
     optional: true,
     blackbox: true
   },
-  description: {
+  annotation: {
     type: String,
     optional: true
   },
@@ -586,6 +594,30 @@ Schema.Deepstreams = new SimpleSchema({
     defaultValue: [],
     minCount: 0,
     maxCount: 1000
+  },
+  curatorWebcamStream: {
+    type: new SimpleSchema({
+        'reference._id': {
+          type: String,
+          optional: true
+        },
+        'reference.username': {
+          type: String,
+          optional: true
+        },
+        source: {
+          type: String
+        },
+        type: {
+          type: String,
+          defaultValue: 'stream'
+        }
+      }),
+    optional: true
+  },
+  curatorWebcamActive: {
+    type: Boolean,
+    optional: true
   },
   streams: {
     type: [Schema.Streams],

@@ -696,14 +696,14 @@ Meteor.methods({
       type: "stream",
       body:{
         query:{
-          match:{
-            title : query
+          multi_match:{
+            query: query,
+	    fields: ["title", "broadcaster", "tags", "description"],
           }
         }
       }
     });
-    var items = results.hits.hits;
-    console.log(query);
+    var items = _.chain(results.hits.hits).pluck("_source").pluck("doc").value();
     console.log(items);
 
     return {

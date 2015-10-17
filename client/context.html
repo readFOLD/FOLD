@@ -88,18 +88,21 @@
       <img class="news-header-image" src="{{headerImageUrl}}"/>
     {{/if}}
     <h4 class="news-title">{{title}}</h4>
-    <div class="news-date">{{publicationDate}}</div>
+    <div class="news-date">{{formatDate publicationDate}}</div>
+    <div class="news-author">{{primaryAuthor}}</div>
     <div class="news-html">{{{html}}}</div>
-    <div class="news-link"><a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a></div>
+    <div class="news-link"><a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}} ></a></div>
   </div>
-  {{> annotation_section }}
+  {{#if showAnnotationSection}}
+    {{> annotation_section}}
+  {{/if}}
 </template>
 
 <template name="homepage_preview_news_section">
   <div class="homepage-preview-news-section">
     <div class="news-source">{{#if providerIconUrl}}<img class="provider-image" src="{{providerIconUrl}}"/>{{/if}}{{providerName}}</div>
     <h4 class="news-title">{{title}}</h4>
-    <div class="news-date">{{publicationDate}}</div>
+    <div class="news-date">{{formatDateNice publicationDate}}</div>
     <div class="news-html">{{{html}}}</div>
   </div>
 </template>
@@ -120,7 +123,7 @@
     </a>
     <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
     <div class="bottom">
-      <a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+      <a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}} ></a>
     </div>
   </div>
 </template>
@@ -285,9 +288,19 @@
 </template>
 
 <template name="preview_news_section">
+  <div class="news-preview-top">
+    <div class="news-author">{{primaryAuthor}}</div>
+    <div class="news-date">{{formatDateNice publicationDate}}</div>
+    {{#if headerImageUrl}}
+      <img class="news-header-image" src="{{headerImageUrl}}"/>
+    {{/if}}
+  </div>
+
   <div class="show-full">
+    <h4 class="news-title">{{title}}</h4>
+
     <div class="news-preview">
-      {{title}} - {{providerName}}
+      {{introduction}}
     </div>
   </div>
 </template>

@@ -121,6 +121,12 @@ Template.watch_page.onCreated(function () {
     mainPlayer._bambuserPlayer = getFlashMovie(that.mainStreamFlashPlayerId);
   };
 
+
+  window.bambuserCuratorWebcamPlayerReady = function(){
+    console.log('Bambuser curator webcam player ready');
+    $('.curator-webcam-stream-container').addClass('ready'); // TODO, do this correctly
+  };
+
   window.twitchPlayerEventCallback = function(events){
     if(_.findWhere(events, {event: 'playerInit'})){
       console.log('Twitch player ready');
@@ -308,6 +314,10 @@ Template.watch_page.helpers({
       return this._id === activeStream._id;
     }
   },
+  allowStreamPreview (){
+    return true;
+    //return Session.get('curateMode') && Deepstreams.findOne({shortId: Template.instance().data.shortId()}, {fields: {'directorMode': 1}}).directorMode
+  },
   mainStreamIFrameId (){
     return Template.instance().mainStreamIFrameId;
   },
@@ -334,7 +344,7 @@ Template.watch_page.helpers({
       return activeStream.autoplayUrl();
     }
   },
-  flashVars (){
+  mainStreamFlashVars (){
     var activeStream = Template.instance().activeStream.get();
     var addlParams;
 
@@ -349,6 +359,18 @@ Template.watch_page.helpers({
     if(activeStream){
       return activeStream.flashVars() + addlParams;
     }
+  },
+  curatorWebcamFlashVars (){
+
+    switch(this.source){
+      case 'bambuser':
+        addlParams='&callback=bambuserCuratorWebcamPlayerReady';
+        break;
+      //case 'twitch':
+      //  addlParams='&eventsCallback=twitchPlayerEventCallback';
+      //  break;
+    }
+    return this.flashVars() + addlParams;
   },
   bambuserPlayer (){
     return Template.instance().activeStream.get().source === 'bambuser'
@@ -368,14 +390,14 @@ Template.watch_page.helpers({
   expandMainSection (){
     return !Session.get("curateMode") && Session.get('reducedView');
   },
-  showStreamSearch (){
-    return Session.get("curateMode") && Session.get('mediaDataType') === 'stream'; // always search on stream
+  showWebcamSetup (){
+    return Session.get("curateMode") && Session.get('mediaDataType') === 'webcam'; // always setup on webcam
   },
   showChat (){
     return Session.get('showChat', true); // TODO this is probably not what we want
   },
   showContextSearch (){
-    return Session.get('mediaDataType') && Session.get("curateMode");
+    return Session.get('mediaDataType') && Session.get("curateMode") && Session.get('mediaDataType') !=='webcam';
   },
   showPreviewEditButton (){
     return this.onAir || this.creationStep === 'go_on_air';
@@ -413,9 +435,6 @@ Template.watch_page.helpers({
   },
   deadstreams (){
     return _.where(this.streams, { live: false });
-  },
-  isActiveContext (){
-    return Session.equals('activeContextId', this._id);
   }
 });
 
@@ -515,14 +534,14 @@ Template.watch_page.events({
   'mouseenter .settings-button-and-menu' (e, template){
     template.settingsMenuOpen.set(true);
   },
-  'mouseleave .settings-button-and-menu' (e, template){
+  'mouseleave .settings-menu-container' (e, template){
     template.settingsMenuOpen.set(false);
   },
   'click .microphone' (e,t){
     notifyFeature('Live audio broadcast: coming soon!');
   },
   'click .webcam' (e,t){
-    notifyFeature('Live webcam broadcast: coming soon!');
+    Session.set('mediaDataType', 'webcam');
   },
   'click .email-share-button' (e,t){
     notifyFeature('Success!! Email share: coming soon!');
@@ -542,10 +561,14 @@ Template.watch_page.events({
   'click .context-mini-preview' (e,t){
     clearCurrentContext();
     Meteor.setTimeout( () =>{
+      var offset = 130;
       var contextToScrollTo = $('.context-section[data-context-id=' + this._id + ']');
       var container = $('.context-area');
-      container.animate({scrollTop: (contextToScrollTo.offset().top - container.offset().top + container.scrollTop())});
+      container.animate({scrollTop: (contextToScrollTo.offset().top - container.offset().top + container.scrollTop() - offset)});
     })
+  },
+  'click .show-timeline' (e,t){
+    notifyFeature('Twitter timeline: Coming soon!')
   }
 });
 
@@ -559,6 +582,12 @@ Template.stream_li.helpers({
   },
   previewMode (){
     return Template.instance().previewMode.get();
+  },
+  showPreviewButton (){
+    return Template.instance().data.allowPreview;
+  },
+  disablePreviewButton (){
+    return this.source === 'twitch';
   }
 });
 
@@ -568,31 +597,60 @@ Template.stream_li.events({
   }
 });
 
-Template.context_browser.onRendered(function(){
-  // make context sortable
-  var sortableOuterDiv = '.context-area';
-  var sortableListItem = '.list-item-context-section';
-  updateActiveContext();
-  var that = this;
-  that.$(sortableOuterDiv).sortable({
-    items: sortableListItem,
-    stop (){
-      var newOrder = that.$(sortableOuterDiv).sortable('toArray', {attribute: 'data-context-id'});
-      Meteor.call('reorderContext', Session.get('streamShortId'), newOrder, saveCallback);
-    }
-  });
-  that.$(sortableOuterDiv).disableSelection();
-
-  Tracker.autorun(function () {
-    if(Session.get('curateMode')){
-      that.$(sortableOuterDiv).sortable('enable');
-    } else {
-      that.$(sortableOuterDiv).sortable('disable');
-    }
-  })
-
+Template.context_browser_area.helpers({
+  showShowTimelineButton (){
+    return Session.get('curateMode');
+  }
 });
 
+Template.context_card_column.helpers({
+  isActiveContext (){
+    return Session.equals('activeContextId', this._id);
+  }
+});
+
+Template.context_browser_area.onRendered(function(){
+  // make context sortable
+  var sortableSets = [
+    {
+      outerDiv: '.context-area',
+      listItem: '.list-item-context-plus-annotation'
+    },{
+      outerDiv: '.previews-container',
+      listItem: '.context-mini-preview'
+    }
+  ];
+  
+  _.each(sortableSets, (sortableSet) => {
+    let sortableOuterDiv = sortableSet.outerDiv;
+    let sortableListItem = sortableSet.listItem;
+
+    this.$(sortableOuterDiv).sortable({
+      items: sortableListItem,
+      stop: () => {
+        var newOrder = this.$(sortableOuterDiv).sortable('toArray', {attribute: 'data-context-id'});
+        Meteor.call('reorderContext', Session.get('streamShortId'), newOrder, saveCallback);
+      }
+    });
+    this.$(sortableOuterDiv).disableSelection();
+
+    Tracker.autorun(function () {
+      if(Session.get('curateMode')){
+        this.$(sortableOuterDiv).sortable('enable');
+      } else {
+        this.$(sortableOuterDiv).sortable('disable');
+      }
+    })
+  });
+});
+
+
+Template.context_browser.onRendered(function() {
+  Tracker.autorun(() => {
+    this.contextBlocks;
+    updateActiveContext();
+  });
+});
 
 Template.context_browser.helpers({
   mediaTypeForDisplay (){
@@ -621,22 +679,22 @@ Template.context_browser.events({
   'click .open' (){
     Session.set('reducedView', false);
   },
-  'click .add-new-context' (){
+  'click .add-new-context-row' (){
     Session.set('mediaDataType', Session.get('previousMediaDataType') || 'image');
   },
   'click .delete-context' (e, t){
-    var that = this;
-
-    t.$('[data-context-id=' + that._id + ']').fadeOut(500, function() {
-      Meteor.call('removeContextFromStream', Session.get("streamShortId"), that._id, basicErrorHandler);
-    });
+    if(confirm('Are you sure you want to delete this ' + singularizeMediaType(this.type) + '? This cannot be undone.')){
+      t.$('.list-item-context-plus-annotation[data-context-id=' + this._id + ']').fadeOut(500, () => {
+          Meteor.call('removeContextFromStream', Session.get("streamShortId"), this._id, basicErrorHandler);
+      });
+    }
   },
   'click .context-section .clickable' (e, t){
 
     if ($(e.target).is('textarea')) { // don't go to big browser when its time to edit context
       return
     }
-    if(this.soloModeLocation){
+    if(this.hasSoloMode()){
       setCurrentContext(this);
     }
   },
@@ -671,15 +729,19 @@ Template.overlay_context_browser.events({
   }
 });
 
-Template.solo_context_section.helpers(horizontalBlockHelpers);
-Template.list_item_context_section.helpers(horizontalBlockHelpers);
-
-// TODO remove and have an about section
-Template.banner_buttons.events({
-  'click .about-deepstream' (){
-    notifyFeature('Coming soon!')
+Template.solo_context_section.events({
+  'click .close' (){
+    clearCurrentContext();
   }
 });
+
+Template.solo_context_section.helpers(horizontalBlockHelpers);
+Template.solo_context_section.helpers({
+  showProvider (){
+    return this.soloModeLocation === 'overlay';
+  }
+});
+Template.list_item_context_section.helpers(horizontalBlockHelpers);
 
 Template.title_description_overlay.onCreated(function(){
   this.titleLength = new ReactiveVar(this.title ? this.title.length : 0);
@@ -778,4 +840,21 @@ Template.relevant_content_icon.helpers({
 
 Template.annotation_section.helpers({
   annotation: textContentHelper
+});
+
+Template.webcam_setup.events({
+  'submit #bambuser-webcam' (e, t){
+    console.log('cloocik')
+    e.preventDefault();
+    var bambuserUsername = t.$('input[name=bambuser-username]').val();
+    if(!bambuserUsername){
+      return notifyError('Please enter your Bambuser username')
+    }
+    Meteor.call('startCuratorWebcam', Session.get("streamShortId"), {source: 'bambuser', reference: {username: bambuserUsername}}, function(err, result){
+      if(err){
+        return basicErrorHandler(err);
+      }
+      notifySuccess('You are now narrating your DeepStream!');
+    });
+  }
 });

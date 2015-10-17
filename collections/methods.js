@@ -324,19 +324,19 @@ Meteor.methods({
     check(description, String);
     return updateDeepstream.call(this, {shortId: shortId}, {$set: {'description' : description }});
   },
-  editHorizontalBlockDescription (streamShortId, contextId, description) {
+  editContextBlockAnnotation (streamShortId, contextId, annotation) {
     check(streamShortId, String);
     check(contextId, String);
-    check(description, String);
+    check(annotation, String);
     var deepstream = Deepstreams.findOne({shortId: streamShortId}, {fields: {'curatorIds': 1}});
 
     if(!_.contains(deepstream.curatorIds, this.userId)){
       throw new Meteor.Error('User not authorized to edit context in this deepstream');
     }
 
-    return updateContextBlock.call(this, {"streamShortId": streamShortId, "_id": contextId }, {"$set": {"description": description}});
+    return updateContextBlock.call(this, {"streamShortId": streamShortId, "_id": contextId }, {"$set": {"annotation": annotation}});
   },
-  editTextSection (shortId, contextId, content) {
+  editTextSection (streamShortId, contextId, content) {
     check(streamShortId, String);
     check(contextId, String);
     check(content, String);
@@ -346,7 +346,7 @@ Meteor.methods({
       throw new Meteor.Error('User not authorized to edit context in this deepstream');
     }
 
-    return updateContextBlock.call(this, {"streamShortId": streamShortId, "_id": contextId }, {"$set": {"content": description}});
+    return updateContextBlock.call(this, {"streamShortId": streamShortId, "_id": contextId }, {"$set": {"content": content}});
   },
   reorderContext (shortId, ordering){
     check(shortId, String);
@@ -383,6 +383,38 @@ Meteor.methods({
     }, {
       $set: {
         directorMode: true
+      }
+    });
+  },
+  startCuratorWebcam (shortId, stream){
+    check(shortId, String);
+    check(stream, Object);
+
+    _.extend(stream, {type: 'stream'});
+
+    if(Meteor.isClient){
+      Session.set('mediaDataType', null);
+    }
+
+    // TODO save info on the user as a default
+
+    return updateDeepstream.call(this, {
+      shortId: shortId
+    }, {
+      $set: {
+        curatorWebcamStream: stream,
+        curatorWebcamActive: true
+      }
+    });
+  },
+  stopCuratorWebcam (shortId){
+    check(shortId, String);
+
+    return updateDeepstream.call(this, {
+      shortId: shortId
+    }, {
+      $set: {
+        curatorWebcamActive: false
       }
     });
   },

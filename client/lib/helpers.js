@@ -109,7 +109,7 @@ window.textContentHelper = function() {
     additionalClasses = '';
   }
   else {
-    textContent = this.description || '';
+    textContent = this.annotation || '';
     rows = 3;
     placeholder = 'Add a caption'
     additionalClasses = 'annotation';
@@ -143,6 +143,23 @@ window.pluralizeMediaType = function(mediaType){
   }
 };
 
+window.singularizeMediaType = function(mediaType){
+  switch(mediaType){
+    case 'news':
+      return 'story';
+    case 'text':
+      return 'text';
+    case 'chat':
+      return 'chat';
+    case 'twitter':
+      return 'tweet';
+    case 'audio':
+      return 'sound clip';
+    default:
+      return mediaType
+  }
+};
+
 window.contextTypes = [
   "stream",
   "text",
@@ -168,7 +185,10 @@ window.horizontalBlockHelpers = _.extend({}, {
   selected (){
     return true;
   },
-  annotation: textContentHelper
+  annotation: textContentHelper,
+  showAnnotationSection () {
+    return this.annotationAllowed && (Session.get('curateMode') || this.annotation);
+  }
 });
 
 
@@ -216,35 +236,52 @@ var monthNames = ["January", "February", "March", "April", "May", "June", "July"
 
 // Friday 2/20/2015 20:29:22
 window.formatDate = function (date) {
-  var hms;
-  hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-  return weekDays[date.getDay()] + " " + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
+  if (date) {
+    var hms;
+    hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+    return weekDays[date.getDay()] + " " + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
+  }
 };
 
 // February 7th, 2015
 window.formatDateNice = function (date) {
-  var hms;
-  hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-  return monthNames[(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear();
+  if (date){
+    var hms;
+    hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+    return monthNames[(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear();
+  }
+
 };
 
 window.updateActiveContext = function(){
-  var contextOffsetObjects = _.map(Deepstreams.findOne({shortId: Session.get('streamShortId')}).orderedContextIds(), (id) => {
-      var e = $('.list-item-context-section[data-context-id=' + id + ']');
-      return {id: id, offset: e.offset().top, height: e.outerHeight()};
-    }
-  );
+
 
   var container = $('.context-area.list-mode');
   var containerOffset = container.offset().top;
+  var lastActivationBias = 0;
+  var currentActivationBias = 30;
+  var activeId;
 
-  var activeId = _.chain(contextOffsetObjects)
-    .filter((obj) => {
-      return obj.offset + obj.height / 2 > containerOffset;
-    })
-    .pluck('id')
-    .first()
-    .value();
+  var orderedContextIds = Deepstreams.findOne({shortId: Session.get('streamShortId')}).orderedContextIds();
+
+
+  if (container[0].scrollHeight - container.scrollTop() - container.outerHeight() - lastActivationBias <= 0 ){
+    activeId =  _.last(orderedContextIds);
+  } else {
+    var contextOffsetObjects = _.map(orderedContextIds, (id) => {
+        var e = $('.list-item-context-plus-annotation[data-context-id=' + id + ']');
+        return {id: id, offset: e.offset().top, height: e.outerHeight()};
+      }
+    );
+
+    activeId = _.chain(contextOffsetObjects)
+      .filter((obj) => {
+        return obj.offset + obj.height / 2 > containerOffset + currentActivationBias;
+      })
+      .pluck('id')
+      .first()
+      .value();
+  }
 
   Session.set('activeContextId', activeId);
 };

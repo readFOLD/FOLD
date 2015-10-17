@@ -102,6 +102,10 @@ Deepstream = (function() {
     return _.findWhere(this.streams, {_id: id});
   };
 
+  Deepstream.prototype.getCuratorWebcamStream = function(){
+    return new Stream(this.curatorWebcamStream);
+  };
+
   Deepstream.prototype.watchPath = function(){
     return '/watch/' + this.userPathSegment + '/' + this.streamPathSegment;
   };
