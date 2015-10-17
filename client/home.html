@@ -250,7 +250,8 @@
     {{> deepstream_preview deepstream=this}}
   {{else}}
     {{#if subsReady}}
-      No results found.
+      <div class="no-results">No results found.</div>
+
     {{/if}}
   {{/each}}
 </template>
@@ -358,13 +359,14 @@
           <img src="{{thumbnailUrl}}"/>
           {{> play_video_icon}}
         </div>
-        <div class="existing-deepstreams-message">0 deepstreams have been made from this</div>
-        <div class="title">{{title}}</div>
-        <div class="small-stream-info">
-          <div class="username">{{username}}</div>
-          {{#if totalViews}}
-            <div class="views">{{totalViews}} Views</div>
-          {{/if}}
+        <div class="stream-info">
+          <div class="title">{{title}}</div>
+          <div class="small-stream-info">
+            <div class="username">{{username}}</div>
+            {{#if totalViews}}
+              <div class="views">{{totalViews}} Views</div>
+            {{/if}}
+          </div>
         </div>
       </div>
     </button>

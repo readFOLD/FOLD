@@ -54,6 +54,7 @@ div.deepstreams-and-streams > ol > li:nth-child(even) {
 
 .stream-type-selector-container{
   text-align: center;
+  margin-bottom: 38px;
 }
 
 .stream-type-selector{
@@ -377,6 +378,7 @@ div.logo-title {
 
 .stream-preview{
   display: inline-block;
+  @image-height: 136px;
   button{
     .size-to-fit;
   }
@@ -385,7 +387,6 @@ div.logo-title {
     text-align: left;
     .size-to-fit;
   }
-  height: 200px;
   width: 375px;
   background-color: @homepage-shade-4;
   margin-right: 30px;
@@ -393,7 +394,7 @@ div.logo-title {
   position: relative;
   .preview-hover;
   .stream-image{
-    height: 136px;
+    height: @image-height;
     width: 172px;
     position: relative;
     img{
@@ -405,31 +406,27 @@ div.logo-title {
       .size(35px);
     }
   }
-  .existing-deepstreams-message{
-    display: inline-block;
+  .stream-info{
+    display: inline-flex;
+    flex-direction: column;
+    height: @image-height;
     width: 150px;
     position: absolute;
-    top: 70px;
-    right: 10px;
-    font-size: 14px;
+    top: 10px;
+    left: 200px;
+  }
+  .small-stream-info{
+    height: 30px;
+    margin-top: 8px;
     color: @deemphasized-light-text-color;
   }
   .title{
-    .ellipsis-text;
+    flex: auto;
     font-size: 18px;
+    width: 100%;
+    overflow-x: hidden;
     margin-top: 5px;
     margin-bottom: 5px;
-  }
-  .small-stream-info{
-    width: 100%;
-    color: @deemphasized-light-text-color;
-  }
-  .username, .views{
-    display: inline-block;
-    font-size: 14px;
-  }
-  .views{
-    float:right;
   }
 }
 
@@ -734,4 +731,8 @@ div.action-items {
       font-size: 14px;
     }
   }
+}
+
+.no-results{
+  height: 100px;
 }

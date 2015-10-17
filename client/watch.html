@@ -218,6 +218,9 @@
               <!--class="curator-webcam-stream-iframe"-->
               <!--src="{{autoplayUrl}}" frameborder="0"-->
               <!--allowfullscreen></iframe>-->
+          {{#if curateMode}}
+            <button class="end-curator-webcam-stream">{{> close_circle}}</button>
+          {{/if}}
         </div>
       {{/with}}
     {{/if}}

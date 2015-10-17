@@ -543,6 +543,9 @@ Template.watch_page.events({
   'click .webcam' (e,t){
     Session.set('mediaDataType', 'webcam');
   },
+  'click .end-curator-webcam-stream' (e,t){
+    Meteor.call('stopCuratorWebcam', t.data.shortId(), basicErrorHandler);
+  },
   'click .email-share-button' (e,t){
     notifyFeature('Success!! Email share: coming soon!');
   },
