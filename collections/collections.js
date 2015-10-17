@@ -606,7 +606,8 @@ Schema.Deepstreams = new SimpleSchema({
           optional: true
         },
         source: {
-          type: String
+          type: String,
+          optional: true
         },
         type: {
           type: String,
