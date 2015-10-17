@@ -704,7 +704,6 @@ Meteor.methods({
       }
     });
     var items = _.chain(results.hits.hits).pluck("_source").pluck("doc").value();
-    console.log(items);
 
     return {
       items: items,
