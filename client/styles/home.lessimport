@@ -153,8 +153,8 @@ div.stories {
     line-height: 31px;
     font-size: 21px;
     font-weight: bold;
-    padding: 20px 30px 0px 30px;
-    margin-bottom: calc(9% ~"-" 27px);
+    margin: 20px 30px calc(9% ~"-" 27px) 30px;
+    //margin-bottom: calc(9% ~"-" 27px);
   }
 
 
@@ -180,7 +180,7 @@ div.stories {
 
       div.author-name-date {
         @margin: 20px;
-        font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+        font-family: 'PT Mono', monospace;
         display: inline-block;
         margin-left: @margin;
         margin-top: -9px;
@@ -214,6 +214,7 @@ div.stories {
     width:100%;
     height: calc(100% ~"-" 110px);
     z-index: -1;
+    border: 1px solid @inactive-color;
   }
 
   img.profile-picture {
@@ -259,8 +260,6 @@ div.stories {
 
   div.story {
     background-color: @white-color;
-    border-bottom: 7px solid @action-color;
-    // box-shadow: 3px 3px @medium-color;
 
     // 540 980+
     // 415 980-

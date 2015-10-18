@@ -128,6 +128,14 @@ html {
   src: local('Muli'), url(//fonts.gstatic.com/s/muli/v7/FrmKYbbiMrxVeJO6lA8KEvesZW2xOQ-xsNqO47m55DA.ttf) format('truetype');
 }
 
+@font-face {
+  font-family: 'PT Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: local('PT Mono'), local('PTMono-Regular'), url(https://fonts.gstatic.com/s/ptmono/v4/71D43E_ZpjerHAsyF2SPuFKPGs1ZzpMvnHX-7fPOuAc.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+
 @highdensity: ~"only screen and (-webkit-min-device-pixel-ratio: 1.5)",
 ~"only screen and (min--moz-device-pixel-ratio: 1.5)",
 ~"only screen and (-o-min-device-pixel-ratio: 3/2)",
