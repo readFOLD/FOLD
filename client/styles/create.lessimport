@@ -253,7 +253,12 @@ div.save-background-image {
   }
 }
 
+.top-banner{
+  z-index: 100;
+}
+
 div.title-overlay {
+  top: @magic-styling-distance;
   @media @not-mobile {
     min-width: 1024px;
   }
@@ -378,9 +383,16 @@ div.title-overlay {
     }
     padding: 11px;
     background-color: @dark-color;
-    &.fixed {
+    &.b {
       position: fixed;
       padding-top: 19px;
+      margin-top: @magic-styling-distance;
+    }
+    &.a{
+      margin-top: 125px;
+    }
+    &.c{
+      margin-top: 0px;
     }
     div.story-title {
       max-width: 100%;

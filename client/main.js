@@ -92,24 +92,28 @@ window.updateCurrentY = function() {
     opacity: 0.5 + Math.min(1.0, scrollTop / maxScroll) / 2
   });
   if (scrollTop >= stickyTitle) {
-    $("div.title-author").css({
-      "margin-top": "0px"
-    });
-    $("div.title-author").addClass("fixed");
+
+    $("div.title-author").addClass("b");
+    $("div.title-author").removeClass("a");
+    $("div.title-author").removeClass("c");
   } else {
-    $("div.title-author").css({
-      "margin-top": "125px"
-    });
-    $("div.title-author").removeClass("fixed");
+
+    $("div.title-author").addClass("a");
+    $("div.title-author").removeClass("b");
+    $("div.title-author").removeClass("c");
   }
   if (scrollTop >= stickyBody) {
     $("div.horizontal-context").addClass("fixed");
     $("div.vertical-narrative").addClass("fixed");
     $("div.vertical-narrative").removeClass("free-scroll");
 
+
     if (scrollTop >= maxScroll) {
       $("div.vertical-narrative").removeClass("fixed");
       $("div.vertical-narrative").addClass("free-scroll");
+      $("div.title-author").addClass("c");
+      $("div.title-author").removeClass("a");
+      $("div.title-author").removeClass("b");
 
     }
   } else {

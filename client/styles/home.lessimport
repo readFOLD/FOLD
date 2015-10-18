@@ -16,6 +16,9 @@ div.home-top {
   }
   background-color: white;
   height: 120px;
+  &.slim{
+    height: @magic-styling-distance;
+  }
   @media @mobile{
     img{
       vertical-align: middle;
@@ -23,7 +26,6 @@ div.home-top {
     height: 175px;
   }
   width: 100%;
-  z-index: 10;
   //border-bottom: 1px solid @medium-color;
   -webkit-box-shadow: 0 2px 8px -6px @dark-color;
   -moz-box-shadow: 0 2px 8px -6px @dark-color;
