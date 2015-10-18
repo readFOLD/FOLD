@@ -176,7 +176,7 @@ Meteor.startup(function() {
 
 Meteor.startup(function(){
   $( window ).konami({
-    code : [38,38,40,40,37,39,37,39, 66, 65, 66, 65, 13],
+    code : [38,38,40,40,37,39,37,39, 66, 65],
     cheat: function() {
       $('body').addClass('konami');
     }

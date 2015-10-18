@@ -159,7 +159,7 @@ div.stories {
     line-height: 31px;
     font-size: 21px;
     font-weight: bold;
-    margin: 20px 30px calc(9% ~"-" 27px) 30px;
+    padding: 20px 30px calc(9% ~"-" 27px) 30px;
     //margin-bottom: calc(9% ~"-" 27px);
   }
 
@@ -220,7 +220,6 @@ div.stories {
     width:100%;
     height: calc(100% ~"-" 110px);
     z-index: -1;
-    border: 1px solid @inactive-color;
   }
 
   img.profile-picture {
@@ -265,6 +264,7 @@ div.stories {
 
 
   div.story {
+    border: 1px solid @inactive-color;
     background-color: @white-color;
 
     // 540 980+
