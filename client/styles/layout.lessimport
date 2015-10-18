@@ -499,6 +499,7 @@ div#overlay {
   }
   &.selected {
     cursor: text;
+    border: 1px solid @inactive-color;
     a {
       // moved background-transition to specific cases so everything doesn't need to animate when a new card becomes selected
       cursor: pointer;
