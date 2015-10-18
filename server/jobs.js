@@ -171,12 +171,12 @@ var generateFetchFunction = function(serviceInfo){
 			index:Meteor.settings.ELASTICSEARCH_INDEX,
         		type:"stream",
         		body:{
-                                doc: result,
-				source: result._streamSource,
-          			broadcaster: result._es.broadcaster,
-          			description: result._es.description,
-	  			tags : result._es.tags,
-          			title: result._es.title,
+                  doc: result,
+				          source: result._streamSource,
+          			  broadcaster: result._es.broadcaster,
+          			  description: result._es.description,
+	  			        tags : result._es.tags,
+          			  title: result._es.title,
         		}
 		});
 	});
