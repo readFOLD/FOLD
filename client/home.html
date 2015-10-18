@@ -1,15 +1,12 @@
 
 
 <template name="top_banner">
-  <div class="home-top {{#if border}}{{border}}{{/if}}">
+  <div class="home-top">
     <div class="left">
       <div class="logo-title">
         {{#linkTo route="home"}}
-        <img class="logo" src="{{c.url 'static/FOLD_LOGO.svg'}}">
-        {{/linkTo}}
-        {{#linkTo route="home"}}
         <div class="title">
-          <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
+          <img src="{{c.url 'static/foldtitle.svg'}}">
         </div>
         {{/linkTo}}
       </div>
@@ -47,9 +44,8 @@
   <div class="home-top remix-color not-sticky">
     <div class="left">
       <div class="logo-title">
-          <img class="logo" src="{{c.url 'static/FOLD_LOGO.svg'}}">
           <div class="title">
-            <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
+            <img src="{{c.url 'static/foldtitle.svg'}}">
           </div>
       </div>
     </div>
@@ -61,11 +57,8 @@
     <div class="left">
       <div class="logo-title">
           {{#linkTo route="home"}}
-          <img class="logo" src="{{c.url 'static/FOLD_LOGO.svg'}}">
-          {{/linkTo}}
-          {{#linkTo route="home"}}
           <div class="title">
-            <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
+            <img src="{{c.url 'static/foldtitle.svg'}}">
           </div>
           {{/linkTo}}
       </div>
@@ -135,8 +128,8 @@
 </template>
 
 <template name="home">
-  {{> top_banner showFilters="true" border="active-border"}}
-  <div class="stories"> 
+  {{> top_banner showFilters="true"}}
+  <div class="stories">
     <section>
       <div class="story-container">
         {{> all_stories}}

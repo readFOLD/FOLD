@@ -28,33 +28,17 @@ div.home-top {
   -webkit-box-shadow: 0 2px 8px -6px @dark-color;
   -moz-box-shadow: 0 2px 8px -6px @dark-color;
   box-shadow: 0 2px 8px -6px @dark-color;
-  
-  &.panel-border {
-    border-top: 6px solid @panel-color;
-  }
-
-  &.active-border {
-    border-top: 6px solid @action-color;
-  }
-
-  &.remix-border {
-    border-top: 6px solid @remix-color;
-  }
 
   div.logo-title {
-    .logo {
-      float: left;
-      z-index: 10;
-    }
 
     div.title {
-      float: right;
+      float: left;
     }
 
     @media @not-mobile{
       display: inline-block;
-      margin-left: 60px;
-      margin-top: 37px;
+      margin-left: 40px;
+      margin-top: 40px;
       width: 310px;
       div.title {
         //margin-top: 5px;
