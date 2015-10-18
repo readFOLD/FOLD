@@ -29,16 +29,40 @@ div.home-top {
   -moz-box-shadow: 0 2px 8px -6px @dark-color;
   box-shadow: 0 2px 8px -6px @dark-color;
 
+
   div.logo-title {
 
     div.title {
       float: left;
     }
 
+
+
+    &.fat{
+      .title{
+        img{
+          height: @magic-styling-distance;
+        }
+      }
+    }
+
+    &.slim{
+      .title{
+        img{
+          height: @magic-styling-distance / 2;
+        }
+      }
+    }
+
     @media @not-mobile{
       display: inline-block;
+      &.fat{
+        margin-top: @magic-styling-distance;
+      }
+      &.slim{
+        margin-top: @magic-styling-distance / 4;
+      }
       margin-left: @magic-styling-distance;
-      margin-top: @magic-styling-distance;
       width: 310px;
       div.title {
         //margin-top: 5px;
@@ -64,7 +88,12 @@ div.home-top {
   div.filter {
     position: absolute;
     font-size: 14px;
-    top: @magic-styling-distance;
+    &.fat{
+      top: @magic-styling-distance;
+    }
+    &.slim{
+      top: 0;
+    }
     height: @magic-styling-distance;
 
     @media @not-mobile{

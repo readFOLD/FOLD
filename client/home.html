@@ -1,23 +1,23 @@
 
 
 <template name="top_banner">
-  <div class="home-top">
+  <div class="home-top {{#if slim}}slim{{else}}fat{{/if}}">
     <div class="left">
-      <div class="logo-title">
+      <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}}">
         {{#linkTo route="home"}}
-        <div class="title">
+        <div class="title {{#if slim}}slim{{else}}fat{{/if}}">
           <img src="{{c.url 'static/foldtitle.svg'}}">
         </div>
         {{/linkTo}}
       </div>
       {{#if showFilters}}
-      <div class="filter">
+      <div class="filter {{#if slim}}slim{{else}}fat{{/if}}">
         {{> filters}}
         <!--{{> filters}} in {{> categories}}-->
       </div>
       {{/if}}
     </div>
-    {{> banner_buttons}}
+    {{> banner_buttons slim=slim}}
     {{> signin_overlay}}
   </div>
 </template>
