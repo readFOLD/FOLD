@@ -1643,7 +1643,7 @@ div.loading-container {
     &.fat{
       li{
         &:not(:last-child) {
-          margin-right: 12px;
+          margin-right: @magic-styling-distance;
         }
       }
     }
@@ -1688,7 +1688,12 @@ div.loading-container {
   }
   .social-links{
     position: absolute;
-    top: 50px;
+    top: @magic-styling-distance;
     right: @magic-styling-distance;
+    li{
+      display: inline-block;
+      width: @magic-styling-distance * 1.5;
+      text-align: center;
+    }
   }
 }

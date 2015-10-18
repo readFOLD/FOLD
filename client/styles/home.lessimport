@@ -7,7 +7,7 @@ div#login-buttons-and-more {
   left: 15px;
 }
 
-@topButtonRight: 180px;
+@topButtonRight: 250px;
 
 div.home-top {
   position: fixed;
