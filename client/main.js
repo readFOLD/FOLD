@@ -174,6 +174,14 @@ Meteor.startup(function() {
   return $(document).scroll(throttledUpdate);
 });
 
+Meteor.startup(function(){
+  $( window ).konami({
+    code : [38,38,40,40,37,39,37,39, 66, 65, 66, 65, 13],
+    cheat: function() {
+      $('body').addClass('konami');
+    }
+  });
+});
 
 window.trackingInfoFromStory = function(story){
   return _.chain(story)
