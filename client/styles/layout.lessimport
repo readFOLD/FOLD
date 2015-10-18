@@ -1,18 +1,18 @@
 @black-color: #1D1D1D;
-@dark-color: #323232;
+@dark-color: #333333;
 @medium-color: #CCCCCB;
 @light-color: #F4F4F4;
 @light-transparent-color: rgba(244,244,244,0.75);
 @white-color: white;
 
-@background-color: #F8F8F8;
-@action-color: #1DB259;
-@inactive-color: #DDDDDD;
+@background-color: #ffffff;
+@action-color: #00c976;
+@inactive-color: #c2c2c5;
 @placeholder-color: #acacac;
-@danger-color: #ff1b0c;
-@less-danger-color: #ba200c;
-@panel-color: #585094;
-@remix-color: #EA1D75;
+@danger-color: #fc521f;
+@less-danger-color: #fc521f;
+@panel-color: #815ed9;
+@remix-color: #fc521f;
 @favorite-color: #FFD600;
 @dark-favorite-color: #EFC820;
 
