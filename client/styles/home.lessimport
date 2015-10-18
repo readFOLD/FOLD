@@ -188,6 +188,7 @@ div.stories {
 
   div.headline {
     background-color: @white-color;
+    font-family: 'FFMarkWebMedium';
     height: auto;
     /*height depends on length of story headline*/
     width: 100%;

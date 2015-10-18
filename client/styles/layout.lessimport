@@ -141,6 +141,27 @@ html {
   unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
 }
 
+.FFMarkWebBold { 
+  font-family: FFMarkWebBold;
+  font-weight: normal;
+  font-style: normal;
+}
+.FFMarkWebMedium { 
+  font-family: FFMarkWebMedium;
+  font-weight: normal;
+  font-style: normal;
+}
+.FFMarkWeb { 
+  font-family: FFMarkWeb;
+  font-weight: normal;
+  font-style: normal;
+}
+.FFMarkWebLight { 
+  font-family: FFMarkWebLight;
+  font-weight: normal;
+  font-style: normal;
+}
+
 @highdensity: ~"only screen and (-webkit-min-device-pixel-ratio: 1.5)",
 ~"only screen and (min--moz-device-pixel-ratio: 1.5)",
 ~"only screen and (-o-min-device-pixel-ratio: 3/2)",
