@@ -121,3 +121,35 @@ svg.mobile-back-icon{
 i.loading-icon{
   color: @action-color;
 }
+
+.facebook-social-icon{
+  .fg{
+    fill: @inactive-color;
+  }
+  &:hover{
+    .fg{
+      fill: @facebook-color;
+    }
+  }
+}
+
+.instagram-social-icon{
+  .fg{
+    fill: @inactive-color;
+  }
+  &:hover{
+    .fg{
+      fill: @instagram-color;
+    }
+  }
+}
+.twitter-social-icon{
+  .fg{
+    fill: @inactive-color;
+  }
+  &:hover{
+    .fg{
+      fill: @twitter-color;
+    }
+  }
+}
