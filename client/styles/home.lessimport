@@ -185,7 +185,7 @@ div.stories {
       }
 
       div.author-name-date {
-        @margin: 20px;
+        @margin: 25px;
         font-family: 'PT Mono', monospace;
         display: inline-block;
         margin-left: @margin;
@@ -196,13 +196,14 @@ div.stories {
         }
         width: calc(100% ~"-"  @profile-picture-size ~"-" @margin * 2);
         div.author-name {
+          color: @dark-color;
           .ellipsis-text;
           width: 100%;
           margin-top: 12px;
           font-size: 15px;
         }
         div.publish-date {
-          //font-style: italic;
+          color: @inactive-color;
           text-transform: uppercase;
           font-size: 12px;
         }
@@ -347,8 +348,8 @@ div.stories {
       font-size: 14px;
       font-family: inherit;
       position: absolute;
-      right: 23px;
-      bottom: 60px;
+      right: 40px;
+      bottom: 40px;
     }
 
     div.edit-or-read {
