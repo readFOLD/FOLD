@@ -7,7 +7,7 @@ div#login-buttons-and-more {
   left: 15px;
 }
 
-@topButtonRight: 72px;
+@topButtonRight: 180px;
 
 div.home-top {
   position: fixed;
@@ -37,8 +37,8 @@ div.home-top {
 
     @media @not-mobile{
       display: inline-block;
-      margin-left: 40px;
-      margin-top: 40px;
+      margin-left: @magic-styling-distance;
+      margin-top: @magic-styling-distance;
       width: 310px;
       div.title {
         //margin-top: 5px;
@@ -63,17 +63,23 @@ div.home-top {
 
   div.filter {
     position: absolute;
-    font-size: 15px;
-    top: 67px;
+    font-size: 14px;
+    top: @magic-styling-distance;
+    height: @magic-styling-distance;
 
     @media @not-mobile{
-      right: @topButtonRight;
+      left: 230px;
     }
     @media @mobile{
       top: 110px;
       width: 100%;
       text-align: center;
     }
+
+    .sod_select, .sod_option{
+      padding: 12.5px 10px;
+    }
+
 
 
     span.categories {
@@ -89,7 +95,7 @@ div.signup, div.login, div.user_profile {
   height: 100%;
 }
 
-@profile-picture-size: 60px;
+@profile-picture-size: @magic-styling-distance * 1.5;
 
 
 div.stories {
@@ -240,7 +246,7 @@ div.stories {
     @media @mobile{
       padding-top: 56px;
     }
-    @padding-side: 40px;
+    @padding-side: @magic-styling-distance;
     padding-left: @padding-side;
     //padding-right: @padding-side;
     padding-bottom: 75px;
@@ -279,9 +285,9 @@ div.stories {
       margin-bottom: 40px;
     }
 
-    @margin-side: 20px;
+    @margin-side: @magic-styling-distance/2;
     margin-left: 0;
-    margin-right: 40px;
+    margin-right: @magic-styling-distance;
     width: calc(33.33% ~"-" @margin-side * 2);
     float: left;
 

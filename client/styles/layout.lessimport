@@ -30,6 +30,8 @@
 @mobile-content-font-size: 15.5px;
 @mobile-content-line-height: 24px;
 
+@magic-styling-distance: 40px;
+
 .content-font{
   font-size: @content-font-size;
   line-height: @content-line-height;
@@ -1584,18 +1586,19 @@ div.loading-container {
   float: right;
 
   div.action-items {
-    @height: 45px;
+    @height: @magic-styling-distance;
     position: absolute;
-    top: -6px;
 
     @media @mobile{
       width: 100%;
       text-align: center;
     }
     &.slim{
+      top: 0px;
       right: 0;
     }
     &.fat{
+      top: @magic-styling-distance;
       @media @not-mobile{
         right: @topButtonRight;
       }
@@ -1682,5 +1685,10 @@ div.loading-container {
         border-top: 1px solid @white-color;
       }
     }
+  }
+  .social-links{
+    position: absolute;
+    top: 50px;
+    right: @magic-styling-distance;
   }
 }
