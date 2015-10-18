@@ -35,7 +35,7 @@
         content: "";
         border-left: @arrow-size solid transparent;
         border-right: @arrow-size solid transparent;
-        border-top: @arrow-size solid @action-color;
+        border-top: @arrow-size solid @dark-color;
         position: absolute;
         right: 15px;
         top: 18px;

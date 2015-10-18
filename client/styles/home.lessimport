@@ -75,9 +75,14 @@ div.home-top {
       width: 100%;
       text-align: center;
     }
+    font-family: 'PT Mono', monospace;
+
 
     .sod_select, .sod_option{
       padding: 12.5px 10px;
+    }
+    .sod_label{
+      text-align: center;
     }
 
 
