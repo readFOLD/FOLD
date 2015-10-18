@@ -15,6 +15,9 @@
 @remix-color: #fc521f;
 @favorite-color: #FFD600;
 @dark-favorite-color: #EFC820;
+@facebook-color: #365998;
+@twitter-color: #4099FF;
+@instagram-color: #9e7144;
 
 @unselected-text-color: #999999;
 @unselected-background-color: #eeeeee;
