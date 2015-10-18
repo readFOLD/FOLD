@@ -80,105 +80,6 @@ div.home-top {
       margin-left: 10px;
     }
   }
-
-  div.action-items {
-    @height: 45px;
-    position: absolute;
-    top: -6px;
-    @media @not-mobile{
-      right: @topButtonRight;
-    }
-    @media @mobile{
-      width: 100%;
-      text-align: center;
-    }
-    color: @light-color;
-    font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
-
-    button{
-      padding: 0px 23px;
-      min-width: 152px;
-      .size-to-fit;
-      &:hover {
-        background-color: @dark-color;
-      }
-    }
-
-    a {
-      min-width: 154px;
-      .size-to-fit;
-      &:hover {
-        background-color: @dark-color;
-      }
-    }
-
-    .create-story {
-      background-color: @action-color;
-      &:hover {
-        background-color: @dark-color;
-      }
-    }
-
-    li {
-      height: @height;
-      @media @not-mobile{
-        float: left;
-      }
-      display: inline-block;
-      position: relative;
-      &:not(:last-child) {
-        margin-right: 12px;
-      }
-    }
-
-    .user-action {
-      background-color: @remix-color;
-      @profile-picture-size: 25px;
-      button{
-        line-height: @height;
-      }
-      span{
-        margin: auto;
-        display: inline-block;
-      }
-      .text{
-        max-width: 200px;
-      }
-      img.profile-picture {
-        margin:auto;
-        margin-right: 2px;
-        margin-bottom: -7.5px;
-        z-index: 10;
-        border-radius: @profile-picture-size/2;
-        width: @profile-picture-size;
-        height: auto;
-      }
-    }
-
-    .about-fold {
-      background-color: @panel-color;
-    }
-
-    ol.user-menu {
-      background-color: @remix-color;
-      li {
-        float: none;
-        display: block;
-        margin:0;
-        border-top: 1px solid @white-color;
-      }
-    }
-  }
-
- /* div.user-image {
-    position: absolute;
-    top: 40px;
-    right: 60px;
-    width: 60px;
-    height: 60px;
-    border-radius: 30px;
-    background-color: @dark-color;
-  } */
 } 
 
 
@@ -338,9 +239,9 @@ div.stories {
     @media @mobile{
       padding-top: 56px;
     }
-    @padding-side: 4px;
+    @padding-side: 40px;
     padding-left: @padding-side;
-    padding-right: @padding-side;
+    //padding-right: @padding-side;
     padding-bottom: 75px;
     overflow: hidden;
 
@@ -379,9 +280,9 @@ div.stories {
       margin-bottom: 40px;
     }
 
-    @margin-side: 4px;
-    margin-left: @margin-side;
-    margin-right: @margin-side;
+    @margin-side: 20px;
+    margin-left: 0;
+    margin-right: 40px;
     width: calc(33.33% ~"-" @margin-side * 2);
     float: left;
 

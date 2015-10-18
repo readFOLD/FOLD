@@ -67,8 +67,8 @@
 </template>
 
 <template name="banner_buttons">
-  <div class="right">
-    <div class="action-items">
+  <div class="banner-buttons {{#if slim}}slim{{else}}fat{{/if}}">
+    <div class="action-items {{#if slim}}slim{{else}}fat{{/if}}">
       <ol>
         {{#unless isPhone}}
           <li class="create-story">
@@ -89,9 +89,14 @@
         {{/unless}}
       </ol>
     </div>
+    {{#unless slim}}
+      <div class="social-links">
 
+      </div>
+    {{/unless}}
   </div>
 </template>
+
 <template name="login_buttons">
   <li class="user-action">
 

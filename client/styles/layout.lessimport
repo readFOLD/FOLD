@@ -1506,3 +1506,108 @@ div.loading-container {
     text-align: center;
   }
 }
+
+.banner-buttons{
+  float: right;
+
+  div.action-items {
+    @height: 45px;
+    position: absolute;
+    top: -6px;
+
+    @media @mobile{
+      width: 100%;
+      text-align: center;
+    }
+    &.slim{
+      right: 0;
+    }
+    &.fat{
+      @media @not-mobile{
+        right: @topButtonRight;
+      }
+    }
+
+    color: @light-color;
+    font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+
+    button{
+      padding: 0px 23px;
+      width: 200px;
+      height: 100%;
+      &:hover {
+        background-color: @dark-color;
+      }
+    }
+
+    a {
+      width: 200px;
+      height: 100%;
+      &:hover {
+        background-color: @dark-color;
+      }
+    }
+
+    .create-story {
+      background-color: @action-color;
+      &:hover {
+        background-color: @dark-color;
+      }
+    }
+
+    li {
+      height: @height;
+      @media @not-mobile{
+        float: left;
+      }
+      display: inline-block;
+      position: relative;
+    }
+
+    &.fat{
+      li{
+        &:not(:last-child) {
+          margin-right: 12px;
+        }
+      }
+    }
+
+    .user-action {
+      background-color: @remix-color;
+      @profile-picture-size: 25px;
+      button{
+        line-height: @height;
+      }
+      span{
+        margin: auto;
+        display: inline-block;
+      }
+      .text{
+        max-width: 200px;
+      }
+      img.profile-picture {
+        margin:auto;
+        margin-right: 2px;
+        margin-bottom: -7.5px;
+        z-index: 10;
+        border-radius: @profile-picture-size/2;
+        width: @profile-picture-size;
+        height: auto;
+      }
+    }
+
+    .about-fold {
+      background-color: @panel-color;
+    }
+
+    ol.user-menu {
+      background-color: @remix-color;
+      li {
+        float: none;
+        display: block;
+        margin:0;
+        border-top: 1px solid @white-color;
+      }
+    }
+  }
+}
