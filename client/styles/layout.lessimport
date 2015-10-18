@@ -649,7 +649,7 @@ div.vertical-narrative {
   @media @mobile{
     .left-transition;
   }
-  top: 427px;
+  top: 467px;
   margin-top: -65px;
   z-index: 10;
   float: left;

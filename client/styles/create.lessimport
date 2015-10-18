@@ -211,7 +211,7 @@ div.floating-story-buttons {
     }
   }
   position: fixed;
-  top: 115px;
+  top: 115px + @magic-styling-distance;
   right: 13px;
   z-index: 27;
 
