@@ -23,7 +23,7 @@ if (!esClient.indices.exists({index:Meteor.settings.ELASTICSEARCH_INDEX})){
     		if (err)
         		console.log('failed to create ElasticSearch index, ' + err.message);
     		else{
-        		console.log('successfully created ElasticSearch index');
+        		console.log('ElasticSearch: successfully created ElasticSearch index');
             esClient.indices.putMapping({
               index: Meteor.settings.ELASTICSEARCH_INDEX,
               "stream":{
@@ -40,7 +40,7 @@ if (!esClient.indices.exists({index:Meteor.settings.ELASTICSEARCH_INDEX})){
                           "title": {
                             "type": "string",
                             "_boost": 5, // give it more priority
-                            /*"analyzers" English and more*/
+                            "analyzer": "trigrams",/*"analyzers" English and more*/
                           },
                           "broadcaster": {
                             "type": "string",
@@ -51,6 +51,7 @@ if (!esClient.indices.exists({index:Meteor.settings.ELASTICSEARCH_INDEX})){
                           },
                           "description":{
                             "type": "string",
+                            "analyzer": "trigrams",
                           },
                           "source": {
                             "type": "string",
