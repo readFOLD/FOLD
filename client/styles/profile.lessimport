@@ -17,7 +17,7 @@ h1 {
 }
 
 div.profile-section {
-  padding-top: 145px;
+  padding-top: 120px;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -36,6 +36,7 @@ div.user-profile {
   min-height: 700px;
   height: 100%;
   z-index: 5;
+  border-right: 1px solid @inactive-color;
 
   @media (max-width: 800px) {
     @margin-side: 5%;
@@ -74,14 +75,13 @@ div.user-profile {
   }
   div.name {
     font-size: 20px;
-    font-weight: bold;
+    font-family: 'FFMarkWebBold';
     margin-bottom: 10px;
     line-height: 120%;
   }
   div.bio {
-    font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+    font-family: 'FFMarkWeb', 'Avenir Next', sans-serif;
     line-height: 160%;
-    font-style: italic;
   }
   .edit-profile {
     color: @action-color;
@@ -95,7 +95,7 @@ div.user-profile {
     } 
   }
   .bio-form {
-    font-family: Muli;
+    font-family: 'FFMarkWebBold';
     margin-top: 5px;
     margin-bottom: 15px;
     height: 110px;

@@ -41,8 +41,30 @@
 */
 
 
+/*
+ * @license
+ * MyFonts Webfont Build ID 3109936, 2015-10-18T18:52:23-0400
+ * 
+ * The fonts listed in this notice are subject to the End User License
+ * Agreement(s) entered into by the website owner. All other parties are 
+ * explicitly restricted from using the Licensed Webfonts(s).
+ * 
+ * You may obtain a valid license at the URLs below.
+ * 
+ * Webfont: FF Magda Clean Mono Web Pro Regular by FontFont
+ * URL: http://www.myfonts.com/fonts/fontfont/ff-magda-clean-mono/pro-regular/
+ * Copyright: 2011 Critzla, Cornel Windlin, Henning Krause published by FSI FontShop International GmbH
+ * Licensed pageviews: 50,000
+ * 
+ * 
+ * License: http://www.myfonts.com/viewlicense?type=web&buildid=3109936
+ * 
+ * © 2015 MyFonts Inc
+*/
 
 
+@font-face {font-family: 'FFMagdaCleanMonoWebProRegular';src: url('webfonts/2F7430_0_0.eot');src: url('webfonts/2F7430_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2F7430_0_0.woff2') format('woff2'),url('webfonts/2F7430_0_0.woff') format('woff'),url('webfonts/2F7430_0_0.ttf') format('truetype');}
+ 
   
 @font-face {font-family: 'FFMarkWebItalic';src: url('webfonts/2F7411_0_0.eot');src: url('webfonts/2F7411_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2F7411_0_0.woff2') format('woff2'),url('webfonts/2F7411_0_0.woff') format('woff'),url('webfonts/2F7411_0_0.ttf') format('truetype');}
  

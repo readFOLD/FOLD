@@ -7,7 +7,7 @@ div#login-buttons-and-more {
   left: 15px;
 }
 
-@topButtonRight: 250px;
+@topButtonRight: 200px;
 
 div.home-top {
   position: fixed;
@@ -26,10 +26,10 @@ div.home-top {
     height: 175px;
   }
   width: 100%;
-  //border-bottom: 1px solid @medium-color;
-  -webkit-box-shadow: 0 2px 8px -6px @dark-color;
-  -moz-box-shadow: 0 2px 8px -6px @dark-color;
-  box-shadow: 0 2px 8px -6px @dark-color;
+  border-bottom: 1px solid @inactive-color;
+  //-webkit-box-shadow: 0 2px 8px -6px @dark-color;
+  //-moz-box-shadow: 0 2px 8px -6px @dark-color;
+  //box-shadow: 0 2px 8px -6px @dark-color;
 
 
   div.logo-title {
@@ -42,8 +42,9 @@ div.home-top {
 
     &.fat{
       .title{
+        margin-top: 5px;
         img{
-          height: @magic-styling-distance;
+          height: @magic-styling-distance * .75;
         }
       }
     }
@@ -99,18 +100,18 @@ div.home-top {
     height: @magic-styling-distance;
 
     @media @not-mobile{
-      left: 230px;
+      left: 196px;
     }
     @media @mobile{
       top: 110px;
       width: 100%;
       text-align: center;
     }
-    font-family: 'PT Mono', monospace;
+    font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
 
 
     .sod_select, .sod_option{
-      padding: 12.5px 10px;
+      padding: 12px 10px;
     }
     .sod_label{
       text-align: center;
@@ -126,7 +127,7 @@ div.home-top {
 
 
 div.signup, div.login, div.user_profile {
-  padding-top: 150px;
+  padding-top: 140px;
   width: 100%;
   height: 100%;
 }
@@ -135,7 +136,7 @@ div.signup, div.login, div.user_profile {
 
 
 div.stories {
-  @profile-section: 400px;
+  @profile-section: 340px;
   padding-top: 150px;
   width: 100%;
   height: 100%;
@@ -188,14 +189,13 @@ div.stories {
 
   div.headline {
     background-color: @white-color;
-    font-family: 'FFMarkWebMedium';
+    font-family: 'FFMarkWebBold';
     height: auto;
     /*height depends on length of story headline*/
     width: 100%;
     position: relative;
     line-height: 31px;
     font-size: 21px;
-    font-weight: bold;
     padding: 20px 30px calc(9% ~"-" 27px) 30px;
     //margin-bottom: calc(9% ~"-" 27px);
   }
@@ -204,9 +204,12 @@ div.stories {
 
   div.byline {
     //padding: 33px 25px;
-    padding-left: 25px;
+    margin-left: 40px;
     div.pull-left {
       width: 100%;
+      position: absolute;
+      bottom: 25px;
+      left: 25px;
       div.author-image {
         display: inline-block;
         float: left;
@@ -223,12 +226,11 @@ div.stories {
 
       div.author-name-date {
         @margin: 25px;
-        font-family: 'PT Mono', monospace;
+        font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
         display: inline-block;
         margin-left: @margin;
-        margin-top: -9px;
         & > div {
-          line-height: 24px;
+          line-height: 18px;
           font-size: 14px;
         }
         width: calc(100% ~"-"  @profile-picture-size ~"-" @margin * 2);
@@ -241,14 +243,14 @@ div.stories {
         }
         div.publish-date {
           color: @inactive-color;
-          text-transform: uppercase;
           font-size: 12px;
         }
       }
     }
     a.author-profile-link:hover {
       span{
-        text-decoration: underline;
+        text-decoration: none;
+        color: @action-color;
       }
     }
   }
@@ -348,8 +350,8 @@ div.stories {
 
     &.profile {
       @margin-side: 2%;
-      margin-right: @margin-side;
-      width: calc(50% ~"-" @margin-side * 2);
+      margin-right: @magic-styling-distance;
+      width: calc(50% ~"-" @magic-styling-distance);
 
       @media (max-width: 1200px) {
         @margin-side: 2%;
@@ -382,8 +384,7 @@ div.stories {
 
 
     div.favorite-button {
-      font-size: 14px;
-      font-family: inherit;
+      font-size: 12px;
       position: absolute;
       right: 40px;
       bottom: 40px;

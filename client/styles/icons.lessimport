@@ -58,15 +58,15 @@ svg.mobile-back-icon{
 }
 
 .star-button{
-  @height: 25px;
+  @height: 20px;
   display: inline-block;
-  margin-left: 5px;
   font-size: 18px;
   height: @height;
   line-height: @height;
   button {
     height: @height;
     width: @height;
+    margin-right: 5px;
     padding: 0;
     background-color: transparent;
     border: none;

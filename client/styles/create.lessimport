@@ -265,7 +265,7 @@ div.title-overlay {
   height: 350px;
 
   z-index: 30;
-  color: @light-color;
+  color: @white-color;
   position: relative;
   overflow: hidden;
   background-color: @unselected-background-color;
@@ -392,14 +392,14 @@ div.title-overlay {
       margin-top: 125px;
     }
     &.c{
-      margin-top: 0px;
+      margin-top: 8px;
     }
     div.story-title {
       max-width: 100%;
-      font-weight: bold;
-      font-size: 25px;
+      font-family: 'FFMarkWebBold';
+      font-size: 22px;
       line-height: 30px;
-      padding-bottom: 9px;
+      //padding-bottom: 6px;
       overflow-x: hidden;
       overflow-y: visible;
       text-overflow: ellipsis;
@@ -409,7 +409,8 @@ div.title-overlay {
       }
     }
     div.author {
-      font-size: 18px;
+      font-size: 14px;
+      font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
       //font-style: italic;
     }
   }
@@ -604,7 +605,6 @@ div.horizontal-context {
     text-align: center;
     width: 75px;
     z-index: 30;
-    // box-shadow: 3px 3px #848484;
   }
 
   div.input-label {
@@ -670,7 +670,7 @@ div.horizontal-context {
 
   .horizontal-new-section {
     position: absolute;
-    background-color: @white-color;
+    background-color: @action-color;
     svg{
       .transition(transform 0.2s ease, fill 0.25s ease);
     }
@@ -1011,7 +1011,7 @@ div.horizontal-context {
         left: 78px;
       }
       div.content-title {    
-        font-weight: bold; 
+        font-family: 'FFMarkWebBold'; 
         font-size: 12px;
         margin-bottom: 5px;    
         overflow: hidden;    
@@ -1204,7 +1204,7 @@ div.text-section {
   button{
     color: @light-color;
     background-color: inherit;
-    font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;
+    font-family: 'FFMarkWeb', 'Avenir Next', sans-serif;
     font-weight: 400;
     font-size: .9em;
     padding: 0.5em 1em 0 1em;
