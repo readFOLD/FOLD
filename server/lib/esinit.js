@@ -18,29 +18,61 @@ esClient.ping({
   }
 });
 
-if (!esClient.indices.exists({index:Meteor.settings.ELASTICSEARCH_INDEX})){
-	esClient.indices.create({ index: Meteor.settings.ELASTICSEARCH_INDEX }, function (err, resp) {
-    		if (err)
-        		console.log('failed to create ElasticSearch index, ' + err.message);
-    		else{
-        		console.log('ElasticSearch: successfully created ElasticSearch index');
-            esClient.indices.putMapping({
+var indexExists = Meteor.wrapAsync(esClient.indices.exists, esClient);
+var createIndex = Meteor.wrapAsync(esClient.indices.create, esClient);
+var putMapping = Meteor.wrapAsync(esClient.indices.putMapping, esClient);
+var putSettings = Meteor.wrapAsync(esClient.indices.putSettings, esClient);
+var closeIndex = Meteor.wrapAsync(esClient.indices.close, esClient);
+var openIndex = Meteor.wrapAsync(esClient.indices.open, esClient);
+
+if (!indexExists({index:Meteor.settings.ELASTICSEARCH_INDEX})){
+	 createIndex({ index: Meteor.settings.ELASTICSEARCH_INDEX });
+   Meteor._sleepForMs(1000);
+   closeIndex({index: Meteor.settings.ELASTICSEARCH_INDEX});
+
+   putSettings({
               index: Meteor.settings.ELASTICSEARCH_INDEX,
-              "stream":{
+              type: "stream",
+              "body":{
+                  "analysis": {
+                    "analyzer": {
+                      "my_ngram_analyzer": {
+                        "tokenizer": "my_ngram_tokenizer",
+                        "filter": ["standard", "lowercase"],
+                    }
+                  },
+                    "tokenizer": {
+                      "my_ngram_tokenizer":{
+                        "type": "nGram",
+                        "min_gram": 2,
+                        "max_gram": 7,
+                        "token_chars": ["letter", "digit"],
+                      }
+                    }
+                  }
+                }
+            }, function(err, result){
+              if(err){
+                console.log("ElasticSearch: putSettings: Error");
+                console.log(err);
+            }
+              else {
+                console.log("ElasticSearch: putSettings: Success");
+                console.log(result);
+              }
+            });
+      Meteor._sleepForMs(1000);
+      putMapping({
+              index: Meteor.settings.ELASTICSEARCH_INDEX,
+              type: "stream",
+              "body":{
+                "stream":{
+                      //  "dynamic": "strict",
                         "properties": {
-                          "dynamic_templates":[{
-                            "doc_template":{
-                              "match": "*",
-                              "mapping": {
-                                "type": "string",
-                                "index": "no",
-                              }
-                            }
-                          }],
                           "title": {
                             "type": "string",
                             "_boost": 5, // give it more priority
-                            "analyzer": "trigrams",/*"analyzers" English and more*/
+                            "analyzer": "my_ngram_analyzer", //"analyzers" English and more
                           },
                           "broadcaster": {
                             "type": "string",
@@ -51,19 +83,28 @@ if (!esClient.indices.exists({index:Meteor.settings.ELASTICSEARCH_INDEX})){
                           },
                           "description":{
                             "type": "string",
-                            "analyzer": "trigrams",
+                            "analyzer": "my_ngram_analyzer",
                           },
                           "source": {
                             "type": "string",
-                          }
-                          /*"title", "broadcaster", "tags", "description"*/
+                          },
                         },
                       },
+                    }
             }, function(err, result){
               if(err){
-                console.log("ElasticSearch: Faild to map data");
+                console.log("ElasticSearch: putMapping: Faild to map data");
+                console.log(err);
+              }
+              else {
+                console.log("ElasticSearch: putMapping: Success");
+                console.log(result);
               }
             });
-		}
-	});
+
+    openIndex({index: Meteor.settings.ELASTICSEARCH_INDEX});
+/*
+
+*/
+
 }
