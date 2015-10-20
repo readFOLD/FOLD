@@ -21,6 +21,7 @@ if (!GOOGLE_API_SERVER_KEY) {
   throw new Meteor.Error('Settings must be loaded for apis to work');
 }
 
+
 var decrementByOne = function(bigInt) {
   var intArr = bigInt.split("");
   if (intArr.length === 1) {
@@ -693,32 +694,10 @@ Meteor.methods({
       items: items,
       nextPage: nextPage
     }*/
-
-    if (!page){
-      var  results = searchES({
-        index: Meteor.settings.ELASTICSEARCH_INDEX,
-        type: "stream",
-        size: Meteor.settings.es.pageSize,
-        body:{
-          "min_score": 0.5,
-          query:{
-            multi_match:{
-              query: query,
-              fields: ["title", "broadcaster", "tags", "description"],
-            }
-          }
-        }
-      });
-      // first time seach has been invoked
-      page = {num: 1};
-      console.log("Search has been invoked for the first time");
-  }else{
-    // second time or more
-    var  results = searchES({
-      index: Meteor.settings.ELASTICSEARCH_INDEX,
+    var esQuery = {
+      index: ES_CONSTANTS.index,
       type: "stream",
-      size: Meteor.settings.es.pageSize,
-      from: parseInt(Meteor.settings.es.pageSize) * page.num,
+      size: ES_CONSTANTS.pageSize,
       body:{
         "min_score": 0.5,
         query:{
@@ -728,19 +707,31 @@ Meteor.methods({
           }
         }
       }
-    });
-    page.num++;
+    };
+
+  if (!page){
+    var  results = searchES(esQuery);
+    page = {num: 1};
+  }else{
+    if(page.num != 'end'){
+      esQuery.from = ES_CONSTANTS.pageSize * page.num;
+      var  results = searchES(esQuery);
+      if (results.hits.total > esQuery.from)
+        page.num++;
+      else
+        page.num = 'end';
+      }
   }
 
 
-    var nextPage = page;
-    var items = _.chain(results.hits.hits).pluck("_source").pluck("doc").value();
+  var nextPage = page;
+  var items = _.chain(results.hits.hits).pluck("_source").pluck("doc").value();
 
 /*
     if(items.length == 0){
       console.log("Inside the suggest block");
       var suggestedItems = suggestES({
-        index: Meteor.settings.ELASTICSEARCH_INDEX,
+        index: ES_CONSTANTS.index,
         type: "stream",
         body: {
           "suggest": {
@@ -764,10 +755,10 @@ Meteor.methods({
       console.log(suggestedItems);
     }
     */
-    return {
-      items: items,
-      nextPage: nextPage,
-    }
+return {
+  items: items,
+  nextPage: nextPage,
+}
   },
   youtubeVideoSearchList: searchYouTube,
   bambuserVideoSearchList (query, option, page) {

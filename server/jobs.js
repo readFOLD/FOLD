@@ -168,7 +168,7 @@ var generateFetchFunction = function(serviceInfo){
       var id=0;
       _.each(mapResults, function(result){
 		insertES({
-			index:Meteor.settings.ELASTICSEARCH_INDEX,
+			index: ES_CONSTANTS.index,
         		type:"stream",
         		body:{
                   doc: result,

@@ -4,6 +4,7 @@ esClient = new ES.Client({
                  host: process.env.ELASTICSEARCH_URL || Meteor.settings.ELASTICSEARCH_URL || "localhost:9200"
 });
 
+
 esClient.ping({
   // ping usually has a 3000ms timeout
   requestTimeout: Infinity,
@@ -25,13 +26,13 @@ var putSettings = Meteor.wrapAsync(esClient.indices.putSettings, esClient);
 var closeIndex = Meteor.wrapAsync(esClient.indices.close, esClient);
 var openIndex = Meteor.wrapAsync(esClient.indices.open, esClient);
 
-if (!indexExists({index:Meteor.settings.ELASTICSEARCH_INDEX})){
-	 createIndex({ index: Meteor.settings.ELASTICSEARCH_INDEX });
+if (!indexExists({index: ES_CONSTANTS.index})){
+	 createIndex({ index: ES_CONSTANTS.index });
    Meteor._sleepForMs(1000);
-   closeIndex({index: Meteor.settings.ELASTICSEARCH_INDEX});
+   closeIndex({index: ES_CONSTANTS.index});
 
    putSettings({
-              index: Meteor.settings.ELASTICSEARCH_INDEX,
+              index: ES_CONSTANTS.index,
               type: "stream",
               "body":{
                   "analysis": {
@@ -63,7 +64,7 @@ if (!indexExists({index:Meteor.settings.ELASTICSEARCH_INDEX})){
             });
       Meteor._sleepForMs(1000);
       putMapping({
-              index: Meteor.settings.ELASTICSEARCH_INDEX,
+              index: ES_CONSTANTS.index,
               type: "stream",
               "body":{
                 "stream":{
@@ -102,7 +103,7 @@ if (!indexExists({index:Meteor.settings.ELASTICSEARCH_INDEX})){
               }
             });
 
-    openIndex({index: Meteor.settings.ELASTICSEARCH_INDEX});
+    openIndex({index: ES_CONSTANTS.index});
 /*
 
 */
