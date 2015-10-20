@@ -425,6 +425,7 @@ footer{
   .write-prompt{
     background-color: @white-color;
     height: 142px;
+    border: 1px solid @inactive-color;
   }
   p{
     margin-top: 0;
@@ -449,12 +450,20 @@ div.story-browser {
   height: 0px;
   z-index: 25;
   div{
-    height: 0px;
+    height: 340px;
+    width: 60px;
+    margin-top: 60px;
     display: inline-block;
+    background-color: @dark-color;
+    cursor: pointer;
+
+    &:hover {
+      background-color: @action-color;
+    }
   }
   svg {
     cursor: pointer;
-    margin-top: 210px;
+    margin-top: 140px;
     border-radius: 30px;
 
 
@@ -500,7 +509,7 @@ div#overlay {
 
   a {
     cursor: auto;
-    padding: 0 4px;
+    padding: 4px 4px;
   }
   &.selected {
     cursor: text;
@@ -687,7 +696,7 @@ div.vertical-narrative {
   }
 
   &.free-scroll{
-    top: 557px;
+    top: 491px;
   }
 
   .narrative-section {
@@ -926,8 +935,8 @@ div#banner-overlay {
   }
 }
 
-@horizontal-context-margin-top: 40px;
-@horizontal-context-top: @fixed-banner-height + 80px - @horizontal-context-margin-top;
+@horizontal-context-margin-top: 20px;
+@horizontal-context-top: @fixed-banner-height + 60px - @horizontal-context-margin-top;
 div.horizontal-context {
   float: right;
   top: 350px;
@@ -943,9 +952,9 @@ div.horizontal-context {
     @media @mobile {
       top: 60px;
     }
-    &.editing {
+    /*&.editing {
       top: 90px;
-    }
+    }*/
   }
   div.preview {
     position: absolute;
@@ -1061,7 +1070,7 @@ div.horizontal-context {
     height: @remix-bar-height;
     width: 100%;
     position: absolute;
-    background-color: @panel-color;
+    background-color: @unselected-background-color;
     line-height: @remix-bar-height;
     color: white;
     svg{
@@ -1617,7 +1626,7 @@ div.loading-container {
 
   div.action-items {
     @height: @magic-styling-distance;
-    font-size: 15px;
+    font-size: 13px;
     position: absolute;
 
     @media @mobile{
@@ -1635,8 +1644,8 @@ div.loading-container {
       }
     }
 
-    color: @light-color;
-    font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
+    color: @white-color;
+    font-family: 'FFMarkWebBold', sans-serif;
 
     button{
       padding: 0px 23px;

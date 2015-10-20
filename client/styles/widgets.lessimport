@@ -91,7 +91,6 @@
         border: 1px solid black;
         border-top: none;
         color: #444444;
-        font-weight: 300;
         z-index: 1;
     }
 
@@ -149,7 +148,7 @@
         }
 
         &.selected {
-            font-weight: 700;
+            font-weight: 500;
             padding-right: 25px;
         }
 

@@ -137,7 +137,7 @@ div.signup, div.login, div.user_profile {
 
 div.stories {
   @profile-section: 340px;
-  padding-top: 150px;
+  padding-top: 135px;
   width: 100%;
   height: 100%;
   background-color: @background-color;

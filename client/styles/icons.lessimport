@@ -30,10 +30,11 @@ svg.remix-icon-square{
   }
 }
 svg.browse-arrow {
-  height: 60px;
-  width: 60px;
+  height: 40px;
+  width: 40px;
+  margin:10px;
   .fg{
-    fill: @dark-color;
+    fill: @white-color;
   }
 }
 svg.search-icon {

@@ -80,7 +80,7 @@ input[type=file] {
 
 div.upload-header-image {
   position: absolute;
-  top: 20px;
+  top: 60px;
   right: 20px;
   z-index: 100;
 }
@@ -211,16 +211,15 @@ div.floating-story-buttons {
     }
   }
   position: fixed;
-  top: 115px + @magic-styling-distance;
-  right: 13px;
+  bottom: 00px;
+  left: 0px;
   z-index: 27;
 
   .saved-text{
-    float: left;
+    float: right;
     color: @black-color;
-    text-transform: uppercase;
-    margin-right: 15px;
-    margin-top: 23px;
+    margin-left: 15px;
+    margin-top: 8px;
     font-size: 13px;
   }
 
@@ -293,7 +292,8 @@ div.title-overlay {
     }
 
     &.visible {
-      opacity: 1.0;
+      //remove for now - replace with person's
+      opacity: 0.0;
     }
   }
 
@@ -373,7 +373,7 @@ div.title-overlay {
 
   div.title-author {
     position: absolute;
-    margin-left: 95px;
+    margin-left: 105px;
     margin-top: 125px;
     max-width: 1300px;
     @media @mobile {
@@ -381,24 +381,25 @@ div.title-overlay {
       margin-right: 20px;
       max-width: calc(100% ~"-" 40px);
     }
-    padding: 11px;
     background-color: @dark-color;
     &.b {
       position: fixed;
-      padding-top: 19px;
       margin-top: @magic-styling-distance;
     }
     &.a{
       margin-top: 125px;
     }
     &.c{
-      margin-top: 8px;
+      margin-top: 0px;
     }
     div.story-title {
       max-width: 100%;
       font-family: 'FFMarkWebBold';
-      font-size: 22px;
-      line-height: 30px;
+      margin-top: 20px;
+      margin-left: 20px;
+      margin-right: 20px;
+      font-size: 24px;
+      line-height: 36px;
       //padding-bottom: 6px;
       overflow-x: hidden;
       overflow-y: visible;
@@ -411,6 +412,9 @@ div.title-overlay {
     div.author {
       font-size: 14px;
       font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
+      margin-bottom: 20px;
+      margin-left: 20px;
+      margin-right: 20px;
       //font-style: italic;
     }
   }
@@ -421,9 +425,9 @@ div.button-options {
     background-color: @dark-color;
     color: @light-color;
     cursor: pointer;
-    padding: 5px;
+    //padding: 5px;
     text-align: center;
-    font-size: 16px;
+    font-size: 15px;
     float: left;
     &:not(:last-child) {
       margin-right: 10px;
@@ -612,7 +616,7 @@ div.horizontal-context {
     margin-bottom: 10px;
   }
 
-  @contentIconBannerHeight: 80px;
+  @contentIconBannerHeight: 60px;
 
   div.content-icons {
     display: -webkit-flex;
@@ -624,7 +628,7 @@ div.horizontal-context {
     height: @contentIconBannerHeight;
     padding-left: 17px;
     padding-right: 17px;
-    background-color: @panel-color;
+    background-color: @dark-color;
     div.row {
       text-align: justify;
       -ms-text-justify: distribute-all-lines;
@@ -633,12 +637,12 @@ div.horizontal-context {
       margin-right: 10%;
     }
 
-    @circle-diameter: 44px;
+    @circle-diameter: 40px;
     button {
       height: @circle-diameter;
       width: @circle-diameter;
       padding: 0;
-      margin-top: 18px;
+      margin-top: 10px;
       svg {
         padding: 1.5px;
 
@@ -701,9 +705,9 @@ div.horizontal-context {
     button {
       display: inline-block;
       line-height: 0px;
-      height: 25px;
+      height: 24px;
       border-radius: 13px;
-      width: 25px;
+      width: 24px;
     }
 
     .delete {
@@ -718,9 +722,9 @@ div.horizontal-context {
   }
 
   div.create-section {
-    padding-top: 22px;
-    padding-left: 22px;
-    padding-right: 22px;
+    padding-top: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
     height: calc(100% ~"-" @contentIconBannerHeight);
   }
 
@@ -762,7 +766,6 @@ div.horizontal-context {
         cursor: pointer;
         font-size: 12px;
         font-weight: bold;
-        text-transform: uppercase;
         display: inline-block;
         min-width: 100px;
         border-bottom: 2px solid white;
@@ -1067,7 +1070,7 @@ div.horizontal-context {
       color: @light-color;
       width: 90px;
       margin-top: 12px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       text-align: center;
       font-size: 12px;
       line-height: 35px;
@@ -1277,6 +1280,7 @@ div#fold-editor{
 }
 
 .create-section {
+  border: 1px solid @unselected-background-color;
   .search-section, .add-desc-section {
     height: 100%;
   }
