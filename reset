@@ -1,3 +1,8 @@
 #!/bin/bash
 meteor reset
+
+#Deleting ES index
+#Assuming ES works on localhost:9200
+curl -XDELETE "localhost:9200/`cat server/lib/constants.js  | egrep -o 'index: ("\w+")' | sed -e 's/index: "//' -e 's/"//'`" 2>&1 2>/dev/null
+
 exit

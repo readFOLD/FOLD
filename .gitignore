@@ -46,3 +46,7 @@ atlassian-ide-plugin.xml
 
 #Mongodump
 dump
+
+#ElasticSearch
+elasticsearch*
+.espid

@@ -1,15 +1,49 @@
 #!/bin/bash
-if meteor --settings settings.json
-then
-	echo
+
+set -e
+#checking for ES
+
+if curl localhost:9200 2>&1 | grep "tagline" 2>&1 >/dev/null
+then 
+	echo "ElasticSearch is working on Localhost:9200"
 else
-	echo "You don't have meteor installed "
-	echo "Do you want to install it?[y/N]"
+	echo "You don't have ElasticSearch installed on your system"
+	echo "Do you want me to install it for you?[y/N]"
 	read answer
-	if [ "$answer" == 'Y' ] 
-	then 
-		curl https://install.meteor.com/ | sh
-	        echo "You should have Meteor installed by now"
+	if [ "${answer,,}" == 'y' ]
+		then
+		esfilename=elasticsearch-1.7.3.tar.gz
+		curl -O "https://download.elastic.co/elasticsearch/elasticsearch/$esfilename" 
+		tar xf $esfilename
+		sleep 2
+		if "${esfilename/.tar.gz/}"/bin/elasticsearch & espid=$!
+		then
+			echo "ElasticSearch is working on localhost:9200/"
+			echo $espid > .espid
+			sleep 1
+		else	
+			echo "We encountered an error please run the following command and check the ElasticSeach logs"
+			exit 1
+		fi
+		
 	fi
 fi
-exit
+
+
+# Meteor handling block
+if meteor --settings settings.json
+then
+	if [ $? == 127 ] # BASH command not found errno
+	then 
+		echo "You don't have meteor installed "
+		echo "Do you want to install it?[y/N]"
+		read answer
+		if [ "${answer,,}" == 'y' ] 
+		then 
+			curl https://install.meteor.com/ | sh
+        		echo "You should have Meteor installed by now"
+		fi
+	fi
+fi
+
+exit 
