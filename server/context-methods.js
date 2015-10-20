@@ -60,9 +60,11 @@ var makeTwitterCall = function(apiCall, params) {
   return res;
 };
 
-var SearchES = Meteor.wrapAsync(
+var searchES = Meteor.wrapAsync(
     esClient.search
 , esClient);
+
+var suggestES = Meteor.wrapAsync(esClient.suggest, esClient);
 
 var searchYouTube = function (query, option, page) {
   var res;
@@ -691,23 +693,80 @@ Meteor.methods({
       items: items,
       nextPage: nextPage
     }*/
-    var  results = SearchES({
+
+    if (!page){
+      var  results = searchES({
+        index: Meteor.settings.ELASTICSEARCH_INDEX,
+        type: "stream",
+        size: Meteor.settings.es.pageSize,
+        body:{
+          "min_score": 0.5,
+          query:{
+            multi_match:{
+              query: query,
+              fields: ["title", "broadcaster", "tags", "description"],
+            }
+          }
+        }
+      });
+      // first time seach has been invoked
+      page = {num: 1};
+      console.log("Search has been invoked for the first time");
+  }else{
+    // second time or more
+    var  results = searchES({
       index: Meteor.settings.ELASTICSEARCH_INDEX,
       type: "stream",
+      size: Meteor.settings.es.pageSize,
+      from: parseInt(Meteor.settings.es.pageSize) * page.num,
       body:{
+        "min_score": 0.5,
         query:{
           multi_match:{
             query: query,
-	    fields: ["title", "broadcaster", "tags", "description"],
+            fields: ["title", "broadcaster", "tags", "description"],
           }
         }
       }
     });
+    page.num++;
+  }
+
+
+    var nextPage = page;
     var items = _.chain(results.hits.hits).pluck("_source").pluck("doc").value();
 
+/*
+    if(items.length == 0){
+      console.log("Inside the suggest block");
+      var suggestedItems = suggestES({
+        index: Meteor.settings.ELASTICSEARCH_INDEX,
+        type: "stream",
+        body: {
+          "suggest": {
+            "text": query,
+            "title_suggest": {
+              "term": {
+                field : "title"
+
+              },
+              "options": [{"score": 0.3}],
+            }
+          }
+        }
+      }, function(e, r){
+        if(e)
+          console.log(e);
+        else {
+          console.log(r);
+        }
+    });
+      console.log(suggestedItems);
+    }
+    */
     return {
       items: items,
-      nextPage: 'end'
+      nextPage: nextPage,
     }
   },
   youtubeVideoSearchList: searchYouTube,
