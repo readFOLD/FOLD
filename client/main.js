@@ -1033,7 +1033,6 @@ Template.create_story.events({
 });
 
 
-var storyViewed = '';
 Template.read.onCreated(function(){
 
   // analytics autorun
@@ -1052,8 +1051,8 @@ Template.read.onCreated(function(){
   });
 
   var id = this.data._id;
-  if (storyViewed !== id){
-    storyViewed = id;
+  if (Session.get('storyViewed') !== id){
+    Session.set('storyViewed', id);
     Meteor.call('countStoryView', id);
     analytics.track('View story', trackingInfoFromStory(this.data));
   }
