@@ -177,7 +177,7 @@ html {
 @tablet:      ~"only screen and (min-device-width: 530px) and (max-device-width: 949px)";
 @desktop:     ~"only screen and (min-device-width: 950px) and (max-device-width: 1128px)";
 @desktop-xl:  ~"only screen and (min-device-width: 1129px)";
-@desktop-xtall:  ~"only screen and (min-device-height: 1129px)";
+@desktop-xtall:  ~"only screen and (min-height: 1129px)";
 
 .transform(@string){
   -webkit-transform: @string;
@@ -407,7 +407,7 @@ body {
 
   line-height: 23px;
   font-size: 15px;
-  min-height: 1400px;
+  min-height: 1420px;
   @media @desktop-xtall {
     min-height: 2000px;
   }
