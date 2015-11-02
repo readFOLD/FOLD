@@ -63,10 +63,13 @@
 
     .horizontal-section {
       display: inline-block;
+      min-width: 100px;
+      @height: 90px;
+      min-height: @height;
       .horizontal-block {
         margin-top: 5px;
         margin-left: 5px;
-        height: 90px;
+        height: @height;
         width: 120px;
         display: inline-block;
         white-space: normal;      
