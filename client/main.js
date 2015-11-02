@@ -185,6 +185,13 @@ Meteor.startup(function(){
       $('body').addClass('konami');
     }
   });
+  $( window ).konami({
+    code : [70, 79, 76, 68],
+    cheat: function() {
+      Session.set('adminMode', true);
+    }
+  });
+
 });
 
 window.trackingInfoFromStory = function(story){
