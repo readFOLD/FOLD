@@ -1,6 +1,6 @@
 @black-color: #1D1D1D;
 @dark-color: #333333;
-@medium-color: #CCCCCB;
+@medium-color: #c2c2c5;
 @light-color: #F4F4F4;
 @light-transparent-color: rgba(244,244,244,0.75);
 @white-color: white;
@@ -21,6 +21,7 @@
 
 @unselected-text-color: #999999;
 @unselected-background-color: #f8f8f8;
+@unselected-link-color: #e5e5e5;
 
 @selected-background-color: white;
 
@@ -529,7 +530,7 @@ div#overlay {
     a {
       // moved background-transition to specific cases so everything doesn't need to animate when a new card becomes selected
       cursor: pointer;
-      background-color: @unselected-background-color;
+      background-color: @unselected-link-color;
       color: inherit;
       &:hover {
         background-color: @medium-color;
