@@ -902,13 +902,22 @@ Template.favorite_button.helpers({
   userFavorited: function() {
     return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
   },
-  additionalClass: function() {
-    return Template.instance().additionalClass.get();
+  additionalClasses: function() {
+    var classes = '';
+
+    if (Template.instance().justFavorited.get()){
+      classes += 'just-favorited'
+    }
+    if (Template.instance().justUnfavorited.get()){
+      classes += 'just-unfavorited'
+    }
+    return classes;
   }
 });
 
 Template.favorite_button.onCreated(function() {
-  this.additionalClass = new ReactiveVar('');
+  this.justFavorited = new ReactiveVar();
+  this.justUnfavorited = new ReactiveVar();
 });
 Template.favorite_button.events({
   "click .favorite": function (e, t) {
@@ -917,25 +926,26 @@ Template.favorite_button.events({
       return notifyInfo('Please sign up or log in to favorite stories');
     }
     var that = this;
-    t.additionalClass.set('just-favorited');
+    t.justFavorited.set(true);
     Meteor.setTimeout(function () {
-      t.additionalClass.set('');
-      return Meteor.call('favoriteStory', that._id, function (err) {
-        if (err) {
-          notifyError(err);
-          throw(err);
-        } else {
-          analytics.track('Favorite story');
-        }
+      t.justFavorited.set(null);
+    }, 700);
 
-      })
-    }, 500);
+    return Meteor.call('favoriteStory', that._id, function (err) {
+      if (err) {
+        notifyError(err);
+        throw(err);
+      } else {
+        analytics.track('Favorite story');
+      }
+
+    })
 
   },
   "click .unfavorite": function (e, t) {
-    t.additionalClass.set('just-unfavorited');
+    t.justUnfavorited.set(true);
     Meteor.setTimeout(function(){
-      t.additionalClass.set('');
+      t.justUnfavorited.set(null);
     }, 1000);
     return Meteor.call('unfavoriteStory', this._id, function (err) {
       if (err) {

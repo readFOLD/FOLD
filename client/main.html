@@ -730,9 +730,9 @@
 <template name="favorite_button">
     <div class="favorite-button">
         {{#if userFavorited}}
-            <button type='button' class='unfavorite {{additionalClass}}'>{{> favorite_icon }}</button>
+            <button type='button' class='unfavorite {{additionalClasses}}'>{{> favorite_icon }}</button>
         {{else}}
-            <button type='button' class='favorite {{additionalClass}}'>{{> favorite_icon }}</button>
+            <button type='button' class='favorite {{additionalClasses}}'>{{> favorite_icon }}</button>
         {{/if}}
         {{favoritedTotal}}
     </div>
