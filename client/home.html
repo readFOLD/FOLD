@@ -155,8 +155,8 @@
   <span class="filters">
     <select data-custom-id="custom" data-custom-class="custom" value="{{initialFilterValue}}">
       {{#each filters}}
-        <option value="{{this}}" {{conditionallySelected}}>
-          {{this}}
+        <option value="{{this.value}}" {{conditionallySelected}}>
+          {{this.label}}
         </option>
       {{/each}}
     </select>

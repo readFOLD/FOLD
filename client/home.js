@@ -108,7 +108,12 @@ Session.set('filterValue', filters[0]); // this must correspond to the first thi
 
 Template.filters.helpers({
   filters: function() {
-    return filters
+    return _.map(filters, function(filter){
+      return {
+        value: filter,
+        label: filter === 'curated' ? 'FOLD picks' : filter
+      }
+    })
   },
   conditionallySelected: function(){
     return Session.equals('filterValue', this.toString()) ? 'selected' : '';
