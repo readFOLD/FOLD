@@ -18,7 +18,7 @@
     {{#unless isPhone}}
       {{> share_button}}
       {{> favorite_button}}
-      {{#if currentUser.admin}}
+      {{#if adminMode}}
         {{> editors_pick_button}}
       {{/if}}
     {{/unless}}

@@ -82,20 +82,34 @@ svg.mobile-back-icon{
   .star-button;
   .favorite {
     .fg {
-      fill: @light-color;
+      fill: @medium-color;
       &:hover {
-        fill: @medium-color;
+        fill: @favorite-color;
       }
     }
   }
   .unfavorite{
     .fg{
       fill: @favorite-color;
-      &:hover{
-        fill: @dark-favorite-color;
-      }
     }
   }
+  .just-favorited{
+    .fg {
+      fill: @favorite-color;
+    }
+    .animation(grow 0.5s 1);
+  }
+  .just-unfavorited{
+    .fg {
+      fill: @medium-color;
+    }
+  }
+  @keyframes grow{
+    50%{
+      transform: scale(1.25);
+    }
+  }
+
 
 }
 

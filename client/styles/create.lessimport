@@ -121,11 +121,6 @@ div.floating-story-buttons {
     float: left;
     font-size: 0;
     margin-right: 10px;
-    .favorite{
-      .fg {
-        fill: @medium-color;
-      }
-    }
   }
   .share-button{
     padding-left: 10px;

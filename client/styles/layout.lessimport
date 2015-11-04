@@ -13,8 +13,8 @@
 @less-danger-color: #fc521f;
 @panel-color: #815ed9;
 @remix-color: #fc521f;
-@favorite-color: #FFD600;
-@dark-favorite-color: #EFC820;
+@favorite-color: #fc521f;
+@dark-favorite-color: #a82d11;
 @facebook-color: #365998;
 @twitter-color: #4099FF;
 @instagram-color: #9e7144;
@@ -178,6 +178,12 @@ html {
 @desktop:     ~"only screen and (min-device-width: 950px) and (max-device-width: 1128px)";
 @desktop-xl:  ~"only screen and (min-device-width: 1129px)";
 @desktop-xtall:  ~"only screen and (min-height: 1129px)";
+
+.animation(@string){
+  -webkit-animation: @string;
+  -moz-animation: @string;
+  animation: @string;
+}
 
 .transform(@string){
   -webkit-transform: @string;
