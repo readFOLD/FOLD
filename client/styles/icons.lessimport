@@ -8,7 +8,7 @@
 
 .back-arrow{
   .fg{
-    fill: @light-color;
+    fill: @white-color;
   }
 }
 

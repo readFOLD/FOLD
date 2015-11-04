@@ -13,7 +13,7 @@ input[type=file] {
   &::before {
     display: inline-block;
     background: @dark-color;
-    color: @light-color;
+    color: @white-color;
     outline: none;
     white-space: nowrap;
     -webkit-user-select: none;
@@ -61,7 +61,7 @@ input[type=file] {
     }
     &::before {
       display: inline-block;
-      color: @light-color;
+      color: @white-color;
       outline: none;
       -webkit-user-select: none;
       cursor: pointer;
@@ -73,7 +73,7 @@ input[type=file] {
     }
     &:hover::before {
       background-color: @dark-color;
-      color: @light-color;
+      color: @white-color;
     }
   }
 }
@@ -87,7 +87,7 @@ div.upload-header-image {
 
 .confirm-publish{
   background-color: @dark-color;
-  color: @light-color;
+  color: @white-color;
 }
 
 div.floating-story-buttons {
@@ -142,12 +142,12 @@ div.floating-story-buttons {
     }
 
     .fg {
-      fill: @light-color;
+      fill: @white-color;
     }
 
     &:hover{
       .fg{
-        fill: @light-color;
+        fill: @white-color;
       }
     }
   }
@@ -196,7 +196,7 @@ div.floating-story-buttons {
 
   button.button {
     background-color: @dark-color;
-    color: @light-color;
+    color: @white-color;
     cursor: pointer;
     padding: 5px 15px;
     font-size: 14px;
@@ -337,7 +337,7 @@ div.title-overlay {
     top: 30px;
     right: 30px;
     background-color: @dark-color;
-    color: @light-color;
+    color: @white-color;
     cursor: pointer;
     padding: 5px;
     text-align: center;
@@ -381,6 +381,7 @@ div.title-overlay {
     margin-left: 105px;
     margin-top: 125px;
     max-width: 1300px;
+    color: @white-color;
     @media @mobile {
       margin-left: 20px;
       margin-right: 20px;
@@ -434,7 +435,7 @@ div.title-overlay {
 div.button-options {
   button {
     background-color: @dark-color;
-    color: @light-color;
+    color: @white-color;
     cursor: pointer;
     //padding: 5px;
     text-align: center;
@@ -517,7 +518,7 @@ div.vertical-narrative {
   .unminimized-new-section-bar {
     border-top: 12px solid @background-color;
     border-bottom: 12px solid @background-color;
-    background-color: @selected-background-color;
+    background-color: @dark-color;
     height: 95px;
   }
 
@@ -661,10 +662,13 @@ div.horizontal-context {
         width: @circle-diameter;
         vertical-align: top;
         display: inline-block;
+        .fg {
+          fill: white;
+        }
 
         &:hover, &.active {
           .bg{
-            fill: @action-color;
+            fill: @dark-color;
           }
         }
       }
@@ -685,7 +689,7 @@ div.horizontal-context {
 
   .horizontal-new-section {
     position: absolute;
-    background-color: @action-color;
+    background-color: @dark-color;
     svg{
       .transition(transform 0.2s ease, fill 0.25s ease);
     }
@@ -812,7 +816,7 @@ div.horizontal-context {
     .search-trigger, .search-input-container, input, .search-button {
       font-size: 12px;
       height: @searchInputHeight;
-      color: @light-color;
+      color: @white-color;
       position: absolute;
       float: left;
     }
@@ -848,8 +852,9 @@ div.horizontal-context {
 
   .search-radios{
     position: relative;
-    margin-top: 20px;
+    margin-top: 13px;
     margin-bottom: 40px;
+    font-size: 13px;
     input {
       width: auto;
     }
@@ -921,7 +926,7 @@ div.horizontal-context {
       cursor: pointer;
 
       &:hover {
-        background: @light-color; 
+        background: @white-color; 
       }
       &.focused {
         background: @medium-color; 
@@ -1078,7 +1083,7 @@ div.horizontal-context {
       left: calc(100%~"-" 90px);
       background-color: @action-color;
       height: @newCardBottomButtonHeight;
-      color: @light-color;
+      color: @white-color;
       width: 90px;
       margin-top: 12px;
       margin-bottom: 20px;
@@ -1207,7 +1212,7 @@ div.text-section {
 
   svg.add-card-icon{
     .fg {
-      fill: @light-color;
+      fill: @white-color;
     }
     .bg {
       opacity: 0;
@@ -1216,7 +1221,7 @@ div.text-section {
   }
 
   button{
-    color: @light-color;
+    color: @white-color;
     background-color: inherit;
     font-family: 'FFMarkWeb', 'Avenir Next', sans-serif;
     font-weight: 400;
@@ -1232,7 +1237,7 @@ div.text-section {
     }
   }
   svg{
-    fill: @light-color;
+    fill: @white-color;
   }
 
 }
@@ -1385,7 +1390,7 @@ div.context-anchor-menu {
 
   .back-arrow{
     .fg{
-      fill: @light-color;
+      fill: @white-color;
     }
   }
   button{

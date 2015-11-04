@@ -20,7 +20,7 @@
 @instagram-color: #9e7144;
 
 @unselected-text-color: #999999;
-@unselected-background-color: #eeeeee;
+@unselected-background-color: #f8f8f8;
 
 @selected-background-color: white;
 
@@ -126,12 +126,12 @@ html {
     font-weight: normal;
 }
 
-@font-face {
+/*@font-face {
   font-family: 'Muli';
   font-style: normal;
   font-weight: 400;
   src: local('Muli'), url(//fonts.gstatic.com/s/muli/v7/FrmKYbbiMrxVeJO6lA8KEvesZW2xOQ-xsNqO47m55DA.ttf) format('truetype');
-}
+}*/
 
 @font-face {
   font-family: 'PT Mono';
@@ -347,12 +347,15 @@ input {
 
 input[type="text"], input[type="password"], input[type="email"] {
   width: 100%;
-  font-family: Muli;
+  font-family: 'FFMarkWeb';
   margin-top: 5px;
   margin-bottom: 15px;
   height: 55px;
   border: none;
   border-bottom: 5px solid @action-color;
+  border-top: 1px solid @dark-color;
+  border-left: 1px solid @dark-color;
+  border-right: 1px solid @dark-color; 
   padding-left: 18px;
   font-size: 17px;
 
@@ -1002,6 +1005,9 @@ div.horizontal-context {
     .bg{
       fill: @action-color;
     }
+    .fg {
+      fill: white;
+    }
     .size(@context-count-size);
   }
 
@@ -1010,13 +1016,12 @@ div.horizontal-context {
       display: none;
     }
     .context-count-text {
-      font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+      font-family: 'FFMarkWebBold', sans-serif;
       font-size: 14px;
       position: absolute;
       cursor: default;
       color: @white-color;
-      //font-weight: 800;
-      margin-top: 4px;
+      margin-top: 5px;
       margin-left: -@context-count-size/2- 8px;
       display: inline;
     }
@@ -1031,7 +1036,9 @@ div.horizontal-context {
   height: @horizontal-content-height;
   // box-shadow: 3px 3px #848484;
   pointer-events: none;
-
+  border-top: 1px solid @inactive-color;
+  border-left: 1px solid @inactive-color;
+  border-right: 1px solid @inactive-color;
   //min-width: 400px;
   width: 32%;
   background-color: @white-color;
@@ -1416,7 +1423,7 @@ div.minimap {
     text-align: center;
     position: absolute;
     height: 20%;
-    font-family: Muli, sans-serif;
+    font-family: 'FFMarkWebBold', sans-serif;
 
     top: 50%;
     left: 50%;
@@ -1460,7 +1467,7 @@ div.minimap {
 }
 
 div.tagsinput {
-  font-family: Muli;
+  font-family: 'FFMarkWeb';
   font-size: 15px;
   border:1px solid #CCC;
   background: #FFF;
@@ -1707,7 +1714,7 @@ div.loading-container {
       img.profile-picture {
         margin:auto;
         margin-right: 2px;
-        margin-bottom: -7.5px;
+        margin-bottom: -9px;
         z-index: 10;
         border-radius: @profile-picture-size/2;
         width: @profile-picture-size;
