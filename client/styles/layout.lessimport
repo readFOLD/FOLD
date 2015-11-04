@@ -929,7 +929,7 @@ div.twitter-section{
 div#banner-overlay {
   width: 100%;
   height: 350px;
-  background-color: @dark-color;
+  background-color: fade(@dark-color, 60%);
   opacity: 0.0;
   position: absolute;
 

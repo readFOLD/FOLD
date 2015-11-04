@@ -261,7 +261,9 @@ div.title-overlay {
   @media @not-mobile {
     min-width: 1024px;
   }
-  height: 350px;
+  @starting-height: 350px;
+  @ending-height: 100px;
+  height: @starting-height;
 
   z-index: 30;
   color: @white-color;
@@ -305,8 +307,11 @@ div.title-overlay {
 
   &.fixed {
     position: fixed;
-    height: 100px;
+    height: @ending-height;
     width: 100%;
+    img{
+      top: -(@starting-height - @ending-height);
+    }
     @media @mobile {
       display: none;
     }
@@ -382,6 +387,7 @@ div.title-overlay {
       max-width: calc(100% ~"-" 40px);
     }
     background-color: @dark-color;
+    .background-transition;
     &.b {
       position: fixed;
       margin-top: @magic-styling-distance;
@@ -391,6 +397,11 @@ div.title-overlay {
     }
     &.c{
       margin-top: 0px;
+    }
+
+
+    &.b, &.c{
+      background-color: transparent;
     }
     div.story-title {
       max-width: 100%;
