@@ -302,7 +302,6 @@
       {{/if}}
       {{#if viz}}
         {{#if editingThisContext}}
-          {{> create_viz_section}}
         {{else}}
           {{> display_viz_section}}
         {{/if}}
@@ -400,7 +399,10 @@
 <template name="display_viz_section">
   <div class="viz-section">
     {{#if selected}}
-      <iframe width="100%" height="315" src="{{url}}" frameborder="0" ></iframe>
+      <div class="deprecated-card">
+        {{> viz_icon}}
+        <div class="deprecation-message">Sorry, we don't support this card anymore. Please check it out at the <a href="{{url}}" class="green" target="_blank">Observatory of Economic Complexity</a></div>
+      </div>
     {{else}}
       <div class="icon-only-preview">
         {{> viz_icon}}

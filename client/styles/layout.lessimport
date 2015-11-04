@@ -842,12 +842,32 @@ div.text-section {
 
   background-color: @medium-color;
 
-  svg {
+  svg{
     @iconSize: 100px;
     height: @iconSize;
     width: @iconSize;
     position: relative;
     top: calc(50% ~"-" @iconSize / 2);
+  }
+}
+
+.deprecated-card {
+  .size-to-fit;
+  text-align: center;
+
+  background-color: @medium-color;
+  @iconSize: 40px;
+
+  svg{
+    height: @iconSize;
+    width: @iconSize;
+    position: relative;
+    top: 80px;
+  }
+  .deprecation-message{
+    position: relative;
+    margin-top: 60px;
+    padding: @magic-styling-distance;
   }
 }
 
