@@ -101,7 +101,9 @@ svg.mobile-back-icon{
   }
   .just-unfavorited{
     .fg {
-      fill: @medium-color;
+      &:hover {
+        fill: @medium-color;
+      }
     }
   }
   @keyframes grow{

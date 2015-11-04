@@ -901,9 +901,15 @@ Template.share_button.helpers({
 Template.favorite_button.helpers({
   userFavorited: function() {
     return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
+  },
+  additionalClass: function() {
+    return Template.instance().additionalClass.get();
   }
 });
 
+Template.favorite_button.onCreated(function() {
+  this.additionalClass = new ReactiveVar('');
+});
 Template.favorite_button.events({
   "click .favorite": function (e, t) {
 
@@ -911,8 +917,9 @@ Template.favorite_button.events({
       return notifyInfo('Please sign up or log in to favorite stories');
     }
     var that = this;
-    t.$('button').addClass('just-favorited');
+    t.additionalClass.set('just-favorited');
     Meteor.setTimeout(function () {
+      t.additionalClass.set('');
       return Meteor.call('favoriteStory', that._id, function (err) {
         if (err) {
           notifyError(err);
@@ -926,21 +933,19 @@ Template.favorite_button.events({
 
   },
   "click .unfavorite": function (e, t) {
-    var that = this;
-    t.$('button').addClass('just-unfavorited');
+    t.additionalClass.set('just-unfavorited');
     Meteor.setTimeout(function(){
-      Meteor.call('unfavoriteStory', that._id, function (err) {
-        if (err) {
-          notifyError(err);
-          throw(err);
-        } else {
-          analytics.track('Unfavorite story');
-        }
-      });
-      t.$('button').removeClass('just-unfavorited');
+      t.additionalClass.set('');
     }, 1000);
+    return Meteor.call('unfavoriteStory', this._id, function (err) {
+      if (err) {
+        notifyError(err);
+        throw(err);
+      } else {
 
-
+        analytics.track('Unfavorite story');
+      }
+    });
   }
 });
 
