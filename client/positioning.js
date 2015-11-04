@@ -1,11 +1,11 @@
 window.constants = {
-  verticalSpacing: 12,
+  verticalSpacing: 20, // there is css that needs to match this
   readModeOffset: 286,
   minPageWidth: 1024
 };
 
-window.getVerticalLeft = function(width) {
-  return Meteor.Device.isPhone() ? (Session.get('windowWidth') > 340 ? 30 : 20) : 106;
+window.getVerticalLeft = function() {
+  return Meteor.Device.isPhone() ? (Session.get('windowWidth') > 340 ? 30 : 20) : (Session.get('windowWidth') / 2 - Session.get('cardWidth') - Session.get('separation'));
 };
 
 window.getHorizontalLeft = function() {

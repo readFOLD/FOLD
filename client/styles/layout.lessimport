@@ -511,9 +511,12 @@ div#overlay {
     cursor: auto;
     padding: 4px 4px;
   }
+
+  @border-width: 1px;
+  border: @border-width solid transparent;
   &.selected {
     cursor: text;
-    border: 1px solid @inactive-color;
+    border: @border-width solid @inactive-color;
     a {
       // moved background-transition to specific cases so everything doesn't need to animate when a new card becomes selected
       cursor: pointer;
@@ -710,7 +713,7 @@ div.vertical-narrative {
     color: @unselected-text-color;
     background-color: @unselected-background-color;
     &.read {
-      margin-bottom: 12px;
+      margin-bottom: 20px;
     }
     // box-shadow: 3px 3px @medium-color;
 

@@ -15,7 +15,7 @@ getCardWidth = function(windowWidth) {
   }
 };
 
-Session.set("separation", 10);
+Session.set("separation", 20);
 
 var windowSizeDep = new Tracker.Dependency();
 
