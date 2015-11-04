@@ -839,12 +839,12 @@ Template.story_browser.helpers({
 });
 
 Template.story_browser.events({
-  "click .right svg": function(d) {
+  "click .right": function(d) {
     window.goRightOneCard();
     analytics.track('Click right arrow');
   },
-  "click .left svg": function(d) {
-    window.goLeftOneCard()
+  "click .left": function(d) {
+    window.goLeftOneCard();
     analytics.track('Click left arrow');
   }
 });
@@ -853,7 +853,7 @@ Template.type_specific_icon.helpers(typeHelpers);
 
 Template.share_button.onCreated(function() {
   this.tooltipShown = new ReactiveVar(false);
-})
+});
 
 Template.share_button.events({
   'click': function(e, t) {
