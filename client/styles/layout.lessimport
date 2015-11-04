@@ -28,7 +28,7 @@
 @horizontal-content-height: 300px;
 
 @content-font-size: 16.5px;
-@content-line-height: 26px;
+@content-line-height: 27px;
 
 @mobile-content-font-size: 15.5px;
 @mobile-content-line-height: 24px;
