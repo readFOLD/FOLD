@@ -707,23 +707,14 @@
   {{/if}}
 </template>
 
-<template name="share_button">
-  {{#if tooltipShown}}
-  <div class="sharing-tooltip">
-    <ul>
-      <li class="share-facebook">
-        <i class="fa fa-facebook"></i>
-        <span>Share on Facebook</span>
-      </li>
-      <li class="share-twitter">
-        <i class="fa fa-twitter"></i>
-        <span>Share on Twitter</span>
-      </li>
-    </ul>
-  </div>
-  {{/if}}
-  <div class="share-button {{#if tooltipShown}}active{{/if}}">
-    <button type='button' class='share'>{{> share_icon }}</button>
+<template name="share_buttons">
+  <div class="share-buttons">
+    <button class="share-facebook">
+      {{> facebook_social_icon}}
+    </button>
+    <button class="share-twitter">
+      {{> twitter_social_icon}}
+    </button>
   </div>
 </template>
 

@@ -1167,7 +1167,7 @@ div.horizontal-context {
 
 
 @minimap-right-buffer: 6px;
-@minimap-bottom-buffer: 6px;
+@minimap-bottom-buffer: @magic-styling-distance + 20px;
 @minimap-top-buffer: 20px;
 @minimap-padding: 6px;
 @minimap-max-height: calc(100% ~"-" @horizontal-context-top ~"-" @horizontal-context-margin-top ~"-" @horizontal-content-height ~"-" @remix-bar-height ~"-" @minimap-bottom-buffer ~"-" @minimap-top-buffer ~"-" 2*@minimap-padding);

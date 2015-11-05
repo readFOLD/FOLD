@@ -79,6 +79,10 @@ Handlebars.registerHelper("adminMode", function() {
   }
 });
 
+Handlebars.registerHelper("reactiveStory", function(){
+  return Stories.findOne(Session.get('storyId'));
+});
+
 Handlebars.registerHelper("profileImage", function(user, size) {
   var diameter;
   if (size === 'large'){

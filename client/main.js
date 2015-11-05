@@ -851,14 +851,8 @@ Template.story_browser.events({
 
 Template.type_specific_icon.helpers(typeHelpers);
 
-Template.share_button.onCreated(function() {
-  this.tooltipShown = new ReactiveVar(false);
-});
 
-Template.share_button.events({
-  'click': function(e, t) {
-    t.tooltipShown.set(!t.tooltipShown.get());
-  },
+Template.share_buttons.events({
   'click .share-facebook': function(e, t) {
     var width  = 575;
     var height = 400;
@@ -892,11 +886,6 @@ Template.share_button.events({
   }
 });
 
-Template.share_button.helpers({
-  "tooltipShown": function() {
-    return Template.instance().tooltipShown.get();
-  }
-})
 
 Template.favorite_button.helpers({
   userFavorited: function() {

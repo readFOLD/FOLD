@@ -92,100 +92,35 @@ div.upload-header-image {
 
 div.floating-story-buttons {
   border-radius: 3px;
-  color: white;
   vertical-align: middle;
   button {
-    float: left;
     text-align: center;
   }
-  .favorite-button, .share-button {
+  .favorite-button, .share-buttons {
     cursor: pointer;
-    background-color: @dark-color;
+    display: inline-block;
     height: 40px;
-    width: 40px;
     margin: 0px;
-
-    &:hover {
-      background-color: @action-color;
-    }
+    float: left;
+    color: @white-color;
   }
   .favorite-button{
+    font-size: 0;
+    background-color: @dark-color;
     button{
-      .size-to-fit;
       margin: auto;
+      .size-to-fit;
       svg{
-        width: 20px;
-        height: 20px;
+        .size(20px);
       }
     }
-    float: left;
-    font-size: 0;
-    margin-right: 10px;
+    width: @magic-styling-distance * 2;
   }
-  .share-button{
-    padding-left: 10px;
-    padding-top: 9px;
-    float: left;
-
+  .share-buttons{
     button {
       width: 20px;
-      height: 20px;
-    }
-
-    &.active {
-      background-color: @action-color;
-    }
-
-    .fg {
-      fill: @white-color;
-    }
-
-    &:hover{
-      .fg{
-        fill: @white-color;
-      }
-    }
-  }
-
-  .sharing-tooltip {
-    position: relative;
-    top: 55px;
-    left: 55px;
-    float: left;
-    background-color: @dark-color;
-    color: white;
-    width: 190px;
-    border-radius: 3px;
-    li {
-      cursor: pointer;
-      padding: 6px 15px;
-      width: 100%;
+      margin-right: 20px;
       height: 40px;
-      line-height: 30px;
-      &:hover {
-        background-color: @action-color;
-      }
-      i {
-        float: left;
-        line-height: 30px;
-      }
-      span {
-        float: right;        
-      }
-    }
-
-    &:after {
-      bottom: 100%;
-      left: 80%;
-      border: solid transparent;
-      content: " ";
-      height: 0;
-      width: 0;
-      position: absolute;
-      pointer-events: none;
-      border-bottom-color: @dark-color;
-      border-width: 10px;
-      margin-left: -8px;
     }
   }
 
@@ -206,8 +141,8 @@ div.floating-story-buttons {
     }
   }
   position: fixed;
-  bottom: 00px;
-  left: 0px;
+  bottom: 0px;
+  right: 0px;
   z-index: 27;
 
   .saved-text{
