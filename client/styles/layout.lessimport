@@ -36,6 +36,8 @@
 
 @magic-styling-distance: 40px;
 
+@card-spacing: 20px;
+
 .content-font{
   font-size: @content-font-size;
   line-height: @content-line-height;
@@ -113,6 +115,12 @@ html {
   text-align: start;
 }
 
+.center-over-parent-div{ // requires parent div to be position relative or absolute
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  .transform(translate(-50%, -50%));
+}
 
 // http://asimpleframe.com/
 @font-face {
@@ -463,23 +471,26 @@ div.story-browser {
     height: 340px;
     width: 60px;
     margin-top: 60px;
-    display: inline-block;
-    background-color: @dark-color;
+    position: relative;
+    background-color: @inactive-color;
     cursor: pointer;
 
     &:hover {
       background-color: @action-color;
     }
   }
+
+  &.edit-mode{
+    div{
+      height: 340px - @remix-bar-height;
+    }
+  }
   svg {
     cursor: pointer;
-    margin-top: 140px;
-    border-radius: 30px;
-
+    .center-over-parent-div;
 
     &:hover {
       background-color: @action-color;
-      border-radius: 30px;
     }
   }
 
@@ -721,9 +732,8 @@ div.vertical-narrative {
     min-height: @horizontal-content-height + @remix-bar-height;
 //    opacity: 0.25;
     color: @unselected-text-color;
-    background-color: @unselected-background-color;
     &.read {
-      margin-bottom: 20px;
+      margin-bottom: @card-spacing;
     }
     // box-shadow: 3px 3px @medium-color;
 
@@ -735,6 +745,10 @@ div.vertical-narrative {
         cursor: text;
       }
     }
+  }
+
+  .vertical-narrative-section{
+    background-color: @unselected-background-color;
   }
 
 }

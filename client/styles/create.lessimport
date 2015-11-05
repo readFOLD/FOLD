@@ -489,13 +489,6 @@ div.narrativeView {
   }
 }
 
-.new-section {
-  fill: @dark-color;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
 
 div.vertical-narrative {
   z-index: 20;
@@ -503,18 +496,19 @@ div.vertical-narrative {
   .new-section {
     min-height: 75px;
     height: 75px;
+    position: relative;
+    svg{
+      .center-over-parent-div;
+    }
     overflow: hidden;
-    font-size: 55px;
-    line-height: 75px;
     text-align: center;
   }
 
 
   .unminimized-new-section-bar {
-    border-top: 12px solid @background-color;
-    border-bottom: 12px solid @background-color;
-    background-color: @dark-color;
-    height: 95px;
+    border-top: @card-spacing solid @background-color;
+    border-bottom: @card-spacing solid @background-color;
+    height: 111px;
   }
 
   .new-section.unminimized {
@@ -524,7 +518,7 @@ div.vertical-narrative {
   .new-section.minimized {
     .height-transition;
     background-color: @background-color;
-    height: 12px;
+    height: @card-spacing;
     border-top: 0px;
     border-bottom: 0px;
     min-height: 0px;
@@ -533,6 +527,7 @@ div.vertical-narrative {
     }
     &:hover {
       .unminimized-new-section-bar;
+      background-color: @action-color;
       svg{
         visibility: inherit;
       }
@@ -582,10 +577,16 @@ svg{
 }
 
 .new-section {
+  cursor: pointer;
+  .fg{
+    fill: @white-color;
+  }
+
+  background-color: @medium-color;
+
   &:hover {
-    .bg{
-      fill: @action-color;
-    }
+    background-color: @action-color;
+
   }
 }
 
@@ -633,8 +634,6 @@ div.horizontal-context {
 
     width: 100%;
     height: @contentIconBannerHeight;
-    padding-left: 17px;
-    padding-right: 17px;
     background-color: @dark-color;
     div.row {
       text-align: justify;
@@ -644,29 +643,35 @@ div.horizontal-context {
       margin-right: 10%;
     }
 
-    @circle-diameter: 40px;
+    @button-size: 57.73px;
     button {
-      height: @circle-diameter;
-      width: @circle-diameter;
+      height: 60px;
+      width: @button-size;
       padding: 0;
-      margin-top: 10px;
       svg {
         padding: 1.5px;
 
-        height: @circle-diameter;
-        width: @circle-diameter;
+        height: 60px;
+        width: @button-size;
         vertical-align: top;
         display: inline-block;
         .fg {
           fill: white;
         }
 
-        &:hover, &.active {
-          .bg{
-            fill: @dark-color;
-          }
-        }
       }
+
+      &.remix-button{
+        background-color: @remix-color;
+      }
+
+      &:hover{
+        background-color: @action-color;
+      }
+      &.active {
+        background-color: @action-color;
+      }
+
     }
 
     .unimplemented {
@@ -684,7 +689,6 @@ div.horizontal-context {
 
   .horizontal-new-section {
     position: absolute;
-    background-color: @dark-color;
     svg{
       .transition(transform 0.2s ease, fill 0.25s ease);
     }

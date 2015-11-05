@@ -550,7 +550,7 @@
 
 
 <template name="story_browser">
-  <div class="story-browser">
+  <div class="story-browser {{#unless read}}edit-mode{{/unless}}">
     {{#if showLeftArrow}}
       <div class="left">
         {{> browse_arrow_left}}
