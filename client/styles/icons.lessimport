@@ -30,8 +30,7 @@ svg.remix-icon-square{
   }
 }
 svg.browse-arrow {
-  height: 40px;
-  width: 40px;
+  .size(20px);
   .fg{
     fill: @white-color;
   }

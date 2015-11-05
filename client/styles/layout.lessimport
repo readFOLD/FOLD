@@ -472,11 +472,16 @@ div.story-browser {
     width: 60px;
     margin-top: 60px;
     position: relative;
-    background-color: @inactive-color;
+    display: inline-block;
+    background-color: @dark-color;
     cursor: pointer;
 
     &:hover {
       background-color: @action-color;
+    }
+    &.right{
+
+      display: inline;
     }
   }
 

@@ -300,10 +300,14 @@ div.title-overlay {
     }
   }
 
+  .background-transition;
+
   &.fixed {
     position: fixed;
     height: @ending-height;
     width: 100%;
+    background-color: @dark-color;
+
     img{
       top: -(@starting-height - @ending-height);
     }
