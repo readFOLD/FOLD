@@ -95,14 +95,14 @@ div.user-profile {
     } 
   }
   .bio-form {
-    font-family: 'FFMarkWebBold';
+    font-family: 'FFMarkWeb';
     margin-top: 5px;
     margin-bottom: 15px;
     height: 110px;
     border: none;
     border-bottom: 5px solid @action-color;
     padding: 10px 18px;
-    font-size: 17px;
+    font-size: 16px;
   }
 }
 
