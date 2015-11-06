@@ -449,7 +449,7 @@ var saveMetaviewOrdering = function() {
 
   Session.set('saveState', 'saving');
 
-  Meteor.call('reorderStory', Session.get("storyId"), idMap, saveCallback)
+  Meteor.call('reorderStory', Session.get("storyId"), idMap, saveCallback);
 
 
   //var originalVerticalSections = that.data.verticalSections;

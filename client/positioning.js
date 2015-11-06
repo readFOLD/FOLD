@@ -199,12 +199,6 @@ $(document).keydown(function(e) {
           goRightOneCard();
         }
         break;
-      case '&': // up arrow
-        goUpOneCard();
-        break;
-      case '(': // down arrow
-        goDownOneCard();
-        break;
       case '%': // left arrow
         if(Session.get('pastHeader')){
           goLeftOneCard();
