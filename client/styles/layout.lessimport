@@ -1795,3 +1795,10 @@ div.loading-container {
     }
   }
 }
+
+.read-admin-ui{
+  position: fixed;
+  bottom: 0;
+  right: 200px;
+  color: @black-color;
+}

@@ -28,6 +28,8 @@ Meteor.users._ensureIndex({
   username: 1
 });
 
+
+
 var readStoryFields = {
   draftStory: 0,
   history: 0,
@@ -37,7 +39,7 @@ var readStoryFields = {
   everPublished:0,
   //deleted: 0, // currently always blank so no need to filter
   //deletedAt: 0, // currently always blank so no need to filter
-  'analytics.shares': 0,
+  //'analytics.shares': 0,
   //'contextBlocks.authorId': 0, // used in analytics
   //'contextBlocks.storyShortId': 0, // used in analytics
   'contextBlocks.storyId': 0,
@@ -51,6 +53,7 @@ var readStoryFields = {
   'contextBlocks.searchQuery': 0,
   'contextBlocks.searchOption': 0
 };
+
 
 var previewStoryFields = {
   shortId: 1,
@@ -201,6 +204,18 @@ Meteor.publish("minimalUsersPub", function(userIds) {
       "profile.profilePicture": 1,
       "username": 1,
       "services.twitter.id": 1
+    }
+  });
+});
+
+Meteor.publish("adminOtherUserPub", function(userId) {
+  if (!userId || !this.userId || !Meteor.users.findOne(this.userId).admin) {
+    return this.ready();
+  }
+  return Meteor.users.find({ _id: userId }, {
+    fields: {
+      "services.twitter.screenName": 1,
+      "emails.address": 1
     }
   });
 });
