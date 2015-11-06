@@ -186,7 +186,7 @@ Meteor.startup(function(){
     }
   });
   $( window ).konami({
-    code : [70, 79, 76, 68],
+    code : [70, 79, 76, 68, 65, 68, 77, 73, 78],
     cheat: function() {
       Session.set('adminMode', true);
     }
