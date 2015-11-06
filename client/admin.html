@@ -1,0 +1,9 @@
+<template name="admin">
+  <h1>Welcome {{currentUser.profile.name}}</h1>
+  <h2>Users Who Love FOLD Stories</h2>
+  <ol>
+    {{#each usersWhoLoveStories}}
+      <li><b>{{profile.name}}</b> ({{emailAddress}} {{#if twitterHandle}}{{twitterHandle}}{{/if}}) : <b>{{profile.favorites.length}} favorites</b></li>
+    {{/each}}
+  </ol>
+</template>

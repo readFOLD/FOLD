@@ -1099,22 +1099,3 @@ Template.read.onCreated(function(){
 Template.read.onRendered(function(){
   $(window).scrollTop(Session.get('scrollTop'));
 });
-
-Template.read_admin_ui.onCreated(function(){
-  this.subscribe('adminOtherUserPub', this.data.authorId);
-});
-
-Template.read_admin_ui.helpers({
-  emailAddress: function(){
-    var user = Meteor.users.findOne(this.authorId);
-    if (user && user.emails){
-      return user.emails[0].address;
-    }
-  },
-  twitterHandle: function(){
-    var user = Meteor.users.findOne(this.authorId);
-    if (user && user.services && user.services.twitter){
-      return '@' + user.services.twitter.screenName;
-    }
-  }
-});

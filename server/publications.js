@@ -220,6 +220,19 @@ Meteor.publish("adminOtherUserPub", function(userId) {
   });
 });
 
+Meteor.publish("adminMostFavoritesUsersPub", function() {
+  if (!this.userId || !Meteor.users.findOne(this.userId).admin) {
+    return this.ready();
+  }
+  return Meteor.users.find({ $where: "this.profile.favorites && this.profile.favorites.length > 10"}, {
+    fields: {
+      "services.twitter.screenName": 1,
+      "emails.address": 1,
+      "profile": 1
+    },
+  });
+});
+
 Meteor.publish("userProfilePub", function(username) { // includes user profile and published stories
 
   userCursor = Meteor.users.find({

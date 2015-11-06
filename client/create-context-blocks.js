@@ -683,13 +683,6 @@ Template.create_text_section.events({
   }
 });
 
-Template.create_twitter_section.helpers({
-  twitterUser: function() {
-    var user = Meteor.user();
-    return user.services && user.services.twitter && user.services.twitter.id;
-  }
-});
-
 Template.search_form.events({
   'change, keydown': function(){
     searchDep.changed();

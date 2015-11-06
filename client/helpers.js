@@ -83,6 +83,11 @@ Handlebars.registerHelper("reactiveStory", function(){
   return Stories.findOne(Session.get('storyId'));
 });
 
+Handlebars.registerHelper("twitterUser", function() {
+  var user = Meteor.user();
+  return user.services && user.services.twitter && user.services.twitter.id;
+});
+
 Handlebars.registerHelper("profileImage", function(user, size) {
   var diameter;
   if (size === 'large'){
