@@ -224,3 +224,6 @@ window.resetXPositionMemory = function () {
   Session.set("currentXByYId", {});
 };
 
+window.getXByYId = function(yId) {
+  return Session.get('currentXByYId')[yId] || 0;
+};
