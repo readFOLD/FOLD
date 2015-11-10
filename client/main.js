@@ -156,7 +156,7 @@ Tracker.autorun(function(){
 Tracker.autorun(function(){
   var currentYId = Session.get("currentYId");
   if (currentYId){
-    Session.set("currentX", Session.get("currentXByYId")[currentYId] || 0);
+    Session.set("currentX", getXByYId(currentYId));
   }
 });
 
@@ -655,6 +655,10 @@ Template.horizontal_context.helpers({
     lastIndex = ((_ref = Session.get("horizontalSectionsMap")[Session.get("currentY")]) != null ? _ref.horizontal.length : void 0) - 1;
     return (this.index === lastIndex) && (lastIndex > 0);
   },
+  horizontalSectionInDOM: function() {
+    // on this row, or this card is the current X for another hidden row
+    return Session.equals("currentY", this.verticalIndex) || this.index === getXByYId(this.verticalId);
+  },
   horizontalShown: function() {
     return Session.equals("currentY", this.index);
   }
@@ -687,7 +691,8 @@ editableDescriptionCreatedBoilerplate = function() {
 
 horizontalBlockHelpers = _.extend({}, typeHelpers, {
   selected: function() {
-    return Session.equals("currentX", this.index) && !Session.get("addingContext");
+    // return Session.equals("currentX", this.index) && !Session.get("addingContext");
+    return this.index === getXByYId(this.verticalId) && !Session.get("addingContext");
   },
   textContent: function() {
     var textContent, rows;
@@ -744,6 +749,9 @@ Template.horizontal_section_block.helpers({
   left: getHorizontalLeft,
   lastUpdate: function() {
     Session.get('lastUpdate');
+  },
+  hide: function() {
+    return !Session.equals("currentY", this.verticalIndex);
   }
 });
 
