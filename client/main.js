@@ -657,7 +657,7 @@ Template.horizontal_context.helpers({
   },
   horizontalSectionInDOM: function() {
     // on this row, or this card is the current X for another hidden row
-    return Session.equals("currentY", this.verticalIndex) || this.index === getXByYId(this.verticalId);
+    return Session.equals("currentY", this.verticalIndex) || this.index === getXByYId(this.verticalId) || this.type === 'audio'; // TODO remove the audio case
   },
   horizontalShown: function() {
     return Session.equals("currentY", this.index);
