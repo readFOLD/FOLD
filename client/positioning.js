@@ -10,12 +10,7 @@ window.getVerticalLeft = function() {
 
 window.getHorizontalLeft = function() {
   var currentPos, currentHorizontal, cardWidth, numCards, left, offset, pageWidth, verticalRight, addContextBlockWidth, cardSeparation;
-
-  currentHorizontal = Session.get("horizontalSectionsMap")[Session.get("currentY")];
-  if (!currentHorizontal) {
-    return
-  }
-
+  
   // Variable definitions (width of page, width of card, offset of cards)
   cardWidth = Session.get("cardWidth");
   cardSeparation = Session.get("separation");
@@ -34,6 +29,10 @@ window.getHorizontalLeft = function() {
   }
 
   if(this.verticalIndex === Session.get("currentY")){
+    currentHorizontal = Session.get("horizontalSectionsMap")[Session.get("currentY")];
+    if (!currentHorizontal) {
+      return
+    }
     currentPos = this.index - Session.get("currentX");
     numCards = currentHorizontal.horizontal.length;
   } else { // card is from another row
