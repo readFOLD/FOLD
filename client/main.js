@@ -303,11 +303,7 @@ Template.story_header.events = {
 };
 
 Template.story.helpers({
-  horizontalExists: function() {
-    var currentY, _ref;
-    currentY = Session.get('currentY');
-    return ((_ref = Session.get('horizontalSectionsMap')[currentY]) != null ? _ref.horizontal.length : void 0) > 1;
-  },
+  horizontalExists: horizontalExists,
   pastHeader: function() {
     return Session.get("pastHeader");
   },
@@ -405,11 +401,12 @@ Template.story.onRendered(function(){
   // TODO destroy bindings later?
   if(Meteor.Device.isPhone()){
     this.$('.entire-story').hammer(hammerSwipeOptions).bind('swipeleft',function(){
-        // TODO only if selected
-        if(Session.get('mobileContextView')){
-          goRightOneCard();
-        } else {
-          Session.set('mobileContextView', true);
+        if(horizontalExists()){
+          if(Session.get('mobileContextView')){
+            goRightOneCard();
+          } else {
+            Session.set('mobileContextView', true);
+          }
         }
       }
     );
