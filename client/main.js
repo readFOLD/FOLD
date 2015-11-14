@@ -66,7 +66,7 @@ Meteor.startup(function(){
 window.hammerSwipeOptions = {
   pointers:	1,
   threshold: 8,
-  velocity:	0.35 // 0.65
+  velocity:	0.25 // 0.65
 };
 
 
@@ -404,9 +404,18 @@ Template.vertical_section_block.events({
 Template.story.onRendered(function(){
   // TODO destroy bindings later?
   if(Meteor.Device.isPhone()){
-    this.$('.vertical-narrative').hammer(hammerSwipeOptions).bind('swipeleft',function(){
+    this.$('.entire-story').hammer(hammerSwipeOptions).bind('swipeleft',function(){
         // TODO only if selected
-        Session.set('mobileContextView', true);
+        if(Session.get('mobileContextView')){
+          goRightOneCard();
+        } else {
+          Session.set('mobileContextView', true);
+        }
+      }
+    );
+
+    this.$('.entire-story').hammer(hammerSwipeOptions).bind('swiperight',function(){
+        Session.set('mobileContextView', false);
       }
     );
   }
