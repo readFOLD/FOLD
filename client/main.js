@@ -414,7 +414,7 @@ Template.story.onRendered(function(){
     this.$('.entire-story').hammer(hammerSwipeOptions).bind('swiperight',function(){
         if(Meteor.Device.isTablet()){
           if(horizontalExists()){
-            goRightOneCard();
+            goLeftOneCard();
           }
         } else {
           Session.set('mobileContextView', false);
