@@ -399,10 +399,10 @@ Template.vertical_section_block.events({
 
 Template.story.onRendered(function(){
   // TODO destroy bindings later?
-  if(Meteor.Device.isPhone()){
+  if(Meteor.Device.isPhone() || Meteor.Device.isTablet()){
     this.$('.entire-story').hammer(hammerSwipeOptions).bind('swipeleft',function(){
         if(horizontalExists()){
-          if(Session.get('mobileContextView')){
+          if (Meteor.Device.isTablet() || Session.get('mobileContextView')){
             goRightOneCard();
           } else {
             Session.set('mobileContextView', true);
@@ -412,7 +412,13 @@ Template.story.onRendered(function(){
     );
 
     this.$('.entire-story').hammer(hammerSwipeOptions).bind('swiperight',function(){
-        Session.set('mobileContextView', false);
+        if(Meteor.Device.isTablet()){
+          if(horizontalExists()){
+            goRightOneCard();
+          }
+        } else {
+          Session.set('mobileContextView', false);
+        }
       }
     );
   }
