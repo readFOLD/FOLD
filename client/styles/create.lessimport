@@ -91,20 +91,22 @@ div.upload-header-image {
 }
 
 div.floating-story-buttons {
+  @height: 40px;
+
   border-radius: 3px;
   vertical-align: middle;
   button {
     text-align: center;
   }
   .favorite-button, .share-buttons {
-    cursor: pointer;
     display: inline-block;
-    height: 40px;
+    height: @height;
     margin: 0px;
     float: left;
     color: @white-color;
   }
   .favorite-button{
+    cursor: pointer;
     font-size: 0;
     background-color: @dark-color;
     button{
@@ -117,12 +119,41 @@ div.floating-story-buttons {
     width: @magic-styling-distance * 2;
   }
   .share-buttons{
+    margin-right: 10px;
+    line-height: @height;
+    color: @black-color;
+    font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
+    .text{
+      float: left;
+      display: inline-block;
+      height: @height;
+      margin-top: 1px;
+      margin-right: 5px;
+      svg{
+        margin-left: 10px;
+      }
+    }
     button {
       width: 20px;
       margin-right: 20px;
-      height: 40px;
+      height: @height;
+      svg{
+        height: @height;
+      }
     }
   }
+
+  .facebook-social-icon{
+    .fg{
+      fill: @facebook-color;
+    }
+  }
+  .twitter-social-icon{
+    .fg{
+      fill: @twitter-color;
+    }
+  }
+
 
   button.button {
     background-color: @dark-color;

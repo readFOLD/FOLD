@@ -711,11 +711,17 @@
 
 <template name="share_buttons">
   <div class="share-buttons">
+    <div class="text">
+      Share this Story {{> social_option_triangle}}
+    </div>
     <button class="share-facebook">
       {{> facebook_social_icon}}
     </button>
     <button class="share-twitter">
       {{> twitter_social_icon}}
+    </button>
+    <button class="share-embed">
+      {{> embed_icon}}
     </button>
   </div>
 </template>

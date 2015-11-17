@@ -922,6 +922,10 @@ Template.share_buttons.events({
     window.open(url, 'twitter', opts);
     Meteor.call('countStoryShare', this._id, 'twitter');
     analytics.track('Share on Twitter');
+  },
+  'click .share-embed': function(e, t) {
+    notifyFeature('Embedding: coming soon!');
+    analytics.track('Click embed button');
   }
 });
 
