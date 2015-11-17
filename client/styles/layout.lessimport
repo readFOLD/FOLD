@@ -1048,12 +1048,11 @@ div.horizontal-context {
   display: inline;
   svg{
     margin-left: 7px;
-    .bg{
-      fill: @action-color;
-    }
+    background-color: @action-color;
     .fg {
       fill: white;
     }
+    border-radius: @context-count-size;
     .size(@context-count-size);
   }
 
