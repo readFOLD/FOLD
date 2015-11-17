@@ -608,6 +608,13 @@ Template.mobile_minimap.helpers({
   }
 });
 
+Template.horizontal_context.events({
+  click () {
+    if(Session.equals('currentY', null)){
+      goToY(0);
+    }
+  }
+});
 Template.horizontal_context.helpers({
   verticalExists: function() {
     return Session.get("horizontalSectionsMap").length;
@@ -675,11 +682,11 @@ Template.horizontal_context.helpers({
     return (this.index === lastIndex) && (lastIndex > 0);
   },
   horizontalSectionInDOM: function() {
-    // on this row, or this card is the current X for another hidden row
-    return Session.equals("currentY", this.verticalIndex) || this.index === getXByYId(this.verticalId);
+    // on this row
+    return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0);// || this.index === getXByYId(this.verticalId); or this card is the current X for another hidden row
   },
   horizontalShown: function() {
-    return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.index === 0);
+    return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0);
   }
 });
 
@@ -770,7 +777,7 @@ Template.horizontal_section_block.helpers({
     Session.get('lastUpdate');
   },
   hide: function() {
-    return !Session.equals("currentY", this.verticalIndex);
+    return !Session.equals("currentY", this.verticalIndex) && !(Session.equals("currentY", null) && this.verticalIndex === 0);
   }
 });
 

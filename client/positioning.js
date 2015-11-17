@@ -1,6 +1,6 @@
 window.constants = {
   verticalSpacing: 20, // there is css that needs to match this
-  readModeOffset: 266,
+  readModeOffset: 246,
   minPageWidth: 1024
 };
 
