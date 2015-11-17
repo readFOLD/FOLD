@@ -12,7 +12,8 @@
 @danger-color: #fc521f;
 @less-danger-color: #fc521f;
 @panel-color: #815ed9;
-@remix-color: #fc521f;
+@remix-color: @panel-color;
+@orange-color: #fc521f;
 @favorite-color: #fc521f;
 @dark-favorite-color: #a82d11;
 @facebook-color: #365998;
@@ -1081,9 +1082,7 @@ div.horizontal-context {
   height: @horizontal-content-height;
   // box-shadow: 3px 3px #848484;
   pointer-events: none;
-  border-top: 1px solid @inactive-color;
-  border-left: 1px solid @inactive-color;
-  border-right: 1px solid @inactive-color;
+  outline: 1px solid @inactive-color;
   //min-width: 400px;
   width: 32%;
   background-color: @white-color;
@@ -1125,16 +1124,18 @@ div.horizontal-context {
     height: @remix-bar-height;
     width: 100%;
     position: absolute;
-    background-color: @unselected-background-color;
+    background-color: @unselected-link-color;
+    outline: 1px solid @unselected-link-color;
     line-height: @remix-bar-height;
     color: white;
     svg{
-      height:40px;
-      width:40px;
+      .size(27px);
     }
     .remix-button{
       float: right;
+      .size(@remix-bar-height);
       display: inline-block;
+      background-color: @remix-color;
     }
   }
 
@@ -1475,7 +1476,7 @@ div.minimap {
     transform: translate(-50%, -50%);
 
     li{
-      background-color: @remix-color;
+      background-color: @orange-color;
       &:hover{
         background-color: @black-color;
       }
@@ -1744,7 +1745,7 @@ div.loading-container {
     }
 
     .user-action {
-      background-color: @remix-color;
+      background-color: @orange-color;
       @profile-picture-size: 25px;
       button{
         line-height: @height;
@@ -1772,7 +1773,7 @@ div.loading-container {
     }
 
     ol.user-menu {
-      background-color: @remix-color;
+      background-color: @orange-color;
       width: 180px;
       li {
         float: none;

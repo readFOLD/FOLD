@@ -600,12 +600,8 @@ div.horizontal-context {
 
       }
 
-      &.remix-button{
-        background-color: @remix-color;
-      }
-
       &:hover{
-        background-color: @action-color;
+        background-color: @panel-color;
       }
       &.active {
         background-color: @action-color;
