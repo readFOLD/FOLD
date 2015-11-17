@@ -250,7 +250,7 @@ div.stories {
         }
         div.publish-date {
           color: @inactive-color;
-          font-size: 12px;
+          font-size: 13px;
         }
       }
     }
