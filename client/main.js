@@ -70,6 +70,8 @@ window.hammerSwipeOptions = {
 };
 
 
+var scrollPauseArmed = false;
+
 window.updateCurrentY = function() {
   var actualY, h, i, maxScroll, readMode, scrollTop, stickyBody, stickyTitle, vertTop, _i, _len, _ref;
   scrollTop = $(document).scrollTop();
@@ -98,6 +100,8 @@ window.updateCurrentY = function() {
     $("div.title-author").removeClass("c");
   } else {
 
+    scrollPauseArmed = true;
+
     $("div.title-author").addClass("a");
     $("div.title-author").removeClass("b");
     $("div.title-author").removeClass("c");
@@ -107,6 +111,14 @@ window.updateCurrentY = function() {
     $("div.vertical-narrative").addClass("fixed");
     $("div.vertical-narrative").removeClass("free-scroll");
 
+    if(scrollPauseArmed){
+      document.body.style.overflowY = 'hidden';
+      $(document).scrollTop(stickyBody);
+      Meteor.setTimeout(() => {
+        document.body.style.overflowY = 'auto';
+      }, 500);
+      scrollPauseArmed = false;
+    }
 
     if (scrollTop >= maxScroll) {
       $("div.vertical-narrative").removeClass("fixed");
