@@ -592,7 +592,7 @@ div#overlay {
 
   @normalContentHeight: 232px;
   @titleHeight: 23px;
-  @titleMarginBottom: 25px;
+  @titleMarginBottom: 15px;
 
   div.title {
     line-height: @titleHeight;
@@ -787,7 +787,7 @@ div.link-section {
     }
     div.link-title {
       font-size: 20px;
-      font-weight: bold;
+      font-family: 'FFMarkWebBold', sans-serif;
       padding-left: 15px;
       padding-top: 15px;
       padding-right: 20px;
