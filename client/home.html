@@ -12,7 +12,7 @@
       </div>
       {{#if showFilters}}
       <div class="filter {{#if slim}}slim{{else}}fat{{/if}}">
-        {{> filters}}
+        {{> filters slim=slim}}
         <!--{{> filters}} in {{> categories}}-->
       </div>
       {{/if}}

@@ -98,9 +98,11 @@ Template.categories.events({
 });
 
 Template.filters.onRendered(function() {
-  $("select").selectOrDie({
-
-  });
+  var options = {};
+  if(this.data.slim){
+    options.placeholder = "Explore";
+  }
+  $("select").selectOrDie(options);
 });
 
 var filters = ['curated', 'trending', 'starred', 'newest'];
