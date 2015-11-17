@@ -675,7 +675,7 @@ Template.horizontal_context.helpers({
     return (this.index === lastIndex) && (lastIndex > 0);
   },
   horizontalShown: function() {
-    return Session.equals("currentY", this.index);
+    return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.index === 0);
   }
 });
 
