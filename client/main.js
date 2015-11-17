@@ -81,10 +81,10 @@ window.updateCurrentY = function() {
   } else {
     Session.set("sticky", false);
   }
-  stickyBody = 90;
+  stickyBody = 245;
   stickyTitle = 120;
-  maxScroll = 230;
-  readMode = 250;
+  maxScroll = 245;
+  readMode = 245;
   $("div#banner-overlay").css({
     opacity: Math.min(1.0, scrollTop / maxScroll)
   });

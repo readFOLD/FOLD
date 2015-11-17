@@ -1,6 +1,6 @@
 window.constants = {
   verticalSpacing: 20, // there is css that needs to match this
-  readModeOffset: 286,
+  readModeOffset: 266,
   minPageWidth: 1024
 };
 
@@ -85,6 +85,10 @@ window.getVerticalHeights = function() {
   return verticalHeights;
 };
 
+window.slideCurrentYIntoPlace = function(){
+  goToY(Session.get('currentY'), {force: true})
+};
+
 window.goToXY = function(x, y) {
   if (y !== Session.get("currentY")) {
     goToY(y);
@@ -92,8 +96,8 @@ window.goToXY = function(x, y) {
   return goToX(x);
 };
 
-window.goToY = function(y) {
-  if (Session.get("currentY") !== y){
+window.goToY = function(y, options) {
+  if ((options && options.force) || Session.get("currentY") !== y){
     var verticalHeights;
     verticalHeights = window.getVerticalHeights();
     $('body,html').animate({

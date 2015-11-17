@@ -714,7 +714,7 @@ div.vertical-narrative {
   @media @mobile{
     .left-transition;
   }
-  top: 467px;
+  top: 475px;
   margin-top: -65px;
   z-index: 10;
   float: left;
@@ -725,7 +725,7 @@ div.vertical-narrative {
   }
 
   &.free-scroll{
-    top: 491px;
+    top: 471px;
   }
 
   .narrative-section {
@@ -1800,4 +1800,8 @@ div.loading-container {
   bottom: 0;
   right: 200px;
   color: @black-color;
+}
+
+.fit{
+  .size-to-fit;
 }

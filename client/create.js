@@ -596,25 +596,14 @@ Template.add_horizontal.helpers({
   }
 });
 
-
-
-var scrollToRelativePosition = function(offset) {
-  var selectedNarrative = $('.vertical-narrative-section.selected');
-  if (selectedNarrative){
-    $('body,html').animate({
-      scrollTop: $('.vertical-narrative-section.selected').position().top + offset
-    }, 200, 'easeInCubic');
-  }
-};
-
 var showNewHorizontalUI = function() {
-  scrollToRelativePosition(350 + 29);
+  slideCurrentYIntoPlace();
   Session.set("addingContext", Session.get('currentYId'));
   return Session.set("editingContext", null);
 };
 
 window.hideNewHorizontalUI = function() {
-  scrollToRelativePosition(350 + 29 - 93);
+  slideCurrentYIntoPlace();
   return Session.set("addingContext", null);
 };
 
