@@ -225,56 +225,56 @@ Template.create.onRendered(function() {
 });
 
 Template.fold_editor.helpers({
-  boldActive () {
+  boldActive: function() {
     return _.intersection(['b', 'strong'], Session.get('selectedTags')).length;
   },
-  italicActive () {
+  italicActive: function() {
     return _.intersection(['i', 'em'], Session.get('selectedTags')).length;
   },
-  underlineActive () {
+  underlineActive: function() {
     return _.intersection(['u'], Session.get('selectedTags')).length;
   },
-  anchorActive () {
+  anchorActive: function() {
     return _.intersection(['a'], Session.get('selectedTags')).length || Session.get('contextAnchorMenuOpen') || Session.get('anchorMenuOpen');
   }
 });
 
 Template.fold_editor.events({
-  'mouseup'  () {
+  'mouseup': function () {
     window.updateUIBasedOnSelection()
   },
-  'mouseup .bold-button' (e) {
+  'mouseup .bold-button': function(e) {
     e.preventDefault();
     document.execCommand('bold', false, null);
     saveUpdatedSelection();
   },
-  'mouseup .italic-button' (e) {
+  'mouseup .italic-button': function(e) {
     e.preventDefault();
     document.execCommand('italic', false, null);
     saveUpdatedSelection();
   },
-  'mouseup .underline-button' (e) {
+  'mouseup .underline-button': function(e) {
     e.preventDefault();
     document.execCommand('underline', false, null);
     saveUpdatedSelection();
   },
-  'mouseup .anchor-button' (e) {
+  'mouseup .anchor-button': function(e) {
     e.preventDefault();
     return toggleAnchorMenu();
   }
 });
 
 Template.context_anchor_menu_contents.events({
-  'mouseenter .context-anchor-menu-contents' () {
+  'mouseenter .context-anchor-menu-contents': function() {
     document.body.style.overflow = 'hidden';
   },
-  'mouseleave .context-anchor-menu-contents' (){
+  'mouseleave .context-anchor-menu-contents': function(){
     document.body.style.overflow='auto';
   }
 });
 
 Template.context_anchor_go_back.events({
-  'mouseup' (e) {
+  'mouseup': function(e) {
     e.preventDefault();
     hideContextAnchorMenu();
     return showAnchorMenu();
@@ -282,18 +282,18 @@ Template.context_anchor_go_back.events({
 });
 
 Template.anchor_menu.events({
-  'mouseup .link-to-card' (e) {
+  'mouseup .link-to-card': function(e) {
     e.preventDefault();
     hideAnchorMenu();
     return showContextAnchorMenu();
   },
-  'mouseup .link-out-of-story' (e) {
+  'mouseup .link-out-of-story': function(e) {
     return e.preventDefault();
   }
 });
 
 Template.fold_link_remover.events({
-  'mouseup button' (e) {
+  'mouseup button': function(e) {
     e.preventDefault();
     removeAnchorTag(window.enclosingAnchorTag);
     hideFoldAll();
@@ -348,13 +348,13 @@ var throttledSaveVerticalSectionContent = _.throttle(saveVerticalSectionContent,
 Template.vertical_section_block.events({
   'blur [contenteditable]': window.updateUIBasedOnSelection,
   'keyup [contenteditable]': window.updateUIBasedOnSelection,
-  'blur .title[contenteditable]'  (e, template){
+  'blur .title[contenteditable]' : function(e, template){
     Session.set('saveState', 'saving');
 
     Meteor.call('updateVerticalSectionTitle', Session.get('storyId'), template.data.index, $.trim(template.$('div.title').text()), saveCallback);
     return true;
   },
-  'keydown .title[contenteditable]'  (e, template){
+  'keydown .title[contenteditable]' : function(e, template){
     if (e.keyCode === 13){ // enter
       e.preventDefault();
       template.$('.content').focus();
@@ -363,7 +363,7 @@ Template.vertical_section_block.events({
   },
   'blur .content[contenteditable]' : saveVerticalSectionContent,
   'keyup .content[contenteditable]' : throttledSaveVerticalSectionContent,
-  'paste .fold-editable' (e) {
+  'paste .fold-editable': function(e) {
     var clipboardData, html;
     e.preventDefault();
     clipboardData = (e.originalEvent || e).clipboardData;
@@ -373,16 +373,16 @@ Template.vertical_section_block.events({
     document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
     analytics.track('Paste into fold-editable area');
   },
-  'drop' (e){
+  'drop': function(e){
     e.preventDefault();
     analytics.track('Drop (attempt) into fold-editable area');
     return false;
   },
   'paste .title.editable': window.plainTextPaste,   // only allow plaintext in title
-  'mouseenter .narrative-babyburger-and-menu' (e, template){
+  'mouseenter .narrative-babyburger-and-menu': function(e, template){
     template.babyburgerOpen.set(true);
   },
-  'mouseleave .narrative-babyburger-and-menu' (e, template){
+  'mouseleave .narrative-babyburger-and-menu': function(e, template){
     template.babyburgerOpen.set(false);
   }
 });
@@ -423,18 +423,18 @@ Template.vertical_section_block.onRendered(function() {
 });
 
 Template.vertical_section_block.helpers({
-  babyburgerOpen (){
+  babyburgerOpen: function(){
     return Template.instance().babyburgerOpen.get();
   }
 });
 
 Template.story_title.events({
   'paste [contenteditable]': window.plainTextPaste,
-  'drop' (e){
+  'drop': function(e){
     e.preventDefault();
     return false;
   },
-  'blur .story-title[contenteditable]' (e,template) {
+  'blur .story-title[contenteditable]': function(e,template) {
     storyId = Session.get('storyId');
     storyTitle = $.trim(template.$('div.story-title').text());
 
@@ -444,23 +444,23 @@ Template.story_title.events({
 });
 
 Template.create.helpers({
-  narrativeView () {
+  narrativeView: function() {
     return Session.get("narrativeView");
   },
-  category () {
+  category: function() {
     return Session.get("storyCategory");
   },
-  publishing () {
+  publishing: function() {
     return Template.instance().publishing.get();
   },
-  headerImageLoading () {
+  headerImageLoading: function() {
     return Template.instance().headerImageLoading.get();
   }
 });
 
 Template.create.events({
   'mouseup': window.updateUIBasedOnSelection, // this is here so that it fires when mouse goes off to the side of vertical section
-  "click .publish-story"  (e, template) {
+  "click .publish-story": function (e, template) {
     var accessPriority = Meteor.user().accessPriority;
     if (!accessPriority || accessPriority > window.publishAccessLevel) {
       notifyInfo("Due to high demand, we had to turn off publish functionality for a moment. Stay tuned for updates!");
@@ -469,11 +469,11 @@ Template.create.events({
       analytics.track('Click publish button');
     }
   },
-  "click .cancel-publish"  (e, template) {
+  "click .cancel-publish": function (e, template) {
     template.publishing.set(false);
     analytics.track('Click cancel publish button');
   },
-  "click .confirm-publish"  (e, template) {
+  "click .confirm-publish": function (e, template) {
     var that = this;
     var title = template.$('input[name=confirm-title]').val();
     var keywords = _.compact(template.$('input[name=keywords]').val().split(','));
@@ -513,7 +513,7 @@ Template.create.events({
 });
 
 Template.add_vertical.events({
-  "click" () {
+  "click": function() {
     var indexToInsert, storyId, verticalSections;
     storyId = Session.get('storyId');
     verticalSections = Session.get('story').verticalSections;
@@ -537,15 +537,15 @@ Template.add_vertical.events({
 });
 
 Template.vertical_edit_menu.helpers({
-  canMoveUp  () {
+  canMoveUp: function () {
     return this.index;
   },
-  canMoveDown  () {
+  canMoveDown: function () {
     return this.index < Session.get('story').verticalSections.length - 1;
   }
 });
 Template.vertical_edit_menu.events({
-  "click .add-title" () {
+  "click .add-title": function() {
     var storyId = Session.get('storyId');
     var index = this.index;
 
@@ -553,7 +553,7 @@ Template.vertical_edit_menu.events({
     Meteor.call('addTitle', storyId, index, saveCallback);
     analytics.track('Click add section title');
   },
-  "click .remove-title" () {
+  "click .remove-title": function() {
     var storyId = Session.get('storyId');
     var index = this.index;
 
@@ -561,7 +561,7 @@ Template.vertical_edit_menu.events({
     Meteor.call('removeTitle', storyId, index, saveCallback);
     analytics.track('Click remove section title');
   },
-  "click .move-card-up" () {
+  "click .move-card-up": function() {
     var storyId = Session.get('storyId');
     var index = this.index;
 
@@ -570,7 +570,7 @@ Template.vertical_edit_menu.events({
     analytics.track('Click move card up');
 
   },
-  "click .move-card-down" () {
+  "click .move-card-down": function() {
     var storyId = Session.get('storyId');
     var index = this.index;
 
@@ -578,7 +578,7 @@ Template.vertical_edit_menu.events({
     Meteor.call('moveVerticalSectionDownOne', storyId, index, saveCallback);
     analytics.track('Click move card down');
   },
-  "click .delete-card" () {
+  "click .delete-card": function() {
     if(confirm("Permanently delete this card and all associated context cards?")) {
       var storyId = Session.get('storyId');
       var index = this.index;
@@ -591,7 +591,7 @@ Template.vertical_edit_menu.events({
 });
 
 Template.add_horizontal.helpers({
-  left () {
+  left: function() {
     return Session.get("verticalLeft") + Session.get("cardWidth") + Session.get("separation");
   }
 });
@@ -632,7 +632,7 @@ var toggleHorizontalUI = function(forceBool) {
 
 
 Template.add_horizontal.events({
-  "click" (d) {
+  "click": function(d) {
     toggleHorizontalUI();
     analytics.track('Click toggle horizontal editor');
   }
@@ -643,89 +643,89 @@ Template.create_horizontal_section_block.onCreated(function() {
 });
 
 Template.create_horizontal_section_block.helpers({
-  type () {
+  type: function() {
     return Session.get('newHorizontalDataType');
   },
-  text () {
+  text: function() {
     return Session.get('newHorizontalDataType') === "text";
   },
-  image () {
+  image: function() {
     return Session.get('newHorizontalDataType') === "image";
   },
-  gif () {
+  gif: function() {
     return Session.get('newHorizontalDataType') === "gif";
   },
-  map () {
+  map: function() {
     return Session.get('newHorizontalDataType') === "map";
   },
-  video () {
+  video: function() {
     return Session.get('newHorizontalDataType') === "video";
   },
-  twitter () {
+  twitter: function() {
     return Session.get('newHorizontalDataType') === "twitter";
   },
-  viz () {
+  viz: function() {
     return Session.get('newHorizontalDataType') === "viz";
   },
-  audio () {
+  audio: function() {
     return Session.get('newHorizontalDataType') === "audio";
   },
-  link () {
+  link: function() {
     return Session.get('newHorizontalDataType') === "link";
   },
-  remix () {
+  remix: function() {
     return Session.get('newHorizontalDataType') === "remix";
   }
 });
 
 Template.create_horizontal_section_block.helpers({
-  left () {
+  left: function() {
     var addBlockWidth = 75;
     return addBlockWidth + Session.get("verticalLeft") + Session.get("cardWidth") + 2 * Session.get("separation");
   }
 });
 
 Template.create_horizontal_section_block.events({
-  'click .text-button' (d, t) {
+  'click .text-button': function(d, t) {
     return Session.set('newHorizontalDataType', 'text');
   },
-  'click .map-button' (d, t) {
+  'click .map-button': function(d, t) {
     return Session.set('newHorizontalDataType', 'map');
   },
-  'click .video-button' (d, t) {
+  'click .video-button': function(d, t) {
     return Session.set('newHorizontalDataType', 'video');
   },
-  'click .image-button' (d, t) {
+  'click .image-button': function(d, t) {
     return Session.set('newHorizontalDataType', 'image');
   },
-  'click .gif-button' (d, t) {
+  'click .gif-button': function(d, t) {
     return Session.set('newHorizontalDataType', 'gif');
   },
-  'click .twitter-button' (d, t) {
+  'click .twitter-button': function(d, t) {
     return Session.set('newHorizontalDataType', 'twitter');
   },
-  'click .viz-button' (d, t) {
+  'click .viz-button': function(d, t) {
     return Session.set('newHorizontalDataType', 'viz');
   },
-  'click .audio-button' (d, t) {
+  'click .audio-button': function(d, t) {
     return Session.set('newHorizontalDataType', 'audio');
   },
-  'click .link-button' (d, t) {
+  'click .link-button': function(d, t) {
     return Session.set('newHorizontalDataType', 'link');
   },
-  'click .remix-button' (d, t) {
+  'click .remix-button': function(d, t) {
     return Session.set('newHorizontalDataType', 'remix');
   },
-  'mouseenter .horizontal-narrative-section' () {
+  'mouseenter .horizontal-narrative-section': function() {
     document.body.style.overflow = 'hidden';
   },
-  'mouseleave .horizontal-narrative-section' (){
+  'mouseleave .horizontal-narrative-section': function(){
     document.body.style.overflow='auto';
   }
 });
 
 Template.horizontal_context.helpers({
-  lastUpdate () {
+  lastUpdate: function() {
     Session.get('lastUpdate');
   }
 });
@@ -739,7 +739,7 @@ var removePlaceholderLinks = function(){
 };
 
 Template.context_anchor_new_card_option.events = {
-  "mousedown" (e) {
+  "mousedown": function(e) {
     e.preventDefault();
     hideFoldEditor();
     removePlaceholderLinks();
@@ -757,7 +757,7 @@ Template.context_anchor_new_card_option.events = {
 };
 
 Template.context_anchor_option.events = {
-  "mousedown"  (e) {
+  "mousedown": function (e) {
     var contextId, link;
     e.preventDefault();
     hideFoldEditor();
@@ -798,15 +798,15 @@ window.addContext = function(contextBlock) {
 };
 
 Template.horizontal_section_edit_delete.helpers({
-  canMoveLeft  () {
+  canMoveLeft: function () {
     return this.index;
   },
-  canMoveRight  () {
+  canMoveRight: function () {
     return this.index < Session.get('story').verticalSections[this.verticalIndex].contextBlocks.length - 1;
   }
 });
 Template.horizontal_section_block.events({
-  "click .delete" (d) {
+  "click .delete": function(d) {
     analytics.track('Click delete horizontal');
     if(confirm("Permanently delete this card?")){
       var currentY = Session.get("currentY");
@@ -817,7 +817,7 @@ Template.horizontal_section_block.events({
       analytics.track('Confirm delete horizontal');
     }
   },
-  "click .edit" (e, t) {
+  "click .edit": function(e, t) {
     Session.set('editingContext', this._id);
     Session.set('addingContext', false);
     analytics.track('Click edit horizontal');
@@ -825,7 +825,7 @@ Template.horizontal_section_block.events({
 });
 
 Template.create_options.events({
-  "click .toggle-preview" () {
+  "click .toggle-preview": function() {
     if (Session.get('read')) {
       window.refreshContentDep.changed();
       Session.set('read', false);
@@ -838,7 +838,7 @@ Template.create_options.events({
 });
 
 Template.link_twitter.events({
-  "click button" () {
+  "click button": function() {
     Meteor.linkWithTwitter({
       requestPermissions: ['user']
     }, function (err) {
@@ -862,13 +862,13 @@ Template.publish_overlay.onRendered(function(){
 });
 
 Template.publish_overlay.helpers({
-  'keywordsString' (){
+  'keywordsString': function(){
     return (this.keywords || []).toString();
   }
 });
 
 Template.publish_overlay.events({
-  'click .header-upload' (e, t) {
+  'click .header-upload': function(e, t) {
     Meteor.setTimeout(function(){
       $('body,html').animate({
         scrollTop: 0

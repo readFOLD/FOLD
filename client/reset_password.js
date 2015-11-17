@@ -3,16 +3,16 @@ Template.reset_password_form.onCreated(function() {
 })
 
 Template.reset_password_form.helpers({
-  message () {
+  message: function() {
     return Template.instance().message.get();
   },
-  resetPassword (){
+  resetPassword: function(){
     return Session.get('resetPasswordToken');
   }
 })
 
 Template.reset_password_form.events({
-  'submit #reset-password-form' (e, t) {
+  'submit #reset-password-form': function(e, t) {
     e.preventDefault();
     
     var password = t.$('#reset-password-password').val();

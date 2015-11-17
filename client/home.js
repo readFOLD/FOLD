@@ -39,26 +39,26 @@ loginWithEmail = function() {
 };
 
 Template.home.helpers({
-  user () {
+  user: function() {
     return Meteor.user();
   },
-  filterOpen () {
+  filterOpen: function() {
     return Session.get("filterOpen");
   },
-  sticky () {
+  sticky: function() {
     return Session.get("sticky");
   },
-  filter () {
+  filter: function() {
     return Session.get("filter");
   },
-  category () {
+  category: function() {
     return Session.get("category");
   }
 });
 
 
 Template.home.events({
-  "click div#expand-filter" (d) {
+  "click div#expand-filter": function(d) {
     var filterOpen, heightChange;
     filterOpen = Session.get("filterOpen");
     heightChange = filterOpen ? "-=100" : "+=100";
@@ -81,16 +81,16 @@ Template.home.events({
 });
 
 Template.categories.helpers({
-  categories () {
+  categories: function() {
     return ['all', 'news', 'history', 'art', 'technology', 'politics', 'e-sports', 'music', 'gaming', 'sponsored'];
   },
-  selected () {
+  selected: function() {
     return Session.equals("category", this.toString());
   }
 });
 
 Template.categories.events({
-  "click li" (d) {
+  "click li": function(d) {
     var srcE;
     srcE = d.srcElement ? d.srcElement : d.target;
     return Session.set('category', $(srcE).data('category'));
@@ -107,16 +107,16 @@ var filters = ['curated', 'trending', 'starred', 'newest'];
 Session.set('filterValue', filters[0]); // this must correspond to the first thingin the dropdown
 
 Template.filters.helpers({
-  filters () {
+  filters: function() {
     return filters
   },
-  conditionallySelected (){
+  conditionallySelected: function(){
     return Session.equals('filterValue', this.toString()) ? 'selected' : '';
   }
 });
 
 Template.filters.events({
-  "change select" (e, t) {
+  "change select": function(e, t) {
     var filterValue = $(e.target).val();
     Session.set('filterValue', filterValue);
     analytics.track('Select filter', {
@@ -291,7 +291,7 @@ var currentHomeStories = function(){
 };
 
 Template.all_stories.events({
-  'click .show-more'  (e,t){
+  'click .show-more' : function(e,t){
     var filterValue = Session.get('filterValue');
     subscriptionsReady.set(filterValue + 'Stories', false);
     homeSubs.subscribe(filterValue + 'StoriesPub', {page: getCurrentSubscriptionPage() + 1}, function(){
@@ -303,10 +303,10 @@ Template.all_stories.events({
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   stories: currentHomeStories,
-  storiesLoading (){
+  storiesLoading: function(){
     return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')))
   },
-  moreToShow (){
+  moreToShow: function(){
     var stories = currentHomeStories();
     if (!stories){
       return false
@@ -316,40 +316,40 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
 });
 
 Template.story_preview.helpers({
-  story (){
+  story: function(){
     return Stories.findOne(this._id);
   }
 });
 
 Template._story_preview_content.helpers({
-  lastPublishDate () {
+  lastPublishDate: function() {
     if(this.publishedAt) {
       return formatDateNice(this.publishedAt);
     }
   },
-  story (){
+  story: function(){
     if (Template.instance().data.useDraftStory){
       return this.draftStory;
     } else {
       return this;
     }
   },
-  linkRoute (){
+  linkRoute: function(){
     return Template.instance().data.useDraftStory ? 'edit' : 'read';
   },
-  author (){
+  author: function(){
     return Meteor.users.findOne(this.authorId)
   },
-  profileUrl (){
+  profileUrl: function(){
     return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate drafts and only use authorDisplayUsername
   },
-  contextCountOfType (type){
+  contextCountOfType: function(type){
     return this.contextBlockTypeCount ? this.contextBlockTypeCount[type] : this.contextCountOfType(type);
   }
 });
 
 Template.login_buttons.helpers({
-  showUserInfo () {
+  showUserInfo: function() {
     return Template.instance().showUserInfo.get();
   }
 });
@@ -359,16 +359,16 @@ Template.login_buttons.onCreated(function() {
 });
 
 Template.login_buttons.events({
-  "mouseenter .user-action" (d) {
+  "mouseenter .user-action": function(d) {
     Template.instance().showUserInfo.set(true);
   },
-  "mouseleave .user-action" (d) {
+  "mouseleave .user-action": function(d) {
     Template.instance().showUserInfo.set(false);
   },
-  "click .signin" (d) {
+  "click .signin": function(d) {
     Session.set('signingIn', true);
   },
-  "click .logout"  (e) {
+  "click .logout" : function(e) {
     e.preventDefault();
     Template.instance().showUserInfo.set(false);
     Meteor.logout();
@@ -382,16 +382,16 @@ var closeSignInOverlay = function(){
 // TODO close sign in overlay on esc (27) need to do on whole window though
 
 Template.signin_overlay.events({
-  "click .close" (d) {
+  "click .close": function(d) {
     closeSignInOverlay();
     analytics.track('Click close sign-in overlay');
   },
-  "click .twitter-signin" (d) {
+  "click .twitter-signin": function(d) {
     closeSignInOverlay();
     loginWithTwitter();
     analytics.track('Click login with Twitter');
   },
-  "click .email-signin" (d) {
+  "click .email-signin": function(d) {
     closeSignInOverlay();
     loginWithEmail();
     analytics.track('Click login with email');

@@ -12,7 +12,7 @@ formatDate = function(date) {
 
 
 Template.my_stories.events({
-  'click .unpublish' (){
+  'click .unpublish': function(){
     var that = this;
     if (confirm('Are you sure you want to unpublish this story?')){
       $('.story[data-story-id=' + that._id + ']').fadeOut(500, function(){
@@ -25,7 +25,7 @@ Template.my_stories.events({
 
     }
   },
-  'click .delete' (){
+  'click .delete': function(){
     var that = this;
     if (confirm('Are you sure you want to delete this story? This cannot be undone.')){
       $('.story[data-story-id=' + that._id + ']').fadeOut(500, function(){
@@ -40,7 +40,7 @@ Template.my_stories.events({
   }
 });
 Template.my_stories.helpers({
-  publishedStories () {
+  publishedStories: function() {
     if (Meteor.user()) {
       return Stories.find({
         authorId: Meteor.user()._id,
@@ -48,7 +48,7 @@ Template.my_stories.helpers({
       });
     }
   },
-  unpublishedStories () {
+  unpublishedStories: function() {
     if (Meteor.user()) {
       return Stories.find({
         authorId: Meteor.user()._id,
@@ -56,16 +56,16 @@ Template.my_stories.helpers({
       });
     }
   },
-  lastEditDate () {
+  lastEditDate: function() {
     return formatDate(this.savedAt);
   },
-  lastPublishDate () {
+  lastPublishDate: function() {
     return formatDate(this.publishedAt);
   }
 });
 
 Template.my_stories.events({
-  "click div#delete" (d) {
+  "click div#delete": function(d) {
     var srcE, storyId;
     srcE = d.srcElement ? d.srcElement : d.target;
     storyId = $(srcE).closest('div.story').data('story-id');
@@ -90,14 +90,14 @@ Template.user_profile.onCreated(function(){
   
   var query = _cloudinary.find({});
   this.observeCloudinary = query.observeChanges({ 
-    changed  (id, changes) {
+    changed: function (id, changes) { 
       if (changes.public_id){ 
         var doc = _cloudinary.findOne(id);
         that.uploadPreview.set('//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_150,h_150,c_fill,g_face/' + doc.public_id);
         that.pictureId.set(doc.public_id);
       }
     },
-    removed  (id) {
+    removed: function (id) {
       var input = that.$('input[type=file]');
       input.val(null);
       input.change(); 
@@ -110,54 +110,54 @@ Template.user_profile.onDestroyed(function(){
 });
 
 Template.user_profile.helpers({
-  editing  () {
+  editing : function() {
     return Template.instance().editing.get()
   },
-  ownProfile () {
+  ownProfile: function() {
     var user = Meteor.user();
     return (user && (user.username == this.user.username)) ? true : false
   },
-  name  () {
+  name : function() {
     return this.user.profile.name
   },
-  bio  () {
+  bio : function() {
     return this.user.profile.bio
   },
-  editPicturePrompt  () {
+  editPicturePrompt : function() {
     return Template.instance().editPicturePrompt.get()
   },
-  editingPicture  () {
+  editingPicture : function() {
     return Template.instance().editingPicture.get() || Template.instance().editPicturePrompt.get()
   },
-  uploadPreview (){
+  uploadPreview: function(){
     return Template.instance().uploadPreview.get();
   }
 });
 
 Template.user_profile.events({
-  "click .edit-profile"  (d, template) {
+  "click .edit-profile" : function(d, template) {
     template.editing.set(true);
   },
-  "click .save-profile-button"  (d, template) {
+  "click .save-profile-button" : function(d, template) {
     template.editing.set(false);
     if (template.pictureId.get()) {
       Meteor.call('saveProfilePicture', this.user._id, template.pictureId.get());
     }
   },
-  "mouseenter .picture"  (d, template) {
+  "mouseenter .picture" : function(d, template) {
     if (template.editing.get()) {
       return template.editPicturePrompt.set(true);
     }
   },
-  "mouseleave .picture"  (d, template) {
+  "mouseleave .picture" : function(d, template) {
     if (template.editing.get()) {
       return template.editPicturePrompt.set(false);
     }
   },
-  "click input[type=file]" (d, template) {
+  "click input[type=file]": function(d, template) {
     return template.editingPicture.set(true);
   },
-  "change input[type=file]" (e, template){
+  "change input[type=file]": function(e, template){
     var file = _.first(e.target.files);
     if (!file){
       template.uploadPreview.set(null);
@@ -171,16 +171,16 @@ Template.user_stories.onCreated(function(){
 });
 
 Template.user_stories.events({
-  "click .toggle-published" (d, template) {
+  "click .toggle-published": function(d, template) {
     return template.seeAllPublished.set(!template.seeAllPublished.get())
   }
 });
 
 Template.user_stories.helpers({
-  seeAllPublished  () {
+  seeAllPublished : function() {
     return Template.instance().seeAllPublished.get()
   },
-  publishedStories () {
+  publishedStories: function() {
     var limit = Template.instance().seeAllPublished.get() ? 0 : numStoriesToDisplay; //when limit=0 -> no limit on stories
     return Stories.find({authorId : this.user._id, published : true}, {
       sort: {
@@ -189,13 +189,13 @@ Template.user_stories.helpers({
       limit: limit
     })
   },
-  showAllPublishedButton () {
+  showAllPublishedButton: function() {
     return Stories.find({authorId : this.user._id, published : true}).count() > numStoriesToDisplay
   },
-  hasPublished () {
+  hasPublished: function() {
     return Stories.findOne({authorId : this.user._id, published : true})
   },
-  unpublishedMessage  () {
+  unpublishedMessage: function () {
     var user = Meteor.user();
     if (user && (user.username == this.user.username)) {
       return "You haven't published any stories yet!"
@@ -210,16 +210,16 @@ Template.user_favorite_stories.onCreated(function(){
 });
 
 Template.user_favorite_stories.events({
-  "click .toggle-favorites" (d, template) {
+  "click .toggle-favorites": function(d, template) {
     return template.seeAllFavorites.set(!template.seeAllFavorites.get())
   }
 });
 
 Template.user_favorite_stories.helpers({
-  seeAllFavorites () {
+  seeAllFavorites: function() {
     return Template.instance().seeAllFavorites.get()
   },
-  favoriteStories () {
+  favoriteStories: function() {
     var limit = Template.instance().seeAllFavorites.get() ? 0 : numStoriesToDisplay; 
     var favorites = this.user.profile.favorites;
     if (favorites && favorites.length) {
@@ -236,16 +236,16 @@ Template.user_favorite_stories.helpers({
       return [];
     }
   },
-  showAllFavoritesButton () {
+  showAllFavoritesButton: function() {
     var favorites = this.user.profile.favorites;
     if (favorites && favorites.length) {
       return favorites.length > numStoriesToDisplay
     }
   },
-  hasFavorites () {
+  hasFavorites: function() {
     return !_.isEmpty(this.user.profile.favorites);
   },
-  noFavoritesMessage  () {
+  noFavoritesMessage: function () {
     var user = Meteor.user();
     if (user && (user.username == this.user.username)) {
       return "You haven't favorited any stories yet!"

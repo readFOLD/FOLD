@@ -9,34 +9,34 @@ Template.signup_form.onCreated(function() {
 });
 
 Template.signup_form.helpers({
-  tempUsername () {
+  tempUsername: function() {
     if (Meteor.user()) {
       return Meteor.user().tempUsername;
     }
     return;
   },
-  emailUser () {
+  emailUser: function() {  
    return Session.get('emailUser');
   },
-  signupError () {
+  signupError: function() {
     return Template.instance().signupError.get();
   },
-  emailError  () {
+  emailError: function () { 
     return Template.instance().emailError.get();
   },
-  nameError  () {
+  nameError: function () { 
     return Template.instance().nameError.get();
   },
-  usernameError  () {
+  usernameError: function () { 
     return Template.instance().usernameError.get();
   },
-  passwordError  () {
+  passwordError: function () { 
     return Template.instance().passwordError.get();
   },
-  password2Error  () {
+  password2Error: function () { 
     return Template.instance().password2Error.get();
   },
-  disableSignup  () {
+  disableSignup: function () {
     return Template.instance().disableSignup.get();
   }
 });
@@ -102,30 +102,30 @@ var enterPress = function(e){
 
 Template.signup_form.events({
   'blur input#signup-email': checkEmailField,
-  'keypress input#signup-email' (e,t) {
+  'keypress input#signup-email': function(e,t) {
     if (enterPress(e)) {
       checkEmailField(e, t);
     }
   },
   'blur input#signup-name': checkNameField,
-  'keypress input#signup-name' (e,t) {
+  'keypress input#signup-name': function(e,t) {
     if (enterPress(e)) {
       checkNameField(e, t);
     }
   },
   'blur input#signup-username': checkUsernameField,
-  'keypress input#signup-username' (e,t) {
+  'keypress input#signup-username': function(e,t) {
     if (enterPress(e)) {
       checkUsernameField(e, t);
     }
   },
   'blur input#signup-password, blur input#signup-password2': checkPasswordFields,
-  'keypress input#signup-password, blur input#signup-password2' (e,t) {
+  'keypress input#signup-password, blur input#signup-password2': function(e,t) {
     if (enterPress(e)) {
       checkPasswordFields(e, t);
     }
   },
-  'submit #signup-form'  (e, t) {
+  'submit #signup-form': function (e, t) {
     e.preventDefault();
 
     if(t.disableSignup.get()){

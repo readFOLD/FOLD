@@ -206,31 +206,31 @@ window.trackingInfoFromStory = function(story){
 };
 
 typeHelpers = {
-  text () {
+  text: function() {
     return this.type === "text";
   },
-  image () {
+  image: function() {
     return this.type === "image";
   },
-  gif () {
+  gif: function() {
     return this.type === "gif";
   },
-  map () {
+  map: function() {
     return this.type === "map";
   },
-  video () {
+  video: function() {
     return this.type === "video";
   },
-  viz () {
+  viz: function() {
     return this.type === "viz";
   },
-  twitter () {
+  twitter: function() {
     return this.type === "twitter";
   },
-  audio () {
+  audio: function() {
     return this.type === "audio";
   },
-  link () {
+  link: function() {
     return this.type === "link";
   }
 };
@@ -254,25 +254,25 @@ Template.story_header.onRendered(function() {
 });
 
 Template.story_header.helpers({
-  title () {
+  title: function() {
     if (this.title) {
       return this.title;
     } else {
       return Session.get("storyTitle");
     }
   },
-  profileUrl (){
+  profileUrl: function(){
     return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate and only use authorDisplayUsername
   }
 });
 
 Template.story_header.events = {
-  "click #to-story" () {
+  "click #to-story": function() {
     $('#to-story, .attribution').fadeOut();
     goToX(0);
     return goToY(0);
   },
-  "click #banner-overlay" () {
+  "click #banner-overlay": function() {
     var path;
     if (Session.get("pastHeader")) {
       $("html, body").animate({
@@ -291,7 +291,7 @@ Template.story_header.events = {
       return goToY(0);
     }
   },
-  "keydown"  (e) {
+  "keydown": function (e) {
     if (e.which == 13) { // enter
       e.preventDefault();
       $(':focus').blur(); // TO-DO this should move focus to the first block
@@ -304,23 +304,23 @@ Template.story_header.events = {
 
 Template.story.helpers({
   horizontalExists: horizontalExists,
-  pastHeader () {
+  pastHeader: function() {
     return Session.get("pastHeader");
   },
 
-  metaviewOpen () {
+  metaviewOpen: function() {
     return Session.get("metaview")
   },
-  showMinimap () {
+  showMinimap: function() {
     return Session.get("showMinimap") && (!Meteor.Device.isPhone());
   },
-  showMobileMinimap () {
+  showMobileMinimap: function() {
     return Session.get("showMinimap") && (Meteor.Device.isPhone());
   }
 });
 
 Template.story_title.helpers({
-  storyTitleDiv (){
+  storyTitleDiv: function(){
     var initialClasses = Session.get('showDraft') ? 'story-title notranslate' : 'story-title';
     if (Session.get('read')) {
       return '<div class="' + initialClasses + '">' + _.escape(this.title) + '</div>';
@@ -332,16 +332,16 @@ Template.story_title.helpers({
 });
 
 Template.vertical_section_block.helpers({
-  notFirst () {
+  notFirst: function() {
     return !Session.equals("currentY", 0);
   },
-  verticalSelected () {
+  verticalSelected: function() {
     return Session.equals("currentY", this.index) && Session.get("pastHeader");
   },
-  validTitle () {
+  validTitle: function() {
     return this.title === !"title";
   },
-  titleDiv () {
+  titleDiv: function() {
     var initialClasses = Session.get('showDraft') ? 'title notranslate' : 'title';
     if (Session.get('read')) {
       return '<div class="' + initialClasses + '" dir="auto">' + _.escape(this.title) + '</div>';
@@ -351,7 +351,7 @@ Template.vertical_section_block.helpers({
     }
   },
   // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
-  contentDiv () {
+  contentDiv: function() {
     var initialClasses = Session.get('showDraft') ? 'content notranslate' : 'content';
     if (Session.get('read')) {
       return '<div class="' + initialClasses + '" dir="auto">' + cleanVerticalSectionContent(this.content) + '</div>';
@@ -364,7 +364,7 @@ Template.vertical_section_block.helpers({
 });
 
 Template.vertical_narrative.helpers({
-  verticalSectionsWithIndex () {
+  verticalSectionsWithIndex: function() {
     if(!this.verticalSections){ // catch error coming from my_stories for some reason
       return
     }
@@ -377,10 +377,10 @@ Template.vertical_narrative.helpers({
 });
 
 Template.vertical_section_block.events({
-  "click" (d, t) {
+  "click": function(d, t) {
     goToY(t.data.index);
   },
-  "click a" (e, t) {
+  "click a": function(e, t) {
     var contextId;
     e.preventDefault();
     if (Session.equals("currentY", t.data.index)){
@@ -464,7 +464,7 @@ Template.metaview.onRendered(function() {
   });
   this.$(".sortable-blocks").sortable({
     connectWith: ".sortable-blocks",
-    stop () {
+    stop: function() {
       resetXPositionMemory(); // prevent XId stuff from getting all crazy
       saveMetaviewOrdering();
     }
@@ -478,18 +478,18 @@ Template.metaview.onDestroyed(function() {
 });
 
 Template.metaview.events({
-  "click .close" (d, t) {
+  "click .close": function(d, t) {
     Session.set("metaview", false);
   },
-  "click" (d, t) {
+  "click": function(d, t) {
     d.preventDefault();
   },
   // these lines below prevent mouseout and mouseover from getting to other dom elements that will release the scroll lock
-  mouseover (d){
+  mouseover: function(d){
     d.preventDefault();
     d.stopPropagation();
   },
-  mouseout (d){
+  mouseout: function(d){
     d.preventDefault();
     d.stopPropagation();
   }
@@ -498,14 +498,14 @@ Template.metaview.events({
 Template.metaview_context_block.helpers(typeHelpers)
 
 Template.metaview.helpers({
-  verticalSectionsWithIndex () {
+  verticalSectionsWithIndex: function() {
     return this.verticalSections.map(function(v, i) {
       return _.extend(v, {
         index: i
       });
     });
   },
-  horizontalSections () {
+  horizontalSections: function() {
     var blocks = this.contextBlocks
        .map(function(id) {
          return ContextBlocks.findOne({ // by finding one at a time, this keeps in broken links. TO-DO maybe should find a better soln that uses $in
@@ -514,13 +514,13 @@ Template.metaview.helpers({
        });
     return blocks;
   },
-  textContent (){
+  textContent: function(){
     return $($.parseHTML(this.content)).text();
   }
 });
 
 Template.minimap.events({
-  "click .minimap" (d, t) {
+  "click .minimap": function(d, t) {
     if (!Session.get('read')){ // only metaview in create for now
       Session.set("metaview", true);
       analytics.track('Click minimap in create mode');
@@ -532,16 +532,16 @@ Template.minimap.events({
 });
 
 Template.minimap.helpers({
-  horizontalSectionsMap () {
+  horizontalSectionsMap: function() {
     return Session.get("horizontalSectionsMap");
   },
-  selectedX () {
+  selectedX: function() {
     return Session.equals("currentX", this.horizontalIndex);
   },
-  selectedY () {
+  selectedY: function() {
     return Session.equals("currentY", this.verticalIndex);
   },
-  minimapLargeEnough () {
+  minimapLargeEnough: function() {
     // Ensure minimap height is greater than 0 and sections are at least 5 pixels tall
     if (Session.get("minimapMaxHeight") <= 0 || (Session.get("minimapMaxHeight") / Session.get("horizontalSectionsMap").length < 5)) {
       return false;
@@ -549,37 +549,37 @@ Template.minimap.helpers({
       return true;
     }
   },
-  responsive () {
+  responsive: function() {
     var maxHeight = Session.get("minimapMaxHeight");
     var defaultSectionHeight = 17 + 5;  // Section height + margin-bottom
     return (Session.get("horizontalSectionsMap").length * defaultSectionHeight >= maxHeight)
   },
-  sectionHeight () {
+  sectionHeight: function() {
     var maxHeight = Session.get("minimapMaxHeight");
     return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75;  // 75% of available space
   },
-  verticalCardWidth () {
+  verticalCardWidth: function() {
     var maxHeight = Session.get("minimapMaxHeight");
     return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 1.53333;  //  1.53333 aspect ratio
   },
-  horizontalCardWidth () {
+  horizontalCardWidth: function() {
     var maxHeight = Session.get("minimapMaxHeight");
     return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 0.7645 * 1.53333;  // Horizontal block is 76.45% of section
   },
-  sectionMargin () {
+  sectionMargin: function() {
     var maxHeight = Session.get("minimapMaxHeight");
     return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.25;  // 25% of available space (33% of section)
   }
 });
 
 Template.mobile_minimap.helpers({
-  verticalSelectedArray () {
+  verticalSelectedArray: function() {
     var currentYId = Session.get('currentYId')
     return _.map(this.verticalSections, function(v){
       return {selected: currentYId === v._id};
     });
   },
-  horizontalSelectedArray () {
+  horizontalSelectedArray: function() {
     var currentXId = Session.get('currentXId');
     var currentY = Session.get('currentY');
     if (this.verticalSections[currentY]){
@@ -590,22 +590,22 @@ Template.mobile_minimap.helpers({
       return [];
     }
   },
-  horizontalWidth (){
+  horizontalWidth: function(){
     return Session.get('windowWidth') - Session.get('mobileMargin');
   },
-  verticalHeight (){
+  verticalHeight: function(){
     return Session.get('windowHeight') - Session.get('mobileMargin');
   },
-  mobileMargin (){
+  mobileMargin: function(){
     return Session.get('mobileMargin');
   }
 });
 
 Template.horizontal_context.helpers({
-  verticalExists () {
+  verticalExists: function() {
     return Session.get("horizontalSectionsMap").length;
   },
-  horizontalSections () {
+  horizontalSections: function() {
     var that = this;
     if(!this.verticalSections){ // catch error coming from my_stories for some reason
       return
@@ -662,12 +662,12 @@ Template.horizontal_context.helpers({
       }
     });
   },
-  last () {
+  last: function() {
     var lastIndex, _ref;
     lastIndex = ((_ref = Session.get("horizontalSectionsMap")[Session.get("currentY")]) != null ? _ref.horizontal.length : void 0) - 1;
     return (this.index === lastIndex) && (lastIndex > 0);
   },
-  horizontalShown () {
+  horizontalShown: function() {
     return Session.equals("currentY", this.index);
   }
 });
@@ -698,10 +698,10 @@ editableDescriptionCreatedBoilerplate = function() {
 //};
 
 horizontalBlockHelpers = _.extend({}, typeHelpers, {
-  selected () {
+  selected: function() {
     return Session.equals("currentX", this.index) && !Session.get("addingContext");
   },
-  textContent () {
+  textContent: function() {
     var textContent, rows;
     if (this.type === 'text'){
       textContent = this.content || '';
@@ -743,7 +743,7 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 //});
 
 Template.horizontal_section_block.events({
-  'click .mobile-context-back-button' (e, t){
+  'click .mobile-context-back-button': function(e, t){
     Session.set('mobileContextView', false);
     analytics.track('Click mobile back button');
   }
@@ -754,14 +754,14 @@ Template.horizontal_section_block.helpers(horizontalBlockHelpers);
 // Magic layout function
 Template.horizontal_section_block.helpers({
   left: getHorizontalLeft,
-  lastUpdate () {
+  lastUpdate: function() {
     Session.get('lastUpdate');
   }
 });
 
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 
-    "blur .text-content.editable" (d, template) {
+    "blur .text-content.editable": function(d, template) {
       var that = this;
       if (!Session.get('read') && !Session.get('addingContext')) {
         var textContent = template.$('textarea[name=content]').val();
@@ -769,13 +769,13 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
         Meteor.call(meteorMethod, that._id, textContent, saveCallback);
       }
     },
-    "mouseenter .text-content.editable" (d, template) {
+    "mouseenter .text-content.editable": function(d, template) {
       document.body.style.overflow = 'hidden';
     },
-    "mouseleave .text-content.editable" (d, template) {
+    "mouseleave .text-content.editable": function(d, template) {
       document.body.style.overflow = 'auto';
     },
-    "keypress .image-section .text-content.editable" (e, template) { // save on Enter
+    "keypress .image-section .text-content.editable": function(e, template) { // save on Enter
       var that = this;
       if (!Session.get('read') && !Session.get('addingContext') && e.which === 13 ) {
         e.preventDefault();
@@ -804,7 +804,7 @@ Template.display_map_section.helpers(horizontalBlockHelpers);
 
 Template.display_link_section.helpers(horizontalBlockHelpers);
 Template.display_link_section.events({
-  'click a'  (e, t) {
+  'click a': function (e, t) {
     var url = e.currentTarget.href;
     analytics.track('Click external link in link card', {
       label: url,
@@ -823,20 +823,20 @@ Template.display_text_section.events(editableDescriptionEventsBoilerplate('editT
 Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
 Template.story_browser.helpers({
-  showLeftArrow () {
+  showLeftArrow: function() {
     return !Meteor.Device.isPhone() && (Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentYId')]);
   },
-  showRightArrow () {
+  showRightArrow: function() {
     return !Meteor.Device.isPhone();
   }
 });
 
 Template.story_browser.events({
-  "click .right svg" (d) {
+  "click .right svg": function(d) {
     window.goRightOneCard();
     analytics.track('Click right arrow');
   },
-  "click .left svg" (d) {
+  "click .left svg": function(d) {
     window.goLeftOneCard()
     analytics.track('Click left arrow');
   }
@@ -849,10 +849,10 @@ Template.share_button.onCreated(function() {
 })
 
 Template.share_button.events({
-  'click' (e, t) {
+  'click': function(e, t) {
     t.tooltipShown.set(!t.tooltipShown.get());
   },
-  'click .share-facebook' (e, t) {
+  'click .share-facebook': function(e, t) {
     var width  = 575;
     var height = 400;
     var left   = ($(window).width()  - width)  / 2;
@@ -867,7 +867,7 @@ Template.share_button.events({
     Meteor.call('countStoryShare', this._id, 'facebook');
     analytics.track('Share on Facebook');
   },
-  'click .share-twitter' (e, t) {
+  'click .share-twitter': function(e, t) {
     var title = $(".story-title").text();
     var width  = 575;
     var height = 400;
@@ -886,19 +886,19 @@ Template.share_button.events({
 });
 
 Template.share_button.helpers({
-  "tooltipShown" () {
+  "tooltipShown": function() {
     return Template.instance().tooltipShown.get();
   }
 })
 
 Template.favorite_button.helpers({
-  userFavorited () {
+  userFavorited: function() {
     return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
   }
 });
 
 Template.favorite_button.events({
-  "click .favorite" () {
+  "click .favorite": function() {
     if(!Meteor.user()){
       return notifyInfo('Please sign up or log in to favorite stories');
     }
@@ -912,7 +912,7 @@ Template.favorite_button.events({
 
     });
   },
-  "click .unfavorite" () {
+  "click .unfavorite": function() {
     return Meteor.call('unfavoriteStory', this._id, function(err) {
       if (err) {
         notifyError(err);
@@ -925,7 +925,7 @@ Template.favorite_button.events({
 });
 
 Template.editors_pick_button.events({
-  "click .pick" () {
+  "click .pick": function() {
     return Meteor.call('designateEditorsPick', this._id, function(err) {
       if (err) {
         notifyError(err);
@@ -933,7 +933,7 @@ Template.editors_pick_button.events({
       }
     });
   },
-  "click .unpick" () {
+  "click .unpick": function() {
     return Meteor.call('stripEditorsPick', this._id, function(err) {
       if (err) {
         notifyError(err);
@@ -946,7 +946,7 @@ Template.editors_pick_button.events({
 
 
 Template.remix_bar.events({
-  'click .remix-button' (){
+  'click .remix-button': function(){
     analytics.track('Remix context card click', _.pick(this, [
       "_id",
       "authorId",
@@ -963,19 +963,19 @@ Template.remix_bar.events({
 });
 
 Template.display_twitter_section.events({
-  "click .show-image"  (e, template) {
+  "click .show-image" : function(e, template) {
     template.$('.twitter-text-section').toggleClass('transparent');
   },
-  "click .image-section"  (e, template) {
+  "click .image-section" : function(e, template) {
     template.$('.twitter-text-section').removeClass('transparent');
   },
-  "mouseenter .twitter-section"  (e, template) {
+  "mouseenter .twitter-section" : function(e, template) {
     if (template.data.imgUrl) {
       template.$('.twitter-text-section').addClass('show-corner');
       template.$('.flag').addClass('show-corner');
     }
   },
-  "mouseleave .twitter-section"  (e, template) {
+  "mouseleave .twitter-section" : function(e, template) {
     if (template.data.imgUrl) {
       template.$('.twitter-text-section').removeClass('show-corner');
       template.$('.flag').removeClass('show-corner');
@@ -1018,7 +1018,7 @@ Tracker.autorun(function() {
 
 
 Template.create_story.events({
-  'click' (){
+  'click': function(){
     if (Meteor.user()){
       var accessPriority = Meteor.user().accessPriority;
       if (accessPriority && accessPriority <= window.createAccessLevel){

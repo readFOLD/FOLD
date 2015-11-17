@@ -3,13 +3,13 @@ Template.recover_password_form.onCreated(function() {
 })
 
 Template.recover_password_form.helpers({
-  message () {
+  message: function() {
     return Template.instance().message.get();
   }
 })
 
 Template.recover_password_form.events({
-  'submit #recover-password-form' (e, t) {
+  'submit #recover-password-form': function(e, t) {
     e.preventDefault();
 
     var forgotPasswordForm = $(e.currentTarget);

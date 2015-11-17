@@ -1,4 +1,4 @@
 
 SearchResults = new Mongo.Collection(null, {
-    transform (doc) { return window.newTypeSpecificContextBlock(doc) }
+    transform: function(doc) { return window.newTypeSpecificContextBlock(doc) }
   });
