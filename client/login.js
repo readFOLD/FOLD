@@ -3,16 +3,16 @@ Template.login_form.onCreated(function() {
 });
 
 Template.login_form.helpers({
-  loginError: function() {
+  loginError () {
     return Template.instance().loginError.get();
   } 
 });
 
 Template.login_form.events({
-  'keypress input': function(e, template) {
+  'keypress input' (e, template) {
     template.loginError.set(false);
   },
-  'submit #login-form' : function(e, template) {
+  'submit #login-form' (e, template) {
     e.preventDefault();
     
     inputs = $('#login-form').serializeArray();

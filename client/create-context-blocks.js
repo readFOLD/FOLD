@@ -7,10 +7,10 @@ var count = function(){
 };
 
 var createBlockHelpers = {
-  showAddButton: function(){
+  showAddButton (){
     return Template.instance().focusResult.get() ? true : false;
   },
-  isFocused: function () {
+  isFocused  () {
     var focusResult = Template.instance().focusResult.get();
     if (_.isObject(focusResult)) {
       if (this._id === focusResult._id) {
@@ -18,31 +18,31 @@ var createBlockHelpers = {
       }
     }
   },
-  isActive: function () {
+  isActive  () {
     var focusResult = Template.instance().focusResult.get();
     if (_.isObject(focusResult)) {
       return true;
     }
   },
-  selected: function() {
+  selected () {
     return (this.source === Session.get('newHorizontalDataSource'));
   },
-  loading: function() {
+  loading () {
     if (Template.instance().loadingResults)
       return Template.instance().loadingResults.get()
   },
-  noMoreResults: function() {
+  noMoreResults () {
     if (Template.instance().noMoreResults)
       return Template.instance().noMoreResults.get()
   },
-  results: function () {
+  results  () {
     searchDep.depend();
     return Template.instance().existingSearchResults()
   },
-  addingDescription: function() {
+  addingDescription () {
     return Template.instance().addingDescription.get();
   },
-  focusResult: function() {
+  focusResult () {
     var focusResult = Template.instance().focusResult.get();
     if (focusResult) { return focusResult; }
   }
@@ -73,11 +73,11 @@ var addFocusResult = function(d, template) {
 };
 
 var createBlockEvents = {
-  "click .data-source": function(d, template) {
+  "click .data-source" (d, template) {
     Session.set('newHorizontalDataSource', this.source);
   },
 
-  "submit form": function(d, template) {
+  "submit form" (d, template) {
     d.preventDefault();
     if(!template.loadingResults.get()){
       if (!template.existingSearchResults || !template.existingSearchResults({reactive: false}).count()) {  // confirm there are no results yet
@@ -88,24 +88,24 @@ var createBlockEvents = {
 
   "scroll ol.search-results-container": throttledSearchScrollFn,
 
-  "click .search-results-container li:not(.loading-icon)": function(d, template) {
+  "click .search-results-container li:not(.loading-icon)" (d, template) {
     template.focusResult.set(this);
   },
 
-  "click .add-desc-button": function (d, template) {
+  "click .add-desc-button"  (d, template) {
     template.addingDescription.set(true);
   },
-  "click .back-button": function (d, template) {
+  "click .back-button"  (d, template) {
     template.addingDescription.set(false);
   },
 
   "click .add-button": addFocusResult,
-  "keydown .text-content.editable": function(e, t) {
+  "keydown .text-content.editable" (e, t) {
     if (e.which === 13){
       addFocusResult.apply(this,arguments);
     }
   },
-  "click .cancel": function() {
+  "click .cancel" () {
     Session.set('addingContext', false);
     return Session.set('editingContext', null);
   }
@@ -239,31 +239,31 @@ _.each(createTemplateNames, function(templateName){
 
 
 Template.create_audio_section.events({
-  "dblclick .search-results-container li:not(.loading-icon)": function (d, template) {
+  "dblclick .search-results-container li:not(.loading-icon)"  (d, template) {
     addContext(this);
   }
 });
 
 Template.create_video_section.events({
-  "dblclick .search-results-container li:not(.loading-icon)": function (d, template) {
+  "dblclick .search-results-container li:not(.loading-icon)"  (d, template) {
     addContext(this);
   }
 });
 
 Template.create_twitter_section.events({
-  "dblclick .search-results-container li:not(.loading-icon)": function (d, template) {
+  "dblclick .search-results-container li:not(.loading-icon)"  (d, template) {
     addContext(this);
   }
 });
 
 Template.create_image_section.events({
-  "dblclick .search-results-container li:not(.loading-icon)": function (d, template) {
+  "dblclick .search-results-container li:not(.loading-icon)"  (d, template) {
     template.addingDescription.set(true);
   }
 });
 
 Template.create_gif_section.events({
-  "dblclick .search-results-container li:not(.loading-icon)": function (d, template) {
+  "dblclick .search-results-container li:not(.loading-icon)"  (d, template) {
     template.addingDescription.set(true);
   }
 });
@@ -346,10 +346,10 @@ Template.create_image_section.onCreated(function(){
   this.uploadStatus = new ReactiveVar();
   var query = _cloudinary.find({});
   this.observeCloudinary = query.observeChanges({ // this query stays live until .stop() is called in the onDestroyed hook
-    added: function (id) { // start upload
+    added  (id) { // start upload
       that.uploadStatus.set('Uploading...');
     },
-    changed: function (id, changes) { // upload stream updated
+    changed  (id, changes) { // upload stream updated
       if (changes.public_id){ // if upload successful
         var doc = _cloudinary.findOne(id);
         var cardModel = doc.format === 'gif' ? GifBlock : ImageBlock;
@@ -369,7 +369,7 @@ Template.create_image_section.onCreated(function(){
         that.addingDescription.set(true);
       }
     },
-    removed: function (id) {  // upload failed
+    removed  (id) {  // upload failed
       var input = that.$('input[type=file]');
       that.uploadStatus.set('Upload failed');
       input.val(null);
@@ -383,19 +383,19 @@ Template.create_image_section.onDestroyed(function(){
 });
 
 Template.create_image_section.helpers({
-  uploadMode: function(){
+  uploadMode (){
     return Session.get('newHorizontalDataSource') === 'cloudinary';
   },
-  uploadStatus: function(){
+  uploadStatus (){
     return Template.instance().uploadStatus.get();
   },
-  uploadPreview: function(){
+  uploadPreview (){
     return Template.instance().uploadPreview.get();
   }
 });
 
 Template.create_image_section.events({
-  'change input[type=file]': function(e, t){
+  'change input[type=file]' (e, t){
     var file = _.first(e.target.files);
     if (file){
       var reader = new FileReader;
@@ -477,17 +477,17 @@ Template.create_viz_section.onRendered(function() {
 });
 
 Template.create_viz_section.helpers({
-    cardWidth: function() { return Session.get('cardWidth') - 40; } ,
-    directions: function() { return Template.instance().directions; },
-    countries: function() { return Template.instance().countries; },
-    years: function() { return Template.instance().years; },
-    selectedYear: function() { return Template.instance().selectedYear.get(); },
-    selectedCountry: function() { return Template.instance().selectedCountry.get(); },
-    selectedDirection: function() { return Template.instance().selectedDirection.get(); },
-    isSelectedYear: function() { return (this == Template.instance().selectedYear.get()); },
-    isSelectedCountry: function() { return (this.id === Template.instance().selectedCountry.get()); },
-    isSelectedDirection: function() { return (this === Template.instance().selectedDirection.get()); },
-    url: function() {
+    cardWidth () { return Session.get('cardWidth') - 40; } ,
+    directions () { return Template.instance().directions; },
+    countries () { return Template.instance().countries; },
+    years () { return Template.instance().years; },
+    selectedYear () { return Template.instance().selectedYear.get(); },
+    selectedCountry () { return Template.instance().selectedCountry.get(); },
+    selectedDirection () { return Template.instance().selectedDirection.get(); },
+    isSelectedYear () { return (this == Template.instance().selectedYear.get()); },
+    isSelectedCountry () { return (this.id === Template.instance().selectedCountry.get()); },
+    isSelectedDirection () { return (this === Template.instance().selectedDirection.get()); },
+    url () {
       var preview = Template.instance().focusResult.get();
       if (preview) {
         return preview.url()
@@ -497,10 +497,10 @@ Template.create_viz_section.helpers({
 );
 
 Template.create_viz_section.events({
-  "change select.countries": function(e, t) {
+  "change select.countries" (e, t) {
     t.selectedCountry.set($(e.target).find('option:selected').data('id'));
   },
-  "change select.years": function(e, t) {
+  "change select.years" (e, t) {
     t.selectedYear.set($(e.target).val());
   }
 })
@@ -660,22 +660,22 @@ Template.create_link_section.onRendered(function() {
 });
 
 Template.create_link_section.helpers({
-  preview: function(){
+  preview (){
     return Template.instance().focusResult.get();
   },
-  link: function() {
+  link () {
     var preview = Template.instance().focusResult.get();
     if (preview) {
       return (preview.type === 'link');
     }
   },
-  image: function() {
+  image () {
     var preview = Template.instance().focusResult.get();
     if (preview) {
       return (preview.type === 'image' || preview.type === 'gif');
     }
   },
-  video: function() {
+  video () {
     var preview = Template.instance().focusResult.get();
     if (preview) {
       return (preview.type === 'video');
@@ -713,19 +713,19 @@ Template.create_map_section.onRendered(function() {
 });
 
 Template.create_map_section.events({
-  'change input[type="radio"]': function(e, template) {
+  'change input[type="radio"]' (e, template) {
     template.search();
   }
 });
 
 Template.create_map_section.helpers({
-  url: function() {
+  url () {
     var preview = Template.instance().focusResult.get();
     if (preview) {
       return preview.url()
     }
   },
-  previewUrl: function() {
+  previewUrl () {
     var preview = Template.instance().focusResult.get();
     if (preview) {
       return preview.previewUrl()
@@ -743,7 +743,7 @@ Template.create_text_section.onRendered(function() {
 });
 
 Template.create_text_section.events({
-  'click .add-button': function(e, template){
+  'click .add-button' (e, template){
     e.preventDefault()
     addContext(new TextBlock({
       content: template.$('textarea[name=content]').val(),
@@ -754,23 +754,23 @@ Template.create_text_section.events({
 });
 
 Template.create_twitter_section.helpers({
-  twitterUser: function() {
+  twitterUser () {
     var user = Meteor.user();
     return user.services && user.services.twitter && user.services.twitter.id;
   }
 });
 
 Template.search_form.events({
-  'change, keydown': function(){
+  'change, keydown' (){
     searchDep.changed();
   },
-  'change input[type="radio"]': function(e,t){
+  'change input[type="radio"]' (e,t){
     t.$('form').submit();
   }
 });
 
 Template.search_form.helpers({
-  placeholder: function() {
+  placeholder () {
     switch(Template.instance().data.placeholderType){
       case 'links':
         return 'e.g. ' +
