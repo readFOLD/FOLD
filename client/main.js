@@ -294,6 +294,9 @@ Template.story_header.helpers({
   },
   profileUrl: function(){
     return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate and only use authorDisplayUsername
+  },
+  author: function(){
+    return Meteor.users.findOne(this.authorId)
   }
 });
 
@@ -1135,6 +1138,10 @@ Template.read.onCreated(function(){
     Meteor.call('countStoryView', id);
     analytics.track('View story', trackingInfoFromStory(this.data));
   }
+
+  this.autorun(() =>{
+    this.subscribe('minimalUsersPub', [this.data.authorId]);
+  });
 });
 
 

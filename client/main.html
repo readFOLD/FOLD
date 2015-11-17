@@ -91,11 +91,14 @@
           By <span>{{authorName}}</span>
         </a>
       </div>
-    </div>
-    <div class="logo visible">
-      {{#linkTo route="home"}}
-        <img src="{{c.url 'static/FOLD_LOGO.svg'}}">
-      {{/linkTo}}
+      {{log profileUrl}}
+      <a class="author-image" href="{{profileUrl}}">
+        {{#if profileImage author}}
+          <img class="profile-picture" src="{{profileImage author}}"/>
+        {{else}}
+          <img class="profile-picture" src="{{c.url 'static/placeholder_image.png'}}"/>
+        {{/if}}
+      </a>
     </div>
 
     {{#unless isPhone}}

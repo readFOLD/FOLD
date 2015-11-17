@@ -40,6 +40,8 @@
         {{else}}
           {{#if profileImage user}} 
            <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>
+          {{else}}
+            <img class="profile-picture-large" src="{{c.url 'static/placeholder_image.png'}}"/>
           {{/if}}
         {{/if}}
      </div>
@@ -56,6 +58,8 @@
     <div class="picture">
       {{#if profileImage user}} 
          <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>
+      {{else}}
+        <img class="profile-picture-large" src="{{c.url 'static/placeholder_image.png'}}"/>
       {{/if}}
     </div>
     <div class="name">{{name}}</div>

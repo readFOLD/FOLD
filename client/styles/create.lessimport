@@ -343,7 +343,7 @@ div.title-overlay {
 
   div.title-author {
     position: absolute;
-    margin-left: 105px;
+    margin-left: 95px;
     margin-top: 125px;
     max-width: 1300px;
     color: @white-color;
@@ -354,15 +354,37 @@ div.title-overlay {
     }
     background-color: @dark-color;
     .background-transition;
+
+    .author-image{
+      display: none;
+      .opacity-transition;
+      position: absolute;
+      left: -70px;
+      top: 20px;
+      .size(60px);
+      img{
+        border-radius: 50%;
+        .size-to-fit;
+      }
+    }
     &.b {
       position: fixed;
       margin-top: @magic-styling-distance;
+      .author-image{
+        opacity: 0;
+        pointer-events: none;
+        display: block;
+      }
     }
     &.a{
       margin-top: 125px;
     }
     &.c{
       margin-top: 0px;
+      .author-image{
+        opacity: 1;
+        display: block;
+      }
     }
 
 
