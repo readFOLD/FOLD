@@ -83,10 +83,11 @@ window.updateCurrentY = function() {
   } else {
     Session.set("sticky", false);
   }
-  stickyBody = 245;
-  stickyTitle = 120;
-  maxScroll = 245;
   readMode = 245;
+  stickyBody = readMode;
+  maxScroll = readMode;
+  stickyTitle = 120;
+  var selectOffset = - 130;
   $("div#banner-overlay").css({
     opacity: Math.min(1.0, scrollTop / maxScroll)
   });
@@ -146,7 +147,6 @@ window.updateCurrentY = function() {
 
   }
   if (scrollTop >= readMode) {
-    var selectOffset = - 90;
     _ref = _.map(window.getVerticalHeights(), function(height){ return height + selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
