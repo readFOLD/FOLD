@@ -59,6 +59,20 @@ window.notifyInfo = function(message){
   );
 };
 
+window.notifyBrowser = function(){
+  $.amaran({
+      content: {
+        message: "Hi! We're so glad you're writing a story on FOLD. Feel free to try out our editor in any browser and give us feedback, but for the best experience right now, we recommend using Chrome!",
+        color: 'white',
+        bgcolor: '#585094' // panel-color
+      },
+      sticky: true,
+      'position' :'top right',
+      theme:'colorful'
+    }
+  );
+};
+
 window.notifyDeploy = function(message, sticky){
   $.amaran({
       content: {

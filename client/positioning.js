@@ -189,6 +189,11 @@ window.moveOneCard = function(d) {
   }
 };
 
+window.horizontalExists = function(){
+  var currentY = Session.get('currentY');
+  return ((_ref = Session.get('horizontalSectionsMap')[currentY]) != null ? _ref.horizontal.length : void 0) > 1
+}
+
 $(document).keydown(function(e) {
   if (Router.current().route.getName() === 'read'){
     letter = String.fromCharCode(e.keyCode);

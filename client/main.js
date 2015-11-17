@@ -66,7 +66,7 @@ Meteor.startup(function(){
 window.hammerSwipeOptions = {
   pointers:	1,
   threshold: 8,
-  velocity:	0.35 // 0.65
+  velocity:	0.25 // 0.65
 };
 
 
@@ -334,11 +334,7 @@ Template.story_header.events = {
 };
 
 Template.story.helpers({
-  horizontalExists: function() {
-    var currentY, _ref;
-    currentY = Session.get('currentY');
-    return ((_ref = Session.get('horizontalSectionsMap')[currentY]) != null ? _ref.horizontal.length : void 0) > 1;
-  },
+  horizontalExists: horizontalExists,
   pastHeader: function() {
     return Session.get("pastHeader");
   },
@@ -434,10 +430,26 @@ Template.vertical_section_block.events({
 
 Template.story.onRendered(function(){
   // TODO destroy bindings later?
-  if(Meteor.Device.isPhone()){
-    this.$('.vertical-narrative').hammer(hammerSwipeOptions).bind('swipeleft',function(){
-        // TODO only if selected
-        Session.set('mobileContextView', true);
+  if(Meteor.Device.isPhone() || Meteor.Device.isTablet()){
+    this.$('.entire-story').hammer(hammerSwipeOptions).bind('swipeleft',function(){
+        if(horizontalExists()){
+          if (Meteor.Device.isTablet() || Session.get('mobileContextView')){
+            goRightOneCard();
+          } else {
+            Session.set('mobileContextView', true);
+          }
+        }
+      }
+    );
+
+    this.$('.entire-story').hammer(hammerSwipeOptions).bind('swiperight',function(){
+        if(Meteor.Device.isTablet()){
+          if(horizontalExists()){
+            goLeftOneCard();
+          }
+        } else {
+          Session.set('mobileContextView', false);
+        }
       }
     );
   }
@@ -1096,7 +1108,6 @@ Template.create_story.events({
 });
 
 
-var storyViewed = '';
 Template.read.onCreated(function(){
 
   // analytics autorun
@@ -1115,8 +1126,8 @@ Template.read.onCreated(function(){
   });
 
   var id = this.data._id;
-  if (storyViewed !== id){
-    storyViewed = id;
+  if (Session.get('storyViewed') !== id){
+    Session.set('storyViewed', id);
     Meteor.call('countStoryView', id);
     analytics.track('View story', trackingInfoFromStory(this.data));
   }
