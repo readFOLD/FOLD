@@ -290,10 +290,13 @@ div.stories {
   div.story-container {
     padding-top: 15px;
     @media @mobile{
-      padding-top: 56px;
+      padding-top: 68px;
     }
     @padding-side: @magic-styling-distance;
     padding-left: @padding-side;
+    @media @mobile{
+      padding-left: @magic-styling-distance/2;
+    }
     //padding-right: @padding-side;
     padding-bottom: 75px;
     overflow: hidden;
@@ -353,6 +356,11 @@ div.stories {
 
     @media (min-width: 2300px) {
       width: calc(20% ~"-" @margin-side * 2);
+    }
+
+    @media @mobile{
+      margin-right: @magic-styling-distance/2;
+      width: calc(100% ~"-" @magic-styling-distance/2);
     }
 
     &.profile {
