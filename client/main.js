@@ -115,7 +115,7 @@ window.updateCurrentY = function() {
     if(scrollPauseArmed){
       document.body.style.overflowY = 'hidden';
       $(document).scrollTop(stickyBody);
-      Meteor.setTimeout(() => {
+      Meteor.setTimeout(function () {
         document.body.style.overflowY = 'auto';
       }, 500);
       scrollPauseArmed = false;
@@ -636,7 +636,7 @@ Template.mobile_minimap.helpers({
 });
 
 Template.horizontal_context.events({
-  click () {
+  click: function () {
     if(Session.equals('currentY', null)){
       goToY(0);
     }
@@ -1139,8 +1139,10 @@ Template.read.onCreated(function(){
     analytics.track('View story', trackingInfoFromStory(this.data));
   }
 
-  this.autorun(() =>{
-    this.subscribe('minimalUsersPub', [this.data.authorId]);
+  var that = this;
+
+  this.autorun(function () {
+    that.subscribe('minimalUsersPub', [that.data.authorId]);
   });
 });
 
