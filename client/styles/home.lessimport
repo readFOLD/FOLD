@@ -75,10 +75,10 @@ div.home-top {
     }
     @media @mobile{
       margin:auto;
-      text-align: center;
-      margin-top: 60px;
+      text-align: left;
+      margin-top: @magic-styling-distance / 4;
+      margin-left: @magic-styling-distance / 2;
       height: 28px;
-      width: 150px;
       img{
         height: 100%
       }
@@ -106,9 +106,7 @@ div.home-top {
       left: 196px;
     }
     @media @mobile{
-      top: 110px;
-      width: 100%;
-      text-align: center;
+      right: 0;
     }
     font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
 
@@ -128,6 +126,13 @@ div.home-top {
 
     span.categories {
       margin-left: 10px;
+    }
+  }
+  &.slim{
+    .action-items{
+      @media @mobile{
+        display: none;
+      }
     }
   }
 } 
