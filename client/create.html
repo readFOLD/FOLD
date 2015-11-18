@@ -55,33 +55,34 @@
     {{/unless}}
   </div>
   {{/unless}}
-  <div class="floating-story-buttons">
-    {{#unless addingContext}}
-      <div class="saved-text">
-        {{#if saving}}
-          Saving...
-        {{else}}
-          Saved
-        {{/if}}
-      </div>
-
-      <button type="button" class="toggle-preview button">
-        {{#if read}}
-          Edit
-        {{else}}
-          Preview
-        {{/if}}
-      </button>
-      {{#if draftStory.unpublishedChanges}}
-        <button type="button" class="publish-story button">
-          {{#if published}}
-            Publish Changes
-          {{else}}
-            Publish
-          {{/if}}
-      </button>
+  <div class="floating-story-buttons-left">
+    <div class="saved-text">
+      {{#if saving}}
+        Saving...
+      {{else}}
+        Saved
       {{/if}}
-    {{/unless}}
+    </div>
+
+    <button type="button" class="toggle-preview button">
+      {{#if read}}
+        Edit
+      {{else}}
+        Preview
+      {{/if}}
+    </button>
+  </div>
+
+  <div class="floating-story-buttons-right">
+    {{#if draftStory.unpublishedChanges}}
+      <button type="button" class="publish-story button">
+        {{#if published}}
+          Publish Changes
+        {{else}}
+          Publish
+        {{/if}}
+    </button>
+    {{/if}}
   </div>
 </template>
 

@@ -93,11 +93,8 @@ div.upload-header-image {
 div.floating-story-buttons {
   @height: 40px;
 
-  border-radius: 3px;
   vertical-align: middle;
-  button {
-    text-align: center;
-  }
+
   .favorite-button, .share-buttons {
     display: inline-block;
     height: @height;
@@ -154,6 +151,17 @@ div.floating-story-buttons {
     }
   }
 
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+
+}
+
+.floating-story-buttons, .floating-story-buttons-left, .floating-story-buttons-right{
+  z-index: 27;
+  button {
+    text-align: center;
+  }
 
   button.button {
     background-color: @dark-color;
@@ -175,22 +183,37 @@ div.floating-story-buttons {
   bottom: 0px;
   right: 0px;
   z-index: 27;
+}
+
+.floating-story-buttons-left{
+
+  width: 0;
+  overflow: visible;
 
   .saved-text{
-    float: right;
     color: @black-color;
     margin-left: 15px;
-    margin-top: 8px;
+    margin-bottom: 4px;
     font-size: 13px;
   }
+
+  button{
+    width: 85px;
+  }
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+}
+
+.floating-story-buttons-right{
 
   .publish-story{
     width: 140px;
   }
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
 
-  .link-to-edit{
-    width: 126px;
-  }
 }
 
 input.background-image-input {

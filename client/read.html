@@ -36,11 +36,14 @@
       {{/with}}
     {{/unless}}
 
+
+  </div>
+  <div class="floating-story-buttons-left">
     {{#if isAuthor}}
       {{#unless isPhone}}
         {{#linkTo route="edit" data=this}}
           <button type="button" class="link-to-edit button">
-            Edit This Story
+            Edit
           </button>
         {{/linkTo}}
       {{/unless}}
