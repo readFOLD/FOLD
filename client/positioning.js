@@ -4,6 +4,10 @@ window.constants = {
   minPageWidth: 1024
 };
 
+if(Meteor.Device.isPhone()){
+  window.constants.readModeOffset = window.constants.readModeOffset + 92
+}
+
 window.getVerticalLeft = function() {
   return Meteor.Device.isPhone() ? (Session.get('windowWidth') > 340 ? 30 : 20) : (Session.get('windowWidth') / 2 - Session.get('cardWidth') - Session.get('separation'));
 };

@@ -430,6 +430,7 @@ body {
   @media @desktop-xtall {
     min-height: 2000px;
   }
+  overflow-x: hidden;
 }
 
 footer{
@@ -503,11 +504,6 @@ div.story-browser {
   .right {
     float: right;
   }
-}
-
-
-article.content {
-  opacity: 0.5;
 }
 
 div#overlay {
@@ -768,6 +764,8 @@ div.link-section {
   height: 300px;
   border-bottom: 7px solid @action-color;
 
+  overflow-y: hidden;
+
   div.top {
     .thumbnail {
       &.left {
@@ -997,13 +995,15 @@ div.horizontal-context {
   margin-top: @horizontal-context-margin-top + 40px;
   margin-bottom: 500px;
   .size-to-fit;
+  opacity: 0.5;
 
   &.fixed {
     position: fixed;
+    opacity: 1;
     margin-top: @horizontal-context-margin-top;
     top: @horizontal-context-top;
     @media @mobile {
-      top: 60px;
+      top: 48px;
     }
     /*&.editing {
       top: 90px;
@@ -1508,13 +1508,12 @@ div.minimap {
 
 .mobile-context-back-button{
   @size: 38px;
-  @bottom-margin: 20px;
   float:right;
   .size(@size);
   padding: 0;
   position: relative;
   margin-right: 0px;
-  margin-top: -1 * @size - @bottom-margin;
+  margin-top: 10px;
 }
 
 div.tagsinput {

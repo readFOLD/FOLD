@@ -83,7 +83,9 @@ window.updateCurrentY = function() {
   } else {
     Session.set("sticky", false);
   }
-  readMode = 245;
+
+  readMode = window.constants.readModeOffset - 1;
+
   stickyBody = readMode;
   maxScroll = readMode;
   stickyTitle = 120;
@@ -91,7 +93,7 @@ window.updateCurrentY = function() {
   $("div#banner-overlay").css({
     opacity: Math.min(1.0, scrollTop / maxScroll)
   });
-  $("article.content").css({
+  $(".horizontal-context").css({
     opacity: 0.5 + Math.min(1.0, scrollTop / maxScroll) / 2
   });
   if (scrollTop >= stickyTitle) {
@@ -370,7 +372,7 @@ Template.vertical_section_block.helpers({
     return !Session.equals("currentY", 0);
   },
   verticalSelected: function() {
-    return Session.equals("currentY", this.index) && Session.get("pastHeader");
+    return Session.equals("currentY", this.index) && Session.get("pastHeader") || Session.equals("currentY", null) && this.index === 0;
   },
   validTitle: function() {
     return this.title === !"title";
@@ -710,10 +712,10 @@ Template.horizontal_context.helpers({
   },
   horizontalSectionInDOM: function() {
     // on this row
-    return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0);// || this.index === getXByYId(this.verticalId); or this card is the current X for another hidden row
+    return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone());// || this.index === getXByYId(this.verticalId); or this card is the current X for another hidden row
   },
   horizontalShown: function() {
-    return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0);
+    return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone());
   }
 });
 

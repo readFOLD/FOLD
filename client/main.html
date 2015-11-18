@@ -248,13 +248,7 @@
   <!--    <div id="index">
       {{index}}
     </div> -->
-    {{#if isPhone}}
-      {{#if selected}}
-        <button class="mobile-context-back-button">
-          {{> mobile_back_icon }}
-        </button>
-      {{/if}}
-    {{/if}}
+
     {{#if type}}
       {{#if text}}
         {{#if editingThisContext}}
@@ -325,6 +319,13 @@
         {{#unless isPhone}}
           {{> remix_bar}}
         {{/unless}}
+      {{/if}}
+      {{#if isPhone}}
+        {{#if selected}}
+          <button class="mobile-context-back-button">
+            {{> mobile_back_icon }}
+          </button>
+        {{/if}}
       {{/if}}
       </section>
     </div>
