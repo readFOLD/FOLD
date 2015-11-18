@@ -82,7 +82,7 @@ div.upload-header-image {
   position: absolute;
   top: 60px;
   right: 20px;
-  z-index: 100;
+  z-index: 90;
 }
 
 .confirm-publish{
@@ -1095,7 +1095,7 @@ div.horizontal-context {
       height: @newCardBottomButtonHeight;
       color: @white-color;
       width: 90px;
-      margin-top: 12px;
+      margin-top: 16px;
       margin-bottom: 20px;
       text-align: center;
       font-size: 12px;

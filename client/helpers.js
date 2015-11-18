@@ -18,6 +18,10 @@ Handlebars.registerHelper("read", function() {
   return Session.get("read");
 });
 
+Handlebars.registerHelper("notRead", function() {
+  return !Session.get("read");
+});
+
 Handlebars.registerHelper("showDraft", function() {
   return Session.get("showDraft");
 });

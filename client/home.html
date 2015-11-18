@@ -15,7 +15,7 @@
       </div>
       {{/if}}
     </div>
-    {{> banner_buttons slim=slim}}
+    {{> banner_buttons slim=slim hideMakeAStory=hideMakeAStory}}
     {{> signin_overlay}}
   </div>
 </template>
@@ -69,9 +69,11 @@
     <div class="action-items {{#if slim}}slim{{else}}fat{{/if}}">
       <ol>
         {{#unless isPhone}}
-          <li class="create-story">
-            {{> create_story}}
-          </li>
+          {{#unless hideMakeAStory}}
+            <li class="create-story">
+              {{> create_story}}
+            </li>
+          {{/unless}}
         {{/unless}}
         {{> login_buttons }}
 

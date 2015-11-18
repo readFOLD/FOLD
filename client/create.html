@@ -74,6 +74,7 @@
   </div>
 
   <div class="floating-story-buttons-right">
+    {{#unless addingContext}}
     {{#if draftStory.unpublishedChanges}}
       <button type="button" class="publish-story button">
         {{#if published}}
@@ -83,6 +84,8 @@
         {{/if}}
     </button>
     {{/if}}
+    {{/unless}}
+
   </div>
 </template>
 

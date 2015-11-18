@@ -1165,7 +1165,7 @@ div.horizontal-context {
   }
 
   &.editing {
-    height: ~"calc(100% - 125px)";
+    height: ~"calc(100% - 165px)";
     z-index: 100;
   }
 }
