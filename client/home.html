@@ -39,26 +39,28 @@
 </template>
 
 <template name="top_banner_simple_no_links">
-  <div class="home-top not-sticky">
+  <div class="home-top not-sticky top-banner {{#if slim}}slim{{else}}fat{{/if}}">
     <div class="left">
-      <div class="logo-title">
-          <div class="title">
+      <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}}">
+        <!--{{#linkTo route="home"}}-->
+          <div class="title {{#if slim}}slim{{else}}fat{{/if}}">
             <img src="{{c.url 'static/foldtitle.svg'}}">
           </div>
+        <!--{{/linkTo}}-->
       </div>
     </div>
   </div>
 </template>
 
 <template name="top_banner_simple">
-  <div class="home-top">
+  <div class="home-top top-banner {{#if slim}}slim{{else}}fat{{/if}}">
     <div class="left">
-      <div class="logo-title">
-          {{#linkTo route="home"}}
-          <div class="title">
+      <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}}">
+        {{#linkTo route="home"}}
+          <div class="title {{#if slim}}slim{{else}}fat{{/if}}">
             <img src="{{c.url 'static/foldtitle.svg'}}">
           </div>
-          {{/linkTo}}
+        {{/linkTo}}
       </div>
     </div>
   </div>
