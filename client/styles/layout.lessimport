@@ -448,6 +448,9 @@ footer{
     border: 1px solid @inactive-color;
     .favorite-button{
       font-size: 0px;
+      button{
+        .size(30px);
+      }
     }
   }
   p{
