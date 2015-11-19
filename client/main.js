@@ -164,6 +164,9 @@ window.updateCurrentY = function() {
   }
 };
 
+window.throttledScrollUpdate = _.throttle(window.updateCurrentY, 20);
+
+
 Tracker.autorun(function(){
   if(!Session.get('pastHeader')){
     Session.set('currentY', null);
@@ -188,8 +191,6 @@ Meteor.startup(function() {
   Session.setDefault("currentY", void 0);
   Session.setDefault("previousY", void 0);
   Session.setDefault("currentX", void 0);
-  throttledUpdate = _.throttle(window.updateCurrentY, 20);
-  return $(document).scroll(throttledUpdate);
 });
 
 Meteor.startup(function(){
@@ -432,6 +433,15 @@ Template.vertical_section_block.events({
     }));
   }
 });
+
+Template.story.onCreated(function(){
+  $(document).on('scroll', throttledScrollUpdate);
+});
+
+Template.story.onDestroyed(function(){
+  $(document).off('scroll', throttledScrollUpdate);
+});
+
 
 Template.story.onRendered(function(){
   // TODO destroy bindings later?
