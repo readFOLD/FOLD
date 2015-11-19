@@ -1416,6 +1416,14 @@ div.context-anchor-menu {
     .box-shadow(0px -8px 12px 0px rgba(0,0,0,0.75));
   }
 }
+
+.context-anchor-menu, .anchor-menu{
+  svg:not(.back-arrow):not(.add-card-icon){
+    background-color: @light-color;
+    border-radius: 50%;
+  }
+}
+
 div.bottom-bar{
   position:relative;
   height: 5px;
