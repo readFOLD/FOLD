@@ -131,8 +131,7 @@ div.floating-story-buttons {
       }
     }
     button {
-      width: 20px;
-      margin-right: 20px;
+      width: @height;
       height: @height;
       svg{
         height: @height;
