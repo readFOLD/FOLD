@@ -552,7 +552,7 @@ div.vertical-narrative {
 
 
 .control-label {
-    font-weight: bold;
+    font-family: 'FFMarkWebBold';
     font-size: 17px;
 }
 
@@ -774,7 +774,7 @@ div.horizontal-context {
   }
 
   div.create-section.unimplemented {
-    font-weight: bold;
+    font-family: 'FFMarkWebBold';
   }
 
   div.tabs {
@@ -790,7 +790,7 @@ div.horizontal-context {
         padding-left: 5px;
         cursor: pointer;
         font-size: 12px;
-        font-family: FFMarkWebBold, sans-serif;
+        font-family: 'FFMarkWebBold', sans-serif;
         display: inline-block;
         min-width: 100px;
         border-bottom: 2px solid white;
@@ -1189,7 +1189,7 @@ div.text-section {
     text-decoration: underline;
   }
   .bold-button{
-    font-family: FFMarkWebBold, sans-serif;
+    font-family: 'FFMarkWebBold', sans-serif;
   }
   .italic-button{
     font-style: italic;
