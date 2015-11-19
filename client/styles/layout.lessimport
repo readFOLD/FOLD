@@ -443,7 +443,7 @@ footer{
   display: inline-block;
   text-align: center;
   .call-to-action{
-    background-color: @white-color;
+    background-color: @white-color !important;
     height: 142px;
     border: 1px solid @inactive-color;
     .favorite-button{
