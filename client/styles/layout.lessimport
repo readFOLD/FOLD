@@ -701,6 +701,10 @@ div.image-section {
   }
 }
 
+.video-section{
+  height: 100%;
+}
+
 div.broken-section {
   height: @horizontal-content-height;
   width: 100%;
