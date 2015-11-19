@@ -1470,6 +1470,7 @@ div.minimap {
     color: @black-color;
   }
   .explanation{
+    font-size: 13px;
     padding: 20px;
     color: @action-color;
     white-space: pre-wrap;
@@ -1479,7 +1480,7 @@ div.minimap {
     display:block;
     text-align: center;
     position: absolute;
-    background-color: @medium-color;
+    background-color: @white-color;
 
     height: 240px;
     width: 320px;
