@@ -160,7 +160,11 @@
     {{#unless isPhone}}
       {{#if read}}
         <div class="call-to-action vertical-narrative-section">
-          <p>Show this writer some thanks!</p>
+          {{#if userFavorited}}
+            <p>Thanks for showing your love!</p>
+          {{else}}
+            <p>Show this writer some thanks!</p>
+          {{/if}}
           {{> favorite_button }}
         </div>
       {{/if}}

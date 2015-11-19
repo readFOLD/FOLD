@@ -92,6 +92,10 @@ Handlebars.registerHelper("twitterUser", function() {
   return user.services && user.services.twitter && user.services.twitter.id;
 });
 
+Handlebars.registerHelper("userFavorited", function() {
+  return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
+});
+
 Handlebars.registerHelper("profileImage", function(user, size) {
   var diameter;
   if (size === 'large'){

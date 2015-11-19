@@ -946,9 +946,6 @@ Template.share_buttons.events({
 
 
 Template.favorite_button.helpers({
-  userFavorited: function() {
-    return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
-  },
   additionalClasses: function() {
     var classes = '';
 
