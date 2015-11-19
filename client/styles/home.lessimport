@@ -20,10 +20,10 @@ div.home-top {
     height: @magic-styling-distance;
   }
   @media @mobile{
+    height: @magic-styling-distance;
     img{
       vertical-align: middle;
     }
-    height: 175px;
   }
   width: 100%;
   border-bottom: 1px solid @inactive-color;
@@ -39,25 +39,33 @@ div.home-top {
     }
 
 
-
-    &.fat{
-      .title{
-        margin-top: 5px;
-        img{
-          height: @magic-styling-distance * .75;
-        }
-      }
-    }
+    @slimHeight: @magic-styling-distance / 2;
 
     &.slim{
       .title{
         img{
-          height: @magic-styling-distance / 2;
+          height: @slimHeight;
+        }
+      }
+    }
+
+    @media @mobile{
+      .title {
+        img {
+          height: @slimHeight;
         }
       }
     }
 
     @media @not-mobile{
+      &.fat{
+        .title{
+          margin-top: 5px;
+          img{
+            height: @magic-styling-distance * .75;
+          }
+        }
+      }
       display: inline-block;
       &.fat{
         margin-top: @magic-styling-distance;
@@ -91,23 +99,29 @@ div.home-top {
   div.filter {
     position: absolute;
     font-size: 14px;
-    &.fat{
-      top: @magic-styling-distance;
-    }
+
     &.slim{
       top: 0;
       .sod_select{
         border-color: transparent;
       }
     }
-    height: @magic-styling-distance;
-
-    @media @not-mobile{
-      left: 196px;
-    }
     @media @mobile{
+      top: 0;
+      .sod_select{
+        border-color: transparent;
+      }
       right: 0;
     }
+    @media @not-mobile{
+      left: 196px;
+      &.fat{
+        top: @magic-styling-distance;
+      }
+    }
+
+    height: @magic-styling-distance;
+
     font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
 
 
@@ -150,6 +164,9 @@ div.signup, div.login, div.user_profile {
 div.stories {
   @profile-section: 340px;
   padding-top: 135px;
+  @media @mobile {
+    padding-top: 5px;
+  }
   width: 100%;
   height: 100%;
   background-color: @background-color;

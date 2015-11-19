@@ -1682,8 +1682,6 @@ div.loading-container {
 }
 
 .banner-buttons{
-  float: right;
-
   div.action-items {
     @height: @magic-styling-distance;
     font-size: 13px;

@@ -77,9 +77,9 @@
             </li>
           {{/unless}}
         {{/unless}}
-        {{> login_buttons }}
-
         {{#unless isPhone}}
+          {{> login_buttons }}
+
           <li class="about-fold">
             {{#linkTo route="about"}}
             <button>
@@ -91,6 +91,7 @@
         {{/unless}}
       </ol>
     </div>
+    {{#unless isPhone}}
     {{#unless slim}}
       <ol class="social-links">
         <li>
@@ -103,6 +104,7 @@
           <a href="https://instagram.com/fold.cm" target="_blank">{{> instagram_social_icon}}</a>
         </li>
       </ol>
+    {{/unless}}
     {{/unless}}
   </div>
 </template>
