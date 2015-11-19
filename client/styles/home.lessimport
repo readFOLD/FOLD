@@ -163,10 +163,12 @@ div.signup, div.login, div.user_profile {
 @story-margin-top: 8px;
 
 .what-is-fold-box{
-  height: 340px;
   position: relative;
+  height: 340px;
   width: calc(100% ~'-' @magic-styling-distance);
   @media @mobile {
+    height: 300px;
+    margin-top: -15px;
     width: calc(100% ~'-' @magic-styling-distance/2);
   }
   margin-bottom: @magic-styling-distance - @story-margin-top;
