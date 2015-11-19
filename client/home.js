@@ -101,12 +101,18 @@ Template.filters.onRendered(function() {
   var options = {};
   if(this.data.slim){
     options.placeholder = "Explore";
+  } else {
+    var filterValue;
+    if(filterValue = Session.get('filterValue')){
+      $("select").val(filterValue);
+    }
   }
   $("select").selectOrDie(options);
+
 });
 
 var filters = ['curated', 'trending', 'starred', 'newest'];
-Session.set('filterValue', filters[0]); // this must correspond to the first thingin the dropdown
+Session.setDefault('filterValue', filters[0]); // this must correspond to the first thing in the dropdown
 
 Template.filters.helpers({
   filters: function() {
@@ -126,6 +132,9 @@ Template.filters.events({
   "change select": function(e, t) {
     var filterValue = $(e.target).val();
     Session.set('filterValue', filterValue);
+    if(t.data.slim){
+      Router.go('/');
+    }
     analytics.track('Select filter', {
       label: filterValue
     });
