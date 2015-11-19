@@ -305,6 +305,9 @@ Template.all_stories.events({
       incrementCurrentSubscriptionPage();
       subscriptionsReady.set(filterValue + 'Stories', true);
     })
+  },
+  'click .dismiss-box': function (e,t) {
+    Session.set('boxDismissed', true);
   }
 });
 
@@ -319,6 +322,9 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
       return false
     }
     return currentHomeStories().count() >= (getCurrentSubscriptionPage() + 1) * PUB_SIZE
+  },
+  boxDismissed: function(){
+    return Session.get('boxDismissed')
   }
 });
 

@@ -160,6 +160,47 @@ div.signup, div.login, div.user_profile {
 
 @profile-picture-size: @magic-styling-distance * 1.5;
 
+@story-margin-top: 8px;
+
+.what-is-fold-box{
+  height: 340px;
+  position: relative;
+  width: calc(100% ~'-' @magic-styling-distance);
+  @media @mobile {
+    width: calc(100% ~'-' @magic-styling-distance/2);
+  }
+  margin-bottom: @magic-styling-distance - @story-margin-top;
+  text-align: center;
+  background-position: center;
+
+  .overlay, .text{
+    position: absolute;
+    top: 0;
+    left: 0;
+    .size-to-fit;
+  }
+  .overlay{
+    background-color: fade(@panel-color, 60%);
+  }
+  .text{
+    color: @white-color;
+  }
+  .dismiss-box{
+    position: absolute;
+    background-color: @black-color;
+    color: @panel-color;
+    .size(@magic-styling-distance);
+    top: @magic-styling-distance;
+    right: @magic-styling-distance;
+    @media @mobile {
+      top: @magic-styling-distance/2;
+      right: @magic-styling-distance/2;
+    }
+    font-size: @magic-styling-distance/2;
+    padding: 0;
+    text-align: center;
+  }
+}
 
 div.stories {
   @profile-section: 340px;
@@ -349,7 +390,7 @@ div.stories {
     z-index: 2;
     display: inline-block;
     position: relative;
-    margin-top: 8px;
+    margin-top: @story-margin-top;
     margin-bottom: 23px;
 
     @media @mobile {

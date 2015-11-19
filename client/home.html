@@ -180,6 +180,23 @@
 </template>
 
 <template name="all_stories">
+  {{#unless loggingIn}}
+    {{#unless currentUser}}
+      {{#unless boxDismissed}}
+
+      <div class="what-is-fold-box" style="background-image: url({{c.url 'static/homepage_hero_image'}})">
+        <div class="overlay"></div>
+        <div class="text">
+          <div class="tagline">Create. Remix. Hover.</div>
+          <div class="description">Look out for those bees.</div>
+        </div>
+        <button class="dismiss-box">✕</button>
+
+      </div>
+      {{/unless}}
+    {{/unless}}
+  {{/unless}}
+
   {{#each stories}}
     {{> story_preview }}
   {{/each}}
