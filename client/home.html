@@ -1,26 +1,21 @@
-
-
 <template name="top_banner">
-  <div class="home-top {{#if border}}{{border}}{{/if}}">
+  <div class="home-top top-banner {{#if slim}}slim{{else}}fat{{/if}}">
     <div class="left">
-      <div class="logo-title">
+      <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}}">
         {{#linkTo route="home"}}
-        <img class="logo" src="{{c.url 'static/FOLD_LOGO.svg'}}">
-        {{/linkTo}}
-        {{#linkTo route="home"}}
-        <div class="title">
-          <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
+        <div class="title {{#if slim}}slim{{else}}fat{{/if}}">
+          <img src="{{c.url 'static/foldtitle.svg'}}">
         </div>
         {{/linkTo}}
       </div>
       {{#if showFilters}}
-      <div class="filter">
-        {{> filters}}
+      <div class="filter {{#if slim}}slim{{else}}fat{{/if}}">
+        {{> filters slim=slim}}
         <!--{{> filters}} in {{> categories}}-->
       </div>
       {{/if}}
     </div>
-    {{> banner_buttons}}
+    {{> banner_buttons slim=slim hideMakeAStory=hideMakeAStory}}
     {{> signin_overlay}}
   </div>
 </template>
@@ -28,8 +23,11 @@
 <template name="signin_overlay">
   {{#if signingIn}}
     <div class="signin-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
-      <button class="close">✕</button>
       <div class="signin-buttons">
+        <button class="close">✕</button>
+        {{#if explanation}}
+          <div class="explanation">{{explanation}}</div>
+        {{/if}}
         <ol class="user-menu">
           <li>
             <button class="twitter-signin">Log in with Twitter</button>
@@ -44,61 +42,77 @@
 </template>
 
 <template name="top_banner_simple_no_links">
-  <div class="home-top remix-color not-sticky">
+  <div class="home-top not-sticky top-banner {{#if slim}}slim{{else}}fat{{/if}}">
     <div class="left">
-      <div class="logo-title">
-          <img class="logo" src="{{c.url 'static/FOLD_LOGO.svg'}}">
-          <div class="title">
-            <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
+      <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}}">
+        <!--{{#linkTo route="home"}}-->
+          <div class="title {{#if slim}}slim{{else}}fat{{/if}}">
+            <img src="{{c.url 'static/foldtitle.svg'}}">
           </div>
+        <!--{{/linkTo}}-->
       </div>
     </div>
   </div>
 </template>
 
 <template name="top_banner_simple">
-  <div class="home-top remix-color">
+  <div class="home-top top-banner {{#if slim}}slim{{else}}fat{{/if}}">
     <div class="left">
-      <div class="logo-title">
-          {{#linkTo route="home"}}
-          <img class="logo" src="{{c.url 'static/FOLD_LOGO.svg'}}">
-          {{/linkTo}}
-          {{#linkTo route="home"}}
-          <div class="title">
-            <img src="{{c.url 'static/FOLD_TITLE.svg'}}">
+      <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}}">
+        {{#linkTo route="home"}}
+          <div class="title {{#if slim}}slim{{else}}fat{{/if}}">
+            <img src="{{c.url 'static/foldtitle.svg'}}">
           </div>
-          {{/linkTo}}
+        {{/linkTo}}
       </div>
     </div>
   </div>
 </template>
 
 <template name="banner_buttons">
-  <div class="right">
-    <div class="action-items">
+  <div class="banner-buttons {{#if slim}}slim{{else}}fat{{/if}}">
+    <div class="action-items {{#if slim}}slim{{else}}fat{{/if}}">
       <ol>
         {{#unless isPhone}}
-          <li class="create-story">
-            {{> create_story}}
-          </li>
+          {{#unless hideMakeAStory}}
+            <li class="create-story">
+              {{> create_story}}
+            </li>
+          {{/unless}}
         {{/unless}}
-        {{> login_buttons }}
-
         {{#unless isPhone}}
-          <li class="about-fold">
-            {{#linkTo route="about"}}
-            <button>
-                <span class="text">About FOLD</span>
+          {{> login_buttons }}
 
-            </button>
-            {{/linkTo}}
+          <li class="about-fold">
+            <!--{{#linkTo route="about"}}-->
+            <a href="/read/FOLD/what-is-fold-TiyWEK6C">
+              <button>
+                <span class="text">About FOLD</span>
+              </button>
+            </a>
+            <!--{{/linkTo}}-->
           </li>
         {{/unless}}
       </ol>
     </div>
-
+    {{#unless isPhone}}
+    {{#unless slim}}
+      <ol class="social-links">
+        <li>
+          <a href="https://www.facebook.com/atFOLD" target="_blank">{{> facebook_social_icon}}</a>
+        </li>
+        <li>
+          <a href="https://www.twitter.com/readFOLD" target="_blank">{{> twitter_social_icon}}</a>
+        </li>
+        <li>
+          <a href="https://instagram.com/fold.cm" target="_blank">{{> instagram_social_icon}}</a>
+        </li>
+      </ol>
+    {{/unless}}
+    {{/unless}}
   </div>
 </template>
+
 <template name="login_buttons">
   <li class="user-action">
 
@@ -135,8 +149,8 @@
 </template>
 
 <template name="home">
-  {{> top_banner showFilters="true" border="active-border"}}
-  <div class="stories"> 
+  {{> top_banner showFilters="true"}}
+  <div class="stories">
     <section>
       <div class="story-container">
         {{> all_stories}}
@@ -149,8 +163,8 @@
   <span class="filters">
     <select data-custom-id="custom" data-custom-class="custom" value="{{initialFilterValue}}">
       {{#each filters}}
-        <option value="{{this}}" {{conditionallySelected}}>
-          {{this}}
+        <option value="{{this.value}}" {{conditionallySelected}}>
+          {{this.label}}
         </option>
       {{/each}}
     </select>
@@ -170,6 +184,24 @@
 </template>
 
 <template name="all_stories">
+  {{#unless loggingIn}}
+    {{#unless currentUser}}
+      {{#unless boxDismissed}}
+
+      <div class="what-is-fold-box" style="background-image: url({{c.url 'static/homepage_hero_image'}})">
+        <div class="overlay"></div>
+        <div class="text">
+          <div class="tagline">Create. Remix. Discover.</div>
+          <div class="description">FOLD is an open publishing platform that helps you share your ideas, tutorials, and more.</div>
+          <div class="description-link"><a href="/read/FOLD/what-is-fold-TiyWEK6C">Learn more about us.</a></div>
+        </div>
+        <button class="dismiss-box">✕</button>
+
+      </div>
+      {{/unless}}
+    {{/unless}}
+  {{/unless}}
+
   {{#each stories}}
     {{> story_preview }}
   {{/each}}
@@ -245,14 +277,6 @@
           </div>
         </div>
       {{/if}}
-      {{#if contextCountOfType 'viz'}}
-        <div class="context-count-icon">
-          {{> viz_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'viz'}}
-          </div>
-        </div>
-      {{/if}}
       {{#if contextCountOfType 'text'}}
         <div class="context-count-icon">
           {{> text_icon }}
@@ -313,7 +337,7 @@
 
       <div class="pull-right">
         {{> favorite_button }}
-        {{#if currentUser.admin}}
+        {{#if adminMode}}
           {{> editors_pick_button }}
         {{/if}}
       </div>

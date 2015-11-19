@@ -15,7 +15,7 @@ getCardWidth = function(windowWidth) {
   }
 };
 
-Session.set("separation", 10);
+Session.set("separation", 20);
 
 var windowSizeDep = new Tracker.Dependency();
 
@@ -66,9 +66,11 @@ Meteor.startup(function(){
 window.hammerSwipeOptions = {
   pointers:	1,
   threshold: 8,
-  velocity:	0.35 // 0.65
+  velocity:	0.25 // 0.65
 };
 
+
+var scrollPauseArmed = false;
 
 window.updateCurrentY = function() {
   var actualY, h, i, maxScroll, readMode, scrollTop, stickyBody, stickyTitle, vertTop, _i, _len, _ref;
@@ -81,35 +83,52 @@ window.updateCurrentY = function() {
   } else {
     Session.set("sticky", false);
   }
-  stickyBody = 90;
+
+  readMode = window.constants.readModeOffset - 1;
+
+  stickyBody = readMode;
+  maxScroll = readMode;
   stickyTitle = 120;
-  maxScroll = 230;
-  readMode = 250;
+  var selectOffset = - 130;
   $("div#banner-overlay").css({
     opacity: Math.min(1.0, scrollTop / maxScroll)
   });
-  $("article.content").css({
+  $(".horizontal-context").css({
     opacity: 0.5 + Math.min(1.0, scrollTop / maxScroll) / 2
   });
   if (scrollTop >= stickyTitle) {
-    $("div.title-author").css({
-      "margin-top": "0px"
-    });
-    $("div.title-author").addClass("fixed");
+
+    $("div.title-author").addClass("b");
+    $("div.title-author").removeClass("a");
+    $("div.title-author").removeClass("c");
   } else {
-    $("div.title-author").css({
-      "margin-top": "125px"
-    });
-    $("div.title-author").removeClass("fixed");
+
+    scrollPauseArmed = true;
+
+    $("div.title-author").addClass("a");
+    $("div.title-author").removeClass("b");
+    $("div.title-author").removeClass("c");
   }
   if (scrollTop >= stickyBody) {
     $("div.horizontal-context").addClass("fixed");
     $("div.vertical-narrative").addClass("fixed");
     $("div.vertical-narrative").removeClass("free-scroll");
 
+    if(scrollPauseArmed){
+      document.body.style.overflowY = 'hidden';
+      $(document).scrollTop(stickyBody);
+      Meteor.setTimeout(function () {
+        document.body.style.overflowY = 'auto';
+      }, 500);
+      scrollPauseArmed = false;
+    }
+
     if (scrollTop >= maxScroll) {
       $("div.vertical-narrative").removeClass("fixed");
       $("div.vertical-narrative").addClass("free-scroll");
+      $("div.title-author").addClass("c");
+      $("div.title-author").removeClass("a");
+      $("div.title-author").removeClass("b");
 
     }
   } else {
@@ -130,7 +149,6 @@ window.updateCurrentY = function() {
 
   }
   if (scrollTop >= readMode) {
-    var selectOffset = - 90;
     _ref = _.map(window.getVerticalHeights(), function(height){ return height + selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
@@ -145,6 +163,9 @@ window.updateCurrentY = function() {
     }
   }
 };
+
+window.throttledScrollUpdate = _.throttle(window.updateCurrentY, 20);
+
 
 Tracker.autorun(function(){
   if(!Session.get('pastHeader')){
@@ -170,10 +191,23 @@ Meteor.startup(function() {
   Session.setDefault("currentY", void 0);
   Session.setDefault("previousY", void 0);
   Session.setDefault("currentX", void 0);
-  throttledUpdate = _.throttle(window.updateCurrentY, 20);
-  return $(document).scroll(throttledUpdate);
 });
 
+Meteor.startup(function(){
+  $( window ).konami({
+    code : [38,38,40,40,37,39,37,39, 66, 65],
+    cheat: function() {
+      $('body').addClass('konami');
+    }
+  });
+  $( window ).konami({
+    code : [70, 79, 76, 68, 65, 68, 77, 73, 78],
+    cheat: function() {
+      Session.set('adminMode', true);
+    }
+  });
+
+});
 
 window.trackingInfoFromStory = function(story){
   return _.chain(story)
@@ -263,6 +297,9 @@ Template.story_header.helpers({
   },
   profileUrl: function(){
     return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate and only use authorDisplayUsername
+  },
+  author: function(){
+    return Meteor.users.findOne(this.authorId)
   }
 });
 
@@ -303,11 +340,7 @@ Template.story_header.events = {
 };
 
 Template.story.helpers({
-  horizontalExists: function() {
-    var currentY, _ref;
-    currentY = Session.get('currentY');
-    return ((_ref = Session.get('horizontalSectionsMap')[currentY]) != null ? _ref.horizontal.length : void 0) > 1;
-  },
+  horizontalExists: horizontalExists,
   pastHeader: function() {
     return Session.get("pastHeader");
   },
@@ -340,7 +373,7 @@ Template.vertical_section_block.helpers({
     return !Session.equals("currentY", 0);
   },
   verticalSelected: function() {
-    return Session.equals("currentY", this.index) && Session.get("pastHeader");
+    return Session.equals("currentY", this.index) && Session.get("pastHeader") || Session.equals("currentY", null) && this.index === 0;
   },
   validTitle: function() {
     return this.title === !"title";
@@ -401,12 +434,37 @@ Template.vertical_section_block.events({
   }
 });
 
+Template.story.onCreated(function(){
+  $(document).on('scroll', throttledScrollUpdate);
+});
+
+Template.story.onDestroyed(function(){
+  $(document).off('scroll', throttledScrollUpdate);
+});
+
+
 Template.story.onRendered(function(){
   // TODO destroy bindings later?
-  if(Meteor.Device.isPhone()){
-    this.$('.vertical-narrative').hammer(hammerSwipeOptions).bind('swipeleft',function(){
-        // TODO only if selected
-        Session.set('mobileContextView', true);
+  if(Meteor.Device.isPhone() || Meteor.Device.isTablet()){
+    this.$('.entire-story').hammer(hammerSwipeOptions).bind('swipeleft',function(){
+        if(horizontalExists()){
+          if (Meteor.Device.isTablet() || Session.get('mobileContextView')){
+            goRightOneCard();
+          } else {
+            Session.set('mobileContextView', true);
+          }
+        }
+      }
+    );
+
+    this.$('.entire-story').hammer(hammerSwipeOptions).bind('swiperight',function(){
+        if(Meteor.Device.isTablet()){
+          if(horizontalExists()){
+            goLeftOneCard();
+          }
+        } else {
+          Session.set('mobileContextView', false);
+        }
       }
     );
   }
@@ -430,7 +488,7 @@ var saveMetaviewOrdering = function() {
 
   Session.set('saveState', 'saving');
 
-  Meteor.call('reorderStory', Session.get("storyId"), idMap, saveCallback)
+  Meteor.call('reorderStory', Session.get("storyId"), idMap, saveCallback);
 
 
   //var originalVerticalSections = that.data.verticalSections;
@@ -589,6 +647,13 @@ Template.mobile_minimap.helpers({
   }
 });
 
+Template.horizontal_context.events({
+  click: function () {
+    if(Session.equals('currentY', null)){
+      goToY(0);
+    }
+  }
+});
 Template.horizontal_context.helpers({
   verticalExists: function() {
     return Session.get("horizontalSectionsMap").length;
@@ -657,10 +722,10 @@ Template.horizontal_context.helpers({
   },
   horizontalSectionInDOM: function() {
     // on this row, or this card is the current X for another hidden row
-    return Session.equals("currentY", this.verticalIndex) || this.index === getXByYId(this.verticalId) || this.type === 'audio'; // TODO remove the audio case
+    return Session.equals("currentY", this.verticalIndex) || this.index === getXByYId(this.verticalId) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone()) || this.type === 'audio'; // TODO remove the audio case
   },
   horizontalShown: function() {
-    return Session.equals("currentY", this.index);
+    return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone());
   }
 });
 
@@ -751,7 +816,7 @@ Template.horizontal_section_block.helpers({
     Session.get('lastUpdate');
   },
   hide: function() {
-    return !Session.equals("currentY", this.verticalIndex);
+    return !Session.equals("currentY", this.verticalIndex) && !(Session.equals("currentY", null) && this.verticalIndex === 0);
   }
 });
 
@@ -828,26 +893,20 @@ Template.story_browser.helpers({
 });
 
 Template.story_browser.events({
-  "click .right svg": function(d) {
+  "click .right": function(d) {
     window.goRightOneCard();
     analytics.track('Click right arrow');
   },
-  "click .left svg": function(d) {
-    window.goLeftOneCard()
+  "click .left": function(d) {
+    window.goLeftOneCard();
     analytics.track('Click left arrow');
   }
 });
 
 Template.type_specific_icon.helpers(typeHelpers);
 
-Template.share_button.onCreated(function() {
-  this.tooltipShown = new ReactiveVar(false);
-})
 
-Template.share_button.events({
-  'click': function(e, t) {
-    t.tooltipShown.set(!t.tooltipShown.get());
-  },
+Template.share_buttons.events({
   'click .share-facebook': function(e, t) {
     var width  = 575;
     var height = 400;
@@ -878,27 +937,50 @@ Template.share_button.events({
     window.open(url, 'twitter', opts);
     Meteor.call('countStoryShare', this._id, 'twitter');
     analytics.track('Share on Twitter');
+  },
+  'click .share-embed': function(e, t) {
+    notifyFeature('Embedding: coming soon!');
+    analytics.track('Click embed button');
   }
 });
 
-Template.share_button.helpers({
-  "tooltipShown": function() {
-    return Template.instance().tooltipShown.get();
-  }
-})
 
 Template.favorite_button.helpers({
   userFavorited: function() {
     return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
+  },
+  additionalClasses: function() {
+    var classes = '';
+
+    if (Template.instance().justFavorited.get()){
+      classes += 'just-favorited'
+    }
+    if (Template.instance().justUnfavorited.get()){
+      classes += 'just-unfavorited'
+    }
+    return classes;
   }
 });
 
+Template.favorite_button.onCreated(function() {
+  this.justFavorited = new ReactiveVar();
+  this.justUnfavorited = new ReactiveVar();
+});
 Template.favorite_button.events({
-  "click .favorite": function() {
-    if(!Meteor.user()){
-      return notifyInfo('Please sign up or log in to favorite stories');
+  "click .favorite": function (e, t) {
+
+    if (!Meteor.user()) {
+      setSigningInFrom();
+      Session.set('signingIn', 'Thanks for showing your love!\nPlease sign in to favorite this FOLD.');
+      return
     }
-    return Meteor.call('favoriteStory', this._id, function(err) {
+    var that = this;
+    t.justFavorited.set(true);
+    Meteor.setTimeout(function () {
+      t.justFavorited.set(null);
+    }, 700);
+
+    return Meteor.call('favoriteStory', that._id, function (err) {
       if (err) {
         notifyError(err);
         throw(err);
@@ -906,14 +988,20 @@ Template.favorite_button.events({
         analytics.track('Favorite story');
       }
 
-    });
+    })
+
   },
-  "click .unfavorite": function() {
-    return Meteor.call('unfavoriteStory', this._id, function(err) {
+  "click .unfavorite": function (e, t) {
+    t.justUnfavorited.set(true);
+    Meteor.setTimeout(function(){
+      t.justUnfavorited.set(null);
+    }, 1000);
+    return Meteor.call('unfavoriteStory', this._id, function (err) {
       if (err) {
         notifyError(err);
         throw(err);
       } else {
+
         analytics.track('Unfavorite story');
       }
     });
@@ -1034,7 +1122,8 @@ Template.create_story.events({
         notifyInfo("Due to high demand, we had to turn off 'create new story' functionality for a moment. Stay tuned for updates!");
       }
     } else {
-      Session.set('signingIn', true)
+      setSigningInFrom();
+      Session.set('signingIn', "You're almost there!\nPlease sign in to make a story.")
       analytics.track('User clicked create and needs to sign in');
     }
   }
@@ -1064,6 +1153,12 @@ Template.read.onCreated(function(){
     Meteor.call('countStoryView', id);
     analytics.track('View story', trackingInfoFromStory(this.data));
   }
+
+  var that = this;
+
+  this.autorun(function () {
+    that.subscribe('minimalUsersPub', [that.data.authorId]);
+  });
 });
 
 

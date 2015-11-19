@@ -8,7 +8,7 @@
 
 .back-arrow{
   .fg{
-    fill: @light-color;
+    fill: @white-color;
   }
 }
 
@@ -16,24 +16,14 @@ svg.icon {
   .size-to-fit;
 }
 svg.add-card-icon{
-  height:44px;
-  width:44px;
+  height:20px;
+  width:20px;
 }
-svg.remix-icon{
-  .bg{
-    fill: @remix-color;
-  }
-}
-svg.remix-icon-square{
-  rect{
-    fill: @remix-color;
-  }
-}
+
 svg.browse-arrow {
-  height: 60px;
-  width: 60px;
+  .size(20px);
   .fg{
-    fill: @dark-color;
+    fill: @white-color;
   }
 }
 svg.search-icon {
@@ -58,15 +48,15 @@ svg.mobile-back-icon{
 }
 
 .star-button{
-  @height: 25px;
+  @height: 20px;
   display: inline-block;
-  margin-left: 5px;
   font-size: 18px;
   height: @height;
   line-height: @height;
   button {
     height: @height;
     width: @height;
+    margin-right: 5px;
     padding: 0;
     background-color: transparent;
     border: none;
@@ -81,20 +71,36 @@ svg.mobile-back-icon{
   .star-button;
   .favorite {
     .fg {
-      fill: @light-color;
+      fill: @medium-color;
       &:hover {
-        fill: @medium-color;
+        fill: @favorite-color;
       }
     }
   }
   .unfavorite{
     .fg{
       fill: @favorite-color;
-      &:hover{
-        fill: @dark-favorite-color;
+    }
+  }
+  .just-favorited{
+    .fg {
+      fill: @favorite-color;
+    }
+    .animation(grow 0.5s 1);
+  }
+  .just-unfavorited{
+    .fg {
+      &:hover {
+        fill: @medium-color;
       }
     }
   }
+  @keyframes grow{
+    50%{
+      transform: scale(1.25);
+    }
+  }
+
 
 }
 
@@ -104,15 +110,15 @@ svg.mobile-back-icon{
     .fg{
       fill: @light-color;
       &:hover{
-        fill: saturate(@remix-color, 80%);;
+        fill: saturate(@orange-color, 80%);;
       }
     }
   }
   .unpick{
     .fg{
-      fill: @remix-color;
+      fill: @orange-color;
       &:hover{
-        fill: fade(@remix-color, 80%);
+        fill: fade(@orange-color, 80%);
       }
     }
   }
@@ -120,4 +126,36 @@ svg.mobile-back-icon{
 
 i.loading-icon{
   color: @action-color;
+}
+
+.facebook-social-icon{
+  .fg{
+    fill: @inactive-color;
+  }
+  &:hover{
+    .fg{
+      fill: @facebook-color;
+    }
+  }
+}
+
+.instagram-social-icon{
+  .fg{
+    fill: @inactive-color;
+  }
+  &:hover{
+    .fg{
+      fill: @instagram-color;
+    }
+  }
+}
+.twitter-social-icon{
+  .fg{
+    fill: @inactive-color;
+  }
+  &:hover{
+    .fg{
+      fill: @twitter-color;
+    }
+  }
 }

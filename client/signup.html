@@ -16,7 +16,7 @@
       <input id="signup-email"
         name="email"
         type="email"
-        placeholder="email@fold.com"
+        placeholder="author@example.com"
         dir="auto"
         autofocus="autofocus"
         class="{{#if emailError}}error{{/if}}"
@@ -24,12 +24,12 @@
       >
 
       <!-- Name -->
-      <label for="name"> What's your name? </label>
+      <label for="name"> What's your name? This will be your byline on stories. </label>
       {{#if nameError}}<span class="error">{{nameError}}</span>{{/if}}
       <input id="signup-name"
         name="name"
         type="text"
-        placeholder="Full Name"
+        placeholder="First Last"
         dir="auto"
         value="{{#if currentUser.profile.name}}{{currentUser.profile.name}}{{/if}}"
         class="{{#if nameError}}error{{/if}}"

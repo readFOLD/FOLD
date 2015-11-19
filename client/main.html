@@ -22,6 +22,51 @@
   <meta property="og:image:secure_url" content="https://res.cloudinary.com/fold/image/upload/v1/static/FOLD_fb_image.png">
   <meta property="og:title" content="FOLD">
   <meta property="og:description" content="Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.">
+
+  <!-- FF Mark License -->
+    <!--
+    /**
+     * @license
+     * MyFonts Webfont Build ID 3109905, 2015-10-18T16:18:30-0400
+     * 
+     * The fonts listed in this notice are subject to the End User License
+     * Agreement(s) entered into by the website owner. All other parties are 
+     * explicitly restricted from using the Licensed Webfonts(s).
+     * 
+     * You may obtain a valid license at the URLs below.
+     * 
+     * Webfont: FF Mark Web Italic by FontFont
+     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-italic/
+     * 
+     * Webfont: FF Mark Web Bold Italic by FontFont
+     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-bold-italic/
+     * 
+     * Webfont: FF Mark Web Bold by FontFont
+     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-bold/
+     * 
+     * Webfont: FF Mark Web Light Italic by FontFont
+     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-light-italic/
+     * 
+     * Webfont: FF Mark Web Light by FontFont
+     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-light/
+     * 
+     * Webfont: FF Mark Web Medium Italic by FontFont
+     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-medium-italic/
+     * 
+     * Webfont: FF Mark Web Medium by FontFont
+     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-medium/
+     * 
+     * Webfont: FF Mark Web by FontFont
+     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-regular/
+     * 
+     * 
+     * License: http://www.myfonts.com/viewlicense?type=web&buildid=3109905
+     * Licensed pageviews: 50,000
+     * Webfonts copyright: 2013 published by FontShop International GmbH
+     * 
+     * © 2015 MyFonts Inc
+    */ -->
+  <link rel="stylesheet" type="text/css" href="MyFontsWebfontsKit.css">
 </head>
 
 
@@ -30,6 +75,7 @@
 -->
 
 <template name="story_header">
+  {{> top_banner showFilters=read hideMakeAStory=notRead slim=true}}
   <div class="title-overlay {{#unless read}}write{{/unless}}">
     {{#with headerImageVideoObject}}
       {{> looping_video}}
@@ -45,11 +91,14 @@
           By <span>{{authorName}}</span>
         </a>
       </div>
-    </div>
-    <div class="logo visible">
-      {{#linkTo route="home"}}
-        <img src="{{c.url 'static/FOLD_LOGO.svg'}}">
-      {{/linkTo}}
+      {{log profileUrl}}
+      <a class="author-image" href="{{profileUrl}}">
+        {{#if profileImage author}}
+          <img class="profile-picture" src="{{profileImage author}}"/>
+        {{else}}
+          <img class="profile-picture" src="{{c.url 'static/placeholder_image.png'}}"/>
+        {{/if}}
+      </a>
     </div>
 
     {{#unless isPhone}}
@@ -72,7 +121,7 @@
 <template name="story">
     <!-- Mesh Background Overlay -->
     <!-- <div id="overlay"></div> -->
-    <article class="content">
+    <article class="content entire-story">
         <div class="vertical-narrative"
              style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
             {{> vertical_narrative}}
@@ -110,9 +159,9 @@
   <footer class="story-footer">
     {{#unless isPhone}}
       {{#if read}}
-        <div class="write-prompt vertical-narrative-section">
-          <p>Anyone can write a story on FOLD!</p>
-          {{> create_story}}
+        <div class="call-to-action vertical-narrative-section">
+          <p>Show this writer some thanks!</p>
+          {{> favorite_button }}
         </div>
       {{/if}}
     {{/unless}}
@@ -199,13 +248,7 @@
   <!--    <div id="index">
       {{index}}
     </div> -->
-    {{#if isPhone}}
-      {{#if selected}}
-        <button class="mobile-context-back-button">
-          {{> mobile_back_icon }}
-        </button>
-      {{/if}}
-    {{/if}}
+
     {{#if type}}
       {{#if text}}
         {{#if editingThisContext}}
@@ -258,7 +301,6 @@
       {{/if}}
       {{#if viz}}
         {{#if editingThisContext}}
-          {{> create_viz_section}}
         {{else}}
           {{> display_viz_section}}
         {{/if}}
@@ -278,6 +320,13 @@
           {{> remix_bar}}
         {{/unless}}
       {{/if}}
+      {{#if isPhone}}
+        {{#if selected}}
+          <button class="mobile-context-back-button">
+            {{> mobile_back_icon }}
+          </button>
+        {{/if}}
+      {{/if}}
       </section>
     </div>
   </template>
@@ -285,9 +334,9 @@
 <template name="remix_bar">
     <div class="remix-bar">
         <!--This card has been shared 6 times-->
-        <span class="remix-button">
+        <button class="remix-button">
             {{> remix_icon_square}}
-        </span>
+        </button>
     </div>
 </template>
 
@@ -356,7 +405,10 @@
 <template name="display_viz_section">
   <div class="viz-section">
     {{#if selected}}
-      <iframe width="100%" height="315" src="{{url}}" frameborder="0" ></iframe>
+      <div class="deprecated-card">
+        {{> viz_icon}}
+        <div class="deprecation-message">Sorry, we don't support this card anymore. Please check it out at the <a href="{{linkUrl}}" class="green" target="_blank">Observatory of Economic Complexity</a></div>
+      </div>
     {{else}}
       <div class="icon-only-preview">
         {{> viz_icon}}
@@ -504,7 +556,7 @@
 
 
 <template name="story_browser">
-  <div class="story-browser">
+  <div class="story-browser {{#unless read}}edit-mode{{/unless}}">
     {{#if showLeftArrow}}
       <div class="left">
         {{> browse_arrow_left}}
@@ -661,32 +713,29 @@
   {{/if}}
 </template>
 
-<template name="share_button">
-  {{#if tooltipShown}}
-  <div class="sharing-tooltip">
-    <ul>
-      <li class="share-facebook">
-        <i class="fa fa-facebook"></i>
-        <span>Share on Facebook</span>
-      </li>
-      <li class="share-twitter">
-        <i class="fa fa-twitter"></i>
-        <span>Share on Twitter</span>
-      </li>
-    </ul>
-  </div>
-  {{/if}}
-  <div class="share-button {{#if tooltipShown}}active{{/if}}">
-    <button type='button' class='share'>{{> share_icon }}</button>
+<template name="share_buttons">
+  <div class="share-buttons">
+    <div class="text">
+      Share this Story {{> social_option_triangle}}
+    </div>
+    <button class="share-facebook">
+      {{> facebook_social_icon}}
+    </button>
+    <button class="share-twitter">
+      {{> twitter_social_icon}}
+    </button>
+    <button class="share-embed">
+      {{> embed_icon}}
+    </button>
   </div>
 </template>
 
 <template name="favorite_button">
     <div class="favorite-button">
         {{#if userFavorited}}
-            <button type='button' class='unfavorite'>{{> favorite_icon }}</button>
+            <button type='button' class='unfavorite {{additionalClasses}}'>{{> favorite_icon }}</button>
         {{else}}
-            <button type='button' class='favorite'>{{> favorite_icon }}</button>
+            <button type='button' class='favorite {{additionalClasses}}'>{{> favorite_icon }}</button>
         {{/if}}
         {{favoritedTotal}}
     </div>

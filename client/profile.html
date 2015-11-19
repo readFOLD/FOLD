@@ -1,5 +1,5 @@
 <template name="profile">
-  {{> top_banner border="remix-border"}}
+  {{> top_banner}}
   <div class="profile-section">
     <section>
       <div class="user-profile">
@@ -40,6 +40,8 @@
         {{else}}
           {{#if profileImage user}} 
            <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>
+          {{else}}
+            <img class="profile-picture-large" src="{{c.url 'static/placeholder_image.png'}}"/>
           {{/if}}
         {{/if}}
      </div>
@@ -56,6 +58,8 @@
     <div class="picture">
       {{#if profileImage user}} 
          <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>
+      {{else}}
+        <img class="profile-picture-large" src="{{c.url 'static/placeholder_image.png'}}"/>
       {{/if}}
     </div>
     <div class="name">{{name}}</div>
@@ -101,7 +105,7 @@
 
 
 <template name="my_story_profile">
-  {{> top_banner border="remix-border"}}
+  {{> top_banner}}
   <div class="stories">
     <section>
       <div class="story-container">
@@ -128,7 +132,7 @@
   </div>
   <div class="unpublished-stories">
     {{#if unpublishedStories}}
-      <h1>Drafts</h1>
+      <h1>Not Published Yet</h1>
       {{#each unpublishedStories}}
           <div class="story" data-story-id="{{_id}}">
             {{> _story_preview_content useDraftStory=true draftStory=draftStory}}

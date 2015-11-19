@@ -13,7 +13,7 @@ input[type=file] {
   &::before {
     display: inline-block;
     background: @dark-color;
-    color: @light-color;
+    color: @white-color;
     outline: none;
     white-space: nowrap;
     -webkit-user-select: none;
@@ -61,7 +61,7 @@ input[type=file] {
     }
     &::before {
       display: inline-block;
-      color: @light-color;
+      color: @white-color;
       outline: none;
       -webkit-user-select: none;
       cursor: pointer;
@@ -73,130 +73,98 @@ input[type=file] {
     }
     &:hover::before {
       background-color: @dark-color;
-      color: @light-color;
+      color: @white-color;
     }
   }
 }
 
 div.upload-header-image {
   position: absolute;
-  top: 20px;
+  top: 60px;
   right: 20px;
-  z-index: 100;
+  z-index: 90;
 }
 
 .confirm-publish{
   background-color: @dark-color;
-  color: @light-color;
+  color: @white-color;
 }
 
 div.floating-story-buttons {
-  border-radius: 3px;
-  color: white;
-  vertical-align: middle;
-  button {
-    float: left;
-    text-align: center;
-  }
-  .favorite-button, .share-button {
-    cursor: pointer;
-    background-color: @dark-color;
-    height: 40px;
-    width: 40px;
-    margin: 0px;
+  @height: 40px;
 
-    &:hover {
-      background-color: @action-color;
-    }
+  vertical-align: middle;
+
+  .favorite-button, .share-buttons {
+    display: inline-block;
+    height: @height;
+    margin: 0px;
+    float: left;
+    color: @white-color;
   }
   .favorite-button{
-    button{
-      .size-to-fit;
-      margin: auto;
-      svg{
-        width: 20px;
-        height: 20px;
-      }
-    }
-    float: left;
+    cursor: pointer;
     font-size: 0;
-    margin-right: 10px;
-    .favorite{
-      .fg {
-        fill: @medium-color;
-      }
-    }
-  }
-  .share-button{
-    padding-left: 10px;
-    padding-top: 9px;
-    float: left;
-
-    button {
-      width: 20px;
-      height: 20px;
-    }
-
-    &.active {
-      background-color: @action-color;
-    }
-
-    .fg {
-      fill: @light-color;
-    }
-
-    &:hover{
-      .fg{
-        fill: @light-color;
-      }
-    }
-  }
-
-  .sharing-tooltip {
-    position: relative;
-    top: 55px;
-    left: 55px;
-    float: left;
     background-color: @dark-color;
-    color: white;
-    width: 190px;
-    border-radius: 3px;
-    li {
-      cursor: pointer;
-      padding: 6px 15px;
-      width: 100%;
-      height: 40px;
-      line-height: 30px;
-      &:hover {
-        background-color: @action-color;
-      }
-      i {
-        float: left;
-        line-height: 30px;
-      }
-      span {
-        float: right;        
+    button{
+      margin: auto;
+      .size-to-fit;
+      svg{
+        .size(20px);
       }
     }
+    width: @magic-styling-distance * 2;
+  }
+  .share-buttons{
+    margin-right: 10px;
+    line-height: @height;
+    color: @black-color;
+    font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
+    .text{
+      float: left;
+      display: inline-block;
+      height: @height;
+      margin-top: 1px;
+      margin-right: 5px;
+      svg{
+        margin-left: 10px;
+      }
+    }
+    button {
+      width: @height;
+      height: @height;
+      svg{
+        height: @height;
+      }
+    }
+  }
 
-    &:after {
-      bottom: 100%;
-      left: 80%;
-      border: solid transparent;
-      content: " ";
-      height: 0;
-      width: 0;
-      position: absolute;
-      pointer-events: none;
-      border-bottom-color: @dark-color;
-      border-width: 10px;
-      margin-left: -8px;
+  .facebook-social-icon{
+    .fg{
+      fill: @facebook-color;
     }
+  }
+  .twitter-social-icon{
+    .fg{
+      fill: @twitter-color;
+    }
+  }
+
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+
+}
+
+.floating-story-buttons, .floating-story-buttons-left, .floating-story-buttons-right{
+  z-index: 27;
+  button {
+    text-align: center;
   }
 
   button.button {
     background-color: @dark-color;
-    color: @light-color;
+    color: @white-color;
     cursor: pointer;
     padding: 5px 15px;
     font-size: 14px;
@@ -211,26 +179,40 @@ div.floating-story-buttons {
     }
   }
   position: fixed;
-  top: 115px;
-  right: 13px;
+  bottom: 0px;
+  right: 0px;
   z-index: 27;
+}
+
+.floating-story-buttons-left{
+
+  width: 0;
+  overflow: visible;
 
   .saved-text{
-    float: left;
     color: @black-color;
-    text-transform: uppercase;
-    margin-right: 15px;
-    margin-top: 23px;
+    margin-left: 15px;
+    margin-bottom: 4px;
     font-size: 13px;
   }
+
+  button{
+    width: 85px;
+  }
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+}
+
+.floating-story-buttons-right{
 
   .publish-story{
     width: 140px;
   }
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
 
-  .link-to-edit{
-    width: 126px;
-  }
 }
 
 input.background-image-input {
@@ -253,14 +235,21 @@ div.save-background-image {
   }
 }
 
+.top-banner{
+  z-index: 100;
+}
+
 div.title-overlay {
+  top: @magic-styling-distance;
   @media @not-mobile {
     min-width: 1024px;
   }
-  height: 350px;
+  @starting-height: 350px;
+  @ending-height: 100px;
+  height: @starting-height;
 
   z-index: 30;
-  color: @light-color;
+  color: @white-color;
   position: relative;
   overflow: hidden;
   background-color: @unselected-background-color;
@@ -288,7 +277,8 @@ div.title-overlay {
     }
 
     &.visible {
-      opacity: 1.0;
+      //remove for now - replace with person's
+      opacity: 0.0;
     }
   }
 
@@ -298,10 +288,17 @@ div.title-overlay {
     }
   }
 
+  .background-transition;
+
   &.fixed {
     position: fixed;
-    height: 100px;
+    height: @ending-height;
     width: 100%;
+    background-color: @dark-color;
+
+    img{
+      top: -(@starting-height - @ending-height);
+    }
     @media @mobile {
       display: none;
     }
@@ -327,7 +324,7 @@ div.title-overlay {
     top: 30px;
     right: 30px;
     background-color: @dark-color;
-    color: @light-color;
+    color: @white-color;
     cursor: pointer;
     padding: 5px;
     text-align: center;
@@ -371,23 +368,60 @@ div.title-overlay {
     margin-left: 95px;
     margin-top: 125px;
     max-width: 1300px;
+    color: @white-color;
     @media @mobile {
       margin-left: 20px;
       margin-right: 20px;
       max-width: calc(100% ~"-" 40px);
     }
-    padding: 11px;
     background-color: @dark-color;
-    &.fixed {
+    .background-transition;
+
+    .author-image{
+      display: none;
+      .opacity-transition;
+      position: absolute;
+      left: -70px;
+      top: 20px;
+      .size(60px);
+      img{
+        border-radius: 50%;
+        .size-to-fit;
+      }
+    }
+    &.b {
       position: fixed;
-      padding-top: 19px;
+      margin-top: @magic-styling-distance;
+      .author-image{
+        opacity: 0;
+        pointer-events: none;
+        display: block;
+      }
+    }
+    &.a{
+      margin-top: 125px;
+    }
+    &.c{
+      margin-top: 0px;
+      .author-image{
+        opacity: 1;
+        display: block;
+      }
+    }
+
+
+    &.b, &.c{
+      background-color: transparent;
     }
     div.story-title {
       max-width: 100%;
-      font-weight: bold;
-      font-size: 25px;
-      line-height: 30px;
-      padding-bottom: 9px;
+      font-family: 'FFMarkWebBold';
+      margin-top: 20px;
+      margin-left: 20px;
+      margin-right: 20px;
+      font-size: 24px;
+      line-height: 36px;
+      //padding-bottom: 6px;
       overflow-x: hidden;
       overflow-y: visible;
       text-overflow: ellipsis;
@@ -397,7 +431,11 @@ div.title-overlay {
       }
     }
     div.author {
-      font-size: 18px;
+      font-size: 14px;
+      font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
+      margin-bottom: 20px;
+      margin-left: 20px;
+      margin-right: 20px;
       //font-style: italic;
     }
   }
@@ -406,11 +444,11 @@ div.title-overlay {
 div.button-options {
   button {
     background-color: @dark-color;
-    color: @light-color;
+    color: @white-color;
     cursor: pointer;
-    padding: 5px;
+    //padding: 5px;
     text-align: center;
-    font-size: 16px;
+    font-size: 15px;
     float: left;
     &:not(:last-child) {
       margin-right: 10px;
@@ -465,13 +503,6 @@ div.narrativeView {
   }
 }
 
-.new-section {
-  fill: @dark-color;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
 
 div.vertical-narrative {
   z-index: 20;
@@ -479,18 +510,19 @@ div.vertical-narrative {
   .new-section {
     min-height: 75px;
     height: 75px;
+    position: relative;
+    svg{
+      .center-over-parent-div;
+    }
     overflow: hidden;
-    font-size: 55px;
-    line-height: 75px;
     text-align: center;
   }
 
 
   .unminimized-new-section-bar {
-    border-top: 12px solid @background-color;
-    border-bottom: 12px solid @background-color;
-    background-color: @selected-background-color;
-    height: 95px;
+    border-top: @card-spacing solid @background-color;
+    border-bottom: @card-spacing solid @background-color;
+    height: 111px;
   }
 
   .new-section.unminimized {
@@ -500,7 +532,7 @@ div.vertical-narrative {
   .new-section.minimized {
     .height-transition;
     background-color: @background-color;
-    height: 12px;
+    height: @card-spacing;
     border-top: 0px;
     border-bottom: 0px;
     min-height: 0px;
@@ -509,6 +541,7 @@ div.vertical-narrative {
     }
     &:hover {
       .unminimized-new-section-bar;
+      background-color: @action-color;
       svg{
         visibility: inherit;
       }
@@ -518,7 +551,7 @@ div.vertical-narrative {
 
 
 .control-label {
-    font-weight: bold;
+    font-family: 'FFMarkWebBold';
     font-size: 17px;
 }
 
@@ -558,10 +591,16 @@ svg{
 }
 
 .new-section {
+  cursor: pointer;
+  .fg{
+    fill: @white-color;
+  }
+
+  background-color: @medium-color;
+
   &:hover {
-    .bg{
-      fill: @action-color;
-    }
+    background-color: @action-color;
+
   }
 }
 
@@ -592,7 +631,6 @@ div.horizontal-context {
     text-align: center;
     width: 75px;
     z-index: 30;
-    // box-shadow: 3px 3px #848484;
   }
 
   div.input-label {
@@ -600,7 +638,7 @@ div.horizontal-context {
     margin-bottom: 10px;
   }
 
-  @contentIconBannerHeight: 80px;
+  @contentIconBannerHeight: 60px;
 
   div.content-icons {
     display: -webkit-flex;
@@ -610,9 +648,7 @@ div.horizontal-context {
 
     width: 100%;
     height: @contentIconBannerHeight;
-    padding-left: 17px;
-    padding-right: 17px;
-    background-color: @panel-color;
+    background-color: @dark-color;
     div.row {
       text-align: justify;
       -ms-text-justify: distribute-all-lines;
@@ -621,26 +657,31 @@ div.horizontal-context {
       margin-right: 10%;
     }
 
-    @circle-diameter: 44px;
+    @button-size: 57.73px;
     button {
-      height: @circle-diameter;
-      width: @circle-diameter;
+      height: 60px;
+      width: @button-size;
       padding: 0;
-      margin-top: 18px;
       svg {
         padding: 1.5px;
 
-        height: @circle-diameter;
-        width: @circle-diameter;
+        height: 60px;
+        width: @button-size;
         vertical-align: top;
         display: inline-block;
-
-        &:hover, &.active {
-          .bg{
-            fill: @action-color;
-          }
+        .fg {
+          fill: white;
         }
+
       }
+
+      &:hover{
+        background-color: @panel-color;
+      }
+      &.active {
+        background-color: @action-color;
+      }
+
     }
 
     .unimplemented {
@@ -658,7 +699,6 @@ div.horizontal-context {
 
   .horizontal-new-section {
     position: absolute;
-    background-color: @white-color;
     svg{
       .transition(transform 0.2s ease, fill 0.25s ease);
     }
@@ -689,9 +729,9 @@ div.horizontal-context {
     button {
       display: inline-block;
       line-height: 0px;
-      height: 25px;
+      height: 24px;
       border-radius: 13px;
-      width: 25px;
+      width: 24px;
     }
 
     .delete {
@@ -706,9 +746,9 @@ div.horizontal-context {
   }
 
   div.create-section {
-    padding-top: 22px;
-    padding-left: 22px;
-    padding-right: 22px;
+    padding-top: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
     height: calc(100% ~"-" @contentIconBannerHeight);
   }
 
@@ -733,7 +773,7 @@ div.horizontal-context {
   }
 
   div.create-section.unimplemented {
-    font-weight: bold;
+    font-family: 'FFMarkWebBold';
   }
 
   div.tabs {
@@ -749,8 +789,7 @@ div.horizontal-context {
         padding-left: 5px;
         cursor: pointer;
         font-size: 12px;
-        font-weight: bold;
-        text-transform: uppercase;
+        font-family: 'FFMarkWebBold', sans-serif;
         display: inline-block;
         min-width: 100px;
         border-bottom: 2px solid white;
@@ -786,7 +825,7 @@ div.horizontal-context {
     .search-trigger, .search-input-container, input, .search-button {
       font-size: 12px;
       height: @searchInputHeight;
-      color: @light-color;
+      color: @white-color;
       position: absolute;
       float: left;
     }
@@ -822,8 +861,9 @@ div.horizontal-context {
 
   .search-radios{
     position: relative;
-    margin-top: 20px;
+    margin-top: 13px;
     margin-bottom: 40px;
+    font-size: 13px;
     input {
       width: auto;
     }
@@ -895,7 +935,7 @@ div.horizontal-context {
       cursor: pointer;
 
       &:hover {
-        background: @light-color; 
+        background: @white-color; 
       }
       &.focused {
         background: @medium-color; 
@@ -999,7 +1039,7 @@ div.horizontal-context {
         left: 78px;
       }
       div.content-title {    
-        font-weight: bold; 
+        font-family: 'FFMarkWebBold'; 
         font-size: 12px;
         margin-bottom: 5px;    
         overflow: hidden;    
@@ -1052,10 +1092,10 @@ div.horizontal-context {
       left: calc(100%~"-" 90px);
       background-color: @action-color;
       height: @newCardBottomButtonHeight;
-      color: @light-color;
+      color: @white-color;
       width: 90px;
-      margin-top: 12px;
-      margin-bottom: 15px;
+      margin-top: 16px;
+      margin-bottom: 20px;
       text-align: center;
       font-size: 12px;
       line-height: 35px;
@@ -1148,7 +1188,7 @@ div.text-section {
     text-decoration: underline;
   }
   .bold-button{
-    font-weight: bold;
+    font-family: 'FFMarkWebBold', sans-serif;
   }
   .italic-button{
     font-style: italic;
@@ -1181,7 +1221,7 @@ div.text-section {
 
   svg.add-card-icon{
     .fg {
-      fill: @light-color;
+      fill: @white-color;
     }
     .bg {
       opacity: 0;
@@ -1190,9 +1230,9 @@ div.text-section {
   }
 
   button{
-    color: @light-color;
+    color: @white-color;
     background-color: inherit;
-    font-family: 'Alright Sans', 'Lucida Grande', 'Avenir Next', sans-serif;
+    font-family: 'FFMarkWeb', 'Avenir Next', sans-serif;
     font-weight: 400;
     font-size: .9em;
     padding: 0.5em 1em 0 1em;
@@ -1206,7 +1246,7 @@ div.text-section {
     }
   }
   svg{
-    fill: @light-color;
+    fill: @white-color;
   }
 
 }
@@ -1265,6 +1305,7 @@ div#fold-editor{
 }
 
 .create-section {
+  border: 1px solid @unselected-background-color;
   .search-section, .add-desc-section {
     height: 100%;
   }
@@ -1358,7 +1399,7 @@ div.context-anchor-menu {
 
   .back-arrow{
     .fg{
-      fill: @light-color;
+      fill: @white-color;
     }
   }
   button{

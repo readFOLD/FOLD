@@ -228,7 +228,6 @@ var createTemplateNames = [
   'create_twitter_section',
   'create_map_section',
   'create_audio_section',
-  'create_viz_section',
   'create_link_section'
 ];
 
@@ -421,7 +420,6 @@ Template.create_audio_section.onRendered(searchTemplateRenderedBoilerplate());
 
 var dataSourcesByType = {
   'image': [{source: 'flickr', 'display': 'Flickr'}, {source: 'imgur', display: 'Imgur'}, {source: 'cloudinary', display: 'Upload Your Own'}],
-  'viz': [{source: 'oec', display: 'Observatory of Economic Complexity'}],
   'gif': [{source: 'giphy', display: 'Giphy'}],
   'video': [{source: 'youtube', display: 'Youtube'}, {source: 'vimeo', display: 'Vimeo'}],
   'audio': [{source: 'soundcloud', display: 'SoundCloud'}],
@@ -436,74 +434,6 @@ _.each(dataSourcesByType, function(dataSources, type){
   var templateName = 'create_' + type + '_section';
   Template[templateName].helpers({dataSources: dataSources});
 });
-
-
-Template.create_viz_section.onCreated(function() {
-  this.type = 'viz';
-  Session.set('newHorizontalDataSource', 'oec');
-
-  this.directions = ['import', 'export'];
-  this.countries = VizBlock.countries;
-  this.years = [1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012];
-
-  this.selectedCountry = new ReactiveVar(_.sample(this.countries).id);
-  this.selectedDirection = new ReactiveVar('export');
-  this.selectedYear = new ReactiveVar(2012);
-
-  this.focusResult = new ReactiveVar();
-
-  var that = this;
-  this.autorun(function() {
-    var oecYear = that.selectedYear.get();
-    var oecCountryCode = that.selectedCountry.get();
-    var oecDirection = that.selectedDirection.get();
-
-    that.focusResult.set(new VizBlock({
-      reference: {
-        oecCountry: oecCountryCode,
-        oecYear: oecYear,
-        oecDirection: oecDirection
-      },
-      authorId : Meteor.user()._id,
-      type: that.type,
-      source: Session.get('newHorizontalDataSource')
-    }));
-  });
-});
-
-
-Template.create_viz_section.onRendered(function() {
-  $("select").selectOrDie({size: 8});
-});
-
-Template.create_viz_section.helpers({
-    cardWidth: function() { return Session.get('cardWidth') - 40; } ,
-    directions: function() { return Template.instance().directions; },
-    countries: function() { return Template.instance().countries; },
-    years: function() { return Template.instance().years; },
-    selectedYear: function() { return Template.instance().selectedYear.get(); },
-    selectedCountry: function() { return Template.instance().selectedCountry.get(); },
-    selectedDirection: function() { return Template.instance().selectedDirection.get(); },
-    isSelectedYear: function() { return (this == Template.instance().selectedYear.get()); },
-    isSelectedCountry: function() { return (this.id === Template.instance().selectedCountry.get()); },
-    isSelectedDirection: function() { return (this === Template.instance().selectedDirection.get()); },
-    url: function() {
-      var preview = Template.instance().focusResult.get();
-      if (preview) {
-        return preview.url()
-      }
-    }
-  }
-);
-
-Template.create_viz_section.events({
-  "change select.countries": function(e, t) {
-    t.selectedCountry.set($(e.target).find('option:selected').data('id'));
-  },
-  "change select.years": function(e, t) {
-    t.selectedYear.set($(e.target).val());
-  }
-})
 
 Template.create_link_section.onCreated(function() {
   this.type = 'link';
@@ -750,13 +680,6 @@ Template.create_text_section.events({
       authorId: Meteor.user()._id,
       source: 'plaintext'
     }));
-  }
-});
-
-Template.create_twitter_section.helpers({
-  twitterUser: function() {
-    var user = Meteor.user();
-    return user.services && user.services.twitter && user.services.twitter.id;
   }
 });
 

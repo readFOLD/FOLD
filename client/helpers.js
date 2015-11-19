@@ -18,6 +18,10 @@ Handlebars.registerHelper("read", function() {
   return Session.get("read");
 });
 
+Handlebars.registerHelper("notRead", function() {
+  return !Session.get("read");
+});
+
 Handlebars.registerHelper("showDraft", function() {
   return Session.get("showDraft");
 });
@@ -68,6 +72,24 @@ Handlebars.registerHelper("windowHeight", function() {
 
 Handlebars.registerHelper("verticalLeft", function() {
   return Session.get("verticalLeft");
+});
+
+Handlebars.registerHelper("adminMode", function() {
+  if (Session.get("adminMode")){
+    var user = Meteor.user();
+    if (user){
+      return user.admin ? true : false;
+    }
+  }
+});
+
+Handlebars.registerHelper("reactiveStory", function(){
+  return Stories.findOne(Session.get('storyId'));
+});
+
+Handlebars.registerHelper("twitterUser", function() {
+  var user = Meteor.user();
+  return user.services && user.services.twitter && user.services.twitter.id;
 });
 
 Handlebars.registerHelper("profileImage", function(user, size) {

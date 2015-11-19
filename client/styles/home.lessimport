@@ -7,7 +7,7 @@ div#login-buttons-and-more {
   left: 15px;
 }
 
-@topButtonRight: 72px;
+@topButtonRight: 200px;
 
 div.home-top {
   position: fixed;
@@ -15,46 +15,65 @@ div.home-top {
     position: absolute;
   }
   background-color: white;
-  height: 145px;
+  height: 120px;
+  &.slim{
+    height: @magic-styling-distance;
+  }
   @media @mobile{
+    height: @magic-styling-distance;
     img{
       vertical-align: middle;
     }
-    height: 175px;
   }
   width: 100%;
-  z-index: 10;
-  //border-bottom: 1px solid @medium-color;
-  -webkit-box-shadow: 0 2px 8px -6px @dark-color;
-  -moz-box-shadow: 0 2px 8px -6px @dark-color;
-  box-shadow: 0 2px 8px -6px @dark-color;
-  
-  &.panel-border {
-    border-top: 6px solid @panel-color;
-  }
+  border-bottom: 1px solid @inactive-color;
+  //-webkit-box-shadow: 0 2px 8px -6px @dark-color;
+  //-moz-box-shadow: 0 2px 8px -6px @dark-color;
+  //box-shadow: 0 2px 8px -6px @dark-color;
 
-  &.active-border {
-    border-top: 6px solid @action-color;
-  }
-
-  &.remix-border {
-    border-top: 6px solid @remix-color;
-  }
 
   div.logo-title {
-    .logo {
-      float: left;
-      z-index: 10;
-    }
 
     div.title {
-      float: right;
+      float: left;
+    }
+
+
+    @slimHeight: @magic-styling-distance / 2;
+
+    &.slim{
+      .title{
+        img{
+          height: @slimHeight;
+        }
+      }
+    }
+
+    @media @mobile{
+      .title {
+        img {
+          height: @slimHeight;
+        }
+      }
     }
 
     @media @not-mobile{
+      &.fat{
+        .title{
+          margin-top: 5px;
+          img{
+            height: @magic-styling-distance * .75;
+          }
+        }
+      }
       display: inline-block;
-      margin-left: 60px;
-      margin-top: 37px;
+      &.fat{
+        margin-top: @magic-styling-distance;
+      }
+      &.slim{
+        margin-top: @magic-styling-distance / 4;
+      }
+      margin-left: @magic-styling-distance;
       width: 310px;
       div.title {
         //margin-top: 5px;
@@ -64,10 +83,10 @@ div.home-top {
     }
     @media @mobile{
       margin:auto;
-      text-align: center;
-      margin-top: 60px;
+      text-align: left;
+      margin-top: @magic-styling-distance / 4;
+      margin-left: @magic-styling-distance / 2;
       height: 28px;
-      width: 150px;
       img{
         height: 100%
       }
@@ -79,137 +98,139 @@ div.home-top {
 
   div.filter {
     position: absolute;
-    font-size: 15px;
-    top: 67px;
+    font-size: 14px;
 
-    @media @not-mobile{
-      right: @topButtonRight;
+    &.slim{
+      top: 0;
+      .sod_select{
+        border-color: transparent;
+      }
     }
     @media @mobile{
-      top: 110px;
-      width: 100%;
+      top: 0;
+      .sod_select{
+        border-color: transparent;
+      }
+      right: 0;
+    }
+    @media @not-mobile{
+      left: 196px;
+      &.fat{
+        top: @magic-styling-distance;
+      }
+    }
+
+    height: @magic-styling-distance;
+
+    font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
+
+
+    .sod_select, .sod_option{
+      padding: 12px 10px;
+      background-color: transparent;
+    }
+    .sod_select.focus{
+      box-shadow: none;
+    }
+    .sod_label{
       text-align: center;
     }
+
 
 
     span.categories {
       margin-left: 10px;
     }
   }
-
-  div.action-items {
-    @height: 45px;
-    position: absolute;
-    top: -6px;
-    @media @not-mobile{
-      right: @topButtonRight;
-    }
-    @media @mobile{
-      width: 100%;
-      text-align: center;
-    }
-    color: @light-color;
-    font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
-
-    button{
-      padding: 0px 23px;
-      min-width: 152px;
-      .size-to-fit;
-      &:hover {
-        background-color: @dark-color;
-      }
-    }
-
-    a {
-      min-width: 154px;
-      .size-to-fit;
-      &:hover {
-        background-color: @dark-color;
-      }
-    }
-
-    .create-story {
-      background-color: @action-color;
-      &:hover {
-        background-color: @dark-color;
-      }
-    }
-
-    li {
-      height: @height;
-      @media @not-mobile{
-        float: left;
-      }
-      display: inline-block;
-      position: relative;
-      &:not(:last-child) {
-        margin-right: 12px;
-      }
-    }
-
-    .user-action {
-      background-color: @remix-color;
-      @profile-picture-size: 25px;
-      button{
-        line-height: @height;
-      }
-      span{
-        margin: auto;
-        display: inline-block;
-      }
-      .text{
-        max-width: 200px;
-      }
-      img.profile-picture {
-        margin:auto;
-        margin-right: 2px;
-        margin-bottom: -7.5px;
-        z-index: 10;
-        border-radius: @profile-picture-size/2;
-        width: @profile-picture-size;
-        height: auto;
-      }
-    }
-
-    .about-fold {
-      background-color: @panel-color;
-    }
-
-    ol.user-menu {
-      background-color: @remix-color;
-      li {
-        float: none;
-        display: block;
-        margin:0;
-        border-top: 1px solid @white-color;
+  &.slim{
+    .action-items{
+      @media @mobile{
+        display: none;
       }
     }
   }
-
- /* div.user-image {
-    position: absolute;
-    top: 40px;
-    right: 60px;
-    width: 60px;
-    height: 60px;
-    border-radius: 30px;
-    background-color: @dark-color;
-  } */
 } 
 
 
 div.signup, div.login, div.user_profile {
-  padding-top: 150px;
+  padding-top: 140px;
   width: 100%;
   height: 100%;
 }
 
-@profile-picture-size: 60px;
+@profile-picture-size: @magic-styling-distance * 1.5;
 
+@story-margin-top: 8px;
+
+.what-is-fold-box{
+  position: relative;
+  height: 340px;
+  width: calc(100% ~'-' @magic-styling-distance);
+  @media @mobile {
+    height: 300px;
+    margin-top: -15px;
+    width: calc(100% ~'-' @magic-styling-distance/2);
+  }
+  margin-bottom: @magic-styling-distance - @story-margin-top;
+  text-align: center;
+  background-position: center;
+  background-color: #333333;
+  background-repeat: no-repeat;
+
+  .overlay, .text{
+    position: absolute;
+    top: 0;
+    left: 0;
+    .size-to-fit;
+  }
+  .tagline {
+    font-family: FFMarkWebBold;
+    font-size:  30px;
+    margin-top: 60px;
+    margin-bottom: 160px;
+    @media @mobile {
+    font-family: FFMarkWebBold;
+    font-size:  25px;
+    margin-top: 30px;
+    margin-bottom: 30px; 
+    }
+  }
+  .description {
+    font-family: FFMagdaCleanMonoWebProRegular;
+  }
+  .description-link {
+    font-family: FFMagdaCleanMonoWebProRegular;
+    text-decoration: underline;
+  }
+  .overlay{
+    background-color: fade(@panel-color, 75%);
+  }
+  .text{
+    color: @white-color;
+  }
+  .dismiss-box{
+    position: absolute;
+    background-color: @black-color;
+    color: @panel-color;
+    .size(@magic-styling-distance);
+    top: @magic-styling-distance;
+    right: @magic-styling-distance;
+    @media @mobile {
+      top: @magic-styling-distance/2;
+      right: @magic-styling-distance/2;
+    }
+    font-size: @magic-styling-distance/2;
+    padding: 0;
+    text-align: center;
+  }
+}
 
 div.stories {
-  @profile-section: 400px;
-  padding-top: 150px;
+  @profile-section: 340px;
+  padding-top: 135px;
+  @media @mobile {
+    padding-top: 5px;
+  }
   width: 100%;
   height: 100%;
   background-color: @background-color;
@@ -261,24 +282,27 @@ div.stories {
 
   div.headline {
     background-color: @white-color;
+    font-family: 'FFMarkWebBold';
     height: auto;
     /*height depends on length of story headline*/
     width: 100%;
     position: relative;
     line-height: 31px;
     font-size: 21px;
-    font-weight: bold;
-    padding: 20px 30px 0px 30px;
-    margin-bottom: calc(9% ~"-" 27px);
+    padding: 20px 30px calc(9% ~"-" 27px) 30px;
+    //margin-bottom: calc(9% ~"-" 27px);
   }
 
 
 
   div.byline {
     //padding: 33px 25px;
-    padding-left: 25px;
+    margin-left: 40px;
     div.pull-left {
       width: 100%;
+      position: absolute;
+      bottom: 25px;
+      left: 25px;
       div.author-image {
         display: inline-block;
         float: left;
@@ -294,32 +318,32 @@ div.stories {
       }
 
       div.author-name-date {
-        @margin: 20px;
-        font-family: 'Muli', 'Lucida Grande', 'Avenir Next', sans-serif;
+        @margin: 25px;
+        font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
         display: inline-block;
         margin-left: @margin;
-        margin-top: -9px;
         & > div {
-          line-height: 24px;
+          line-height: 18px;
           font-size: 14px;
         }
         width: calc(100% ~"-"  @profile-picture-size ~"-" @margin * 2);
         div.author-name {
+          color: @dark-color;
           .ellipsis-text;
           width: 100%;
           margin-top: 12px;
           font-size: 15px;
         }
         div.publish-date {
-          //font-style: italic;
-          text-transform: uppercase;
-          font-size: 12px;
+          color: @inactive-color;
+          font-size: 13px;
         }
       }
     }
     a.author-profile-link:hover {
       span{
-        text-decoration: underline;
+        text-decoration: none;
+        color: @action-color;
       }
     }
   }
@@ -352,11 +376,14 @@ div.stories {
   div.story-container {
     padding-top: 15px;
     @media @mobile{
-      padding-top: 56px;
+      padding-top: 68px;
     }
-    @padding-side: 4px;
+    @padding-side: @magic-styling-distance;
     padding-left: @padding-side;
-    padding-right: @padding-side;
+    @media @mobile{
+      padding-left: @magic-styling-distance/2;
+    }
+    //padding-right: @padding-side;
     padding-bottom: 75px;
     overflow: hidden;
 
@@ -373,9 +400,8 @@ div.stories {
 
 
   div.story {
+    border: 1px solid @inactive-color;
     background-color: @white-color;
-    border-bottom: 7px solid @action-color;
-    // box-shadow: 3px 3px @medium-color;
 
     // 540 980+
     // 415 980-
@@ -387,7 +413,7 @@ div.stories {
     z-index: 2;
     display: inline-block;
     position: relative;
-    margin-top: 8px;
+    margin-top: @story-margin-top;
     margin-bottom: 23px;
 
     @media @mobile {
@@ -395,9 +421,9 @@ div.stories {
       margin-bottom: 40px;
     }
 
-    @margin-side: 4px;
-    margin-left: @margin-side;
-    margin-right: @margin-side;
+    @margin-side: @magic-styling-distance/2;
+    margin-left: 0;
+    margin-right: @magic-styling-distance;
     width: calc(33.33% ~"-" @margin-side * 2);
     float: left;
 
@@ -418,10 +444,15 @@ div.stories {
       width: calc(20% ~"-" @margin-side * 2);
     }
 
+    @media @mobile{
+      margin-right: @magic-styling-distance/2;
+      width: calc(100% ~"-" @magic-styling-distance/2);
+    }
+
     &.profile {
       @margin-side: 2%;
-      margin-right: @margin-side;
-      width: calc(50% ~"-" @margin-side * 2);
+      margin-right: @magic-styling-distance;
+      width: calc(50% ~"-" @magic-styling-distance);
 
       @media (max-width: 1200px) {
         @margin-side: 2%;
@@ -454,11 +485,10 @@ div.stories {
 
 
     div.favorite-button {
-      font-size: 14px;
-      font-family: inherit;
+      font-size: 12px;
       position: absolute;
-      right: 23px;
-      bottom: 60px;
+      right: 40px;
+      bottom: 40px;
     }
 
     div.edit-or-read {

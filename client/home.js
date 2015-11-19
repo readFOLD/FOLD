@@ -98,17 +98,30 @@ Template.categories.events({
 });
 
 Template.filters.onRendered(function() {
-  $("select").selectOrDie({
+  var options = {};
+  if(this.data.slim){
+    options.placeholder = "Explore";
+  } else {
+    var filterValue;
+    if(filterValue = Session.get('filterValue')){
+      $("select").val(filterValue);
+    }
+  }
+  $("select").selectOrDie(options);
 
-  });
 });
 
 var filters = ['curated', 'trending', 'starred', 'newest'];
-Session.set('filterValue', filters[0]); // this must correspond to the first thingin the dropdown
+Session.setDefault('filterValue', filters[0]); // this must correspond to the first thing in the dropdown
 
 Template.filters.helpers({
   filters: function() {
-    return filters
+    return _.map(filters, function(filter){
+      return {
+        value: filter,
+        label: filter === 'curated' ? 'FOLD picks' : filter
+      }
+    })
   },
   conditionallySelected: function(){
     return Session.equals('filterValue', this.toString()) ? 'selected' : '';
@@ -119,6 +132,9 @@ Template.filters.events({
   "change select": function(e, t) {
     var filterValue = $(e.target).val();
     Session.set('filterValue', filterValue);
+    if(t.data.slim){
+      Router.go('/');
+    }
     analytics.track('Select filter', {
       label: filterValue
     });
@@ -298,6 +314,9 @@ Template.all_stories.events({
       incrementCurrentSubscriptionPage();
       subscriptionsReady.set(filterValue + 'Stories', true);
     })
+  },
+  'click .dismiss-box': function (e,t) {
+    Session.set('boxDismissed', true);
   }
 });
 
@@ -312,6 +331,9 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
       return false
     }
     return currentHomeStories().count() >= (getCurrentSubscriptionPage() + 1) * PUB_SIZE
+  },
+  boxDismissed: function(){
+    return Session.get('boxDismissed')
   }
 });
 
@@ -367,6 +389,7 @@ Template.login_buttons.events({
   },
   "click .signin": function(d) {
     Session.set('signingIn', true);
+    setSigningInFrom();
   },
   "click .logout" : function(e) {
     e.preventDefault();
@@ -375,12 +398,17 @@ Template.login_buttons.events({
   }
 });
 
-var closeSignInOverlay = function(){
-  Session.set('signingIn', false);
-};
 
 // TODO close sign in overlay on esc (27) need to do on whole window though
 
+Template.signin_overlay.helpers({
+  explanation: function(){
+    var signingIn = Session.get('signingIn');
+    if(typeof signingIn === 'string'){
+      return signingIn
+    }
+  }
+})
 Template.signin_overlay.events({
   "click .close": function(d) {
     closeSignInOverlay();

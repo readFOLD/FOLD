@@ -1,11 +1,15 @@
 window.constants = {
-  verticalSpacing: 12,
-  readModeOffset: 286,
+  verticalSpacing: 20, // there is css that needs to match this
+  readModeOffset: 246,
   minPageWidth: 1024
 };
 
-window.getVerticalLeft = function(width) {
-  return Meteor.Device.isPhone() ? (Session.get('windowWidth') > 340 ? 30 : 20) : 106;
+if(Meteor.Device.isPhone()){
+  window.constants.readModeOffset = window.constants.readModeOffset + 92
+}
+
+window.getVerticalLeft = function() {
+  return Meteor.Device.isPhone() ? (Session.get('windowWidth') > 340 ? 30 : 20) : (Session.get('windowWidth') / 2 - Session.get('cardWidth') - Session.get('separation'));
 };
 
 window.getHorizontalLeft = function() {
@@ -91,6 +95,10 @@ window.getVerticalHeights = function() {
   return verticalHeights;
 };
 
+window.slideCurrentYIntoPlace = function(){
+  goToY(Session.get('currentY'), {force: true})
+};
+
 window.goToXY = function(x, y) {
   if (y !== Session.get("currentY")) {
     goToY(y);
@@ -98,8 +106,8 @@ window.goToXY = function(x, y) {
   return goToX(x);
 };
 
-window.goToY = function(y) {
-  if (Session.get("currentY") !== y){
+window.goToY = function(y, options) {
+  if ((options && options.force) || Session.get("currentY") !== y){
     var verticalHeights;
     verticalHeights = window.getVerticalHeights();
     $('body,html').animate({
@@ -185,6 +193,11 @@ window.moveOneCard = function(d) {
   }
 };
 
+window.horizontalExists = function(){
+  var currentY = Session.get('currentY');
+  return ((_ref = Session.get('horizontalSectionsMap')[currentY]) != null ? _ref.horizontal.length : void 0) > 1
+}
+
 $(document).keydown(function(e) {
   if (Router.current().route.getName() === 'read'){
     letter = String.fromCharCode(e.keyCode);
@@ -204,12 +217,6 @@ $(document).keydown(function(e) {
         if(Session.get('pastHeader')) {
           goRightOneCard();
         }
-        break;
-      case '&': // up arrow
-        goUpOneCard();
-        break;
-      case '(': // down arrow
-        goDownOneCard();
         break;
       case '%': // left arrow
         if(Session.get('pastHeader')){

@@ -911,6 +911,13 @@ VizBlock = (function (_super) {
     }
   };
 
+  VizBlock.prototype.linkUrl = function () {
+    switch (this.source) {
+      case 'oec':
+        return '//atlas.media.mit.edu/en/visualize/tree_map/hs/' + this.reference.oecDirection + '/' + this.reference.oecCountry + '/all/show/' + this.reference.oecYear
+    }
+  };
+
   VizBlock.countries = [{"id": "ago", "name": "Angola"}, {"id": "bdi", "name": "Burundi"}, {
     "id": "ben",
     "name": "Benin"

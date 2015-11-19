@@ -1,33 +1,49 @@
 <template name="read">
-  {{#if isPhone}}
-    <div class="mobile-progress-header" >
-      <h2>Mobile will be ready soon!</h2>
-      <h3>But you can see our progress here</h3>
-    </div>
-  {{/if}}
   {{!hasContext suppresses a firefox error when story not found because page gets rendered without any context, probably right before story not found gets shown, should probably not be necessary}}
   {{#if hasContext}}
     {{> story_header}}
+    {{#if adminMode}}
+      {{> read_admin_ui}}
+    {{/if}}
     {{> story}}
     {{> read_options}}
   {{/if}}
 </template>
 
+<template name="read_admin_ui">
+  <div class="read-admin-ui">
+    <ol>
+      <li>{{emailAddress}}</li>
+      {{#if twitterHandle}}
+        <li>{{twitterHandle}}</li>
+      {{/if}}
+      <li>{{analytics.views.total}} views</li>
+      <li>{{analytics.shares.total}} shares</li>
+      <li>{{favoritedTotal}} favorites</li>
+      <li></li>
+    </ol>
+  </div>
+</template>
 <template name="read_options">
   <div class="floating-story-buttons">
     {{#unless isPhone}}
-      {{> share_button}}
-      {{> favorite_button}}
-      {{#if currentUser.admin}}
-        {{> editors_pick_button}}
-      {{/if}}
+      {{#with reactiveStory}}
+        {{> share_buttons}}
+        {{> favorite_button}}
+        {{#if adminMode}}
+          {{> editors_pick_button}}
+        {{/if}}
+      {{/with}}
     {{/unless}}
 
+
+  </div>
+  <div class="floating-story-buttons-left">
     {{#if isAuthor}}
       {{#unless isPhone}}
         {{#linkTo route="edit" data=this}}
           <button type="button" class="link-to-edit button">
-            Edit This Story
+            Edit
           </button>
         {{/linkTo}}
       {{/unless}}
