@@ -23,8 +23,11 @@
 <template name="signin_overlay">
   {{#if signingIn}}
     <div class="signin-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
-      <button class="close">✕</button>
       <div class="signin-buttons">
+        <button class="close">✕</button>
+        {{#if explanation}}
+          <div class="explanation">{{explanation}}</div>
+        {{/if}}
         <ol class="user-menu">
           <li>
             <button class="twitter-signin">Log in with Twitter</button>

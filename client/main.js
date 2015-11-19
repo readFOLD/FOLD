@@ -970,7 +970,9 @@ Template.favorite_button.events({
   "click .favorite": function (e, t) {
 
     if (!Meteor.user()) {
-      return notifyInfo('Please sign up or log in to favorite stories');
+      setSigningInFrom();
+      Session.set('signingIn', 'Thanks for showing your love!\nPlease sign in to favorite this FOLD.');
+      return
     }
     var that = this;
     t.justFavorited.set(true);
@@ -1120,7 +1122,8 @@ Template.create_story.events({
         notifyInfo("Due to high demand, we had to turn off 'create new story' functionality for a moment. Stay tuned for updates!");
       }
     } else {
-      Session.set('signingIn', true)
+      setSigningInFrom();
+      Session.set('signingIn', "You're almost there!\nPlease sign in to make a story.")
       analytics.track('User clicked create and needs to sign in');
     }
   }

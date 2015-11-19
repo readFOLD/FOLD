@@ -76,3 +76,17 @@ window.checkValidUsername = function(username) {
 window.incrementReactiveVar = function(rv){
   return rv.set(rv.get() + 1);
 }
+
+
+window.closeSignInOverlay = function(){
+  Session.set('signingIn', false);
+};
+
+window.setSigningInFrom = function () {
+  Session.set('signingInFrom', Router.current().url);
+};
+
+window.returnFromSignIn = function () {
+  closeSignInOverlay();
+  Router.go(Session.get('signingInFrom') || '/');
+};

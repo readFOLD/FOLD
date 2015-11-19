@@ -389,6 +389,7 @@ Template.login_buttons.events({
   },
   "click .signin": function(d) {
     Session.set('signingIn', true);
+    setSigningInFrom();
   },
   "click .logout" : function(e) {
     e.preventDefault();
@@ -397,12 +398,17 @@ Template.login_buttons.events({
   }
 });
 
-var closeSignInOverlay = function(){
-  Session.set('signingIn', false);
-};
 
 // TODO close sign in overlay on esc (27) need to do on whole window though
 
+Template.signin_overlay.helpers({
+  explanation: function(){
+    var signingIn = Session.get('signingIn');
+    if(typeof signingIn === 'string'){
+      return signingIn
+    }
+  }
+})
 Template.signin_overlay.events({
   "click .close": function(d) {
     closeSignInOverlay();

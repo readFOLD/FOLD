@@ -442,20 +442,19 @@ footer{
   height: @height;
   display: inline-block;
   text-align: center;
-  .write-prompt{
+  .call-to-action{
     background-color: @white-color;
     height: 142px;
     border: 1px solid @inactive-color;
+    .favorite-button{
+      font-size: 0px;
+    }
   }
   p{
     margin-top: 0;
   }
   button{
     padding: 10px 12px 10px 12px;
-    background-color: @action-color;
-    &:hover {
-      background-color: @dark-color;
-    }
   }
 }
 
@@ -1459,26 +1458,46 @@ div.minimap {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: rgba(255,255,255,0.8);
+  background-color: fade(@dark-color, 80%);
   .close{
-    float: right;
+    position: absolute;
+    top: 8px;
+    padding: 0;
+    right: 8px;
     background-color: rgba(0,0,0,0);
-    font-size: 22px;
-    margin-right: 10px;
-    margin-top: 10px;
+    font-size: 16px;
+    .size(16px);
     color: @black-color;
+  }
+  .explanation{
+    padding: 20px;
+    color: @action-color;
+    white-space: pre-wrap;
   }
   .signin-buttons{
     margin:auto;
     display:block;
     text-align: center;
     position: absolute;
-    height: 20%;
+    background-color: @medium-color;
+
+    height: 240px;
+    width: 320px;
+    max-height: 100%;
+    max-width: 100%;
     font-family: 'FFMarkWebBold', sans-serif;
 
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    ol{
+      display: inline-block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
 
     li{
       background-color: @orange-color;
@@ -1807,4 +1826,8 @@ div.loading-container {
 
 .fit{
   .size-to-fit;
+}
+
+.amaran-wrapper{
+  z-index: 9999999;
 }
