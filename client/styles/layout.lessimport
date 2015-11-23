@@ -543,7 +543,8 @@ div#overlay {
 
   @border-width: 1px;
   border: @border-width solid transparent;
-  &.selected {
+
+  .selected-styling {
     cursor: text;
     border: @border-width solid @inactive-color;
     a {
@@ -566,6 +567,13 @@ div#overlay {
         color: white;
       }
     }
+  }
+
+  &.selected {
+    .selected-styling;
+  }
+  @media @mobile {
+    .selected-styling;
   }
 }
 
