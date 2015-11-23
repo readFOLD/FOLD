@@ -722,7 +722,7 @@ Template.horizontal_context.helpers({
   },
   horizontalSectionInDOM: function() {
     // on this row
-    return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone());// || this.index === getXByYId(this.verticalId); or this card is the current X for another hidden row
+    return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari);// || this.index === getXByYId(this.verticalId); or this card is the current X for another hidden row
   },
   horizontalShown: function() {
     return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone());
