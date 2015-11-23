@@ -73,7 +73,7 @@ a.green {
     background-color: @action-color;
     color: @white-color;
     height: @button-height;
-    font-family: 'FFMarkWebBold', sans-serif;
+    .FFMarkWebBold;
 
     &:hover {
     	background-color: @dark-color;
@@ -115,7 +115,7 @@ div.sign-up-options {
   margin: auto;
   width: 350px;
   a{
-    font-family: 'FFMarkWebBold', sans-serif;
+    .FFMarkWebBold;
     background-color: @action-color;
     height: @button-height;
     display: block;

@@ -415,7 +415,7 @@ div.title-overlay {
     }
     div.story-title {
       max-width: 100%;
-      font-family: 'FFMarkWebBold';
+      .FFMarkWebBold;
       margin-top: 20px;
       margin-left: 20px;
       margin-right: 20px;
@@ -551,7 +551,7 @@ div.vertical-narrative {
 
 
 .control-label {
-    font-family: 'FFMarkWebBold';
+    .FFMarkWebBold;
     font-size: 17px;
 }
 
@@ -773,7 +773,7 @@ div.horizontal-context {
   }
 
   div.create-section.unimplemented {
-    font-family: 'FFMarkWebBold';
+    .FFMarkWebBold;
   }
 
   div.tabs {
@@ -789,7 +789,7 @@ div.horizontal-context {
         padding-left: 5px;
         cursor: pointer;
         font-size: 12px;
-        font-family: 'FFMarkWebBold', sans-serif;
+        .FFMarkWebBold;
         display: inline-block;
         min-width: 100px;
         border-bottom: 2px solid white;
@@ -1039,7 +1039,7 @@ div.horizontal-context {
         left: 78px;
       }
       div.content-title {    
-        font-family: 'FFMarkWebBold'; 
+        .FFMarkWebBold;
         font-size: 12px;
         margin-bottom: 5px;    
         overflow: hidden;    
@@ -1188,7 +1188,7 @@ div.text-section {
     text-decoration: underline;
   }
   .bold-button{
-    font-family: 'FFMarkWebBold', sans-serif;
+    .FFMarkWebBold;
   }
   .italic-button{
     font-style: italic;

@@ -156,16 +156,19 @@ html {
   font-weight: normal;
   font-style: normal;
 }
+
 .FFMarkWebMedium { 
   font-family: FFMarkWebMedium;
   font-weight: normal;
   font-style: normal;
 }
+
 .FFMarkWeb { 
   font-family: FFMarkWeb;
   font-weight: normal;
   font-style: normal;
 }
+
 .FFMarkWebLight { 
   font-family: FFMarkWebLight;
   font-weight: normal;
@@ -433,6 +436,10 @@ body {
   overflow-x: hidden;
 }
 
+strong, b{
+  .FFMarkWebBold;
+}
+
 footer{
   @height: 500px;
   position:absolute;
@@ -596,7 +603,7 @@ div#overlay {
   div.title {
     line-height: @titleHeight;
     font-size: 20px;
-    font-family: 'FFMarkWebBold';
+    .FFMarkWebBold;
     margin-bottom: @titleMarginBottom;
   }
 
@@ -792,7 +799,7 @@ div.link-section {
     }
     div.link-title {
       font-size: 20px;
-      font-family: 'FFMarkWebBold', sans-serif;
+      .FFMarkWebBold;
       padding-left: 15px;
       padding-top: 15px;
       padding-right: 20px;
@@ -1073,7 +1080,7 @@ div.horizontal-context {
       display: none;
     }
     .context-count-text {
-      font-family: 'FFMarkWebBold', sans-serif;
+      .FFMarkWebBold;
       font-size: 14px;
       position: absolute;
       cursor: default;
@@ -1493,7 +1500,7 @@ div.minimap {
     width: 320px;
     max-height: 100%;
     max-width: 100%;
-    font-family: 'FFMarkWebBold', sans-serif;
+    .FFMarkWebBold;
 
     top: 50%;
     left: 50%;
@@ -1730,7 +1737,7 @@ div.loading-container {
     }
 
     color: @white-color;
-    font-family: 'FFMarkWebBold', sans-serif;
+    .FFMarkWebBold;
 
     button{
       padding: 0px 23px;

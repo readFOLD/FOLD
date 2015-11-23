@@ -184,12 +184,11 @@ div.signup, div.login, div.user_profile {
     .size-to-fit;
   }
   .tagline {
-    font-family: FFMarkWebBold;
+    .FFMarkWebBold;
     font-size:  30px;
     margin-top: 60px;
     margin-bottom: 160px;
     @media @mobile {
-    font-family: FFMarkWebBold;
     font-size:  25px;
     margin-top: 50px;
     margin-bottom: 30px; 
@@ -282,7 +281,7 @@ div.stories {
 
   div.headline {
     background-color: @white-color;
-    font-family: 'FFMarkWebBold';
+    .FFMarkWebBold;
     height: auto;
     /*height depends on length of story headline*/
     width: 100%;

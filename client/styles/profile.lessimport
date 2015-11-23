@@ -75,7 +75,7 @@ div.user-profile {
   }
   div.name {
     font-size: 20px;
-    font-family: 'FFMarkWebBold';
+    .FFMarkWebBold;
     margin-bottom: 10px;
     line-height: 120%;
   }
