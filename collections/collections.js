@@ -345,17 +345,20 @@ ContextBlock.searchMappings = {
       if (e.media) {
         //if single image result
         ownername = e.owner.username;
+        flickrOwnerId = e.owner.nsid;
         uploadDate = e.dateuploaded;
         title = e.title._content;
       } else {
         //if search result
         ownername = e.ownername;
+        flickrOwnerId = e.owner;
         uploadDate = e.dateupload;
         title = e.title;
       }
       return {
         reference: {
           ownerName: ownername,
+          flickrOwnerId: flickrOwnerId,
           uploadDate: new Date(parseInt(uploadDate) * 1000),
           flickrFarm: e.farm,
           flickrSecret: e.secret,
@@ -722,13 +725,13 @@ ImageBlock = (function (_super) {
 
   ImageBlock.prototype.showVideo = function () {
     return this.webMUrl() || this.mp4Url();
-  },
+  };
 
-    ImageBlock.prototype.webMUrl = function () {
-      if (this.source === 'imgur' && this.reference.hasWebM) {
-        return '//i.imgur.com/' + this.reference.id + '.webm';
-      }
-    };
+  ImageBlock.prototype.webMUrl = function () {
+    if (this.source === 'imgur' && this.reference.hasWebM) {
+      return '//i.imgur.com/' + this.reference.id + '.webm';
+    }
+  };
 
   ImageBlock.prototype.mp4Url = function () {
     if (this.source === 'imgur' && this.reference.hasMP4) {
@@ -756,18 +759,27 @@ ImageBlock = (function (_super) {
 
   ImageBlock.prototype.isFlickr = function () {
     return (this.source === 'flickr');
-  }
+  };
 
   ImageBlock.prototype.webUrl = function () {
     switch (this.source) {
       case 'flickr':
-        if (this.reference.ownerName) {
-          return '//www.flickr.com/photos/' + this.reference.ownerName + '/' + this.reference.id;
+        if (this.reference.flickrOwnerId) {
+          return '//www.flickr.com/photos/' + this.reference.flickrOwnerId + '/' + this.reference.id;
         } else {
           return encodeFlickrUrl(this.reference.id)
         }
     }
-  }
+  };
+
+  ImageBlock.prototype.ownerUrl = function () {
+    switch (this.source) {
+      case 'flickr':
+        if (this.reference.flickrOwnerId) {
+          return '//www.flickr.com/photos/' + this.reference.flickrOwnerId;
+        }
+    }
+  };
 
   ImageBlock.prototype.ownerName = function () {
     switch (this.source) {
