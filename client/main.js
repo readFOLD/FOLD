@@ -946,6 +946,7 @@ Template.favorite_button.onCreated(function() {
 });
 Template.favorite_button.events({
   "click .favorite": function (e, t) {
+    analytics.track('Click favorite button');
 
     if (!Meteor.user()) {
       setSigningInFrom();
