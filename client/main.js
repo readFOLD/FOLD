@@ -60,6 +60,16 @@ Meteor.startup(function(){
   throttledResize = _.throttle(windowResize, 20);
 
   $(window).resize(throttledResize);
+
+  var justReloaded = window.codeReloaded;
+
+  Tracker.autorun(function(){
+    if (Session.get('signingIn') && !justReloaded){
+      setSigningInFrom();
+      analytics.track('Opened sign-in overlay');
+    }
+    justReloaded = false;
+  })
 });
 
 
@@ -949,7 +959,6 @@ Template.favorite_button.events({
     analytics.track('Click favorite button');
 
     if (!Meteor.user()) {
-      setSigningInFrom();
       Session.set('signingIn', 'Thanks for showing your love!\nPlease sign in to favorite this FOLD.');
       return
     }
@@ -1101,7 +1110,6 @@ Template.create_story.events({
         notifyInfo("Due to high demand, we had to turn off 'create new story' functionality for a moment. Stay tuned for updates!");
       }
     } else {
-      setSigningInFrom();
       Session.set('signingIn', "You're almost there!\nPlease sign in to make a story.")
       analytics.track('User clicked create and needs to sign in');
     }

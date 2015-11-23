@@ -386,7 +386,6 @@ Template.login_buttons.events({
   },
   "click .signin": function(d) {
     Session.set('signingIn', true);
-    setSigningInFrom();
   },
   "click .logout" : function(e) {
     e.preventDefault();
