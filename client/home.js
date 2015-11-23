@@ -45,9 +45,6 @@ Template.home.helpers({
   filterOpen: function() {
     return Session.get("filterOpen");
   },
-  sticky: function() {
-    return Session.get("sticky");
-  },
   filter: function() {
     return Session.get("filter");
   },

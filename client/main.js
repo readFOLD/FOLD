@@ -73,81 +73,63 @@ window.hammerSwipeOptions = {
 var scrollPauseArmed = false;
 
 window.updateCurrentY = function() {
-  var actualY, h, i, maxScroll, readMode, scrollTop, stickyBody, stickyTitle, vertTop, _i, _len, _ref;
+  var actualY, h, i, readMode, scrollTop, stickyTitle, vertTop, _i, _len, _ref;
   scrollTop = $(document).scrollTop();
   Session.set("scrollTop", scrollTop);
-  $("div.logo").addClass("visible");
-
-  if (scrollTop >= (200 - 32)) {
-    Session.set("sticky", true);
-  } else {
-    Session.set("sticky", false);
-  }
 
   readMode = window.constants.readModeOffset - 1;
 
-  stickyBody = readMode;
-  maxScroll = readMode;
   stickyTitle = 120;
   var selectOffset = - 130;
   $("div#banner-overlay").css({
-    opacity: Math.min(1.0, scrollTop / maxScroll)
+    opacity: Math.min(1.0, scrollTop / readMode)
   });
   $(".horizontal-context").css({
-    opacity: 0.5 + Math.min(1.0, scrollTop / maxScroll) / 2
+    opacity: 0.5 + Math.min(1.0, scrollTop / readMode) / 2
   });
-  if (scrollTop >= stickyTitle) {
-
+  if (scrollTop >= readMode){
+    $("div.title-author").addClass("c");
+    $("div.title-author").removeClass("a");
+    $("div.title-author").removeClass("b");
+  } else if (scrollTop >= stickyTitle) {
     $("div.title-author").addClass("b");
     $("div.title-author").removeClass("a");
     $("div.title-author").removeClass("c");
   } else {
-
     scrollPauseArmed = true;
 
     $("div.title-author").addClass("a");
     $("div.title-author").removeClass("b");
     $("div.title-author").removeClass("c");
   }
-  if (scrollTop >= stickyBody) {
+
+  if (scrollTop >= readMode) {
+    $("div.title-overlay, div#banner-overlay").addClass("fixed");
+    Session.set("pastHeader", true);
     $("div.horizontal-context").addClass("fixed");
-    $("div.vertical-narrative").addClass("fixed");
-    $("div.vertical-narrative").removeClass("free-scroll");
 
     if(scrollPauseArmed){
       document.body.style.overflowY = 'hidden';
-      $(document).scrollTop(stickyBody);
+      $(document).scrollTop(readMode);
       Meteor.setTimeout(function () {
         document.body.style.overflowY = 'auto';
       }, 500);
       scrollPauseArmed = false;
     }
 
-    if (scrollTop >= maxScroll) {
-      $("div.vertical-narrative").removeClass("fixed");
-      $("div.vertical-narrative").addClass("free-scroll");
-      $("div.title-author").addClass("c");
-      $("div.title-author").removeClass("a");
-      $("div.title-author").removeClass("b");
+    $("div.vertical-narrative").removeClass("fixed");
+    $("div.vertical-narrative").addClass("free-scroll");
 
-    }
+
   } else {
+    $("div.title-overlay, div#banner-overlay").removeClass("fixed");
+    Session.set("pastHeader", false);
     $("div.horizontal-context").removeClass("fixed");
     $("div.vertical-narrative").removeClass("fixed");
     $("div.vertical-narrative").removeClass("free-scroll");
   }
-  if (scrollTop >= maxScroll) {
-    $("div.title-overlay, div#banner-overlay").addClass("fixed");
-    $("div.logo").addClass("visible");
-    Session.set("pastHeader", true);
-  } else {
-    $("div.title-overlay, div#banner-overlay").removeClass("fixed");
-    Session.set("pastHeader", false);
-    if (scrollTop > 25){
-      $("div.logo").removeClass("visible");
-    }
 
-  }
+
   if (scrollTop >= readMode) {
     _ref = _.map(window.getVerticalHeights(), function(height){ return height + selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
