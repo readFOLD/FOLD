@@ -414,14 +414,17 @@ Template.vertical_section_block.events({
     if (Session.equals("currentY", t.data.index)){
       contextId = $(e.currentTarget).data('contextId');
       goToContext(contextId);
+      
+      analytics.track('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
+        verticalIndex: this.index,
+        contextId: contextId,
+        contextType: $(e.currentTarget).data('contextType'),
+        contextSource: $(e.currentTarget).data('contextSource'),
+        numberOfContextCardsOnVertical: this.contextBlocks.length,
+        inReadMode: Session.get('read')
+      }));
     }
-    analytics.track('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
-      verticalIndex: this.index,
-      contextType: $(e.currentTarget).data('contextType'),
-      contextSource: $(e.currentTarget).data('contextSource'),
-      numberOfContextCardsOnVertical: this.contextBlocks.length,
-      inReadMode: Session.get('read')
-    }));
+
   }
 });
 
