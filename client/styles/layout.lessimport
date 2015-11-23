@@ -366,7 +366,7 @@ input {
 
 input[type="text"], input[type="password"], input[type="email"] {
   width: 100%;
-  font-family: 'FFMarkWeb';
+  .FFMarkWeb;
   margin-top: 5px;
   margin-bottom: 15px;
   height: 55px;
@@ -411,17 +411,14 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 textarea {
-  font-family: 'FFMarkWeb', 'Avenir Next', sans-serif;
+  .FFMarkWeb;
 }
 
 body {
-  //still like san-serif for headlines and bylines
-  font-family: 'FFMarkWeb', 'Avenir Next', sans-serif;
+  .FFMarkWeb;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  //potential option for card text
-  // font-family: 'Alegreya Sans' , sans-serif;
   margin: 0;
   background-color: @background-color;
   transition: color 0.25s ease;
@@ -1551,7 +1548,7 @@ div.minimap {
 }
 
 div.tagsinput {
-  font-family: 'FFMarkWeb';
+  .FFMarkWeb;
   font-size: 15px;
   border:1px solid #CCC;
   background: #FFF;

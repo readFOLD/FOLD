@@ -46,7 +46,7 @@ form {
 form#login-form {
 	width: 350px;
 	font-size: 15px;
-	font-family: 'FFMarkWeb', sans-serif;
+	.FFMarkWeb;
 	margin: auto;
 }
 
@@ -60,7 +60,7 @@ form#signup-form {
 	width: 350px;
 	margin-left: 75px;
 	margin-top: 55px;
-	font-family: 'FFMarkWeb', sans-serif;
+	.FFMarkWeb;
 }
 
 a.green {

@@ -80,7 +80,7 @@ div.user-profile {
     line-height: 120%;
   }
   div.bio {
-    font-family: 'FFMarkWeb', 'Avenir Next', sans-serif;
+    .FFMarkWeb;
     line-height: 160%;
   }
   .edit-profile {
@@ -95,7 +95,7 @@ div.user-profile {
     } 
   }
   .bio-form {
-    font-family: 'FFMarkWeb';
+    .FFMarkWeb;
     margin-top: 5px;
     margin-bottom: 15px;
     height: 110px;

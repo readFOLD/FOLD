@@ -1232,8 +1232,7 @@ div.text-section {
   button{
     color: @white-color;
     background-color: inherit;
-    font-family: 'FFMarkWeb', 'Avenir Next', sans-serif;
-    font-weight: 400;
+    .FFMarkWeb;
     font-size: .9em;
     padding: 0.5em 1em 0 1em;
     .text-align-start;
