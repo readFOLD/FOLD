@@ -80,7 +80,6 @@ window.updateCurrentY = function() {
   readMode = window.constants.readModeOffset - 1;
 
   stickyTitle = 120;
-  var selectOffset = - 130;
   $("div#banner-overlay").css({
     opacity: Math.min(1.0, scrollTop / readMode)
   });
@@ -131,7 +130,7 @@ window.updateCurrentY = function() {
 
 
   if (scrollTop >= readMode) {
-    _ref = _.map(window.getVerticalHeights(), function(height){ return height + selectOffset});
+    _ref = _.map(window.getVerticalHeights(), function(height){ return height + window.constants.selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
       if (scrollTop < h) {
