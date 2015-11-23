@@ -189,13 +189,16 @@ div.signup, div.login, div.user_profile {
     margin-top: 60px;
     margin-bottom: 160px;
     @media @mobile {
-    font-size:  25px;
-    margin-top: 50px;
-    margin-bottom: 30px; 
+      font-size:  25px;
+      margin-top: 75px;
+      margin-bottom: 30px;
     }
   }
   .description {
     font-family: FFMagdaCleanMonoWebProRegular;
+    @media @mobile {
+      .padding-sides(10px);
+    }
   }
   .description-link {
     font-family: FFMagdaCleanMonoWebProRegular;

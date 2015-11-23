@@ -300,6 +300,17 @@ html {
   height: 100%;
 }
 
+
+.padding-sides(@s){
+  padding-left:@s;
+  padding-right: @s;
+}
+
+.margin-sides(@s){
+  margin-left:@s;
+  margin-right: @s;
+}
+
 .size(@s){
   height:@s;
   width: @s;
