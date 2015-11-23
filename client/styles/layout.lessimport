@@ -550,6 +550,7 @@ div#overlay {
   a {
     cursor: auto;
     padding: 4px 4px;
+    pointer-events: none;
   }
 
   @border-width: 1px;
@@ -581,6 +582,8 @@ div#overlay {
     a {
       // moved background-transition to specific cases so everything doesn't need to animate when a new card becomes selected
       cursor: pointer;
+
+      pointer-events: auto;
       background-color: @unselected-link-color;
       color: inherit;
       &:hover {
