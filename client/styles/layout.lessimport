@@ -555,9 +555,29 @@ div#overlay {
   @border-width: 1px;
   border: @border-width solid transparent;
 
+  position: relative;
+  .width-transition;
+  .height-transition;
+  overflow-y: hidden;
+  width: 100%;
+  min-height: @horizontal-content-height + @remix-bar-height;
+  color: @unselected-text-color;
+
+  &.read {
+    margin-bottom: @card-spacing;
+  }
+
+  background-color: @unselected-background-color;
+
   .selected-styling {
     cursor: text;
     border: @border-width solid @inactive-color;
+    color: @dark-color;
+    opacity: 1.0;
+    background-color: @selected-background-color;
+    p {
+      cursor: text;
+    }
     a {
       // moved background-transition to specific cases so everything doesn't need to animate when a new card becomes selected
       cursor: pointer;
@@ -594,7 +614,6 @@ div#overlay {
   &.new-section{
     padding: 0 15px;
   }
-  background-color: @white-color;
 
   div.vertical-nav-container {
     position: absolute;
@@ -638,6 +657,11 @@ div#overlay {
       min-height: @normalContentHeight;
     }
   }
+}
+
+
+.display-context-section{
+  height: 100%;
 }
 
 div.image-section {
@@ -724,10 +748,6 @@ div.image-section {
   }
 }
 
-.video-section{
-  height: 100%;
-}
-
 div.broken-section {
   height: @horizontal-content-height;
   width: 100%;
@@ -753,35 +773,6 @@ div.vertical-narrative {
   &.free-scroll{
     top: 471px;
   }
-
-  .narrative-section {
-    position: relative;
-    .width-transition;
-    .height-transition;
-    overflow-y: hidden;
-    width: 100%;
-    min-height: @horizontal-content-height + @remix-bar-height;
-//    opacity: 0.25;
-    color: @unselected-text-color;
-    &.read {
-      margin-bottom: @card-spacing;
-    }
-    // box-shadow: 3px 3px @medium-color;
-
-    &.selected {
-      color: @dark-color;
-      opacity: 1.0;
-      background-color: @selected-background-color;
-      p {
-        cursor: text;
-      }
-    }
-  }
-
-  .vertical-narrative-section{
-    background-color: @unselected-background-color;
-  }
-
 }
 
 div.oec-section {
