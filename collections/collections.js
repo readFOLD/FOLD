@@ -695,7 +695,7 @@ TwitterBlock = (function (_super) {
     var text = this.reference.text; // twttr seems to be escaping appropriately itself
 
     if (this.imgUrl()) {
-      var imgIndex = text.lastIndexOf("http://");
+      var imgIndex = text.lastIndexOf("https://") || text.lastIndexOf("http://");
       text = text.substring(0, imgIndex);
     }
 
