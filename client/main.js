@@ -1144,7 +1144,7 @@ Template.read.onCreated(function(){
   if (Session.get('storyViewed') !== id){
     Session.set('storyViewed', id);
     Meteor.call('countStoryView', id);
-    analytics.track('View story', _.extend({}, trackingInfoFromStory(this.data), { nonInteraction: 1 });
+    analytics.track('View story', _.extend({}, trackingInfoFromStory(this.data), { nonInteraction: 1 }));
   }
 
   var that = this;
