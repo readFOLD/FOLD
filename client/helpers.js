@@ -75,12 +75,7 @@ Handlebars.registerHelper("verticalLeft", function() {
 });
 
 Handlebars.registerHelper("adminMode", function() {
-  if (Session.get("adminMode")){
-    var user = Meteor.user();
-    if (user){
-      return user.admin ? true : false;
-    }
-  }
+  return adminMode();
 });
 
 Handlebars.registerHelper("reactiveStory", function(){

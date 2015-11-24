@@ -100,3 +100,12 @@ window.returnFromSignIn = function () {
   Router.go(Session.get('signingInFrom') || '/');
 };
 
+window.adminMode = function() {
+  if (Session.get("adminMode")){
+    var user = Meteor.user();
+    if (user){
+      return user.admin ? true : false;
+    }
+  }
+}
+

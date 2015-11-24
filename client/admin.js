@@ -19,11 +19,6 @@ Template.admin.helpers({
 });
 
 
-Template.read_admin_ui.onCreated(function(){
-  this.subscribe('adminOtherUserPub', this.data.authorId);
-});
-
-
 Template.read_admin_ui.helpers({
   emailAddress: function () {
     var user = Meteor.users.findOne(this.authorId);

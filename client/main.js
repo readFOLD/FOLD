@@ -1150,7 +1150,11 @@ Template.read.onCreated(function(){
   var that = this;
 
   this.autorun(function () {
-    that.subscribe('minimalUsersPub', [that.data.authorId]);
+    if(adminMode()){
+      that.subscribe('adminOtherUserPub', that.data.authorId);
+    } else {
+      that.subscribe('minimalUsersPub', [that.data.authorId]);
+    }
   });
 });
 
