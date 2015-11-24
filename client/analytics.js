@@ -13,7 +13,10 @@ Router.onRun(function() {
 });
 
 window.trackTiming = function(category, str, time){  // mobile safari doesn't have timing api so those results will not include initial request time
-  analytics.track(str, {time: time});
+  analytics.track(str, {
+    time: time,
+    nonInteraction: 1
+  });
 
   analytics.ready(function(){
     ga('send', 'timing', category, str, time);

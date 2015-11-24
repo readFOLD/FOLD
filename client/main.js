@@ -66,7 +66,7 @@ Meteor.startup(function(){
   Tracker.autorun(function(){
     if (Session.get('signingIn') && !justReloaded){
       setSigningInFrom();
-      analytics.track('Opened sign-in overlay');
+      analytics.track('Opened sign-in overlay', {nonInteraction: 1});
     }
     justReloaded = false;
   })
@@ -1144,7 +1144,7 @@ Template.read.onCreated(function(){
   if (Session.get('storyViewed') !== id){
     Session.set('storyViewed', id);
     Meteor.call('countStoryView', id);
-    analytics.track('View story', trackingInfoFromStory(this.data));
+    analytics.track('View story', _.extend({}, trackingInfoFromStory(this.data), { nonInteraction: 1 });
   }
 
   var that = this;
