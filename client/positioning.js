@@ -109,6 +109,7 @@ window.goToXY = function(x, y) {
 
 window.goToY = function(y, options) {
   options = options || {};
+  options.complete = options.complete || function(){};
   if ((options.force) || Session.get("currentY") !== y){
     var verticalHeights;
     verticalHeights = window.getVerticalHeights();
@@ -121,9 +122,7 @@ window.goToY = function(y, options) {
       });
     });
   } else {
-    if (options.complete){
-      options.complete();
-    }
+    options.complete();
   }
 };
 

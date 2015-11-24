@@ -406,7 +406,7 @@ Template.vertical_narrative.helpers({
 
 Template.vertical_section_block.events({
   "click": function(e, t) {
-    var afterGoToY = function(){};
+    var afterGoToY;
     var that = this;
 
     if ($(e.target).is('a')) {
@@ -416,14 +416,16 @@ Template.vertical_section_block.events({
       afterGoToY = function(){
         goToContext(contextId);
       };
-      analytics.track('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
-        verticalIndex: that.index,
-        contextId: contextId,
-        contextType: $(e.currentTarget).data('contextType'),
-        contextSource: $(e.currentTarget).data('contextSource'),
-        numberOfContextCardsOnVertical: that.contextBlocks.length,
-        inReadMode: Session.get('read')
-      }));
+      Meteor.setTimeout(function(){
+        analytics.track('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
+          verticalIndex: that.index,
+          contextId: contextId,
+          contextType: $(e.currentTarget).data('contextType'),
+          contextSource: $(e.currentTarget).data('contextSource'),
+          numberOfContextCardsOnVertical: that.contextBlocks.length,
+          inReadMode: Session.get('read')
+        }));
+      });
     }
 
     goToY(t.data.index, {complete: afterGoToY});
