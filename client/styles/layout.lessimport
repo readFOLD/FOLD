@@ -460,6 +460,7 @@ footer{
   .call-to-action{
     background-color: @white-color !important;
     height: 142px;
+    min-height: 0;
     border: 1px solid @inactive-color;
     .favorite-button{
       font-size: 0px;
