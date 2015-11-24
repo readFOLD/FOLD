@@ -406,31 +406,27 @@ Template.vertical_narrative.helpers({
 
 Template.vertical_section_block.events({
   "click": function(e, t) {
-    var afterGoToY;
+    var afterGoToY = function(){};
     var that = this;
 
     if ($(e.target).is('a')) {
-      var contextId;
+      var contextId = $(e.target).data('contextId');
 
       e.preventDefault();
       afterGoToY = function(){
-        contextId = $(e.target).data('contextId');
         goToContext(contextId);
-        analytics.track('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
-          verticalIndex: that.index,
-          contextId: contextId,
-          contextType: $(e.currentTarget).data('contextType'),
-          contextSource: $(e.currentTarget).data('contextSource'),
-          numberOfContextCardsOnVertical: that.contextBlocks.length,
-          inReadMode: Session.get('read')
-        }));
-      }
+      };
+      analytics.track('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
+        verticalIndex: that.index,
+        contextId: contextId,
+        contextType: $(e.currentTarget).data('contextType'),
+        contextSource: $(e.currentTarget).data('contextSource'),
+        numberOfContextCardsOnVertical: that.contextBlocks.length,
+        inReadMode: Session.get('read')
+      }));
     }
 
     goToY(t.data.index, {complete: afterGoToY});
-
-  },
-  "click a": function(e, t) {
 
   }
 });
