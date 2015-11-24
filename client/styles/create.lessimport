@@ -510,6 +510,7 @@ div.vertical-narrative {
   .new-section {
     min-height: 75px;
     height: 75px;
+    width: 100%;
     position: relative;
     svg{
       .center-over-parent-div;
