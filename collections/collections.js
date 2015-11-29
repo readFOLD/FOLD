@@ -777,6 +777,8 @@ ImageBlock = (function (_super) {
       case 'flickr':
         if (this.reference.flickrOwnerId) {
           return '//www.flickr.com/photos/' + this.reference.flickrOwnerId;
+        } else {
+          return this.reference.authorUrl; // from embedly
         }
     }
   };
@@ -784,7 +786,7 @@ ImageBlock = (function (_super) {
   ImageBlock.prototype.ownerName = function () {
     switch (this.source) {
       case 'flickr':
-        return this.reference.ownerName;
+        return this.reference.ownerName || this.reference.authorName; // author name is from embedly
     }
   };
 
