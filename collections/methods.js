@@ -133,15 +133,17 @@ var unpublishStory = function(storyId) {
   var contextBlockIds = story.contextBlockIds;
 
   // update contextblocks so they are ready for unpublish
-  // TODO REMIX. Might need to do something different if remixed.
-  var numCBlocksUpdated = updateContextBlocks.call(this, {_id: {$in: contextBlockIds}}, {
-    $set: {
-      'published': false
-    }
-  }, {multi: true});
+  if (Meteor.isServer){ // context blocks probably aren't loaded on client
+    // TODO REMIX. Might need to do something different if remixed.
+    var numCBlocksUpdated = updateContextBlocks.call(this, {_id: {$in: contextBlockIds}}, {
+      $set: {
+        'published': false
+      }
+    }, {multi: true});
 
-  if (numCBlocksUpdated !== contextBlockIds.length) {
-    throw new Meteor.Error('context blocks failed to update on unpublish ' + storyId + '. Maybe some are missing. Or are not by author. Number of ids: ' + contextBlockIds.length + ' Number of blocks updated: ' + numCBlocksUpdated);
+    if (numCBlocksUpdated !== contextBlockIds.length) {
+      throw new Meteor.Error('context blocks failed to update on unpublish ' + storyId + '. Maybe some are missing. Or are not by author. Number of ids: ' + contextBlockIds.length + ' Number of blocks updated: ' + numCBlocksUpdated);
+    }
   }
 
   return updateStory.call(this, {_id: storyId}, {
@@ -560,7 +562,7 @@ Meteor.methods({
     }
 
     if (story.published){
-      var unpublishSuccessful = unpublishStory(this, storyId);
+      var unpublishSuccessful = unpublishStory.call(this, storyId);
       if (!unpublishSuccessful) {
         throw new Meteor.Error('unpublish failed' + storyId + '  userId: ' + this.userId);
       }
