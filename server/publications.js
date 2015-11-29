@@ -236,6 +236,37 @@ Meteor.publish("adminMostFavoritesUsersPub", function() {
   });
 });
 
+Meteor.publish("adminReadDraftPub", function(shortId) {
+  if (!this.userId || !Meteor.users.findOne(this.userId).admin) {
+    return this.ready();
+  }
+  return Stories.find({
+    shortId: shortId
+  }, {
+    fields: {
+      history: 0
+    }
+  });
+});
+
+Meteor.publish("adminContextBlocksPub", function(storyShortId) {
+  if(!storyShortId || !this.userId || !Meteor.users.findOne(this.userId).admin){
+    return this.ready();
+  }
+
+  return ContextBlocks.find({
+    storyShortId: storyShortId,
+    deleted: {$ne: true}
+  },{
+    fields : {
+      fullDetails: 0
+    },
+    limit: 1000
+  });
+});
+
+
+
 Meteor.publish("userProfilePub", function(username) { // includes user profile and published stories
 
   userCursor = Meteor.users.find({
