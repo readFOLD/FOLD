@@ -116,7 +116,7 @@ window.formatDate = function (date) {
   if (date) {
     var hms;
     hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-    return weekDays[date.getDay()] + " " + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
+    return weekDays[date.getDay()] + " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
   }
 };
 
@@ -131,7 +131,7 @@ window.formatDateNice = function (date) {
 // 2/7/2015
 window.formatDateCompact = function (date) {
   if (date){
-    return date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
+    return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
   }
 
 };
