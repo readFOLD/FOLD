@@ -266,6 +266,22 @@ Meteor.publish("adminContextBlocksPub", function(storyShortId) {
 });
 
 
+Meteor.publish("adminRecentDraftsPub", function(options) {
+  if(!this.userId || !Meteor.users.findOne(this.userId).admin){
+    return this.ready();
+  }
+
+  return Stories.find({
+    published: false
+  }, {
+    fields: previewStoryFieldsWithDraft,
+    sort: {
+      savedAt: -1
+    },
+    limit: 100
+  });
+});
+
 
 Meteor.publish("userProfilePub", function(username) { // includes user profile and published stories
 

@@ -107,3 +107,15 @@ Handlebars.registerHelper("profileImage", function(user, size) {
     }
   }
 });
+
+
+Handlebars.registerHelper("formatNumber", function(num){
+  if(!num){
+    return 0;
+  }
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+});
+
+Handlebars.registerHelper("formatDate", window.formatDate);
+Handlebars.registerHelper("formatDateNice", window.formatDateNice);
+Handlebars.registerHelper("formatDateCompact", window.formatDateCompact);

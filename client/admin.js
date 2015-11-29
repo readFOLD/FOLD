@@ -34,4 +34,15 @@ Template.read_admin_ui.helpers({
   }
 });
 
-
+Template.admin_recent_drafts.helpers({
+  recentDrafts: function() {
+    return Stories.find({
+      published : false
+    }, {
+        sort: {
+          savedAt: -1
+        }
+      }
+    );
+  }
+})

@@ -107,5 +107,32 @@ window.adminMode = function() {
       return user.admin ? true : false;
     }
   }
-}
+};
+
+var weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+window.formatDate = function (date) {
+  if (date) {
+    var hms;
+    hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+    return weekDays[date.getDay()] + " " + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
+  }
+};
+
+// February 7th, 2015
+window.formatDateNice = function (date) {
+  if (date){
+    return monthNames[(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear();
+  }
+
+};
+
+// 2/7/2015
+window.formatDateCompact = function (date) {
+  if (date){
+    return date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
+  }
+
+};
 
