@@ -45,4 +45,21 @@ Template.admin_recent_drafts.helpers({
       }
     );
   }
-})
+});
+
+Template.admin_recent_drafts.events({
+  'click .show-more': function(){
+    Session.set("adminRecentDraftsMore", Session.get("adminRecentDraftsMore") + 1);
+  }
+});
+
+
+Template.admin_recent_drafts.onCreated(function(){
+  Session.setDefault('adminRecentDraftsMore', 0);
+
+  var that = this;
+
+  this.autorun(function(){
+    that.subscribe("adminRecentDraftsPub", {more: Session.get("adminRecentDraftsMore")})
+  });
+});

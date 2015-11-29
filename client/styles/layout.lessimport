@@ -1850,6 +1850,15 @@ div.loading-container {
   color: @black-color;
 }
 
+.admin-recent-drafts{
+  .show-more{
+    background-color: @black-color;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+  }
+}
+
 .fit{
   .size-to-fit;
 }

@@ -1,27 +1,32 @@
 <template name="admin">
-  <h1>Welcome {{currentUser.profile.name}}</h1>
-  <h2>Users Who Love FOLD Stories</h2>
-  <ol>
-    {{#each usersWhoLoveStories}}
-      <li><b>{{profile.name}}</b> ({{emailAddress}} {{#if twitterHandle}}{{twitterHandle}}{{/if}}) : <b>{{profile.favorites.length}} favorites</b></li>
-    {{/each}}
-  </ol>
-  <br>
-  <br>
-  {{#linkTo route="admin-recent-drafts"}}<b>View Recent Drafts</b>{{/linkTo}}
+  <div class="admin">
+    <h1>Welcome {{currentUser.profile.name}}</h1>
+    <h2>Users Who Love FOLD Stories</h2>
+    <ol>
+      {{#each usersWhoLoveStories}}
+        <li><b>{{profile.name}}</b> ({{emailAddress}} {{#if twitterHandle}}{{twitterHandle}}{{/if}}) : <b>{{profile.favorites.length}} favorites</b></li>
+      {{/each}}
+    </ol>
+    <br>
+    <br>
+    {{#linkTo route="admin-recent-drafts"}}<b>View Recent Drafts</b>{{/linkTo}}
+  </div>
 </template>
 
 <template name="admin_recent_drafts">
-  <h1>Welcome {{currentUser.profile.name}}</h1>
-  <h2>Recently saved drafts</h2>
-  <ol>
-    {{#each recentDrafts}}
-      {{#linkTo route="admin-read-draft" data=this}}
-        <li>
-          <b>{{draftStory.title}}</b> by {{authorUsername}} saved at {{formatDate savedAt}}
+  <div class="admin-recent-drafts">
+    <h1>Welcome {{currentUser.profile.name}}</h1>
+    <h2>Recently saved drafts</h2>
+    <button class="show-more">Show More</button>
+    <ol>
+      {{#each recentDrafts}}
+        {{#linkTo route="admin-read-draft" data=this}}
+          <li>
+            <b>{{draftStory.title}}</b> by {{authorUsername}} saved at {{formatDate savedAt}}
 
-        </li>
-      {{/linkTo}}
-    {{/each}}
-  </ol>
+          </li>
+        {{/linkTo}}
+      {{/each}}
+    </ol>
+  </div>
 </template>

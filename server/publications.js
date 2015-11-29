@@ -267,6 +267,9 @@ Meteor.publish("adminContextBlocksPub", function(storyShortId) {
 
 
 Meteor.publish("adminRecentDraftsPub", function(options) {
+  options = options || {};
+  options.more = options.more || 0;
+
   if(!this.userId || !Meteor.users.findOne(this.userId).admin){
     return this.ready();
   }
@@ -278,7 +281,7 @@ Meteor.publish("adminRecentDraftsPub", function(options) {
     sort: {
       savedAt: -1
     },
-    limit: 100
+    limit: 250 * Math.pow(2, options.more)
   });
 });
 
