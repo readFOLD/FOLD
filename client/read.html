@@ -2,9 +2,6 @@
   {{!hasContext suppresses a firefox error when story not found because page gets rendered without any context, probably right before story not found gets shown, should probably not be necessary}}
   {{#if hasContext}}
     {{> story_header}}
-    {{#if adminMode}}
-      {{> read_admin_ui}}
-    {{/if}}
     {{> story}}
     {{> read_options}}
   {{/if}}
@@ -17,9 +14,14 @@
       {{#if twitterHandle}}
         <li>{{twitterHandle}}</li>
       {{/if}}
-      <li>{{analytics.views.byIP}} unique views</li>
-      <li>{{analytics.shares.total}} shares</li>
-      <li>{{favoritedTotal}} favorites</li>
+      {{#if published}}
+        <li>{{analytics.views.byIP}} unique views</li>
+        <li>{{analytics.shares.total}} shares</li>
+        <li>{{favoritedTotal}} favorites</li>
+      {{else}}
+        <li>Unpublished Draft</li>
+        <li>Last saved: {{formatDate savedAt}}</li>
+      {{/if}}
       <li></li>
     </ol>
   </div>
