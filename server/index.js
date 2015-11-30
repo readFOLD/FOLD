@@ -11,7 +11,7 @@ WebApp.connectHandlers.use(function(req, res, next) {
 
 if (_.contains([true, 'true'], process.env.ALLOW_BOTS)){
   robots.addLine('User-agent: *\nDisallow: /create/');
-  robots.addLine('User-agent: *\nDisallow: /admin/');
+  robots.addLine('Disallow: /admin/');
 } else {
   robots.addLine('User-agent: *\nDisallow: /');
 }
