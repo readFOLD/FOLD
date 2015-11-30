@@ -627,9 +627,10 @@ Template.mobile_minimap.helpers({
   horizontalSelectedArray: function() {
     var currentXId = Session.get('currentXId');
     var currentY = Session.get('currentY');
+    var mobileContextView = Session.get('mobileContextView');
     if (this.verticalSections[currentY]){
       return _.map(this.verticalSections[currentY].contextBlocks, function(cId){
-        return {selected: currentXId === cId};
+        return {selected: mobileContextView && (currentXId === cId)};
       });
     } else {
       return [];
