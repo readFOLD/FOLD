@@ -462,6 +462,7 @@ footer{
     height: 142px;
     min-height: 0;
     border: 1px solid @inactive-color;
+    color: @black-color;
     .favorite-button{
       font-size: 0px;
       button{
