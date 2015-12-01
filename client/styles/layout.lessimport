@@ -1416,13 +1416,10 @@ div.minimap {
 
 .central-publish-modal{
   background-color: @dark-color;
-  position: fixed;
   padding: @nonMobileNarrativeSectionPadding;
   width: 600px;
   max-width: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  .center-over-parent-div;
   color: @white-color;
 
   label {
@@ -1501,7 +1498,6 @@ div.minimap {
     margin:auto;
     display:block;
     text-align: center;
-    position: absolute;
     background-color: @white-color;
 
     height: 240px;
@@ -1510,16 +1506,11 @@ div.minimap {
     max-width: 100%;
     .FFMarkWebBold;
 
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    .center-over-parent-div;
 
     ol{
       display: inline-block;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      .center-over-parent-div;
     }
 
     li{
