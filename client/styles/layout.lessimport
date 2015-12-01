@@ -444,10 +444,6 @@ body {
   overflow-x: hidden;
 }
 
-strong, b{
-  .FFMarkWebBold;
-}
-
 footer{
   @height: 500px;
   position:absolute;
