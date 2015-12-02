@@ -167,7 +167,7 @@
   <div class="search-form">
     <form>
       <div class="search-outside-input-container search-open">
-        <div class="search-trigger">Search</div>
+        <div class="search-trigger">{{#if searchInputLabel}}{{searchInputLabel}}{{else}}Search{{/if}}</div>
         <div class="search-input-container">
           <input type="search" placeholder={{placeholder}} autofocus="autofocus" dir="auto">
         </div>
@@ -227,7 +227,7 @@
       </ul>
     </div>
 
-    {{> search_form placeholderType='links'}}
+    {{> search_form searchInputLabel='URL' placeholderType='links'}}
 
     {{#if loading}}
       <div class="preview-section placeholder">
