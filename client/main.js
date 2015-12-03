@@ -725,7 +725,7 @@ Template.horizontal_context.helpers({
   },
   horizontalSectionInDOM: function() {
     // on this row, or this card is the current X for another hidden row
-    return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId');
+    return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId') || this.type === 'audio';
   },
   horizontalShown: function() {
     return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone());
@@ -760,7 +760,8 @@ editableDescriptionCreatedBoilerplate = function() {
 horizontalBlockHelpers = _.extend({}, typeHelpers, {
   selected: function() {
     // return Session.equals("currentX", this.index) && !Session.get("addingContext");
-    return this.index === getXByYId(this.verticalId) && !Session.get("addingContext");
+    //    return this.index === getXByYId(this.verticalId) && !Session.get("addingContext") || this._id === Session.get('poppedOutContextId');
+    return (Session.equals("currentX", this.index) || Session.equals("currentX", null) && this.index === 0) && (Session.equals("currentY", this.verticalIndex) || Session.equals("currentY", null) && this.verticalIndex === 0) && !Session.get("addingContext") || this._id === Session.get('poppedOutContextId');
   },
   textContent: function() {
     var textContent, rows;
@@ -819,7 +820,7 @@ Template.horizontal_section_block.helpers({
     Session.get('lastUpdate');
   },
   hide: function() {
-    return !Session.equals("currentY", this.verticalIndex) && !(Session.equals("currentY", null) && this.verticalIndex === 0) && ! this._id === Session.get('poppedOutContextId');
+    return !Session.equals("currentY", this.verticalIndex) && !(Session.equals("currentY", null) && this.verticalIndex === 0) && !(this._id === Session.get('poppedOutContextId'));
   },
   poppedOut: function(){
     return this._id === Session.get('poppedOutContextId');
@@ -1121,6 +1122,50 @@ Tracker.autorun(function() {
   }
   return Session.set('currentXId', null);
 });
+
+window.mostRecentAudioCardWidget = null;
+window.mostRecentAudioCardId = null;
+
+Tracker.autorun(function() {
+  var currentXId;
+  if (currentXId = Session.get('currentXId')){
+    console.log('current X id changed')
+
+    Tracker.nonreactive(function(){
+      if (currentXId === Session.get('poppedOutContextId')){ // new card was previously popped out, so pop it back in
+        console.log('pop back in')
+        Session.set('poppedOutContextId', null);
+
+      } else if(mostRecentAudioCardWidget){ // otherwise there is a most recent audio card
+        console.log('there is already a current audio card')
+
+        var associatedAudioCardId = mostRecentAudioCardId;
+
+        mostRecentAudioCardWidget.isPaused(function(paused){
+          if (!paused){ // and it's playing
+            console.log('current audio card wasnt paused')
+            console.log('pop out ' + associatedAudioCardId)
+
+            Session.set('poppedOutContextId', associatedAudioCardId);  // pop it out
+          }
+        })
+      }
+      var audioIFrame;
+      if (audioIFrame = document.querySelector(".audio-section[data-context-id='" + currentXId + "'] iframe" )){ // also, if the new card is an audio card
+        console.log('set current audio card')
+
+        window.mostRecentAudioCardWidget = SC.Widget(audioIFrame); // it's now the most recent audio card
+        window.mostRecentAudioCardId = currentXId;
+      } else {
+        console.log('no more current audio card')
+
+        window.mostRecentAudioCardWidget = null;
+        window.mostRecentAudioCardId = null;
+      }
+    })
+  }
+});
+
 
 
 

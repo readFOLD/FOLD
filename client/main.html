@@ -247,9 +247,6 @@
   <div
       class="narrative-section horizontal-narrative-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if poppedOut}}popped-out selected{{/if}} {{#if editingThisContext}}editing{{/if}} {{#if hide}}hide{{/if}}" data-index="{{index}}" style="width: {{cardWidth}}px; left: {{left}}px;">
 <section>
-  <!--    <div id="index">
-      {{index}}
-    </div> -->
 
     {{#if type}}
       {{#if text}}
@@ -431,12 +428,10 @@
 
 
 <template name="display_audio_section">
-  <div class="display-context-section audio-section">
-    {{#if selected}}
-      <div class="active-display">
-        <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
-      </div>
-    {{/if}}
+  <div class="display-context-section audio-section" data-context-id="{{_id}}">
+    <div class="active-display {{#unless selected}}hide{{/unless}}">
+      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+    </div>
     <div class="preview">
       <img src="{{previewUrl}}"/>
     </div>

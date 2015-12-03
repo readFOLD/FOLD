@@ -584,8 +584,12 @@ AudioBlock = (function (_super) {
   };
 
   AudioBlock.prototype.previewUrl = function () {
-    if (this.source === 'soundcloud' && this.reference.artworkUrl) {
-      return this.reference.artworkUrl.replace(/large\.jpg/, "t500x500.jpg");
+    if (this.source === 'soundcloud') {
+      if(this.reference.artworkUrl){
+        return this.reference.artworkUrl.replace(/large\.jpg/, "t500x500.jpg");
+      } else {
+        return "https://w1.sndcdn.com/AKjJbbNw4Pz6_m.png"; // TODO something else
+      }
     }
   };
 
