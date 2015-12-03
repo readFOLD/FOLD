@@ -184,19 +184,21 @@ div.signup, div.login, div.user_profile {
     .size-to-fit;
   }
   .tagline {
-    font-family: FFMarkWebBold;
+    .FFMarkWebBold;
     font-size:  30px;
     margin-top: 60px;
     margin-bottom: 160px;
     @media @mobile {
-    font-family: FFMarkWebBold;
-    font-size:  25px;
-    margin-top: 30px;
-    margin-bottom: 30px; 
+      font-size:  25px;
+      margin-top: 75px;
+      margin-bottom: 30px;
     }
   }
   .description {
     font-family: FFMagdaCleanMonoWebProRegular;
+    @media @mobile {
+      .padding-sides(10px);
+    }
   }
   .description-link {
     font-family: FFMagdaCleanMonoWebProRegular;
@@ -282,7 +284,7 @@ div.stories {
 
   div.headline {
     background-color: @white-color;
-    font-family: 'FFMarkWebBold';
+    .FFMarkWebBold;
     height: auto;
     /*height depends on length of story headline*/
     width: 100%;

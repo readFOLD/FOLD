@@ -156,16 +156,19 @@ html {
   font-weight: normal;
   font-style: normal;
 }
+
 .FFMarkWebMedium { 
   font-family: FFMarkWebMedium;
   font-weight: normal;
   font-style: normal;
 }
+
 .FFMarkWeb { 
   font-family: FFMarkWeb;
   font-weight: normal;
   font-style: normal;
 }
+
 .FFMarkWebLight { 
   font-family: FFMarkWebLight;
   font-weight: normal;
@@ -297,6 +300,17 @@ html {
   height: 100%;
 }
 
+
+.padding-sides(@s){
+  padding-left:@s;
+  padding-right: @s;
+}
+
+.margin-sides(@s){
+  margin-left:@s;
+  margin-right: @s;
+}
+
 .size(@s){
   height:@s;
   width: @s;
@@ -363,7 +377,7 @@ input {
 
 input[type="text"], input[type="password"], input[type="email"] {
   width: 100%;
-  font-family: 'FFMarkWeb';
+  .FFMarkWeb;
   margin-top: 5px;
   margin-bottom: 15px;
   height: 55px;
@@ -408,17 +422,14 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 textarea {
-  font-family: 'FFMarkWeb', 'Avenir Next', sans-serif;
+  .FFMarkWeb;
 }
 
 body {
-  //still like san-serif for headlines and bylines
-  font-family: 'FFMarkWeb', 'Avenir Next', sans-serif;
+  .FFMarkWeb;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  //potential option for card text
-  // font-family: 'Alegreya Sans' , sans-serif;
   margin: 0;
   background-color: @background-color;
   transition: color 0.25s ease;
@@ -443,11 +454,16 @@ footer{
   display: inline-block;
   text-align: center;
   .call-to-action{
-    background-color: @white-color;
+    background-color: @white-color !important;
     height: 142px;
+    min-height: 0;
     border: 1px solid @inactive-color;
+    color: @black-color;
     .favorite-button{
       font-size: 0px;
+      button{
+        .size(30px);
+      }
     }
   }
   p{
@@ -532,16 +548,40 @@ div#overlay {
   a {
     cursor: auto;
     padding: 4px 4px;
+    pointer-events: none;
   }
 
   @border-width: 1px;
   border: @border-width solid transparent;
-  &.selected {
+
+  position: relative;
+  .width-transition;
+  .height-transition;
+  overflow-y: hidden;
+  width: 100%;
+  min-height: @horizontal-content-height + @remix-bar-height;
+  color: @unselected-text-color;
+
+  &.read {
+    margin-bottom: @card-spacing;
+  }
+
+  background-color: @unselected-background-color;
+
+  .selected-styling {
     cursor: text;
     border: @border-width solid @inactive-color;
+    color: @dark-color;
+    opacity: 1.0;
+    background-color: @selected-background-color;
+    p {
+      cursor: text;
+    }
     a {
       // moved background-transition to specific cases so everything doesn't need to animate when a new card becomes selected
       cursor: pointer;
+
+      pointer-events: auto;
       background-color: @unselected-link-color;
       color: inherit;
       &:hover {
@@ -560,6 +600,13 @@ div#overlay {
       }
     }
   }
+
+  &.selected {
+    .selected-styling;
+  }
+  @media @mobile {
+    .selected-styling;
+  }
 }
 
 .narrative-section {
@@ -568,7 +615,6 @@ div#overlay {
   &.new-section{
     padding: 0 15px;
   }
-  background-color: @white-color;
 
   div.vertical-nav-container {
     position: absolute;
@@ -593,7 +639,7 @@ div#overlay {
   div.title {
     line-height: @titleHeight;
     font-size: 20px;
-    font-family: 'FFMarkWebBold';
+    .FFMarkWebBold;
     margin-bottom: @titleMarginBottom;
   }
 
@@ -612,6 +658,11 @@ div#overlay {
       min-height: @normalContentHeight;
     }
   }
+}
+
+
+.display-context-section{
+  height: 100%;
 }
 
 div.image-section {
@@ -723,35 +774,6 @@ div.vertical-narrative {
   &.free-scroll{
     top: 471px;
   }
-
-  .narrative-section {
-    position: relative;
-    .width-transition;
-    .height-transition;
-    overflow-y: hidden;
-    width: 100%;
-    min-height: @horizontal-content-height + @remix-bar-height;
-//    opacity: 0.25;
-    color: @unselected-text-color;
-    &.read {
-      margin-bottom: @card-spacing;
-    }
-    // box-shadow: 3px 3px @medium-color;
-
-    &.selected {
-      color: @dark-color;
-      opacity: 1.0;
-      background-color: @selected-background-color;
-      p {
-        cursor: text;
-      }
-    }
-  }
-
-  .vertical-narrative-section{
-    background-color: @unselected-background-color;
-  }
-
 }
 
 div.oec-section {
@@ -785,7 +807,7 @@ div.link-section {
     }
     div.link-title {
       font-size: 20px;
-      font-family: 'FFMarkWebBold', sans-serif;
+      .FFMarkWebBold;
       padding-left: 15px;
       padding-top: 15px;
       padding-right: 20px;
@@ -1066,7 +1088,7 @@ div.horizontal-context {
       display: none;
     }
     .context-count-text {
-      font-family: 'FFMarkWebBold', sans-serif;
+      .FFMarkWebBold;
       font-size: 14px;
       position: absolute;
       cursor: default;
@@ -1185,10 +1207,9 @@ div.horizontal-context {
 
 
 @minimap-right-buffer: 6px;
-@minimap-bottom-buffer: @magic-styling-distance + 20px;
+@minimap-bottom-buffer: @magic-styling-distance + 10px;
 @minimap-top-buffer: 20px;
 @minimap-padding: 6px;
-@minimap-max-height: calc(100% ~"-" @horizontal-context-top ~"-" @horizontal-context-margin-top ~"-" @horizontal-content-height ~"-" @remix-bar-height ~"-" @minimap-bottom-buffer ~"-" @minimap-top-buffer ~"-" 2*@minimap-padding);
 
 div.minimap {
   .background-transition;
@@ -1196,7 +1217,6 @@ div.minimap {
   overflow: hidden;
   right: @minimap-right-buffer;
   bottom: @minimap-bottom-buffer;
-  max-height: @minimap-max-height;
   padding: @minimap-padding;
 
   .expand {
@@ -1408,13 +1428,10 @@ div.minimap {
 
 .central-publish-modal{
   background-color: @dark-color;
-  position: fixed;
   padding: @nonMobileNarrativeSectionPadding;
   width: 600px;
   max-width: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  .center-over-parent-div;
   color: @white-color;
 
   label {
@@ -1484,6 +1501,7 @@ div.minimap {
     color: @black-color;
   }
   .explanation{
+    font-size: 13px;
     padding: 20px;
     color: @action-color;
     white-space: pre-wrap;
@@ -1492,25 +1510,19 @@ div.minimap {
     margin:auto;
     display:block;
     text-align: center;
-    position: absolute;
-    background-color: @medium-color;
+    background-color: @white-color;
 
     height: 240px;
     width: 320px;
     max-height: 100%;
     max-width: 100%;
-    font-family: 'FFMarkWebBold', sans-serif;
+    .FFMarkWebBold;
 
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    .center-over-parent-div;
 
     ol{
       display: inline-block;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      .center-over-parent-div;
     }
 
     li{
@@ -1550,7 +1562,7 @@ div.minimap {
 }
 
 div.tagsinput {
-  font-family: 'FFMarkWeb';
+  .FFMarkWeb;
   font-size: 15px;
   border:1px solid #CCC;
   background: #FFF;
@@ -1736,7 +1748,7 @@ div.loading-container {
     }
 
     color: @white-color;
-    font-family: 'FFMarkWebBold', sans-serif;
+    .FFMarkWebBold;
 
     button{
       padding: 0px 23px;
@@ -1836,6 +1848,15 @@ div.loading-container {
   bottom: 0;
   right: 200px;
   color: @black-color;
+}
+
+.admin-recent-drafts{
+  .show-more{
+    background-color: @black-color;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+  }
 }
 
 .fit{

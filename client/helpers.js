@@ -75,12 +75,7 @@ Handlebars.registerHelper("verticalLeft", function() {
 });
 
 Handlebars.registerHelper("adminMode", function() {
-  if (Session.get("adminMode")){
-    var user = Meteor.user();
-    if (user){
-      return user.admin ? true : false;
-    }
-  }
+  return adminMode();
 });
 
 Handlebars.registerHelper("reactiveStory", function(){
@@ -90,6 +85,10 @@ Handlebars.registerHelper("reactiveStory", function(){
 Handlebars.registerHelper("twitterUser", function() {
   var user = Meteor.user();
   return user.services && user.services.twitter && user.services.twitter.id;
+});
+
+Handlebars.registerHelper("userFavorited", function() {
+  return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
 });
 
 Handlebars.registerHelper("profileImage", function(user, size) {
@@ -108,3 +107,15 @@ Handlebars.registerHelper("profileImage", function(user, size) {
     }
   }
 });
+
+
+Handlebars.registerHelper("formatNumber", function(num){
+  if(!num){
+    return 0;
+  }
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+});
+
+Handlebars.registerHelper("formatDate", window.formatDate);
+Handlebars.registerHelper("formatDateNice", window.formatDateNice);
+Handlebars.registerHelper("formatDateCompact", window.formatDateCompact);

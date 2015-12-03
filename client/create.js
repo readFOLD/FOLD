@@ -99,6 +99,14 @@ window.plainTextPaste = function(e) {
 Template.create.onCreated(function() {
   this.publishing = new ReactiveVar();
   this.headerImageLoading = new ReactiveVar();
+
+  var that = this;
+
+  this.autorun(function () {
+    if(adminMode()){
+      that.subscribe('adminOtherUserPub', that.data.authorId); // for admins to see author info when read draft
+    }
+  });
 });
 
 Template.create.onRendered(function() {

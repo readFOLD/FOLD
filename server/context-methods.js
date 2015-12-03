@@ -415,16 +415,16 @@ Meteor.methods({
 
     return searchResults;
   },
-  embedlyEmbedResult: function (query) {
+  embedlyEmbedResult: function (url) {
     var res, requestParams;
-    check(query, String);
+    check(url, String);
     this.unblock();
 
     requestParams = {
-      url: query,
+      url: url.trim(),
       key: EMBEDLY_KEY,
       maxheight: 300,
-      maxwidth: 474 // TODO update for deepstream
+      maxwidth: 474
     };
 
     res = HTTP.get('http://api.embed.ly/1/oembed', {
@@ -432,13 +432,13 @@ Meteor.methods({
     });
     return res.data;
   },
-  embedlyExtractResult: function (query) {
+  embedlyExtractResult: function (url) {
     var res, requestParams;
-    check(query, String);
+    check(url, String);
     this.unblock();
 
     requestParams = {
-      url: query,
+      url: url.trim(),
       key: EMBEDLY_KEY,
       maxheight: 300,
       maxwidth: 474 // TODO update for deepstream

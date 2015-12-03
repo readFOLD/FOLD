@@ -8,6 +8,15 @@ $.cloudinary.config({
 
 window.isHighDensity = ((window.matchMedia && (window.matchMedia('only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)').matches || window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)').matches)) || (window.devicePixelRatio && window.devicePixelRatio > 1.3));
 
+// browser detection
+window.isChrome = navigator.userAgent.indexOf('Chrome') > -1;
+window.isExplorer = navigator.userAgent.indexOf('MSIE') > -1;
+window.isFirefox = navigator.userAgent.indexOf('Firefox') > -1;
+window.isSafari = navigator.userAgent.indexOf("Safari") > -1;
+window.isOpera = navigator.userAgent.toLowerCase().indexOf("op") > -1;
+if ((isChrome)&&(isSafari)) {isSafari=false;}
+if ((isChrome)&&(isOpera)) {isChrome=false;}
+
 window.isValidPassword = function(p) {
   if (p.length >= 6) {
     return true;
@@ -90,3 +99,40 @@ window.returnFromSignIn = function () {
   closeSignInOverlay();
   Router.go(Session.get('signingInFrom') || '/');
 };
+
+window.adminMode = function() {
+  if (Session.get("adminMode")){
+    var user = Meteor.user();
+    if (user){
+      return user.admin ? true : false;
+    }
+  }
+};
+
+var weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+window.formatDate = function (date) {
+  if (date) {
+    var hms;
+    hms = date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+    return weekDays[date.getDay()] + " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
+  }
+};
+
+// February 7th, 2015
+window.formatDateNice = function (date) {
+  if (date){
+    return monthNames[(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear();
+  }
+
+};
+
+// 2/7/2015
+window.formatDateCompact = function (date) {
+  if (date){
+    return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+  }
+
+};
+

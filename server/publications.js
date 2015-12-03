@@ -214,6 +214,9 @@ Meteor.publish("adminOtherUserPub", function(userId) {
   }
   return Meteor.users.find({ _id: userId }, {
     fields: {
+      "profile.profilePicture": 1,
+      "username": 1,
+      "services.twitter.id": 1,
       "services.twitter.screenName": 1,
       "emails.address": 1
     }
@@ -232,6 +235,56 @@ Meteor.publish("adminMostFavoritesUsersPub", function() {
     },
   });
 });
+
+Meteor.publish("adminReadDraftPub", function(shortId) {
+  if (!this.userId || !Meteor.users.findOne(this.userId).admin) {
+    return this.ready();
+  }
+  return Stories.find({
+    shortId: shortId
+  }, {
+    fields: {
+      history: 0
+    }
+  });
+});
+
+Meteor.publish("adminContextBlocksPub", function(storyShortId) {
+  if(!storyShortId || !this.userId || !Meteor.users.findOne(this.userId).admin){
+    return this.ready();
+  }
+
+  return ContextBlocks.find({
+    storyShortId: storyShortId,
+    deleted: {$ne: true}
+  },{
+    fields : {
+      fullDetails: 0
+    },
+    limit: 1000
+  });
+});
+
+
+Meteor.publish("adminRecentDraftsPub", function(options) {
+  options = options || {};
+  options.more = options.more || 0;
+
+  if(!this.userId || !Meteor.users.findOne(this.userId).admin){
+    return this.ready();
+  }
+
+  return Stories.find({
+    published: false
+  }, {
+    fields: previewStoryFieldsWithDraft,
+    sort: {
+      savedAt: -1
+    },
+    limit: 250 * Math.pow(2, options.more)
+  });
+});
+
 
 Meteor.publish("userProfilePub", function(username) { // includes user profile and published stories
 

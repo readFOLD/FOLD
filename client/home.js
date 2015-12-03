@@ -45,9 +45,6 @@ Template.home.helpers({
   filterOpen: function() {
     return Session.get("filterOpen");
   },
-  sticky: function() {
-    return Session.get("sticky");
-  },
   filter: function() {
     return Session.get("filter");
   },
@@ -389,7 +386,6 @@ Template.login_buttons.events({
   },
   "click .signin": function(d) {
     Session.set('signingIn', true);
-    setSigningInFrom();
   },
   "click .logout" : function(e) {
     e.preventDefault();

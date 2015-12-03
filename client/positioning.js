@@ -1,7 +1,8 @@
 window.constants = {
   verticalSpacing: 20, // there is css that needs to match this
   readModeOffset: 246,
-  minPageWidth: 1024
+  minPageWidth: 1024,
+  selectOffset: - 210
 };
 
 if(Meteor.Device.isPhone()){
@@ -107,14 +108,21 @@ window.goToXY = function(x, y) {
 };
 
 window.goToY = function(y, options) {
-  if ((options && options.force) || Session.get("currentY") !== y){
+  options = options || {};
+  options.complete = options.complete || function(){};
+  if ((options.force) || Session.get("currentY") !== y){
     var verticalHeights;
     verticalHeights = window.getVerticalHeights();
     $('body,html').animate({
       scrollTop: verticalHeights[y]
     }, 500, 'easeInExpo', function() {
       Session.set("currentY", y);
+      Meteor.setTimeout(function(){
+        options.complete();
+      });
     });
+  } else {
+    options.complete();
   }
 };
 

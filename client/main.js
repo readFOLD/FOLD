@@ -60,6 +60,16 @@ Meteor.startup(function(){
   throttledResize = _.throttle(windowResize, 20);
 
   $(window).resize(throttledResize);
+
+  var justReloaded = window.codeReloaded;
+
+  Tracker.autorun(function(){
+    if (Session.get('signingIn') && !justReloaded){
+      setSigningInFrom();
+      analytics.track('Opened sign-in overlay', {nonInteraction: 1});
+    }
+    justReloaded = false;
+  })
 });
 
 
@@ -73,83 +83,64 @@ window.hammerSwipeOptions = {
 var scrollPauseArmed = false;
 
 window.updateCurrentY = function() {
-  var actualY, h, i, maxScroll, readMode, scrollTop, stickyBody, stickyTitle, vertTop, _i, _len, _ref;
+  var actualY, h, i, readMode, scrollTop, stickyTitle, vertTop, _i, _len, _ref;
   scrollTop = $(document).scrollTop();
   Session.set("scrollTop", scrollTop);
-  $("div.logo").addClass("visible");
-
-  if (scrollTop >= (200 - 32)) {
-    Session.set("sticky", true);
-  } else {
-    Session.set("sticky", false);
-  }
 
   readMode = window.constants.readModeOffset - 1;
 
-  stickyBody = readMode;
-  maxScroll = readMode;
   stickyTitle = 120;
-  var selectOffset = - 130;
   $("div#banner-overlay").css({
-    opacity: Math.min(1.0, scrollTop / maxScroll)
+    opacity: Math.min(1.0, scrollTop / readMode)
   });
   $(".horizontal-context").css({
-    opacity: 0.5 + Math.min(1.0, scrollTop / maxScroll) / 2
+    opacity: 0.5 + Math.min(1.0, scrollTop / readMode) / 2
   });
-  if (scrollTop >= stickyTitle) {
-
+  if (scrollTop >= readMode){
+    $("div.title-author").addClass("c");
+    $("div.title-author").removeClass("a");
+    $("div.title-author").removeClass("b");
+  } else if (scrollTop >= stickyTitle) {
     $("div.title-author").addClass("b");
     $("div.title-author").removeClass("a");
     $("div.title-author").removeClass("c");
   } else {
-
     scrollPauseArmed = true;
 
     $("div.title-author").addClass("a");
     $("div.title-author").removeClass("b");
     $("div.title-author").removeClass("c");
   }
-  if (scrollTop >= stickyBody) {
+
+  if (scrollTop >= readMode) {
+    $("div.title-overlay, div#banner-overlay").addClass("fixed");
+    Session.set("pastHeader", true);
     $("div.horizontal-context").addClass("fixed");
-    $("div.vertical-narrative").addClass("fixed");
-    $("div.vertical-narrative").removeClass("free-scroll");
 
     if(scrollPauseArmed){
       document.body.style.overflowY = 'hidden';
-      $(document).scrollTop(stickyBody);
+      $(document).scrollTop(readMode);
       Meteor.setTimeout(function () {
         document.body.style.overflowY = 'auto';
       }, 500);
       scrollPauseArmed = false;
     }
 
-    if (scrollTop >= maxScroll) {
-      $("div.vertical-narrative").removeClass("fixed");
-      $("div.vertical-narrative").addClass("free-scroll");
-      $("div.title-author").addClass("c");
-      $("div.title-author").removeClass("a");
-      $("div.title-author").removeClass("b");
+    $("div.vertical-narrative").removeClass("fixed");
+    $("div.vertical-narrative").addClass("free-scroll");
 
-    }
+
   } else {
+    $("div.title-overlay, div#banner-overlay").removeClass("fixed");
+    Session.set("pastHeader", false);
     $("div.horizontal-context").removeClass("fixed");
     $("div.vertical-narrative").removeClass("fixed");
     $("div.vertical-narrative").removeClass("free-scroll");
   }
-  if (scrollTop >= maxScroll) {
-    $("div.title-overlay, div#banner-overlay").addClass("fixed");
-    $("div.logo").addClass("visible");
-    Session.set("pastHeader", true);
-  } else {
-    $("div.title-overlay, div#banner-overlay").removeClass("fixed");
-    Session.set("pastHeader", false);
-    if (scrollTop > 25){
-      $("div.logo").removeClass("visible");
-    }
 
-  }
+
   if (scrollTop >= readMode) {
-    _ref = _.map(window.getVerticalHeights(), function(height){ return height + selectOffset});
+    _ref = _.map(window.getVerticalHeights(), function(height){ return height + window.constants.selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
       if (scrollTop < h) {
@@ -414,23 +405,34 @@ Template.vertical_narrative.helpers({
 });
 
 Template.vertical_section_block.events({
-  "click": function(d, t) {
-    goToY(t.data.index);
-  },
-  "click a": function(e, t) {
-    var contextId;
-    e.preventDefault();
-    if (Session.equals("currentY", t.data.index)){
-      contextId = $(e.currentTarget).data('contextId');
-      goToContext(contextId);
+  "click": function(e, t) {
+    var afterGoToY;
+    var enclosingAnchor;
+    var that = this;
+
+    if($(e.target).is('div')){
+      // do nothing
+    } else if (enclosingAnchor = $(e.target).closest('a')){
+      var contextId = $(enclosingAnchor).data('contextId');
+
+      e.preventDefault();
+      afterGoToY = function(){
+        goToContext(contextId);
+      };
+      Meteor.setTimeout(function(){
+        analytics.track('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
+          verticalIndex: that.index,
+          contextId: contextId,
+          contextType: $(e.currentTarget).data('contextType'),
+          contextSource: $(e.currentTarget).data('contextSource'),
+          numberOfContextCardsOnVertical: that.contextBlocks.length,
+          inReadMode: Session.get('read')
+        }));
+      });
     }
-    analytics.track('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
-      verticalIndex: this.index,
-      contextType: $(e.currentTarget).data('contextType'),
-      contextSource: $(e.currentTarget).data('contextSource'),
-      numberOfContextCardsOnVertical: this.contextBlocks.length,
-      inReadMode: Session.get('read')
-    }));
+
+    goToY(t.data.index, {complete: afterGoToY});
+
   }
 });
 
@@ -628,9 +630,10 @@ Template.mobile_minimap.helpers({
   horizontalSelectedArray: function() {
     var currentXId = Session.get('currentXId');
     var currentY = Session.get('currentY');
+    var mobileContextView = Session.get('mobileContextView');
     if (this.verticalSections[currentY]){
       return _.map(this.verticalSections[currentY].contextBlocks, function(cId){
-        return {selected: currentXId === cId};
+        return {selected: mobileContextView && (currentXId === cId)};
       });
     } else {
       return [];
@@ -722,7 +725,7 @@ Template.horizontal_context.helpers({
   },
   horizontalSectionInDOM: function() {
     // on this row, or this card is the current X for another hidden row
-    return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone()) || this._id === Session.get('poppedOutContextId');
+    return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId');
   },
   horizontalShown: function() {
     return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone());
@@ -949,9 +952,6 @@ Template.share_buttons.events({
 
 
 Template.favorite_button.helpers({
-  userFavorited: function() {
-    return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
-  },
   additionalClasses: function() {
     var classes = '';
 
@@ -971,9 +971,9 @@ Template.favorite_button.onCreated(function() {
 });
 Template.favorite_button.events({
   "click .favorite": function (e, t) {
+    analytics.track('Click favorite button');
 
     if (!Meteor.user()) {
-      setSigningInFrom();
       Session.set('signingIn', 'Thanks for showing your love!\nPlease sign in to favorite this FOLD.');
       return
     }
@@ -1145,7 +1145,6 @@ Template.create_story.events({
         notifyInfo("Due to high demand, we had to turn off 'create new story' functionality for a moment. Stay tuned for updates!");
       }
     } else {
-      setSigningInFrom();
       Session.set('signingIn', "You're almost there!\nPlease sign in to make a story.")
       analytics.track('User clicked create and needs to sign in');
     }
@@ -1174,13 +1173,17 @@ Template.read.onCreated(function(){
   if (Session.get('storyViewed') !== id){
     Session.set('storyViewed', id);
     Meteor.call('countStoryView', id);
-    analytics.track('View story', trackingInfoFromStory(this.data));
+    analytics.track('View story', _.extend({}, trackingInfoFromStory(this.data), { nonInteraction: 1 }));
   }
 
   var that = this;
 
   this.autorun(function () {
-    that.subscribe('minimalUsersPub', [that.data.authorId]);
+    if(adminMode()){
+      that.subscribe('adminOtherUserPub', that.data.authorId);
+    } else {
+      that.subscribe('minimalUsersPub', [that.data.authorId]);
+    }
   });
 });
 

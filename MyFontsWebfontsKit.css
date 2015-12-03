@@ -88,4 +88,7 @@
  
   
 @font-face {font-family: 'FFMarkWeb';src: url('webfonts/2F7411_7_0.eot');src: url('webfonts/2F7411_7_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2F7411_7_0.woff2') format('woff2'),url('webfonts/2F7411_7_0.woff') format('woff'),url('webfonts/2F7411_7_0.ttf') format('truetype');}
- 
+
+/* FOLD Edit: Set bold weight of markweb to the bold version of the font*/
+@font-face {font-family: 'FFMarkWeb';src: url('webfonts/2F7411_2_0.eot');src: url('webfonts/2F7411_2_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2F7411_2_0.woff2') format('woff2'),url('webfonts/2F7411_2_0.woff') format('woff'),url('webfonts/2F7411_2_0.ttf') format('truetype');
+    font-weight: bold;}

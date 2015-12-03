@@ -19,11 +19,6 @@ Template.admin.helpers({
 });
 
 
-Template.read_admin_ui.onCreated(function(){
-  this.subscribe('adminOtherUserPub', this.data.authorId);
-});
-
-
 Template.read_admin_ui.helpers({
   emailAddress: function () {
     var user = Meteor.users.findOne(this.authorId);
@@ -39,4 +34,32 @@ Template.read_admin_ui.helpers({
   }
 });
 
+Template.admin_recent_drafts.helpers({
+  recentDrafts: function() {
+    return Stories.find({
+      published : false
+    }, {
+        sort: {
+          savedAt: -1
+        }
+      }
+    );
+  }
+});
 
+Template.admin_recent_drafts.events({
+  'click .show-more': function(){
+    Session.set("adminRecentDraftsMore", Session.get("adminRecentDraftsMore") + 1);
+  }
+});
+
+
+Template.admin_recent_drafts.onCreated(function(){
+  Session.setDefault('adminRecentDraftsMore', 0);
+
+  var that = this;
+
+  this.autorun(function(){
+    that.subscribe("adminRecentDraftsPub", {more: Session.get("adminRecentDraftsMore")})
+  });
+});
