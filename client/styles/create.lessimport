@@ -157,7 +157,7 @@ div.floating-story-buttons {
 }
 
 .floating-story-buttons, .floating-story-buttons-left, .floating-story-buttons-right{
-  z-index: 27;
+  z-index: 45;
   button {
     text-align: center;
   }
@@ -181,7 +181,6 @@ div.floating-story-buttons {
   position: fixed;
   bottom: 0px;
   right: 0px;
-  z-index: 27;
 }
 
 .floating-story-buttons-left{
@@ -239,13 +238,15 @@ div.save-background-image {
   z-index: 100;
 }
 
+@title-overlay-ending-height: 100px;
+
 div.title-overlay {
   top: @magic-styling-distance;
   @media @not-mobile {
     min-width: 1024px;
   }
   @starting-height: 350px;
-  @ending-height: 100px;
+  @ending-height: @title-overlay-ending-height;
   height: @starting-height;
 
   z-index: 30;
@@ -624,13 +625,14 @@ div.horizontal-context {
     padding: 0;
   }
 
+  z-index: 40;
+
   .new-section {
     height: @horizontal-content-height;
     font-size: 55px;
     line-height: @horizontal-content-height;
     text-align: center;
     width: 75px;
-    z-index: 30;
   }
 
   div.input-label {

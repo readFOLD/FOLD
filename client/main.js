@@ -816,7 +816,7 @@ Template.horizontal_section_block.helpers({
     Session.get('lastUpdate');
   },
   hide: function() {
-    return !Session.equals("currentY", this.verticalIndex) && !(Session.equals("currentY", null) && this.verticalIndex === 0);
+    return !Session.equals("currentY", this.verticalIndex) && !(Session.equals("currentY", null) && this.verticalIndex === 0) && ! this._id === Session.get('poppedOutContextId');
   },
   poppedOut: function(){
     return this._id === Session.get('poppedOutContextId');
@@ -1031,6 +1031,12 @@ Template.editors_pick_button.events({
 });
 
 
+
+Template.remix_bar.helpers({
+  showPopoutButton: function(){
+    return this.type === 'audio';
+  }
+});
 
 Template.remix_bar.events({
   'click .remix-button': function(){

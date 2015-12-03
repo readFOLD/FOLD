@@ -334,9 +334,11 @@
 <template name="remix_bar">
     <div class="remix-bar">
         <!--This card has been shared 6 times-->
+      {{#if showPopoutButton}}
         <button class="popout-button">
             out
         </button>
+      {{/if}}
       <button class="remix-button">
             {{> remix_icon_square}}
         </button>
