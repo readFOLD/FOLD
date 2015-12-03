@@ -722,7 +722,7 @@ Template.horizontal_context.helpers({
   },
   horizontalSectionInDOM: function() {
     // on this row, or this card is the current X for another hidden row
-    return Session.equals("currentY", this.verticalIndex) || this.index === getXByYId(this.verticalId) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone()) || this.type === 'audio'; // TODO remove the audio case
+    return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone()) || this._id === Session.get('poppedOutContextId');
   },
   horizontalShown: function() {
     return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone());
@@ -817,6 +817,9 @@ Template.horizontal_section_block.helpers({
   },
   hide: function() {
     return !Session.equals("currentY", this.verticalIndex) && !(Session.equals("currentY", null) && this.verticalIndex === 0);
+  },
+  poppedOut: function(){
+    return this._id === Session.get('poppedOutContextId');
   }
 });
 
@@ -1043,6 +1046,20 @@ Template.remix_bar.events({
       "verticalIndex"
     ]));
     notifyFeature("Remixing cards: coming soon!");
+  },
+  'click .popout-button': function(){
+    analytics.track('Pop out card click', _.pick(this, [
+      "_id",
+      "authorId",
+      "index",
+      "source",
+      //"storyId",
+      "storyShortId",
+      "type",
+      "verticalId",
+      "verticalIndex"
+    ]));
+    Session.set('poppedOutContextId', this._id);
   }
 });
 
