@@ -1624,6 +1624,7 @@ div.inline-block {
 
 div.hide {
   visibility: hidden !important; // could also use left: -9999px. better than display:none because it still has a non-zero size
+  opacity: 0 !important;
 }
 
 div.collapse {

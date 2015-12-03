@@ -165,12 +165,44 @@ Tracker.autorun(function(){
   }
 });
 
+
+Tracker.autorun(function(){
+  var story = Session.get('story');
+  var currentY = Session.get("currentY");
+  if (story && (currentY != null)) {
+    var verticalSection = story.verticalSections[currentY];
+    Session.set('currentYId', verticalSection._id);
+  } else {
+    return Session.set('currentYId', null);
+  }
+});
+
+
 Tracker.autorun(function(){
   var currentYId = Session.get("currentYId");
   if (currentYId){
     Session.set("currentX", getXByYId(currentYId));
   }
 });
+
+
+Tracker.autorun(function(){
+  var story = Session.get('story');
+  var currentY = Session.get("currentY");
+  var verticalSection = story.verticalSections[currentY] || {};
+  var currentX = getXByYId(verticalSection._id); // reactive to XByYId, too
+  console.log(currentX)
+  if(typeof currentX === 'number' && verticalSection.contextBlocks){
+    var currentContextBlockId = verticalSection.contextBlocks[currentX];
+    if (currentContextBlockId) {
+      console.log('set current X to ' + currentContextBlockId);
+      return Session.set('currentXId', currentContextBlockId);
+    }
+  }
+  return Session.set('currentXId', null);
+});
+
+
 
 Meteor.startup(function() {
   var throttledUpdate;
@@ -1092,78 +1124,46 @@ Template.display_twitter_section.events({
 });
 
 
-Tracker.autorun(function(){
-  var story = Session.get('story');
-  var currentY = Session.get("currentY");
-  if (story && (currentY != null)) {
-    Session.set('currentVerticalSection', story.verticalSections[currentY]);
-  } else {
-    Session.set('currentVerticalSection', null);
-  }
-});
-
-Tracker.autorun(function() {
-  var verticalSection = Session.get('currentVerticalSection');
-  if (verticalSection) {
-    return Session.set('currentYId', verticalSection._id);
-  } else {
-    return Session.set('currentYId', null);
-  }
-});
-
-Tracker.autorun(function() {
-  var verticalSection = Session.get('currentVerticalSection');
-  var currentX = Session.get('currentX');
-  if (verticalSection) {
-    var currentContextBlockId = verticalSection.contextBlocks[currentX];
-    if (currentContextBlockId) {
-      return Session.set('currentXId', currentContextBlockId);
-    }
-  }
-  return Session.set('currentXId', null);
-});
-
 window.mostRecentAudioCardWidget = null;
 window.mostRecentAudioCardId = null;
 
 Tracker.autorun(function() {
-  var currentXId;
-  if (currentXId = Session.get('currentXId')){
-    console.log('current X id changed')
+  var currentXId = Session.get('currentXId');
 
-    Tracker.nonreactive(function(){
-      if (currentXId === Session.get('poppedOutContextId')){ // new card was previously popped out, so pop it back in
-        console.log('pop back in')
-        Session.set('poppedOutContextId', null);
+  Tracker.nonreactive(function(){
+    a = Date.now()
+    if (currentXId === Session.get('poppedOutContextId')){ // new card was previously popped out, so pop it back in
+      console.log('pop back in')
+      Session.set('poppedOutContextId', null);
 
-      } else if(mostRecentAudioCardWidget){ // otherwise there is a most recent audio card
-        console.log('there is already a current audio card')
+    } else if(mostRecentAudioCardWidget){ // otherwise there is a most recent audio card
+      console.log('there is already a current audio card')
 
-        var associatedAudioCardId = mostRecentAudioCardId;
+      var associatedAudioCardId = mostRecentAudioCardId;
 
-        mostRecentAudioCardWidget.isPaused(function(paused){
-          if (!paused){ // and it's playing
-            console.log('current audio card wasnt paused')
-            console.log('pop out ' + associatedAudioCardId)
+      mostRecentAudioCardWidget.isPaused(function(paused){
+        if (!paused){ // and it's playing
+          console.log('current audio card wasnt paused')
+          console.log('pop out ' + associatedAudioCardId)
 
-            Session.set('poppedOutContextId', associatedAudioCardId);  // pop it out
-          }
-        })
-      }
-      var audioIFrame;
-      if (audioIFrame = document.querySelector(".audio-section[data-context-id='" + currentXId + "'] iframe" )){ // also, if the new card is an audio card
-        console.log('set current audio card')
+          Session.set('poppedOutContextId', associatedAudioCardId);  // pop it out
+        }
+      })
+    }
+    var audioIFrame;
+    if (currentXId && (audioIFrame = document.querySelector(".audio-section[data-context-id='" + currentXId + "'] iframe" ))){ // also, if the new card is an audio card
+      console.log('set current audio card')
 
-        window.mostRecentAudioCardWidget = SC.Widget(audioIFrame); // it's now the most recent audio card
-        window.mostRecentAudioCardId = currentXId;
-      } else {
-        console.log('no more current audio card')
+      window.mostRecentAudioCardWidget = SC.Widget(audioIFrame); // it's now the most recent audio card
+      window.mostRecentAudioCardId = currentXId;
+    } else {
+      console.log('no more current audio card')
 
-        window.mostRecentAudioCardWidget = null;
-        window.mostRecentAudioCardId = null;
-      }
-    })
-  }
+      window.mostRecentAudioCardWidget = null;
+      window.mostRecentAudioCardId = null;
+    }
+    console.log(Date.now()- a)
+  })
 });
 
 

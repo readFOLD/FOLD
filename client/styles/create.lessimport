@@ -249,7 +249,6 @@ div.title-overlay {
   @ending-height: @title-overlay-ending-height;
   height: @starting-height;
 
-  z-index: 30;
   color: @white-color;
   position: relative;
   overflow: hidden;
@@ -293,6 +292,7 @@ div.title-overlay {
 
   &.fixed {
     position: fixed;
+    z-index: 30;
     height: @ending-height;
     width: 100%;
     background-color: @dark-color;

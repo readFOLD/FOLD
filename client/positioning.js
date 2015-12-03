@@ -156,7 +156,7 @@ window.goDownOneCard = function() {
 
   newY = currentY + 1;
   if (newY < Session.get("story").verticalSections.length){
-    return goToXY(0, newY);
+    return goToY(newY);
   }
 };
 
@@ -165,7 +165,7 @@ window.goUpOneCard = function() {
   currentY = Session.get("currentY");
   newY = currentY - 1;
   if (newY >= 0)
-    return goToXY(0, newY);
+    return goToY(newY);
 };
 
 window.goRightOneCard = function() {
