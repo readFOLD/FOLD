@@ -407,10 +407,13 @@ Template.vertical_narrative.helpers({
 Template.vertical_section_block.events({
   "click": function(e, t) {
     var afterGoToY;
+    var enclosingAnchor;
     var that = this;
 
-    if ($(e.target).is('a')) {
-      var contextId = $(e.target).data('contextId');
+    if($(e.target).is('div')){
+      // do nothing
+    } else if (enclosingAnchor = $(e.target).closest('a')){
+      var contextId = $(enclosingAnchor).data('contextId');
 
       e.preventDefault();
       afterGoToY = function(){
