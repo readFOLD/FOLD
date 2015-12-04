@@ -887,6 +887,7 @@ div.text-section {
 .audio-section {
   .size-to-fit;
 }
+
 .icon-only-preview {
   .size-to-fit;
   text-align: center;
@@ -1107,13 +1108,14 @@ div.horizontal-context {
 
 
 .horizontal-narrative-section {
+  @outline-color: @inactive-color;
   @unselected-opacity: 0.25;
   .left-transition;
   position: absolute;
   height: @horizontal-content-height;
   // box-shadow: 3px 3px #848484;
   pointer-events: none;
-  outline: 1px solid @inactive-color;
+  outline: 1px solid @outline-color;
   //min-width: 400px;
   width: 32%;
   background-color: @white-color;
@@ -1150,7 +1152,34 @@ div.horizontal-context {
       padding: 5px;
       .size-to-fit;
     }
+    &.selected{ // hack for when still on the row
+      .remix-bar{
+        opacity: @unselected-opacity;
+      }
+      outline-color: fade(@outline-color, @unselected-opacity * 100);
+    }
   }
+
+  .popout-message{
+    .size-to-fit;
+    text-align: center;
+    display: table;
+    padding: @magic-styling-distance;
+    p {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+    }
+    opacity: @unselected-opacity;
+  }
+
+  &.hide-container{
+    outline: none;
+    .remix-bar, .popout-message{
+      .hide;
+    }
+  }
+
 
   &.text {
     opacity: 1;

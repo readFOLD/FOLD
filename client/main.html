@@ -245,7 +245,7 @@
 
 <template name="horizontal_section_block">
   <div
-      class="narrative-section horizontal-narrative-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if poppedOut}}popped-out selected{{/if}} {{#if editingThisContext}}editing{{/if}} {{#if hide}}hide{{/if}}" data-index="{{index}}" style="width: {{cardWidth}}px; left: {{left}}px;">
+      class="narrative-section horizontal-narrative-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if poppedOut}}popped-out selected{{/if}} {{#if hideContainer}}hide-container{{/if}} {{#if editingThisContext}}editing{{/if}} {{#if hide}}hide{{/if}}" data-index="{{index}}" style="width: {{cardWidth}}px; left: {{left}}px;">
 <section>
 
     {{#if type}}
@@ -436,6 +436,14 @@
       <img src="{{previewUrl}}"/>
     </div>
   </div>
+  {{#if poppedOut}}
+    <div class="popout-message">
+      <p>Currently listening to:
+        <br>
+        <em>{{title}}</em>
+      </p>
+    </div>
+  {{/if}}
   {{#unless read}}
       {{> horizontal_section_edit_delete}}
     {{/unless}}

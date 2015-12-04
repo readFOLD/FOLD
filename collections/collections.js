@@ -571,6 +571,10 @@ AudioBlock = (function (_super) {
     }
   }
 
+  AudioBlock.prototype.title = function () {
+    return this.reference.title;
+  };
+
   AudioBlock.prototype.url = function () {
     if (this.source === 'soundcloud') {
       return '//w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/' + this.reference.id + '&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=true'

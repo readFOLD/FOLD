@@ -805,6 +805,9 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
     //    return this.index === getXByYId(this.verticalId) && !Session.get("addingContext") || this._id === Session.get('poppedOutContextId');
     return (Session.equals("currentX", this.index) || Session.equals("currentX", null) && this.index === 0) && (Session.equals("currentY", this.verticalIndex) || Session.equals("currentY", null) && this.verticalIndex === 0) && !Session.get("addingContext") || this._id === Session.get('poppedOutContextId');
   },
+  poppedOut: function(){
+    return this.type === 'audio' && this._id === Session.get('poppedOutContextId');
+  },
   textContent: function() {
     var textContent, rows;
     if (this.type === 'text'){
@@ -864,8 +867,9 @@ Template.horizontal_section_block.helpers({
   hide: function() {
     return !Session.equals("currentY", this.verticalIndex) && !(Session.equals("currentY", null) && this.verticalIndex === 0) && !(this._id === Session.get('poppedOutContextId'));
   },
-  poppedOut: function(){
-    return this._id === Session.get('poppedOutContextId');
+
+  hideContainer: function() {
+    return this.type === 'audio' && this._id === Session.get('poppedOutContextId') && !(Session.equals("currentY", this.verticalIndex) || Session.equals("currentY", null) && this.verticalIndex === 0);
   }
 });
 
