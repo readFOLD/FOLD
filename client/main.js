@@ -1108,7 +1108,8 @@ Template.remix_bar.events({
       "verticalId",
       "verticalIndex"
     ]));
-    Session.set('poppedOutContextId', this._id);
+    goRightOneCard();
+    Session.set('poppedOutContextId', this._id); // in case there is only one card in the row, force it to pop out
   }
 });
 

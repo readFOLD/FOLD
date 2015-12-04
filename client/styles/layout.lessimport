@@ -300,6 +300,11 @@ html {
   height: 100%;
 }
 
+.hide {
+  visibility: hidden !important; // could also use left: -9999px. better than display:none because it still has a non-zero size
+  opacity: 0 !important;
+}
+
 
 .padding-sides(@s){
   padding-left:@s;
@@ -1135,9 +1140,14 @@ div.horizontal-context {
       right: 0px;
       height: @title-overlay-ending-height;
       width: @title-overlay-ending-height * 2;
+      background-color: @dark-color;
       z-index: 9999999999999;
     }
+    .preview{
+      display: none;
+    }
     iframe{
+      padding: 5px;
       .size-to-fit;
     }
   }
@@ -1625,11 +1635,6 @@ div.tagsinput div {
 
 div.inline-block {
   display: inline-block;
-}
-
-div.hide {
-  visibility: hidden !important; // could also use left: -9999px. better than display:none because it still has a non-zero size
-  opacity: 0 !important;
 }
 
 div.collapse {
