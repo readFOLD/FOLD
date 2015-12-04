@@ -171,6 +171,9 @@ Tracker.autorun(function(){
   var currentY = Session.get("currentY");
   if (story && (currentY != null)) {
     var verticalSection = story.verticalSections[currentY];
+    if(!verticalSection){
+      return
+    }
     Session.set('currentYId', verticalSection._id);
   } else {
     return Session.set('currentYId', null);
@@ -189,10 +192,17 @@ Tracker.autorun(function(){
 Tracker.autorun(function(){
   var story = Session.get('story');
   var currentY = Session.get("currentY");
-  var verticalSection = story.verticalSections[currentY] || {};
-  var currentX = getXByYId(verticalSection._id); // reactive to XByYId, too
+  var currentXByYId = Session.get("currentXByYId"); // for reactivity
+  if(!story){
+    return
+  }
+  var verticalSection = story.verticalSections[currentY];
+  if(!verticalSection){
+    return
+  }
+  var currentX = getXByYId(verticalSection._id);
   console.log(currentX)
-  if(typeof currentX === 'number' && verticalSection.contextBlocks){
+  if(typeof currentX === 'number'){
     var currentContextBlockId = verticalSection.contextBlocks[currentX];
     if (currentContextBlockId) {
       console.log('set current X to ' + currentContextBlockId);
