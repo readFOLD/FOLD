@@ -334,11 +334,11 @@
   <div class="remix-bar">
     <!--This card has been shared 6 times-->
     <button class="remix-button">
-      {{> remix_icon_square}}
+      {{> remix_icon }}
     </button>
     {{#if showPopoutButton}}
       <button class="popout-button">
-        out
+        {{> popout_icon}}
       </button>
     {{/if}}
   </div>
@@ -429,6 +429,11 @@
 
 <template name="display_audio_section">
   <div class="display-context-section audio-section" data-context-id="{{_id}}">
+    {{#if poppedOut}}
+      <button class="dismiss-popout">
+        {{> x_icon}}
+      </button>
+    {{/if}}
     <div class="active-display {{#unless selected}}hide{{/unless}}">
       <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
     </div>

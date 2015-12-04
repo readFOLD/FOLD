@@ -1141,7 +1141,7 @@ div.horizontal-context {
       top: @magic-styling-distance;
       right: 0px;
       height: @title-overlay-ending-height;
-      width: @title-overlay-ending-height * 2;
+      width: @popout-width;
       background-color: @dark-color;
       z-index: 9999999999999;
     }
@@ -1150,7 +1150,16 @@ div.horizontal-context {
     }
     iframe{
       padding: 5px;
+      padding-right: 25px;
       .size-to-fit;
+    }
+    .dismiss-popout{
+      z-index: 40;
+      top: 5px;
+      right: 5px;
+      .size(15px);
+      padding: 0;
+      position: absolute;
     }
     &.selected{ // hack for when still on the row
       .remix-bar{
@@ -1207,8 +1216,11 @@ div.horizontal-context {
     outline: 1px solid @unselected-link-color;
     line-height: @remix-bar-height;
     color: white;
+    button {
+      padding: 0;
+    }
     svg{
-      .size(27px);
+      .size-to-fit;
     }
     .remix-button, .popout-button{
       float: right;

@@ -239,6 +239,7 @@ div.save-background-image {
 }
 
 @title-overlay-ending-height: 100px;
+@popout-width: @title-overlay-ending-height * 2.5;
 
 div.title-overlay {
   top: @magic-styling-distance;
@@ -304,8 +305,8 @@ div.title-overlay {
     }
 
     &.popout-exists{
-      min-width: calc(100% ~"-" 200px);
-      width: calc(100% ~"-" 200px);
+      min-width: calc(100% ~"-" @popout-width);
+      width: calc(100% ~"-" @popout-width);
     }
   }
 

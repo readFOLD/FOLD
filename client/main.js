@@ -1139,8 +1139,14 @@ Template.display_twitter_section.events({
 });
 
 
+window.poppedOutAudioCardWidget = null;
+
 window.mostRecentAudioCardWidget = null;
 window.mostRecentAudioCardId = null;
+
+getAudioIFrame = function(contextId){
+  return document.querySelector(".audio-section[data-context-id='" + contextId + "'] iframe");
+};
 
 Tracker.autorun(function() {
   var currentXId = Session.get('currentXId');
@@ -1166,7 +1172,7 @@ Tracker.autorun(function() {
       })
     }
     var audioIFrame;
-    if (currentXId && (audioIFrame = document.querySelector(".audio-section[data-context-id='" + currentXId + "'] iframe" ))){ // also, if the new card is an audio card
+    if (currentXId && (audioIFrame = getAudioIFrame(currentXId))){ // also, if the new card is an audio card
       console.log('set current audio card')
 
       window.mostRecentAudioCardWidget = SC.Widget(audioIFrame); // it's now the most recent audio card
@@ -1180,6 +1186,13 @@ Tracker.autorun(function() {
     console.log(Date.now()- a)
   })
 });
+
+Tracker.autorun(function(){
+  var poppedOutContextId;
+  if(poppedOutContextId = Session.get('poppedOutContextId')){
+    poppedOutAudioCardWidget = SC.Widget(getAudioIFrame(poppedOutContextId));
+  }
+})
 
 
 
