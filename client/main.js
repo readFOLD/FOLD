@@ -1154,36 +1154,23 @@ Tracker.autorun(function() {
   Tracker.nonreactive(function(){
     a = Date.now()
     if (currentXId === Session.get('poppedOutContextId')){ // new card was previously popped out, so pop it back in
-      console.log('pop back in')
       Session.set('poppedOutContextId', null);
-
     } else if(mostRecentAudioCardWidget){ // otherwise there is a most recent audio card
-      console.log('there is already a current audio card')
-
       var associatedAudioCardId = mostRecentAudioCardId;
-
       mostRecentAudioCardWidget.isPaused(function(paused){
         if (!paused){ // and it's playing
-          console.log('current audio card wasnt paused')
-          console.log('pop out ' + associatedAudioCardId)
-
           Session.set('poppedOutContextId', associatedAudioCardId);  // pop it out
         }
       })
     }
     var audioIFrame;
     if (currentXId && (audioIFrame = getAudioIFrame(currentXId))){ // also, if the new card is an audio card
-      console.log('set current audio card')
-
       window.mostRecentAudioCardWidget = SC.Widget(audioIFrame); // it's now the most recent audio card
       window.mostRecentAudioCardId = currentXId;
     } else {
-      console.log('no more current audio card')
-
       window.mostRecentAudioCardWidget = null;
       window.mostRecentAudioCardId = null;
     }
-    console.log(Date.now()- a)
   })
 });
 
