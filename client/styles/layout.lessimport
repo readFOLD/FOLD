@@ -1171,11 +1171,16 @@ div.horizontal-context {
     svg{
       .size(27px);
     }
-    .remix-button{
+    .remix-button, .popout-button{
       float: right;
       .size(@remix-bar-height);
       display: inline-block;
+    }
+    .remix-button{
       background-color: @remix-color;
+    }
+    .popout-button{
+      background-color: @action-color;
     }
   }
 
