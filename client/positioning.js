@@ -248,10 +248,5 @@ window.resetXPositionMemory = function () {
 };
 
 window.getXByYId = function(yId) {
-  var currentXByYId;
-  if(currentXByYId = Session.get('currentXByYId')){
-    return currentXByYId[yId] || 0;
-  } else {
-    return 0
-  }
+  return Session.get('currentXByYId')[yId] || 0;
 };

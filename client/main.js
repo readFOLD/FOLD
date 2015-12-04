@@ -171,11 +171,10 @@ Tracker.autorun(function(){
   var currentY = Session.get("currentY");
   if (story && (currentY != null)) {
     var verticalSection = story.verticalSections[currentY];
-    if(verticalSection){
-      Session.set('currentYId', verticalSection._id);
-    }
+    Session.set('currentYId', verticalSection._id);
+  } else {
+    return Session.set('currentYId', null);
   }
-  return Session.set('currentYId', null);
 });
 
 
@@ -190,8 +189,7 @@ Tracker.autorun(function(){
 Tracker.autorun(function(){
   var story = Session.get('story');
   var currentY = Session.get("currentY");
-  var verticalSection = story ? story.verticalSections[currentY] : {};
-  verticalSection = verticalSection || {};
+  var verticalSection = story.verticalSections[currentY] || {};
   var currentX = getXByYId(verticalSection._id); // reactive to XByYId, too
   console.log(currentX)
   if(typeof currentX === 'number' && verticalSection.contextBlocks){
