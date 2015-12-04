@@ -78,6 +78,10 @@ Handlebars.registerHelper("adminMode", function() {
   return adminMode();
 });
 
+Handlebars.registerHelper("popoutExists", function() {
+  return Session.get('poppedOutContextId') ? true : false;
+});
+
 Handlebars.registerHelper("reactiveStory", function(){
   return Stories.findOne(Session.get('storyId'));
 });

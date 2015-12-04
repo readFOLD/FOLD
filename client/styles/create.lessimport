@@ -242,9 +242,7 @@ div.save-background-image {
 
 div.title-overlay {
   top: @magic-styling-distance;
-  @media @not-mobile {
-    min-width: 1024px;
-  }
+
   @starting-height: 350px;
   @ending-height: @title-overlay-ending-height;
   height: @starting-height;
@@ -261,6 +259,7 @@ div.title-overlay {
       max-height: 100%;
     }
   }
+
 
   div.logo {
     .opacity-transition;
@@ -302,6 +301,11 @@ div.title-overlay {
     }
     @media @mobile {
       display: none;
+    }
+
+    &.popout-exists{
+      min-width: calc(100% ~"-" 200px);
+      width: calc(100% ~"-" 200px);
     }
   }
 
@@ -626,7 +630,7 @@ div.horizontal-context {
     padding: 0;
   }
 
-  z-index: 40;
+  z-index: 15;
 
   .new-section {
     height: @horizontal-content-height;
