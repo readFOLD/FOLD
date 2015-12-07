@@ -169,12 +169,14 @@ Tracker.autorun(function(){
 Tracker.autorun(function(){
   var story = Session.get('story');
   var currentY = Session.get("currentY");
+
   if (story && (currentY != null)) {
     var verticalSection = story.verticalSections[currentY];
     if(!verticalSection){
-      return
+      return Session.set('currentYId', null);
+    } else {
+      return Session.set('currentYId', verticalSection._id);
     }
-    Session.set('currentYId', verticalSection._id);
   } else {
     return Session.set('currentYId', null);
   }
@@ -201,11 +203,9 @@ Tracker.autorun(function(){
     return
   }
   var currentX = getXByYId(verticalSection._id);
-  console.log(currentX)
   if(typeof currentX === 'number'){
     var currentContextBlockId = verticalSection.contextBlocks[currentX];
     if (currentContextBlockId) {
-      console.log('set current X to ' + currentContextBlockId);
       return Session.set('currentXId', currentContextBlockId);
     }
   }
@@ -215,7 +215,6 @@ Tracker.autorun(function(){
 
 
 Meteor.startup(function() {
-  var throttledUpdate;
   Session.setDefault("filterOpen", false);
   Session.setDefault("filter", "curated");
   Session.setDefault("category", "all");
@@ -803,7 +802,15 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
   selected: function() {
     // return Session.equals("currentX", this.index) && !Session.get("addingContext");
     //    return this.index === getXByYId(this.verticalId) && !Session.get("addingContext") || this._id === Session.get('poppedOutContextId');
-    return (Session.equals("currentX", this.index) || Session.equals("currentX", null) && this.index === 0) && (Session.equals("currentY", this.verticalIndex) || Session.equals("currentY", null) && this.verticalIndex === 0) && !Session.get("addingContext") || this._id === Session.get('poppedOutContextId');
+    //console.log(this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId))
+    console.log(this.index)
+    console.log((this.index === getXByYId(Session.get('currentYId')) || (this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId)) && !Session.get("addingContext"))
+      || this._id === Session.get('poppedOutContextId'))
+    console.log((this.index === getXByYId(Session.get('currentYId'))))
+    console.log((this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId)))
+
+    return (this.index === getXByYId(Session.get('currentYId')) || (this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId)) && !Session.get("addingContext"))
+      || this._id === Session.get('poppedOutContextId');
   },
   poppedOut: function(){
     return this.type === 'audio' && this._id === Session.get('poppedOutContextId');
@@ -1152,7 +1159,6 @@ Tracker.autorun(function() {
   var currentXId = Session.get('currentXId');
 
   Tracker.nonreactive(function(){
-    a = Date.now()
     if (currentXId === Session.get('poppedOutContextId')){ // new card was previously popped out, so pop it back in
       Session.set('poppedOutContextId', null);
     } else if(mostRecentAudioCardWidget){ // otherwise there is a most recent audio card
