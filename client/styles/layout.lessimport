@@ -597,6 +597,8 @@ div#overlay {
         background-color: @action-color;
         .background-transition;
         color: white;
+        cursor: inherit;
+        pointer-events: none;
       }
       &.placeholder {
         background-color: @panel-color;
