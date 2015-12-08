@@ -284,7 +284,11 @@ div.title-overlay {
     }
     @control-height: 45px;
     @control-spacing: 7px;
-    @time-width: 40px;
+    @time-width: 35px;
+    .title{
+      .ellipsis-text;
+      width: calc(100% ~"-" 35px);
+    }
     .controls{
       margin-top: 5px;
       display: table;
