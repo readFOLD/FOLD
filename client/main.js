@@ -1210,10 +1210,12 @@ Tracker.autorun(function(){
 
     })
 
-    poppedOutAudioCardWidget.bind(SC.Widget.Events.PLAY_PROGRESS, function (e) {
+    var updatePlayProgress = function (e) {
       poppedOutPlayerInfo.set('currentPosition', e.currentPosition)
       poppedOutPlayerInfo.set('relativePosition', e.relativePosition)
-    })
+    }
+
+    poppedOutAudioCardWidget.bind(SC.Widget.Events.PLAY_PROGRESS, _.throttle(updatePlayProgress, 200))
   } else {
     if (poppedOutAudioCardWidget){
       poppedOutAudioCardWidget.unbind(SC.Widget.Events.READY);
