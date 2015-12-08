@@ -76,7 +76,7 @@
 
 <template name="story_header">
   {{> top_banner showFilters=read hideMakeAStory=notRead slim=true}}
-  <div class="title-overlay {{#unless read}}write{{/unless}} {{#if popoutExists}}popout-exists{{/if}}">
+  <div class="title-overlay {{#unless read}}write{{/unless}}">
     {{#with headerImageVideoObject}}
       {{> looping_video}}
     {{else}}
@@ -99,6 +99,7 @@
         {{/if}}
       </a>
     </div>
+    {{#if popoutExists}}{{> audio_popout}}{{/if}}
 
     {{#unless isPhone}}
       {{#if headerImageAttribution}}
@@ -109,6 +110,20 @@
     {{/unless}}
   </div>
   {{> signin_overlay}}
+</template>
+
+<template name="audio_popout">
+  <div class="audio-popout">
+    {{title}}
+    {{currentTime}}
+    {{totalTime}}
+    {{#if showPauseButton}}
+      <button class="pause">pause btn</button>
+    {{else}}
+      <button class="play">play btn</button>
+    {{/if}}
+    <input class="progress" type="range" min="0" max="1000" step="1" value="0">
+  </div>
 </template>
 
 <template name="story_title">

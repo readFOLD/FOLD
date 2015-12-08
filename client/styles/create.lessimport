@@ -261,6 +261,15 @@ div.title-overlay {
     }
   }
 
+  .audio-popout{
+    position: absolute;
+    z-index: 50;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: @popout-width;
+  }
+
 
   div.logo {
     .opacity-transition;
@@ -302,11 +311,6 @@ div.title-overlay {
     }
     @media @mobile {
       display: none;
-    }
-
-    &.popout-exists{
-      min-width: calc(100% ~"-" @popout-width);
-      width: calc(100% ~"-" @popout-width);
     }
   }
 

@@ -803,12 +803,6 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
     // return Session.equals("currentX", this.index) && !Session.get("addingContext");
     //    return this.index === getXByYId(this.verticalId) && !Session.get("addingContext") || this._id === Session.get('poppedOutContextId');
     //console.log(this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId))
-    console.log(this.index)
-    console.log((this.index === getXByYId(Session.get('currentYId')) || (this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId)) && !Session.get("addingContext"))
-      || this._id === Session.get('poppedOutContextId'))
-    console.log((this.index === getXByYId(Session.get('currentYId'))))
-    console.log((this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId)))
-
     return (this.index === getXByYId(Session.get('currentYId')) || (this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId)) && !Session.get("addingContext"))
       || this._id === Session.get('poppedOutContextId');
   },
@@ -1180,12 +1174,113 @@ Tracker.autorun(function() {
   })
 });
 
+Session.set('poppedOutContextId', null);
+
+window.poppedOutPlayerInfo = new ReactiveDict;
+
+
 Tracker.autorun(function(){
   var poppedOutContextId;
-  if(poppedOutContextId = Session.get('poppedOutContextId')){
+  if(poppedOutContextId = Session.get('poppedOutContextId')) {
     poppedOutAudioCardWidget = SC.Widget(getAudioIFrame(poppedOutContextId));
+    poppedOutAudioCardWidget.bind(SC.Widget.Events.READY, function () {
+      console.log('ready')
+
+      poppedOutAudioCardWidget.getCurrentSound(function (currentSound) {
+        poppedOutPlayerInfo.set('title', currentSound.title);
+        poppedOutPlayerInfo.set('duration', currentSound.duration);
+        poppedOutAudioCardWidget.isPaused(function(isPaused){
+          poppedOutPlayerInfo.set('status', isPaused ? 'paused' : 'playing');
+        });
+      });
+    });
+
+    poppedOutAudioCardWidget.bind(SC.Widget.Events.PLAY, function (e) {
+      poppedOutPlayerInfo.set('status', 'playing');
+    })
+    poppedOutAudioCardWidget.bind(SC.Widget.Events.PAUSE, function (e) {
+      poppedOutPlayerInfo.set('status', 'paused');
+    })
+
+    poppedOutAudioCardWidget.bind(SC.Widget.Events.FINISH, function (e) {
+      console.log('finish')
+      poppedOutPlayerInfo.set('status', 'paused');
+      poppedOutPlayerInfo.set('currentPosition', poppedOutPlayerInfo.get('duration'));
+      poppedOutPlayerInfo.set('relativePosition', 1);
+
+    })
+
+    poppedOutAudioCardWidget.bind(SC.Widget.Events.PLAY_PROGRESS, function (e) {
+      poppedOutPlayerInfo.set('currentPosition', e.currentPosition)
+      poppedOutPlayerInfo.set('relativePosition', e.relativePosition)
+    })
+  } else {
+    if (poppedOutAudioCardWidget){
+      poppedOutAudioCardWidget.unbind(SC.Widget.Events.READY);
+      poppedOutAudioCardWidget.unbind(SC.Widget.Events.PLAY);
+      poppedOutAudioCardWidget.unbind(SC.Widget.Events.PAUSE);
+      poppedOutAudioCardWidget.unbind(SC.Widget.Events.FINISH);
+      poppedOutAudioCardWidget.unbind(SC.Widget.Events.PLAY_PROGRESS);
+    }
   }
-})
+});
+
+function millisToMinutesAndSeconds(millis) {
+  var minutes = Math.floor(millis / 60000);
+  var seconds = ((millis % 60000) / 1000).toFixed(0);
+  return (seconds == 60 ? (minutes+1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+}
+
+
+Template.audio_popout.helpers({
+  title: function(){
+    return poppedOutPlayerInfo.get('title');
+  },
+  totalTime: function(){
+    return millisToMinutesAndSeconds(poppedOutPlayerInfo.get('duration'));
+  },
+  currentTime: function(){
+    var currentPosition;
+    if(currentPosition = poppedOutPlayerInfo.get('currentPosition')){
+      return millisToMinutesAndSeconds(currentPosition);
+    } else {
+      return "0:00"
+    }
+  },
+  showPauseButton: function(){
+    return poppedOutPlayerInfo.get('status') === 'playing';
+  }
+});
+
+Template.audio_popout.events({
+  'click .play': function(){
+    poppedOutAudioCardWidget.play();
+  },
+  'click .pause': function(){
+    poppedOutAudioCardWidget.pause();
+  },
+  'input .progress, change .progress': function(e, t){
+    var millis = Math.min(e.currentTarget.value / 1000, 0.99) * poppedOutPlayerInfo.get('duration'); // min prevents scrub to end weirdness
+    poppedOutAudioCardWidget.seekTo(millis);
+    poppedOutAudioCardWidget.isPaused(function(isPaused){
+      if(isPaused){
+        poppedOutAudioCardWidget.play();
+      }
+    });
+
+  }
+});
+
+Template.audio_popout.onRendered(function(){
+  var that = this;
+  this.autorun(function(){
+    var relativePosition = poppedOutPlayerInfo.get('relativePosition');
+    if(typeof relativePosition === 'number'){
+      that.$('input.progress').val(relativePosition * 1000);
+    }
+  });
+});
+
 
 
 
