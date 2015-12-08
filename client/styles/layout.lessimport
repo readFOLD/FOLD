@@ -412,6 +412,78 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 
+// from https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/
+input[type=range] {
+  -webkit-appearance: none;
+  margin: 18px 0;
+  width: 100%;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 7px;
+  border: 3px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: @orange-color;
+}
+input[type=range]::-webkit-slider-thumb {
+  height: 28px;
+  width: 7px;
+  //border-radius: 3px;
+  background: @white-color;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -12px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: @orange-color; // this is the color of bar when sliding
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 7px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: @orange-color;
+}
+input[type=range]::-moz-range-thumb {
+  height: 28px;
+  width: 7px;
+  background: @white-color;
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: @orange-color;
+}
+input[type=range]::-ms-fill-upper {
+  background: @orange-color;
+}
+input[type=range]::-ms-thumb {
+  height: 28px;
+  width: 14px;
+  background: @white-color;
+  cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: @orange-color; // this is the color of bar when sliding
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: @orange-color; // this is the color of bar when sliding
+}
+
+
 *, *:before, *:after {
   -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
@@ -599,6 +671,7 @@ div#overlay {
         color: white;
         cursor: inherit;
         pointer-events: none;
+
       }
       &.placeholder {
         background-color: @panel-color;
@@ -1139,30 +1212,12 @@ div.horizontal-context {
 
   &.popped-out{
     .audio-section{
-      position: fixed;
-      top: @magic-styling-distance;
-      right: 0px;
-      height: @title-overlay-ending-height;
-      width: @popout-width;
-      background-color: @dark-color;
-      z-index: 9999999999999;
+      display: none;
     }
     .preview{
       display: none;
     }
-    iframe{
-      padding: 5px;
-      padding-right: 25px;
-      .size-to-fit;
-    }
-    .dismiss-popout{
-      z-index: 40;
-      top: 5px;
-      right: 5px;
-      .size(15px);
-      padding: 0;
-      position: absolute;
-    }
+
     &.selected{ // hack for when still on the row
       .remix-bar{
         opacity: @unselected-opacity;
