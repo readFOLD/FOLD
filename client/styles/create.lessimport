@@ -239,7 +239,7 @@ div.save-background-image {
 }
 
 @title-overlay-ending-height: 100px;
-@popout-width: @title-overlay-ending-height * 2.5;
+@popout-width: @title-overlay-ending-height * 3.5;
 
 div.title-overlay {
   top: @magic-styling-distance;
@@ -268,12 +268,51 @@ div.title-overlay {
     top: 0;
     height: 100%;
     width: @popout-width;
+    padding: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    @control-height: 45px;
+    .controls{
+      margin-top: 5px;
+      display: table;
+      height: @control-height;
+      width: 100%;
+    }
+    .play, .pause, .progress, .current-time, .total-time {
+      float: left;
+      display: table-cell;
+      height: 100%;
+      line-height: @control-height;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+    .current-time{
+      text-align: center;
+      width: 40px;
+    }
+    input{
+      width: 50%;
+    }
+    .play, .pause{
+      .size(@control-height);
+      border-radius: 50%;
+      line-height: @control-height;
+      font-size: @control-height/2;
+      text-align: center;
+      background-color: @orange-color;
+    }
     .dismiss-popout{
-      top: 5px;
-      right: 5px;
-      .size(15px);
+      top: 15px;
+      right: 15px;
+      .size(26px);
+      border-radius: 50%;
+      svg{
+        .center-over-parent-div;
+        .size(14px);
+      }
       padding: 0;
       position: absolute;
+      background-color: @dark-color;
     }
   }
 

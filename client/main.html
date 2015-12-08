@@ -114,15 +114,17 @@
 
 <template name="audio_popout">
   <div class="audio-popout">
-    {{title}}
-    {{currentTime}}
-    {{totalTime}}
-    {{#if showPauseButton}}
-      <button class="pause">pause btn</button>
-    {{else}}
-      <button class="play">play btn</button>
-    {{/if}}
-    <input class="progress" type="range" min="0" max="1000" step="1" value="0">
+    <div class="title">{{title}}</div>
+    <div class="controls">
+      {{#if showPauseButton}}
+        <button class="pause"><i class="fa fa-pause"></i></button>
+      {{else}}
+        <button class="play"><i class="fa fa-play"></i></button>
+      {{/if}}
+      <div class="current-time">{{currentTime}}</div>
+      <input class="progress" type="range" min="0" max="1000" step="1" value="0">
+      <div class="total-time">{{totalTime}}</div>
+    </div>
     <button class="dismiss-popout">
       {{> x_icon}}
     </button>
