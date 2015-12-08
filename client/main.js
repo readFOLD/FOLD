@@ -1178,13 +1178,16 @@ Session.set('poppedOutContextId', null);
 
 window.poppedOutPlayerInfo = new ReactiveDict;
 
+var updatePlayProgress = function (e) {
+  poppedOutPlayerInfo.set('currentPosition', e.currentPosition)
+  poppedOutPlayerInfo.set('relativePosition', e.relativePosition)
+};
 
 Tracker.autorun(function(){
   var poppedOutContextId;
   if(poppedOutContextId = Session.get('poppedOutContextId')) {
     poppedOutAudioCardWidget = SC.Widget(getAudioIFrame(poppedOutContextId));
     poppedOutAudioCardWidget.bind(SC.Widget.Events.READY, function () {
-      console.log('ready')
 
       poppedOutAudioCardWidget.getCurrentSound(function (currentSound) {
         poppedOutPlayerInfo.set('title', currentSound.title);
@@ -1197,23 +1200,17 @@ Tracker.autorun(function(){
 
     poppedOutAudioCardWidget.bind(SC.Widget.Events.PLAY, function (e) {
       poppedOutPlayerInfo.set('status', 'playing');
-    })
+    });
+
     poppedOutAudioCardWidget.bind(SC.Widget.Events.PAUSE, function (e) {
       poppedOutPlayerInfo.set('status', 'paused');
-    })
+    });
 
     poppedOutAudioCardWidget.bind(SC.Widget.Events.FINISH, function (e) {
-      console.log('finish')
       poppedOutPlayerInfo.set('status', 'paused');
       poppedOutPlayerInfo.set('currentPosition', poppedOutPlayerInfo.get('duration'));
       poppedOutPlayerInfo.set('relativePosition', 1);
-
-    })
-
-    var updatePlayProgress = function (e) {
-      poppedOutPlayerInfo.set('currentPosition', e.currentPosition)
-      poppedOutPlayerInfo.set('relativePosition', e.relativePosition)
-    }
+    });
 
     poppedOutAudioCardWidget.bind(SC.Widget.Events.PLAY_PROGRESS, _.throttle(updatePlayProgress, 200))
   } else {
