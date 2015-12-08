@@ -123,6 +123,9 @@
       <button class="play">play btn</button>
     {{/if}}
     <input class="progress" type="range" min="0" max="1000" step="1" value="0">
+    <button class="dismiss-popout">
+      {{> x_icon}}
+    </button>
   </div>
 </template>
 
@@ -444,11 +447,6 @@
 
 <template name="display_audio_section">
   <div class="display-context-section audio-section" data-context-id="{{_id}}">
-    {{#if poppedOut}}
-      <button class="dismiss-popout">
-        {{> x_icon}}
-      </button>
-    {{/if}}
     <div class="active-display {{#unless selected}}hide{{/unless}}">
       <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
     </div>

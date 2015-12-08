@@ -1267,7 +1267,11 @@ Template.audio_popout.events({
         poppedOutAudioCardWidget.play();
       }
     });
-
+  },
+  "click .dismiss-popout": function(e, t) {
+    Session.set('poppedOutContextId', null);
+    poppedOutAudioCardWidget.pause();
+    analytics.track('Click dismiss popout button');
   }
 });
 

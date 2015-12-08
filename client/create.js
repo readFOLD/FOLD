@@ -816,11 +816,6 @@ Template.horizontal_section_block.events({
     Session.set('editingContext', this._id);
     Session.set('addingContext', false);
     analytics.track('Click edit horizontal');
-  },
-  "click .dismiss-popout": function(e, t) {
-    Session.set('poppedOutContextId', null);
-    poppedOutAudioCardWidget.pause();
-    analytics.track('Click dismiss popout button');
   }
 });
 
