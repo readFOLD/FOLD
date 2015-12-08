@@ -685,9 +685,6 @@ Template.mobile_minimap.helpers({
   },
   verticalHeight: function(){
     return Session.get('windowHeight') - Session.get('mobileMargin');
-  },
-  mobileMargin: function(){
-    return Session.get('mobileMargin');
   }
 });
 
@@ -1151,10 +1148,13 @@ getAudioIFrame = function(contextId){
 
 Tracker.autorun(function() {
   var currentXId = Session.get('currentXId');
+  var mobileContextView = Session.get('mobileContextView');
 
   Tracker.nonreactive(function(){
-    if (currentXId === Session.get('poppedOutContextId')){ // new card was previously popped out, so pop it back in
-      Session.set('poppedOutContextId', null);
+    if (currentXId === Session.get('poppedOutContextId')){ // if new card is popped out audio
+      if(!Meteor.Device.isPhone() || mobileContextView){
+        Session.set('poppedOutContextId', null);  // new card was previously popped out, so pop it back in
+      }
     } else if(mostRecentAudioCardWidget){ // otherwise there is a most recent audio card
       var associatedAudioCardId = mostRecentAudioCardId;
       mostRecentAudioCardWidget.isPaused(function(paused){
@@ -1179,24 +1179,33 @@ Session.set('poppedOutContextId', null);
 window.poppedOutPlayerInfo = new ReactiveDict;
 
 var updatePlayProgress = function (e) {
-  poppedOutPlayerInfo.set('currentPosition', e.currentPosition)
-  poppedOutPlayerInfo.set('relativePosition', e.relativePosition)
+  poppedOutPlayerInfo.set('currentPosition', e.currentPosition);
+  poppedOutPlayerInfo.set('relativePosition', e.relativePosition);
 };
 
 Tracker.autorun(function(){
   var poppedOutContextId;
   if(poppedOutContextId = Session.get('poppedOutContextId')) {
     poppedOutAudioCardWidget = SC.Widget(getAudioIFrame(poppedOutContextId));
-    poppedOutAudioCardWidget.bind(SC.Widget.Events.READY, function () {
-
+    var updateBasicPlayerInfo = function(){
       poppedOutAudioCardWidget.getCurrentSound(function (currentSound) {
+        console.log(currentSound)
         poppedOutPlayerInfo.set('title', currentSound.title);
         poppedOutPlayerInfo.set('duration', currentSound.duration);
         poppedOutAudioCardWidget.isPaused(function(isPaused){
           poppedOutPlayerInfo.set('status', isPaused ? 'paused' : 'playing');
         });
+        poppedOutAudioCardWidget.getPosition(function(position){
+          poppedOutPlayerInfo.set('currentPosition', position);
+          poppedOutPlayerInfo.set('relativePosition', position / currentSound.duration);
+        });
       });
-    });
+      // TO-DO, add get position getPosition(callback) in milliseconds
+    };
+
+    updateBasicPlayerInfo();
+
+    poppedOutAudioCardWidget.bind(SC.Widget.Events.READY, updateBasicPlayerInfo);
 
     poppedOutAudioCardWidget.bind(SC.Widget.Events.PLAY, function (e) {
       poppedOutPlayerInfo.set('status', 'playing');
@@ -1251,6 +1260,16 @@ Template.audio_popout.helpers({
   }
 });
 
+var updateAudioPosition = function(e, t){
+  var millis = Math.min(e.currentTarget.value / 1000, 0.99) * poppedOutPlayerInfo.get('duration'); // min prevents scrub to end weirdness
+  poppedOutAudioCardWidget.seekTo(millis);
+  poppedOutAudioCardWidget.isPaused(function(isPaused){
+    if(isPaused){
+      poppedOutAudioCardWidget.play();
+    }
+  });
+}
+
 Template.audio_popout.events({
   'click .play': function(){
     poppedOutAudioCardWidget.play();
@@ -1258,20 +1277,22 @@ Template.audio_popout.events({
   'click .pause': function(){
     poppedOutAudioCardWidget.pause();
   },
-  'input .progress, change .progress': function(e, t){
-    var millis = Math.min(e.currentTarget.value / 1000, 0.99) * poppedOutPlayerInfo.get('duration'); // min prevents scrub to end weirdness
-    poppedOutAudioCardWidget.seekTo(millis);
-    poppedOutAudioCardWidget.isPaused(function(isPaused){
-      if(isPaused){
-        poppedOutAudioCardWidget.play();
-      }
-    });
+  'change .progress': updateAudioPosition,
+  'input .progress': function(e,t) {
+    if(Meteor.Device.isPhone()){
+      poppedOutAudioCardWidget.pause();
+    } else {
+      updateAudioPosition(e,t);
+    }
   },
   "click .dismiss-popout": function(e, t) {
     Session.set('poppedOutContextId', null);
     poppedOutAudioCardWidget.pause();
     analytics.track('Click dismiss popout button');
   }
+});
+
+Template.audio_popout.events({
 });
 
 Template.audio_popout.onRendered(function(){

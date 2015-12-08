@@ -251,6 +251,7 @@ div.title-overlay {
   color: @white-color;
   position: relative;
   overflow: hidden;
+
   background-color: @unselected-background-color;
 
   .header-overlay-image, video{
@@ -266,12 +267,24 @@ div.title-overlay {
     z-index: 50;
     right: 0;
     top: 0;
-    height: 100%;
+    height: @title-overlay-ending-height;
     width: @popout-width;
-    padding: 15px;
+    padding-top: 12px;
+    @side-padding: 15px;
+    .padding-sides(15px);
     font-size: 12px;
     font-weight: bold;
+    @media @mobile {
+      height: 100px;
+      position: fixed;
+      right: 0;
+      top: auto;
+      width: 100%;
+      background-color: @dark-color;
+    }
     @control-height: 45px;
+    @control-spacing: 7px;
+    @time-width: 40px;
     .controls{
       margin-top: 5px;
       display: table;
@@ -284,22 +297,30 @@ div.title-overlay {
       height: 100%;
       line-height: @control-height;
       vertical-align: middle;
-      margin-right: 5px;
+      margin-right: @control-spacing;
+    }
+    .current-time, .total-time{
+      width: @time-width;
     }
     .current-time{
-      text-align: center;
-      width: 40px;
+      text-align: right;
     }
     input{
-      width: 50%;
+      width: calc(100% ~"-" (@control-height + @control-spacing * 3 + 2 * @time-width + @side-padding));
     }
     .play, .pause{
       .size(@control-height);
       border-radius: 50%;
       line-height: @control-height;
       font-size: @control-height/2;
-      text-align: center;
+      text-align: left;
       background-color: @orange-color;
+    }
+    .play{
+      padding-left: 15px;
+    }
+    .pause{
+      padding-left: 12px;
     }
     .dismiss-popout{
       top: 15px;
@@ -308,7 +329,7 @@ div.title-overlay {
       border-radius: 50%;
       svg{
         .center-over-parent-div;
-        .size(14px);
+        .size(13px);
       }
       padding: 0;
       position: absolute;
@@ -356,9 +377,12 @@ div.title-overlay {
       top: -(@starting-height - @ending-height);
     }
     @media @mobile {
-      display: none;
+      height: 0;
+      overflow: visible;
+      left: -9999999px;
     }
   }
+
 
   &.read:hover {
     border-bottom: 1px dashed grey;

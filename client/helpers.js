@@ -74,6 +74,10 @@ Handlebars.registerHelper("verticalLeft", function() {
   return Session.get("verticalLeft");
 });
 
+Handlebars.registerHelper("mobileMargin", function(){
+  return Session.get('mobileMargin');
+});
+
 Handlebars.registerHelper("adminMode", function() {
   return adminMode();
 });

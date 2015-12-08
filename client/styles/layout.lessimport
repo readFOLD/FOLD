@@ -432,6 +432,9 @@ input[type=range]::-webkit-slider-runnable-track {
 input[type=range]::-webkit-slider-thumb {
   height: 28px;
   width: 7px;
+  @media @mobile {
+    width: 15px;
+  }
   //border-radius: 3px;
   background: @white-color;
   cursor: pointer;
@@ -448,10 +451,17 @@ input[type=range]::-moz-range-track {
   animate: 0.2s;
   background: @orange-color;
 }
+
+input[type=range]::-moz-focus-outer {
+  border: 0;
+}
+
 input[type=range]::-moz-range-thumb {
   height: 28px;
   width: 7px;
   background: @white-color;
+  border-radius: 0px;
+  border: none;
   cursor: pointer;
 }
 input[type=range]::-ms-track {
@@ -1105,7 +1115,7 @@ div.horizontal-context {
     margin-top: @horizontal-context-margin-top;
     top: @horizontal-context-top;
     @media @mobile {
-      top: 48px;
+      top: 30px;
     }
     /*&.editing {
       top: 90px;
