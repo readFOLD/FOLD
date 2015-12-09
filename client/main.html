@@ -126,7 +126,7 @@
       <input class="progress" type="range" min="0" max="1000" step="1" value="0">
       <div class="total-time">{{totalTime}}</div>
     </div>
-    <button class="dismiss-popout">
+    <button title="Stop playback and dismiss" class="dismiss-popout">
       {{> x_icon}}
     </button>
   </div>
@@ -358,7 +358,7 @@
       {{> remix_icon_square }}
     </button>
     {{#if showPopoutButton}}
-      <button class="popout-button">
+      <button title="Pop-out audio" class="popout-button">
         {{> popout_icon}}
       </button>
     {{/if}}
