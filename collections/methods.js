@@ -286,12 +286,12 @@ Meteor.methods({
   editLinkTitle: function(horizontalId, content) {
     check(horizontalId, String);
     check(content, String);
-    return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"override.title": content}});
+    return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"override.title": content.replace(/\n/g, "") }});
   },
   editLinkDescription: function(horizontalId, content) {
     check(horizontalId, String);
     check(content, String);
-    return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"override.description": content}});
+    return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"override.description": content.replace(/\n/g, "") }});
   },
   reorderStory: function(storyId, idMap) {
     check(storyId, String);
