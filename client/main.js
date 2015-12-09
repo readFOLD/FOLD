@@ -915,15 +915,72 @@ Template.display_twitter_section.helpers(horizontalBlockHelpers);
 Template.display_map_section.helpers(horizontalBlockHelpers);
 
 Template.display_link_section.helpers(horizontalBlockHelpers);
+Template.display_link_section.onCreated(function(){
+  this.editingTitle = new ReactiveVar();
+  this.editingDescription = new ReactiveVar();
+});
+Template.display_link_section.helpers({
+  editingTitle: function(){
+    return Template.instance().editingTitle.get()
+  },
+  editingDescription: function(){
+    return Template.instance().editingDescription.get()
+  },
+});
 Template.display_link_section.events({
   'click a': function (e, t) {
+    if(!Session.get('read')){
+      e.preventDefault();
+      return
+    }
     var url = e.currentTarget.href;
     analytics.track('Click external link in link card', {
       label: url,
       url: url,
       targetClassName: e.target.className
     })
-  }
+  },
+  'click div.link-title': function(e,t){
+    if(!Session.get('read') && !Session.get('addingContext')){
+      t.editingTitle.set(true);
+      Meteor.setTimeout(function(){
+        t.$('.link-title').select();
+      })
+    }
+  },
+  'blur textarea.link-title': function(e,t){
+    var that = this;
+    if(!Session.get('read') && !Session.get('addingContext')){
+      Session.set('saveState', 'saving');
+      Meteor.call('editLinkTitle', that._id, t.$('textarea.link-title').val(), function(err, result){
+        if(result){
+          t.editingTitle.set(false);
+        }
+        saveCallback(err, result)
+      });
+    }
+  },
+  'click div.link-description': function(e,t){
+    if(!Session.get('read') && !Session.get('addingContext')){
+      t.editingDescription.set(true);
+      Meteor.setTimeout(function(){
+        t.$('.link-description').select();
+      })
+    }
+  },
+  'blur textarea.link-description': function(e,t){
+    var that = this;
+    if(!Session.get('read') && !Session.get('addingContext')){
+      Session.set('saveState', 'saving');
+      Meteor.call('editLinkDescription', that._id, t.$('textarea.link-description').val(), function(err, result){
+        if(result){
+          t.editingDescription.set(false);
+        }
+        saveCallback(err, result)
+      });
+    }
+  },
+
 });
 
 Template.display_text_section.onCreated(editableDescriptionCreatedBoilerplate);

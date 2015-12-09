@@ -895,7 +895,7 @@ div.link-section {
         height: 130px;
       }
     }
-    div.link-title {
+    .link-title {
       font-size: 20px;
       .FFMarkWebBold;
       padding-left: 15px;
@@ -921,10 +921,11 @@ div.link-section {
     }
   }
 
-  div.link-description {
+  .link-description {
     font-size: 14px;
     width: 100%;
     overflow: hidden;
+    line-height: inherit;
 
     padding-left: 15px;
     padding-right: 15px;
@@ -937,6 +938,14 @@ div.link-section {
       clear: both;
       max-height: 110px;
       padding-top: 15px;
+    }
+  }
+
+
+  .click-to-edit{
+    cursor: pointer;
+    &:hover{
+      background-color: yellow !important;
     }
   }
 

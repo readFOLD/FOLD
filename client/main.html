@@ -502,11 +502,19 @@
           {{else}}
             <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
           {{/if}}
-          <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
+        {{/if}}
+        {{#if editingTitle}}
+          <textarea class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</textarea>
+        {{else}}
+          <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}}">{{title}}</div>
         {{/if}}
       </div>
     </a>
-    <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</div>
+  {{#if editingDescription}}
+    <textarea class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</textarea>
+  {{else}}
+    <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}}">{{linkDescription}}</div>
+  {{/if}}
     <div class="bottom">
       <a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
     </div>

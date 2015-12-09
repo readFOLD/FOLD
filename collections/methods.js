@@ -283,6 +283,16 @@ Meteor.methods({
     check(content, String);
     return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"content": content}});
   },
+  editLinkTitle: function(horizontalId, content) {
+    check(horizontalId, String);
+    check(content, String);
+    return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"override.title": content}});
+  },
+  editLinkDescription: function(horizontalId, content) {
+    check(horizontalId, String);
+    check(content, String);
+    return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"override.description": content}});
+  },
   reorderStory: function(storyId, idMap) {
     check(storyId, String);
     check(idMap, [Object]);
