@@ -1287,9 +1287,6 @@ div.horizontal-context {
     button {
       padding: 0;
     }
-    svg{
-      .size-to-fit;
-    }
     .remix-button, .popout-button{
       float: right;
       .size(@remix-bar-height);
