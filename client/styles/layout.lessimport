@@ -1336,6 +1336,7 @@ div.minimap {
   .background-transition;
   position: fixed;
   overflow: hidden;
+  z-index: 60;
   right: @minimap-right-buffer;
   bottom: @minimap-bottom-buffer;
   padding: @minimap-padding;
