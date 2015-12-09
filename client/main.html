@@ -511,7 +511,7 @@
       </div>
     </a>
   {{#if editingDescription}}
-    <textarea class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{linkDescription}}</textarea>
+    <textarea class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}" rows="5">{{linkDescription}}</textarea>
   {{else}}
     <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}}">{{linkDescription}}</div>
   {{/if}}
