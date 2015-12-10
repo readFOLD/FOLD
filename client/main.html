@@ -180,14 +180,12 @@
 
 <template name="story_footer">
   <footer class="story-footer">
-    {{#unless isPhone}}
-      {{#if read}}
-        <div class="call-to-action vertical-narrative-section">
-          <p>Show this writer some thanks!</p>
-          {{> favorite_button }}
-        </div>
-      {{/if}}
-    {{/unless}}
+    {{#if read}}
+      <div class="call-to-action vertical-narrative-section">
+        <p>Show this writer some thanks!</p>
+        {{> favorite_button }}
+      </div>
+    {{/if}}
   </footer>
 </template>
 
