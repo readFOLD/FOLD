@@ -1287,14 +1287,17 @@ LinkBlock = (function (_super) {
   function LinkBlock(doc) {
     LinkBlock.__super__.constructor.call(this, doc);
     this.type = 'link';
+    if(!this.override){
+      this.override = {}; // if needed in more type, probably put this in ContextBlock, or the schema and migrate
+    }
   }
 
   LinkBlock.prototype.title = function () {
-    return this.reference.title || this.reference.originalUrl;
+    return this.override.title ||this.reference.title || this.reference.originalUrl;
   };
 
   LinkBlock.prototype.linkDescription = function () {
-    return this.reference.description || '';
+    return this.override.description || this.reference.description || '';
   };
 
   LinkBlock.prototype.thumbnailUrl = function () {
@@ -1657,7 +1660,10 @@ Schema.ContextBlocks = new SimpleSchema({
     type: Schema.ContextReferenceProfile,
     optional: true
   },
-
+  override: {
+    type: Schema.ContextReferenceProfile,
+    optional: true
+  },
   searchQuery: {
     type:String,
     optional:true
