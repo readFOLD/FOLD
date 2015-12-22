@@ -946,10 +946,10 @@ div.link-section {
     bottom: 0;
     padding-top: 13px;
     padding-bottom: 7px;
-    cursor: pointer;
     width: calc(100% ~"-" 15px);
     background-color: @white-color;
     a {
+      display: block;
       color: @action-color;
     }
   }
