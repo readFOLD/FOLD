@@ -22,51 +22,6 @@
   <meta property="og:image:secure_url" content="https://res.cloudinary.com/fold/image/upload/v1/static/FOLD_fb_image.png">
   <meta property="og:title" content="FOLD">
   <meta property="og:description" content="Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.">
-
-  <!-- FF Mark License -->
-    <!--
-    /**
-     * @license
-     * MyFonts Webfont Build ID 3109905, 2015-10-18T16:18:30-0400
-     * 
-     * The fonts listed in this notice are subject to the End User License
-     * Agreement(s) entered into by the website owner. All other parties are 
-     * explicitly restricted from using the Licensed Webfonts(s).
-     * 
-     * You may obtain a valid license at the URLs below.
-     * 
-     * Webfont: FF Mark Web Italic by FontFont
-     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-italic/
-     * 
-     * Webfont: FF Mark Web Bold Italic by FontFont
-     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-bold-italic/
-     * 
-     * Webfont: FF Mark Web Bold by FontFont
-     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-bold/
-     * 
-     * Webfont: FF Mark Web Light Italic by FontFont
-     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-light-italic/
-     * 
-     * Webfont: FF Mark Web Light by FontFont
-     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-light/
-     * 
-     * Webfont: FF Mark Web Medium Italic by FontFont
-     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-medium-italic/
-     * 
-     * Webfont: FF Mark Web Medium by FontFont
-     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-medium/
-     * 
-     * Webfont: FF Mark Web by FontFont
-     * URL: http://www.myfonts.com/fonts/fontfont/mark/ot-regular/
-     * 
-     * 
-     * License: http://www.myfonts.com/viewlicense?type=web&buildid=3109905
-     * Licensed pageviews: 50,000
-     * Webfonts copyright: 2013 published by FontShop International GmbH
-     * 
-     * © 2015 MyFonts Inc
-    */ -->
-  <link rel="stylesheet" type="text/css" href="MyFontsWebfontsKit.css">
 </head>
 
 
@@ -180,14 +135,12 @@
 
 <template name="story_footer">
   <footer class="story-footer">
-    {{#unless isPhone}}
-      {{#if read}}
-        <div class="call-to-action vertical-narrative-section">
-          <p>Show this writer some thanks!</p>
-          {{> favorite_button }}
-        </div>
-      {{/if}}
-    {{/unless}}
+    {{#if read}}
+      <div class="call-to-action vertical-narrative-section">
+        <p>Show this writer some thanks!</p>
+        {{> favorite_button }}
+      </div>
+    {{/if}}
   </footer>
 </template>
 

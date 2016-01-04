@@ -342,19 +342,7 @@ Template.story_header.events = {
     return goToY(0);
   },
   "click #banner-overlay": function() {
-    var path;
-    if (Session.get("pastHeader")) {
-      $("html, body").animate({
-        scrollTop: 0
-      }, function() {
-        return $('#to-story, .attribution').fadeIn();
-      });
-      Session.set("currentX", void 0);
-      Session.set("currentY", void 0);
-      path = window.location.pathname.split("/");
-      path.pop();
-      return path.pop();
-    } else {
+    if (!Session.get("pastHeader")) {
       $('#to-story, .attribution').fadeOut();
       goToX(0);
       return goToY(0);
@@ -1246,7 +1234,6 @@ Tracker.autorun(function(){
     poppedOutAudioCardWidget = SC.Widget(getAudioIFrame(poppedOutContextId));
     var updateBasicPlayerInfo = function(){
       poppedOutAudioCardWidget.getCurrentSound(function (currentSound) {
-        console.log(currentSound)
         poppedOutPlayerInfo.set('title', currentSound.title);
         poppedOutPlayerInfo.set('duration', currentSound.duration);
         poppedOutAudioCardWidget.isPaused(function(isPaused){
@@ -1257,8 +1244,9 @@ Tracker.autorun(function(){
           poppedOutPlayerInfo.set('relativePosition', position / currentSound.duration);
         });
       });
-      // TO-DO, add get position getPosition(callback) in milliseconds
     };
+
+    analytics.track('Audio popped out', { nonInteraction: 1 }); // we can't be sure the user initiated
 
     updateBasicPlayerInfo();
 
@@ -1266,16 +1254,19 @@ Tracker.autorun(function(){
 
     poppedOutAudioCardWidget.bind(SC.Widget.Events.PLAY, function (e) {
       poppedOutPlayerInfo.set('status', 'playing');
+      analytics.track('Popped out audio playing', { nonInteraction: 1 }); // we can't be sure the user initiated
     });
 
     poppedOutAudioCardWidget.bind(SC.Widget.Events.PAUSE, function (e) {
       poppedOutPlayerInfo.set('status', 'paused');
+      analytics.track('Popped out audio pausing', { nonInteraction: 1 }); // we can't be sure the user initiated
     });
 
     poppedOutAudioCardWidget.bind(SC.Widget.Events.FINISH, function (e) {
       poppedOutPlayerInfo.set('status', 'paused');
       poppedOutPlayerInfo.set('currentPosition', poppedOutPlayerInfo.get('duration'));
       poppedOutPlayerInfo.set('relativePosition', 1);
+      analytics.track('Popped out audio finished', { nonInteraction: 1 });
     });
 
     poppedOutAudioCardWidget.bind(SC.Widget.Events.PLAY_PROGRESS, _.throttle(updatePlayProgress, 200))
@@ -1347,9 +1338,6 @@ Template.audio_popout.events({
     poppedOutAudioCardWidget.pause();
     analytics.track('Click dismiss popout button');
   }
-});
-
-Template.audio_popout.events({
 });
 
 Template.audio_popout.onRendered(function(){
