@@ -450,11 +450,26 @@
     <a href="{{url}}" target="_blank">
       <div class="top">
         {{#if thumbnailUrl}}
+
           {{#if imageOnLeft}}
-            <img class="thumbnail left" src="{{thumbnailUrl}}" />
+            <div class="thumbnail left">
+              {{#if editThumbnailPrompt}}
+                {{#c_upload}}
+                  <input type="file" accept="image/*" class="overlay">
+                {{/c_upload}}
+              {{/if}}
+              <img src="{{thumbnailUrl}}" />
+            </div>
           {{else}}
-            <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
+            <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'>
+              {{#if editThumbnailPrompt}}
+                {{#c_upload}}
+                  <input type="file" accept="image/*" class="overlay">
+                {{/c_upload}}
+              {{/if}}
+            </div>
           {{/if}}
+
         {{/if}}
         {{#if editingTitle}}
           <textarea class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</textarea>
@@ -469,7 +484,7 @@
     <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}}"><span>{{linkDescription}}</span></div>
   {{/if}}
     <div class="bottom">
-      <a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
+      <a class="read-more {{#unless read}}inactive{{/unless}}" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
     </div>
   </div>
   {{#unless read}}

@@ -879,10 +879,14 @@ div.link-section {
 
   div.top {
     .thumbnail {
+      position: relative;
       &.left {
         float: left;
         width: 130px;
         height: 130px;
+        img{
+          .size-to-fit;
+        }
       }
       &.top {
         background-color: @action-color;
@@ -961,11 +965,14 @@ div.link-section {
     padding-top: 13px;
     padding-left: 15px;
     padding-bottom: 7px;
-    cursor: pointer;
     width: 100%;
     background-color: @white-color;
     a {
       color: @action-color;
+      &.inactive{
+        pointer-events: none;
+        cursor: inherit;
+      }
     }
   }
 }

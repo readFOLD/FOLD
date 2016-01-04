@@ -906,6 +906,7 @@ Template.display_link_section.helpers(horizontalBlockHelpers);
 Template.display_link_section.onCreated(function(){
   this.editingTitle = new ReactiveVar();
   this.editingDescription = new ReactiveVar();
+  this.editThumbnailPrompt = new ReactiveVar();
 });
 Template.display_link_section.helpers({
   editingTitle: function(){
@@ -914,13 +915,12 @@ Template.display_link_section.helpers({
   editingDescription: function(){
     return Template.instance().editingDescription.get()
   },
+  editThumbnailPrompt: function(){
+    return Template.instance().editThumbnailPrompt.get()
+  }
 });
 Template.display_link_section.events({
   'click a': function (e, t) {
-    if(!Session.get('read')){
-      e.preventDefault();
-      return
-    }
     var url = e.currentTarget.href;
     analytics.track('Click external link in link card', {
       label: url,
@@ -968,6 +968,16 @@ Template.display_link_section.events({
       });
     }
   },
+  "mouseenter .thumbnail" : function(d, template) {
+    if(!Session.get('read')){
+      return template.editThumbnailPrompt.set(true);
+    }
+  },
+  "mouseleave .thumbnail" : function(d, template) {
+    if(!Session.get('read')) {
+      return template.editThumbnailPrompt.set(false);
+    }
+  }
 
 });
 
