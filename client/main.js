@@ -342,19 +342,7 @@ Template.story_header.events = {
     return goToY(0);
   },
   "click #banner-overlay": function() {
-    var path;
-    if (Session.get("pastHeader")) {
-      $("html, body").animate({
-        scrollTop: 0
-      }, function() {
-        return $('#to-story, .attribution').fadeIn();
-      });
-      Session.set("currentX", void 0);
-      Session.set("currentY", void 0);
-      path = window.location.pathname.split("/");
-      path.pop();
-      return path.pop();
-    } else {
+    if (!Session.get("pastHeader")) {
       $('#to-story, .attribution').fadeOut();
       goToX(0);
       return goToY(0);
