@@ -1568,7 +1568,6 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   mapType: {
     type: String,
     allowedValues: ['roadmap', 'satellite'],
-    defaultValue: 'satellite',
     optional: true,
     autoform: {
       afFieldInput: {
