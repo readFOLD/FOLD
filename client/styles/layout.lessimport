@@ -944,8 +944,14 @@ div.link-section {
 
   .click-to-edit{
     cursor: pointer;
+    span{
+      display: inline-block;
+    }
     &:hover{
-      background-color: yellow !important;
+      span{
+        background-color: @action-color;
+        color: @white-color;
+      }
     }
   }
 

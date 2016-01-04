@@ -506,14 +506,14 @@
         {{#if editingTitle}}
           <textarea class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</textarea>
         {{else}}
-          <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}}">{{title}}</div>
+          <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}}"><span>{{title}}</span></div>
         {{/if}}
       </div>
     </a>
   {{#if editingDescription}}
     <textarea class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}" rows="5">{{linkDescription}}</textarea>
   {{else}}
-    <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}}">{{linkDescription}}</div>
+    <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}}"><span>{{linkDescription}}</span></div>
   {{/if}}
     <div class="bottom">
       <a class="read-more" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
