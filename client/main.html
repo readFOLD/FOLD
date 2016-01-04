@@ -454,18 +454,14 @@
           {{#if imageOnLeft}}
             <div class="thumbnail left">
               {{#if editThumbnailPrompt}}
-                {{#c_upload}}
-                  <input type="file" accept="image/*" class="overlay">
-                {{/c_upload}}
+                <input type="file" accept="image/*" class="overlay">
               {{/if}}
               <img src="{{thumbnailUrl}}" />
             </div>
           {{else}}
             <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'>
               {{#if editThumbnailPrompt}}
-                {{#c_upload}}
-                  <input type="file" accept="image/*" class="overlay">
-                {{/c_upload}}
+                <input type="file" accept="image/*" class="overlay">
               {{/if}}
             </div>
           {{/if}}

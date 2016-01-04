@@ -22,7 +22,6 @@ facts
 chaosbohne:twitter-text
 percolatestudio:segment.io@=1.2.2_1
 bozhao:link-accounts
-lepozepo:cloudinary
 mystor:device-detection
 email
 browser-policy
@@ -48,3 +47,4 @@ check
 
 
 npm-container
+lepozepo:cloudinary

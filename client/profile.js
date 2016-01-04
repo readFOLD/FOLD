@@ -87,27 +87,9 @@ Template.user_profile.onCreated(function(){
   this.editingPicture = new ReactiveVar(false);
   this.uploadPreview = new ReactiveVar();
   this.pictureId = new ReactiveVar();
-  
-  var query = _cloudinary.find({});
-  this.observeCloudinary = query.observeChanges({ 
-    changed: function (id, changes) { 
-      if (changes.public_id){ 
-        var doc = _cloudinary.findOne(id);
-        that.uploadPreview.set('//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_150,h_150,c_fill,g_face/' + doc.public_id);
-        that.pictureId.set(doc.public_id);
-      }
-    },
-    removed: function (id) {
-      var input = that.$('input[type=file]');
-      input.val(null);
-      input.change(); 
-    }
-  });
+
 });
 
-Template.user_profile.onDestroyed(function(){
-  this.observeCloudinary.stop();
-});
 
 Template.user_profile.helpers({
   editing : function() {
@@ -159,9 +141,21 @@ Template.user_profile.events({
   },
   "change input[type=file]": function(e, template){
     var file = _.first(e.target.files);
-    if (!file){
+    if (file) {
+      // actual upload
+      Cloudinary.upload([file], {}, function(err, doc) {
+        if(err){
+          var input = template.$('input[type=file]');
+          input.val(null);
+          input.change();
+        } else {
+          template.uploadPreview.set('//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_150,h_150,c_fill,g_face/' + doc.public_id);
+          template.pictureId.set(doc.public_id);
+        }
+      })
+    } else {
       template.uploadPreview.set(null);
-    } 
+    }
     return template.editingPicture.set(false);
   }
 });
