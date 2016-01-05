@@ -908,6 +908,7 @@ Template.display_link_section.onCreated(function(){
   this.editingDescription = new ReactiveVar();
   this.editThumbnailPrompt = new ReactiveVar();
   this.editingThumbnail = new ReactiveVar();
+  this.uploadingThumbnail = new ReactiveVar();
 });
 Template.display_link_section.helpers({
   editingTitle: function(){
@@ -918,10 +919,19 @@ Template.display_link_section.helpers({
   },
   editThumbnailPrompt: function(){
     return Template.instance().editThumbnailPrompt.get() || Template.instance().editingThumbnail.get();
+  },
+  uploadingThumbnail: function(){
+    return Template.instance().uploadingThumbnail.get();
   }
 });
 Template.display_link_section.events({
   'click a': function (e, t) {
+    if(!Session.get('read')){
+      if ($(e.target).is('a')) {
+        e.preventDefault()
+      }
+      return
+    }
     var url = e.currentTarget.href;
     analytics.track('Click external link in link card', {
       label: url,
@@ -986,11 +996,14 @@ Template.display_link_section.events({
     var that = this;
     var file = _.first(e.target.files);
     if (file) {
+      template.uploadingThumbnail.set(true);
       Cloudinary.upload([file], {}, function(err, doc) {
         if(err){
           var input = template.$('input[type=file]');
           input.val(null);
           input.change();
+          template.uploadingThumbnail.set(false);
+          return template.editingThumbnail.set(false);
         } else {
           var cloudinaryImageInfo = {
             id: doc.public_id,
@@ -1000,11 +1013,15 @@ Template.display_link_section.events({
           };
           Meteor.call('editLinkThumbnail', that._id, cloudinaryImageInfo, function(err, result){
             saveCallback(err, result)
+            template.uploadingThumbnail.set(false);
+            return template.editingThumbnail.set(false);
           });
         }
       })
+    } else {
+      template.uploadingThumbnail.set(false);
+      return template.editingThumbnail.set(false);
     }
-    return template.editingThumbnail.set(false);
   }
 });
 

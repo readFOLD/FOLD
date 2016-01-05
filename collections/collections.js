@@ -1306,13 +1306,18 @@ LinkBlock = (function (_super) {
 
   LinkBlock.prototype.thumbnailOverrideUrl = function () {
     if(this.thumbnailOverride()){
+      var url;
       if(this.imageOnLeft()){
-        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_face,h_130,w_130/' + this.override.thumbnailId;
+        url = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_center,h_130,w_130/' + this.override.thumbnailId;
       } else {
-        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_center,h_130,w_520/' + this.override.thumbnailId;
+        url = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_center,h_130,w_520/' + this.override.thumbnailId;
       }
+      if(this.override.thumbnailFileExtension === 'gif'){
+        url += '.jpg'
+      }
+      
+      return url
     }
-
   };
 
   LinkBlock.prototype.thumbnailUrl = function () {

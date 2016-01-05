@@ -69,7 +69,7 @@ input[type=file] {
       text-align: center;
       font-size: 14px;
       .size-to-fit;
-      content: 'Upload Image';
+      content: attr(data-label);
     }
     &:hover::before {
       background-color: @dark-color;
