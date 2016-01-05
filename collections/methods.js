@@ -293,6 +293,21 @@ Meteor.methods({
     check(content, String);
     return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"override.description": content.replace(/\n/g, "") }});
   },
+  editLinkThumbnail: function(horizontalId, cloudinaryImageInfo) {
+    check(horizontalId, String);
+    check(cloudinaryImageInfo, Object);
+    check(cloudinaryImageInfo.id, String);
+    check(cloudinaryImageInfo.fileExtension, String);
+    check(cloudinaryImageInfo.width, Number);
+    check(cloudinaryImageInfo.height, Number);
+
+    return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {
+      "override.thumbnailId": cloudinaryImageInfo.id,
+      "override.thumbnailWidth": cloudinaryImageInfo.width,
+      "override.thumbnailHeight": cloudinaryImageInfo.height,
+      "override.thumbnailFileExtension": cloudinaryImageInfo.fileExtension
+    }});
+  },
   reorderStory: function(storyId, idMap) {
     check(storyId, String);
     check(idMap, [Object]);

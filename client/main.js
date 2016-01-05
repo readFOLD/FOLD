@@ -907,6 +907,7 @@ Template.display_link_section.onCreated(function(){
   this.editingTitle = new ReactiveVar();
   this.editingDescription = new ReactiveVar();
   this.editThumbnailPrompt = new ReactiveVar();
+  this.editingThumbnail = new ReactiveVar();
 });
 Template.display_link_section.helpers({
   editingTitle: function(){
@@ -916,7 +917,7 @@ Template.display_link_section.helpers({
     return Template.instance().editingDescription.get()
   },
   editThumbnailPrompt: function(){
-    return Template.instance().editThumbnailPrompt.get()
+    return Template.instance().editThumbnailPrompt.get() || Template.instance().editingThumbnail.get();
   }
 });
 Template.display_link_section.events({
@@ -977,6 +978,43 @@ Template.display_link_section.events({
     if(!Session.get('read')) {
       return template.editThumbnailPrompt.set(false);
     }
+  },
+  "click input[type=file]": function(d, template) {
+    console.log('yes happsn')
+    console.log(template.$('input[type=file]'))
+    return template.editingThumbnail.set(true);
+  },
+  "change input[type=file]": function(e, template){
+    console.log('happens')
+    var that = this;
+    var file = _.first(e.target.files);
+    if (file) {
+      console.log('222')
+
+      // actual upload
+      Cloudinary.upload([file], {}, function(err, doc) {
+        console.log('333')
+
+        if(err){
+          var input = template.$('input[type=file]');
+          input.val(null);
+          input.change();
+        } else {
+          var cloudinaryImageInfo = {
+            id: doc.public_id,
+            fileExtension: doc.format,
+            width: doc.width,
+            height: doc.height
+          }
+          Meteor.call('editLinkThumbnail', that._id, cloudinaryImageInfo, function(err, result){
+            saveCallback(err, result)
+          })
+          //template.uploadPreview.set('//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_150,h_150,c_fill,g_face/' + doc.public_id);
+          //template.pictureId.set(doc.public_id);
+        }
+      })
+    }
+    return template.editingThumbnail.set(false);
   }
 
 });
