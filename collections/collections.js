@@ -1305,14 +1305,12 @@ LinkBlock = (function (_super) {
   };
 
   LinkBlock.prototype.thumbnailOverrideUrl = function () {
-    // TODO make this how we want it
     if(this.thumbnailOverride()){
       if(this.imageOnLeft()){
         return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_face,h_130,w_130/' + this.override.thumbnailId;
       } else {
         return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_center,h_130,w_520/' + this.override.thumbnailId;
       }
-      ///c_limit,h_130,w_520
     }
 
   };
