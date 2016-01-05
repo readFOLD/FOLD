@@ -1300,12 +1300,35 @@ LinkBlock = (function (_super) {
     return this.override.description || this.reference.description || '';
   };
 
+  LinkBlock.prototype.thumbnailOverride = function () {
+    return this.override.thumbnailId ? true : false;
+  };
+
+  LinkBlock.prototype.thumbnailOverrideUrl = function () {
+    // TODO make this how we want it
+    if(this.thumbnailOverride()){
+      if(this.imageOnLeft()){
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_face,h_130,w_130/' + this.override.thumbnailId;
+      } else {
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_center,h_130,w_520/' + this.override.thumbnailId;
+      }
+      ///c_limit,h_130,w_520
+    }
+
+  };
+
   LinkBlock.prototype.thumbnailUrl = function () {
-    return this.reference.thumbnailUrl || '//res.cloudinary.com/fold/image/upload/v1/static/LINK_SQUARE.svg';
+    return this.thumbnailOverrideUrl() || this.reference.thumbnailUrl || '//res.cloudinary.com/fold/image/upload/v1/static/LINK_SQUARE.svg';
   };
 
   LinkBlock.prototype.imageOnLeft = function () {
-    return !this.reference.thumbnailUrl || (this.reference.thumbnailWidth / this.reference.thumbnailHeight) <= 1.25;
+    if (this.thumbnailOverride()) {
+      return (this.override.thumbnailWidth / this.override.thumbnailHeight) <= 1.25;
+    } else if (this.reference.thumbnailUrl) {
+      return (this.reference.thumbnailWidth / this.reference.thumbnailHeight) <= 1.25;
+    } else {
+      return true
+    }
   };
 
   LinkBlock.prototype.url = function () {
