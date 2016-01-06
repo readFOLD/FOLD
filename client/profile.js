@@ -83,7 +83,6 @@ Template.user_profile.onCreated(function(){
   });
   
   this.editing = new ReactiveVar(false);
-  this.editPicturePrompt = new ReactiveVar(false);
   this.editingPicture = new ReactiveVar(false);
   this.uploadPreview = new ReactiveVar();
   this.pictureId = new ReactiveVar();
@@ -105,12 +104,6 @@ Template.user_profile.helpers({
   bio : function() {
     return this.user.profile.bio
   },
-  editPicturePrompt : function() {
-    return Template.instance().editPicturePrompt.get()
-  },
-  editingPicture : function() {
-    return Template.instance().editingPicture.get() || Template.instance().editPicturePrompt.get()
-  },
   uploadPreview: function(){
     return Template.instance().uploadPreview.get();
   }
@@ -126,16 +119,7 @@ Template.user_profile.events({
       Meteor.call('saveProfilePicture', this.user._id, template.pictureId.get());
     }
   },
-  "mouseenter .picture" : function(d, template) {
-    if (template.editing.get()) {
-      return template.editPicturePrompt.set(true);
-    }
-  },
-  "mouseleave .picture" : function(d, template) {
-    if (template.editing.get()) {
-      return template.editPicturePrompt.set(false);
-    }
-  },
+
   "click input[type=file]": function(d, template) {
     return template.editingPicture.set(true);
   },

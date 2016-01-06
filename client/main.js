@@ -918,7 +918,7 @@ Template.display_link_section.helpers({
     return Template.instance().editingDescription.get()
   },
   editThumbnailPrompt: function(){
-    return Template.instance().editThumbnailPrompt.get() || Template.instance().editingThumbnail.get();
+    return !Session.get('read');
   },
   uploadingThumbnail: function(){
     return Template.instance().uploadingThumbnail.get();
@@ -926,11 +926,9 @@ Template.display_link_section.helpers({
 });
 Template.display_link_section.events({
   'click a': function (e, t) {
-    if(!Session.get('read')){
-      if ($(e.target).is('a')) {
-        e.preventDefault()
-      }
-      return
+    if(!Session.get('read') && !$(e.target).is('input')){
+      e.preventDefault();
+      return false
     }
     var url = e.currentTarget.href;
     analytics.track('Click external link in link card', {
@@ -979,16 +977,6 @@ Template.display_link_section.events({
       });
     }
   },
-  "mouseenter .thumbnail" : function(d, template) {
-    if(!Session.get('read')){
-      return template.editThumbnailPrompt.set(true);
-    }
-  },
-  "mouseleave .thumbnail" : function(d, template) {
-    if(!Session.get('read')) {
-      return template.editThumbnailPrompt.set(false);
-    }
-  },
   "click input[type=file]": function(d, template) {
     return template.editingThumbnail.set(true);
   },
@@ -997,7 +985,7 @@ Template.display_link_section.events({
     var finish = function(){
       template.uploadingThumbnail.set(false);
       return template.editingThumbnail.set(false);
-    }
+    };
 
     var file = _.first(e.target.files);
     if (file) {

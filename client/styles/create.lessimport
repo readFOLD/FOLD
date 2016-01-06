@@ -49,6 +49,11 @@ input[type=file] {
   }
 
   &.overlay{
+    &:not(.uploading){
+      &:not(:hover){
+        opacity: 0 !important;
+      }
+    }
     position: absolute;
     .size-to-fit;
     z-index: 10;
