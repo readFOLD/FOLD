@@ -999,6 +999,7 @@ Template.display_link_section.events({
           var input = template.$('input[type=file]');
           input.val(null);
           input.change();
+          saveCallback(err);
           return finish();
         } else {
           var cloudinaryImageInfo = {
@@ -1008,7 +1009,7 @@ Template.display_link_section.events({
             height: doc.height
           };
           Meteor.call('editLinkThumbnail', that._id, cloudinaryImageInfo, function(err, result){
-            saveCallback(err, result)
+            saveCallback(err, result);
             return finish()
           });
         }

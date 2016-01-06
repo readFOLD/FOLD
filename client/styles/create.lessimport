@@ -74,7 +74,12 @@ input[type=file] {
       text-align: center;
       font-size: 14px;
       .size-to-fit;
-      content: attr(data-label);
+      content: 'Upload Image';
+    }
+    &.uploading{
+      &::before {
+        content: 'Uploading Image...';
+      }
     }
     &:hover::before {
       background-color: @dark-color;

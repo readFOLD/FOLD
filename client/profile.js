@@ -83,10 +83,9 @@ Template.user_profile.onCreated(function(){
   });
   
   this.editing = new ReactiveVar(false);
-  this.editingPicture = new ReactiveVar(false);
   this.uploadPreview = new ReactiveVar();
+  this.uploadingPicture = new ReactiveVar();
   this.pictureId = new ReactiveVar();
-
 });
 
 
@@ -106,6 +105,9 @@ Template.user_profile.helpers({
   },
   uploadPreview: function(){
     return Template.instance().uploadPreview.get();
+  },
+  uploadingPicture: function(){
+    return Template.instance().uploadingPicture.get();
   }
 });
 
@@ -119,22 +121,21 @@ Template.user_profile.events({
       Meteor.call('saveProfilePicture', this.user._id, template.pictureId.get());
     }
   },
-
-  "click input[type=file]": function(d, template) {
-    return template.editingPicture.set(true);
-  },
   "change input[type=file]": function(e, template){
     var file = _.first(e.target.files);
     if (file) {
       if(file.size > CLOUDINARY_FILE_SIZE){
         return notifyImageSizeError();
       }
+      template.uploadingPicture.set(true);
       // actual upload
       Cloudinary.upload([file], {}, function(err, doc) {
+        template.uploadingPicture.set(false);
         if(err){
           var input = template.$('input[type=file]');
           input.val(null);
           input.change();
+          notifyError('Image upload failed');
         } else {
           template.uploadPreview.set('//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_150,h_150,c_fill,g_face/' + doc.public_id);
           template.pictureId.set(doc.public_id);
@@ -143,7 +144,6 @@ Template.user_profile.events({
     } else {
       template.uploadPreview.set(null);
     }
-    return template.editingPicture.set(false);
   }
 });
 

@@ -454,14 +454,14 @@
           {{#if imageOnLeft}}
             <div class="thumbnail left">
               {{#if editThumbnailPrompt}}
-                <input type="file" accept="image/*" class="overlay {{#if uploadingThumbnail}}uploading{{/if}}" data-label="{{#if uploadingThumbnail}}Uploading Image...{{else}}Upload Image{{/if}}">
+                <input type="file" accept="image/*" class="overlay {{#if uploadingThumbnail}}uploading{{/if}}">
               {{/if}}
               <img src="{{thumbnailUrl}}" />
             </div>
           {{else}}
             <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'>
               {{#if editThumbnailPrompt}}
-                <input type="file" accept="image/*" class="overlay {{#if uploadingThumbnail}}uploading{{/if}}" data-label="{{#if uploadingThumbnail}}Uploading Image...{{else}}Upload Image{{/if}}">
+                <input type="file" accept="image/*" class="overlay {{#if uploadingThumbnail}}uploading{{/if}}">
               {{/if}}
             </div>
           {{/if}}

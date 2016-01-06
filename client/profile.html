@@ -30,7 +30,7 @@
       <button type="submit" class="save-profile-button">Save</button>
       
        <div class="picture">
-        <input type="file" accept="image/*" class="overlay" data-label="Upload Image">
+        <input type="file" accept="image/*" class="overlay {{#if uploadingPicture}}uploading{{/if}}">
         {{#if uploadPreview}}
           <img class="profile-picture-large" src="{{uploadPreview}}">
         {{else}}
