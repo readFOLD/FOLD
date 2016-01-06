@@ -361,6 +361,9 @@ Template.create_image_section.events({
   'change input[type=file]': function(e, t){
     var file = _.first(e.target.files);
     if (file){
+      if(file.size > CLOUDINARY_FILE_SIZE){
+        return notifyImageSizeError();
+      }
       t.uploadStatus.set('Uploading...');
 
       // immediate preview

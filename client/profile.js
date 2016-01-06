@@ -142,6 +142,9 @@ Template.user_profile.events({
   "change input[type=file]": function(e, template){
     var file = _.first(e.target.files);
     if (file) {
+      if(file.size > CLOUDINARY_FILE_SIZE){
+        return notifyImageSizeError();
+      }
       // actual upload
       Cloudinary.upload([file], {}, function(err, doc) {
         if(err){

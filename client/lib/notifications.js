@@ -41,7 +41,8 @@ window.notifyError = function(message){
         bgcolor: '#ff1b0c' // danger-color
       },
       'position' :'top right',
-      theme:'colorful'
+      theme:'colorful',
+      delay: 8000
     }
   );
 };
@@ -87,4 +88,8 @@ window.notifyDeploy = function(message, sticky){
     }
   );
   $('.amaran').addClass('migration-notification');
+};
+
+window.notifyImageSizeError = function(){
+  notifyError("Wow, that's a really big file! Can you make it any smaller? We support files up to " + CLOUDINARY_FILE_SIZE/1000000 + ' MB');
 };

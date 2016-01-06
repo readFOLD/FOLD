@@ -994,16 +994,24 @@ Template.display_link_section.events({
   },
   "change input[type=file]": function(e, template){
     var that = this;
+    var finish = function(){
+      template.uploadingThumbnail.set(false);
+      return template.editingThumbnail.set(false);
+    }
+
     var file = _.first(e.target.files);
     if (file) {
+      if(file.size > CLOUDINARY_FILE_SIZE){
+        notifyImageSizeError();
+        return finish()
+      }
       template.uploadingThumbnail.set(true);
       Cloudinary.upload([file], {}, function(err, doc) {
         if(err){
           var input = template.$('input[type=file]');
           input.val(null);
           input.change();
-          template.uploadingThumbnail.set(false);
-          return template.editingThumbnail.set(false);
+          return finish();
         } else {
           var cloudinaryImageInfo = {
             id: doc.public_id,
@@ -1013,14 +1021,12 @@ Template.display_link_section.events({
           };
           Meteor.call('editLinkThumbnail', that._id, cloudinaryImageInfo, function(err, result){
             saveCallback(err, result)
-            template.uploadingThumbnail.set(false);
-            return template.editingThumbnail.set(false);
+            return finish()
           });
         }
       })
     } else {
-      template.uploadingThumbnail.set(false);
-      return template.editingThumbnail.set(false);
+      return finish()
     }
   }
 });
