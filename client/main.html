@@ -47,11 +47,7 @@
         </a>
       </div>
       <a class="author-image" href="{{profileUrl}}">
-        {{#if profileImage author}}
-          <img class="profile-picture" src="{{profileImage author}}"/>
-        {{else}}
-          <img class="profile-picture" src="{{c.url 'static/placeholder_image.png'}}"/>
-        {{/if}}
+        <img class="profile-picture" src="{{profileImage author}}"/>
       </a>
     </div>
     {{#if popoutExists}}{{> audio_popout}}{{/if}}

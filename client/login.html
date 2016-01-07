@@ -1,3 +1,146 @@
+<template name="signin_overlay">
+  {{#if signingIn}}
+    <div class="signin-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+
+      <div class="signin-modal">
+        <button class="close">✕</button>
+        <div class="title"><img src="{{c.url 'static/foldtitle.svg'}}"></div>
+
+        {{#if onSignupStage}}
+          <div class="slogan">Create. Remix. Discover.</div>
+          {{#if explanation}}
+            <div class="explanation">{{explanation}}</div>
+          {{/if}}
+          <ol class="user-menu">
+            <li>
+              <button class="twitter-signin">Sign in with Twitter</button>
+            </li>
+            <li>
+              <button class="email-signup">Sign up with email</button>
+            </li>
+          </ol>
+        {{/if}}
+
+        {{#if onInfoStage}}
+          {{> info_form}}
+
+        {{/if}}
+
+        {{#if onPasswordStage}}
+          {{> password_form}}
+        {{/if}}
+
+        {{#if onOnboardingStage}}
+          {{> onboarding_screen}}
+        {{/if}}
+
+      </div>
+
+    </div>
+  {{/if}}
+</template>
+
+<template name="info_form">
+
+  <form id="info-form" action="action">
+    <!-- Email -->
+    <label for="email"> What's your e-mail? </label>
+    {{#if emailError}}<span class="error">{{emailError}}</span>{{/if}}
+    <input id="signup-email"
+           name="email"
+           type="email"
+           placeholder="author@example.com"
+           dir="auto"
+           autofocus="autofocus"
+           class="{{#if emailError}}error{{/if}}"
+           required
+        >
+
+    <!-- Name -->
+    <label for="name"> What's your name? This will be your byline on stories. </label>
+    {{#if nameError}}<span class="error">{{nameError}}</span>{{/if}}
+    <input id="signup-name"
+           name="name"
+           type="text"
+           placeholder="First Last"
+           dir="auto"
+           value="{{#if currentUser.profile.name}}{{currentUser.profile.name}}{{/if}}"
+           class="{{#if nameError}}error{{/if}}"
+           required
+        >
+
+    <!-- Username -->
+    <label for="username">What's your username?</label>
+    {{#if usernameError}}<span class="error">{{usernameError}}</span>{{/if}}
+    <input id="signup-username"
+           name="username"
+           type="text"
+           placeholder="Username"
+           dir="auto"
+           value="{{#if currentUser.tempUsername}}{{currentUser.tempUsername}}{{/if}}"
+           class="{{#if usernameError}}error{{/if}}"
+           required
+        >
+
+    {{#if signupError}}<div class="error">{{signupError}}</div>{{/if}}
+
+
+    {{#if twitterUser}}
+      <p>By creating an account, I accept FOLD’s {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}} and {{#linkTo route="privacy" target='_blank' class='green'}}Privacy Policy{{/linkTo}}.</p>
+      <button type="submit" class="signup-button">Sign up</button>
+    {{else}}
+      <button type="submit" class="signup-button">Next</button>
+    {{/if}}
+
+    {{#if disableSignup}}
+      {{>loading_icon}}
+    {{/if}}
+  </form>
+</template>
+
+
+<template name="password_form">
+  <form id="password-form" action="action">
+    <!-- Password -->
+    <label for="password">Choose a password</label>
+    {{#if passwordError}}<span class="error">{{passwordError}}</span>{{/if}}
+    <input id="signup-password"
+           name="password"
+           type="password"
+           placeholder="password"
+           dir="auto"
+           class="{{#if passwordError}}error{{/if}}"
+           required
+        >
+    <label for="password2">Reenter your password</label>
+    {{#if password2Error}}<span class="error">{{password2Error}}</span>{{/if}}
+    <input id="signup-password2"
+           name="password2"
+           type="password"
+           placeholder="password"
+           dir="auto"
+           class="{{#if password2Error}}error{{/if}}"
+           required
+        >
+
+    {{#if signupError}}<div class="error">{{signupError}}</div>{{/if}}
+
+    <p>By creating an account, I accept FOLD’s {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}} and {{#linkTo route="privacy" target='_blank' class='green'}}Privacy Policy{{/linkTo}}.</p>
+    <button type="submit" class="signup-button">Sign up</button>
+    {{#if disableSignup}}
+      {{>loading_icon}}
+    {{/if}}
+  </form>
+</template>
+
+
+<template name="onboarding_screen">
+
+
+</template>
+
+
+
 <template name="login">
   {{> top_banner_simple_no_links}}
   <div class="login">

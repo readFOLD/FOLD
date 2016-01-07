@@ -17,27 +17,6 @@ formatDateNice = function(date) {
   return monthNames[(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear();
 };
 
-loginWithTwitter = function() {
-  Session.set('signingInWithTwitter', true);
-  Meteor.loginWithTwitter({
-    requestPermissions: ['user']
-  }, function (err) {
-    if (err) {
-      notifyError("Twitter login failed");
-      Session.set('signingInWithTwitter', false);
-      throw(err); // throw error so we see it on kadira
-    } else if (!Meteor.user().username) { // if they are signing up for the first time they won't have a username yet
-      Router.go('twitter-signup');
-    } else { // otherwise they are a returning user, they are now logged in and free to proceed
-      notifyLogin();
-    }
-  });
-};
-
-loginWithEmail = function() {
-  Router.go('login')
-};
-
 Template.home.helpers({
   user: function() {
     return Meteor.user();
@@ -391,33 +370,5 @@ Template.login_buttons.events({
     e.preventDefault();
     Template.instance().showUserInfo.set(false);
     Meteor.logout();
-  }
-});
-
-
-// TODO close sign in overlay on esc (27) need to do on whole window though
-
-Template.signin_overlay.helpers({
-  explanation: function(){
-    var signingIn = Session.get('signingIn');
-    if(typeof signingIn === 'string'){
-      return signingIn
-    }
-  }
-})
-Template.signin_overlay.events({
-  "click .close": function(d) {
-    closeSignInOverlay();
-    analytics.track('Click close sign-in overlay');
-  },
-  "click .twitter-signin": function(d) {
-    closeSignInOverlay();
-    loginWithTwitter();
-    analytics.track('Click login with Twitter');
-  },
-  "click .email-signin": function(d) {
-    closeSignInOverlay();
-    loginWithEmail();
-    analytics.track('Click login with email');
   }
 });

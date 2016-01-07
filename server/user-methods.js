@@ -98,5 +98,6 @@ Meteor.methods({
         });
       }
     }
-  }
+  },
+  validateUserInfo: validateNewUser
 });

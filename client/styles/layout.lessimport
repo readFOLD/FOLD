@@ -1600,19 +1600,23 @@ div.minimap {
     color: @action-color;
     white-space: pre-wrap;
   }
-  .signin-buttons{
+  .signin-modal{
     margin:auto;
     display:block;
     text-align: center;
     background-color: @white-color;
 
-    height: 240px;
+    height: 300px;
     width: 320px;
     max-height: 100%;
     max-width: 100%;
     .FFMarkWebBold;
 
     .center-over-parent-div;
+
+    .title{
+      margin-top: 20px;
+    }
 
     ol{
       display: inline-block;

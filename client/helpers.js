@@ -106,6 +106,7 @@ Handlebars.registerHelper("profileImage", function(user, size) {
   } else {
     diameter = 60;
   }
+  var defaultProfilePic = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/static/placeholder_image.png';
   var dprSetting = window.isHighDensity ? ',dpr_2.0' : '';
   if (user && user.profile) { 
     if ( user.profile.profilePicture) {
@@ -114,6 +115,9 @@ Handlebars.registerHelper("profileImage", function(user, size) {
       return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + user.services.twitter.id
     }
   }
+
+  // if nothing else served up
+  return defaultProfilePic
 });
 
 

@@ -20,27 +20,6 @@
   </div>
 </template>
 
-<template name="signin_overlay">
-  {{#if signingIn}}
-    <div class="signin-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
-      <div class="signin-buttons">
-        <button class="close">✕</button>
-        {{#if explanation}}
-          <div class="explanation">{{explanation}}</div>
-        {{/if}}
-        <ol class="user-menu">
-          <li>
-            <button class="twitter-signin">Log in with Twitter</button>
-          </li>
-          <li>
-            <button class="email-signin">Log in with email</button>
-          </li>
-        </ol>
-      </div>
-    </div>
-  {{/if}}
-</template>
-
 <template name="top_banner_simple_no_links">
   <div class="home-top not-sticky top-banner {{#if slim}}slim{{else}}fat{{/if}}">
     <div class="left">
@@ -120,9 +99,7 @@
       <a href="/profile/{{currentUser.displayUsername}}">
 
         <button>
-            {{#if profileImage currentUser}}
-              <img class="profile-picture" src="{{profileImage currentUser}}"/>
-            {{/if}}
+          <img class="profile-picture" src="{{profileImage currentUser}}"/>
           <span class="text">{{currentUser.profile.name}}</span>
         </button>
       </a>
@@ -321,11 +298,7 @@
       <a class="author-profile-link" href="{{profileUrl}}">
         <div class="pull-left">
           <div class="author-image">
-            {{#if profileImage author}}
-             <img class="profile-picture" src="{{profileImage author}}"/>
-            {{else}}
-              <img class="profile-picture" src="{{c.url 'static/placeholder_image.png'}}"/>
-            {{/if}}
+           <img class="profile-picture" src="{{profileImage author}}"/>
           </div>
 
           <div class="author-name-date">
