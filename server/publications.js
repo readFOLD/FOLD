@@ -355,6 +355,7 @@ Meteor.publish("userData", function () {
         "services.twitter.id": 1,
         "displayUsername": 1,
         "admin": 1,
+        "privileges": 1,
         "profile": 1
       }});
   } else {

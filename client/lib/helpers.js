@@ -136,3 +136,6 @@ window.formatDateCompact = function (date) {
 
 };
 
+window.enterPress = function(e){
+  return e.keyCode === 13
+};

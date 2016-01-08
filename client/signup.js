@@ -96,9 +96,6 @@ var checkPasswordFields = function(e, t) {
   }
 };
 
-var enterPress = function(e){
-  return e.keyCode === 13
-};
 
 Template.signup_form.events({
   'blur input#signup-email': checkEmailField,
