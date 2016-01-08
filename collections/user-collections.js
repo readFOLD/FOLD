@@ -33,7 +33,8 @@ Schema.UserProfile = new SimpleSchema({
   },
   favorites: {
     type: [String],
-    optional: true
+    optional: true,
+    defaultValue: []
   },
   profilePicture: {
     type: String,
