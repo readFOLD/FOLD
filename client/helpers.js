@@ -92,7 +92,7 @@ Handlebars.registerHelper("reactiveStory", function(){
 
 Handlebars.registerHelper("twitterUser", function() {
   var user = Meteor.user();
-  return user.services && user.services.twitter && user.services.twitter.id;
+  return user && user.services && user.services.twitter && user.services.twitter.id;
 });
 
 Handlebars.registerHelper("userFavorited", function() {

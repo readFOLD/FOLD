@@ -99,5 +99,9 @@ Meteor.methods({
       }
     }
   },
-  validateUserInfo: validateNewUser
+  validateUserInfo: function(userInfo){
+    check(userInfo.email, String);
+    userInfo.emails = [{address: userInfo.email}];
+    return validateNewUser(userInfo);
+  }
 });

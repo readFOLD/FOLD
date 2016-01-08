@@ -65,7 +65,6 @@ Meteor.startup(function(){
 
   Tracker.autorun(function(){
     if (Session.get('signingIn') && !justReloaded){
-      setSigningInFrom();
       analytics.track('Opened sign-in overlay', {nonInteraction: 1});
     }
     justReloaded = false;
@@ -1007,7 +1006,7 @@ Template.favorite_button.events({
     analytics.track('Click favorite button');
 
     if (!Meteor.user()) {
-      Session.set('signingIn', 'Thanks for showing your love!\nPlease sign in to favorite this FOLD.');
+      openSignInOverlay('Thanks for showing your love!\nPlease sign in to favorite this FOLD.');
       return
     }
     var that = this;

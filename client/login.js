@@ -220,7 +220,7 @@ Template.info_form.events({
         }
       };
 
-      Meteor.call('validateNewUser', newUserInfo, function(err) {
+      Meteor.call('validateUserInfo', newUserInfo, function(err) {
         t.disableSignup.set(false);
         if (err) {
           if (err.error === 'username') {
@@ -232,7 +232,7 @@ Template.info_form.events({
           }
 
         } else {
-          Session.set('signinStage', 'onboarding');
+          Session.set('signinStage', 'password');
         }
       });
     }
@@ -273,6 +273,7 @@ Template.password_form.events({
   },
   'submit': function (e, t) {
     e.preventDefault();
+    checkPasswordFields(e, t);
 
     if(t.disableSignup.get()){
       return
@@ -304,15 +305,19 @@ Template.password_form.events({
       if (err) {
         t.signupError.set(err.reason || err.error);
       } else {
+        Session.set('signinStage', 'onboarding');
         notifyLogin();
-        Session.set('signupStage', 'onboarding');
       }
     });
   }
 });
 
 
-
+Template.onboarding_screen.events({
+  'click .finish': function(){
+    closeSignInOverlay();
+  }
+});
 
 Template.login_form.onCreated(function() {
   this.loginError = new ReactiveVar(false);
@@ -342,7 +347,6 @@ Template.login_form.events({
       if (err) {
         template.loginError.set(err.reason); 
       } else {
-        returnFromSignIn();
         notifyLogin();
       }
       return;

@@ -135,8 +135,20 @@
 
 
 <template name="onboarding_screen">
+  {{#with currentUser}}
+    <div class="author-image">
+      <img class="profile-picture" src="{{profileImage this}}"/>
+    </div>
 
-
+    <div class="author-name-username">
+      <div class="author-name">By <span>{{profile.name}}</span></div>
+      <div class="publish-date">{{username}}</div>
+    </div>
+    <div>
+      To edit your photo or display name, visit your <a href="/profile/{{username}}" class="green">profile</a>.
+    </div>
+    <button class="finish">Thanks</button>
+  {{/with}}
 </template>
 
 

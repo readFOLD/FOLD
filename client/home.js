@@ -364,7 +364,7 @@ Template.login_buttons.events({
     Template.instance().showUserInfo.set(false);
   },
   "click .signin": function(d) {
-    Session.set('signingIn', true);
+    openSignInOverlay();
   },
   "click .logout" : function(e) {
     e.preventDefault();

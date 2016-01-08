@@ -87,18 +87,15 @@ window.incrementReactiveVar = function(rv){
 }
 
 
+window.openSignInOverlay = function(str){
+  Session.set('signinStage', 'signup');
+  Session.set('signingIn', str || true);
+};
+
 window.closeSignInOverlay = function(){
   Session.set('signingIn', false);
 };
 
-window.setSigningInFrom = function () {
-  Session.set('signingInFrom', Router.current().url);
-};
-
-window.returnFromSignIn = function () {
-  closeSignInOverlay();
-  Router.go(Session.get('signingInFrom') || '/');
-};
 
 window.adminMode = function() {
   if (Session.get("adminMode")){
