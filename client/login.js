@@ -211,6 +211,7 @@ Template.info_form.events({
         } else {
           Session.set('signinStage', 'onboarding');
           notifyLogin();
+          analytics.track('New user signed up', {label: 'twitter'});
         }
       });
     } else { // if email user
@@ -310,6 +311,7 @@ Template.password_form.events({
       } else {
         Session.set('signinStage', 'onboarding');
         notifyLogin();
+        analytics.track('New user signed up', {label: 'email'});
       }
     });
   }
