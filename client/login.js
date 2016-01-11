@@ -64,6 +64,9 @@ Template.signin_overlay.events({
   },
   "click .go-to-login": function(e, t){
     Session.set('signinStage', 'login');
+  },
+  "click .back-to-signup": function(e, t){
+    Session.set('signinStage', 'signup');
   }
 });
 

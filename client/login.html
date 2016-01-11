@@ -45,7 +45,9 @@
 </template>
 
 <template name="info_form">
-
+  {{#unless twitterUser}}
+    <button class="back-to-signup">{{> back_arrow}}</button>
+  {{/unless}}
   <form id="info-form" action="action">
     <!-- Email -->
     <label for="email"> What's your e-mail? </label>
@@ -168,6 +170,7 @@
 </template>
 
 <template name="login_form">
+  <button class="back-to-signup">{{> back_arrow}}</button>
   <form id="login-form" action="action">
     <label for="username"> Username or Email </label>
     <input name="username" type="text" placeholder="username or email" autofocus="autofocus" required>
