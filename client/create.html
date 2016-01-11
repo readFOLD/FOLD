@@ -55,15 +55,14 @@
     {{/unless}}
   </div>
   {{/unless}}
+  <div class="saved-text">
+    {{#if saving}}
+      Saving...
+    {{else}}
+      Saved
+    {{/if}}
+  </div>
   <div class="floating-story-buttons-left">
-    <div class="saved-text">
-      {{#if saving}}
-        Saving...
-      {{else}}
-        Saved
-      {{/if}}
-    </div>
-
     <button type="button" class="toggle-preview button">
       {{#if read}}
         Edit

@@ -22,6 +22,10 @@ Handlebars.registerHelper("notRead", function() {
   return !Session.get("read");
 });
 
+Handlebars.registerHelper("showPublished", function() {
+  return !Session.get("showDraft");
+});
+
 Handlebars.registerHelper("showDraft", function() {
   return Session.get("showDraft");
 });

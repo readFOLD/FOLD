@@ -188,13 +188,6 @@ div.floating-story-buttons {
   width: 0;
   overflow: visible;
 
-  .saved-text{
-    color: @black-color;
-    margin-left: 15px;
-    margin-bottom: 4px;
-    font-size: 13px;
-  }
-
   button{
     width: 85px;
   }
@@ -212,6 +205,18 @@ div.floating-story-buttons {
   bottom: 0px;
   right: 0px;
 
+}
+
+.saved-text{
+  color: @black-color;
+  margin-left: 15px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  position: fixed;
+  z-index: 200;
+  top: 0px;
+  line-height: @magic-styling-distance;
+  right: 400px;
 }
 
 input.background-image-input {
