@@ -72,5 +72,21 @@ Meteor.methods({
     this.unblock();
     check(storyId, String);
     countStat.call(this, storyId, 'shares', {service: service});
+  },
+  impersonate: function(username) {
+    check(username, String);
+
+    var user = Meteor.user();
+    if (!user || !user.admin || !user.privileges || !user.privileges.impersonation){
+      throw new Meteor.Error(403, 'Permission denied');
+    }
+
+    var otherUser;
+    if (!(otherUser = Meteor.users.findOne({username: username}))){
+      throw new Meteor.Error(404, 'User not found');
+    }
+
+    this.setUserId(otherUser._id);
+    return otherUser._id
   }
 });

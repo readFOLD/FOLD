@@ -1944,6 +1944,15 @@ div.loading-container {
   color: @black-color;
 }
 
+.admin{
+  padding: 20px;
+  input{
+    margin-top: 100px;
+    display: block;
+    width: 300px;
+  }
+}
+
 .admin-recent-drafts{
   .show-more{
     background-color: @black-color;

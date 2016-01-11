@@ -61,6 +61,9 @@ Template.signin_overlay.events({
   "click .email-signup": function(d) {
     Session.set('signinStage', 'info');
     analytics.track('Click sign up with email');
+  },
+  "click .go-to-login": function(e, t){
+    Session.set('signinStage', 'login');
   }
 });
 
@@ -152,10 +155,6 @@ var checkPasswordFields = function(e, t) {
   }
 };
 
-var enterPress = function(e){
-  return e.keyCode === 13
-};
-
 Template.info_form.events({
   'blur input#signup-email': checkEmailField,
   'keypress input#signup-email': function(e,t) {
@@ -176,6 +175,7 @@ Template.info_form.events({
     }
   },
   'submit': function (e, t) {
+    var key;
     e.preventDefault();
 
     if(t.disableSignup.get()){
@@ -292,7 +292,7 @@ Template.password_form.events({
     var inputs = $('#password-form').serializeArray();
     var userInfo = {};
     _.each(inputs, function (input) {
-      key = input['name'];
+      var key = input['name'];
       value = input['value'];
       userInfo[key] = value;
     });
@@ -314,7 +314,7 @@ Template.password_form.events({
 
 
 Template.onboarding_screen.events({
-  'click .finish': function(){
+  'click a, click button': function(){
     closeSignInOverlay();
   }
 });
@@ -339,7 +339,7 @@ Template.login_form.events({
     inputs = $('#login-form').serializeArray();
     user_info = {};
     _.each(inputs, function(input) {
-        key = input['name'];
+        var key = input['name'];
         value = input['value'];
         user_info[key]=value;
       });
