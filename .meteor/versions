@@ -25,6 +25,7 @@ callback-hook@1.0.4
 chaosbohne:twitter-text@0.1.2
 check@1.1.0
 chuangbo:cookie@1.1.0
+coffeescript@1.0.11
 ddp@1.2.2
 ddp-client@1.2.1
 ddp-common@1.2.2
@@ -57,8 +58,7 @@ iron:middleware-stack@1.0.11
 iron:url@1.0.11
 jquery@1.11.4
 launch-screen@1.0.4
-lepozepo:cloudinary@3.0.3
-lepozepo:streams@0.2.0
+lepozepo:cloudinary@4.1.2
 less@2.5.1
 livedata@1.0.15
 localstorage@1.0.5
