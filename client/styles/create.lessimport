@@ -175,7 +175,6 @@ div.floating-story-buttons {
 
     &:hover {
       background-color: @action-color;
-      color: @dark-color;
     }
   }
   position: fixed;
@@ -236,6 +235,7 @@ div.floating-story-buttons {
     .width-transition;
   }
   &:hover{
+    background-color: @action-color;
     .text{
       width: 150px;
     }
