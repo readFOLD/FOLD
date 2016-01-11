@@ -348,6 +348,7 @@ Template.login_form.events({
         template.loginError.set(err.reason); 
       } else {
         notifyLogin();
+        closeSignInOverlay();
       }
       return;
     })
