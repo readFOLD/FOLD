@@ -110,7 +110,11 @@ Handlebars.registerHelper("profileImage", function(user, size) {
   var dprSetting = window.isHighDensity ? ',dpr_2.0' : '';
   if (user && user.profile) { 
     if ( user.profile.profilePicture) {
-      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + user.profile.profilePicture
+      if ( user.profile.profilePicture < 20) { // it's a monster
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/static/profile_monster_' + user.profile.profilePicture + '.svg';
+      } else {
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + user.profile.profilePicture
+      }
     } else if (user.services && user.services.twitter) {
       return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + user.services.twitter.id
     }

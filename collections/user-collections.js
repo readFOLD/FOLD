@@ -38,7 +38,18 @@ Schema.UserProfile = new SimpleSchema({
   },
   profilePicture: {
     type: String,
-    optional: true
+    autoValue: function() {
+      var monster = _.random(1,10).toString();
+      if (this.isSet) {
+        return this.value;
+      } else if (this.isInsert) {
+        return monster;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: monster};
+      } else {
+        this.unset();
+      }
+    }
   }
 });
 
