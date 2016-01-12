@@ -7,7 +7,7 @@ Reload._onMigrate('fold', function (retry) {
     return [true, {codeReloaded: true}];
   } else {
     //if (Router.current().route.getName() === 'edit') {
-    if (!Meteor.settings['public'].NODE_ENV === 'development') { // true
+    if (Meteor.settings['public'].NODE_ENV !== 'development') {
       notifyDeploy("We've just made an improvement! Click here to sync up the latest code.", true);
       analytics.track('Reload notification happened', {label: 'Reload on click'});
       $('.migration-notification').click(function () {
