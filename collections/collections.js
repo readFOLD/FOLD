@@ -69,7 +69,24 @@ Story = (function() {
     var maxHeight = (size === 'small') ? 230 : 350;
 
     if (image) {
-      url = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_north,h_' + maxHeight + ',w_' + maxWidth + '/' + image
+      if (image < 10){ // if it's a placeholder image
+        var color;
+
+        switch(image){
+          case '1':
+            color = panelColor;
+            break;
+          case '2':
+            color = orangeColor;
+            break;
+          default:
+            throw new Meteor.Error('Placeholder color not found');
+        }
+
+        url = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='3'><linearGradient id='gradient' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='10%' stop-color='" + color  + "'/><stop offset='90%' stop-color='" + whiteColor + "'/> </linearGradient><rect fill='url(#gradient)' x='0' y='0' width='100%' height='100%'/></svg>"
+      } else {
+        url = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_north,h_' + maxHeight + ',w_' + maxWidth + '/' + image
+      }
     }
     if(this.headerImageFormat === 'gif'){ // animated header image is static jpg on phone for now //if(Meteor.Device.isPhone() && this.headerImageFormat ==='gif'){
       url += '.jpg'; // TODO, this could conflict with headerImageVideoObject if conditional changes
@@ -1726,53 +1743,60 @@ var verticalSectionSchema = new SimpleSchema({
   }
 });
 
-var sharedStorySchemaObject = {
-  headerImageFormat: {
-    type: String,
-    optional: true
-  },
-  headerImageAttribution: {
-    type: String,
-    optional: true
-  },
-  headerImage: {
-    type: String,
-    autoValue: function() {
-      var placeholderNumber = _.random(1,2).toString();
-      if (this.isSet) {
-        return this.value;
-      } else if (this.isInsert) {
-        return placeholderNumber;
-      } else if (this.isUpsert) {
-        return {$setOnInsert: placeholderNumber};
-      } else {
-        this.unset();
+var sharedStorySchema = function(options) {
+  options = options || {};
+  return {
+    headerImageFormat: {
+      type: String,
+      optional: true
+    },
+    headerImageAttribution: {
+      type: String,
+      optional: true
+    },
+    headerImage: {
+      type: String,
+      optional: true,
+      autoValue: function() {
+        if(options.draft){
+          return this.unset();
+        }
+        var placeholderNumber = _.random(1,2).toString();
+        if (this.isSet) {
+          return this.value;
+        } else if (this.isInsert) {
+          return placeholderNumber;
+        } else if (this.isUpsert) {
+          return {$setOnInsert: placeholderNumber};
+        } else {
+          this.unset();
+        }
       }
+    },
+    storyPathSegment: {
+      type: String
+    },
+    title: {
+      type: String,
+      defaultValue: ''
+    },
+    keywords:{
+      type: [String],
+      defaultValue: []
+    },
+    narrativeRightsReserved: {
+      type: Boolean,
+      optional: true
+    },
+    verticalSections: {
+      type: [verticalSectionSchema],
+      minCount: 1,
+      maxCount: 1000
     }
-  },
-  storyPathSegment: {
-    type: String
-  },
-  title: {
-    type: String,
-    defaultValue: ''
-  },
-  keywords:{
-    type: [String],
-    defaultValue: []
-  },
-  narrativeRightsReserved: {
-    type: Boolean,
-    optional: true
-  },
-  verticalSections: {
-    type: [verticalSectionSchema],
-    minCount: 1,
-    maxCount: 1000
   }
 };
 
-var draftStorySchema = new SimpleSchema(sharedStorySchemaObject);
+var draftStorySchema = new SimpleSchema(sharedStorySchema({draft: true}));
 
 
 
@@ -1795,7 +1819,7 @@ var analyticsSchema = new SimpleSchema({
   }
 });
 
-Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
+Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchema(), {
     shortId: {
       type: String
     },
