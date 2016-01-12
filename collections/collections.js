@@ -1737,7 +1737,18 @@ var sharedStorySchemaObject = {
   },
   headerImage: {
     type: String,
-    optional: true
+    autoValue: function() {
+      var placeholderNumber = _.random(1,2).toString();
+      if (this.isSet) {
+        return this.value;
+      } else if (this.isInsert) {
+        return placeholderNumber;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: placeholderNumber};
+      } else {
+        this.unset();
+      }
+    }
   },
   storyPathSegment: {
     type: String
