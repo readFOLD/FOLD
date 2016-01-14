@@ -68,6 +68,28 @@ Meteor.startup(function(){
       analytics.track('Opened sign-in overlay', {nonInteraction: 1});
     }
     justReloaded = false;
+  });
+
+  var restrictFocusToModal = function( event ) {
+    var modal = $('.signin-modal');
+    if (!modal.has(event.target)[0]) {
+      event.stopPropagation();
+      Meteor.setTimeout(function(){
+        modal[0].focus();
+        var input = $('.signin-modal input')[0];
+        if(input){
+          input.focus();
+        }
+      })
+    }
+  };
+
+  Tracker.autorun(function(){
+    if (Session.get('signingIn')){
+      $(document).on('focusin', restrictFocusToModal);
+    } else {
+      $(document).off('focusin', restrictFocusToModal);
+    }
   })
 });
 
