@@ -359,6 +359,9 @@ input[type="text"], input[type="password"], input[type="email"] {
   margin-bottom: 15px;
   height: 55px;
   border: 1px solid @medium-color;
+  &:focus{
+    border-color: #8e8e8e;
+  }
   padding-left: 18px;
   font-size: 17px;
 

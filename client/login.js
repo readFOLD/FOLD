@@ -104,6 +104,15 @@ Template.info_form.helpers({
   usernameError: function () {
     return Template.instance().usernameError.get();
   },
+  emailComplete: function () {
+    return Template.instance().emailComplete.get();
+  },
+  nameComplete: function () {
+    return Template.instance().nameComplete.get();
+  },
+  usernameComplete: function () {
+    return Template.instance().usernameComplete.get();
+  },
   submitting: function () {
     Template.instance().submitting.get()
   },
@@ -118,43 +127,45 @@ Template.info_form.helpers({
   }
 });
 
-var checkEmailField =  function(e, t) {
+var checkEmailField =  function(e, t, suppressError) {
   var email = t.$('input.signup-email').val();
   email = trimInput(email);
 
-  console.log('11111')
-  console.log(email)
-
   var result = checkValidEmail(email);
   if (!result.status) {
-    t.emailError.set(result.message)
+    if(!suppressError) {
+      t.emailError.set(result.message)
+    }
   } else {
     t.emailError.set(false)
     t.emailComplete.set(true);
   }
 };
 
-var checkNameField = function(e, t) {
+var checkNameField = function(e, t, suppressError) {
   var name = t.$('input.signup-name').val();
   name = trimInput(name);
 
   var result = checkValidName(name);
   if (!result.status) {
-    t.nameError.set(result.message)
+    if(!suppressError){
+      t.nameError.set(result.message)
+    }
   } else {
     t.nameError.set(false)
     t.nameComplete.set(true)
   }
 };
 
-var checkUsernameField = function(e, t) {
+var checkUsernameField = function(e, t, suppressError) {
   var username = t.$(".signup-username").val();
   username = trimInput(username);
-  console.log(e)
 
   var result = checkValidUsername(username);
   if (!result.status) {
-    t.usernameError.set(result.message)
+    if(!suppressError){
+      t.usernameError.set(result.message)
+    }
   } else {
     t.usernameError.set(false)
     t.usernameComplete.set(true)
@@ -177,8 +188,6 @@ var checkPasswordConfirmation = function(e, t) {
   var p1 = t.$(".signup-password").val();
   var p2 = t.$(".signup-password2").val();
 
-  console.log('happening')
-
   var result2 = checkValidPasswordConfirmation(p1, p2);
   if (!result2.status) {
     t.password2Error.set(result2.message);
@@ -187,6 +196,13 @@ var checkPasswordConfirmation = function(e, t) {
     t.password2Complete.set(true);
   }
 };
+
+Template.info_form.onRendered(function(){
+  // in case coming back
+  checkEmailField(null, this, true);
+  checkNameField(null, this, true);
+  checkUsernameField(null, this, true);
+});
 
 Template.info_form.helpers({
   initialName: function(){
@@ -225,13 +241,17 @@ Template.info_form.events({
   },
   'blur input.signup-name': checkNameField,
   'keypress input.signup-name': function(e,t) {
-    if (enterPress(e)) {
+    //if (enterPress(e)) {
+    Meteor.setTimeout(function(){
       checkNameField(e, t);
-    }
+    });
+    //}
   },
   'blur input.signup-username': checkUsernameField,
   'keypress input.signup-username': function(e,t) {
-    checkUsernameField(e, t);
+    if (enterPress(e)) {
+      checkUsernameField(e, t);
+    }
   },
   'submit': function (e, t) {
     var key;
@@ -321,6 +341,12 @@ Template.password_form.helpers({
   password2Error: function () {
     return Template.instance().password2Error.get();
   },
+  passwordComplete: function () {
+    return Template.instance().passwordComplete.get();
+  },
+  password2Complete: function () {
+    return Template.instance().password2Complete.get();
+  },
   submitting: function () {
     return Template.instance().submitting.get();
   },
@@ -343,7 +369,9 @@ Template.password_form.events({
   },
   'keypress input.signup-password2': function(e,t) {
     //if (enterPress(e)) {
+    Meteor.setTimeout(function() {
       checkPasswordConfirmation(e, t);
+    });
     //}
   },
   'submit': function (e, t) {

@@ -24,6 +24,10 @@
   <meta property="og:description" content="Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.">
 </head>
 
+<body>
+{{> signin_overlay}}
+</body>
+
 
 <!--
   Templates used in reading, creating, and editing
@@ -60,7 +64,6 @@
       {{/if}}
     {{/unless}}
   </div>
-  {{> signin_overlay}}
   {{log isPhone}}
 </template>
 

@@ -36,11 +36,6 @@ input.success{
 }
 
 form {
-  span.error {
-    float: right;
-    color: @orange-color;
-  }
-
   div.error {
     color: red;
   }
@@ -139,34 +134,27 @@ div.sign-up-options {
   top: 0;
   left: 0;
   background-color: fade(@dark-color, 80%);
-  .close{
-    position: absolute;
-    top: 8px;
-    padding: 0;
-    right: 8px;
-    background-color: rgba(0,0,0,0);
-    font-size: 16px;
-    .size(16px);
-    color: @black-color;
-  }
-  .explanation{
-    font-size: 13px;
-    padding: 20px;
-    color: @action-color;
-    white-space: pre-wrap;
-  }
+  .FFMarkWebMedium;
+
   .signin-modal{
     margin:auto;
     display:block;
     text-align: center;
     background-color: @white-color;
+    font-size: 18px;
+    @media @mobile {
+      font-size: 16px;
+    }
 
     .size(500px);
 
 
     button{
+      font-size: 18px;
+
       background-color: @action-color;
       color: @white-color;
+      .FFMarkWebBold;
       &:hover{
         background-color: @black-color;
       }
@@ -178,43 +166,159 @@ div.sign-up-options {
     button.text{
       background: none !important;
       color: @panel-color;
+      padding: 0;
       &:hover{
         text-decoration: underline;
       }
     }
 
+    max-height: 100%;
+    max-width: 100%;
+
+    .center-over-parent-div;
+
+    .title{
+      margin-top: 93px;
+      &.has-explanation{
+        margin-top: 68px;
+      }
+      img{
+        width: 120px;
+      }
+      line-height: 0;
+    }
+
+    .slogan, .explanation{
+      margin-top: @magic-styling-distance;
+      @media @mobile {
+        margin-top: @magic-styling-distance / 2;
+      }
+      line-height: normal;
+    }
+    .slogan{
+      color: @medium-color;
+    }
+
+    .explanation{
+      color: @dark-color;
+      line-height: 28px;
+      white-space: pre-wrap;
+    }
+
+    ol{
+      margin-top: @magic-styling-distance;
+      @media @mobile {
+        margin-top: @magic-styling-distance / 2;
+      }
+        text-align: center;
+    }
+
+    li{
+      display: inline-block;
+      margin-bottom: @magic-styling-distance / 2;
+      width: 380px;
+      max-width: calc(100% ~"-" @magic-styling-distance);
+      height: 60px;
+
+      button{
+        .size-to-fit;
+      }
+      svg{
+        .size(auto);
+        margin-left: 13px;
+        display: inline;
+        vertical-align: middle;
+      }
+      span{
+        display: inline;
+        vertical-align: middle;
+      }
+    }
+
+    @input-width: 335px;
+    @status-width: 60px;
+
+    input{
+      height: 60px;
+      width: @input-width;
+      &::-webkit-input-placeholder {
+        .FFMarkWebBold;
+      }
+      &:-moz-placeholder {
+        .FFMarkWebBold;
+      }
+      &:-ms-input-placeholder {
+        .FFMarkWebBold;
+      }
+      &:first-child{
+        margin-top: 0;
+      }
+      &:last-of-type{
+        margin-bottom: 0;
+      }
+      margin-top: 15px;
+      margin-bottom: 5px;
+
+
+    }
+
+
+    .status{
+      width: @status-width;
+      height: 20px;
+      text-align: center;
+      display: inline-block;
+      position: relative;
+      left: -20px;
+      svg{
+        position: absolute;
+      }
+    }
+    span.error{
+      display: inline-block;
+      width: @input-width + @status-width;
+      text-align: left;
+      color: @orange-color;
+      font-size: 15px;
+    }
+
+    .back{
+      position: absolute;
+      left: @magic-styling-distance;
+      top: 53px;
+      color: @medium-color !important;
+    }
+
+    .already-have{
+      margin-top: @magic-styling-distance / 2;
+      max-width: 100%;
+    }
     .close{
-      background-color: @black-color;
+      .FFMarkWeb;
+      position: absolute;
+      top: @magic-styling-distance;
+      right: @magic-styling-distance;
+      @media @mobile{
+        top: @magic-styling-distance / 2;
+        right: @magic-styling-distance / 2;
+      }
+      background-color: @medium-color;
       .size(@magic-styling-distance);
       font-size: @magic-styling-distance/2;
       padding: 0;
       text-align: center;
     }
 
-    max-height: 100%;
-    max-width: 100%;
-    .FFMarkWebBold;
-
-    .center-over-parent-div;
-
-    .title{
-      margin-top: 20px;
+    form{
+      margin-top: 120px;
     }
 
-    ol{
+    .signup-button{
       display: inline-block;
-      .center-over-parent-div;
-    }
-
-    li{
-
-      margin-top: 10px;
-      width: 200px;
-      height: 45px;
-
-      button{
-        .size-to-fit;
-      }
+      margin-top: @magic-styling-distance;
+      height: 60px;
+      width: 120px;
+      text-align: center;
     }
   }
 }
