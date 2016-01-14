@@ -11,7 +11,14 @@ div.login, div.reset-password, div.recover-password {
 }
 
 input.error, input.required {
-  border-bottom: 5px solid red;
+  //&:after{
+  //  content:'no';
+  //}
+}
+input.success{
+  //&:after{
+  //  content:'no';
+  //}
 }
 
 @media @not-mobile{
@@ -31,16 +38,13 @@ input.error, input.required {
 form {
   span.error {
     float: right;
-    color: red;
+    color: @orange-color;
   }
 
   div.error {
     color: red;
   }
 
-  input.error {
-    border-bottom: 5px solid red;
-  }
 }
 
 form#login-form {
@@ -124,6 +128,93 @@ div.sign-up-options {
     line-height: @button-height;
     &:hover {
       background-color: @dark-color;
+    }
+  }
+}
+
+
+.signin-overlay{
+  z-index: 99999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: fade(@dark-color, 80%);
+  .close{
+    position: absolute;
+    top: 8px;
+    padding: 0;
+    right: 8px;
+    background-color: rgba(0,0,0,0);
+    font-size: 16px;
+    .size(16px);
+    color: @black-color;
+  }
+  .explanation{
+    font-size: 13px;
+    padding: 20px;
+    color: @action-color;
+    white-space: pre-wrap;
+  }
+  .signin-modal{
+    margin:auto;
+    display:block;
+    text-align: center;
+    background-color: @white-color;
+
+    .size(500px);
+
+
+    button{
+      background-color: @action-color;
+      color: @white-color;
+      &:hover{
+        background-color: @black-color;
+      }
+      &:disabled{
+        background-color: @inactive-color;
+        cursor: auto;
+      }
+    }
+    button.text{
+      background: none !important;
+      color: @panel-color;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+
+    .close{
+      background-color: @black-color;
+      .size(@magic-styling-distance);
+      font-size: @magic-styling-distance/2;
+      padding: 0;
+      text-align: center;
+    }
+
+    max-height: 100%;
+    max-width: 100%;
+    .FFMarkWebBold;
+
+    .center-over-parent-div;
+
+    .title{
+      margin-top: 20px;
+    }
+
+    ol{
+      display: inline-block;
+      .center-over-parent-div;
+    }
+
+    li{
+
+      margin-top: 10px;
+      width: 200px;
+      height: 45px;
+
+      button{
+        .size-to-fit;
+      }
     }
   }
 }

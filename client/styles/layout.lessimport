@@ -358,11 +358,7 @@ input[type="text"], input[type="password"], input[type="email"] {
   margin-top: 5px;
   margin-bottom: 15px;
   height: 55px;
-  border: none;
-  border-bottom: 5px solid @action-color;
-  border-top: 1px solid @dark-color;
-  border-left: 1px solid @dark-color;
-  border-right: 1px solid @dark-color; 
+  border: 1px solid @medium-color;
   padding-left: 18px;
   font-size: 17px;
 
@@ -503,13 +499,19 @@ body {
   overflow-x: hidden;
 }
 
-footer{
+.story-footer{
   @height: 500px;
-  position:absolute;
-  left: 0;
-  right:0;
   bottom:-@height;
   height: @height;
+  @media @desktop-xtall {
+    @height: 850px;
+    bottom: -@height;
+    height: @height;
+  }
+
+  position:absolute;
+  left: 0;
+  right:0;;
   display: inline-block;
   text-align: center;
   .call-to-action{
@@ -1578,67 +1580,6 @@ div.minimap {
   }
 }
 
-.signin-overlay{
-  z-index: 99999;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: fade(@dark-color, 80%);
-  .close{
-    position: absolute;
-    top: 8px;
-    padding: 0;
-    right: 8px;
-    background-color: rgba(0,0,0,0);
-    font-size: 16px;
-    .size(16px);
-    color: @black-color;
-  }
-  .explanation{
-    font-size: 13px;
-    padding: 20px;
-    color: @action-color;
-    white-space: pre-wrap;
-  }
-  .signin-modal{
-    margin:auto;
-    display:block;
-    text-align: center;
-    background-color: @white-color;
-
-    height: 300px;
-    width: 320px;
-    max-height: 100%;
-    max-width: 100%;
-    .FFMarkWebBold;
-
-    .center-over-parent-div;
-
-    .title{
-      margin-top: 20px;
-    }
-
-    ol{
-      display: inline-block;
-      .center-over-parent-div;
-    }
-
-    li{
-      background-color: @orange-color;
-      &:hover{
-        background-color: @black-color;
-      }
-      color: @white-color;
-      margin-top: 10px;
-      width: 200px;
-      height: 45px;
-
-      button{
-        .size-to-fit;
-      }
-    }
-  }
-}
 
 .mobile-progress-header{
   text-align: center;

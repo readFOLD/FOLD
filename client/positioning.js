@@ -207,7 +207,7 @@ window.horizontalExists = function(){
 }
 
 $(document).keydown(function(e) {
-  if (Router.current().route.getName() === 'read'){
+  if ((Router.current().route.getName() === 'read') && !signingIn()){
     letter = String.fromCharCode(e.keyCode);
     switch(letter){
       case 'J':

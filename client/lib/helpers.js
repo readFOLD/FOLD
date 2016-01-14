@@ -96,6 +96,10 @@ window.closeSignInOverlay = function(){
   Session.set('signingIn', false);
 };
 
+window.signingIn = function(){
+  return Session.get('signingIn');
+};
+
 
 window.adminMode = function() {
   if (Session.get("adminMode")){

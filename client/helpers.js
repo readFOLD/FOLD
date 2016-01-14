@@ -35,7 +35,7 @@ Handlebars.registerHelper("saving", function() {
 });
 
 Handlebars.registerHelper("signingIn", function() {
-  return Session.get("signingIn");
+  return window.signingIn();
 });
 
 Handlebars.registerHelper("currentYId", function() {
@@ -97,6 +97,12 @@ Handlebars.registerHelper("reactiveStory", function(){
 Handlebars.registerHelper("twitterUser", function() {
   var user = Meteor.user();
   return user && user.services && user.services.twitter && user.services.twitter.id;
+});
+
+Handlebars.registerHelper("firstName", function(user) {
+  if (user && user.profile) {
+    return user.profile.name.split(' ')[0];
+  }
 });
 
 Handlebars.registerHelper("userFavorited", function() {

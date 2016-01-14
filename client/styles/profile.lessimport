@@ -99,8 +99,7 @@ div.user-profile {
     margin-top: 5px;
     margin-bottom: 15px;
     height: 110px;
-    border: none;
-    border-bottom: 5px solid @action-color;
+    border: 1px solid @medium-color;
     padding: 10px 18px;
     font-size: 16px;
   }

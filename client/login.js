@@ -65,6 +65,9 @@ Template.signin_overlay.events({
   "click .go-to-login": function(e, t){
     Session.set('signinStage', 'login');
   },
+  "click .back-to-info": function(e, t){
+    Session.set('signinStage', 'info');
+  },
   "click .back-to-signup": function(e, t){
     Session.set('signinStage', 'signup');
   }
@@ -76,7 +79,10 @@ Template.info_form.onCreated(function() {
   this.emailError = new ReactiveVar();
   this.nameError = new ReactiveVar();
   this.usernameError = new ReactiveVar();
-  this.disableSignup = new ReactiveVar();
+  this.emailComplete = new ReactiveVar();
+  this.nameComplete = new ReactiveVar();
+  this.usernameComplete = new ReactiveVar();
+  this.submitting = new ReactiveVar();
 });
 
 Template.info_form.helpers({
@@ -98,25 +104,38 @@ Template.info_form.helpers({
   usernameError: function () {
     return Template.instance().usernameError.get();
   },
+  submitting: function () {
+    Template.instance().submitting.get()
+  },
   disableSignup: function () {
-    return Template.instance().disableSignup.get();
+    return Template.instance().submitting.get()
+      || !Template.instance().emailComplete.get()
+      || !Template.instance().nameComplete.get()
+      || !Template.instance().usernameComplete.get()
+      || Template.instance().emailError.get()
+      || Template.instance().nameError.get()
+      || Template.instance().usernameError.get()
   }
 });
 
 var checkEmailField =  function(e, t) {
-  var email = $('input#signup-email').val();
+  var email = t.$('input.signup-email').val();
   email = trimInput(email);
+
+  console.log('11111')
+  console.log(email)
 
   var result = checkValidEmail(email);
   if (!result.status) {
     t.emailError.set(result.message)
   } else {
     t.emailError.set(false)
+    t.emailComplete.set(true);
   }
 };
 
 var checkNameField = function(e, t) {
-  var name = $('input#signup-name').val();
+  var name = t.$('input.signup-name').val();
   name = trimInput(name);
 
   var result = checkValidName(name);
@@ -124,78 +143,115 @@ var checkNameField = function(e, t) {
     t.nameError.set(result.message)
   } else {
     t.nameError.set(false)
+    t.nameComplete.set(true)
   }
 };
 
 var checkUsernameField = function(e, t) {
-  var username = $("#signup-username").val();
+  var username = t.$(".signup-username").val();
   username = trimInput(username);
+  console.log(e)
 
   var result = checkValidUsername(username);
   if (!result.status) {
     t.usernameError.set(result.message)
   } else {
     t.usernameError.set(false)
+    t.usernameComplete.set(true)
   }
 };
 
-var checkPasswordFields = function(e, t) {
-  var p1 = $("#signup-password").val();
-  var p2 = $("#signup-password2").val();
+var checkPassword = function(e, t) {
+  var p1 = t.$(".signup-password").val();
 
-  var result = checkValidPassword(p1, p2);
+  var result = checkValidPassword(p1);
   if (!result.status) {
     t.passwordError.set(result.message);
   } else {
     t.passwordError.set(false);
+    t.passwordComplete.set(true);
   }
+};
+
+var checkPasswordConfirmation = function(e, t) {
+  var p1 = t.$(".signup-password").val();
+  var p2 = t.$(".signup-password2").val();
+
+  console.log('happening')
 
   var result2 = checkValidPasswordConfirmation(p1, p2);
   if (!result2.status) {
     t.password2Error.set(result2.message);
   } else {
     t.password2Error.set(false);
+    t.password2Complete.set(true);
   }
 };
 
+Template.info_form.helpers({
+  initialName: function(){
+    if (newUserInfo.profile && newUserInfo.profile.name ){
+      return newUserInfo.profile.name
+    } else {
+      var user = Meteor.user();
+      if(user && user.profile && user.profile.name){
+        return user.profile.name;
+      }
+    }
+  },
+  initialEmail: function(){
+    if (newUserInfo.email){
+      return newUserInfo.email
+    }
+  },
+  initialUsername: function(){
+    if (newUserInfo.username){
+      return newUserInfo.username
+    } else {
+      var user = Meteor.user();
+      if(user && user.tempUsername){
+        return user.tempUsername;
+      }
+    }
+  },
+
+})
 Template.info_form.events({
-  'blur input#signup-email': checkEmailField,
-  'keypress input#signup-email': function(e,t) {
+  'blur input.signup-email': checkEmailField,
+  'keypress input.signup-email': function(e,t) {
     if (enterPress(e)) {
       checkEmailField(e, t);
     }
   },
-  'blur input#signup-name': checkNameField,
-  'keypress input#signup-name': function(e,t) {
+  'blur input.signup-name': checkNameField,
+  'keypress input.signup-name': function(e,t) {
     if (enterPress(e)) {
       checkNameField(e, t);
     }
   },
-  'blur input#signup-username': checkUsernameField,
-  'keypress input#signup-username': function(e,t) {
-    if (enterPress(e)) {
-      checkUsernameField(e, t);
-    }
+  'blur input.signup-username': checkUsernameField,
+  'keypress input.signup-username': function(e,t) {
+    checkUsernameField(e, t);
   },
   'submit': function (e, t) {
     var key;
     e.preventDefault();
 
-    if(t.disableSignup.get()){
+    if(t.submitting.get()){
       return
     } else {
-      t.disableSignup.set(true)
+      t.submitting.set(true)
     }
 
     if (t.emailError.get() || t.usernameError.get()) {
       t.signupError.set('Please fix errors in required fields');
-      t.disableSignup.set(false);
+      t.submitting.set(false);
       return;
     } else {
       t.signupError.set(null);
     }
 
-    var inputs = $('#info-form').serializeArray();
+    var inputs = t.$('#info-form').serializeArray();
     var userInfo = {};
     _.each(inputs, function (input) {
       key = input['name'];
@@ -205,7 +261,7 @@ Template.info_form.events({
 
     if (Meteor.user()) { // if just finishing signup and already created a user via twitter
       Meteor.call('updateInitialTwitterUserInfo', userInfo, function (err) {
-        t.disableSignup.set(false);
+        t.submitting.set(false);
         if (err) {
           t.signupError.set(err.reason || err.error);
         } else {
@@ -225,7 +281,7 @@ Template.info_form.events({
       };
 
       Meteor.call('validateUserInfo', newUserInfo, function(err) {
-        t.disableSignup.set(false);
+        t.submitting.set(false);
         if (err) {
           if (err.error === 'username') {
             t.usernameError.set(err.reason || err.error);
@@ -249,7 +305,10 @@ Template.password_form.onCreated(function() {
   this.signupError = new ReactiveVar();
   this.passwordError = new ReactiveVar();
   this.password2Error = new ReactiveVar();
+  this.passwordComplete = new ReactiveVar();
+  this.password2Complete = new ReactiveVar();
   this.disableSignup = new ReactiveVar();
+  this.submitting = new ReactiveVar();
 });
 
 Template.password_form.helpers({
@@ -262,38 +321,51 @@ Template.password_form.helpers({
   password2Error: function () {
     return Template.instance().password2Error.get();
   },
+  submitting: function () {
+    return Template.instance().submitting.get();
+  },
   disableSignup: function () {
-    return Template.instance().disableSignup.get();
+    return Template.instance().submitting.get()
+      || !Template.instance().passwordComplete.get()
+      || !Template.instance().password2Complete.get()
+      || Template.instance().passwordError.get()
+      || Template.instance().password2Error.get()
   }
 });
 
 
 Template.password_form.events({
-  'blur input#signup-password, blur input#signup-password2': checkPasswordFields,
-  'keypress input#signup-password, blur input#signup-password2': function(e,t) {
+  'blur input.signup-password': checkPassword,
+  'keypress input.signup-password': function(e,t) {
     if (enterPress(e)) {
-      checkPasswordFields(e, t);
+      checkPassword(e, t);
     }
+  },
+  'keypress input.signup-password2': function(e,t) {
+    //if (enterPress(e)) {
+      checkPasswordConfirmation(e, t);
+    //}
   },
   'submit': function (e, t) {
     e.preventDefault();
-    checkPasswordFields(e, t);
+    checkPassword(e, t);
+    checkPasswordConfirmation(e, t);
 
-    if(t.disableSignup.get()){
+    if(t.submitting.get()){
       return
     } else {
-      t.disableSignup.set(true)
+      t.submitting.set(true)
     }
 
     if (t.passwordError.get()|| t.password2Error.get()) {
       t.signupError.set('Please fix errors in required fields');
-      t.disableSignup.set(false);
+      t.submitting.set(false);
       return;
     } else {
       t.signupError.set(null);
     }
 
-    var inputs = $('#password-form').serializeArray();
+    var inputs = t.$('#password-form').serializeArray();
     var userInfo = {};
     _.each(inputs, function (input) {
       var key = input['name'];
@@ -302,10 +374,9 @@ Template.password_form.events({
     });
 
     newUserInfo.password = userInfo.password;
-    console.log(newUserInfo);
 
     Accounts.createUser(newUserInfo, function(err) {
-      t.disableSignup.set(false);
+      t.submitting.set(false);
       if (err) {
         t.signupError.set(err.reason || err.error);
       } else {
@@ -331,7 +402,7 @@ Template.login_form.onCreated(function() {
 Template.login_form.helpers({
   loginError: function() {
     return Template.instance().loginError.get();
-  } 
+  }
 });
 
 Template.login_form.events({
@@ -340,8 +411,8 @@ Template.login_form.events({
   },
   'submit #login-form' : function(e, template) {
     e.preventDefault();
-    
-    inputs = $('#login-form').serializeArray();
+
+    inputs = template.$('#login-form').serializeArray();
     user_info = {};
     _.each(inputs, function(input) {
         var key = input['name'];
@@ -350,7 +421,7 @@ Template.login_form.events({
       });
     Meteor.loginWithPassword(user_info.username.toLowerCase(), user_info.password, function(err){
       if (err) {
-        template.loginError.set(err.reason); 
+        template.loginError.set(err.reason);
       } else {
         notifyLogin();
         closeSignInOverlay();

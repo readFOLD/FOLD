@@ -4,12 +4,12 @@
 
       <div class="signin-modal">
         <button class="close">✕</button>
-        <div class="title"><img src="{{c.url 'static/foldtitle.svg'}}"></div>
-
         {{#if onSignupStage}}
-          <div class="slogan">Create. Remix. Discover.</div>
+          <div class="title"><img src="{{c.url 'static/foldtitle.svg'}}"></div>
           {{#if explanation}}
             <div class="explanation">{{explanation}}</div>
+          {{else}}
+            <div class="slogan">Create. Remix. Discover.</div>
           {{/if}}
           <ol class="user-menu">
             <li>
@@ -19,7 +19,7 @@
               <button class="email-signup">Sign up with email</button>
             </li>
           </ol>
-          <div class="already-have">Already have an account? <button class="go-to-login">Sign in.</button></div>
+          <div class="already-have">Already have an account? <button class="go-to-login text">Sign in.</button></div>
         {{/if}}
 
         {{#if onLoginStage}}
@@ -46,95 +46,96 @@
 
 <template name="info_form">
   {{#unless twitterUser}}
-    <button class="back-to-signup">{{> back_arrow}}</button>
+    <button class="back-to-signup text">Go back</button>
   {{/unless}}
-  <form id="info-form" action="action">
+  <form id="info-form" disabled="{{disableSignup}}" action="action">
     <!-- Email -->
     <label for="email"> What's your e-mail? </label>
-    {{#if emailError}}<span class="error">{{emailError}}</span>{{/if}}
-    <input id="signup-email"
-           name="email"
+    <input name="email"
            type="email"
            placeholder="author@example.com"
            dir="auto"
+           value="{{initialEmail}}"
            autofocus="autofocus"
-           class="{{#if emailError}}error{{/if}}"
+           class="signup-email {{#if emailError}}error{{/if}}"
            required
         >
+    {{#if emailError}}<span class="error">{{emailError}}</span>{{/if}}
+
 
     <!-- Name -->
     <label for="name"> What's your name? This will be your byline on stories. </label>
-    {{#if nameError}}<span class="error">{{nameError}}</span>{{/if}}
-    <input id="signup-name"
-           name="name"
+    <input name="name"
            type="text"
            placeholder="First Last"
            dir="auto"
-           value="{{#if currentUser.profile.name}}{{currentUser.profile.name}}{{/if}}"
-           class="{{#if nameError}}error{{/if}}"
+           value="{{initialName}}"
+           class="signup-name {{#if nameError}}error{{/if}}"
            required
         >
+    {{#if nameError}}<span class="error">{{nameError}}</span>{{/if}}
+
 
     <!-- Username -->
     <label for="username">What's your username?</label>
-    {{#if usernameError}}<span class="error">{{usernameError}}</span>{{/if}}
-    <input id="signup-username"
-           name="username"
+    <input name="username"
            type="text"
            placeholder="Username"
            dir="auto"
-           value="{{#if currentUser.tempUsername}}{{currentUser.tempUsername}}{{/if}}"
-           class="{{#if usernameError}}error{{/if}}"
+           value="{{initialUsername}}"
+           class="signup-username {{#if usernameError}}error{{/if}}"
            required
         >
+    {{#if usernameError}}<span class="error">{{usernameError}}</span>{{/if}}
+
 
     {{#if signupError}}<div class="error">{{signupError}}</div>{{/if}}
 
 
     {{#if twitterUser}}
       <p>By creating an account, I accept FOLD’s {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}} and {{#linkTo route="privacy" target='_blank' class='green'}}Privacy Policy{{/linkTo}}.</p>
-      <button type="submit" class="signup-button">Sign up</button>
+      <button type="submit" disabled="{{disableSignup}}" class="signup-button">Sign up</button>
     {{else}}
-      <button type="submit" class="signup-button">Next</button>
+      <button type="submit" disabled="{{disableSignup}}" class="signup-button">Next</button>
     {{/if}}
 
-    {{#if disableSignup}}
-      {{>loading_icon}}
+    {{#if submitting}}
+      {{> loading_icon}}
     {{/if}}
   </form>
 </template>
 
 
 <template name="password_form">
-  <form id="password-form" action="action">
+  <button class="back-to-info text">Go back</button>
+  <form id="password-form" disabled="{{disableSignup}}" action="action">
     <!-- Password -->
     <label for="password">Choose a password</label>
+    <input name="password"
+           type="password"
+           placeholder="password"
+           dir="auto"
+           class="signup-password {{#if passwordError}}error{{/if}}"
+           required
+        >
     {{#if passwordError}}<span class="error">{{passwordError}}</span>{{/if}}
-    <input id="signup-password"
-           name="password"
-           type="password"
-           placeholder="password"
-           dir="auto"
-           class="{{#if passwordError}}error{{/if}}"
-           required
-        >
     <label for="password2">Reenter your password</label>
-    {{#if password2Error}}<span class="error">{{password2Error}}</span>{{/if}}
-    <input id="signup-password2"
-           name="password2"
+    <input name="password2"
            type="password"
            placeholder="password"
            dir="auto"
-           class="{{#if password2Error}}error{{/if}}"
+           class="signup-password2 {{#if password2Error}}error{{/if}}"
            required
         >
+    {{#if password2Error}}<span class="error">{{password2Error}}</span>{{/if}}
+
 
     {{#if signupError}}<div class="error">{{signupError}}</div>{{/if}}
 
     <p>By creating an account, I accept FOLD’s {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}} and {{#linkTo route="privacy" target='_blank' class='green'}}Privacy Policy{{/linkTo}}.</p>
-    <button type="submit" class="signup-button">Sign up</button>
-    {{#if disableSignup}}
-      {{>loading_icon}}
+    <button type="submit" disabled="{{disableSignup}}" class="signup-button">Sign up</button>
+    {{#if submitting}}
+      {{> loading_icon}}
     {{/if}}
   </form>
 </template>
@@ -148,26 +149,17 @@
     </div>
 
     <div class="author-name-username">
-      <div class="author-name">{{profile.name}}</div>
+      <div class="author-name">Welcome <a href="/profile/{{username}}">{{firstName user}}</a></div>
       <div class="publish-date">{{username}}</div>
     </div>
     <div>
-      To edit your photo or display name, visit your <a href="/profile/{{username}}" class="green">profile</a>.
+      To edit your photo or display name, visit your <a href="/profile/{{username}}">profile</a>.
     </div>
     <button class="finish">Thanks</button>
   {{/with}}
 </template>
 
 
-
-<template name="login">
-  {{> top_banner_simple_no_links}}
-  <div class="login">
-    <section>
-      {{> login_form}}
-    </section>
-  </div>
-</template>
 
 <template name="login_form">
   <button class="back-to-signup">{{> back_arrow}}</button>
