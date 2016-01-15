@@ -96,10 +96,22 @@
 
 
     {{#if twitterUser}}
-      <button type="submit" disabled="{{disableSignup}}" class="signup-button">Sign up!</button>
+      <button type="submit" disabled="{{disableSignup}}" class="signup-button">
+        {{#if submitting}}
+          {{> loading_icon}}
+        {{else}}
+          Sign up!
+        {{/if}}
+      </button>
       <p class="accept">By signing up, you agree to FOLD’s {{#linkTo route="terms" target='_blank'}}Terms of Service{{/linkTo}} & {{#linkTo route="privacy" target='_blank'}}Privacy Policy{{/linkTo}}.</p>
     {{else}}
-      <button type="submit" disabled="{{disableSignup}}" class="signup-button">Next</button>
+      <button type="submit" disabled="{{disableSignup}}" class="signup-button">
+        {{#if submitting}}
+          {{> loading_icon}}
+        {{else}}
+          Next
+        {{/if}}
+      </button>
     {{/if}}
 
     {{#if submitting}}
@@ -137,11 +149,14 @@
 
     {{#if signupError}}<div class="error">{{signupError}}</div>{{/if}}
 
-    <button type="submit" disabled="{{disableSignup}}" class="signup-button">Sign up!</button>
+    <button type="submit" disabled="{{disableSignup}}" class="signup-button">
+      {{#if submitting}}
+        {{> loading_icon}}
+      {{else}}
+        Sign up!
+      {{/if}}</button>
     <p class="accept">By signing up, you agree to FOLD’s {{#linkTo route="terms" target='_blank'}}Terms of Service{{/linkTo}} & {{#linkTo route="privacy" target='_blank'}}Privacy Policy{{/linkTo}}.</p>
-    {{#if submitting}}
-      {{> loading_icon}}
-    {{/if}}
+
   </form>
 </template>
 
@@ -169,23 +184,25 @@
 <template name="login_form">
   <button class="back back-to-signup text">Go back</button>
   <form id="login-form" action="action">
-    <label for="username"> Username or Email </label>
-    <input name="username" type="text" placeholder="username or email" autofocus="autofocus" required>
-    <label for="password"> Password </label>
-    <input name="password" type="password" placeholder="password" required>
+    <input name="username" type="text" placeholder="Username / Email" autofocus="autofocus" required>
+    <input name="password" type="password" placeholder="Password" required>
 
-    {{#if loginError}}
-      <div class="error">
-        {{loginError}}
-      </div>
-    {{/if}}
 
-    <button type="submit" class="login-button">Log in</button>
-    {{#if loggingIn}}
-      {{> loading_icon}}
-    {{/if}}
-    <a href="/recover-password" class="recover-password-link">Lost password?</a>
+
+    <div class="lost-or-login">
+      <a href="/recover-password" class="recover-password-link">Lost password?</a>
+      {{#if loginError}}
+        <div class="error">
+          {{loginError}}
+        </div>
+      {{/if}}
+      <button type="submit" class="login-button">    {{#if loggingIn}}
+        {{> loading_icon}} {{else}}
+        Log in
+      {{/if}}</button>
+    </div>
+
   </form>
-  <div class="vertical-divider">OR</div>
-  <button class="twitter-signin">Sign in with Twitter</button>
+  <hr>
+  <button class="twitter-signin no-hover-state solo"><span>Or, sign in with Twitter</span>{{> login_bird}}</button>
 </template>

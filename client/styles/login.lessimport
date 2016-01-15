@@ -35,38 +35,11 @@ input.success{
   }
 }
 
-form {
-  div.error {
-    color: red;
-  }
-
-}
-
-form#login-form {
-	width: 350px;
-	font-size: 15px;
-	.FFMarkWeb;
-	margin: auto;
-}
-
-h1.login-header {
-  text-align: center;
-  margin-bottom: 50px;
-  font-size: 23px;
-}
-
-form#signup-form {
-	width: 350px;
-	margin-left: 75px;
-	margin-top: 55px;
-	.FFMarkWeb;
-}
-
 a.green {
   color: @action-color;
 }
 
-.login-button, .signup-button, .save-profile-button, .reset-button {
+.save-profile-button, .reset-button {
 	margin-top: 20px;
 	width: 100px;
     background-color: @action-color;
@@ -79,13 +52,6 @@ a.green {
     }
 }
 
-a.recover-password-link {
-  margin-left: 100px;
-
-  &:hover {
-    color: @action-color;
-  }
-}
 
 div.log-in-error {
 	margin-top: 10px;
@@ -154,9 +120,14 @@ div.sign-up-options {
 
       background-color: @action-color;
       color: @white-color;
+      .loading-icon{
+        color: @white-color;
+      }
       .FFMarkWebBold;
       &:hover{
-        background-color: @black-color;
+        &:not(.no-hover-state){
+          background-color: @black-color;
+        }
       }
       &:disabled{
         background-color: @inactive-color;
@@ -230,16 +201,7 @@ div.sign-up-options {
       button{
         .size-to-fit;
       }
-      svg{
-        .size(auto);
-        margin-left: 13px;
-        display: inline;
-        vertical-align: middle;
-      }
-      span{
-        display: inline;
-        vertical-align: middle;
-      }
+
     }
 
     @input-width: 335px;
@@ -294,7 +256,11 @@ div.sign-up-options {
     .back{
       position: absolute;
       left: @magic-styling-distance;
-      top: 53px;
+      top: @magic-styling-distance + 13px;
+      @media @mobile{
+        left: @magic-styling-distance / 2;
+        top: @magic-styling-distance / 2 + 13px;
+      }
       color: @medium-color !important;
     }
 
@@ -329,12 +295,81 @@ div.sign-up-options {
       color: @placeholder-color;
     }
 
-    .signup-button{
+    hr{
+      width: 380px;
+      border: 0;
+      border-top: 1px solid @medium-color;
+      margin-top: @magic-styling-distance / 2;
+      margin-bottom: @magic-styling-distance / 2;
+    }
+
+    #login-form{
+      line-height: 0;
+      input, .lost-or-login{
+        width: 380px;
+        max-width: calc(100% ~"-" 20px);
+      }
+      .lost-or-login{
+        display: inline-block;
+        line-height: normal;
+        position: relative;
+        a{
+          margin-top: 17px;
+          float: left;
+        }
+        button{
+          float: right;
+        }
+        .error{
+          position: absolute;
+          font-size: 14px;
+          line-height: 18px;
+          bottom: 0;
+          white-space: pre-line;
+
+
+          @media @mobile{
+            font-size: 14px;
+            line-height: 15px;
+            bottom: 0px;
+            white-space: normal;
+          }
+          text-align: left;
+          width: calc(100% ~"-" 130px);
+        }
+      }
+    }
+
+    .twitter-signin{
+      width: 380px;
+      height: 60px;
+      svg{
+        .size(auto);
+        margin-left: 13px;
+        display: inline;
+        vertical-align: middle;
+      }
+      span{
+        display: inline;
+        vertical-align: middle;
+      }
+      .solo{
+        max-width: calc(100% ~"-" 20px);
+      }
+    }
+
+
+    .signup-button, .login-button{
       display: inline-block;
-      margin-top: @magic-styling-distance;
       height: 60px;
       width: 120px;
       text-align: center;
+    }
+    .signup-button{
+      margin-top: @magic-styling-distance;
+    }
+    .login-button{
+      margin-top: @magic-styling-distance / 2;
     }
   }
 }

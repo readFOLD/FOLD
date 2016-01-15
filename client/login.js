@@ -422,6 +422,7 @@ Template.onboarding_screen.events({
 
 Template.login_form.onCreated(function() {
   this.loginError = new ReactiveVar(false);
+  this.submitting = new ReactiveVar(false);
 });
 
 Template.login_form.helpers({
@@ -437,6 +438,13 @@ Template.login_form.events({
   'submit #login-form' : function(e, template) {
     e.preventDefault();
 
+
+    if(template.submitting.get()){
+      return
+    } else {
+      template.submitting.set(true);
+    }
+
     inputs = template.$('#login-form').serializeArray();
     user_info = {};
     _.each(inputs, function(input) {
@@ -445,8 +453,23 @@ Template.login_form.events({
         user_info[key]=value;
       });
     Meteor.loginWithPassword(user_info.username.toLowerCase(), user_info.password, function(err){
+      template.submitting.set(false);
       if (err) {
-        template.loginError.set(err.reason);
+        var errorText;
+        switch(err.reason){
+          case 'User not found':
+            errorText = "Hmmm... we can't find that username / email";
+            break;
+          case 'Incorrect password':
+            errorText = "Incorrect password";
+            break;
+          case 'User has no password set':
+            errorText = "Looks like you signed up with Twitter.\nClick below!";
+            break;
+          default:
+            errorText = err.reason;
+        }
+        template.loginError.set(errorText);
       } else {
         notifyLogin();
         closeSignInOverlay();
