@@ -1,23 +1,19 @@
 <template name="profile">
   {{> top_banner}}
   <div class="profile-section">
-    <section>
-      <div class="user-profile">
-        {{> user_profile}}
-      </div>
-    </section>
-  </div>
-    <div class="stories profile">
-      <section>
-        <div class="story-container profile">
-          {{> user_stories}}
-        </div>
-        <div class="horizontal-line"></div>
-        <div class="story-container profile">
-          {{> user_favorite_stories}}
-        </div>
-      </section>
+    <div class="user-profile">
+      {{> user_profile}}
     </div>
+  </div>
+  <div class="stories profile">
+    <div class="story-container profile">
+      {{> user_stories}}
+    </div>
+    <div class="horizontal-line"></div>
+    <div class="story-container profile">
+      {{> user_favorite_stories}}
+    </div>
+  </div>
 </template>
 
 
@@ -37,7 +33,7 @@
      </div>
       <div class="user-info">
         {{> afQuickField name='profile.name'}}
-        {{> afQuickField name='profile.bio' class="bio-form"}}
+        {{> afQuickField name='profile.bio' class="bio-form" placeholder="Tell the world a little about yourself!"}}
       </div>
     {{/autoForm}}
   </div>
@@ -68,7 +64,24 @@
         </div>
     {{/each}}
   {{else}}
-    <div class="message">{{unpublishedMessage}}</div>
+    <div class="message">
+      {{#if ownProfile}}
+        You haven't published anything yet, but getting started is easy!<br><br>
+        Here are some examples to inspire you:
+        <ul>
+          <li><a href="/read/CorySchmitz/how-i-make-textures-kLiQK8se">Make a tutorial to share your skills with the world</a></li>
+          <li><a href="/read/trainbabie/what-is-hipsterdom-nqeiz7XP">Explain the surprising history behind a common word</a></li>
+          <li><a href="/read/EthanZ/choosing-the-appropriate-extreme-metal-music-to-listen-to-while-grading-masters-theses-SESbL2qK">Share an annotated playlist of your favorite songs</a></li>
+        </ul>
+        {{#if hasDrafts}}
+          <a class="view-drafts" href="/my_stories"><button>View Your Drafts</button></a>
+        {{else}}
+          {{> create_story}}
+        {{/if}}
+      {{else}}
+        {{user.profile.name}} hasn't published any stories yet. Any minute now!
+      {{/if}}
+    </div>
   {{/if}}
 </template>
 
@@ -86,7 +99,13 @@
         </div>
     {{/each}}
   {{else}}
-    <div class="message">{{noFavoritesMessage}}</div>
+    <div class="message">
+      {{#if ownProfile}}
+        You haven't favorited any stories yet!
+      {{else}}
+        {{user.profile.name}} hasn't favorited any stories yet, but they just got here. Give 'em some time!
+      {{/if}}
+    </div>
   {{/if}}
 </template>
 
