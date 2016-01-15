@@ -72,9 +72,9 @@ window.checkValidUsername = function(username) {
   if (username.length === 0 ) {
     return { status: false, message: 'Please enter a username' };
   } else if (username.length < 3) {
-  	return { status: false, message: 'Too short (minimum 3 chars)' };
+  	return { status: false, message: 'Too short (minimum 3 characters)' };
   } else if (username.length > 15) {
-  	return { status: false, message: 'Too long (maximum 15 chars)' };
+  	return { status: false, message: 'Too long (maximum 15 characters)' };
   } else if (!username.match(usernameRegex)) {
     return { status: false, message: 'Please only use letters, numbers, and _' };
   } else {
