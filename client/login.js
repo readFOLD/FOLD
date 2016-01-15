@@ -30,6 +30,9 @@ Template.signin_overlay.helpers({
   },
   onOnboardingStage: function(){
     return Session.equals('signinStage', 'onboarding');
+  },
+  onForgotStage: function(){
+    return Session.equals('signinStage', 'forgot');
   }
 });
 
@@ -67,6 +70,12 @@ Template.signin_overlay.events({
   },
   "click .back-to-signup": function(e, t){
     Session.set('signinStage', 'signup');
+  },
+  "click .back-to-login": function(e, t){
+    Session.set('signinStage', 'login');
+  },
+  "click .forgot-password": function(e, t){
+    Session.set('signinStage', 'forgot');
   }
 });
 

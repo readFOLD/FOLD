@@ -34,6 +34,10 @@
           {{> onboarding_screen}}
         {{/if}}
 
+        {{#if onForgotStage}}
+          {{> recover_password_form}}
+        {{/if}}
+
       </div>
 
     </div>
@@ -177,7 +181,7 @@
 
 
     <div class="lost-or-login">
-      <a href="/recover-password" class="recover-password-link">Lost password?</a>
+      <button class="forgot-password text">Lost password?</button>
       {{#if loginError}}
         <div class="error">
           {{loginError}}

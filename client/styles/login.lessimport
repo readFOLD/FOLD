@@ -320,11 +320,11 @@ div.sign-up-options {
         display: inline-block;
         line-height: normal;
         position: relative;
-        a{
+        .forgot-password{
           margin-top: 17px;
           float: left;
         }
-        button{
+        .login-button{
           float: right;
         }
         .error{
@@ -393,6 +393,24 @@ div.sign-up-options {
     .finish{
       height: @height;
       width: 120px;
+    }
+
+    //recover-password
+    #recover-password-form{
+      margin-top: 120px;
+    }
+    #recover-password-email{
+      width: @width;
+      max-width: @max-width;
+    }
+    .recover-button{
+      height: @height;
+      margin-top: @magic-styling-distance/2;
+      width: @width;
+      max-width: @max-width;
+    }
+    .message{
+      margin-top: @magic-styling-distance/2;
     }
   }
 }
