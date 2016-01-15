@@ -354,6 +354,7 @@ Meteor.publish("userData", function () {
         'accessPriority': 1,
         "services.twitter.id": 1,
         "displayUsername": 1,
+        'tempUsername': 1,
         "admin": 1,
         "privileges": 1,
         "profile": 1
