@@ -48,6 +48,9 @@
   {{#unless twitterUser}}
     <button class="back back-to-signup text">Go back</button>
   {{/unless}}
+  {{#if twitterUser}}
+    <div class="absolute title"><img src="{{c.url 'static/foldtitle.svg'}}"></div>
+  {{/if}}
   <form id="info-form" disabled="{{disableSignup}}" action="action">
     <!-- Email -->
     <input name="email"
@@ -60,7 +63,7 @@
            required
         >
     <span class="status">{{#if emailError}}{{> login_x}}{{else}}{{#if emailComplete}}{{>login_check}}{{/if}}{{/if}}</span>
-    {{#if emailError}}<span class="error">{{emailError}}</span>{{/if}}
+    <div class="field-info {{#if emailError}}error{{/if}}"><span>{{#if emailError}}{{emailError}}{{else}}{{#if twitterUser}}Your email{{/if}}{{/if}}</span></div>
 
 
     <!-- Username -->
@@ -73,7 +76,7 @@
            required
         >
     <span class="status">{{#if usernameError}}{{> login_x}}{{else}}{{#if usernameComplete}}{{>login_check}}{{/if}}{{/if}}</span>
-    {{#if usernameError}}<span class="error">{{usernameError}}</span>{{/if}}
+    <div class="field-info {{#if usernameError}}error{{/if}}"><span>{{#if usernameError}}{{usernameError}}{{else}}{{#if twitterUser}}Your username{{/if}}{{/if}}</span></div>
 
     <!-- Name -->
     <input name="name"
@@ -85,7 +88,7 @@
            required
     >
     <span class="status">{{#if nameError}}{{> login_x}}{{else}}{{#if nameComplete}}{{>login_check}}{{/if}}{{/if}}</span>
-    {{#if nameError}}<span class="error">{{nameError}}</span>{{/if}}
+    <div class="field-info {{#if nameError}}error{{/if}}"><span>{{#if nameError}}{{nameError}}{{else}}{{#if twitterUser}}Your full name{{/if}}{{/if}}</span></div>
 
 
 
@@ -93,8 +96,8 @@
 
 
     {{#if twitterUser}}
-      <p class="accept">By creating an account, I accept FOLD’s {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}} and {{#linkTo route="privacy" target='_blank' class='green'}}Privacy Policy{{/linkTo}}.</p>
-      <button type="submit" disabled="{{disableSignup}}" class="signup-button">Sign up</button>
+      <button type="submit" disabled="{{disableSignup}}" class="signup-button">Sign up!</button>
+      <p class="accept">By signing up, you agree to FOLD’s {{#linkTo route="terms" target='_blank'}}Terms of Service{{/linkTo}} & {{#linkTo route="privacy" target='_blank'}}Privacy Policy{{/linkTo}}.</p>
     {{else}}
       <button type="submit" disabled="{{disableSignup}}" class="signup-button">Next</button>
     {{/if}}
@@ -119,7 +122,7 @@
            required
         >
     <span class="status">{{#if passwordError}}{{> login_x}}{{else}}{{#if passwordComplete}}{{>login_check}}{{/if}}{{/if}}</span>
-    {{#if passwordError}}<span class="error">{{passwordError}}</span>{{/if}}
+    <div class="field-info {{#if passwordError}}error{{/if}}"><span>{{#if passwordError}}{{passwordError}}{{else}} {{/if}}</span></div>
 
     <input name="password2"
            type="password"
@@ -129,13 +132,13 @@
            required
         >
     <span class="status">{{#if password2Error}}{{> login_x}}{{else}}{{#if password2Complete}}{{>login_check}}{{/if}}{{/if}}</span>
-    {{#if password2Error}}<span class="error">{{password2Error}}</span>{{/if}}
+    <div class="field-info {{#if password2Error}}error{{/if}}"><span>{{#if password2Error}}{{password2Error}}{{else}} {{/if}}</span></div>
 
 
     {{#if signupError}}<div class="error">{{signupError}}</div>{{/if}}
 
-    <p class="accept">By creating an account, I accept FOLD’s {{#linkTo route="terms" target='_blank' class='green'}}Terms of Service{{/linkTo}} and {{#linkTo route="privacy" target='_blank' class='green'}}Privacy Policy{{/linkTo}}.</p>
-    <button type="submit" disabled="{{disableSignup}}" class="signup-button">Sign up</button>
+    <button type="submit" disabled="{{disableSignup}}" class="signup-button">Sign up!</button>
+    <p class="accept">By signing up, you agree to FOLD’s {{#linkTo route="terms" target='_blank'}}Terms of Service{{/linkTo}} & {{#linkTo route="privacy" target='_blank'}}Privacy Policy{{/linkTo}}.</p>
     {{#if submitting}}
       {{> loading_icon}}
     {{/if}}

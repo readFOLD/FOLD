@@ -30,9 +30,6 @@ Template.signin_overlay.helpers({
   },
   onOnboardingStage: function(){
     return Session.equals('signinStage', 'onboarding');
-  },
-  twitterUser: function(){
-    return Meteor.user() && !Meteor.user().username;
   }
 });
 
