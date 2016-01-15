@@ -5,6 +5,10 @@ Meteor.startup(function () {
     Meteor.settings['public'].SEGMENT_WRITE_KEY = process.env.SEGMENT_WRITE_KEY;
   }
 
+  if (process.env.NODE_ENV){
+    Meteor.settings['public'].NODE_ENV = process.env.NODE_ENV;
+  }
+
   // SMTP Config
   smtp = {
     username: Meteor.settings.SMTP_USERNAME,

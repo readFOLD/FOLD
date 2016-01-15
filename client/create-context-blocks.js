@@ -343,42 +343,6 @@ Template.create_image_section.onCreated(function(){
   var that = this;
   this.uploadPreview = new ReactiveVar();
   this.uploadStatus = new ReactiveVar();
-  var query = _cloudinary.find({});
-  this.observeCloudinary = query.observeChanges({ // this query stays live until .stop() is called in the onDestroyed hook
-    added: function (id) { // start upload
-      that.uploadStatus.set('Uploading...');
-    },
-    changed: function (id, changes) { // upload stream updated
-      if (changes.public_id){ // if upload successful
-        var doc = _cloudinary.findOne(id);
-        var cardModel = doc.format === 'gif' ? GifBlock : ImageBlock;
-        // TO-DO consider how to do attribution
-        that.uploadStatus.set('Upload successful');
-        that.focusResult.set(new cardModel({
-          reference: {
-            id: doc.public_id,
-            fileExtension: doc.format,
-            width: doc.width,
-            height: doc.height
-          },
-          source: Session.get('newHorizontalDataSource'),
-          authorId : Meteor.user()._id,
-          fullDetails: doc
-        }));
-        that.addingDescription.set(true);
-      }
-    },
-    removed: function (id) {  // upload failed
-      var input = that.$('input[type=file]');
-      that.uploadStatus.set('Upload failed');
-      input.val(null);
-      input.change(); // trigger change event
-    }
-  });
-});
-
-Template.create_image_section.onDestroyed(function(){
-  this.observeCloudinary.stop();
 });
 
 Template.create_image_section.helpers({
@@ -397,15 +361,49 @@ Template.create_image_section.events({
   'change input[type=file]': function(e, t){
     var file = _.first(e.target.files);
     if (file){
+      if(file.size > CLOUDINARY_FILE_SIZE){
+        return notifyImageSizeError();
+      }
+      t.uploadStatus.set('Uploading...');
+
+      // immediate preview
       var reader = new FileReader;
       reader.onload = function(upload){
         t.uploadPreview.set(upload.target.result);
       };
       reader.readAsDataURL(file);
+
+      // actual upload
+      Cloudinary.upload([file], {}, function(err, doc) {
+        if(err){
+          var input = t.$('input[type=file]');
+          t.uploadStatus.set('Upload failed');
+          input.val(null);
+          input.change(); // trigger change event
+        } else {
+          var cardModel = doc.format === 'gif' ? GifBlock : ImageBlock;
+          // TO-DO consider how to do attribution
+          t.uploadStatus.set('Upload successful');
+          t.focusResult.set(new cardModel({
+            reference: {
+              id: doc.public_id,
+              fileExtension: doc.format,
+              width: doc.width,
+              height: doc.height
+            },
+            source: Session.get('newHorizontalDataSource'),
+            authorId : Meteor.user()._id,
+            fullDetails: doc
+          }));
+          t.addingDescription.set(true);
+        }
+
+      })
     } else {
       t.uploadPreview.set(null);
     }
   }
+
 });
 
 Template.create_image_section.onCreated(searchTemplateCreatedBoilerplate('image', 'flickr'));

@@ -28,12 +28,8 @@
       <button type="submit" class="save-profile-button">Save</button>
       
        <div class="picture">
-        {{#if editingPicture}}
-          {{#c_upload}}
-            <input type="file" accept="image/*" class="overlay">
-          {{/c_upload}}
-        {{/if}}
-        {{#if uploadPreview}} 
+        <input type="file" accept="image/*" class="overlay {{#if uploadingPicture}}uploading{{/if}}">
+        {{#if uploadPreview}}
           <img class="profile-picture-large" src="{{uploadPreview}}">
         {{else}}
           <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>

@@ -924,14 +924,120 @@ Template.display_twitter_section.helpers(horizontalBlockHelpers);
 Template.display_map_section.helpers(horizontalBlockHelpers);
 
 Template.display_link_section.helpers(horizontalBlockHelpers);
+Template.display_link_section.onCreated(function(){
+  this.editingTitle = new ReactiveVar();
+  this.editingDescription = new ReactiveVar();
+  this.editThumbnailPrompt = new ReactiveVar();
+  this.editingThumbnail = new ReactiveVar();
+  this.uploadingThumbnail = new ReactiveVar();
+});
+Template.display_link_section.helpers({
+  editingTitle: function(){
+    return Template.instance().editingTitle.get()
+  },
+  editingDescription: function(){
+    return Template.instance().editingDescription.get()
+  },
+  editThumbnailPrompt: function(){
+    return !Session.get('read');
+  },
+  uploadingThumbnail: function(){
+    return Template.instance().uploadingThumbnail.get();
+  }
+});
 Template.display_link_section.events({
   'click a': function (e, t) {
+    if(!Session.get('read') && !$(e.target).is('input')){
+      e.preventDefault();
+      return false
+    }
     var url = e.currentTarget.href;
     analytics.track('Click external link in link card', {
       label: url,
       url: url,
       targetClassName: e.target.className
     })
+  },
+  'click div.link-title': function(e,t){
+    if(!Session.get('read') && !Session.get('addingContext')){
+      t.editingTitle.set(true);
+      Meteor.setTimeout(function(){
+        t.$('.link-title').select();
+      })
+    }
+  },
+  'blur textarea.link-title': function(e,t){
+    var that = this;
+    if(!Session.get('read') && !Session.get('addingContext')){
+      Session.set('saveState', 'saving');
+      Meteor.call('editLinkTitle', that._id, t.$('textarea.link-title').val(), function(err, result){
+        if(result){
+          t.editingTitle.set(false);
+        }
+        saveCallback(err, result)
+      });
+    }
+  },
+  'click div.link-description': function(e,t){
+    if(!Session.get('read') && !Session.get('addingContext')){
+      t.editingDescription.set(true);
+      Meteor.setTimeout(function(){
+        t.$('.link-description').select();
+      })
+    }
+  },
+  'blur textarea.link-description': function(e,t){
+    var that = this;
+    if(!Session.get('read') && !Session.get('addingContext')){
+      Session.set('saveState', 'saving');
+      Meteor.call('editLinkDescription', that._id, t.$('textarea.link-description').val(), function(err, result){
+        if(result){
+          t.editingDescription.set(false);
+        }
+        saveCallback(err, result)
+      });
+    }
+  },
+  "click input[type=file]": function(d, template) {
+    return template.editingThumbnail.set(true);
+  },
+  "change input[type=file]": function(e, template){
+    var that = this;
+    var finish = function(){
+      template.uploadingThumbnail.set(false);
+      return template.editingThumbnail.set(false);
+    };
+
+    var file = _.first(e.target.files);
+    if (file) {
+      if(file.size > CLOUDINARY_FILE_SIZE){
+        notifyImageSizeError();
+        return finish()
+      }
+      template.uploadingThumbnail.set(true);
+      Cloudinary.upload([file], {}, function(err, doc) {
+        if(err){
+          var input = template.$('input[type=file]');
+          input.val(null);
+          input.change();
+          saveCallback(err);
+          return finish();
+        } else {
+          var cloudinaryImageInfo = {
+            id: doc.public_id,
+            fileExtension: doc.format,
+            width: doc.width,
+            height: doc.height
+          };
+          Meteor.call('editLinkThumbnail', that._id, cloudinaryImageInfo, function(err, result){
+            saveCallback(err, result);
+            return finish()
+          });
+        }
+      })
+    } else {
+      return finish()
+    }
   }
 });
 

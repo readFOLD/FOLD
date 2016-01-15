@@ -49,9 +49,13 @@ input[type=file] {
   }
 
   &.overlay{
+    &:not(.uploading){
+      &:not(:hover){
+        opacity: 0 !important;
+      }
+    }
     position: absolute;
-    width: 150px;
-    height: 150px;
+    .size-to-fit;
     z-index: 10;
     background-color: @black-color;
     opacity: 0.7;
@@ -66,10 +70,16 @@ input[type=file] {
       -webkit-user-select: none;
       cursor: pointer;
       padding: 85px 15px;
+      padding-bottom: 0;
       text-align: center;
       font-size: 14px;
-      width: 100%;;
+      .size-to-fit;
       content: 'Upload Image';
+    }
+    &.uploading{
+      &::before {
+        content: 'Uploading Image...';
+      }
     }
     &:hover::before {
       background-color: @dark-color;

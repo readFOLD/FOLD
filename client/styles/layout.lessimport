@@ -856,10 +856,14 @@ div.link-section {
 
   div.top {
     .thumbnail {
+      position: relative;
       &.left {
         float: left;
         width: 130px;
         height: 130px;
+        img{
+          .size-to-fit;
+        }
       }
       &.top {
         background-color: @action-color;
@@ -872,7 +876,7 @@ div.link-section {
         height: 130px;
       }
     }
-    div.link-title {
+    .link-title {
       font-size: 20px;
       .FFMarkWebBold;
       padding-left: 15px;
@@ -898,10 +902,11 @@ div.link-section {
     }
   }
 
-  div.link-description {
+  .link-description {
     font-size: 14px;
     width: 100%;
     overflow: hidden;
+    line-height: inherit;
 
     padding-left: 15px;
     padding-right: 15px;
@@ -917,17 +922,35 @@ div.link-section {
     }
   }
 
+
+  .click-to-edit{
+    cursor: pointer;
+    span{
+      display: inline-block;
+    }
+    &:hover{
+      span{
+        background-color: @action-color;
+        color: @white-color;
+      }
+    }
+  }
+
   .bottom {
     position: absolute;
-    left: 15px;
     bottom: 0;
     padding-top: 13px;
+    padding-left: 15px;
     padding-bottom: 7px;
     width: calc(100% ~"-" 15px);
     background-color: @white-color;
     a {
       display: block;
       color: @action-color;
+      &.inactive{
+        pointer-events: none;
+        cursor: inherit;
+      }
     }
   }
 }
