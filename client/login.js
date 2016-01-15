@@ -195,6 +195,8 @@ var checkPasswordConfirmation = function(e, t) {
 };
 
 Template.info_form.onRendered(function(){
+  this.$('input')[0].focus();
+
   // in case coming back
   checkEmailField(null, this, true);
   checkNameField(null, this, true);
@@ -328,6 +330,11 @@ Template.password_form.onCreated(function() {
   this.submitting = new ReactiveVar();
 });
 
+Template.password_form.onRendered(function(){
+  this.$('input')[0].focus();
+});
+
+
 Template.password_form.helpers({
   signupError: function() {
     return Template.instance().signupError.get();
@@ -424,6 +431,11 @@ Template.login_form.onCreated(function() {
   this.loginError = new ReactiveVar(false);
   this.submitting = new ReactiveVar(false);
 });
+
+Template.login_form.onRendered(function(){
+  this.$('input')[0].focus();
+});
+
 
 Template.login_form.helpers({
   loginError: function() {
