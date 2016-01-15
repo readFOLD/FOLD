@@ -261,7 +261,6 @@ Template.info_form.events({
     }
 
     if (t.emailError.get() || t.usernameError.get()) {
-      t.signupError.set('Please fix errors in required fields');
       t.submitting.set(false);
       return;
     } else {
@@ -384,7 +383,6 @@ Template.password_form.events({
     }
 
     if (t.passwordError.get()|| t.password2Error.get()) {
-      t.signupError.set('Please fix errors in required fields');
       t.submitting.set(false);
       return;
     } else {
