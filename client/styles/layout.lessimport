@@ -533,9 +533,6 @@ body {
   p{
     margin-top: 0;
   }
-  button{
-    padding: 10px 12px 10px 12px;
-  }
 }
 
 .full-page-width{
