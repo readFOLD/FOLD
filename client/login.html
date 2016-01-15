@@ -11,14 +11,10 @@
           {{else}}
             <div class="slogan">Create, Remix, Discover.</div>
           {{/if}}
-          <ol class="user-menu">
-            <li>
-              <button class="twitter-signin"><span>Sign up with Twitter</span>{{> login_bird}}</button>
-            </li>
-            <li>
-              <button class="email-signup"><span>Sign up with email</span></button>
-            </li>
-          </ol>
+          <div class="user-menu">
+            <button class="twitter-signin signin"><span>Sign up with Twitter</span>{{> login_bird}}</button>
+            <button class="email-signup signin"><span>Sign up with email</span></button>
+          </div>
           <div class="already-have">Already have an account? <button class="go-to-login text">Sign in.</button></div>
         {{/if}}
 
@@ -195,5 +191,5 @@
 
   </form>
   <hr>
-  <button class="twitter-signin no-hover-state solo"><span>Or, sign in with Twitter</span>{{> login_bird}}</button>
+  <button class="twitter-signin no-hover-state signin"><span>Or, sign in with Twitter</span>{{> login_bird}}</button>
 </template>

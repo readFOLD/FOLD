@@ -103,6 +103,11 @@ div.sign-up-options {
   .FFMarkWebMedium;
 
   .signin-modal{
+
+    @max-width: calc(100% ~"-" @magic-styling-distance);
+    @height: 60px;
+    @width: 380px;
+
     margin:auto;
     display:block;
     text-align: center;
@@ -183,7 +188,8 @@ div.sign-up-options {
       white-space: pre-wrap;
     }
 
-    ol{
+    .user-menu{
+      width: 100%;
       margin-top: @magic-styling-distance;
       @media @mobile {
         margin-top: @magic-styling-distance / 2;
@@ -191,25 +197,21 @@ div.sign-up-options {
         text-align: center;
     }
 
-    li{
+    button.signin{
       display: inline-block;
       margin-bottom: @magic-styling-distance / 2;
-      width: 380px;
-      max-width: calc(100% ~"-" @magic-styling-distance);
-      height: 60px;
-
-      button{
-        .size-to-fit;
-      }
-
+      width: @width;
+      height: @height;
+      max-width: @max-width;
     }
 
     @input-width: 335px;
     @status-width: 60px;
 
     input{
-      height: 60px;
+      height: @height;
       width: @input-width;
+      max-width: calc(100% ~"-" (@status-width + @magic-styling-distance));
       &::-webkit-input-placeholder {
         .FFMarkWebBold;
       }
@@ -242,6 +244,7 @@ div.sign-up-options {
       height: 0;
       span{
         width: @input-width + @status-width;
+        max-width: calc(100% ~"-" (@magic-styling-distance));
         display: inline-block;
         text-align: left;
       }
@@ -295,11 +298,12 @@ div.sign-up-options {
       &.above{
         margin-top: 35px;
       }
+      .padding-sides(@magic-styling-distance/2);
       color: @placeholder-color;
     }
 
     hr{
-      width: 380px;
+      width: @width;
       border: 0;
       border-top: 1px solid @medium-color;
       margin-top: @magic-styling-distance / 2;
@@ -309,8 +313,8 @@ div.sign-up-options {
     #login-form{
       line-height: 0;
       input, .lost-or-login{
-        width: 380px;
-        max-width: calc(100% ~"-" 20px);
+        width: @width;
+        max-width: @max-width;
       }
       .lost-or-login{
         display: inline-block;
@@ -344,8 +348,6 @@ div.sign-up-options {
     }
 
     .twitter-signin{
-      width: 380px;
-      height: 60px;
       svg{
         .size(auto);
         margin-left: 13px;
@@ -356,15 +358,12 @@ div.sign-up-options {
         display: inline;
         vertical-align: middle;
       }
-      .solo{
-        max-width: calc(100% ~"-" 20px);
-      }
     }
 
 
     .signup-button, .login-button{
       display: inline-block;
-      height: 60px;
+      height: @height;
       width: 120px;
       text-align: center;
     }
@@ -392,7 +391,7 @@ div.sign-up-options {
       margin-bottom: 40px;
     }
     .finish{
-      height: 60px;
+      height: @height;
       width: 120px;
     }
   }

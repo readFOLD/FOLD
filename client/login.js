@@ -233,23 +233,25 @@ Template.info_form.helpers({
 })
 Template.info_form.events({
   'blur input.signup-email': checkEmailField,
-  'keypress input.signup-email': function(e,t) {
-    if (enterPress(e)) {
-      checkEmailField(e, t);
+  'keyup input.signup-email': function(e,t) {
+    if (enterPress(e) || t.emailError.get()) {
+      Meteor.setTimeout(function() {
+        checkEmailField(e, t);
+      });
     }
   },
   'blur input.signup-name': checkNameField,
-  'keypress input.signup-name': function(e,t) {
-    //if (enterPress(e)) {
+  'keyup input.signup-name': function(e,t) {
     Meteor.setTimeout(function(){
       checkNameField(e, t);
     });
-    //}
   },
   'blur input.signup-username': checkUsernameField,
-  'keypress input.signup-username': function(e,t) {
-    if (enterPress(e)) {
-      checkUsernameField(e, t);
+  'keyup input.signup-username': function(e,t) {
+    if (enterPress(e) || t.usernameError.get()) {
+      Meteor.setTimeout(function() {
+        checkUsernameField(e, t);
+      });
     }
   },
   'submit': function (e, t) {
@@ -366,17 +368,17 @@ Template.password_form.helpers({
 
 Template.password_form.events({
   'blur input.signup-password': checkPassword,
-  'keypress input.signup-password': function(e,t) {
-    if (enterPress(e)) {
-      checkPassword(e, t);
+  'keyup input.signup-password': function(e,t) {
+    if (enterPress(e) || t.passwordError.get()) {
+      Meteor.setTimeout(function() {
+        checkPassword(e, t);
+      });
     }
   },
-  'keypress input.signup-password2': function(e,t) {
-    //if (enterPress(e)) {
+  'keyup input.signup-password2': function(e,t) {
     Meteor.setTimeout(function() {
       checkPasswordConfirmation(e, t);
     });
-    //}
   },
   'submit': function (e, t) {
     e.preventDefault();
