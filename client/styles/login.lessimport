@@ -292,6 +292,9 @@ div.sign-up-options {
       font-size: 12px;
       margin: 0;
       margin-top: 15px;
+      &.above{
+        margin-top: 35px;
+      }
       color: @placeholder-color;
     }
 
@@ -370,6 +373,27 @@ div.sign-up-options {
     }
     .login-button{
       margin-top: @magic-styling-distance / 2;
+    }
+
+    //onboarding
+    .welcome{
+      font-size: 36px;
+      margin-top: 120px;
+      margin-bottom: 35px;
+    }
+    .author-image{
+      height: 95px;
+      img{
+        height: 100%;
+      }
+    }
+    .edit-prompt{
+      margin-top: 35px;
+      margin-bottom: 40px;
+    }
+    .finish{
+      height: 60px;
+      width: 120px;
     }
   }
 }

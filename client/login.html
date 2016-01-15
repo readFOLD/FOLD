@@ -149,13 +149,13 @@
 
     {{#if signupError}}<div class="error">{{signupError}}</div>{{/if}}
 
+    <p class="accept above">By signing up, you agree to FOLD’s {{#linkTo route="terms" target='_blank'}}Terms of Service{{/linkTo}} & {{#linkTo route="privacy" target='_blank'}}Privacy Policy{{/linkTo}}.</p>
     <button type="submit" disabled="{{disableSignup}}" class="signup-button">
       {{#if submitting}}
         {{> loading_icon}}
       {{else}}
         Sign up!
       {{/if}}</button>
-    <p class="accept">By signing up, you agree to FOLD’s {{#linkTo route="terms" target='_blank'}}Terms of Service{{/linkTo}} & {{#linkTo route="privacy" target='_blank'}}Privacy Policy{{/linkTo}}.</p>
 
   </form>
 </template>
@@ -163,19 +163,14 @@
 
 <template name="onboarding_screen">
   {{#with currentUser}}
-    <div class="all-set">You're all set!</div>
+    <div class="welcome">Welcome, <a href="/profile/{{username}}">{{firstName this}}</a>!</div>
     <div class="author-image">
-      <img class="profile-picture" src="{{profileImage this}}"/>
+      <img class="profile-picture" src="{{profileImage this 'large'}}"/>
     </div>
-
-    <div class="author-name-username">
-      <div class="author-name">Welcome <a href="/profile/{{username}}">{{firstName user}}</a></div>
-      <div class="publish-date">{{username}}</div>
+    <div class="edit-prompt">
+      To edit your photo, display name,<br>or bio, visit <a href="/profile/{{username}}">your profile</a>!
     </div>
-    <div>
-      To edit your photo or display name, visit your <a href="/profile/{{username}}">profile</a>.
-    </div>
-    <button class="finish">Thanks</button>
+    <button class="finish">Thanks!</button>
   {{/with}}
 </template>
 
