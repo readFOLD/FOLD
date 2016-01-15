@@ -284,6 +284,7 @@ Template.info_form.events({
         } else {
           Session.set('signinStage', 'onboarding');
           notifyLogin();
+          newUserInfo = {};
           analytics.track('New user signed up', {label: 'twitter'});
         }
       });
@@ -406,6 +407,7 @@ Template.password_form.events({
         t.signupError.set(err.reason || err.error);
       } else {
         Session.set('signinStage', 'onboarding');
+        newUserInfo = {};
         notifyLogin();
         analytics.track('New user signed up', {label: 'email'});
       }
