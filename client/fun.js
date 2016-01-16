@@ -1,8 +1,10 @@
 
-Template.random_story.onCreated(function(){
+Template.random_story.onCreated(function() {
   this.randomizedLink = new ReactiveVar();
   this.rolling = new ReactiveVar();
+});
 
+Template.random_story.onRendered(function(){
   var currentUrl = Router.current().url;
   this.links = _.reject([
     "/read/riascience/fifty-years-of-walking-in-space-and-what-we-found-there-uRTtQWQo",
