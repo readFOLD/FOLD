@@ -2,7 +2,9 @@
 Template.random_story.onCreated(function(){
   this.randomizedLink = new ReactiveVar();
   this.rolling = new ReactiveVar();
-  this.links = [
+
+  var currentUrl = Router.current().url;
+  this.links = _.reject([
     "/read/riascience/fifty-years-of-walking-in-space-and-what-we-found-there-uRTtQWQo",
     "/read/FOLD/how-close-are-we-to-the-martian-Bret9g44",
     "/read/BDatta/this-is-not-a-hologram-w5hosSJa",
@@ -27,7 +29,10 @@ Template.random_story.onCreated(function(){
     "/read/sgenner/why-screens-can-ruin-your-sleep-XuiGfrJi",
     "/read/sultanalqassemi/sultan-al-qassemi-on-mit-media-lab-imagination-realized-i8ZS3Dtg",
     "/read/MattCarroll/mr-spock-to-the-rescue-how-a-star-trek-star-earned-the-admiration-of-a-young-fan-v5Rr3gGf"
-  ];
+  ], function(url){
+    return _s.include(url, idFromPathSegment(currentUrl));
+  });
+
   this.randomizedLink.set(_.sample(this.links));
 
   var that = this;
