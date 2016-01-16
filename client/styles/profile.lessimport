@@ -11,9 +11,6 @@ h1 {
 }
 
 .message {
-  @media (max-width: 800px) {
-    text-align: center;
-  }
   ul{
     margin-top: 10px;
   }
@@ -22,24 +19,34 @@ h1 {
     margin-left: 20px;
     color: @panel-color;
   }
-  a{
-    &:hover{
-      text-decoration: underline !important;
+  &.stories-message{
+    a{
+      &:hover{
+        text-decoration: underline !important;
+      }
     }
   }
   button{
-    margin-top: @magic-styling-distance/2;
     color: @white-color;
     height: @magic-styling-distance;
     .FFMarkWebBold;
     font-size: 13px;
     .padding-sides(20px);
   }
+  .create-story, .view-drafts{
+    button{
+      margin-top: @magic-styling-distance/2;
+    }
+  }
   .create-story{
     background-color: @action-color;
   }
   .view-drafts{
     background-color: @orange-color;
+  }
+  .random-story{
+    margin-top: 10px;
+    margin-left: 15px;
   }
 
 }

@@ -64,7 +64,7 @@
         </div>
     {{/each}}
   {{else}}
-    <div class="message">
+    <div class="message stories-message">
       {{#if ownProfile}}
         You haven't published anything yet, but getting started is easy!<br><br>
         Here are some examples to inspire you:
@@ -74,7 +74,7 @@
           <li><a href="/read/EthanZ/choosing-the-appropriate-extreme-metal-music-to-listen-to-while-grading-masters-theses-SESbL2qK">Share an annotated playlist of your favorite songs</a></li>
         </ul>
         {{#if hasDrafts}}
-          <a class="view-drafts" href="/my_stories"><button>View Your Drafts</button></a>
+          <a class="view-drafts" href="/my_stories"><button>View your drafts</button></a>
         {{else}}
           {{> create_story}}
         {{/if}}
@@ -101,7 +101,7 @@
   {{else}}
     <div class="message">
       {{#if ownProfile}}
-        You haven't favorited any stories yet!
+        You haven't favorited any stories yet<br>Try your luck? {{> random_story}}
       {{else}}
         {{user.profile.name}} hasn't favorited any stories yet, but they just got here. Give 'em some time!
       {{/if}}

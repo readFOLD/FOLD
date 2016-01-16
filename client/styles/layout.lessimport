@@ -519,19 +519,25 @@ body {
   text-align: center;
   .call-to-action{
     background-color: @white-color !important;
-    height: 142px;
+    height: 185px;
     min-height: 0;
     border: 1px solid @inactive-color;
     color: @black-color;
     .favorite-button{
       font-size: 0px;
+      margin-left: 14px;
       button{
-        .size(30px);
+        .size(25px);
       }
+    }
+    .random-story{
+      margin-top: 20px;
+      pointer-events: auto;
     }
   }
   p{
-    margin-top: 0;
+    display: inline-block;
+    margin-top: -10px;
   }
 }
 
@@ -1923,6 +1929,32 @@ div.loading-container {
     position: fixed;
     right: 0;
     bottom: 0;
+  }
+}
+
+.random-story{
+  height: @magic-styling-distance;
+  color: @white-color;
+  .FFMarkWebBold;
+  font-size: 13px;
+  .padding-sides(20px);
+  background-color: @panel-color;
+  width: 210px;
+  display: inline-block;
+  button{
+    .size-to-fit;
+  }
+  svg{
+    @keyframes spin{
+      0%{
+        .transform(rotate(0deg));
+      }
+      100%{
+        .transform(rotate(360deg));
+      }
+    }
+    .animation(spin 0.9s 1);
+    height: 100%;
   }
 }
 
