@@ -1937,9 +1937,9 @@ div.loading-container {
   color: @white-color;
   .FFMarkWebBold;
   font-size: 13px;
-  .padding-sides(20px);
   background-color: @panel-color;
   width: 210px;
+  .padding-sizes(0);
   display: inline-block;
   button{
     .size-to-fit;
