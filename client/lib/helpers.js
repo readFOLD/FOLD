@@ -140,3 +140,11 @@ window.formatDateCompact = function (date) {
 window.enterPress = function(e){
   return e.keyCode === 13
 };
+
+window.trackingInfoFromPage = function () {
+  var currentRoute = Router.current();
+  return {
+    currentRouteName: currentRoute.route.getName(),
+    currentRoutePath: window.location.pathname
+  }
+};
