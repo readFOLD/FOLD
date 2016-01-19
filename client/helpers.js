@@ -119,7 +119,7 @@ Handlebars.registerHelper("profileImage", function(user, size) {
   var defaultProfilePic = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/static/placeholder_image.png';
   var dprSetting = window.isHighDensity ? ',dpr_2.0' : '';
   var twitterPic;
-  if (user.services && user.services.twitter) {
+  if (user && user.services && user.services.twitter) {
     twitterPic = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + user.services.twitter.id
   }
 
@@ -135,7 +135,7 @@ Handlebars.registerHelper("profileImage", function(user, size) {
       } else {
         return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + user.profile.profilePicture
       }
-    } else if (user.services && user.services.twitter) {
+    } else if (twitterPic) {
       return twitterPic
     }
   }
