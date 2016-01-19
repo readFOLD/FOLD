@@ -206,7 +206,7 @@ var searchAPI = function(query) {
         _.extend(item, {
           type : type,
           source: source,
-          authorId : Meteor.user()._id,
+          authorId : Meteor.userId(),
           searchQuery : query,
           searchOption : option,
           nextPage: nextPage,
@@ -392,7 +392,7 @@ Template.create_image_section.events({
               height: doc.height
             },
             source: Session.get('newHorizontalDataSource'),
-            authorId : Meteor.user()._id,
+            authorId : Meteor.userId(),
             fullDetails: doc
           }));
           t.addingDescription.set(true);
@@ -457,7 +457,7 @@ Template.create_link_section.onCreated(function() {
       addPropertiesToBaseline = function(obj){
         var newObj = _.extend({}, obj, {
           fullDetails: result,
-          authorId : Meteor.user()._id,
+          authorId : Meteor.userId(),
           searchQuery: url,
           fromEmbedly: true,
           version: 'em1'
@@ -631,7 +631,7 @@ Template.create_map_section.onCreated(function() {
         mapQuery: inputs.query,
         mapType: inputs.option
       },
-      authorId : Meteor.user()._id
+      authorId : Meteor.userId()
     }))
   };
 });
@@ -675,7 +675,7 @@ Template.create_text_section.events({
     e.preventDefault()
     addContext(new TextBlock({
       content: template.$('textarea[name=content]').val(),
-      authorId: Meteor.user()._id,
+      authorId: Meteor.userId(),
       source: 'plaintext'
     }));
   }

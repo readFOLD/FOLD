@@ -43,7 +43,7 @@ Template.my_stories.helpers({
   publishedStories: function() {
     if (Meteor.user()) {
       return Stories.find({
-        authorId: Meteor.user()._id,
+        authorId: Meteor.userId(),
         published : true
       });
     }
@@ -51,7 +51,7 @@ Template.my_stories.helpers({
   unpublishedStories: function() {
     if (Meteor.user()) {
       return Stories.find({
-        authorId: Meteor.user()._id,
+        authorId: Meteor.userId(),
         published : false
       });
     }

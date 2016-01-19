@@ -166,7 +166,7 @@ Meteor.methods({
     var contextId = ContextBlocks.insert(_.extend({}, contextBlock, {
       storyId: storyId,
       storyShortId: storyShortId,
-      authorId: Meteor.user()._id,
+      authorId: Meteor.userId(),
       savedAt: new Date
     }));
 

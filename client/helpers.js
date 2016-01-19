@@ -56,7 +56,8 @@ Handlebars.registerHelper("editingThisContext", function() {
 Handlebars.registerHelper("UsersCollection", Meteor.users);
 
 Handlebars.registerHelper("isAuthor", function() {
-  return Meteor.user() && Meteor.user()._id === this.authorId;
+  var userId = Meteor.userId();
+  return userId && userId === this.authorId;
 });
 
 Handlebars.registerHelper("cardWidth", function() {
