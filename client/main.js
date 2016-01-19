@@ -1438,7 +1438,7 @@ Template.create_story.events({
             notifyError(err);
             throw(err);
           }
-          analytics.track('User clicked create and created story');
+          analytics.track('User clicked create and created story', trackingInfoFromPage());
 
         })
       } else {
@@ -1446,7 +1446,7 @@ Template.create_story.events({
       }
     } else {
       Session.set('signingIn', "You're almost there!\nPlease sign in to make a story.")
-      analytics.track('User clicked create and needs to sign in');
+      analytics.track('User clicked create and needs to sign in', trackingInfoFromPage());
     }
   }
 });
