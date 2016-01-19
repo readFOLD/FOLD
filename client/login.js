@@ -39,7 +39,7 @@ Template.signin_overlay.helpers({
 Template.signin_overlay.events({
   "click .close": function(d) {
     closeSignInOverlay();
-    analytics.track('Click close sign-in overlay');
+    trackEvent('Click close sign-in overlay');
   },
   "click .twitter-signin": function(d) {
     Meteor.loginWithTwitter({
@@ -56,11 +56,11 @@ Template.signin_overlay.events({
       }
     });
 
-    analytics.track('Click login with Twitter');
+    trackEvent('Click login with Twitter');
   },
   "click .email-signup": function(d) {
     Session.set('signinStage', 'info');
-    analytics.track('Click sign up with email');
+    trackEvent('Click sign up with email');
   },
   "click .go-to-login": function(e, t){
     Session.set('signinStage', 'login');
@@ -297,7 +297,7 @@ Template.info_form.events({
           Session.set('signinStage', 'onboarding');
           notifyLogin();
           newUserInfo = {};
-          analytics.track('New user signed up', {label: 'twitter'});
+          trackEvent('New user signed up', {label: 'twitter'});
         }
       });
     } else { // if email user
@@ -425,7 +425,7 @@ Template.password_form.events({
         Session.set('signinStage', 'onboarding');
         newUserInfo = {};
         notifyLogin();
-        analytics.track('New user signed up', {label: 'email'});
+        trackEvent('New user signed up', {label: 'email'});
       }
     });
   }

@@ -72,6 +72,6 @@ Template.random_story.events({
     t.rollTheDice(function(){
       Router.go(t.randomizedLink.get());
     })
-    analytics.track('Click random story button', trackingInfoFromPage());
+    trackEvent('Click random story button');
   }
 });

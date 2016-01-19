@@ -143,8 +143,20 @@ window.enterPress = function(e){
 
 window.trackingInfoFromPage = function () {
   var currentRoute = Router.current();
-  return {
-    currentRouteName: currentRoute.route.getName(),
+  var info = {
     currentRoutePath: window.location.pathname
+  };
+  if(currentRoute){
+    _.extend(info, {
+      currentRouteName: currentRoute.route.getName()
+    })
   }
+  return info
+};
+
+window.trackEvent = function(){
+  arguments[1] = arguments[1] || {};
+  _.extend(arguments[1], trackingInfoFromPage());
+  console.log(arguments)
+  analytics.track.apply(this, arguments);
 };

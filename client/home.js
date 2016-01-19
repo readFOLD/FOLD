@@ -111,7 +111,7 @@ Template.filters.events({
     if(t.data.slim){
       Router.go('/');
     }
-    analytics.track('Select filter', {
+    trackEvent('Select filter', {
       label: filterValue
     });
   }
