@@ -235,15 +235,16 @@ Template.all_stories.onCreated(function(){
   var that = this;
   createHomePageDate = Date.now();
   subscribeToCuratedStories(function(){
+    if (!that.view.isDestroyed){ // because this happens asynchronously, the user may have already navigated away
+      that.autorun(function(){
+        whichUserPics.depend();
+        that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}));
+      });
+    }
     subscribeToTrendingStories(function() {
       subscribeToNewestStories(function(){
         subscribeToStarredStories(function(){
-          if (!that.view.isDestroyed){ // because this happens asynchronously, the user may have already navigated away
-            that.autorun(function(){
-              whichUserPics.depend();
-              that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}));
-            });
-          }
+          whichUserPics.changed();
         })
       })
     });
