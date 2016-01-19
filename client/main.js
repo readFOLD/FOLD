@@ -64,8 +64,16 @@ Meteor.startup(function(){
   var justReloaded = window.codeReloaded;
 
   Tracker.autorun(function(){
-    if (Session.get('signingIn') && !justReloaded){
-      analytics.track('Opened sign-in overlay', {nonInteraction: 1});
+    var signingIn = Session.get('signingIn');
+    if (signingIn && !justReloaded){
+      var trackingInfo = {nonInteraction: 1};
+      if(typeof signingIn === 'string'){
+        _.extend(trackingInfo,{
+          label: signingIn,
+          message: signingIn
+        })
+      }
+      analytics.track('Opened sign-in overlay', _.extend(trackingInfo, trackingInfoFromPage()));
     }
     justReloaded = false;
   });
