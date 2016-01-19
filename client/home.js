@@ -229,6 +229,7 @@ var subscribeToStarredStories = function(cb){
 };
 
 var createHomePageDate;
+var whichUserPics = new Tracker.Dependency();
 
 Template.all_stories.onCreated(function(){
   var that = this;
@@ -239,6 +240,7 @@ Template.all_stories.onCreated(function(){
         subscribeToStarredStories(function(){
           if (!that.view.isDestroyed){ // because this happens asynchronously, the user may have already navigated away
             that.autorun(function(){
+              whichUserPics.depend();
               that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}));
             });
           }
@@ -288,6 +290,7 @@ Template.all_stories.events({
     subscriptionsReady.set(filterValue + 'Stories', false);
     homeSubs.subscribe(filterValue + 'StoriesPub', {page: getCurrentSubscriptionPage() + 1}, function(){
       incrementCurrentSubscriptionPage();
+      whichUserPics.changed();
       subscriptionsReady.set(filterValue + 'Stories', true);
     })
   },
