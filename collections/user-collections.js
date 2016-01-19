@@ -43,9 +43,9 @@ Schema.UserProfile = new SimpleSchema({
       if (this.isSet) {
         return this.value;
       } else if (this.isInsert) {
-        return monster;
+        return this.value || monster;
       } else if (this.isUpsert) {
-        return {$setOnInsert: monster};
+        return {$setOnInsert: this.value || monster};
       } else {
         this.unset();
       }
