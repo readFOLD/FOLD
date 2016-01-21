@@ -164,7 +164,12 @@ div.home-top {
     }
     input{
       .size-to-fit;
-      border: 1px solid @medium-color;
+      background-color: transparent;
+    }
+    &.fat{
+      input{
+        border: 1px solid @medium-color;
+      }
     }
 
     height: @magic-styling-distance;

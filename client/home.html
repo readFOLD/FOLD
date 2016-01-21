@@ -14,7 +14,7 @@
           <!--{{> filters}} in {{> categories}}-->
         </div>
         <div class="search {{#if slim}}slim{{else}}fat{{/if}}">
-          {{> search}}
+          {{> search slim=slim}}
         </div>
       {{/if}}
     </div>
@@ -138,7 +138,7 @@
 
 
 <template name="search">
-  <input class="story-search" type="search">
+  <input class="story-search" type="search" placeholder="Search">
 </template>
 
 <template name="filters">

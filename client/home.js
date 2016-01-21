@@ -56,6 +56,15 @@ Template.home.events({
   }
 });
 
+Template.search.onCreated(function() {
+  this.autorun(function(){
+    if(!Session.get('storySearchQuery')){
+      $("input").val(null);
+    }
+  })
+
+
+})
 Template.search.onRendered(function() {
   if(this.data.slim){
   } else {
@@ -119,6 +128,7 @@ Template.filters.events({
   "change select": function(e, t) {
     var filterValue = $(e.target).val();
     Session.set('filterValue', filterValue);
+    Session.set('storySearchQuery', null);
     if(t.data.slim){
       Router.go('/');
     }
