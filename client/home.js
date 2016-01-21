@@ -260,6 +260,7 @@ Template.all_stories.onCreated(function(){
   });
 });
 
+search = null;
 
 var currentHomeStories = function(){
 
@@ -267,6 +268,14 @@ var currentHomeStories = function(){
 
   if (limit <= 0){
     return
+  }
+
+  if(true){
+    return StorySearch.getData({
+      docTransform: function(doc){
+        return new Story(doc);
+      }
+    }, true);
   }
 
   switch (Session.get('filterValue')) {
@@ -319,7 +328,7 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
 
 Template.story_preview.helpers({
   story: function(){
-    return Stories.findOne(this._id);
+    return Template.instance().data.story || Stories.findOne(this._id);
   }
 });
 

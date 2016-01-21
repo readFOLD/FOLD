@@ -82,9 +82,6 @@
         <li>
           <a href="https://www.twitter.com/readFOLD" target="_blank">{{> twitter_social_icon}}</a>
         </li>
-        <li>
-          <a href="https://instagram.com/fold.cm" target="_blank">{{> instagram_social_icon}}</a>
-        </li>
       </ol>
     {{/unless}}
     {{/unless}}
@@ -179,7 +176,8 @@
   {{/unless}}
 
   {{#each stories}}
-    {{> story_preview }}
+    {{debugContext}}
+    {{> story_preview story=this }}
   {{/each}}
   <div class="home-loading-footer">
     {{#if storiesLoading}}
