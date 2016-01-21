@@ -135,7 +135,7 @@ Template.search.events({
     if(enterPress(e) && t.data.slim){
       Router.go('/');
     }
-  }, 200)
+  }, 200, {leading: false})
 });
 
 var curatedStoriesSub,
@@ -183,6 +183,11 @@ setSubscriptionPage('curated', 0); // curated stories are preloaded
 var homeSubs = new SubsManager({
   cacheLimit: 9999,
   expireIn: 99999999
+});
+
+var searchUserSubs = new SubsManager({
+  cacheLimit: 1,
+  expireIn: 60
 });
 
 // these methods all keep the subscription open for the lifetime of the window, but can be called again safely
@@ -284,6 +289,16 @@ Template.all_stories.onCreated(function(){
     StorySearch.search(Session.get('storySearchQuery'));
   });
 
+  subscribeToSearchedMinimalUsers = _.debounce(function(){
+    return searchUserSubs.subscribe('minimalUsersPub', StorySearch.getData({}, true).map(function(story){return story.authorId}));
+  }, 1000);
+
+  this.autorun(function(){
+    if(StorySearch.getStatus().loaded){
+      subscribeToSearchedMinimalUsers();
+    }
+  });
+
 
 });
 
@@ -299,6 +314,10 @@ var currentHomeStories = function(){
 
   if(Session.get('storySearchQuery')){
     return StorySearch.getData({
+      sort:[
+        ["editorsPickAt", "desc"],
+        ["favoritedTotal", "desc"]
+      ],
       docTransform: function(doc){
         return new Story(doc);
       }

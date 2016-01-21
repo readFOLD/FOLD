@@ -4,7 +4,7 @@ SearchSource.defineSource('stories', function(searchText, options) {
       ["editorsPickAt", "desc"],
       ["favoritedTotal", "desc"]
     ],
-    limit: 20,
+    limit: PUB_SIZE,
     fields: previewStoryFields
   };
 
