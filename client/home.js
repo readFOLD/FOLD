@@ -56,6 +56,17 @@ Template.home.events({
   }
 });
 
+Template.search.onRendered(function() {
+  if(this.data.slim){
+  } else {
+    var storySearchQuery;
+    if(storySearchQuery = Session.get('storySearchQuery')){
+      $("input").val(storySearchQuery);
+    }
+  }
+});
+
+
 Template.categories.helpers({
   categories: function() {
     return ['all', 'news', 'history', 'art', 'technology', 'politics', 'e-sports', 'music', 'gaming', 'sponsored'];
@@ -115,6 +126,16 @@ Template.filters.events({
       label: filterValue
     });
   }
+});
+
+Template.search.events({
+  "keyup input": _.throttle(function(e, t) {
+    var text = $(e.target).val().trim();
+    Session.set('storySearchQuery', text);
+    if(enterPress(e) && t.data.slim){
+      Router.go('/');
+    }
+  }, 200)
 });
 
 var curatedStoriesSub,
@@ -258,6 +279,12 @@ Template.all_stories.onCreated(function(){
     }
     notFirstRun = true;
   });
+
+  this.autorun(function(){
+    StorySearch.search(Session.get('storySearchQuery'));
+  });
+
+
 });
 
 search = null;
@@ -270,7 +297,7 @@ var currentHomeStories = function(){
     return
   }
 
-  if(true){
+  if(Session.get('storySearchQuery')){
     return StorySearch.getData({
       docTransform: function(doc){
         return new Story(doc);
@@ -312,7 +339,7 @@ Template.all_stories.events({
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   stories: currentHomeStories,
   storiesLoading: function(){
-    return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')))
+    return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')) || StorySearch.getStatus().loading)
   },
   moreToShow: function(){
     var stories = currentHomeStories();
@@ -325,6 +352,8 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
     return Session.get('boxDismissed')
   }
 });
+
+
 
 Template.story_preview.helpers({
   story: function(){

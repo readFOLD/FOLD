@@ -5,7 +5,7 @@ SearchResults = new Mongo.Collection(null, {
 
 var options = {
   keepHistory: 1000 * 60 * 5,
-  localSearch: false
+  localSearch: true
 };
 var fields = ['title', 'keywords', 'authorName', 'authorDisplayUsername'];
 

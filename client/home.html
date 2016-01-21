@@ -9,15 +9,19 @@
         {{/linkTo}}
       </div>
       {{#if showFilters}}
-      <div class="filter {{#if slim}}slim{{else}}fat{{/if}}">
-        {{> filters slim=slim}}
-        <!--{{> filters}} in {{> categories}}-->
-      </div>
+        <div class="filter {{#if slim}}slim{{else}}fat{{/if}}">
+          {{> filters slim=slim}}
+          <!--{{> filters}} in {{> categories}}-->
+        </div>
+        <div class="search {{#if slim}}slim{{else}}fat{{/if}}">
+          {{> search}}
+        </div>
       {{/if}}
     </div>
     {{> banner_buttons slim=slim hideMakeAStory=hideMakeAStory}}
   </div>
 </template>
+
 
 <template name="top_banner_simple_no_links">
   <div class="home-top not-sticky top-banner {{#if slim}}slim{{else}}fat{{/if}}">
@@ -132,6 +136,11 @@
   </div>
 </template>
 
+
+<template name="search">
+  <input class="story-search" type="search">
+</template>
+
 <template name="filters">
   <span class="filters">
     <select data-custom-id="custom" data-custom-class="custom" value="{{initialFilterValue}}">
@@ -176,7 +185,6 @@
   {{/unless}}
 
   {{#each stories}}
-    {{debugContext}}
     {{> story_preview story=this }}
   {{/each}}
   <div class="home-loading-footer">

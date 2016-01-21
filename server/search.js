@@ -1,19 +1,22 @@
 SearchSource.defineSource('stories', function(searchText, options) {
-  var options = {sort: [
-    ["editorsPickAt", "desc"],
-    ["favoritedTotal", "desc"]
-  ],
+  var options = {
+    sort: [
+      ["editorsPickAt", "desc"],
+      ["favoritedTotal", "desc"]
+    ],
     limit: 20,
-    fields: previewStoryFields};
+    fields: previewStoryFields
+  };
 
   if(searchText) {
+    Meteor._sleepForMs(500);
     var regExp = buildRegExp(searchText);
     var selector = {$or: [{title: regExp},{ keywords: regExp},{ authorName: regExp},{ authorDisplayUsername: regExp}],
       published: true
     };
     return Stories.find(selector, options).fetch();
   } else {
-    return Stories.find({}, options).fetch();
+    return []
   }
 });
 

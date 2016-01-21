@@ -124,7 +124,6 @@ div.home-top {
 
     font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
 
-
     .sod_select, .sod_option{
       padding: 12px 10px;
       background-color: transparent;
@@ -136,12 +135,43 @@ div.home-top {
       text-align: center;
     }
 
-
-
     span.categories {
       margin-left: 10px;
     }
   }
+  &.slim{
+    .action-items{
+      @media @mobile{
+        display: none;
+      }
+    }
+  }
+  div.search {
+    position: absolute;
+    font-size: 14px;
+
+    &.slim{
+      top: 0;
+    }
+    @media @mobile{
+      display: none;
+    }
+    @media @not-mobile{
+      left: 400px;
+      &.fat{
+        top: @magic-styling-distance;
+      }
+    }
+    input{
+      .size-to-fit;
+      border: 1px solid @medium-color;
+    }
+
+    height: @magic-styling-distance;
+
+    font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
+  }
+
   &.slim{
     .action-items{
       @media @mobile{
