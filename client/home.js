@@ -326,7 +326,8 @@ var currentHomeStories = function(){
     return StorySearch.getData({
       sort:[
         ["editorsPickAt", "desc"],
-        ["favoritedTotal", "desc"]
+        ["favoritedTotal", "desc"],
+        ["savedAt", "desc"]
       ],
       docTransform: function(doc){
         return new Story(doc);

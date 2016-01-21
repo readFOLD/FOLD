@@ -2,7 +2,8 @@ SearchSource.defineSource('stories', function(searchText, options) {
   var options = {
     sort: [
       ["editorsPickAt", "desc"],
-      ["favoritedTotal", "desc"]
+      ["favoritedTotal", "desc"],
+      ["savedAt", "desc"]
     ],
     limit: PUB_SIZE,
     fields: previewStoryFields
