@@ -157,6 +157,5 @@ window.trackingInfoFromPage = function () {
 window.trackEvent = function(){
   arguments[1] = arguments[1] || {};
   _.extend(arguments[1], trackingInfoFromPage());
-  console.log(arguments)
   analytics.track.apply(this, arguments);
 };

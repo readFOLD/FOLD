@@ -502,19 +502,27 @@ Template.create.events({
   },
   "change input.header-upload":  function(e, template){
     var that = this;
-    template.headerImageLoading.set(true);
-    var files = $("input.header-upload")[0].files;
-    Session.set('saveState', 'saving');
-    C.upload(files, function(r) { // callback does not respect typical error behavior and currently just doesn't call callback
-      if (r.error){ // this can't get hit at the moment
-        return saveCallback(r)
+    var file = _.first(e.target.files);
+    if (file) {
+      if (file.size > CLOUDINARY_FILE_SIZE) {
+        return notifyImageSizeError();
       }
-      return Meteor.call('updateHeaderImage', that._id, r.public_id, r.format, function(err, success) {
-        template.headerImageLoading.set(false);
-        saveCallback(err, success) 
+      template.headerImageLoading.set(true);
+      Session.set('saveState', 'saving');
+      console.log('bbbbb')
+      Cloudinary.upload([file], {}, function (err, doc) {
+        console.log('lalalalal')
+        if (err) {
+          template.headerImageLoading.set(false);
+          return saveCallback(err)
+        }
+        return Meteor.call('updateHeaderImage', that._id, doc.public_id, doc.format, function (err, success) {
+          template.headerImageLoading.set(false);
+          saveCallback(err, success)
+        });
       });
-    });
-    trackEvent('Change upload header on header');
+      trackEvent('Change upload header on header');
+    }
   }
 });
 
