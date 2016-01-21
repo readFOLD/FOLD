@@ -1772,7 +1772,11 @@ var sharedStorySchema = function(options) {
       optional: true,
       autoValue: function() {
         if(options.draft){
-          return this.unset();
+          if (this.isSet) {
+            return this.value;
+          } else {
+            return this.unset();
+          }
         }
         var placeholderNumber = _.random(1,2).toString();
         if (this.isSet) {
