@@ -186,6 +186,10 @@
 
   {{#each stories}}
     {{> story_preview story=this }}
+  {{else}}
+    {{#unless storiesLoading}}
+      Oops, no stories found
+    {{/unless}}
   {{/each}}
   <div class="home-loading-footer">
     {{#if storiesLoading}}
