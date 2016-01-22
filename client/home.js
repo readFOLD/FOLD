@@ -146,6 +146,7 @@ Template.search.events({
     if(enterPress(e) && t.data.slim){
       Router.go('/');
     }
+    $('html, body').scrollTop(0);
   }, 200, {leading: false})
 });
 

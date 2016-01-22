@@ -14,7 +14,6 @@ SearchSource.defineSource('stories', function(searchText, options) {
   };
 
   if(searchText) {
-    Meteor._sleepForMs(500);
     var regExp = buildRegExp(searchText);
     var selector = {$or: [{title: regExp},{ keywords: regExp},{ authorName: regExp},{ authorDisplayUsername: regExp}],
       published: true
