@@ -17,6 +17,10 @@ formatDateNice = function(date) {
   return monthNames[(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear();
 };
 
+
+var filters = ['curated', 'trending', 'starred', 'newest'];
+Session.setDefault('filterValue', filters[0]); // this must correspond to the first thing in the dropdown
+
 Template.home.helpers({
   user: function() {
     return Meteor.user();
@@ -34,25 +38,15 @@ Template.home.helpers({
 
 
 Template.home.events({
-  "click div#expand-filter": function(d) {
-    var filterOpen, heightChange;
-    filterOpen = Session.get("filterOpen");
-    heightChange = filterOpen ? "-=100" : "+=100";
-    $("div#filter").animate({
-      height: heightChange
-    }, 250);
-    if (filterOpen) {
-      $("div.logo").animate({
-        top: "52px",
-        opacity: 1
-      }, 400, 'easeOutExpo');
-    } else {
-      $("div.logo").animate({
-        top: "78px",
-        opacity: 0
-      }, 400, 'easeOutExpo');
-    }
-    return Session.set("filterOpen", !filterOpen);
+  "click .logo-title a": function(e, t) {
+    // reset search query
+    Session.set('storySearchQuery', null);
+
+    // reset filter
+    Session.set('filterValue', filters[0]);
+    t.$("select.filters-select").val(filters[0]);
+    t.$("select.filters-select").selectOrDie("update");
+
   }
 });
 
@@ -108,8 +102,6 @@ Template.filters.onRendered(function() {
 
 });
 
-var filters = ['curated', 'trending', 'starred', 'newest'];
-Session.setDefault('filterValue', filters[0]); // this must correspond to the first thing in the dropdown
 
 Template.filters.helpers({
   filters: function() {
@@ -309,7 +301,6 @@ Template.all_stories.onCreated(function(){
           currentPage = 0;
           setCurrentSubscriptionPage(currentPage);
         }
-        console.log('searchA')
         StorySearch.search(storySearchQuery, {page: currentPage});
       })
     }
