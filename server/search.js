@@ -1,11 +1,15 @@
 SearchSource.defineSource('stories', function(searchText, options) {
-  var options = {
+  options = options || {};
+  _.defaults(options, {
+    page: 0
+  });
+  var findOptions = {
     sort: [
       ["editorsPickAt", "desc"],
       ["favoritedTotal", "desc"],
       ["savedAt", "desc"]
     ],
-    limit: PUB_SIZE,
+    limit: PUB_SIZE * (options.page + 1),
     fields: previewStoryFields
   };
 
@@ -15,7 +19,7 @@ SearchSource.defineSource('stories', function(searchText, options) {
     var selector = {$or: [{title: regExp},{ keywords: regExp},{ authorName: regExp},{ authorDisplayUsername: regExp}],
       published: true
     };
-    return Stories.find(selector, options).fetch();
+    return Stories.find(selector, findOptions).fetch();
   } else {
     return []
   }

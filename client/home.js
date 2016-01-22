@@ -64,7 +64,8 @@ Template.search.onCreated(function() {
   })
 
 
-})
+});
+
 Template.search.onRendered(function() {
   if(this.data.slim){
   } else {
@@ -163,11 +164,13 @@ var setSubscriptionPage = function(filterValue, val){
 };
 
 var getCurrentSubscriptionPage = function(){
-  return getSubscriptionPage(Session.get('filterValue'));
+  var storySearchQuery = Session.get('storySearchQuery');
+  return getSubscriptionPage(storySearchQuery ? ('search:' + storySearchQuery) : Session.get('filterValue'));
 };
 
 var setCurrentSubscriptionPage = function(val){
-  return setSubscriptionPage(Session.get('filterValue'), val);
+  var storySearchQuery = Session.get('storySearchQuery');
+  return setSubscriptionPage(storySearchQuery ? ('search:' + storySearchQuery) : Session.get('filterValue'), val);
 };
 
 
@@ -295,8 +298,31 @@ Template.all_stories.onCreated(function(){
     notFirstRun = true;
   });
 
+  // first page of search results, or when flip back to query
   this.autorun(function(){
-    StorySearch.search(Session.get('storySearchQuery'));
+    var storySearchQuery = Session.get('storySearchQuery');
+    if(storySearchQuery){
+      Tracker.nonreactive(function(){
+        var currentPage = getCurrentSubscriptionPage();
+        if(typeof currentPage !== 'number'){
+          currentPage = 0;
+          setCurrentSubscriptionPage(currentPage);
+        }
+        console.log('searchA')
+        StorySearch.search(storySearchQuery, {page: currentPage});
+      })
+    }
+  });
+
+  // further pages of search results
+  this.autorun(function(){
+    var currentPage = getCurrentSubscriptionPage();
+    Tracker.nonreactive(function(){
+      var storySearchQuery = Session.get('storySearchQuery');
+      if(storySearchQuery && currentPage){
+        StorySearch.search(storySearchQuery, {page: currentPage});
+      }
+    });
   });
 
   subscribeToSearchedMinimalUsers = _.debounce(function(){
@@ -353,13 +379,20 @@ var currentHomeStories = function(){
 
 Template.all_stories.events({
   'click .show-more' : function(e,t){
-    var filterValue = Session.get('filterValue');
-    subscriptionsReady.set(filterValue + 'Stories', false);
-    homeSubs.subscribe(filterValue + 'StoriesPub', {page: getCurrentSubscriptionPage() + 1}, function(){
+
+    var storySearchQuery = Session.get('storySearchQuery');
+    if(storySearchQuery){
       incrementCurrentSubscriptionPage();
-      whichUserPics.changed();
-      subscriptionsReady.set(filterValue + 'Stories', true);
-    })
+    } else {
+      var filterValue = Session.get('filterValue');
+      subscriptionsReady.set(filterValue + 'Stories', false);
+      homeSubs.subscribe(filterValue + 'StoriesPub', {page: getCurrentSubscriptionPage() + 1}, function(){
+        incrementCurrentSubscriptionPage();
+        whichUserPics.changed();
+        subscriptionsReady.set(filterValue + 'Stories', true);
+      })
+    }
+
   },
   'click .dismiss-box': function (e,t) {
     Session.set('boxDismissed', true);
