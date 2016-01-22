@@ -30,7 +30,7 @@ Meteor.users._ensureIndex({
 
 
 
-var readStoryFields = {
+readStoryFields = {
   draftStory: 0,
   history: 0,
   narrativeRightsReserved: 0,
@@ -55,7 +55,7 @@ var readStoryFields = {
 };
 
 
-var previewStoryFields = {
+previewStoryFields = {
   shortId: 1,
   savedAt: 1,
   publishedAt: 1,
@@ -74,12 +74,13 @@ var previewStoryFields = {
   headerImage: 1,
   favoritedTotal: 1,
   storyPathSegment: 1,
-  title: 1
+  title: 1,
+  keywords: 1
 };
 
 
 // add preview fields again but nested under draftStory. also authorUsername until migrate
-var previewStoryFieldsWithDraft = _.extend({}, previewStoryFields, _.chain(previewStoryFields).keys().map(function(fieldName){return 'draftStory.' + fieldName}).object(_.values(previewStoryFields)).value(), {'authorUsername': 1});
+previewStoryFieldsWithDraft = _.extend({}, previewStoryFields, _.chain(previewStoryFields).keys().map(function(fieldName){return 'draftStory.' + fieldName}).object(_.values(previewStoryFields)).value(), {'authorUsername': 1});
 
 Meteor.publish("curatedStoriesPub", function(options) {
   options = options ? options : {};

@@ -378,7 +378,7 @@ Template.story_header.events = {
     }
   },
   "keydown": function (e) {
-    if (e.which == 13) { // enter
+    if (enterPress(e) && !Session.get('read')) { // enter
       e.preventDefault();
       $(':focus').blur(); // TO-DO this should move focus to the first block
       $('#to-story, .attribution').fadeOut();

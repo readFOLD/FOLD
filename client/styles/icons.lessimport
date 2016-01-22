@@ -159,3 +159,12 @@ i.loading-icon{
     }
   }
 }
+
+.clear-search-icon{
+  .fg{
+    fill: @inactive-color;
+  }
+  .bg{
+    fill: @background-color;
+  }
+}
