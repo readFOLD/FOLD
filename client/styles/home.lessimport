@@ -150,6 +150,7 @@ div.home-top {
   div.search {
     position: absolute;
     font-size: 14px;
+    width: 180px;
 
     &.slim{
       top: 0;
@@ -172,6 +173,7 @@ div.home-top {
     input{
       .size-to-fit;
       background-color: transparent;
+      padding-right: 35px;
     }
     &.fat{
       input{
@@ -182,6 +184,16 @@ div.home-top {
     height: @magic-styling-distance;
 
     font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
+
+    .clear-search{
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      svg{
+        .size(20px);
+      }
+      padding: 0;
+    }
   }
 
   &.slim{

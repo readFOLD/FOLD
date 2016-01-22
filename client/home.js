@@ -65,8 +65,28 @@ Template.search.onRendered(function() {
   } else {
     var storySearchQuery;
     if(storySearchQuery = Session.get('storySearchQuery')){
-      $("input").val(storySearchQuery);
+      this.$("input").val(storySearchQuery);
     }
+  }
+});
+
+Template.search.helpers({
+  showClearSearch: function(){
+    return Session.get('storySearchQuery') ? true : false;
+  }
+});
+
+Template.search.events({
+  'click .clear-search': function(e, t){
+    // this is the business logic
+    Meteor.defer(function(){
+      return Session.set('storySearchQuery', null);
+    });
+
+    // do this so the ui is snappy
+    t.$("input").val(null);
+    t.$("button").hide();
+
   }
 });
 

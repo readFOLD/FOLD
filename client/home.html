@@ -139,6 +139,9 @@
 
 <template name="search">
   <input class="story-search" type="search" placeholder="Search">
+  {{#if showClearSearch}}
+    <button class="clear-search">{{> clear_search_icon}}</button>
+  {{/if}}
 </template>
 
 <template name="filters">
