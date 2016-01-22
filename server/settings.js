@@ -15,10 +15,13 @@ Meteor.startup(function () {
     password: Meteor.settings.SMTP_API_KEY,
     server: Meteor.settings.SMTP_SERVER,
     port: Meteor.settings.SMTP_PORT
-  }
+  };
 
   process.env.MAIL_URL = 'smtp://' + encodeURIComponent(smtp.username) + ':' + encodeURIComponent(smtp.password) + '@' + encodeURIComponent(smtp.server) + ':' + smtp.port;
 
+  Mandrill.config({
+    key:  Meteor.settings.MANDRILL_API_KEY  // get your Mandrill key from https://mandrillapp.com/settings/index
+  });
 });
 
 if (Meteor.settings.CLOUDINARY_API_SECRET){

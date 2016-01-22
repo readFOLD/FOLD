@@ -62,7 +62,7 @@ Meteor.methods({
 
     var bio = (res && res.description) ? res.description : "";
 
-    return Meteor.users.update({
+    var success = Meteor.users.update({
       _id: this.userId
     }, {
       $set: {
@@ -76,6 +76,14 @@ Meteor.methods({
         "emails": {"address": userInfo.email, "verified": false}
       }
     });
+
+    if(success){
+      Meteor.defer(function(){
+        sendWelcomeEmail(Meteor.user());
+      });
+    }
+
+    return success
   },
   setBioFromTwitter: function () {
     var user = Meteor.user();
