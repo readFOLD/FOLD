@@ -39,6 +39,13 @@
 
 @card-spacing: 20px;
 
+@home-banner-break-1:  ~"(max-width: 1300px)";
+@home-banner-break-2:  ~"(max-width: 1200px)";
+@home-banner-break-3:  ~"(max-width: 1000px)";
+@home-banner-break-4:  ~"(max-width: 800px)";
+
+
+
 .content-font{
   font-size: @content-font-size;
   line-height: @content-line-height;
@@ -1791,6 +1798,7 @@ div.loading-container {
 }
 
 .banner-buttons{
+
   div.action-items {
     @height: @magic-styling-distance;
     font-size: 13px;
@@ -1807,7 +1815,10 @@ div.loading-container {
     &.fat{
       top: @magic-styling-distance;
       @media @not-mobile{
-        right: @topButtonRight;
+        right: 140px;
+        @media @home-banner-break-1{
+          right: 40px;
+        }
       }
     }
 
@@ -1848,9 +1859,17 @@ div.loading-container {
     }
 
     &.fat{
-      li{
+      .action-item-list>li{
         &:not(:last-child) {
           margin-right: @magic-styling-distance / 2;
+        }
+        @media @home-banner-break-2{
+          &:last-child {
+            display: none;
+          }
+          &:nth-last-child(2) {
+            margin-right: 0;
+          }
         }
       }
     }
@@ -1903,6 +1922,9 @@ div.loading-container {
       display: inline-block;
       width: @magic-styling-distance;
       text-align: center;
+    }
+    @media @home-banner-break-1 {
+      display: none;
     }
   }
 }

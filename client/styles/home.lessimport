@@ -7,8 +7,6 @@ div#login-buttons-and-more {
   left: 15px;
 }
 
-@topButtonRight: 140px;
-
 div.home-top {
   position: fixed;
   &.not-sticky{
@@ -117,6 +115,9 @@ div.home-top {
       left: 196px;
       &.fat{
         top: @magic-styling-distance;
+        @media @home-banner-break-3 {
+          display: none;
+        }
       }
     }
 
@@ -160,6 +161,12 @@ div.home-top {
       left: 400px;
       &.fat{
         top: @magic-styling-distance;
+        @media @home-banner-break-3 {
+          left: 196px;
+        }
+        @media @home-banner-break-4 {
+          display: none;
+        }
       }
     }
     input{
