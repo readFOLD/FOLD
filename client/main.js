@@ -1508,13 +1508,13 @@ subtractSentActiveHeartbeatCount = function(){
   _.each(_.keys(activeHeartbeatCountSent), function(k){
     activeHeartbeatCount[k] = activeHeartbeatCount[k] - activeHeartbeatCountSent[k];
   });
-  activeHeartbeatCountSent = {};
+  activeHeartbeatCountSent = {}; // this makes the function safe to run multiple times
 };
 
 var sendHeartbeatsInterval = 30000;
 
 
-activeHeartbeatCountSender = function(){
+activeHeartbeatCountSender = function(doOnce){
   if(_.isEmpty(activeHeartbeatCount)){
     console.log('nothing to send')
     return
@@ -1528,14 +1528,18 @@ activeHeartbeatCountSender = function(){
     } else {
       subtractSentActiveHeartbeatCount();
     }
-    Meteor.setTimeout(activeHeartbeatCountSender, sendHeartbeatsInterval);
+    if(!doOnce){
+      Meteor.setTimeout(activeHeartbeatCountSender, sendHeartbeatsInterval);
+    }
   });
 };
 
-// TODO send heartbeats on window close if haven't already
-
 Meteor.startup(function(){
   Meteor.setTimeout(activeHeartbeatCountSender, sendHeartbeatsInterval);
+  $(window).bind('beforeunload', function(){
+    subtractSentActiveHeartbeatCount(); // in case there is already a count pending don't double-do it
+    activeHeartbeatCountSender(true);
+  })
 });
 
 Template.read.onRendered(function(){
