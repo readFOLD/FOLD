@@ -287,7 +287,7 @@ Meteor.publish("adminRecentDraftsPub", function(options) {
 });
 
 
-Meteor.publish("userProfilePub", function(username) { // includes user profile and published stories
+Meteor.publish("userProfilePub", function(username) { // includes user profile and favorited stories
 
   userCursor = Meteor.users.find({
     username: username.toLowerCase()
