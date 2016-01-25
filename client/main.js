@@ -1,5 +1,7 @@
 var getCardWidth, horizontalBlockHelpers, throttledResize, typeHelpers;
 
+window.storiesReadThisSession = [];
+
 UI.registerHelper('selectedIf', function(val) {
   return val ? 'selected' : '';
 });
@@ -63,11 +65,17 @@ Meteor.startup(function(){
 
   var justReloaded = window.codeReloaded;
 
+
+  if(!justReloaded){
+    storiesReadThisSession = [];
+  }
+
   Tracker.autorun(function(){
     if (Session.get('signingIn') && !justReloaded){
       setSigningInFrom();
       analytics.track('Opened sign-in overlay', {nonInteraction: 1});
     }
+
     justReloaded = false;
   })
 });
@@ -211,6 +219,25 @@ Tracker.autorun(function(){
   }
   return Session.set('currentXId', null);
 });
+
+Tracker.autorun(function(){
+  var story = Session.get('story');
+  var currentY = Session.get("currentY");
+  if(!story || !Session.get('read')){
+    return
+  }
+
+  var totalLength = story.verticalSections.length;
+
+  if((currentY + 1) >= totalLength * 0.67){
+    if(!_.contains(storiesReadThisSession, story._id)){
+      console.log('read ' + story._id)
+      storiesReadThisSession.push(story._id);
+    }
+  }
+});
+
+
 
 
 
