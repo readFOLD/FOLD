@@ -1507,6 +1507,9 @@ incrementActiveHeartbeatCount = function(id){
 subtractSentActiveHeartbeatCount = function(){
   _.each(_.keys(activeHeartbeatCountSent), function(k){
     activeHeartbeatCount[k] = activeHeartbeatCount[k] - activeHeartbeatCountSent[k];
+    if(!activeHeartbeatCount[k]){
+      delete activeHeartbeatCount[k]
+    }
   });
   activeHeartbeatCountSent = {}; // this makes the function safe to run multiple times
 };
