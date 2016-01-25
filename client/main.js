@@ -1503,6 +1503,8 @@ activeHeartbeatCountSender = function(){
   });
 };
 
+// TODO send heartbeats on window close if haven't already
+
 Meteor.startup(function(){
   Meteor.setTimeout(activeHeartbeatCountSender, sendHeartbeatsInterval);
 });
