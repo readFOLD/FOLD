@@ -9,37 +9,19 @@
         {{/linkTo}}
       </div>
       {{#if showFilters}}
-      <div class="filter {{#if slim}}slim{{else}}fat{{/if}}">
-        {{> filters slim=slim}}
-        <!--{{> filters}} in {{> categories}}-->
-      </div>
+        <div class="filter {{#if slim}}slim{{else}}fat{{/if}}">
+          {{> filters slim=slim}}
+          <!--{{> filters}} in {{> categories}}-->
+        </div>
+        <div class="search {{#if slim}}slim{{else}}fat{{/if}}">
+          {{> search slim=slim}}
+        </div>
       {{/if}}
     </div>
     {{> banner_buttons slim=slim hideMakeAStory=hideMakeAStory}}
-    {{> signin_overlay}}
   </div>
 </template>
 
-<template name="signin_overlay">
-  {{#if signingIn}}
-    <div class="signin-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
-      <div class="signin-buttons">
-        <button class="close">✕</button>
-        {{#if explanation}}
-          <div class="explanation">{{explanation}}</div>
-        {{/if}}
-        <ol class="user-menu">
-          <li>
-            <button class="twitter-signin">Log in with Twitter</button>
-          </li>
-          <li>
-            <button class="email-signin">Log in with email</button>
-          </li>
-        </ol>
-      </div>
-    </div>
-  {{/if}}
-</template>
 
 <template name="top_banner_simple_no_links">
   <div class="home-top not-sticky top-banner {{#if slim}}slim{{else}}fat{{/if}}">
@@ -72,7 +54,7 @@
 <template name="banner_buttons">
   <div class="banner-buttons {{#if slim}}slim{{else}}fat{{/if}}">
     <div class="action-items {{#if slim}}slim{{else}}fat{{/if}}">
-      <ol>
+      <ol class="action-item-list">
         {{#unless isPhone}}
           {{#unless hideMakeAStory}}
             <li class="create-story">
@@ -104,9 +86,6 @@
         <li>
           <a href="https://www.twitter.com/readFOLD" target="_blank">{{> twitter_social_icon}}</a>
         </li>
-        <li>
-          <a href="https://instagram.com/fold.cm" target="_blank">{{> instagram_social_icon}}</a>
-        </li>
       </ol>
     {{/unless}}
     {{/unless}}
@@ -120,9 +99,7 @@
       <a href="/profile/{{currentUser.displayUsername}}">
 
         <button>
-            {{#if profileImage currentUser}}
-              <img class="profile-picture" src="{{profileImage currentUser}}"/>
-            {{/if}}
+          <img class="profile-picture" src="{{profileImage currentUser}}"/>
           <span class="text">{{currentUser.profile.name}}</span>
         </button>
       </a>
@@ -159,9 +136,17 @@
   </div>
 </template>
 
+
+<template name="search">
+  <input class="story-search" type="search" placeholder="Search">
+  {{#if showClearSearch}}
+    <button class="clear-search">{{> clear_search_icon}}</button>
+  {{/if}}
+</template>
+
 <template name="filters">
   <span class="filters">
-    <select data-custom-id="custom" data-custom-class="custom" value="{{initialFilterValue}}">
+    <select class="filters-select" data-custom-id="custom" data-custom-class="custom" value="{{initialFilterValue}}">
       {{#each filters}}
         <option value="{{this.value}}" {{conditionallySelected}}>
           {{this.label}}
@@ -192,7 +177,7 @@
         <div class="overlay"></div>
         <div class="text">
           <div class="tagline">Create. Remix. Discover.</div>
-          <div class="description">FOLD is an open publishing platform that helps you share your ideas, tutorials, and more.</div>
+          <div class="description">FOLD is an open publishing platform that makes it easy to explain and explore new ideas.</div>
           <div class="description-link"><a href="/read/FOLD/what-is-fold-TiyWEK6C">Learn more about us.</a></div>
         </div>
         <button class="dismiss-box">✕</button>
@@ -203,7 +188,11 @@
   {{/unless}}
 
   {{#each stories}}
-    {{> story_preview }}
+    {{> story_preview story=this }}
+  {{else}}
+    {{#unless storiesLoading}}
+      Sorry, no stories matched your search. Maybe you could write one?
+    {{/unless}}
   {{/each}}
   <div class="home-loading-footer">
     {{#if storiesLoading}}
@@ -321,11 +310,7 @@
       <a class="author-profile-link" href="{{profileUrl}}">
         <div class="pull-left">
           <div class="author-image">
-            {{#if profileImage author}}
-             <img class="profile-picture" src="{{profileImage author}}"/>
-            {{else}}
-              <img class="profile-picture" src="{{c.url 'static/placeholder_image.png'}}"/>
-            {{/if}}
+           <img class="profile-picture" src="{{profileImage author}}"/>
           </div>
 
           <div class="author-name-date">

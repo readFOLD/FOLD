@@ -71,12 +71,41 @@ Meteor.startup(function(){
   }
 
   Tracker.autorun(function(){
-    if (Session.get('signingIn') && !justReloaded){
-      setSigningInFrom();
-      analytics.track('Opened sign-in overlay', {nonInteraction: 1});
+    var signingIn = Session.get('signingIn');
+    if (signingIn && !justReloaded){
+      var trackingInfo = {nonInteraction: 1};
+      if(typeof signingIn === 'string'){
+        _.extend(trackingInfo,{
+          label: signingIn,
+          message: signingIn
+        })
+      }
+      trackEvent('Opened sign-in overlay', trackingInfo);
     }
 
     justReloaded = false;
+  });
+
+  var restrictFocusToModal = function( event ) {
+    var modal = $('.signin-modal');
+    if (!modal.has(event.target)[0]) {
+      event.stopPropagation();
+      Meteor.setTimeout(function(){
+        modal[0].focus();
+        var input = $('.signin-modal input')[0];
+        if(input){
+          input.focus();
+        }
+      })
+    }
+  };
+
+  Tracker.autorun(function(){
+    if (Session.get('signingIn')){
+      $(document).on('focusin', restrictFocusToModal);
+    } else {
+      $(document).off('focusin', restrictFocusToModal);
+    }
   })
 });
 
@@ -351,7 +380,7 @@ Template.story_header.events = {
     }
   },
   "keydown": function (e) {
-    if (e.which == 13) { // enter
+    if (enterPress(e) && !Session.get('read')) { // enter
       e.preventDefault();
       $(':focus').blur(); // TO-DO this should move focus to the first block
       $('#to-story, .attribution').fadeOut();
@@ -451,7 +480,7 @@ Template.vertical_section_block.events({
         goToContext(contextId);
       };
       Meteor.setTimeout(function(){
-        analytics.track('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
+        trackEvent('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
           verticalIndex: that.index,
           contextId: contextId,
           contextType: $(e.currentTarget).data('contextType'),
@@ -602,10 +631,10 @@ Template.minimap.events({
   "click .minimap": function(d, t) {
     if (!Session.get('read')){ // only metaview in create for now
       Session.set("metaview", true);
-      analytics.track('Click minimap in create mode');
+      trackEvent('Click minimap in create mode');
     } else {
       notifyFeature('Zoom-out mode: coming soon!');
-      analytics.track('Click minimap in read mode');
+      trackEvent('Click minimap in read mode');
     }
   }
 });
@@ -840,7 +869,7 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 Template.horizontal_section_block.events({
   'click .mobile-context-back-button': function(e, t){
     Session.set('mobileContextView', false);
-    analytics.track('Click mobile back button');
+    trackEvent('Click mobile back button');
   }
 });
 
@@ -933,7 +962,7 @@ Template.display_link_section.events({
       return false
     }
     var url = e.currentTarget.href;
-    analytics.track('Click external link in link card', {
+    trackEvent('Click external link in link card', {
       label: url,
       url: url,
       targetClassName: e.target.className
@@ -1042,11 +1071,11 @@ Template.story_browser.helpers({
 Template.story_browser.events({
   "click .right": function(d) {
     window.goRightOneCard();
-    analytics.track('Click right arrow');
+    trackEvent('Click right arrow');
   },
   "click .left": function(d) {
     window.goLeftOneCard();
-    analytics.track('Click left arrow');
+    trackEvent('Click left arrow');
   }
 });
 
@@ -1067,7 +1096,7 @@ Template.share_buttons.events({
       ',left='   + left
     window.open(url, 'facebook', opts);
     Meteor.call('countStoryShare', this._id, 'facebook');
-    analytics.track('Share on Facebook');
+    trackEvent('Share on Facebook');
   },
   'click .share-twitter': function(e, t) {
     var title = $(".story-title").text();
@@ -1083,11 +1112,11 @@ Template.share_buttons.events({
       ',left='   + left
     window.open(url, 'twitter', opts);
     Meteor.call('countStoryShare', this._id, 'twitter');
-    analytics.track('Share on Twitter');
+    trackEvent('Share on Twitter');
   },
   'click .share-embed': function(e, t) {
     notifyFeature('Embedding: coming soon!');
-    analytics.track('Click embed button');
+    trackEvent('Click embed button');
   }
 });
 
@@ -1112,10 +1141,10 @@ Template.favorite_button.onCreated(function() {
 });
 Template.favorite_button.events({
   "click .favorite": function (e, t) {
-    analytics.track('Click favorite button');
+    trackEvent('Click favorite button');
 
     if (!Meteor.user()) {
-      Session.set('signingIn', 'Thanks for showing your love!\nPlease sign in to favorite this FOLD.');
+      openSignInOverlay('Thanks for showing your love!\nPlease sign in to favorite this FOLD.');
       return
     }
     var that = this;
@@ -1129,7 +1158,7 @@ Template.favorite_button.events({
         notifyError(err);
         throw(err);
       } else {
-        analytics.track('Favorite story');
+        trackEvent('Favorite story');
       }
 
     })
@@ -1146,7 +1175,7 @@ Template.favorite_button.events({
         throw(err);
       } else {
 
-        analytics.track('Unfavorite story');
+        trackEvent('Unfavorite story');
       }
     });
   }
@@ -1181,7 +1210,7 @@ Template.remix_bar.helpers({
 
 Template.remix_bar.events({
   'click .remix-button': function(){
-    analytics.track('Remix context card click', _.pick(this, [
+    trackEvent('Remix context card click', _.pick(this, [
       "_id",
       "authorId",
       "index",
@@ -1195,7 +1224,7 @@ Template.remix_bar.events({
     notifyFeature("Remixing cards: coming soon!");
   },
   'click .popout-button': function(){
-    analytics.track('Pop out card click', _.pick(this, [
+    trackEvent('Pop out card click', _.pick(this, [
       "_id",
       "authorId",
       "index",
@@ -1297,7 +1326,7 @@ Tracker.autorun(function(){
       });
     };
 
-    analytics.track('Audio popped out', { nonInteraction: 1 }); // we can't be sure the user initiated
+    trackEvent('Audio popped out', { nonInteraction: 1 }); // we can't be sure the user initiated
 
     updateBasicPlayerInfo();
 
@@ -1305,19 +1334,19 @@ Tracker.autorun(function(){
 
     poppedOutAudioCardWidget.bind(SC.Widget.Events.PLAY, function (e) {
       poppedOutPlayerInfo.set('status', 'playing');
-      analytics.track('Popped out audio playing', { nonInteraction: 1 }); // we can't be sure the user initiated
+      trackEvent('Popped out audio playing', { nonInteraction: 1 }); // we can't be sure the user initiated
     });
 
     poppedOutAudioCardWidget.bind(SC.Widget.Events.PAUSE, function (e) {
       poppedOutPlayerInfo.set('status', 'paused');
-      analytics.track('Popped out audio pausing', { nonInteraction: 1 }); // we can't be sure the user initiated
+      trackEvent('Popped out audio pausing', { nonInteraction: 1 }); // we can't be sure the user initiated
     });
 
     poppedOutAudioCardWidget.bind(SC.Widget.Events.FINISH, function (e) {
       poppedOutPlayerInfo.set('status', 'paused');
       poppedOutPlayerInfo.set('currentPosition', poppedOutPlayerInfo.get('duration'));
       poppedOutPlayerInfo.set('relativePosition', 1);
-      analytics.track('Popped out audio finished', { nonInteraction: 1 });
+      trackEvent('Popped out audio finished', { nonInteraction: 1 });
     });
 
     poppedOutAudioCardWidget.bind(SC.Widget.Events.PLAY_PROGRESS, _.throttle(updatePlayProgress, 200))
@@ -1387,7 +1416,7 @@ Template.audio_popout.events({
   "click .dismiss-popout": function(e, t) {
     Session.set('poppedOutContextId', null);
     poppedOutAudioCardWidget.pause();
-    analytics.track('Click dismiss popout button');
+    trackEvent('Click dismiss popout button');
   }
 });
 
@@ -1419,7 +1448,7 @@ Template.create_story.events({
             notifyError(err);
             throw(err);
           }
-          analytics.track('User clicked create and created story');
+          trackEvent('User clicked create and created story');
 
         })
       } else {
@@ -1427,7 +1456,7 @@ Template.create_story.events({
       }
     } else {
       Session.set('signingIn', "You're almost there!\nPlease sign in to make a story.")
-      analytics.track('User clicked create and needs to sign in');
+      trackEvent('User clicked create and needs to sign in');
     }
   }
 });
@@ -1440,7 +1469,7 @@ Template.read.onCreated(function(){
     if (!Session.equals("currentY", null)){
       var y = Session.get("currentY");
       var storyLength = Session.get("story").verticalSections.length;
-      analytics.track('View vertical narrative section', {
+      trackEvent('View vertical narrative section', {
         label: y,
         verticalNarrativeIndex: y,
         storyLength: storyLength,
@@ -1455,7 +1484,7 @@ Template.read.onCreated(function(){
     Session.set('storyViewed', id);
     Meteor.call('countStoryView', id);
     console.log('count view  ' + id)
-    analytics.track('View story', _.extend({}, trackingInfoFromStory(this.data), { nonInteraction: 1 }));
+    trackEvent('View story', _.extend({}, trackingInfoFromStory(this.data), { nonInteraction: 1 }));
   }
 
   var that = this;

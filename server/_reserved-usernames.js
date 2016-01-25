@@ -859,6 +859,6 @@ checkUserSignup = function(username, email) {
     } else {
       throw new Meteor.Error('email', 'Email is already in use.')
     }
-
   }
+  return true
 };

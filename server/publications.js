@@ -30,7 +30,7 @@ Meteor.users._ensureIndex({
 
 
 
-var readStoryFields = {
+readStoryFields = {
   draftStory: 0,
   history: 0,
   narrativeRightsReserved: 0,
@@ -55,7 +55,7 @@ var readStoryFields = {
 };
 
 
-var previewStoryFields = {
+previewStoryFields = {
   shortId: 1,
   savedAt: 1,
   publishedAt: 1,
@@ -74,12 +74,13 @@ var previewStoryFields = {
   headerImage: 1,
   favoritedTotal: 1,
   storyPathSegment: 1,
-  title: 1
+  title: 1,
+  keywords: 1
 };
 
 
 // add preview fields again but nested under draftStory. also authorUsername until migrate
-var previewStoryFieldsWithDraft = _.extend({}, previewStoryFields, _.chain(previewStoryFields).keys().map(function(fieldName){return 'draftStory.' + fieldName}).object(_.values(previewStoryFields)).value(), {'authorUsername': 1});
+previewStoryFieldsWithDraft = _.extend({}, previewStoryFields, _.chain(previewStoryFields).keys().map(function(fieldName){return 'draftStory.' + fieldName}).object(_.values(previewStoryFields)).value(), {'authorUsername': 1});
 
 Meteor.publish("curatedStoriesPub", function(options) {
   options = options ? options : {};
@@ -286,7 +287,7 @@ Meteor.publish("adminRecentDraftsPub", function(options) {
 });
 
 
-Meteor.publish("userProfilePub", function(username) { // includes user profile and published stories
+Meteor.publish("userProfilePub", function(username) { // includes user profile and favorited stories
 
   userCursor = Meteor.users.find({
     username: username.toLowerCase()
@@ -354,7 +355,9 @@ Meteor.publish("userData", function () {
         'accessPriority': 1,
         "services.twitter.id": 1,
         "displayUsername": 1,
+        'tempUsername': 1,
         "admin": 1,
+        "privileges": 1,
         "profile": 1
       }});
   } else {

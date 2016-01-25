@@ -5,3 +5,9 @@ if (!GOOGLE_API_CLIENT_KEY) {
   throw new Meteor.Error('Settings must be loaded for apis to work');
 }
 
+window.panelColor = "#815ed9";
+window.remixColor = panelColor;
+window.orangeColor = "#fc521f";
+window.actionColor = '#00c976';
+window.dangerColor = '#fc521f';
+window.whiteColor = "white";

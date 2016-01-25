@@ -11,7 +11,14 @@ div.login, div.reset-password, div.recover-password {
 }
 
 input.error, input.required {
-  border-bottom: 5px solid red;
+  //&:after{
+  //  content:'no';
+  //}
+}
+input.success{
+  //&:after{
+  //  content:'no';
+  //}
 }
 
 @media @not-mobile{
@@ -28,46 +35,11 @@ input.error, input.required {
   }
 }
 
-form {
-  span.error {
-    float: right;
-    color: red;
-  }
-
-  div.error {
-    color: red;
-  }
-
-  input.error {
-    border-bottom: 5px solid red;
-  }
-}
-
-form#login-form {
-	width: 350px;
-	font-size: 15px;
-	.FFMarkWeb;
-	margin: auto;
-}
-
-h1.login-header {
-  text-align: center;
-  margin-bottom: 50px;
-  font-size: 23px;
-}
-
-form#signup-form {
-	width: 350px;
-	margin-left: 75px;
-	margin-top: 55px;
-	.FFMarkWeb;
-}
-
 a.green {
   color: @action-color;
 }
 
-.login-button, .signup-button, .save-profile-button, .reset-button {
+.save-profile-button, .reset-button {
 	margin-top: 20px;
 	width: 100px;
     background-color: @action-color;
@@ -80,13 +52,6 @@ a.green {
     }
 }
 
-a.recover-password-link {
-  margin-left: 100px;
-
-  &:hover {
-    color: @action-color;
-  }
-}
 
 div.log-in-error {
 	margin-top: 10px;
@@ -124,6 +89,332 @@ div.sign-up-options {
     line-height: @button-height;
     &:hover {
       background-color: @dark-color;
+    }
+  }
+}
+
+
+.signin-overlay{
+  z-index: 99999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: fade(@dark-color, 80%);
+  .FFMarkWebMedium;
+
+  .signin-modal{
+
+    @max-width: calc(100% ~"-" @magic-styling-distance);
+    @height: 60px;
+    @width: 380px;
+
+    margin:auto;
+    display:block;
+    text-align: center;
+    background-color: @white-color;
+    font-size: 18px;
+    @media @mobile {
+      font-size: 16px;
+    }
+
+    .size(500px);
+
+
+    button{
+      font-size: 18px;
+
+      background-color: @action-color;
+      color: @white-color;
+      .loading-icon{
+        color: @white-color;
+      }
+      .FFMarkWebBold;
+      &:hover{
+        &:not(.no-hover-state){
+          background-color: @black-color;
+        }
+      }
+      &:disabled{
+        background-color: @inactive-color;
+        cursor: auto;
+      }
+    }
+    a, button.text{
+      background: none !important;
+      color: @panel-color;
+      padding: 0;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+
+    max-height: 100%;
+    max-width: 100%;
+
+    .center-over-parent-div;
+
+    .title{
+      margin-top: 93px;
+      &.has-explanation{
+        margin-top: 68px;
+      }
+      &.absolute{
+        position: absolute;
+        width: 100%;
+        top: @magic-styling-distance + 5px;
+        margin-top:0;
+        text-align: center;
+      }
+      img{
+        width: 120px;
+      }
+      line-height: 0;
+    }
+
+    .slogan, .explanation{
+      margin-top: @magic-styling-distance;
+      @media @mobile {
+        margin-top: @magic-styling-distance / 2;
+      }
+      line-height: normal;
+    }
+    .slogan{
+      color: @medium-color;
+    }
+
+    .explanation{
+      color: @dark-color;
+      line-height: 28px;
+      white-space: pre-wrap;
+    }
+
+    .user-menu{
+      width: 100%;
+      margin-top: @magic-styling-distance;
+      @media @mobile {
+        margin-top: @magic-styling-distance / 2;
+      }
+        text-align: center;
+    }
+
+    button.signin{
+      display: inline-block;
+      margin-bottom: @magic-styling-distance / 2;
+      width: @width;
+      height: @height;
+      max-width: @max-width;
+    }
+
+    @input-width: 335px;
+    @status-width: 60px;
+
+    input{
+      height: @height;
+      width: @input-width;
+      max-width: calc(100% ~"-" (@status-width + @magic-styling-distance));
+      &::-webkit-input-placeholder {
+        .FFMarkWebBold;
+      }
+      &:-moz-placeholder {
+        .FFMarkWebBold;
+      }
+      &:-ms-input-placeholder {
+        .FFMarkWebBold;
+      }
+      margin-top: 30px;
+      margin-bottom: 0px;
+      &:first-child{
+        margin-top: 0;
+      }
+    }
+
+
+    .status{
+      width: @status-width;
+      height: 20px;
+      text-align: center;
+      display: inline-block;
+      position: relative;
+      left: -20px;
+      svg{
+        position: absolute;
+      }
+    }
+    .field-info{
+      height: 0;
+      span{
+        width: @input-width + @status-width;
+        max-width: calc(100% ~"-" (@magic-styling-distance));
+        display: inline-block;
+        text-align: left;
+      }
+      text-align: center;
+      font-size: 12px;
+      color: @placeholder-color;
+    }
+    div.error{
+      color: @orange-color;
+    }
+
+    .back{
+      position: absolute;
+      left: @magic-styling-distance;
+      top: @magic-styling-distance + 13px;
+      @media @mobile{
+        left: @magic-styling-distance / 2;
+        top: @magic-styling-distance / 2 + 13px;
+      }
+      color: @medium-color !important;
+    }
+
+    .already-have{
+      margin-top: @magic-styling-distance / 2;
+      max-width: 100%;
+    }
+    .close{
+      .FFMarkWeb;
+      position: absolute;
+      top: @magic-styling-distance;
+      right: @magic-styling-distance;
+      @media @mobile{
+        top: @magic-styling-distance / 2;
+        right: @magic-styling-distance / 2;
+      }
+      background-color: @medium-color;
+      .size(@magic-styling-distance);
+      font-size: @magic-styling-distance/2;
+      padding: 0;
+      text-align: center;
+    }
+
+    form{
+      margin-top: 105px;
+    }
+
+    .accept{
+      font-size: 12px;
+      margin: 0;
+      margin-top: 15px;
+      &.above{
+        margin-top: 35px;
+      }
+      .padding-sides(@magic-styling-distance/2);
+      color: @placeholder-color;
+    }
+
+    hr{
+      width: @width;
+      border: 0;
+      border-top: 1px solid @medium-color;
+      margin-top: @magic-styling-distance / 2;
+      margin-bottom: @magic-styling-distance / 2;
+    }
+
+    #login-form{
+      line-height: 0;
+      input, .lost-or-login{
+        width: @width;
+        max-width: @max-width;
+      }
+      .lost-or-login{
+        display: inline-block;
+        line-height: normal;
+        position: relative;
+        .forgot-password{
+          margin-top: 17px;
+          float: left;
+          cursor: pointer;
+          &:hover{
+            text-decoration: underline !important;
+          }
+        }
+        .login-button{
+          float: right;
+        }
+        .error{
+          position: absolute;
+          font-size: 14px;
+          line-height: 18px;
+          bottom: 0;
+          white-space: pre-line;
+
+
+          @media @mobile{
+            font-size: 14px;
+            line-height: 15px;
+            bottom: 0px;
+            white-space: normal;
+          }
+          text-align: left;
+          width: calc(100% ~"-" 130px);
+        }
+      }
+    }
+
+    .twitter-signin{
+      svg{
+        .size(auto);
+        margin-left: 13px;
+        display: inline;
+        vertical-align: middle;
+      }
+      span{
+        display: inline;
+        vertical-align: middle;
+      }
+    }
+
+
+    .signup-button, .login-button{
+      display: inline-block;
+      height: @height;
+      width: 120px;
+      text-align: center;
+    }
+    .signup-button{
+      margin-top: @magic-styling-distance;
+    }
+    .login-button{
+      margin-top: @magic-styling-distance / 2;
+    }
+
+    //onboarding
+    .welcome{
+      font-size: 36px;
+      margin-top: 120px;
+      margin-bottom: 35px;
+    }
+    .author-image{
+      height: 95px;
+      img{
+        height: 100%;
+      }
+    }
+    .edit-prompt{
+      margin-top: 35px;
+      margin-bottom: 40px;
+    }
+    .finish{
+      height: @height;
+      width: 120px;
+    }
+
+    //recover-password
+    #recover-password-form{
+      margin-top: 120px;
+    }
+    #recover-password-email{
+      width: @width;
+      max-width: @max-width;
+    }
+    .recover-button{
+      height: @height;
+      margin-top: @magic-styling-distance/2;
+      width: @width;
+      max-width: @max-width;
+    }
+    .message{
+      margin-top: @magic-styling-distance/2;
     }
   }
 }

@@ -377,11 +377,11 @@ Template.vertical_section_block.events({
     html = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
 
     document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
-    analytics.track('Paste into fold-editable area');
+    trackEvent('Paste into fold-editable area');
   },
   'drop': function(e){
     e.preventDefault();
-    analytics.track('Drop (attempt) into fold-editable area');
+    trackEvent('Drop (attempt) into fold-editable area');
     return false;
   },
   'paste .title.editable': window.plainTextPaste,   // only allow plaintext in title
@@ -472,12 +472,12 @@ Template.create.events({
       notifyInfo("Due to high demand, we had to turn off publish functionality for a moment. Stay tuned for updates!");
     } else {
       template.publishing.set(true);
-      analytics.track('Click publish button');
+      trackEvent('Click publish button');
     }
   },
   "click .cancel-publish": function (e, template) {
     template.publishing.set(false);
-    analytics.track('Click cancel publish button');
+    trackEvent('Click cancel publish button');
   },
   "click .confirm-publish": function (e, template) {
     var that = this;
@@ -496,25 +496,33 @@ Template.create.events({
       } else {
         Router.go('/profile/' + Meteor.user().username);
         notifySuccess('You story has been published!');
-        analytics.track('Publish story', window.trackingInfoFromStory(Stories.findOne(that._id))); // TODO add info about author
+        trackEvent('Publish story', window.trackingInfoFromStory(Stories.findOne(that._id))); // TODO add info about author
       }
     });
   },
   "change input.header-upload":  function(e, template){
     var that = this;
-    template.headerImageLoading.set(true);
-    var files = $("input.header-upload")[0].files;
-    Session.set('saveState', 'saving');
-    C.upload(files, function(r) { // callback does not respect typical error behavior and currently just doesn't call callback
-      if (r.error){ // this can't get hit at the moment
-        return saveCallback(r)
+    var file = _.first(e.target.files);
+    if (file) {
+      if (file.size > CLOUDINARY_FILE_SIZE) {
+        return notifyImageSizeError();
       }
-      return Meteor.call('updateHeaderImage', that._id, r.public_id, r.format, function(err, success) {
-        template.headerImageLoading.set(false);
-        saveCallback(err, success) 
+      template.headerImageLoading.set(true);
+      Session.set('saveState', 'saving');
+      console.log('bbbbb')
+      Cloudinary.upload([file], {}, function (err, doc) {
+        console.log('lalalalal')
+        if (err) {
+          template.headerImageLoading.set(false);
+          return saveCallback(err)
+        }
+        return Meteor.call('updateHeaderImage', that._id, doc.public_id, doc.format, function (err, success) {
+          template.headerImageLoading.set(false);
+          saveCallback(err, success)
+        });
       });
-    });
-    analytics.track('Change upload header on header');
+      trackEvent('Change upload header on header');
+    }
   }
 });
 
@@ -531,7 +539,7 @@ Template.add_vertical.events({
         throw(err);
       }
       if (numDocs) {
-        analytics.track('Add vertical section', {
+        trackEvent('Add vertical section', {
           label: indexToInsert,
           verticalSectionIndex: indexToInsert
         });
@@ -557,7 +565,7 @@ Template.vertical_edit_menu.events({
 
     Session.set('saveState', 'saving');
     Meteor.call('addTitle', storyId, index, saveCallback);
-    analytics.track('Click add section title');
+    trackEvent('Click add section title');
   },
   "click .remove-title": function() {
     var storyId = Session.get('storyId');
@@ -565,7 +573,7 @@ Template.vertical_edit_menu.events({
 
     Session.set('saveState', 'saving');
     Meteor.call('removeTitle', storyId, index, saveCallback);
-    analytics.track('Click remove section title');
+    trackEvent('Click remove section title');
   },
   "click .move-card-up": function() {
     var storyId = Session.get('storyId');
@@ -573,7 +581,7 @@ Template.vertical_edit_menu.events({
 
     Session.set('saveState', 'saving');
     Meteor.call('moveVerticalSectionUpOne', storyId, index, saveCallback);
-    analytics.track('Click move card up');
+    trackEvent('Click move card up');
 
   },
   "click .move-card-down": function() {
@@ -582,7 +590,7 @@ Template.vertical_edit_menu.events({
 
     Session.set('saveState', 'saving');
     Meteor.call('moveVerticalSectionDownOne', storyId, index, saveCallback);
-    analytics.track('Click move card down');
+    trackEvent('Click move card down');
   },
   "click .delete-card": function() {
     if(confirm("Permanently delete this card and all associated context cards?")) {
@@ -591,7 +599,7 @@ Template.vertical_edit_menu.events({
 
       Session.set('saveState', 'saving');
       Meteor.call('deleteVerticalSection', storyId, index, saveCallback);
-      analytics.track('Click delete card');
+      trackEvent('Click delete card');
     }
   }
 });
@@ -629,7 +637,7 @@ var toggleHorizontalUI = function(forceBool) {
 Template.add_horizontal.events({
   "click": function(d) {
     toggleHorizontalUI();
-    analytics.track('Click toggle horizontal editor');
+    trackEvent('Click toggle horizontal editor');
   }
 });
 
@@ -747,7 +755,7 @@ Template.context_anchor_new_card_option.events = {
     placeholderAnchorElement.addClass('placeholder');
 
     showNewHorizontalUI();
-    analytics.track('Click add new card inside fold editor');
+    trackEvent('Click add new card inside fold editor');
   }
 };
 
@@ -773,7 +781,7 @@ Template.context_anchor_option.events = {
     //temporaryAnchorElement.data({contextId: contextId});
     saveUpdatedSelection();
     goToContext(contextId);
-    analytics.track('Click add link to context option inside fold editor');
+    trackEvent('Click add link to context option inside fold editor');
     return false;
   }
 };
@@ -802,20 +810,20 @@ Template.horizontal_section_edit_delete.helpers({
 });
 Template.horizontal_section_block.events({
   "click .delete": function(d) {
-    analytics.track('Click delete horizontal');
+    trackEvent('Click delete horizontal');
     if(confirm("Permanently delete this card?")){
       var currentY = Session.get("currentY");
       Session.set('saveState', 'saving');
       id = this._id;
       removeAnchorTag($('.vertical-narrative-section[data-vertical-index="'+ currentY +'"] .content a[data-context-id="' + id + '"]'));
       Meteor.call('removeContextFromStory', Session.get("storyId"), id, currentY, saveCallback);
-      analytics.track('Confirm delete horizontal');
+      trackEvent('Confirm delete horizontal');
     }
   },
   "click .edit": function(e, t) {
     Session.set('editingContext', this._id);
     Session.set('addingContext', false);
-    analytics.track('Click edit horizontal');
+    trackEvent('Click edit horizontal');
   }
 });
 
@@ -824,10 +832,10 @@ Template.create_options.events({
     if (Session.get('read')) {
       window.refreshContentDep.changed();
       Session.set('read', false);
-      analytics.track('Click toggle preview off');
+      trackEvent('Click toggle preview off');
     } else {
       Session.set('read', true);
-      analytics.track('Click toggle preview on');
+      trackEvent('Click toggle preview on');
     }
   }
 });
@@ -844,7 +852,7 @@ Template.link_twitter.events({
         Meteor.call('setBioFromTwitter')
       }
     });
-    analytics.track('Click Link Twitter');
+    trackEvent('Click Link Twitter');
   }
 });
 
@@ -869,6 +877,6 @@ Template.publish_overlay.events({
         scrollTop: 0
         }, 500, 'easeInExpo')}
       , 1500)
-    analytics.track('Click upload header inside publish dialog');
+    trackEvent('Click upload header inside publish dialog');
   }
 });

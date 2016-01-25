@@ -24,13 +24,17 @@
   <meta property="og:description" content="Reading, authoring, and publishing platform allowing storytellers to structure and contextualize stories.">
 </head>
 
+<body>
+{{> signin_overlay}}
+</body>
+
 
 <!--
   Templates used in reading, creating, and editing
 -->
 
 <template name="story_header">
-  {{> top_banner showFilters=read hideMakeAStory=notRead slim=true}}
+  {{> top_banner showFilters=showPublished hideMakeAStory=showDraft slim=true}}
   <div class="title-overlay {{#unless read}}write{{/unless}}">
     {{#with headerImageVideoObject}}
       {{> looping_video}}
@@ -47,11 +51,7 @@
         </a>
       </div>
       <a class="author-image" href="{{profileUrl}}">
-        {{#if profileImage author}}
-          <img class="profile-picture" src="{{profileImage author}}"/>
-        {{else}}
-          <img class="profile-picture" src="{{c.url 'static/placeholder_image.png'}}"/>
-        {{/if}}
+        <img class="profile-picture" src="{{profileImage author}}"/>
       </a>
     </div>
     {{#if popoutExists}}{{> audio_popout}}{{/if}}
@@ -64,7 +64,6 @@
       {{/if}}
     {{/unless}}
   </div>
-  {{> signin_overlay}}
 </template>
 
 <template name="audio_popout">
@@ -136,8 +135,9 @@
   <footer class="story-footer">
     {{#if read}}
       <div class="call-to-action vertical-narrative-section">
-        <p>Show this writer some thanks!</p>
-        {{> favorite_button }}
+        <p>Show this writer some thanks!</p>{{> favorite_button }}
+        <br>
+        {{> random_story }}
       </div>
     {{/if}}
   </footer>
@@ -153,7 +153,6 @@
   {{#unless read}}
     {{> add_vertical_unminimized}}
   {{/unless}}
-
 </template>
 
 <template name="vertical_section_block">
@@ -760,7 +759,7 @@
 <template name="loading_page">
   <div class="loading-page" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
     <div class="centered-loading-icon">
-      Loading...
+      Wait for it...
       <!--{{> loading_icon}}-->
     </div>
   </div>

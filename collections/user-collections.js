@@ -33,11 +33,23 @@ Schema.UserProfile = new SimpleSchema({
   },
   favorites: {
     type: [String],
-    optional: true
+    optional: true,
+    defaultValue: []
   },
   profilePicture: {
     type: String,
-    optional: true
+    autoValue: function() {
+      var monster = _.random(1,10).toString();
+      if (this.isSet) {
+        return this.value;
+      } else if (this.isInsert) {
+        return this.value || monster;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: this.value || monster};
+      } else {
+        this.unset();
+      }
+    }
   }
 });
 

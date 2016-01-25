@@ -71,6 +71,7 @@ meteorhacks:kadira@2.26.3
 meteorhacks:meteorx@1.4.1
 meteorhacks:npm@1.5.0
 meteorhacks:picker@1.0.3
+meteorhacks:search-source@1.4.2
 meteorhacks:subs-manager@1.6.2
 minifiers@1.1.7
 minimongo@1.0.10
@@ -115,3 +116,4 @@ url@1.0.5
 webapp@1.2.3
 webapp-hashing@1.0.5
 wizonesolutions:underscore-string@1.0.0
+wylio:mandrill@1.0.1

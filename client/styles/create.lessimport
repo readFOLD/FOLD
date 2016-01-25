@@ -73,6 +73,7 @@ input[type=file] {
       padding-bottom: 0;
       text-align: center;
       font-size: 14px;
+      .FFMarkWebBold;
       .size-to-fit;
       content: 'Upload Image';
     }
@@ -185,7 +186,6 @@ div.floating-story-buttons {
 
     &:hover {
       background-color: @action-color;
-      color: @dark-color;
     }
   }
   position: fixed;
@@ -197,13 +197,6 @@ div.floating-story-buttons {
 
   width: 0;
   overflow: visible;
-
-  .saved-text{
-    color: @black-color;
-    margin-left: 15px;
-    margin-bottom: 4px;
-    font-size: 13px;
-  }
 
   button{
     width: 85px;
@@ -223,6 +216,50 @@ div.floating-story-buttons {
   right: 0px;
 
 }
+
+.saved-text{
+  color: @black-color;
+  font-size: 13px;
+  position: fixed;
+  z-index: 200;
+  top: 0px;
+  line-height: @magic-styling-distance;
+  right: 400px;
+}
+
+.feedback{
+  color: @white-color;
+  background-color: @black-color;
+  height: @magic-styling-distance;
+  div{
+    float: left;
+  }
+  .icon{
+    width: @magic-styling-distance;
+    text-align: center;
+    font-weight: bold;
+  }
+  .text{
+    width: 0;
+    height: 100%;
+    overflow-x: hidden;
+    .width-transition;
+  }
+  &:hover{
+    background-color: @action-color;
+    .text{
+      width: 150px;
+    }
+  }
+  font-size: 13px;
+  position: fixed;
+  z-index: 200;
+  left: 0px;
+  bottom: @magic-styling-distance * 1.5;
+  line-height: @magic-styling-distance;
+}
+
+
 
 input.background-image-input {
   width: 140px;

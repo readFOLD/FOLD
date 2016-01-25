@@ -1,11 +1,7 @@
 Template.admin.helpers({
   usersWhoLoveStories: function(){
     return _.sortBy(Meteor.users.find().fetch(), function(e){ return -1 * e.profile.favorites.length })
-  }
-});
-
-
-Template.admin.helpers({
+  },
   emailAddress: function () {
     if (this.emails) {
       return this.emails[0].address;
@@ -14,6 +10,23 @@ Template.admin.helpers({
   twitterHandle: function () {
     if (this.services && this.services.twitter && this.services.twitter.screenName) {
       return '@' + this.services.twitter.screenName;
+    }
+  }
+});
+
+Template.admin.events({
+  'keypress .impersonate': function (e,t) {
+    if(enterPress(e)){
+      var username = t.$('input.impersonate').val();
+      Meteor.call('impersonate', username, function (err, userId) {
+        if(err){
+          notifyError(err)
+        } else {
+          Meteor.connection.setUserId(userId);
+          notifySuccess("Ok you're in! Be very very careful.");
+          Router.go('/');
+        }
+      });
     }
   }
 });

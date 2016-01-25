@@ -1,44 +1,199 @@
-<template name="login">
-  {{> top_banner_simple_no_links}}
-  <div class="login">
-    <section>
-      {{> login_form}}
-    </section>
-  </div>
+<template name="signin_overlay">
+  {{#if signingIn}}
+    <div class="signin-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+
+      <div class="signin-modal">
+        <button class="close">✕</button>
+        {{#if onSignupStage}}
+          <div class="title {{#if explanation}}has-explanation{{/if}}"><img src="{{c.url 'static/foldtitle.svg'}}"></div>
+          {{#if explanation}}
+            <div class="explanation">{{explanation}}</div>
+          {{else}}
+            <div class="slogan">Create, Remix, Discover.</div>
+          {{/if}}
+          <div class="user-menu">
+            <button class="twitter-signin signin"><span>Sign up with Twitter</span>{{> login_bird}}</button>
+            <button class="email-signup signin"><span>Sign up with email</span></button>
+          </div>
+          <div class="already-have">Already have an account? <button class="go-to-login text">Sign in.</button></div>
+        {{/if}}
+
+        {{#if onLoginStage}}
+          {{> login_form}}
+        {{/if}}
+
+        {{#if onInfoStage}}
+          {{> info_form}}
+        {{/if}}
+
+        {{#if onPasswordStage}}
+          {{> password_form}}
+        {{/if}}
+
+        {{#if onOnboardingStage}}
+          {{> onboarding_screen}}
+        {{/if}}
+
+        {{#if onForgotStage}}
+          {{> recover_password_form}}
+        {{/if}}
+
+      </div>
+
+    </div>
+  {{/if}}
 </template>
 
-<template name="login_form">
-  <div class="login-left">
-    <div class="sign-up-options">
-      <h1 class="login-header">Sign up for a new account</h1>
-      {{#linkTo route="email-signup"}}
-        Create an account with e-mail
-      {{/linkTo}}
-      <!-- add "create an account with twitter" to double down-->
-    </div>
-  </div>
-  <div class="divider">
-     or
-  </div>
-  <div class="login-right">
-    <h1 class="login-header">Log in with an existing account</h1>
-    <form id="login-form" action="action">
-      <label for="username"> Username or Email </label>
-      <input name="username" type="text" placeholder="username or email" autofocus="autofocus" required>
-      <label for="password"> Password </label>
-      <input name="password" type="password" placeholder="password" required>
+<template name="info_form">
+  {{#unless twitterUser}}
+    <button class="back back-to-signup text">Go back</button>
+  {{/unless}}
+  {{#if twitterUser}}
+    <div class="absolute title"><img src="{{c.url 'static/foldtitle.svg'}}"></div>
+  {{/if}}
+  <form id="info-form" disabled="{{disableSignup}}" action="action">
+    <!-- Email -->
+    <input name="email"
+           type="email"
+           placeholder="Email address"
+           dir="auto"
+           value="{{initialEmail}}"
+           autofocus="autofocus"
+           class="signup-email {{#if emailError}}error{{/if}}"
+           required
+        >
+    <span class="status">{{#if emailError}}{{> login_x}}{{else}}{{#if emailComplete}}{{>login_check}}{{/if}}{{/if}}</span>
+    <div class="field-info {{#if emailError}}error{{/if}}"><span>{{#if emailError}}{{emailError}}{{else}}{{#if twitterUser}}Your email{{/if}}{{/if}}</span></div>
 
+
+    <!-- Username -->
+    <input name="username"
+           type="text"
+           placeholder="Username"
+           dir="auto"
+           value="{{initialUsername}}"
+           class="signup-username {{#if usernameError}}error{{/if}}"
+           required
+        >
+    <span class="status">{{#if usernameError}}{{> login_x}}{{else}}{{#if usernameComplete}}{{>login_check}}{{/if}}{{/if}}</span>
+    <div class="field-info {{#if usernameError}}error{{/if}}"><span>{{#if usernameError}}{{usernameError}}{{else}}{{#if twitterUser}}Your username{{/if}}{{/if}}</span></div>
+
+    <!-- Name -->
+    <input name="name"
+           type="text"
+           placeholder="Full name"
+           dir="auto"
+           value="{{initialName}}"
+           class="signup-name {{#if nameError}}error{{/if}}"
+           required
+    >
+    <span class="status">{{#if nameError}}{{> login_x}}{{else}}{{#if nameComplete}}{{>login_check}}{{/if}}{{/if}}</span>
+    <div class="field-info {{#if nameError}}error{{/if}}"><span>{{#if nameError}}{{nameError}}{{else}}{{#if twitterUser}}Your full name{{/if}}{{/if}}</span></div>
+
+
+
+    {{#if signupError}}<div class="error">{{signupError}}</div>{{/if}}
+
+
+    {{#if twitterUser}}
+      <button type="submit" disabled="{{disableSignup}}" class="signup-button">
+        {{#if submitting}}
+          {{> loading_icon}}
+        {{else}}
+          Sign up!
+        {{/if}}
+      </button>
+      <p class="accept">By signing up, you agree to FOLD’s {{#linkTo route="terms" target='_blank'}}Terms of Service{{/linkTo}} & {{#linkTo route="privacy" target='_blank'}}Privacy Policy{{/linkTo}}.</p>
+    {{else}}
+      <button type="submit" disabled="{{disableSignup}}" class="signup-button">
+        {{#if submitting}}
+          {{> loading_icon}}
+        {{else}}
+          Next
+        {{/if}}
+      </button>
+    {{/if}}
+  </form>
+</template>
+
+
+<template name="password_form">
+  <button class="back back-to-info text">Go back</button>
+  <form id="password-form" disabled="{{disableSignup}}" action="action">
+    <!-- Password -->
+    <input name="password"
+           type="password"
+           placeholder="Password"
+           dir="auto"
+           autofocus="autofocus"
+           class="signup-password {{#if passwordError}}error{{/if}}"
+           required
+        >
+    <span class="status">{{#if passwordError}}{{> login_x}}{{else}}{{#if passwordComplete}}{{>login_check}}{{/if}}{{/if}}</span>
+    <div class="field-info {{#if passwordError}}error{{/if}}"><span>{{#if passwordError}}{{passwordError}}{{else}} {{/if}}</span></div>
+
+    <input name="password2"
+           type="password"
+           placeholder="Type that password again!"
+           dir="auto"
+           class="signup-password2 {{#if password2Error}}error{{/if}}"
+           required
+        >
+    <span class="status">{{#if password2Error}}{{> login_x}}{{else}}{{#if password2Complete}}{{>login_check}}{{/if}}{{/if}}</span>
+    <div class="field-info {{#if password2Error}}error{{/if}}"><span>{{#if password2Error}}{{password2Error}}{{else}} {{/if}}</span></div>
+
+
+    {{#if signupError}}<div class="error">{{signupError}}</div>{{/if}}
+
+    <p class="accept above">By signing up, you agree to FOLD’s {{#linkTo route="terms" target='_blank'}}Terms of Service{{/linkTo}} & {{#linkTo route="privacy" target='_blank'}}Privacy Policy{{/linkTo}}.</p>
+    <button type="submit" disabled="{{disableSignup}}" class="signup-button">
+      {{#if submitting}}
+        {{> loading_icon}}
+      {{else}}
+        Sign up!
+      {{/if}}</button>
+
+  </form>
+</template>
+
+
+<template name="onboarding_screen">
+  {{#with currentUser}}
+    <div class="welcome">Welcome, <a href="/profile/{{username}}">{{firstName this}}</a>!</div>
+    <div class="author-image">
+      <img class="profile-picture" src="{{profileImage this 'large'}}"/>
+    </div>
+    <div class="edit-prompt">
+      To edit your photo, display name,<br>or bio, visit <a href="/profile/{{username}}">your profile</a>!
+    </div>
+    <button class="finish">Thanks!</button>
+  {{/with}}
+</template>
+
+
+
+<template name="login_form">
+  <button class="back back-to-signup text">Go back</button>
+  <form id="login-form" action="action">
+    <input name="username" type="text" placeholder="Username / Email" autofocus="autofocus" required>
+    <input name="password" type="password" placeholder="Password" required>
+
+
+
+    <div class="lost-or-login">
+      <a class="forgot-password">Lost password?</a>
       {{#if loginError}}
         <div class="error">
           {{loginError}}
         </div>
       {{/if}}
+      <button type="submit" class="login-button">    {{#if loggingIn}}
+        {{> loading_icon}} {{else}}
+        Log in
+      {{/if}}</button>
+    </div>
 
-      <button type="submit" class="login-button">Log in</button>
-      {{#if loggingIn}}
-        {{> loading_icon}}
-      {{/if}}
-      <a href="/recover-password" class="recover-password-link">Lost password?</a>
-    </form>
-  </div>
+  </form>
+  <hr>
+  <button class="twitter-signin no-hover-state signin"><span>Or, sign in with Twitter</span>{{> login_bird}}</button>
 </template>

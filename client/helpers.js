@@ -22,6 +22,10 @@ Handlebars.registerHelper("notRead", function() {
   return !Session.get("read");
 });
 
+Handlebars.registerHelper("showPublished", function() {
+  return !Session.get("showDraft");
+});
+
 Handlebars.registerHelper("showDraft", function() {
   return Session.get("showDraft");
 });
@@ -31,7 +35,7 @@ Handlebars.registerHelper("saving", function() {
 });
 
 Handlebars.registerHelper("signingIn", function() {
-  return Session.get("signingIn");
+  return window.signingIn();
 });
 
 Handlebars.registerHelper("currentYId", function() {
@@ -52,7 +56,8 @@ Handlebars.registerHelper("editingThisContext", function() {
 Handlebars.registerHelper("UsersCollection", Meteor.users);
 
 Handlebars.registerHelper("isAuthor", function() {
-  return Meteor.user() && Meteor.user()._id === this.authorId;
+  var userId = Meteor.userId();
+  return userId && userId === this.authorId;
 });
 
 Handlebars.registerHelper("cardWidth", function() {
@@ -92,7 +97,13 @@ Handlebars.registerHelper("reactiveStory", function(){
 
 Handlebars.registerHelper("twitterUser", function() {
   var user = Meteor.user();
-  return user.services && user.services.twitter && user.services.twitter.id;
+  return user && user.services && user.services.twitter && user.services.twitter.id;
+});
+
+Handlebars.registerHelper("firstName", function(user) {
+  if (user && user.profile) {
+    return user.profile.name.split(' ')[0];
+  }
 });
 
 Handlebars.registerHelper("userFavorited", function() {
@@ -106,14 +117,32 @@ Handlebars.registerHelper("profileImage", function(user, size) {
   } else {
     diameter = 60;
   }
+  var defaultProfilePic = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/static/placeholder_image.png';
   var dprSetting = window.isHighDensity ? ',dpr_2.0' : '';
+  var twitterPic;
+  if (user && user.services && user.services.twitter) {
+    twitterPic = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + user.services.twitter.id
+  }
+
+
   if (user && user.profile) { 
     if ( user.profile.profilePicture) {
-      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + user.profile.profilePicture
-    } else if (user.services && user.services.twitter) {
-      return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + user.services.twitter.id
+      if ( user.profile.profilePicture < 20) { // it's a monster
+        if (twitterPic){
+          return twitterPic
+        } else { // show monster
+          return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/static/profile_monster_' + user.profile.profilePicture + '.svg';
+        }
+      } else {
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + user.profile.profilePicture
+      }
+    } else if (twitterPic) {
+      return twitterPic
     }
   }
+
+  // if nothing else served up
+  return defaultProfilePic
 });
 
 

@@ -43,7 +43,7 @@ Template.my_stories.helpers({
   publishedStories: function() {
     if (Meteor.user()) {
       return Stories.find({
-        authorId: Meteor.user()._id,
+        authorId: Meteor.userId(),
         published : true
       });
     }
@@ -51,7 +51,7 @@ Template.my_stories.helpers({
   unpublishedStories: function() {
     if (Meteor.user()) {
       return Stories.find({
-        authorId: Meteor.user()._id,
+        authorId: Meteor.userId(),
         published : false
       });
     }
@@ -89,14 +89,16 @@ Template.user_profile.onCreated(function(){
 });
 
 
+var ownProfile = function() {
+  var user = Meteor.user();
+  return (user && (user.username == this.user.username)) ? true : false
+};
+
 Template.user_profile.helpers({
   editing : function() {
     return Template.instance().editing.get()
   },
-  ownProfile: function() {
-    var user = Meteor.user();
-    return (user && (user.username == this.user.username)) ? true : false
-  },
+  ownProfile: ownProfile,
   name : function() {
     return this.user.profile.name
   },
@@ -176,14 +178,10 @@ Template.user_stories.helpers({
   hasPublished: function() {
     return Stories.findOne({authorId : this.user._id, published : true})
   },
-  unpublishedMessage: function () {
-    var user = Meteor.user();
-    if (user && (user.username == this.user.username)) {
-      return "You haven't published any stories yet!"
-    } else {
-      return "This user hasn't written any stories yet"
-    }
-  }
+  hasDrafts: function(){
+    return Stories.findOne({authorId : this.user._id}, {published: false})
+  },
+  ownProfile: ownProfile
 });
 
 Template.user_favorite_stories.onCreated(function(){
@@ -226,12 +224,5 @@ Template.user_favorite_stories.helpers({
   hasFavorites: function() {
     return !_.isEmpty(this.user.profile.favorites);
   },
-  noFavoritesMessage: function () {
-    var user = Meteor.user();
-    if (user && (user.username == this.user.username)) {
-      return "You haven't favorited any stories yet!"
-    } else {
-      return "This user hasn't favorited any stories yet"
-    }
-  }
+  ownProfile: ownProfile
 });

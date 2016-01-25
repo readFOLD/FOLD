@@ -11,14 +11,48 @@ h1 {
 }
 
 .message {
-  @media (max-width: 800px) {
-    text-align: center;
+  ul{
+    margin-top: 10px;
   }
+  li{
+    list-style: disc;
+    margin-left: 20px;
+    color: @panel-color;
+  }
+  &.stories-message{
+    a{
+      &:hover{
+        text-decoration: underline !important;
+      }
+    }
+  }
+  button{
+    color: @white-color;
+    height: @magic-styling-distance;
+    .FFMarkWebBold;
+    font-size: 13px;
+    .padding-sides(20px);
+  }
+  .create-story, .view-drafts{
+    button{
+      margin-top: @magic-styling-distance/2;
+    }
+  }
+  .create-story{
+    background-color: @action-color;
+  }
+  .view-drafts{
+    background-color: @orange-color;
+  }
+  .random-story{
+    margin-top: 10px;
+    margin-left: 15px;
+  }
+
 }
 
 div.profile-section {
   padding-top: 120px;
-  width: 100%;
   height: 100%;
   position: absolute;
 
@@ -26,6 +60,7 @@ div.profile-section {
     position: inherit;
   } 
 }
+
 
 div.user-profile {
   position: fixed;
@@ -86,6 +121,9 @@ div.user-profile {
   .edit-profile {
     color: @action-color;
     position: absolute;
+    &:hover{
+      text-decoration: underline;
+    }
   }
   .save-profile-button {
     position: absolute; 
@@ -99,10 +137,10 @@ div.user-profile {
     margin-top: 5px;
     margin-bottom: 15px;
     height: 110px;
-    border: none;
-    border-bottom: 5px solid @action-color;
+    border: 1px solid @medium-color;
     padding: 10px 18px;
     font-size: 16px;
+    line-height: 22px;
   }
 }
 

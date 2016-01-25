@@ -17,26 +17,9 @@ formatDateNice = function(date) {
   return monthNames[(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear();
 };
 
-loginWithTwitter = function() {
-  Session.set('signingInWithTwitter', true);
-  Meteor.loginWithTwitter({
-    requestPermissions: ['user']
-  }, function (err) {
-    if (err) {
-      notifyError("Twitter login failed");
-      Session.set('signingInWithTwitter', false);
-      throw(err); // throw error so we see it on kadira
-    } else if (!Meteor.user().username) { // if they are signing up for the first time they won't have a username yet
-      Router.go('twitter-signup');
-    } else { // otherwise they are a returning user, they are now logged in and free to proceed
-      notifyLogin();
-    }
-  });
-};
 
-loginWithEmail = function() {
-  Router.go('login')
-};
+var filters = ['curated', 'trending', 'starred', 'newest'];
+Session.setDefault('filterValue', filters[0]); // this must correspond to the first thing in the dropdown
 
 Template.home.helpers({
   user: function() {
@@ -55,27 +38,58 @@ Template.home.helpers({
 
 
 Template.home.events({
-  "click div#expand-filter": function(d) {
-    var filterOpen, heightChange;
-    filterOpen = Session.get("filterOpen");
-    heightChange = filterOpen ? "-=100" : "+=100";
-    $("div#filter").animate({
-      height: heightChange
-    }, 250);
-    if (filterOpen) {
-      $("div.logo").animate({
-        top: "52px",
-        opacity: 1
-      }, 400, 'easeOutExpo');
-    } else {
-      $("div.logo").animate({
-        top: "78px",
-        opacity: 0
-      }, 400, 'easeOutExpo');
-    }
-    return Session.set("filterOpen", !filterOpen);
+  "click .logo-title a": function(e, t) {
+    // reset search query
+    Session.set('storySearchQuery', null);
+
+    // reset filter
+    Session.set('filterValue', filters[0]);
+    t.$("select.filters-select").val(filters[0]);
+    t.$("select.filters-select").selectOrDie("update");
+
   }
 });
+
+Template.search.onCreated(function() {
+  this.autorun(function(){
+    if(!Session.get('storySearchQuery')){
+      $("input").val(null);
+    }
+  })
+
+
+});
+
+Template.search.onRendered(function() {
+  if(this.data.slim){
+  } else {
+    var storySearchQuery;
+    if(storySearchQuery = Session.get('storySearchQuery')){
+      this.$("input").val(storySearchQuery);
+    }
+  }
+});
+
+Template.search.helpers({
+  showClearSearch: function(){
+    return Session.get('storySearchQuery') ? true : false;
+  }
+});
+
+Template.search.events({
+  'click .clear-search': function(e, t){
+    // this is the business logic
+    Meteor.defer(function(){
+      return Session.set('storySearchQuery', null);
+    });
+
+    // do this so the ui is snappy
+    t.$("input").val(null);
+    t.$("button").hide();
+
+  }
+});
+
 
 Template.categories.helpers({
   categories: function() {
@@ -108,8 +122,6 @@ Template.filters.onRendered(function() {
 
 });
 
-var filters = ['curated', 'trending', 'starred', 'newest'];
-Session.setDefault('filterValue', filters[0]); // this must correspond to the first thing in the dropdown
 
 Template.filters.helpers({
   filters: function() {
@@ -129,13 +141,25 @@ Template.filters.events({
   "change select": function(e, t) {
     var filterValue = $(e.target).val();
     Session.set('filterValue', filterValue);
+    Session.set('storySearchQuery', null);
     if(t.data.slim){
       Router.go('/');
     }
-    analytics.track('Select filter', {
+    trackEvent('Select filter', {
       label: filterValue
     });
   }
+});
+
+Template.search.events({
+  "keyup input": _.throttle(function(e, t) {
+    var text = $(e.target).val().trim();
+    Session.set('storySearchQuery', text);
+    if(enterPress(e) && t.data.slim){
+      Router.go('/');
+    }
+    $('html, body').scrollTop(0);
+  }, 200, {leading: false})
 });
 
 var curatedStoriesSub,
@@ -153,11 +177,13 @@ var setSubscriptionPage = function(filterValue, val){
 };
 
 var getCurrentSubscriptionPage = function(){
-  return getSubscriptionPage(Session.get('filterValue'));
+  var storySearchQuery = Session.get('storySearchQuery');
+  return getSubscriptionPage(storySearchQuery ? ('search:' + storySearchQuery) : Session.get('filterValue'));
 };
 
 var setCurrentSubscriptionPage = function(val){
-  return setSubscriptionPage(Session.get('filterValue'), val);
+  var storySearchQuery = Session.get('storySearchQuery');
+  return setSubscriptionPage(storySearchQuery ? ('search:' + storySearchQuery) : Session.get('filterValue'), val);
 };
 
 
@@ -183,6 +209,11 @@ setSubscriptionPage('curated', 0); // curated stories are preloaded
 var homeSubs = new SubsManager({
   cacheLimit: 9999,
   expireIn: 99999999
+});
+
+var searchUserSubs = new SubsManager({
+  cacheLimit: 1,
+  expireIn: 60
 });
 
 // these methods all keep the subscription open for the lifetime of the window, but can be called again safely
@@ -250,19 +281,22 @@ var subscribeToStarredStories = function(cb){
 };
 
 var createHomePageDate;
+var whichUserPics = new Tracker.Dependency();
 
 Template.all_stories.onCreated(function(){
   var that = this;
   createHomePageDate = Date.now();
   subscribeToCuratedStories(function(){
+    if (!that.view.isDestroyed){ // because this happens asynchronously, the user may have already navigated away
+      that.autorun(function(){
+        whichUserPics.depend();
+        that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}));
+      });
+    }
     subscribeToTrendingStories(function() {
       subscribeToNewestStories(function(){
         subscribeToStarredStories(function(){
-          if (!that.view.isDestroyed){ // because this happens asynchronously, the user may have already navigated away
-            that.autorun(function(){
-              that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}));
-            });
-          }
+          whichUserPics.changed();
         })
       })
     });
@@ -276,8 +310,47 @@ Template.all_stories.onCreated(function(){
     }
     notFirstRun = true;
   });
+
+  // first page of search results, or when flip back to query
+  this.autorun(function(){
+    var storySearchQuery = Session.get('storySearchQuery');
+    if(storySearchQuery){
+      Tracker.nonreactive(function(){
+        var currentPage = getCurrentSubscriptionPage();
+        if(typeof currentPage !== 'number'){
+          currentPage = 0;
+          setCurrentSubscriptionPage(currentPage);
+        }
+        StorySearch.search(storySearchQuery, {page: currentPage});
+      })
+    }
+  });
+
+  // further pages of search results
+  this.autorun(function(){
+    var currentPage = getCurrentSubscriptionPage();
+    Tracker.nonreactive(function(){
+      var storySearchQuery = Session.get('storySearchQuery');
+      if(storySearchQuery && currentPage){
+        StorySearch.search(storySearchQuery, {page: currentPage});
+      }
+    });
+  });
+
+  subscribeToSearchedMinimalUsers = _.debounce(function(){
+    return searchUserSubs.subscribe('minimalUsersPub', StorySearch.getData({}, true).map(function(story){return story.authorId}));
+  }, 1000);
+
+  this.autorun(function(){
+    if(StorySearch.getStatus().loaded){
+      subscribeToSearchedMinimalUsers();
+    }
+  });
+
+
 });
 
+search = null;
 
 var currentHomeStories = function(){
 
@@ -285,6 +358,19 @@ var currentHomeStories = function(){
 
   if (limit <= 0){
     return
+  }
+
+  if(Session.get('storySearchQuery')){
+    return StorySearch.getData({
+      sort:[
+        ["editorsPickAt", "desc"],
+        ["favoritedTotal", "desc"],
+        ["savedAt", "desc"]
+      ],
+      docTransform: function(doc){
+        return new Story(doc);
+      }
+    }, true);
   }
 
   switch (Session.get('filterValue')) {
@@ -305,12 +391,20 @@ var currentHomeStories = function(){
 
 Template.all_stories.events({
   'click .show-more' : function(e,t){
-    var filterValue = Session.get('filterValue');
-    subscriptionsReady.set(filterValue + 'Stories', false);
-    homeSubs.subscribe(filterValue + 'StoriesPub', {page: getCurrentSubscriptionPage() + 1}, function(){
+
+    var storySearchQuery = Session.get('storySearchQuery');
+    if(storySearchQuery){
       incrementCurrentSubscriptionPage();
-      subscriptionsReady.set(filterValue + 'Stories', true);
-    })
+    } else {
+      var filterValue = Session.get('filterValue');
+      subscriptionsReady.set(filterValue + 'Stories', false);
+      homeSubs.subscribe(filterValue + 'StoriesPub', {page: getCurrentSubscriptionPage() + 1}, function(){
+        incrementCurrentSubscriptionPage();
+        whichUserPics.changed();
+        subscriptionsReady.set(filterValue + 'Stories', true);
+      })
+    }
+
   },
   'click .dismiss-box': function (e,t) {
     Session.set('boxDismissed', true);
@@ -320,7 +414,7 @@ Template.all_stories.events({
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   stories: currentHomeStories,
   storiesLoading: function(){
-    return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')))
+    return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')) || StorySearch.getStatus().loading)
   },
   moreToShow: function(){
     var stories = currentHomeStories();
@@ -334,9 +428,11 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
   }
 });
 
+
+
 Template.story_preview.helpers({
   story: function(){
-    return Stories.findOne(this._id);
+    return Template.instance().data.story || Stories.findOne(this._id);
   }
 });
 
@@ -385,39 +481,11 @@ Template.login_buttons.events({
     Template.instance().showUserInfo.set(false);
   },
   "click .signin": function(d) {
-    Session.set('signingIn', true);
+    openSignInOverlay();
   },
   "click .logout" : function(e) {
     e.preventDefault();
     Template.instance().showUserInfo.set(false);
     Meteor.logout();
-  }
-});
-
-
-// TODO close sign in overlay on esc (27) need to do on whole window though
-
-Template.signin_overlay.helpers({
-  explanation: function(){
-    var signingIn = Session.get('signingIn');
-    if(typeof signingIn === 'string'){
-      return signingIn
-    }
-  }
-})
-Template.signin_overlay.events({
-  "click .close": function(d) {
-    closeSignInOverlay();
-    analytics.track('Click close sign-in overlay');
-  },
-  "click .twitter-signin": function(d) {
-    closeSignInOverlay();
-    loginWithTwitter();
-    analytics.track('Click login with Twitter');
-  },
-  "click .email-signin": function(d) {
-    closeSignInOverlay();
-    loginWithEmail();
-    analytics.track('Click login with email');
   }
 });

@@ -82,21 +82,37 @@ Meteor.methods({
     this.unblock();
     check(storyId, String);
     check(countMap, Object);
-    _.keys(countMap, function(e){
+    _.keys(countMap, function (e) {
       check(e, String); // these should be ids
-      check(e, Match.Where(function(str){
+      check(e, Match.Where(function (str) {
         return (/^[^.]*$/).test(str); // check has no periods
       }))
     });
-    _.values(countMap, function(e){
+    _.values(countMap, function (e) {
       check(e, Number);
     });
 
     var incMap = {};
-    _.each(_.keys(countMap), function(k){
+    _.each(_.keys(countMap), function (k) {
       incMap['heartbeats.active.' + k] = countMap[k];
     });
 
     Stories.update({_id: storyId}, {$inc: incMap});
+  },
+  impersonate: function(username) {
+    check(username, String);
+
+    var user = Meteor.user();
+    if (!user || !user.admin || !user.privileges || !user.privileges.impersonation){
+      throw new Meteor.Error(403, 'Permission denied');
+    }
+
+    var otherUser;
+    if (!(otherUser = Meteor.users.findOne({username: username}))){
+      throw new Meteor.Error(404, 'User not found');
+    }
+
+    this.setUserId(otherUser._id);
+    return otherUser._id
   }
 });

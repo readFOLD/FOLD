@@ -55,15 +55,20 @@
     {{/unless}}
   </div>
   {{/unless}}
+  <div class="saved-text">
+    {{#if saving}}
+      Saving...
+    {{else}}
+      Saved
+    {{/if}}
+  </div>
+  <div class="feedback">
+    <a href="mailto:feedback@fold.cm?Subject=FOLD Feedback" target="_blank">
+      <div class="icon">?</div>
+      <div class="text">Questions/feedback</div>
+    </a>
+  </div>
   <div class="floating-story-buttons-left">
-    <div class="saved-text">
-      {{#if saving}}
-        Saving...
-      {{else}}
-        Saved
-      {{/if}}
-    </div>
-
     <button type="button" class="toggle-preview button">
       {{#if read}}
         Edit
@@ -295,10 +300,6 @@
       {{#if uploadMode}}
         <div class="image-upload">
           <input type="file" accept="image/*" class="image-upload">
-
-          <!--{{#each c.uploading_images}}-->
-            <!--<p>Uploading: {{percent_uploaded}}%</p>-->
-          <!--{{/each}}-->
           {{#if uploadStatus}}
             <p>{{uploadStatus}}</p>
           {{/if}}

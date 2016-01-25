@@ -72,9 +72,9 @@ window.checkValidUsername = function(username) {
   if (username.length === 0 ) {
     return { status: false, message: 'Please enter a username' };
   } else if (username.length < 3) {
-  	return { status: false, message: 'Too short (minimum 3 chars)' };
+  	return { status: false, message: 'Too short (minimum 3 characters)' };
   } else if (username.length > 15) {
-  	return { status: false, message: 'Too long (maximum 15 chars)' };
+  	return { status: false, message: 'Too long (maximum 15 characters)' };
   } else if (!username.match(usernameRegex)) {
     return { status: false, message: 'Please only use letters, numbers, and _' };
   } else {
@@ -87,18 +87,19 @@ window.incrementReactiveVar = function(rv){
 }
 
 
+window.openSignInOverlay = function(str){
+  Session.set('signinStage', 'signup');
+  Session.set('signingIn', str || true);
+};
+
 window.closeSignInOverlay = function(){
   Session.set('signingIn', false);
 };
 
-window.setSigningInFrom = function () {
-  Session.set('signingInFrom', Router.current().url);
+window.signingIn = function(){
+  return Session.get('signingIn');
 };
 
-window.returnFromSignIn = function () {
-  closeSignInOverlay();
-  Router.go(Session.get('signingInFrom') || '/');
-};
 
 window.adminMode = function() {
   if (Session.get("adminMode")){
@@ -136,7 +137,7 @@ window.formatDateCompact = function (date) {
 
 };
 
-window.trackingInfoFromStory = function(story){
+window.trackingInfoFromStory = function(story) {
   return _.chain(story)
     .pick([
       '_id',
@@ -164,4 +165,27 @@ window.trackingInfoFromStory = function(story){
     } : {})
     .extend(story.countContextTypes ? story.countContextTypes() : {}) // TODO Fix
     .value();
+};
+
+window.enterPress = function(e){
+  return e.keyCode === 13
+};
+
+window.trackingInfoFromPage = function () {
+  var currentRoute = Router.current();
+  var info = {
+    currentRoutePath: window.location.pathname
+  };
+  if(currentRoute){
+    _.extend(info, {
+      currentRouteName: currentRoute.route.getName()
+    })
+  }
+  return info
+};
+
+window.trackEvent = function(){
+  arguments[1] = arguments[1] || {};
+  _.extend(arguments[1], trackingInfoFromPage());
+  analytics.track.apply(this, arguments);
 };

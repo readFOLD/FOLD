@@ -9,7 +9,10 @@
     </ol>
     <br>
     <br>
-    {{#linkTo route="admin-recent-drafts"}}<b>View Recent Drafts</b>{{/linkTo}}
+    {{#linkTo class="green" route="admin-recent-drafts"}}<b>View Recent Drafts</b>{{/linkTo}}
+    {{#if currentUser.privileges.impersonation}}
+      <input placeholder="Impersonate by username" type="text" class="impersonate"/>
+    {{/if}}
   </div>
 </template>
 

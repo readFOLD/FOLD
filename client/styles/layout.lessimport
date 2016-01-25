@@ -39,6 +39,13 @@
 
 @card-spacing: 20px;
 
+@home-banner-break-1:  ~"(max-width: 1300px)";
+@home-banner-break-2:  ~"(max-width: 1200px)";
+@home-banner-break-3:  ~"(max-width: 1000px)";
+@home-banner-break-4:  ~"(max-width: 800px)";
+
+
+
 .content-font{
   font-size: @content-font-size;
   line-height: @content-line-height;
@@ -121,34 +128,6 @@ html {
   top: 50%;
   left: 50%;
   .transform(translate(-50%, -50%));
-}
-
-// http://asimpleframe.com/
-@font-face {
-    font-family: 'Alright Sans';
-    src: url("/alright_sans_bold.woff");
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: 'Alright Sans';
-    src: url("/alright_sans.woff");
-    font-weight: normal;
-}
-
-/*@font-face {
-  font-family: 'Muli';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Muli'), url(//fonts.gstatic.com/s/muli/v7/FrmKYbbiMrxVeJO6lA8KEvesZW2xOQ-xsNqO47m55DA.ttf) format('truetype');
-}*/
-
-@font-face {
-  font-family: 'PT Mono';
-  font-style: normal;
-  font-weight: 400;
-  src: local('PT Mono'), local('PTMono-Regular'), url(//fonts.gstatic.com/s/ptmono/v4/71D43E_ZpjerHAsyF2SPuFKPGs1ZzpMvnHX-7fPOuAc.woff2) format('woff2');
-  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
 }
 
 .FFMarkWebBold { 
@@ -386,11 +365,10 @@ input[type="text"], input[type="password"], input[type="email"] {
   margin-top: 5px;
   margin-bottom: 15px;
   height: 55px;
-  border: none;
-  border-bottom: 5px solid @action-color;
-  border-top: 1px solid @dark-color;
-  border-left: 1px solid @dark-color;
-  border-right: 1px solid @dark-color; 
+  border: 1px solid @medium-color;
+  &:focus{
+    border-color: #8e8e8e;
+  }
   padding-left: 18px;
   font-size: 17px;
 
@@ -531,33 +509,42 @@ body {
   overflow-x: hidden;
 }
 
-footer{
+.story-footer{
   @height: 500px;
-  position:absolute;
-  left: 0;
-  right:0;
   bottom:-@height;
   height: @height;
+  @media @desktop-xtall {
+    @height: 850px;
+    bottom: -@height;
+    height: @height;
+  }
+
+  position:absolute;
+  left: 0;
+  right:0;;
   display: inline-block;
   text-align: center;
   .call-to-action{
     background-color: @white-color !important;
-    height: 142px;
+    height: 185px;
     min-height: 0;
     border: 1px solid @inactive-color;
     color: @black-color;
     .favorite-button{
       font-size: 0px;
+      margin-left: 14px;
       button{
-        .size(30px);
+        .size(25px);
       }
+    }
+    .random-story{
+      margin-top: 20px;
+      pointer-events: auto;
     }
   }
   p{
-    margin-top: 0;
-  }
-  button{
-    padding: 10px 12px 10px 12px;
+    display: inline-block;
+    margin-top: -10px;
   }
 }
 
@@ -965,9 +952,10 @@ div.link-section {
     padding-top: 13px;
     padding-left: 15px;
     padding-bottom: 7px;
-    width: 100%;
+    width: calc(100% ~"-" 15px);
     background-color: @white-color;
     a {
+      display: block;
       color: @action-color;
       &.inactive{
         pointer-events: none;
@@ -1628,63 +1616,6 @@ div.minimap {
   }
 }
 
-.signin-overlay{
-  z-index: 99999;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: fade(@dark-color, 80%);
-  .close{
-    position: absolute;
-    top: 8px;
-    padding: 0;
-    right: 8px;
-    background-color: rgba(0,0,0,0);
-    font-size: 16px;
-    .size(16px);
-    color: @black-color;
-  }
-  .explanation{
-    font-size: 13px;
-    padding: 20px;
-    color: @action-color;
-    white-space: pre-wrap;
-  }
-  .signin-buttons{
-    margin:auto;
-    display:block;
-    text-align: center;
-    background-color: @white-color;
-
-    height: 240px;
-    width: 320px;
-    max-height: 100%;
-    max-width: 100%;
-    .FFMarkWebBold;
-
-    .center-over-parent-div;
-
-    ol{
-      display: inline-block;
-      .center-over-parent-div;
-    }
-
-    li{
-      background-color: @orange-color;
-      &:hover{
-        background-color: @black-color;
-      }
-      color: @white-color;
-      margin-top: 10px;
-      width: 200px;
-      height: 45px;
-
-      button{
-        .size-to-fit;
-      }
-    }
-  }
-}
 
 .mobile-progress-header{
   text-align: center;
@@ -1867,6 +1798,7 @@ div.loading-container {
 }
 
 .banner-buttons{
+
   div.action-items {
     @height: @magic-styling-distance;
     font-size: 13px;
@@ -1883,7 +1815,10 @@ div.loading-container {
     &.fat{
       top: @magic-styling-distance;
       @media @not-mobile{
-        right: @topButtonRight;
+        right: 140px;
+        @media @home-banner-break-1{
+          right: 40px;
+        }
       }
     }
 
@@ -1924,9 +1859,17 @@ div.loading-container {
     }
 
     &.fat{
-      li{
+      .action-item-list>li{
         &:not(:last-child) {
           margin-right: @magic-styling-distance / 2;
+        }
+        @media @home-banner-break-2{
+          &:last-child {
+            display: none;
+          }
+          &:nth-last-child(2) {
+            margin-right: 0;
+          }
         }
       }
     }
@@ -1980,6 +1923,9 @@ div.loading-container {
       width: @magic-styling-distance;
       text-align: center;
     }
+    @media @home-banner-break-1 {
+      display: none;
+    }
   }
 }
 
@@ -1990,12 +1936,46 @@ div.loading-container {
   color: @black-color;
 }
 
+.admin{
+  padding: 20px;
+  input{
+    margin-top: 100px;
+    display: block;
+    width: 300px;
+  }
+}
+
 .admin-recent-drafts{
   .show-more{
     background-color: @black-color;
     position: fixed;
     right: 0;
     bottom: 0;
+  }
+}
+
+.random-story{
+  height: @magic-styling-distance;
+  color: @white-color;
+  .FFMarkWebBold;
+  font-size: 13px;
+  background-color: @panel-color;
+  width: 210px;
+  display: inline-block;
+  button{
+    .size-to-fit;
+  }
+  svg{
+    @keyframes spin{
+      0%{
+        .transform(rotate(0deg));
+      }
+      100%{
+        .transform(rotate(360deg));
+      }
+    }
+    .animation(spin 0.9s 1);
+    height: 100%;
   }
 }
 
