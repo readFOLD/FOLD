@@ -1554,22 +1554,17 @@ $(window).bind('mousemove mouseup touchstart touchend touchmove keyup scroll res
 
 Template.read.onRendered(function(){
   $(window).scrollTop(Session.get('scrollTop'));
-  this.heartbeatInterval = Meteor.setInterval(function(){ // TODO make more accurate. http://www.sitepoint.com/creating-accurate-timers-in-javascript/
+  this.heartbeatInterval = Meteor.setInterval(function(){
     var currentYId = Session.get('currentYId');
     var currentXId = Session.get('currentXId');
     var poppedOutContextId = Session.get('poppedOutContextId');
 
+    var poppedOutPlayerActive = poppedOutContextId && poppedOutPlayerInfo.get('status') === 'playing';
     var userActive = !document.hidden && userInactiveCount < inactiveThreshold;
 
     userInactiveCount += 1;
 
-    if(!userActive){
-      document.title = 'Inactive'
-    } else {
-      document.title = 'Active'
-    }
-
-    if(poppedOutContextId && poppedOutPlayerInfo.get('status') === 'playing') {
+    if(poppedOutPlayerActive) {
       console.log('current popout playing id: ' + poppedOutContextId);
       activeHeartbeatCount[poppedOutContextId] = (activeHeartbeatCount[poppedOutContextId] || 0) + 1;
     }
@@ -1584,6 +1579,10 @@ Template.read.onRendered(function(){
           activeHeartbeatCount[currentXId] = (activeHeartbeatCount[currentXId] || 0) + 1;
         }
       }
+    }
+
+    if (userActive || poppedOutPlayerActive){
+      activeHeartbeatCount['story'] = (activeHeartbeatCount['story'] || 0) + 1;
     }
 
   }, 1000);
