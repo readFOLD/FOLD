@@ -1950,7 +1950,7 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchema(), {
       type: String,
       optional: true
     },
-    heartbeats: {
+    heartbeats: { // TODO, nest under analytics??
       type: Object,
       optional: true
     },

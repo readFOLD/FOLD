@@ -1397,9 +1397,15 @@ div.minimap {
     }
 
     &.selected-section {
-      .selected-block {
-        background-color: @action-color;
+      .selected-block{
+        &:not(.activity-shown) {
+          background-color: @action-color;
+        }
+        &.activity-shown{
+          outline: 1px dotted @black-color;
+        }
       }
+
     }    
   }
 

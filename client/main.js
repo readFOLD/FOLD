@@ -677,6 +677,12 @@ Template.minimap.helpers({
   sectionMargin: function() {
     var maxHeight = Session.get("minimapMaxHeight");
     return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.25;  // 25% of available space (33% of section)
+  },
+  showActivity: function(){
+    return true; //adminMode();
+  },
+  activityLevel: function(){
+    return(this.activeHeartbeats / Session.get('story').heartbeats.active.story) * 100;
   }
 });
 
