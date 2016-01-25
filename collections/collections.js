@@ -1911,6 +1911,15 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchemaObject, {
     'version': {
       type: String,
       optional: true
+    },
+    heartbeats: {
+      type: Object,
+      optional: true
+    },
+    'heartbeats.active': {
+      type: Object,
+      optional: true,
+      blackbox: true
     }
   })
 );

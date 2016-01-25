@@ -271,35 +271,7 @@ Meteor.startup(function(){
 
 });
 
-window.trackingInfoFromStory = function(story){
-  return _.chain(story)
-    .pick([
-      '_id',
-      'authorDisplayUsername',
-      'authorId',
-      'authorName',
-      'authorUsername',
-      'createdAt',
-      'editorsPick',
-      'editorsPickAt',
-      'firstPublishedAt',
-      'headerImageFormat',
-      'keywords',
-      'narrativeRightsReserved',
-      'publishedAt',
-      'savedAt',
-      'shortId',
-      'title'])
-    .extend(story.published ? {
-      'numberOfContextBlocks': story.contextBlockIds.length,
-      'numberOfVerticalSections': story.verticalSections.length,
-      'favorites': story.favoritedTotal,
-      'numberofKeywords': story.keywords.length,
-      'titleLength': story.title.length
-    } : {})
-    .extend(story.countContextTypes ? story.countContextTypes() : {}) // TODO Fix
-    .value();
-};
+
 
 typeHelpers = {
   text: function() {
@@ -1497,7 +1469,63 @@ Template.read.onCreated(function(){
   });
 });
 
+var activeHeartbeatCount = {};
+var activeHeartbeatCountSent = {};
+incrementActiveHeartbeatCount = function(id){
+  activeHearbeatCount[id] = (activeHearbeatCount[id] || 0) + 1;
+};
+
+subtractSentActiveHeartbeatCount = function(){
+  _.each(_.keys(activeHeartbeatCountSent), function(k){
+    activeHeartbeatCount[k] = activeHeartbeatCount[k] - activeHeartbeatCountSent[k];
+  });
+  activeHeartbeatCountSent = {};
+};
+
+var sendHeartbeatsInterval = 30000;
+
+
+activeHeartbeatCountSender = function(){
+  if(_.isEmpty(activeHeartbeatCount)){
+    console.log('nothing to send')
+    return
+  }
+  activeHeartbeatCountSent = _.clone(activeHeartbeatCount);
+  console.log('sending:')
+  console.log(activeHeartbeatCountSent)
+  Meteor.call('countStoryActiveHeartbeats', Session.get('storyId'), activeHeartbeatCountSent, function(err){
+    if(err){
+      console.warn('Failed to send heartbeats');
+    } else {
+      subtractSentActiveHeartbeatCount();
+    }
+    Meteor.setTimeout(activeHeartbeatCountSender, sendHeartbeatsInterval);
+  });
+};
+
+Meteor.startup(function(){
+  Meteor.setTimeout(activeHeartbeatCountSender, sendHeartbeatsInterval);
+});
 
 Template.read.onRendered(function(){
   $(window).scrollTop(Session.get('scrollTop'));
+  this.heartbeatInterval = Meteor.setInterval(function(){ // TODO make more accurate. http://www.sitepoint.com/creating-accurate-timers-in-javascript/
+    var currentYId = Session.get('currentYId');
+    var currentXId = Session.get('currentXId');
+    if(currentYId){
+      console.log('currentYId: ' + currentYId)
+      activeHeartbeatCount[currentYId] = (activeHeartbeatCount[currentYId] || 0) + 1;
+
+      if(currentXId){ // can only truly have active context if have active narrative. currentXId may have a value when viewing header
+        console.log('currentXId: ' + currentXId)
+        activeHeartbeatCount[currentXId] = (activeHeartbeatCount[currentXId] || 0) + 1;
+      }
+    }
+
+  }, 1000);
+});
+
+Template.read.onDestroyed(function(){
+  $(window).scrollTop(Session.get('scrollTop'));
+  Meteor.clearInterval(this.heartbeatInterval);
 });

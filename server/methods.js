@@ -77,5 +77,26 @@ Meteor.methods({
     this.unblock();
     check(storyId, String);
     countStat.call(this, storyId, 'reads', {service: service});
+  },
+  countStoryActiveHeartbeats: function(storyId, countMap) {
+    this.unblock();
+    check(storyId, String);
+    check(countMap, Object);
+    _.keys(countMap, function(e){
+      check(e, String); // these should be ids
+      check(e, Match.Where(function(str){
+        return (/^[^.]*$/).test(str); // check has no periods
+      }))
+    });
+    _.values(countMap, function(e){
+      check(e, Number);
+    });
+
+    var incMap = {};
+    _.each(_.keys(countMap), function(k){
+      incMap['heartbeats.active.' + k] = countMap[k];
+    });
+
+    Stories.update({_id: storyId}, {$inc: incMap});
   }
 });
