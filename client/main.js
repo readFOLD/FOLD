@@ -220,6 +220,7 @@ Tracker.autorun(function(){
   return Session.set('currentXId', null);
 });
 
+
 Tracker.autorun(function(){
   var story = Session.get('story');
   var currentY = Session.get("currentY");
@@ -229,16 +230,18 @@ Tracker.autorun(function(){
 
   var totalLength = story.verticalSections.length;
 
-  if((currentY + 1) >= totalLength * 0.67){
-    if(!_.contains(storiesReadThisSession, story._id)){
-      console.log('read ' + story._id)
-      storiesReadThisSession.push(story._id);
+  if (typeof currentY === 'number'){
+    if((currentY + 1) >= totalLength * 0.67){
+      if(!_.contains(storiesReadThisSession, story._id)){
+        var id = story._id
+        console.log('read ' + story._id)
+        Meteor.call('countStoryRead', id);
+        storiesReadThisSession.push(story._id); // TODO, reconcile this method with story views. Stories views allows multiple per browser session. This does not.
+        analytics.track('View story', _.extend({}, trackingInfoFromStory(story), { nonInteraction: 1 }));
+      }
     }
   }
 });
-
-
-
 
 
 Meteor.startup(function() {
@@ -1479,6 +1482,7 @@ Template.read.onCreated(function(){
   if (Session.get('storyViewed') !== id){
     Session.set('storyViewed', id);
     Meteor.call('countStoryView', id);
+    console.log('count view  ' + id)
     analytics.track('View story', _.extend({}, trackingInfoFromStory(this.data), { nonInteraction: 1 }));
   }
 

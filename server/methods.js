@@ -72,5 +72,10 @@ Meteor.methods({
     this.unblock();
     check(storyId, String);
     countStat.call(this, storyId, 'shares', {service: service});
+  },
+  countStoryRead: function(storyId, service) {
+    this.unblock();
+    check(storyId, String);
+    countStat.call(this, storyId, 'reads', {service: service});
   }
 });
