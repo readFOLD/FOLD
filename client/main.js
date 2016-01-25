@@ -1542,18 +1542,44 @@ Meteor.startup(function(){
   })
 });
 
+window.userInactiveCount = 0;
+var inactiveThreshold = 15;
+
+$(window).bind('mousemove mouseup touchstart touchend touchmove keyup scroll resize', function(){
+  userInactiveCount = 0;
+});
+
 Template.read.onRendered(function(){
   $(window).scrollTop(Session.get('scrollTop'));
   this.heartbeatInterval = Meteor.setInterval(function(){ // TODO make more accurate. http://www.sitepoint.com/creating-accurate-timers-in-javascript/
     var currentYId = Session.get('currentYId');
     var currentXId = Session.get('currentXId');
-    if(currentYId){
-      console.log('currentYId: ' + currentYId)
-      activeHeartbeatCount[currentYId] = (activeHeartbeatCount[currentYId] || 0) + 1;
+    var poppedOutContextId = Session.get('poppedOutContextId');
 
-      if(currentXId){ // can only truly have active context if have active narrative. currentXId may have a value when viewing header
-        console.log('currentXId: ' + currentXId)
-        activeHeartbeatCount[currentXId] = (activeHeartbeatCount[currentXId] || 0) + 1;
+    var userActive = !document.hidden && userInactiveCount < inactiveThreshold;
+
+    userInactiveCount += 1;
+
+    if(!userActive){
+      document.title = 'Inactive'
+    } else {
+      document.title = 'Active'
+    }
+
+    if(poppedOutContextId && poppedOutPlayerInfo.get('status') === 'playing') {
+      console.log('current popout playing id: ' + poppedOutContextId);
+      activeHeartbeatCount[poppedOutContextId] = (activeHeartbeatCount[poppedOutContextId] || 0) + 1;
+    }
+
+    if(userActive){
+      if(currentYId){
+        console.log('currentYId: ' + currentYId)
+        activeHeartbeatCount[currentYId] = (activeHeartbeatCount[currentYId] || 0) + 1;
+
+        if(currentXId){ // can only truly have active context if have active narrative. currentXId may have a value when viewing header
+          console.log('currentXId: ' + currentXId)
+          activeHeartbeatCount[currentXId] = (activeHeartbeatCount[currentXId] || 0) + 1;
+        }
       }
     }
 
