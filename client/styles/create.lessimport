@@ -229,7 +229,7 @@ div.floating-story-buttons {
 
 .feedback{
   color: @white-color;
-  background-color: @black-color;
+  background-color: @dark-color;
   height: @magic-styling-distance;
   div{
     float: left;
