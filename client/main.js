@@ -1591,6 +1591,10 @@ $(window).bind('mousemove mouseup touchstart touchend touchmove keyup scroll res
   userInactiveCount = 0;
 });
 
+var addActiveHeartbeat = function(key){
+  activeHeartbeatCount[key] = (activeHeartbeatCount[key] || 0) + 1;
+};
+
 Template.read.onRendered(function(){
   $(window).scrollTop(Session.get('scrollTop'));
   this.heartbeatInterval = Meteor.setInterval(function(){
@@ -1605,23 +1609,31 @@ Template.read.onRendered(function(){
 
     if(poppedOutPlayerActive) {
       console.log('current popout playing id: ' + poppedOutContextId);
-      activeHeartbeatCount[poppedOutContextId] = (activeHeartbeatCount[poppedOutContextId] || 0) + 1;
+      addActiveHeartbeat(poppedOutContextId);
     }
 
     if(userActive){
       if(currentYId){
         console.log('currentYId: ' + currentYId)
-        activeHeartbeatCount[currentYId] = (activeHeartbeatCount[currentYId] || 0) + 1;
+        addActiveHeartbeat(currentYId);
 
         if(currentXId){ // can only truly have active context if have active narrative. currentXId may have a value when viewing header
           console.log('currentXId: ' + currentXId)
-          activeHeartbeatCount[currentXId] = (activeHeartbeatCount[currentXId] || 0) + 1;
+          addActiveHeartbeat(currentXId);
+        }
+      } else {
+        if (!Session.get('pastHeader')){
+          console.log('header')
+          addActiveHeartbeat('header');
+        } else if (Session.get("currentY")) { // if no currentYId, but there is currentY, then it's at the footer
+          console.log('footer')
+          addActiveHeartbeat('footer');
         }
       }
     }
 
     if (userActive || poppedOutPlayerActive){
-      activeHeartbeatCount['story'] = (activeHeartbeatCount['story'] || 0) + 1;
+      addActiveHeartbeat('story');
     }
 
   }, 1000);
