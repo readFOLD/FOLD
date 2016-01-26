@@ -37,6 +37,7 @@ readStoryFields = {
   //savedAt: 0, // used in analytics
   //createdAt:0, // used in analytics
   everPublished:0,
+  analyticsBeforeReads:0,
   //deleted: 0, // currently always blank so no need to filter
   //deletedAt: 0, // currently always blank so no need to filter
   //'analytics.shares': 0,
