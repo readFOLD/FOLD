@@ -137,6 +137,36 @@ window.formatDateCompact = function (date) {
 
 };
 
+window.trackingInfoFromStory = function(story) {
+  return _.chain(story)
+    .pick([
+      '_id',
+      'authorDisplayUsername',
+      'authorId',
+      'authorName',
+      'authorUsername',
+      'createdAt',
+      'editorsPick',
+      'editorsPickAt',
+      'firstPublishedAt',
+      'headerImageFormat',
+      'keywords',
+      'narrativeRightsReserved',
+      'publishedAt',
+      'savedAt',
+      'shortId',
+      'title'])
+    .extend(story.published ? {
+      'numberOfContextBlocks': story.contextBlockIds.length,
+      'numberOfVerticalSections': story.verticalSections.length,
+      'favorites': story.favoritedTotal,
+      'numberofKeywords': story.keywords.length,
+      'titleLength': story.title.length
+    } : {})
+    .extend(story.countContextTypes ? story.countContextTypes() : {}) // TODO Fix
+    .value();
+};
+
 window.enterPress = function(e){
   return e.keyCode === 13
 };

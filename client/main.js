@@ -1,5 +1,6 @@
 var getCardWidth, horizontalBlockHelpers, throttledResize, typeHelpers;
 
+
 UI.registerHelper('selectedIf', function(val) {
   return val ? 'selected' : '';
 });
@@ -75,6 +76,7 @@ Meteor.startup(function(){
       }
       trackEvent('Opened sign-in overlay', trackingInfo);
     }
+
     justReloaded = false;
   });
 
@@ -242,6 +244,72 @@ Tracker.autorun(function(){
 });
 
 
+Tracker.autorun(function(){
+  var story = Session.get('story');
+  if(!story){
+    return
+  }
+
+  var id = story._id;
+
+  var currentY = Session.get("currentY");
+
+  var read;
+  var storyRead;
+
+  Tracker.nonreactive(function(){
+    read = Session.get('read');
+    storyRead = Session.equals('storyRead', id);
+  });
+
+
+  if(!read || storyRead){
+    return
+  }
+
+  var totalLength = story.verticalSections.length;
+
+  if (typeof currentY === 'number'){
+    if((currentY + 1) >= totalLength * 0.67){
+      Session.set('storyRead', id);
+      Meteor.call('countStoryRead', id);
+      analytics.track('Read story', _.extend({}, trackingInfoFromStory(story), { nonInteraction: 1 }));
+    }
+  }
+});
+
+
+Tracker.autorun(function(){
+  var story = Session.get('story');
+
+  if(!story){
+    return
+  }
+
+  var id = story._id;
+
+  var read;
+  var storyViewed;
+
+  Tracker.nonreactive(function(){
+    read = Session.get('read')
+    storyViewed = Session.equals('storyViewed', id);
+  });
+
+
+  if(!read || storyViewed){
+    return
+  }
+
+
+  Session.set('storyViewed', id);
+  Session.set('storyRead', null); // should reset whether story was read whenever switch which story was viewed so views and reads are comparable
+  Meteor.call('countStoryView', id);
+  trackEvent('View story', _.extend({}, trackingInfoFromStory(story), { nonInteraction: 1 }));
+});
+
+
+
 
 Meteor.startup(function() {
   Session.setDefault("filterOpen", false);
@@ -270,35 +338,7 @@ Meteor.startup(function(){
 
 });
 
-window.trackingInfoFromStory = function(story){
-  return _.chain(story)
-    .pick([
-      '_id',
-      'authorDisplayUsername',
-      'authorId',
-      'authorName',
-      'authorUsername',
-      'createdAt',
-      'editorsPick',
-      'editorsPickAt',
-      'firstPublishedAt',
-      'headerImageFormat',
-      'keywords',
-      'narrativeRightsReserved',
-      'publishedAt',
-      'savedAt',
-      'shortId',
-      'title'])
-    .extend(story.published ? {
-      'numberOfContextBlocks': story.contextBlockIds.length,
-      'numberOfVerticalSections': story.verticalSections.length,
-      'favorites': story.favoritedTotal,
-      'numberofKeywords': story.keywords.length,
-      'titleLength': story.title.length
-    } : {})
-    .extend(story.countContextTypes ? story.countContextTypes() : {}) // TODO Fix
-    .value();
-};
+
 
 typeHelpers = {
   text: function() {
@@ -675,6 +715,12 @@ Template.minimap.helpers({
   sectionMargin: function() {
     var maxHeight = Session.get("minimapMaxHeight");
     return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.25;  // 25% of available space (33% of section)
+  },
+  showActivity: function(){
+    return adminMode();
+  },
+  activityLevel: function(){
+    return((this.activeHeartbeats || 0) / Session.get('story').analytics.heartbeats.active.story) * 100;
   }
 });
 
@@ -1477,12 +1523,6 @@ Template.read.onCreated(function(){
     }
   });
 
-  var id = this.data._id;
-  if (Session.get('storyViewed') !== id){
-    Session.set('storyViewed', id);
-    Meteor.call('countStoryView', id);
-    trackEvent('View story', _.extend({}, trackingInfoFromStory(this.data), { nonInteraction: 1 }));
-  }
 
   var that = this;
 
@@ -1495,7 +1535,104 @@ Template.read.onCreated(function(){
   });
 });
 
+var activeHeartbeatCount = {};
+var activeHeartbeatCountSent = {};
+incrementActiveHeartbeatCount = function(id){
+  activeHearbeatCount[id] = (activeHearbeatCount[id] || 0) + 1;
+};
+
+subtractSentActiveHeartbeatCount = function(){
+  _.each(_.keys(activeHeartbeatCountSent), function(k){
+    activeHeartbeatCount[k] = activeHeartbeatCount[k] - activeHeartbeatCountSent[k];
+    if(!activeHeartbeatCount[k]){
+      delete activeHeartbeatCount[k]
+    }
+  });
+  activeHeartbeatCountSent = {}; // this makes the function safe to run multiple times
+};
+
+var sendHeartbeatsInterval = 30000;
+
+
+activeHeartbeatCountSender = function(doOnce){
+  if(_.isEmpty(activeHeartbeatCount)){
+    console.log('nothing to send')
+    return
+  }
+  activeHeartbeatCountSent = _.clone(activeHeartbeatCount);
+  console.log('sending:')
+  console.log(activeHeartbeatCountSent)
+  Meteor.call('countStoryActiveHeartbeats', Session.get('storyId'), activeHeartbeatCountSent, function(err){
+    if(err){
+      console.warn('Failed to send heartbeats');
+    } else {
+      subtractSentActiveHeartbeatCount();
+    }
+    if(!doOnce){
+      Meteor.setTimeout(activeHeartbeatCountSender, sendHeartbeatsInterval);
+    }
+  });
+};
+
+Meteor.startup(function(){
+  Meteor.setTimeout(activeHeartbeatCountSender, sendHeartbeatsInterval);
+  $(window).bind('beforeunload', function(){
+    subtractSentActiveHeartbeatCount(); // in case there is already a count pending don't double-do it
+    activeHeartbeatCountSender(true);
+  })
+});
+
+window.userInactiveCount = 0;
+var inactiveThreshold = 15;
+
+$(window).bind('mousemove mouseup touchstart touchend touchmove keyup scroll resize', function(){
+  userInactiveCount = 0;
+});
+
+var addActiveHeartbeat = function(key){
+  activeHeartbeatCount[key] = (activeHeartbeatCount[key] || 0) + 1;
+};
 
 Template.read.onRendered(function(){
   $(window).scrollTop(Session.get('scrollTop'));
+  this.heartbeatInterval = Meteor.setInterval(function(){
+    var currentYId = Session.get('currentYId');
+    var currentXId = Session.get('currentXId');
+    var poppedOutContextId = Session.get('poppedOutContextId');
+
+    var poppedOutPlayerActive = poppedOutContextId && poppedOutPlayerInfo.get('status') === 'playing';
+    var userActive = !document.hidden && userInactiveCount < inactiveThreshold;
+
+    userInactiveCount += 1;
+
+    if(poppedOutPlayerActive) {
+      addActiveHeartbeat(poppedOutContextId);
+    }
+
+    if(userActive){
+      if(currentYId){
+        addActiveHeartbeat(currentYId);
+
+        if(currentXId){ // can only truly have active context if have active narrative. currentXId may have a value when viewing header
+          addActiveHeartbeat(currentXId);
+        }
+      } else {
+        if (!Session.get('pastHeader')){
+          addActiveHeartbeat('header');
+        } else if (Session.get("currentY")) { // if no currentYId, but there is currentY, then it's at the footer
+          addActiveHeartbeat('footer');
+        }
+      }
+    }
+
+    if (userActive || poppedOutPlayerActive){
+      addActiveHeartbeat('story');
+    }
+
+  }, 1000);
+});
+
+Template.read.onDestroyed(function(){
+  $(window).scrollTop(Session.get('scrollTop'));
+  Meteor.clearInterval(this.heartbeatInterval);
 });

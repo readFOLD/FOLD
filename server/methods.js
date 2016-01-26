@@ -73,6 +73,33 @@ Meteor.methods({
     check(storyId, String);
     countStat.call(this, storyId, 'shares', {service: service});
   },
+  countStoryRead: function(storyId, service) {
+    this.unblock();
+    check(storyId, String);
+    countStat.call(this, storyId, 'reads', {service: service});
+  },
+  countStoryActiveHeartbeats: function(storyId, countMap) {
+    this.unblock();
+    check(storyId, String);
+    check(countMap, Object);
+    _.keys(countMap, function (e) {
+      check(e, String); // these should be ids
+      check(e, Match.Where(function (str) {
+        return (/^[^.]*$/).test(str); // check has no periods
+      }))
+    });
+    _.values(countMap, function (e) {
+      check(e, Number);
+    });
+
+    var incMap = {};
+    _.each(_.keys(countMap), function (k) {
+      incMap['analytics.heartbeats.active.' + k] = countMap[k];
+    });
+
+    StoryStats.upsert({storyId: storyId}, {$inc: incMap});
+    return Stories.update({_id: storyId}, {$inc: incMap});
+  },
   impersonate: function(username) {
     check(username, String);
 
