@@ -24,6 +24,12 @@ changeFavorite = function(storyId, toFavorite) {
     }
   });
 
+
+  if (!story) {
+    throw new Meteor.Error('story-not-found', "Sorry, we couldn't find that story");
+  }
+
+
   operator = toFavorite ? '$addToSet' : '$pull';
   storyOperation = {};
   storyOperation[operator] = {
@@ -50,11 +56,62 @@ changeFavorite = function(storyId, toFavorite) {
   }, userOperation);
 };
 
+changeFollow = function(userId, toFollow) {
+  var operator, recipientOperation, actorOperation;
+
+  this.unblock();
+  if (!this.userId) {
+    throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to follow a user');
+  }
+
+  if (this.userId === userId) {
+    throw new Meteor.Error('cant-follow-self', "Sorry, you can't follow yourself");
+  }
+
+  var recipient = Meteor.users.findOne({
+    _id: userId,
+  }, {
+    fields: {
+      followed: 1
+    }
+  });
+
+  if (!recipient) {
+    throw new Meteor.Error('user-not-found', "Sorry, we couldn't find that user");
+  }
+
+
+  operator = toFollow ? '$addToSet' : '$pull';
+  recipientOperation = {};
+  recipientOperation[operator] = {
+    followed: this.userId
+  };
+
+  var currentlyFollowed = (_.contains(recipient.followed, this.userId));
+
+  if (toFollow && !currentlyFollowed){
+    recipientOperation['$inc'] = { followedTotal : 1 };
+  } else if (!toFollow && currentlyFollowed){
+    recipientOperation['$inc'] = { followedTotal : -1 };
+  }
+
+  actorOperation = {};
+  actorOperation[operator] = {
+    'profile.following': userId
+  };
+  Meteor.users.update({
+    _id: userId
+  }, recipientOperation);
+  return Meteor.users.update({
+    _id: this.userId
+  }, actorOperation);
+};
+
 var changeEditorsPick = function(storyId, isPick) {
 
   this.unblock();
   if (!Meteor.user().admin) {
-    throw new Meteor.Error('not-admin-in', 'Sorry, you must be an admin to designate an editors pick');
+    throw new Meteor.Error('not-admin', 'Sorry, you must be an admin to designate an editors pick');
   }
 
   Stories.update({
@@ -599,6 +656,14 @@ Meteor.methods({
         deletedAt: new Date
       }
     });
+  },
+  followUser: function(userId) {
+    check(userId, String);
+    return changeFollow.call(this, userId, true);
+  },
+  unfollowUser: function(userId) {
+    check(userId, String);
+    return changeFollow.call(this, userId, false);
   },
   favoriteStory: function(storyId) {
     check(storyId, String);

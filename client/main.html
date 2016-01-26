@@ -49,6 +49,7 @@
         <a href="{{profileUrl}}">
           By <span>{{authorName}}</span>
         </a>
+        {{> follow_button userId=authorId}}
       </div>
       <a class="author-image" href="{{profileUrl}}">
         <img class="profile-picture" src="{{profileImage author}}"/>
@@ -731,25 +732,40 @@
   </div>
 </template>
 
+<template name="follow_button">
+  <div class="follow-button">
+    {{#if isYou}}
+      <button type='button' class='is-you {{additionalClasses}}'>This is you</button>
+    {{else}}
+      {{#if userFollowing}}
+        <button type='button' class='unfollow {{additionalClasses}}'>Unfollow</button>
+      {{else}}
+        <button type='button' class='follow {{additionalClasses}}'>Follow</button>
+      {{/if}}
+    {{/if}}
+
+  </div>
+</template>
+
 <template name="favorite_button">
-    <div class="favorite-button">
-        {{#if userFavorited}}
-            <button type='button' class='unfavorite {{additionalClasses}}'>{{> favorite_icon }}</button>
-        {{else}}
-            <button type='button' class='favorite {{additionalClasses}}'>{{> favorite_icon }}</button>
-        {{/if}}
-        {{favoritedTotal}}
-    </div>
+  <div class="favorite-button">
+    {{#if userFavorited}}
+      <button type='button' class='unfavorite {{additionalClasses}}'>{{> favorite_icon }}</button>
+    {{else}}
+      <button type='button' class='favorite {{additionalClasses}}'>{{> favorite_icon }}</button>
+    {{/if}}
+    {{favoritedTotal}}
+  </div>
 </template>
 
 <template name="editors_pick_button">
-    <div class="editors-pick-button">
-        {{#if editorsPick}}
-            <button type='button' class='unpick'>{{> favorite_icon }}</button>
-        {{else}}
-            <button type='button' class='pick'>{{> favorite_icon }}</button>
-        {{/if}}
-    </div>
+  <div class="editors-pick-button">
+    {{#if editorsPick}}
+      <button type='button' class='unpick'>{{> favorite_icon }}</button>
+    {{else}}
+      <button type='button' class='pick'>{{> favorite_icon }}</button>
+    {{/if}}
+  </div>
 </template>
 
 <template name="stats">

@@ -295,6 +295,7 @@ Meteor.publish("userProfilePub", function(username) { // includes user profile a
   }, {
     fields: {
       "profile" : 1,
+      "followed": 1,
       "username" : 1,
       "displayUsername" : 1,
       "services.twitter.id": 1
@@ -359,7 +360,8 @@ Meteor.publish("userData", function () {
         'tempUsername': 1,
         "admin": 1,
         "privileges": 1,
-        "profile": 1
+        "profile": 1,
+        "followed": 1
       }});
   } else {
     this.ready();

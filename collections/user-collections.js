@@ -36,6 +36,11 @@ Schema.UserProfile = new SimpleSchema({
     optional: true,
     defaultValue: []
   },
+  following: {
+    type: [String],
+    optional: true,
+    defaultValue: []
+  },
   profilePicture: {
     type: String,
     autoValue: function() {
@@ -135,6 +140,16 @@ Schema.User = new SimpleSchema({
     type: Schema.UserProfile,
     optional: true,
     defaultValue: {}
+  },
+  followed: {
+    type: [String],
+    optional: true,
+    defaultValue: []
+  },
+  followedTotal: {
+    type: Number,
+    optional: true,
+    defaultValue: 0
   },
   services: {
     type: Object,
