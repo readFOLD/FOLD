@@ -254,16 +254,16 @@ Tracker.autorun(function(){
 
   var currentY = Session.get("currentY");
 
-  var read;
+  var onReadPage;
   var storyRead;
 
   Tracker.nonreactive(function(){
-    read = Session.get('read');
+    onReadPage = Session.get('read') && !Session.get('showDraft');
     storyRead = Session.equals('storyRead', id);
   });
 
 
-  if(!read || storyRead){
+  if(!onReadPage || storyRead){
     return
   }
 
@@ -272,6 +272,7 @@ Tracker.autorun(function(){
   if (typeof currentY === 'number'){
     if((currentY + 1) >= totalLength * 0.67){
       Session.set('storyRead', id);
+      console.log('read')
       Meteor.call('countStoryRead', id);
       analytics.track('Read story', _.extend({}, trackingInfoFromStory(story), { nonInteraction: 1 }));
     }
@@ -288,16 +289,16 @@ Tracker.autorun(function(){
 
   var id = story._id;
 
-  var read;
+  var onReadPage;
   var storyViewed;
 
   Tracker.nonreactive(function(){
-    read = Session.get('read')
+    onReadPage = Session.get('read') && !Session.get('showDraft');
     storyViewed = Session.equals('storyViewed', id);
   });
 
 
-  if(!read || storyViewed){
+  if(!onReadPage || storyViewed){
     return
   }
 
