@@ -97,7 +97,8 @@ Meteor.methods({
       incMap['analytics.heartbeats.active.' + k] = countMap[k];
     });
 
-    Stories.update({_id: storyId}, {$inc: incMap});
+    StoryStats.upsert({storyId: storyId}, {$inc: incMap});
+    return Stories.update({_id: storyId}, {$inc: incMap});
   },
   impersonate: function(username) {
     check(username, String);

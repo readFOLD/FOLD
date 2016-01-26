@@ -2029,7 +2029,16 @@ Schema.StoryStats = new SimpleSchema({
   },
   'analytics.reads': {
     type: analyticsSchema
-  }
+  },
+  'analytics.heartbeats': {
+    type: Object,
+    optional: true
+  },
+  'analytics.heartbeats.active': {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
 });
 
 this.StoryStats.attachSchema(Schema.StoryStats);
