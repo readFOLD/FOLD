@@ -682,7 +682,7 @@ Template.minimap.helpers({
     return true; //adminMode();
   },
   activityLevel: function(){
-    return(this.activeHeartbeats / Session.get('story').heartbeats.active.story) * 100;
+    return((this.activeHeartbeats || 0) / Session.get('story').heartbeats.active.story) * 100;
   }
 });
 
