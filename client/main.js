@@ -1,6 +1,5 @@
 var getCardWidth, horizontalBlockHelpers, throttledResize, typeHelpers;
 
-window.storiesReadThisSession = [];
 
 UI.registerHelper('selectedIf', function(val) {
   return val ? 'selected' : '';
@@ -64,11 +63,6 @@ Meteor.startup(function(){
   $(window).resize(throttledResize);
 
   var justReloaded = window.codeReloaded;
-
-
-  if(!justReloaded){
-    storiesReadThisSession = [];
-  }
 
   Tracker.autorun(function(){
     var signingIn = Session.get('signingIn');
@@ -252,8 +246,24 @@ Tracker.autorun(function(){
 
 Tracker.autorun(function(){
   var story = Session.get('story');
+  if(!story){
+    return
+  }
+
+  var id = story._id;
+
   var currentY = Session.get("currentY");
-  if(!story || !Session.get('read')){
+
+  var read;
+  var storyRead;
+
+  Tracker.nonreactive(function(){
+    read = Session.get('read');
+    storyRead = Session.equals('storyRead', id);
+  });
+
+
+  if(!read || storyRead){
     return
   }
 
@@ -261,16 +271,46 @@ Tracker.autorun(function(){
 
   if (typeof currentY === 'number'){
     if((currentY + 1) >= totalLength * 0.67){
-      if(!_.contains(storiesReadThisSession, story._id)){
-        var id = story._id
-        console.log('read ' + story._id)
-        Meteor.call('countStoryRead', id);
-        storiesReadThisSession.push(story._id); // TODO, reconcile this method with story views. Stories views allows multiple per browser session. This does not.
-        analytics.track('View story', _.extend({}, trackingInfoFromStory(story), { nonInteraction: 1 }));
-      }
+      Session.set('storyRead', id);
+      console.log('read ' + story._id);
+      Meteor.call('countStoryRead', id);
+      analytics.track('Read story', _.extend({}, trackingInfoFromStory(story), { nonInteraction: 1 }));
     }
   }
 });
+
+
+Tracker.autorun(function(){
+  var story = Session.get('story');
+
+  if(!story){
+    return
+  }
+
+  var id = story._id;
+
+  var read;
+  var storyViewed;
+
+  Tracker.nonreactive(function(){
+    read = Session.get('read')
+    storyViewed = Session.equals('storyViewed', id);
+  });
+
+
+  if(!read || storyViewed){
+    return
+  }
+
+
+  Session.set('storyViewed', id);
+  Session.set('storyRead', null); // should reset whether story was read whenever switch which story was viewed so views and reads are comparable
+  Meteor.call('countStoryView', id);
+  console.log('count view  ' + id)
+  trackEvent('View story', _.extend({}, trackingInfoFromStory(story), { nonInteraction: 1 }));
+});
+
+
 
 
 Meteor.startup(function() {
@@ -1485,13 +1525,6 @@ Template.read.onCreated(function(){
     }
   });
 
-  var id = this.data._id;
-  if (Session.get('storyViewed') !== id){
-    Session.set('storyViewed', id);
-    Meteor.call('countStoryView', id);
-    console.log('count view  ' + id)
-    trackEvent('View story', _.extend({}, trackingInfoFromStory(this.data), { nonInteraction: 1 }));
-  }
 
   var that = this;
 
