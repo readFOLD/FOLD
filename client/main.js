@@ -717,7 +717,7 @@ Template.minimap.helpers({
     return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.25;  // 25% of available space (33% of section)
   },
   showActivity: function(){
-    return true; //adminMode();
+    return adminMode();
   },
   activityLevel: function(){
     return((this.activeHeartbeats || 0) / Session.get('story').analytics.heartbeats.active.story) * 100;
