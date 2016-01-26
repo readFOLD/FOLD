@@ -1608,25 +1608,20 @@ Template.read.onRendered(function(){
     userInactiveCount += 1;
 
     if(poppedOutPlayerActive) {
-      console.log('current popout playing id: ' + poppedOutContextId);
       addActiveHeartbeat(poppedOutContextId);
     }
 
     if(userActive){
       if(currentYId){
-        console.log('currentYId: ' + currentYId)
         addActiveHeartbeat(currentYId);
 
         if(currentXId){ // can only truly have active context if have active narrative. currentXId may have a value when viewing header
-          console.log('currentXId: ' + currentXId)
           addActiveHeartbeat(currentXId);
         }
       } else {
         if (!Session.get('pastHeader')){
-          console.log('header')
           addActiveHeartbeat('header');
         } else if (Session.get("currentY")) { // if no currentYId, but there is currentY, then it's at the footer
-          console.log('footer')
           addActiveHeartbeat('footer');
         }
       }
