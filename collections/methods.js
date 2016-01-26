@@ -72,7 +72,7 @@ changeFollow = function(userId, toFollow) {
     _id: userId,
   }, {
     fields: {
-      followed: 1
+      followers: 1
     }
   });
 
@@ -80,25 +80,45 @@ changeFollow = function(userId, toFollow) {
     throw new Meteor.Error('user-not-found', "Sorry, we couldn't find that user");
   }
 
+  var actor = Meteor.users.findOne({
+    _id: this.userId,
+  }, {
+    fields: {
+      'profile.following': 1
+    }
+  });
+
+
 
   operator = toFollow ? '$addToSet' : '$pull';
   recipientOperation = {};
   recipientOperation[operator] = {
-    followed: this.userId
+    followers: this.userId
   };
 
-  var currentlyFollowed = (_.contains(recipient.followed, this.userId));
+  var currentlyFollowed = (_.contains(recipient.followers, this.userId));
 
   if (toFollow && !currentlyFollowed){
-    recipientOperation['$inc'] = { followedTotal : 1 };
+    recipientOperation['$inc'] = { followersTotal : 1 };
   } else if (!toFollow && currentlyFollowed){
-    recipientOperation['$inc'] = { followedTotal : -1 };
+    recipientOperation['$inc'] = { followersTotal : -1 };
   }
+
+
+  var currentlyFollowing = (_.contains(actor.profile.following, userId));
 
   actorOperation = {};
   actorOperation[operator] = {
     'profile.following': userId
   };
+
+  if (toFollow && !currentlyFollowing){
+    actorOperation['$inc'] = { followingTotal : 1 };
+  } else if (!toFollow && currentlyFollowing){
+    actorOperation['$inc'] = { followingTotal : -1 };
+  }
+
+
   Meteor.users.update({
     _id: userId
   }, recipientOperation);

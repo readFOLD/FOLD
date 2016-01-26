@@ -141,12 +141,17 @@ Schema.User = new SimpleSchema({
     optional: true,
     defaultValue: {}
   },
-  followed: {
+  followers: {
     type: [String],
     optional: true,
     defaultValue: []
   },
-  followedTotal: {
+  followersTotal: {
+    type: Number,
+    optional: true,
+    defaultValue: 0
+  },
+  followingTotal: {
     type: Number,
     optional: true,
     defaultValue: 0
