@@ -272,7 +272,6 @@ Tracker.autorun(function(){
   if (typeof currentY === 'number'){
     if((currentY + 1) >= totalLength * 0.67){
       Session.set('storyRead', id);
-      console.log('read ' + story._id);
       Meteor.call('countStoryRead', id);
       analytics.track('Read story', _.extend({}, trackingInfoFromStory(story), { nonInteraction: 1 }));
     }
@@ -306,7 +305,6 @@ Tracker.autorun(function(){
   Session.set('storyViewed', id);
   Session.set('storyRead', null); // should reset whether story was read whenever switch which story was viewed so views and reads are comparable
   Meteor.call('countStoryView', id);
-  console.log('count view  ' + id)
   trackEvent('View story', _.extend({}, trackingInfoFromStory(story), { nonInteraction: 1 }));
 });
 
@@ -722,7 +720,7 @@ Template.minimap.helpers({
     return true; //adminMode();
   },
   activityLevel: function(){
-    return((this.activeHeartbeats || 0) / Session.get('story').heartbeats.active.story) * 100;
+    return((this.activeHeartbeats || 0) / Session.get('story').analytics.heartbeats.active.story) * 100;
   }
 });
 

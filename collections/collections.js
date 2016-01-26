@@ -1926,6 +1926,15 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchema(), {
     'analytics.reads': {
       type: analyticsSchema
     },
+    'analytics.heartbeats': {
+      type: Object,
+      optional: true
+    },
+    'analytics.heartbeats.active': {
+      type: Object,
+      optional: true,
+      blackbox: true
+    },
     contextBlocks: {
       type: [ContextBlock], // TODO this should really be Schema.ContextBlocks, but would need to be converted to a regular object, otherwise simple-schema complains
       minCount: 0,
@@ -1949,15 +1958,6 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchema(), {
     'version': {
       type: String,
       optional: true
-    },
-    heartbeats: { // TODO, nest under analytics??
-      type: Object,
-      optional: true
-    },
-    'heartbeats.active': {
-      type: Object,
-      optional: true,
-      blackbox: true
     }
   })
 );

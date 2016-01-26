@@ -94,7 +94,7 @@ Meteor.methods({
 
     var incMap = {};
     _.each(_.keys(countMap), function (k) {
-      incMap['heartbeats.active.' + k] = countMap[k];
+      incMap['analytics.heartbeats.active.' + k] = countMap[k];
     });
 
     Stories.update({_id: storyId}, {$inc: incMap});
