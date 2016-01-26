@@ -1635,4 +1635,8 @@ Template.read.onRendered(function(){
 Template.read.onDestroyed(function(){
   $(window).scrollTop(Session.get('scrollTop'));
   Meteor.clearInterval(this.heartbeatInterval);
+
+  // send all existing heartbeats when leave a story
+  subtractSentActiveHeartbeatCount(); // in case there is already a count pending don't double-do it
+  activeHeartbeatCountSender(true);
 });
