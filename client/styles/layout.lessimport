@@ -816,6 +816,11 @@ div.image-section {
     min-height: 36px;
 
   }
+
+  .looping-video{
+    .size-to-fit;
+  }
+
   img, video {
     width: auto;
     max-width: 100%;
