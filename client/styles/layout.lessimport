@@ -1985,6 +1985,15 @@ div.loading-container {
   }
 }
 
+.not-found{
+  position: absolute;
+  .content{
+    .center-over-parent-div;
+    text-align: center;
+    line-height: normal;
+  }
+}
+
 .fit{
   .size-to-fit;
 }
