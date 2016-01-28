@@ -358,7 +358,7 @@ ContextBlock.searchMappings = {
   flickr: {
     methodName: 'flickrImageSearchList',
     mapFn: function (e) {
-      var username, uploadDate, title;
+      var username, uploadDate, title, lgUrl, lgHeight, lgWidth;
       if (e.media) {
         //if single image result
         ownername = e.owner.username;
@@ -372,7 +372,8 @@ ContextBlock.searchMappings = {
         uploadDate = e.dateupload;
         title = e.title;
       }
-      return {
+
+      var info = {
         reference: {
           ownerName: ownername,
           flickrOwnerId: flickrOwnerId,
@@ -383,7 +384,26 @@ ContextBlock.searchMappings = {
           flickrServer: e.server,
           title: title
         }
+      };
+
+      // find the largest version of image available
+      _.each(['z', 'c', 'l', 'h', 'k', 'o'], function(sizeSuffix){
+        if(e['url_'+ sizeSuffix]){
+          lgUrl = e['url_'+ sizeSuffix];
+          lgHeight = e['height_'+ sizeSuffix];
+          lgWidth = e['width_'+ sizeSuffix];
+        }
+      });
+
+      if(lgUrl){
+        _.extend(info.reference, {
+          lgUrl: lgUrl,
+          lgHeight: lgHeight,
+          lgWidth: lgWidth
+        })
       }
+
+      return info
     }
   },
   cloudinary: {

@@ -166,7 +166,7 @@ Meteor.methods({
         sort: 'relevance',
         license: '1,2,3,4,5,6,7,8',
         per_page: 200,
-        extras: ['owner_name', 'date_upload'],
+        extras: ['date_upload', 'owner_name', 'description','tags', 'url_z', 'url_c', 'url_l', 'url_h', 'url_k', 'url_o'],
         page: page
       };
     }
