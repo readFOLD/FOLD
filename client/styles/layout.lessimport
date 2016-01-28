@@ -1990,6 +1990,30 @@ div.loading-container {
   }
 }
 
+.context-overlay {
+  position: fixed;
+  z-index: 100;
+  background-color: @white-color;
+  left: 0;
+  top: 0;
+}
+
+.context-overlay-content{
+  .center-over-parent-div;
+  width: 80%;
+  height: 80%;
+
+  img, video {
+    width: auto;
+    max-width: 100%;
+    margin: auto;
+    vertical-align: middle;
+    display: inline-block;
+    max-height: 100%;
+    .center-over-parent-div;
+  }
+}
+
 .not-found{
   position: absolute;
   .content{

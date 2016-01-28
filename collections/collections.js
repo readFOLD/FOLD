@@ -847,7 +847,7 @@ ImageBlock = (function (_super) {
   ImageBlock.prototype.largeUrl = function () {
     switch (this.source) {
       case 'flickr':
-        return this.reference.lgUrl || '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_b.jpg';
+        return this.reference.lgUrl || '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_z.jpg';
       case 'cloudinary':
         // TO-DO maybe use jpeg instead of png in certain situations
         return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + this.reference.id;
@@ -1526,6 +1526,18 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
   flickrServer: {
+    type: String,
+    optional: true
+  },
+  lgUrl: {
+    type: String,
+    optional: true
+  },
+  lgHeight: {
+    type: String,
+    optional: true
+  },
+  lgWidth: {
     type: String,
     optional: true
   },

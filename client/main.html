@@ -92,39 +92,44 @@
 </template>
 
 <template name="story">
-    <!-- Mesh Background Overlay -->
-    <!-- <div id="overlay"></div> -->
-    <article class="content entire-story">
-        <div class="vertical-narrative"
-             style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
-            {{> vertical_narrative}}
+  <!-- Mesh Background Overlay -->
+  <!-- <div id="overlay"></div> -->
+  <article class="content entire-story">
+    <div class="vertical-narrative"
+         style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
+      {{> vertical_narrative}}
 
-            {{> story_footer}}
-        </div>
-            <div class="horizontal-context">
-                {{> horizontal_context}}
-            </div>
-    </article>
+      {{> story_footer}}
+    </div>
+    <div class="horizontal-context">
+      {{> horizontal_context}}
+    </div>
+  </article>
 
 
-    {{#if pastHeader}}
-        {{#if showMinimap}}
-          {{> minimap}}
-        {{/if}}
-      {{#if showMobileMinimap}}
-          {{> mobile_minimap}}
-        {{/if}}
-        {{#if metaviewOpen}}
-          {{> metaview}}
-        {{/if}}
-        {{#if horizontalExists}}
-            {{#unless addingContext}}
-                <div class="browser-offset">
-                    {{> story_browser}}
-                </div>
-            {{/unless}}
-        {{/if}}
+  {{#if pastHeader}}
+    {{#if showMinimap}}
+      {{> minimap}}
     {{/if}}
+    {{#if showMobileMinimap}}
+      {{> mobile_minimap}}
+    {{/if}}
+    {{#if metaviewOpen}}
+      {{> metaview}}
+    {{/if}}
+    {{#if horizontalExists}}
+      {{#unless addingContext}}
+        <div class="browser-offset">
+          {{> story_browser}}
+        </div>
+      {{/unless}}
+    {{/if}}
+  {{/if}}
+
+  {{#if showContextOverlay}}
+    {{> context_overlay}}
+  {{/if}}
+
   {{#if adminMode}}
     {{> read_admin_ui}}
   {{/if}}
@@ -553,6 +558,17 @@
   {{#unless read}}
     {{> horizontal_section_edit_delete}}
   {{/unless}}
+</template>
+
+<template name="context_overlay">
+  {{#with overlaidContext}}
+    {{debugContext}}
+    <div class="context-overlay" style="height: {{windowHeight}}px; width: {{windowWidth}}px;">
+      <div class="context-overlay-content">
+        <img src="{{largeUrl}}" />
+      </div>
+    </div>
+  {{/with}}
 </template>
 
 
