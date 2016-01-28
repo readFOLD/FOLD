@@ -973,8 +973,8 @@ Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
 Template.display_image_section.helpers(horizontalBlockHelpers);
 Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 Template.display_image_section.events({
-    'click': function () {
-      if (Session.get('read')){
+    'click': function (e, t) {
+      if (Session.get('read') && !($(e.target).is('a'))){
         Session.set('contextOverlayId', this._id);
       }
     }
@@ -1660,9 +1660,6 @@ Template.context_overlay.helpers({
     if(Session.get('showDraft')) {
       return ContextBlocks.findOne(id);
     } else {
-      //console.log(this)
-      //console.log(this.contextBlocks)
-      //console.log(_.findWhere(this.contextBlocks, {_id: id}))
       return newTypeSpecificContextBlock(_.findWhere(this.contextBlocks, {_id: id}));
     }
   }
