@@ -2020,6 +2020,7 @@ div.loading-container {
   background-color: @white-color;
   left: 0;
   top: 0;
+  cursor: pointer;
 }
 
 .context-overlay-content{
