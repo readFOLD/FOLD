@@ -2017,7 +2017,7 @@ div.loading-container {
 .context-overlay {
   position: fixed;
   z-index: 300;
-  background-color: @white-color;
+  background-color: fade(@white-color, 95%);
   left: 0;
   top: 0;
   cursor: pointer;
