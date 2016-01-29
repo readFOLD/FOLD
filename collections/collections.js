@@ -942,6 +942,10 @@ GifBlock = (function (_super) {
     }
   };
 
+  GifBlock.prototype.largeUrl = function () {
+    return this.url(); // don't let gifs get large to preserve bandwidth
+  };
+
   GifBlock.prototype.url = function () {
     switch (this.source) {
       case 'giphy':
