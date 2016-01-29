@@ -358,7 +358,7 @@ ContextBlock.searchMappings = {
   flickr: {
     methodName: 'flickrImageSearchList',
     mapFn: function (e) {
-      var username, uploadDate, title;
+      var username, uploadDate, title, lgUrl, lgHeight, lgWidth;
       if (e.media) {
         //if single image result
         ownername = e.owner.username;
@@ -372,7 +372,8 @@ ContextBlock.searchMappings = {
         uploadDate = e.dateupload;
         title = e.title;
       }
-      return {
+
+      var info = {
         reference: {
           ownerName: ownername,
           flickrOwnerId: flickrOwnerId,
@@ -383,7 +384,26 @@ ContextBlock.searchMappings = {
           flickrServer: e.server,
           title: title
         }
+      };
+
+      // find the largest version of image available
+      _.each(['z', 'c', 'l', 'h', 'k', 'o'], function(sizeSuffix){
+        if(e['url_'+ sizeSuffix]){
+          lgUrl = e['url_'+ sizeSuffix];
+          lgHeight = e['height_'+ sizeSuffix];
+          lgWidth = e['width_'+ sizeSuffix];
+        }
+      });
+
+      if(lgUrl){
+        _.extend(info.reference, {
+          lgUrl: lgUrl,
+          lgHeight: lgHeight,
+          lgWidth: lgWidth
+        })
       }
+
+      return info
     }
   },
   cloudinary: {
@@ -821,6 +841,18 @@ ImageBlock = (function (_super) {
         if (this.reference.uploadDate) {
           return this.reference.uploadDate.toDateString();
         }
+    }
+  };
+
+  ImageBlock.prototype.largeUrl = function () {
+    switch (this.source) {
+      case 'flickr':
+        return this.reference.lgUrl || '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_z.jpg';
+      case 'cloudinary':
+        // TO-DO maybe use jpeg instead of png in certain situations
+        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + this.reference.id;
+      default:
+        return this.url();
     }
   };
 
@@ -1494,6 +1526,18 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
   flickrServer: {
+    type: String,
+    optional: true
+  },
+  lgUrl: {
+    type: String,
+    optional: true
+  },
+  lgHeight: {
+    type: String,
+    optional: true
+  },
+  lgWidth: {
     type: String,
     optional: true
   },

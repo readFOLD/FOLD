@@ -92,39 +92,44 @@
 </template>
 
 <template name="story">
-    <!-- Mesh Background Overlay -->
-    <!-- <div id="overlay"></div> -->
-    <article class="content entire-story">
-        <div class="vertical-narrative"
-             style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
-            {{> vertical_narrative}}
+  <!-- Mesh Background Overlay -->
+  <!-- <div id="overlay"></div> -->
+  <article class="content entire-story">
+    <div class="vertical-narrative"
+         style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
+      {{> vertical_narrative}}
 
-            {{> story_footer}}
-        </div>
-            <div class="horizontal-context">
-                {{> horizontal_context}}
-            </div>
-    </article>
+      {{> story_footer}}
+    </div>
+    <div class="horizontal-context">
+      {{> horizontal_context}}
+    </div>
+  </article>
 
 
-    {{#if pastHeader}}
-        {{#if showMinimap}}
-          {{> minimap}}
-        {{/if}}
-      {{#if showMobileMinimap}}
-          {{> mobile_minimap}}
-        {{/if}}
-        {{#if metaviewOpen}}
-          {{> metaview}}
-        {{/if}}
-        {{#if horizontalExists}}
-            {{#unless addingContext}}
-                <div class="browser-offset">
-                    {{> story_browser}}
-                </div>
-            {{/unless}}
-        {{/if}}
+  {{#if pastHeader}}
+    {{#if showMinimap}}
+      {{> minimap}}
     {{/if}}
+    {{#if showMobileMinimap}}
+      {{> mobile_minimap}}
+    {{/if}}
+    {{#if metaviewOpen}}
+      {{> metaview}}
+    {{/if}}
+    {{#if horizontalExists}}
+      {{#unless addingContext}}
+        <div class="browser-offset">
+          {{> story_browser}}
+        </div>
+      {{/unless}}
+    {{/if}}
+  {{/if}}
+
+  {{#if showContextOverlay}}
+    {{> context_overlay}}
+  {{/if}}
+
   {{#if adminMode}}
     {{> read_admin_ui}}
   {{/if}}
@@ -327,7 +332,7 @@
 </template>
 
 <template name="display_image_section">
-  <div class="display-context-section image-section {{#unless read}}always-show-caption{{/unless}}">
+  <div class="display-context-section image-section {{#unless read}}always-show-caption{{/unless}}{{#if read}}show-expand-icon{{/if}}">
     {{#if showVideo}}
       {{> looping_video}}
     {{else}}
@@ -341,6 +346,9 @@
       {{/if}}
     {{/if}}
     {{{textContent}}}
+    <div class="expand-icon-box">
+      {{> expand_icon}}
+    </div>
   </div>
   {{#unless read}}
     {{> horizontal_section_edit_delete}}
@@ -553,6 +561,16 @@
   {{#unless read}}
     {{> horizontal_section_edit_delete}}
   {{/unless}}
+</template>
+
+<template name="context_overlay">
+  {{#with overlaidContext}}
+    <div class="context-overlay" style="height: {{windowHeight}}px; width: {{windowWidth}}px;">
+      <div class="context-overlay-content">
+        <img src="{{largeUrl}}" />
+      </div>
+    </div>
+  {{/with}}
 </template>
 
 
