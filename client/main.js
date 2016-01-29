@@ -1684,3 +1684,7 @@ Template.context_overlay.events({
     return false
   }
 });
+
+Template.loading_page.onRendered(function(){
+  $(window).scrollTop(0);
+});
