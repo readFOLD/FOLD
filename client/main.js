@@ -1678,7 +1678,6 @@ Template.context_overlay.events({
     Session.set('contextOverlayId', null);
   },
   'scroll': function (e) {
-    console.log('bfkldsfkdslfkls')
     e.preventDefault();
     e.stopPropagation();
     return false
