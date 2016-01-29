@@ -1665,9 +1665,22 @@ Template.context_overlay.helpers({
   }
 })
 
+Template.context_overlay.onCreated(function(){
+  document.body.style.overflow = 'hidden';
+});
+
+Template.context_overlay.onDestroyed(function(){
+  document.body.style.overflow = 'auto';
+});
+
 Template.context_overlay.events({
-    'click': function () {
-      Session.set('contextOverlayId', null);
-    }
+  'click': function () {
+    Session.set('contextOverlayId', null);
+  },
+  'scroll': function (e) {
+    console.log('bfkldsfkdslfkls')
+    e.preventDefault();
+    e.stopPropagation();
+    return false
   }
-);
+});
