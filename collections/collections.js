@@ -358,7 +358,7 @@ ContextBlock.searchMappings = {
   flickr: {
     methodName: 'flickrImageSearchList',
     mapFn: function (e) {
-      var username, uploadDate, title, lgUrl, lgHeight, lgWidth;
+      var username, uploadDate, title, lgUrl, lgHeight, lgWidth, flickrSecretOrig, formatOrig;
       if (e.media) {
         //if single image result
         ownername = e.owner.username;
@@ -386,21 +386,27 @@ ContextBlock.searchMappings = {
         }
       };
 
-      // find the largest version of image available
-      _.each(['z', 'c', 'l', 'h', 'k', 'o'], function(sizeSuffix){
-        if(e['url_'+ sizeSuffix]){
-          lgUrl = e['url_'+ sizeSuffix];
-          lgHeight = e['height_'+ sizeSuffix];
-          lgWidth = e['width_'+ sizeSuffix];
-        }
-      });
-
-      if(lgUrl){
+      if(e.originalsecret && e.originalformat){ // check if original is available
         _.extend(info.reference, {
-          lgUrl: lgUrl,
-          lgHeight: lgHeight,
-          lgWidth: lgWidth
+          flickrSecretOrig: e.originalsecret,
+          flickrFormatOrig:  e.originalformat
         })
+      } else {
+        // find the largest version of image available
+        _.each(['z', 'c', 'l', 'h', 'k', 'o'], function(sizeSuffix){
+          if(e['url_'+ sizeSuffix]){
+            lgUrl = e['url_'+ sizeSuffix];
+            lgHeight = e['height_'+ sizeSuffix];
+            lgWidth = e['width_'+ sizeSuffix];
+          }
+        });
+        if(lgUrl){
+          _.extend(info.reference, {
+            lgUrl: lgUrl,
+            lgHeight: lgHeight,
+            lgWidth: lgWidth
+          })
+        }
       }
 
       return info
@@ -847,7 +853,13 @@ ImageBlock = (function (_super) {
   ImageBlock.prototype.largeUrl = function () {
     switch (this.source) {
       case 'flickr':
-        return this.reference.lgUrl || '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_z.jpg';
+        if (this.reference.flickrSecretOrig){ // check for original
+          return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecretOrig + '_o.' + this.reference.flickrFormatOrig;
+        } else if (this.reference.lgUrl){  // check for largest url available
+          return this.reference.lgUrl
+        } else { // fallback to size "z"
+          return '//farm' + this.reference.flickrFarm + '.staticflickr.com/' + this.reference.flickrServer + '/' + this.reference.id + '_' + this.reference.flickrSecret + '_z.jpg';
+        }
       case 'cloudinary':
         // TO-DO maybe use jpeg instead of png in certain situations
         return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/' + this.reference.id;
@@ -1526,6 +1538,14 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
   flickrServer: {
+    type: String,
+    optional: true
+  },
+  flickrSecretOrig: {
+    type: String,
+    optional: true
+  },
+  flickrFormatOrig: {
     type: String,
     optional: true
   },
