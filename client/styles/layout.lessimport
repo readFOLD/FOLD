@@ -757,7 +757,7 @@ div.image-section {
 
 
   .expand-icon-box{
-    display: none;
+    opacity: 0;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
     left: 8px;
@@ -771,12 +771,15 @@ div.image-section {
       .center-over-parent-div;
     }
   }
-  &:hover.show-expand-icon{
+  &.show-expand-icon{
     cursor: pointer;
-    .expand-icon-box{
-      display: block;
+    &:hover{
+      .expand-icon-box{
+        opacity: 1;
+      }
     }
   }
+
 
 
   img.giphy-logo {
@@ -786,7 +789,7 @@ div.image-section {
     width: 150px;
   }
   
-  .text-content {
+  .text-content, .expand-icon-box {
     .opacity-background-transition;
   }
 
