@@ -974,8 +974,9 @@ Template.display_image_section.helpers(horizontalBlockHelpers);
 Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 Template.display_image_section.events({
     'click': function (e, t) {
-      if (Session.get('read') && !($(e.target).is('a'))){
+      if (Session.get('read') && !($(e.target).is('a')) && !Meteor.Device.isPhone()){
         Session.set('contextOverlayId', this._id);
+        trackEvent('Expand image card');
       }
     }
   }
