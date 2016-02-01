@@ -207,8 +207,8 @@ window.horizontalExists = function(){
 }
 
 $(document).keydown(function(e) {
-  if ((Router.current().route.getName() === 'read') && !signingIn()){
-    letter = String.fromCharCode(e.keyCode);
+  if ((Router.current().route.getName() === 'read' || (Router.current().route.getName() === 'create' && Session.get('read'))) && !signingIn()){
+    var letter = String.fromCharCode(e.keyCode);
     switch(letter){
       case 'J':
         goDownOneCard();
@@ -238,6 +238,10 @@ $(document).keydown(function(e) {
         break;
       case ' ': // spacebar
         break;
+    }
+  } else if (signingIn() && Session.equals('signinStage', 'signup')){
+    if(e.keyCode === 27){ // esc
+      closeSignInOverlay();
     }
   }
 });
