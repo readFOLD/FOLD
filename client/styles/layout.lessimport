@@ -962,6 +962,9 @@ div.link-section {
       max-height: 110px;
       padding-top: 15px;
     }
+    &.empty{
+      color: @placeholder-color;
+    }
   }
 
 

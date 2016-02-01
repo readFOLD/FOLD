@@ -483,7 +483,7 @@
   {{#if editingDescription}}
     <textarea class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}" rows="5">{{linkDescription}}</textarea>
   {{else}}
-    <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}}"><span>{{linkDescription}}</span></div>
+    <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}} {{#unless linkDescription}}empty{{/unless}}"><span>{{#if linkDescription}}{{linkDescription}}{{else}}{{#unless read}}Click to add a description{{/unless}}{{/if}}</span></div>
   {{/if}}
     <div class="bottom">
       <a class="read-more {{#unless read}}inactive{{/unless}}" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
