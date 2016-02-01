@@ -69,21 +69,32 @@ Story = (function() {
     var maxHeight = (size === 'small') ? 230 : 350;
 
     if (image) {
-      if (image < 10){ // if it's a placeholder image
-        var color;
+      if (image <= 13){ // if it's a placeholder image
 
-        switch(image){
-          case '1':
-            color = panelColor;
-            break;
-          case '2':
-            color = orangeColor;
-            break;
-          default:
-            throw new Meteor.Error('Placeholder color not found');
+        var headerAtmosphereMap = {
+          1: "SAUCERS",
+          2: "OCEAN",
+          3: "FLOWERS",
+          4: "BUILDING",
+          5: "LIGHTNING",
+          6: "DANCER",
+          7: "CUBES",
+          8: "COMPUTER",
+          9: "MARSH",
+          10: "RINGS",
+          11: "MOTH",
+          12: "MOUNTAINS",
+          13: "AERIAL"
+        };
+
+        var headerAtmosphereName = headerAtmosphereMap[image];
+
+        if (!headerAtmosphereName){
+          throw new Meteor.Error('Header atmosphere not found');
         }
 
-        url = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='3'><linearGradient id='gradient' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='10%' stop-color='" + color  + "'/><stop offset='90%' stop-color='" + whiteColor + "'/> </linearGradient><rect fill='url(#gradient)' x='0' y='0' width='100%' height='100%'/></svg>"
+        url = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_north,h_' + maxHeight + ',w_' + maxWidth + '/static/header_atmosphere_' + headerAtmosphereName
+
       } else {
         url = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_north,h_' + maxHeight + ',w_' + maxWidth + '/' + image
       }
@@ -1846,7 +1857,7 @@ var sharedStorySchema = function(options) {
             return this.unset();
           }
         }
-        var placeholderNumber = _.random(1,2).toString();
+        var placeholderNumber = _.random(1,13).toString();
         if (this.isSet) {
           return this.value;
         } else if (this.isInsert) {
