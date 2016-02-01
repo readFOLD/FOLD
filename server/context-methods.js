@@ -275,6 +275,10 @@ Meteor.methods({
       limit: 50
     };
 
+    if (query.indexOf('giphy.com') !== -1) { // if paste in an gif link, query for the id from the url
+      requestParams.q = _.chain(query.split('/')).compact().last().value().match(/[\w]*/)[0]
+    }
+
     var res = HTTP.get('http://api.giphy.com/v1/gifs/search', {
       params: requestParams
     });
