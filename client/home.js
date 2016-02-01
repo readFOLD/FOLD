@@ -128,7 +128,7 @@ Template.filters.helpers({
     return _.map(filters, function(filter){
       return {
         value: filter,
-        label: filter === 'curated' ? 'FOLD picks' : filter
+        label: filter === 'curated' ? 'FOLD Picks' : _s.capitalize(filter)
       }
     })
   },
