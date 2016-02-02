@@ -455,8 +455,7 @@ div.stories {
     }
   }
 
-
-  div.story {
+  div.story, .activity-feed {
     border: 1px solid @inactive-color;
     background-color: @white-color;
 

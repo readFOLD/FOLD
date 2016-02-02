@@ -115,5 +115,13 @@ Meteor.methods({
 
     this.setUserId(otherUser._id);
     return otherUser._id
+  },
+  getActivityFeed: function(){
+    if(!this.userId){
+      throw new Meteor.Error("Only users may get their activity feed");
+    }
+
+    var activityIds = ActivityFeedItems.find({uId: this.userId}, {sort:{r: -1}, limit: 50, fields: {'aId' : 1}}).map(function(i){return i.aId}); // FETCH THE ID MAP OR SOMETHING
+    return Activities.find({_id: {$in: activityIds}}).fetch();
   }
 });

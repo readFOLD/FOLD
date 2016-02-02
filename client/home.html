@@ -187,6 +187,10 @@
     {{/unless}}
   {{/unless}}
 
+  {{#if adminMode}}
+    {{> activity_feed}}
+  {{/if}}
+
   {{#each stories}}
     {{> story_preview story=this }}
   {{else}}
@@ -334,5 +338,15 @@
 <template name="edit_or_read_bar">
   <div class="edit-or-read">
 
+  </div>
+</template>
+
+<template name="activity_feed">
+  <div class="activity-feed">
+    {{#each populatedFeedItems}}
+      <div class="feed-item">
+        {{actor.name}} {{type}}d {{object.name}}
+      </div>
+    {{/each}}
   </div>
 </template>
