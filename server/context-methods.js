@@ -275,10 +275,26 @@ Meteor.methods({
       limit: 50
     };
 
+    var urlItems = [];
+
     if (query.indexOf('giphy.com') !== -1) { // if paste in an gif link, query for the id from the url
       var pathSegment = _.chain(query.split('/')).compact().last().value();
       var id = _.last(pathSegment.split('-')).match(/[\w]*/)[0]; // if it's a url just send the id at the end of the path segment without any extension;
-      requestParams.q = id;
+      var res;
+      try {
+        res = HTTP.get('http://api.giphy.com/v1/gifs/' + id, {
+          params: {
+            api_key: GIPHY_API_KEY
+          }
+        });
+      } catch (err) {
+        if (!err.response || err.response.statusCode !== 404) { // swallow 404's, rethrow others
+          throw err;
+        }
+      }
+      if (res.data && res.data.data) {
+        urlItems[0] = res.data.data;
+      }
     }
 
     var res = HTTP.get('http://api.giphy.com/v1/gifs/search', {
@@ -306,7 +322,7 @@ Meteor.methods({
 
     return {
       nextPage: nextPage,
-      items: items
+      items: urlItems.concat(items)
     }
   },
   soundcloudAudioSearchList: function (query, option, page) {
