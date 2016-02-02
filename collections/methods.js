@@ -602,7 +602,11 @@ Meteor.methods({
   },
   favoriteStory: function(storyId) {
     check(storyId, String);
-    return changeFavorite.call(this, storyId, true);
+    var success = changeFavorite.call(this, storyId, true);
+    if(success){
+      generateFavoriteActivity(this.userId, storyId)
+    }
+    return success;
   },
   unfavoriteStory: function(storyId) {
     check(storyId, String);
