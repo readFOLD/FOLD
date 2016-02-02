@@ -2124,3 +2124,79 @@ this.StoryStats.attachSchema(Schema.StoryStats);
 
 
 this.StoryHistories = new Mongo.Collection("story_histories");
+
+
+this.Activities = new Mongo.Collection("activities");
+
+var objectSchema = new SimpleSchema({
+  type: {
+    type: String,
+    allowedValues: ['person', 'story', 'context_card']
+  },
+  id: {
+    type: String
+  },
+  name: {
+    type: String
+  }
+});
+
+Schema.Activities = new SimpleSchema({
+  type: { // follow, favorite etc...
+    type: String,
+    allowedValues: ['favorite']
+  },
+  content: { // for ex., message contents
+    type: String,
+    optional: true
+  },
+  published: { // when this happened
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date;
+      } else if (this.isUpsert) {
+        return {$setOnInsert: new Date};
+      } else {
+        this.unset();
+      }
+    }
+  },
+  fanout: { // fanout status
+    type: String,
+    defaultValue: 'pending',
+    allowedValues: ['pending', 'in_progress', 'done']
+  },
+  actor: {
+    type: objectSchema,
+    optional: true
+  },
+  object: {
+    type: objectSchema,
+    optional: true
+  },
+  //target: {
+  //  type: objectSchema,
+  //  optional: true
+  //}
+});
+
+this.Activities.attachSchema(Schema.Activities);
+
+
+
+this.ActivityFeedItems = new Mongo.Collection("activity_feed_items");
+
+Schema.ActivityFeedItems = new SimpleSchema({
+  uId: { // userId
+    type: String
+  },
+  aId: { // actionId
+    type: String
+  },
+  r: { // relevancy
+    type: Date
+  }
+});
+
+this.ActivityFeedItems.attachSchema(Schema.ActivityFeedItems);
