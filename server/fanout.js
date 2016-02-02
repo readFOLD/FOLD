@@ -10,7 +10,20 @@ var runFanout = function (options) {
 
   var timeLogs = [];
 
-  var pendingActivities = Activities.find({fanout: "pending"});
+  var pendingActivities;
+
+  if (options.cleanup) {
+    pendingActivities = Activities.find({fanout: "in_progress"}); // find partially fanned out activities
+    pendingActivities.forEach(function(activity){
+      ActivityFeedItems.remove({aId: activity._id}); // remove the related feed items
+    });
+    // then try to fan them out again
+
+    timeLogs.push('in progress activities fetch and activity feed cleanup time: ' + ((Date.now() - previousTimepoint) / 1000) + ' seconds');
+    previousTimepoint = Date.now();
+  } else {
+    pendingActivities = Activities.find({fanout: "pending"}); // this is the default
+  }
 
   timeLogs.push('pending activities fetch time: ' + ((Date.now() - previousTimepoint) / 1000) + ' seconds');
   previousTimepoint = Date.now();
@@ -29,21 +42,26 @@ var runFanout = function (options) {
 
 };
 
-var jobWaitInSeconds = parseInt(process.env.JOB_WAIT) || 5 * 60; // default is every 5 minutes
+var fanOutWaitInSeconds = parseInt(process.env.FANOUT_WAIT) || 5 * 60; // default is every 5 minutes
 
 
 if (process.env.PROCESS_TYPE === 'fanout_worker') { // if a worker process
   Meteor.startup(function () {
     while (true) {
       runFanout();
-      Meteor._sleepForMs(jobWaitInSeconds * 1000);
+      Meteor._sleepForMs(fanOutWaitInSeconds * 1000);
     }
+  });
+} else if (process.env.PROCESS_TYPE === 'cleanup_fanout_worker') { // don't run this while fanout worker is running
+  Meteor.startup(function () {
+    runFanout({cleanup: true});
+    process.exit();
   });
 } else if (process.env.NODE_ENV === 'development') { // however, in developement, run fanout more quickly
   Meteor.startup(function () {
     var backgroundFanout = function(){
       Meteor.setTimeout(function(){
-        runFanout({logging: true});
+        runFanout({logging: false});
         backgroundFanout();
       }, 1000);
     };
