@@ -54,6 +54,7 @@ fanToTarget = function(activity){
   generateActivityFeedItem(activity.target.id, activity._id, activity.published);
 };
 
+
 fanoutActivity = function(activity){
   check(activity, Object);
   check(activity.published, Date);
@@ -61,8 +62,11 @@ fanoutActivity = function(activity){
   Activities.update(activity._id, {$set: {fanout: 'in_progress'}});
 
   switch(activity.type){
-    case 'favorite':
-      fanToActor(activity);
+    case 'Favorite':
+      var story = Stories.findOne(activity.object.id, {fields: {authorId: 1}});
+      if(story){
+        generateActivityFeedItem(story.authorId, activity._id, activity.published);
+      }
       break;
     default:
       throw new Error('Activity type not matched for activity: ' + activity._id);

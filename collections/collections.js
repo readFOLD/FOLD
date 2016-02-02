@@ -2131,7 +2131,7 @@ this.Activities = new Mongo.Collection("activities");
 var objectSchema = new SimpleSchema({
   type: {
     type: String,
-    allowedValues: ['person', 'story', 'context_card']
+    allowedValues: ['Person', 'Story', 'ContextCard']
   },
   id: {
     type: String
@@ -2144,7 +2144,7 @@ var objectSchema = new SimpleSchema({
 Schema.Activities = new SimpleSchema({
   type: { // follow, favorite etc...
     type: String,
-    allowedValues: ['favorite']
+    allowedValues: ['Favorite']
   },
   content: { // for ex., message contents
     type: String,
