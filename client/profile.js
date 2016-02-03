@@ -265,7 +265,7 @@ Template.user_following.helpers({
   usersFollowing: function() {
     var following = this.user.profile.following;
     if (following && following.length) {
-      return Users.find({
+      return Meteor.users.find({
         _id: {
           $in: following
         }}, {

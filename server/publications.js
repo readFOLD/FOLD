@@ -299,10 +299,13 @@ Meteor.publish("userProfilePub", function(username) { // includes user profile a
   }, {
     fields: {
       "profile" : 1,
-      "followers": 1,
       "username" : 1,
       "displayUsername" : 1,
-      "services.twitter.id": 1
+      "services.twitter.id": 1,
+      "followers": 1,
+      "followingTotal": 1,
+      "followersTotal": 1,
+      "favoritesTotal": 1
     },
     limit: 1
   });
@@ -325,6 +328,15 @@ Meteor.publish("userProfilePub", function(username) { // includes user profile a
       fields : previewStoryFields,
       limit: 100 // initial limit
   })]
+          "services.twitter.id": 1,
+          "followers": 1,
+          "followingTotal": 1,
+          "followersTotal": 1,
+          "favoritesTotal": 1
+        },
+        limit: 100 // initial limit
+      }
+    )]
 });
 
 Meteor.publish("userStoriesPub", function(username) { // only published stories

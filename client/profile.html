@@ -128,9 +128,7 @@
   <h1>Following</h1>
   {{#if user.followingTotal}}
     {{#each usersFollowing}}
-        <div class="profile person" data-person-id="{{_id}}">
-          {{name}}
-        </div>
+      {{> person_card person=this onProfilePage=true}}
     {{/each}}
   {{else}}
     <div class="message">
@@ -185,4 +183,13 @@
       {{/each}}
     {{/if}}
     </div>
+</template>
+
+<template name="person_card">
+  <div class="person {{#if onProfilePage}}profile{{/if}}" data-person-id="{{person._id}}">
+    <div class="picture"><img class="profile-picture-large" src="{{profileImage person 'large'}}"></div>
+    <div class="name">{{person.profile.name}}</div>
+    <div class="bio">{{person.profile.bio}}</div>
+    <div class="follow-button-container">{{>follow_button}}</div>
+  </div>
 </template>
