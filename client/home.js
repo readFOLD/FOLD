@@ -296,7 +296,7 @@ Template.all_stories.onCreated(function(){
     if (!that.view.isDestroyed){ // because this happens asynchronously, the user may have already navigated away
       that.autorun(function(){
         whichUserPics.depend();
-        that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}));
+        that.subscribe('minimalUsersPub', _.sortBy(Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}), _.identity));
       });
     }
     subscribeToTrendingStories(function() {
@@ -344,7 +344,7 @@ Template.all_stories.onCreated(function(){
   });
 
   subscribeToSearchedMinimalUsers = _.debounce(function(){
-    return searchUserSubs.subscribe('minimalUsersPub', StorySearch.getData({}, true).map(function(story){return story.authorId}));
+    return searchUserSubs.subscribe('minimalUsersPub', _.sortBy(StorySearch.getData({}, true).map(function(story){return story.authorId}), _.identity));
   }, 1000);
 
   this.autorun(function(){

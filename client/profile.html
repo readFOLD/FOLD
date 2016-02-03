@@ -23,7 +23,7 @@
             {{> user_following}}
           {{else}}
             {{#if showFollowers}}
-
+              {{> user_followers}}
             {{/if}}
           {{/if}}
         {{/if}}
@@ -37,22 +37,22 @@
   {{#if editing}}
     <div class="user-info-form">
       {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="method-update" meteormethod="updateProfile" validation="keyup"}}
-      <button type="submit" class="save-profile-button">Save</button>
-      
-       <div class="picture">
-        <input type="file" accept="image/*" class="overlay {{#if uploadingPicture}}uploading{{/if}}">
-        {{#if uploadPreview}}
-          <img class="profile-picture-large" src="{{uploadPreview}}">
-        {{else}}
-          <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>
-        {{/if}}
-     </div>
-      <div class="user-info">
-        {{> afQuickField name='profile.name'}}
-        {{> afQuickField name='profile.bio' class="bio-form" placeholder="Tell the world a little about yourself!"}}
-      </div>
-    {{/autoForm}}
-  </div>
+        <button type="submit" class="save-profile-button">Save</button>
+
+        <div class="picture">
+          <input type="file" accept="image/*" class="overlay {{#if uploadingPicture}}uploading{{/if}}">
+          {{#if uploadPreview}}
+            <img class="profile-picture-large" src="{{uploadPreview}}">
+          {{else}}
+            <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>
+          {{/if}}
+        </div>
+        <div class="user-info">
+          {{> afQuickField name='profile.name'}}
+          {{> afQuickField name='profile.bio' class="bio-form" placeholder="Tell the world a little about yourself!"}}
+        </div>
+      {{/autoForm}}
+    </div>
   {{else}}
     {{#if ownProfile}}
       <button class="edit-profile">Edit Your Profile</button>
@@ -62,6 +62,9 @@
     </div>
     <div class="name">{{name}}</div>
     <div class="bio">{{bio}}</div>
+    <div class="following">{{user.followingTotal}} following</div>
+    <div class="followers">{{user.followersTotal}} followers</div>
+    {{> follow_button userId=user._id}}
   {{/if}}
 </template>
 
@@ -141,6 +144,23 @@
   {{/if}}
 </template>
 
+<template name="user_followers">
+  <h1>Followers</h1>
+  {{#if user.followersTotal}}
+    {{#each followers}}
+      {{> person_card person=this onProfilePage=true}}
+    {{/each}}
+  {{else}}
+    <div class="message">
+      {{#if ownProfile}}
+        You don't have any followers yet.<br>Try your luck? {{> create_story}}
+      {{else}}
+        {{user.profile.name}} doesn't have any followersyet, but they just got here. Give 'em some time!
+      {{/if}}
+    </div>
+  {{/if}}
+</template>
+
 
 <template name="my_story_profile">
   {{> top_banner}}
@@ -190,6 +210,6 @@
     <div class="picture"><img class="profile-picture-large" src="{{profileImage person 'large'}}"></div>
     <div class="name">{{person.profile.name}}</div>
     <div class="bio">{{person.profile.bio}}</div>
-    <div class="follow-button-container">{{>follow_button}}</div>
+    <div class="follow-button-container">{{>follow_button userId=person._id}}</div>
   </div>
 </template>

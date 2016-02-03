@@ -2045,6 +2045,14 @@ div.loading-container {
   }
 }
 
+
+.follow-button{
+  button{
+    background-color: @action-color;
+    color: @black-color;
+  }
+}
+
 .not-found{
   position: absolute;
   .content{

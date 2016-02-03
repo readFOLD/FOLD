@@ -113,13 +113,16 @@ Template.user_profile.onCreated(function(){
   var that = this;
 
   this.autorun(function(){
-    that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}));
+    var usersFromStories = Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId});
+    var user = Meteor.user();
+    var usersToSubscribeTo = _.compact(_.union(usersFromStories, user.profile.following, user.followers));
+    that.subscribe('minimalUsersPub', _.sortBy(usersToSubscribeTo, _.identity));
   });
   
   this.editing = new ReactiveVar(false);
   this.uploadPreview = new ReactiveVar();
   this.uploadingPicture = new ReactiveVar();
-  this.pictureId = new ReactiveVar()
+  this.pictureId = new ReactiveVar();
 });
 
 
@@ -270,7 +273,26 @@ Template.user_following.helpers({
           $in: following
         }}, {
           sort: {
-            followingTotal: -1
+            followersTotal: -1
+            }
+      })
+    } else {
+      return [];
+    }
+  },
+  ownProfile: ownProfile
+});
+
+Template.user_followers.helpers({
+  followers: function() {
+    var followers = this.user.followers;
+    if (followers && followers.length) {
+      return Meteor.users.find({
+        _id: {
+          $in: followers
+        }}, {
+          sort: {
+            followersTotal: -1
             }
       })
     } else {
