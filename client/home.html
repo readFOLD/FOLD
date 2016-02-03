@@ -319,6 +319,11 @@
           </div>
         </div>
       </a>
+      {{#if showProfileInfo}}
+        <div class="profile-info">
+          {{>follow_button userId=authorId}}
+        </div>
+      {{/if}}
 
       <div class="pull-right">
         {{> favorite_button }}

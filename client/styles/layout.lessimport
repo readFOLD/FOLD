@@ -2047,7 +2047,9 @@ div.loading-container {
 
 
 .follow-button{
+  width: 100px;
   button{
+    .size-to-fit;
     background-color: @action-color;
     color: @black-color;
   }

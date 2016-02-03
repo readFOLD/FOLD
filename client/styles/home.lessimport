@@ -355,6 +355,25 @@ div.stories {
   div.byline {
     //padding: 33px 25px;
     margin-left: 40px;
+    .profile-info{
+      position: absolute;
+      bottom: 90px;
+      left: 75px;
+      background-color: @black-color;
+      &:after{
+        @triangleSize: 8px;
+        content:'';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -@triangleSize;
+        width: 0;
+        height: 0;
+        border-top: solid @triangleSize @black-color;
+        border-left: solid @triangleSize transparent;
+        border-right: solid @triangleSize transparent;
+      }
+    }
     div.pull-left {
       width: 100%;
       position: absolute;

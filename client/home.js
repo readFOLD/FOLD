@@ -435,11 +435,47 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
 });
 
 
-
 Template.story_preview.helpers({
   story: function(){
     return Template.instance().data.story || Stories.findOne(this._id);
   }
+});
+
+
+Template._story_preview_content.onCreated(function(){
+  this.showProfileInfoVariable = new ReactiveVar();
+  this.lastBylineHoverEvent = null;
+  var that = this;
+  var timer = null;
+  this.hideProfileInfo = function(){
+    timer = Meteor.setTimeout(function(){
+      that.showProfileInfoVariable.set(false);
+      timer = null;
+    }, 500)
+  };
+  this.cancelHideProfileInfo = function(){
+    if(timer){
+      Meteor.clearTimeout(timer);
+    }
+  };
+  this.showProfileInfo = function(){
+    that.cancelHideProfileInfo();
+    that.showProfileInfoVariable.set(true);
+  }
+});
+
+Template._story_preview_content.helpers({
+  showProfileInfo: function(){
+    return Template.instance().showProfileInfoVariable.get()
+  }
+});
+Template._story_preview_content.events({
+  "mouseenter .byline": function(d) {
+    Template.instance().showProfileInfo();
+  },
+  "mouseleave .byline": function(d) {
+    Template.instance().hideProfileInfo();
+  },
 });
 
 Template._story_preview_content.helpers({
