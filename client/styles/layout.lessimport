@@ -755,6 +755,33 @@ div.image-section {
     }
   }
 
+
+  .expand-icon-box{
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    .size(40px);
+    .fg{
+      fill: @white-color;
+    }
+    svg{
+      .size(20px);
+      .center-over-parent-div;
+    }
+  }
+  &.show-expand-icon{
+    cursor: pointer;
+    &:hover{
+      .expand-icon-box{
+        opacity: 1;
+      }
+    }
+  }
+
+
+
   img.giphy-logo {
     position: absolute;
     bottom: 10px;
@@ -762,7 +789,7 @@ div.image-section {
     width: 150px;
   }
   
-  .text-content {
+  .text-content, .expand-icon-box {
     .opacity-background-transition;
   }
 
@@ -816,6 +843,11 @@ div.image-section {
     min-height: 36px;
 
   }
+
+  .looping-video{
+    .size-to-fit;
+  }
+
   img, video {
     width: auto;
     max-width: 100%;
@@ -929,6 +961,9 @@ div.link-section {
       clear: both;
       max-height: 110px;
       padding-top: 15px;
+    }
+    &.empty{
+      color: @placeholder-color;
     }
   }
 
@@ -1982,6 +2017,40 @@ div.loading-container {
     }
     .animation(spin 0.9s 1);
     height: 100%;
+  }
+}
+
+.context-overlay {
+  position: fixed;
+  z-index: 300;
+  background-color: fade(@white-color, 95%);
+  left: 0;
+  top: 0;
+  cursor: pointer;
+}
+
+.context-overlay-content{
+  .center-over-parent-div;
+  width: 80%;
+  height: 80%;
+
+  img, video {
+    width: auto;
+    max-width: 100%;
+    margin: auto;
+    vertical-align: middle;
+    display: inline-block;
+    max-height: 100%;
+    .center-over-parent-div;
+  }
+}
+
+.not-found{
+  position: absolute;
+  .content{
+    .center-over-parent-div;
+    text-align: center;
+    line-height: normal;
   }
 }
 

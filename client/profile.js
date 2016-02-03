@@ -260,3 +260,22 @@ Template.user_favorite_stories.helpers({
   },
   ownProfile: ownProfile
 });
+
+Template.user_following.helpers({
+  usersFollowing: function() {
+    var following = this.user.profile.following;
+    if (following && following.length) {
+      return Users.find({
+        _id: {
+          $in: following
+        }}, {
+          sort: {
+            followingTotal: -1
+            }
+      })
+    } else {
+      return [];
+    }
+  },
+  ownProfile: ownProfile
+});

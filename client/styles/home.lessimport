@@ -133,7 +133,6 @@ div.home-top {
       box-shadow: none;
     }
     .sod_label{
-      text-align: center;
     }
 
     span.categories {
@@ -340,6 +339,8 @@ div.stories {
     background-color: @white-color;
     .FFMarkWebBold;
     height: auto;
+    max-height: 210px;
+    overflow: hidden;
     /*height depends on length of story headline*/
     width: 100%;
     position: relative;

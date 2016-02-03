@@ -41,6 +41,12 @@ Template.signin_overlay.events({
     closeSignInOverlay();
     trackEvent('Click close sign-in overlay');
   },
+  "click": function(e){
+    if($(e.currentTarget).hasClass('signin-overlay') && Session.equals('signinStage', 'signup')){
+      closeSignInOverlay();
+      trackEvent('Click outside sign-in overlay and close');
+    }
+  },
   "click .twitter-signin": function(d) {
     Meteor.loginWithTwitter({
       requestPermissions: ['user']

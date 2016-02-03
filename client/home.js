@@ -62,6 +62,7 @@ Template.search.onCreated(function() {
 
 Template.search.onRendered(function() {
   if(this.data.slim){
+    this.$("button").hide(); // hack to hide button
   } else {
     var storySearchQuery;
     if(storySearchQuery = Session.get('storySearchQuery')){
@@ -72,7 +73,7 @@ Template.search.onRendered(function() {
 
 Template.search.helpers({
   showClearSearch: function(){
-    return Session.get('storySearchQuery') ? true : false;
+    return Session.get('storySearchQuery');
   }
 });
 
@@ -87,6 +88,11 @@ Template.search.events({
     t.$("input").val(null);
     t.$("button").hide();
 
+  },
+  'keydown': function(e, t){
+    if(t.data.slim){
+      t.$("button").show(); // compensate for hack from above
+    }
   }
 });
 
@@ -128,7 +134,7 @@ Template.filters.helpers({
     return _.map(filters, function(filter){
       return {
         value: filter,
-        label: filter === 'curated' ? 'FOLD picks' : filter
+        label: filter === 'curated' ? 'FOLD Picks' : _s.capitalize(filter)
       }
     })
   },

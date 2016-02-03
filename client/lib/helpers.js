@@ -176,7 +176,7 @@ window.trackingInfoFromPage = function () {
   var info = {
     currentRoutePath: window.location.pathname
   };
-  if(currentRoute){
+  if(currentRoute && currentRoute.route){
     _.extend(info, {
       currentRouteName: currentRoute.route.getName()
     })

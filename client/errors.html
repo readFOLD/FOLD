@@ -1,8 +1,27 @@
 <template name="story_not_found">
-  <h1>Story Not Found</h1>
+  <div class="story-not-found not-found" style="height: {{windowHeight}}px; width: {{windowWidth}}px;">
+    <div class="content">
+      <h1>Sorry, we can't find the story you're looking for!</h1>
+      {{> random_story}}
+    </div>
+  </div>
 </template>
 
 
 <template name="user_not_found">
-  <h1>User Not Found</h1>
+  <div class="user-not-found not-found" style="height: {{windowHeight}}px; width: {{windowWidth}}px;">
+    <div class="content">
+      <h1>Sorry, we can't find the user you're looking for!</h1>
+      {{> random_story}}
+    </div>
+  </div>
+</template>
+
+<template name="not_found">
+  <div class="not-found" style="height: {{windowHeight}}px; width: {{windowWidth}}px;">
+    <div class="content">
+      <h1>Oops, we can't find the page you're looking for!</h1>
+      {{> random_story}}
+    </div>
+  </div>
 </template>

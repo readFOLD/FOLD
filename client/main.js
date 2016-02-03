@@ -443,6 +443,9 @@ Template.story.helpers({
   },
   showMobileMinimap: function() {
     return Session.get("showMinimap") && (Meteor.Device.isPhone());
+  },
+  showContextOverlay: function(){
+    return Session.get('contextOverlayId');
   }
 });
 
@@ -969,6 +972,15 @@ Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
 //Template.display_image_section.onCreated(editableDescriptionDestroyedBoilerplate('editHorizontalBlockDescription'));
 Template.display_image_section.helpers(horizontalBlockHelpers);
 Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
+Template.display_image_section.events({
+    'click': function (e, t) {
+      if (Session.get('read') && !($(e.target).is('a')) && !Meteor.Device.isPhone()){
+        Session.set('contextOverlayId', this._id);
+        trackEvent('Expand image card');
+      }
+    }
+  }
+);
 
 Template.display_audio_section.helpers(horizontalBlockHelpers);
 
@@ -1705,4 +1717,39 @@ Template.read.onDestroyed(function(){
   // send all existing heartbeats when leave a story
   subtractSentActiveHeartbeatCount(); // in case there is already a count pending don't double-do it
   activeHeartbeatCountSender(true);
+});
+
+
+Template.context_overlay.helpers({
+  overlaidContext: function(){
+    var id = Session.get('contextOverlayId');
+    if(Session.get('showDraft')) {
+      return ContextBlocks.findOne(id);
+    } else {
+      return newTypeSpecificContextBlock(_.findWhere(this.contextBlocks, {_id: id}));
+    }
+  }
+})
+
+Template.context_overlay.onCreated(function(){
+  document.body.style.overflow = 'hidden';
+});
+
+Template.context_overlay.onDestroyed(function(){
+  document.body.style.overflow = 'auto';
+});
+
+Template.context_overlay.events({
+  'click': function () {
+    Session.set('contextOverlayId', null);
+  },
+  'scroll': function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false
+  }
+});
+
+Template.loading_page.onRendered(function(){
+  $(window).scrollTop(0);
 });

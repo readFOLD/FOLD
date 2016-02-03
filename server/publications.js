@@ -163,7 +163,8 @@ Meteor.publish("readStoryPub", function(userPathSegment, shortId) {
     shortId: shortId,
     published: true
   }, {
-    fields: readStoryFields
+    fields: readStoryFields,
+    limit: 1
   });
 });
 
@@ -175,7 +176,8 @@ Meteor.publish("createStoryPub", function(userPathSegment, shortId) {
   }, {
     fields: {
       history: 0
-    }
+    },
+    limit: 1
   });
 });
 
@@ -221,7 +223,8 @@ Meteor.publish("adminOtherUserPub", function(userId) {
       "services.twitter.id": 1,
       "services.twitter.screenName": 1,
       "emails.address": 1
-    }
+    },
+    limit: 1
   });
 });
 
@@ -247,7 +250,8 @@ Meteor.publish("adminReadDraftPub", function(shortId) {
   }, {
     fields: {
       history: 0
-    }
+    },
+    limit: 1
   });
 });
 
@@ -299,7 +303,8 @@ Meteor.publish("userProfilePub", function(username) { // includes user profile a
       "username" : 1,
       "displayUsername" : 1,
       "services.twitter.id": 1
-    }
+    },
+    limit: 1
   });
 
   var user = userCursor.fetch()[0];
@@ -362,7 +367,9 @@ Meteor.publish("userData", function () {
         "privileges": 1,
         "profile": 1,
         "followers": 1
-      }});
+      },
+      limit: 1
+      });
   } else {
     this.ready();
   }
