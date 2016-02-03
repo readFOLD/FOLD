@@ -117,7 +117,7 @@ Handlebars.registerHelper("profileImage", function(user, size) {
   } else {
     diameter = 60;
   }
-  var defaultProfilePic = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/static/placeholder_image.png';
+  var defaultProfilePic = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='; // transparent gif
   var dprSetting = window.isHighDensity ? ',dpr_2.0' : '';
   var twitterPic;
   if (user && user.services && user.services.twitter) {
