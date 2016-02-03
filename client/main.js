@@ -112,6 +112,7 @@ window.hammerSwipeOptions = {
 
 
 var scrollPauseArmed = false;
+var scrollPauseLength = 700;
 
 window.updateCurrentY = function() {
   var actualY, h, i, readMode, scrollTop, stickyTitle, vertTop, _i, _len, _ref;
@@ -153,7 +154,7 @@ window.updateCurrentY = function() {
       $(document).scrollTop(readMode);
       Meteor.setTimeout(function () {
         document.body.style.overflowY = 'auto';
-      }, 500);
+      }, scrollPauseLength);
       scrollPauseArmed = false;
     }
 
