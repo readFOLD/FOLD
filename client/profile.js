@@ -10,6 +10,40 @@ formatDate = function(date) {
   return weekDays[date.getDay()] + " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
 };
 
+Template.profile.onCreated(function(){
+  this.sectionToShow = new ReactiveVar('latest');
+});
+
+Template.profile.events({
+  "click .show-latest": function (e, t) {
+    t.sectionToShow.set('latest');
+  },
+  "click .show-favorites": function (e, t) {
+    t.sectionToShow.set('favorites');
+  },
+  "click .show-following": function (e, t) {
+    t.sectionToShow.set('following');
+  },
+  "click .show-followers": function (e, t) {
+    t.sectionToShow.set('followers');
+  }
+});
+
+Template.profile.helpers({
+  "showLatest": function(){
+    return Template.instance().sectionToShow.get() === 'latest';
+  },
+  "showFavorites": function(){
+    return Template.instance().sectionToShow.get() === 'favorites';
+  },
+  "showFollowing": function(){
+    return Template.instance().sectionToShow.get() === 'following';
+  },
+  "showFollowers": function(){
+    return Template.instance().sectionToShow.get() === 'followers';
+  }
+});
+
 
 Template.my_stories.events({
   'click .unpublish': function(){
@@ -85,7 +119,7 @@ Template.user_profile.onCreated(function(){
   this.editing = new ReactiveVar(false);
   this.uploadPreview = new ReactiveVar();
   this.uploadingPicture = new ReactiveVar();
-  this.pictureId = new ReactiveVar();
+  this.pictureId = new ReactiveVar()
 });
 
 

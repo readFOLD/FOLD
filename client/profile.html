@@ -6,12 +6,28 @@
     </div>
   </div>
   <div class="stories profile">
-    <div class="story-container profile">
-      {{> user_stories}}
+    <div class="profile-section-buttons">
+      <button class="show-latest {{#if showLatest}}active{{/if}}">{{firstName user}}'s latest</button>
+      <button class="show-favorites {{#if showFavorites}}active{{/if}}">Favs</button>
+      <button class="show-following {{#if showFollowing}}active{{/if}}">Following</button>
+      <button class="show-followers {{#if showFollowers}}active{{/if}}">Followers</button>
     </div>
-    <div class="horizontal-line"></div>
     <div class="story-container profile">
-      {{> user_favorite_stories}}
+      {{#if showLatest}}
+        {{> user_stories}}
+      {{else}}
+        {{#if showFavorites}}
+          {{> user_favorite_stories}}
+        {{else}}
+          {{#if showFollowing}}
+            {{> user_following}}
+          {{else}}
+            {{#if showFollowers}}
+
+            {{/if}}
+          {{/if}}
+        {{/if}}
+      {{/if}}
     </div>
   </div>
 </template>
@@ -103,6 +119,25 @@
         You haven't favorited any stories yet.<br>Try your luck? {{> random_story}}
       {{else}}
         {{user.profile.name}} hasn't favorited any stories yet, but they just got here. Give 'em some time!
+      {{/if}}
+    </div>
+  {{/if}}
+</template>
+
+<template name="user_following">
+  <h1>Following</h1>
+  {{#if user.followingTotal}}
+    {{#each usersFollowing}}
+        <div class="profile person" data-person-id="{{_id}}">
+          {{name}}
+        </div>
+    {{/each}}
+  {{else}}
+    <div class="message">
+      {{#if ownProfile}}
+        You haven't followed anyone yet.<br>Try your luck? {{> random_story}}
+      {{else}}
+        {{user.profile.name}} hasn't followed anyone yet, but they just got here. Give 'em some time!
       {{/if}}
     </div>
   {{/if}}

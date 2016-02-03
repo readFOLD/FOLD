@@ -455,7 +455,7 @@ div.stories {
   }
 
 
-  div.story {
+  div.story, div.person {
     border: 1px solid @inactive-color;
     background-color: @white-color;
 
@@ -583,4 +583,16 @@ div.stories {
 .home-loading-footer {
   text-align: center;
   width: 100%;
+}
+
+.profile-section-buttons{
+  display: flex;
+  button{
+    height: @magic-styling-distance;
+    flex: auto;
+    background-color: @medium-color;
+    &:hover, &.active{
+      background-color: @action-color;
+    }
+  }
 }
