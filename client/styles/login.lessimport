@@ -141,7 +141,7 @@ div.sign-up-options {
     }
     a, button.text{
       background: none !important;
-      color: @panel-color;
+      color: @social-color;
       padding: 0;
       &:hover{
         text-decoration: underline;

@@ -3,7 +3,7 @@ window.notifyRemix = function(message){
       content: {
         message: message,
         color: 'white',
-        bgcolor: '#EA1D75' // remix-color
+        bgcolor: '#EA1D75' // social-color
       },
       'position' :'top right',
       theme:'colorful'
@@ -52,7 +52,7 @@ window.notifyInfo = function(message){
       content: {
         message: message,
         color: 'white',
-        bgcolor: '#585094' // panel-color
+        bgcolor: '#585094' // social-color
       },
       'position' :'top right',
       theme:'colorful'
@@ -65,7 +65,7 @@ window.notifyBrowser = function(){
       content: {
         message: "Hi! We're so glad you're writing a story on FOLD. Feel free to try out our editor in any browser and give us feedback, but for the best experience right now, we recommend using Chrome!",
         color: 'white',
-        bgcolor: '#585094' // panel-color
+        bgcolor: '#585094' // social-color
       },
       sticky: true,
       'position' :'top right',
@@ -79,7 +79,7 @@ window.notifyDeploy = function(message, sticky){
       content: {
         message: message,
         color: 'white',
-        bgcolor: '#585094' // panel-color
+        bgcolor: '#585094' // social-color
       },
       'position' :'top right',
       theme:'colorful',

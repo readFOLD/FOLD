@@ -17,7 +17,7 @@ h1 {
   li{
     list-style: disc;
     margin-left: 20px;
-    color: @panel-color;
+    color: @social-color;
   }
   &.stories-message{
     a{
@@ -40,7 +40,7 @@ h1 {
     background-color: @action-color;
   }
   .view-drafts{
-    background-color: @orange-color;
+    background-color: @social-color;
   }
   .random-story{
     margin-top: 10px;
@@ -178,9 +178,9 @@ div.user-profile {
   }
   .unpublish{
     margin-right: 10px;
-    background-color: @panel-color;
+    background-color: @social-color;
     &:hover{
-      background-color: darken(@panel-color, 10%);
+      background-color: darken(@social-color, 10%);
     }
   }
   .delete{

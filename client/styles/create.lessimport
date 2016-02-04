@@ -809,7 +809,7 @@ div.horizontal-context {
       }
 
       &:hover{
-        background-color: @panel-color;
+        background-color: @social-color;
       }
       &.active {
         background-color: @action-color;
@@ -1396,7 +1396,7 @@ div.text-section {
     margin-left: -@triangleSize;
     width: 0;
     height: 0;
-    border-top: solid @triangleSize @panel-color;
+    border-top: solid @triangleSize @social-color;
     border-left: solid @triangleSize transparent;
     border-right: solid @triangleSize transparent;
   }
@@ -1409,7 +1409,7 @@ div#fold-editor{
 
   #fold-editor-button-group {
     height: @fold-editor-row-height;
-    background-color: @panel-color;
+    background-color: @social-color;
     .standard-icon-colors;
     svg{
       @size: 40px;
@@ -1560,6 +1560,6 @@ div.bottom-bar{
   position:relative;
   height: 5px;
   width: 100%;
-  background-color: @panel-color;
+  background-color: @social-color;
   z-index: 9000;
 }

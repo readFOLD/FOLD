@@ -258,7 +258,7 @@ div.signup, div.login, div.user_profile {
     text-decoration: underline;
   }
   .overlay{
-    background-color: fade(@panel-color, 75%);
+    background-color: fade(@social-color, 75%);
   }
   .text{
     color: @white-color;
@@ -266,7 +266,7 @@ div.signup, div.login, div.user_profile {
   .dismiss-box{
     position: absolute;
     background-color: @black-color;
-    color: @panel-color;
+    color: @social-color;
     .size(@magic-styling-distance);
     top: @magic-styling-distance;
     right: @magic-styling-distance;
@@ -610,9 +610,14 @@ div.stories {
   button{
     height: @magic-styling-distance;
     flex: auto;
+    .FFMarkWebBold;
+    font-size: 13px;
     background-color: @medium-color;
-    &:hover, &.active{
-      background-color: @action-color;
+    &:hover{
+      background-color: @black-color;
+    }
+    &.active{
+      background-color: @social-color;
     }
   }
 }
