@@ -188,7 +188,11 @@
   {{/unless}}
 
   {{#each stories}}
-    {{> story_preview story=this }}
+    {{#if profile}}
+      {{> person_card person=this }}
+    {{else}}
+      {{> story_preview story=this }}
+    {{/if}}
   {{else}}
     {{#unless storiesLoading}}
       Sorry, no stories matched your search. Maybe you could write one?

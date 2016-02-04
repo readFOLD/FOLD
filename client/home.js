@@ -328,6 +328,7 @@ Template.all_stories.onCreated(function(){
           setCurrentSubscriptionPage(currentPage);
         }
         StorySearch.search(storySearchQuery, {page: currentPage});
+        PersonSearch.search(storySearchQuery, {page: 0});
       })
     }
   });
@@ -343,13 +344,21 @@ Template.all_stories.onCreated(function(){
     });
   });
 
-  subscribeToSearchedMinimalUsers = _.debounce(function(){
+  subscribeToStorySearchedMinimalUsers = _.debounce(function(){
     return searchUserSubs.subscribe('minimalUsersPub', _.sortBy(StorySearch.getData({}, true).map(function(story){return story.authorId}), _.identity));
+  }, 1000);
+
+  // TODO, we just loaded this data with the search....
+  subscribeToPeopleSearchedMinimalUsers = _.debounce(function(){
+    return searchUserSubs.subscribe('minimalUsersPub', _.sortBy(PersonSearch.getData({}, true).map(function(person){return person._id}), _.identity));
   }, 1000);
 
   this.autorun(function(){
     if(StorySearch.getStatus().loaded){
-      subscribeToSearchedMinimalUsers();
+      subscribeToStorySearchedMinimalUsers();
+    }
+    if(PersonSearch.getStatus().loaded){
+      subscribeToPeopleSearchedMinimalUsers();
     }
   });
 
@@ -367,7 +376,7 @@ var currentHomeStories = function(){
   }
 
   if(Session.get('storySearchQuery')){
-    return StorySearch.getData({
+    var storyResults = StorySearch.getData({
       sort:[
         ["editorsPickAt", "desc"],
         ["favoritedTotal", "desc"],
@@ -376,7 +385,19 @@ var currentHomeStories = function(){
       docTransform: function(doc){
         return new Story(doc);
       }
-    }, true);
+    });
+    var personResults = PersonSearch.getData({
+      sort:[
+        ["followersTotal", "desc"],
+        ["followingTotal", "desc"],
+        ["createdAt", "desc"]
+      ]
+    });
+    var searchResults = _.union(personResults, storyResults)
+    searchResults.count = function(){
+      return storyResults.length
+    }
+    return searchResults;
   }
 
   switch (Session.get('filterValue')) {
@@ -420,7 +441,8 @@ Template.all_stories.events({
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   stories: currentHomeStories,
   storiesLoading: function(){
-    return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')) || StorySearch.getStatus().loading)
+    return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')) || PersonSearch.getStatus().loading
+    || StorySearch.getStatus().loading)
   },
   moreToShow: function(){
     var stories = currentHomeStories();

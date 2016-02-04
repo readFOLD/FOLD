@@ -10,3 +10,4 @@ var options = {
 var fields = ['title', 'keywords', 'authorName', 'authorDisplayUsername'];
 
 StorySearch = new SearchSource('stories', fields, options);
+PersonSearch = new SearchSource('people', ['profile.name', 'username'], options);
