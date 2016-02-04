@@ -609,7 +609,7 @@ div.stories {
   display: flex;
   button{
     height: @magic-styling-distance;
-    flex: auto;
+    flex: 1;
     .FFMarkWebBold;
     font-size: 13px;
     background-color: @medium-color;

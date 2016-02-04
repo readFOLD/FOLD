@@ -117,7 +117,7 @@ div.user-profile {
     line-height: 160%;
   }
   .edit-profile {
-    color: @action-color;
+    color: @social-color;
     position: absolute;
     &:hover{
       text-decoration: underline;
