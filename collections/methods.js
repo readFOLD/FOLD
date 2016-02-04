@@ -113,6 +113,13 @@ changeFollow = function(userId, toFollow) {
 
   actor.profile.following = actor.profile.following || [];
 
+
+  if(Meteor.isClient){
+    if(toFollow && actor.profile.following.length === 0){
+      notifySuccess("Yay your first follow!")
+    }
+  }
+
   actorOperation = {};
   actorOperation[operator] = {
     'profile.following': userId
