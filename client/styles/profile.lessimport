@@ -33,7 +33,7 @@ h1 {
     font-size: 13px;
     .padding-sides(20px);
   }
-  button.create-story, button.view-drafts{
+  button.create-story, button.view-drafts, .random-story, .random-person{
     margin-top: @magic-styling-distance/2;
   }
   .create-story{
@@ -41,10 +41,6 @@ h1 {
   }
   .view-drafts{
     background-color: @social-color;
-  }
-  .random-story{
-    margin-top: 10px;
-    margin-left: 15px;
   }
 
 }

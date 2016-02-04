@@ -121,7 +121,7 @@
   {{else}}
     <div class="message">
       {{#if ownProfile}}
-        You haven't favorited any stories yet.<br>Try your luck? {{> random_story}}
+        You haven't favorited any stories yet.<br><br>Try your luck?<br>{{> random_story}}
       {{else}}
         {{user.profile.name}} hasn't favorited any stories yet, but they just got here. Give 'em some time!
       {{/if}}
@@ -130,35 +130,32 @@
 </template>
 
 <template name="user_following">
-  {{#if user.followingTotal}}
-    {{#each usersFollowing}}
-      {{> person_card person=this onProfilePage=true}}
-    {{/each}}
+  {{#each usersFollowing}}
+    {{> person_card person=this onProfilePage=true}}
   {{else}}
     <div class="message">
       {{#if ownProfile}}
-        You haven't followed anyone yet.<br>Try your luck? {{> random_story}}
+        You don't follow anyone yet...<br>{{> random_person}}
       {{else}}
-        {{user.profile.name}} hasn't followed anyone yet, but they just got here. Give 'em some time!
+        {{user.profile.name}} hasn't followed anyone yet... ¯\_(ツ)_/¯
       {{/if}}
     </div>
-  {{/if}}
+  {{/each}}
+
 </template>
 
 <template name="user_followers">
-  {{#if user.followersTotal}}
-    {{#each followers}}
-      {{> person_card person=this onProfilePage=true}}
-    {{/each}}
+  {{#each followers}}
+    {{> person_card person=this onProfilePage=true}}
   {{else}}
     <div class="message">
       {{#if ownProfile}}
-        You don't have any followers yet.<br>Try your luck? {{> create_story}}
+        You don't have any followers yet.<br><br>Try writing a story!<br>{{> create_story}}
       {{else}}
-        {{user.profile.name}} doesn't have any followersyet, but they just got here. Give 'em some time!
+        Nobody follows {{user.profile.name}} yet... ಠ╭╮ಠ
       {{/if}}
     </div>
-  {{/if}}
+  {{/each}}
 </template>
 
 

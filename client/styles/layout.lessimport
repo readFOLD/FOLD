@@ -1994,7 +1994,7 @@ div.loading-container {
   }
 }
 
-.random-story{
+.random-story, .random-person{
   height: @magic-styling-distance;
   color: @white-color;
   .FFMarkWebBold;
