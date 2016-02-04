@@ -38,10 +38,12 @@ changeFavorite = function(storyId, toFavorite) {
 
   var currentlyFavorited = (_.contains(story.favorited, this.userId));
 
+  story.favorited = story.favorited || [];
+
   if (toFavorite && !currentlyFavorited){
-    storyOperation['$inc'] = { favoritedTotal : 1 };
+    storyOperation['$set'] = { favoritedTotal : story.favorited.length + 1 };
   } else if (!toFavorite && currentlyFavorited){
-    storyOperation['$inc'] = { favoritedTotal : -1 };
+    storyOperation['$set'] = { favoritedTotal : story.favorited.length - 1 };
   }
 
   userOperation = {};
@@ -98,14 +100,18 @@ changeFollow = function(userId, toFollow) {
 
   var currentlyFollowed = (_.contains(recipient.followers, this.userId));
 
+  recipient.followers = recipient.followers || [];
+
   if (toFollow && !currentlyFollowed){
-    recipientOperation['$inc'] = { followersTotal : 1 };
+    recipientOperation['$set'] = { followersTotal : recipient.followers.length + 1 };
   } else if (!toFollow && currentlyFollowed){
-    recipientOperation['$inc'] = { followersTotal : -1 };
+    recipientOperation['$set'] = { followersTotal : recipient.followers.length - 1 };
   }
 
 
   var currentlyFollowing = (_.contains(actor.profile.following, userId));
+
+  actor.profile.following = actor.profile.following || [];
 
   actorOperation = {};
   actorOperation[operator] = {
@@ -113,9 +119,9 @@ changeFollow = function(userId, toFollow) {
   };
 
   if (toFollow && !currentlyFollowing){
-    actorOperation['$inc'] = { followingTotal : 1 };
+    actorOperation['$set'] = { followingTotal : actor.profile.following.length + 1 };
   } else if (!toFollow && currentlyFollowing){
-    actorOperation['$inc'] = { followingTotal : -1 };
+    actorOperation['$set'] = { followingTotal : actor.profile.following.length - 1 };
   }
 
 
