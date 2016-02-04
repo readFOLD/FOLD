@@ -2056,6 +2056,15 @@ div.loading-container {
     &:hover{
       background-color: @black-color;
     }
+    &.unfollow:hover{
+      span{
+        display: none;
+      }
+      &:before{
+        content: 'Unfollow';
+      }
+      background-color: @orange-color;
+    }
   }
 }
 

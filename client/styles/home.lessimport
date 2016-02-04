@@ -359,7 +359,6 @@ div.stories {
       position: absolute;
       bottom: 90px;
       left: 75px;
-      background-color: @black-color;
       &:after{
         @triangleSize: 8px;
         content:'';
@@ -369,7 +368,7 @@ div.stories {
         margin-left: -@triangleSize;
         width: 0;
         height: 0;
-        border-top: solid @triangleSize @black-color;
+        border-top: solid @triangleSize @social-color;
         border-left: solid @triangleSize transparent;
         border-right: solid @triangleSize transparent;
       }
