@@ -207,6 +207,7 @@ Meteor.publish("minimalUsersPub", function(userIds) {
     fields: {
       "profile": 1,
       "username": 1,
+      displayUsername: 1,
       "services.twitter.id": 1,
       "followersTotal": 1,
       "followingTotal": 1

@@ -55,7 +55,7 @@
     </div>
   {{else}}
     {{#if ownProfile}}
-      <button class="edit-profile">Edit Your Profile</button>
+      <button class="edit-profile">Edit Profile</button>
     {{/if}}
     <div class="picture">
       <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>
@@ -207,9 +207,10 @@
 
 <template name="person_card">
   <div class="person {{#if onProfilePage}}profile{{/if}}" data-person-id="{{person._id}}">
-    <div class="picture"><img class="profile-picture-large" src="{{profileImage person 'large'}}"></div>
+    <div class="picture"><img src="{{profileImage person 'large'}}"></div>
     <div class="name">{{person.profile.name}}</div>
-    <div class="bio">{{person.profile.bio}}</div>
+    <div class="username">({{person.displayUsername}})</div>
     <div class="follow-button-container">{{>follow_button userId=person._id}}</div>
+    {{> person_icon}}
   </div>
 </template>

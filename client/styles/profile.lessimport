@@ -1,4 +1,4 @@
-@picture-radius: 150px;
+@picture-radius: 126px;
 @profile-width: 340px;
 
 
@@ -96,8 +96,8 @@ div.user-profile {
     margin-bottom: 35px;
 
     .profile-picture-large {
-      height: 150px;
-      width: 150px;
+      height: @picture-radius;
+      width: @picture-radius;
     }
   }
 

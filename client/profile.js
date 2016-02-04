@@ -114,7 +114,7 @@ Template.user_profile.onCreated(function(){
 
   this.autorun(function(){
     var usersFromStories = Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId});
-    var user = Meteor.user();
+    var user = that.data.user;
     var usersToSubscribeTo = _.compact(_.union(usersFromStories, user.profile.following, user.followers));
     that.subscribe('minimalUsersPub', _.sortBy(usersToSubscribeTo, _.identity));
   });

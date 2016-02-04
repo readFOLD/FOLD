@@ -2048,6 +2048,7 @@ div.loading-container {
 .follow-button{
   width: 180px;
   height: @magic-styling-distance;
+  display: inline-block;
   button{
     .FFMarkWebBold;
     font-size: 13px;
