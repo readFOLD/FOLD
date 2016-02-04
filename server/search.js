@@ -24,6 +24,32 @@ SearchSource.defineSource('stories', function(searchText, options) {
   }
 });
 
+SearchSource.defineSource('people', function(searchText, options) {
+  options = options || {};
+  _.defaults(options, {
+    page: 0
+  });
+  var findOptions = {
+    sort: [
+      ["followersTotal", "desc"],
+      ["followingTotal", "desc"],
+      ["favoritesTotal", "desc"],
+      ["createdAt", "desc"]
+    ],
+    limit: 3 * (options.page + 1),
+    fields: minimalUserFields
+  };
+
+  if(searchText) {
+    var regExp = buildRegExp(searchText);
+    var selector = {$or: [{username: regExp},{ 'profile.name': regExp}]
+    };
+    return Meteor.users.find(selector, findOptions).fetch();
+  } else {
+    return []
+  }
+});
+
 function buildRegExp(searchText) {
   var words = searchText.trim().split(/[ \-\:]+/);
   var exps = _.map(words, function(word) {

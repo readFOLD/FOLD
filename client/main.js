@@ -1182,6 +1182,71 @@ Template.share_buttons.events({
 });
 
 
+Template.follow_button.helpers({
+  additionalClasses: function() {
+    var classes = '';
+
+    if (Template.instance().justFollowed.get()){
+      classes += 'just-followed'
+    }
+    if (Template.instance().justUnfollowed.get()){
+      classes += 'just-unfollowed'
+    }
+    return classes;
+  },
+  userFollowing: function(){
+    return Meteor.user() && _.contains(Meteor.user().profile.following, Template.instance().data.userId);
+  },
+  isYou: function(){
+    return Meteor.userId() === Template.instance().data.userId;
+  }
+});
+
+Template.follow_button.onCreated(function() {
+  this.justFollowed = new ReactiveVar();
+  this.justUnfollowed = new ReactiveVar();
+});
+Template.follow_button.events({
+  "click .follow": function (e, t) {
+    trackEvent('Click follow button');
+
+    if (!Meteor.user()) {
+      openSignInOverlay('Thanks for showing your support!\nPlease sign in to follow this user.');
+      return
+    }
+    t.justFollowed.set(true);
+    Meteor.setTimeout(function () {
+      t.justFollowed.set(null);
+    }, 1500);
+
+    return Meteor.call('followUser', t.data.userId, function (err) {
+      if (err) {
+        notifyError(err);
+        throw(err);
+      } else {
+        trackEvent('Follow user');
+      }
+
+    })
+
+  },
+  "click .unfollow": function (e, t) {
+    t.justUnfollowed.set(true);
+    Meteor.setTimeout(function(){
+      t.justUnfollowed.set(null);
+    }, 1000);
+    return Meteor.call('unfollowUser', t.data.userId, function (err) {
+      if (err) {
+        notifyError(err);
+        throw(err);
+      } else {
+        trackEvent('Unfollow user');
+      }
+    });
+  }
+});
+
+
 Template.favorite_button.helpers({
   additionalClasses: function() {
     var classes = '';

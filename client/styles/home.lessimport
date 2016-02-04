@@ -258,7 +258,7 @@ div.signup, div.login, div.user_profile {
     text-decoration: underline;
   }
   .overlay{
-    background-color: fade(@panel-color, 75%);
+    background-color: fade(@social-color, 75%);
   }
   .text{
     color: @white-color;
@@ -266,7 +266,7 @@ div.signup, div.login, div.user_profile {
   .dismiss-box{
     position: absolute;
     background-color: @black-color;
-    color: @panel-color;
+    color: @social-color;
     .size(@magic-styling-distance);
     top: @magic-styling-distance;
     right: @magic-styling-distance;
@@ -282,7 +282,7 @@ div.signup, div.login, div.user_profile {
 
 div.stories {
   @profile-section: 340px;
-  padding-top: 135px;
+  padding-top: 120px;
   @media @mobile {
     padding-top: 5px;
   }
@@ -355,6 +355,24 @@ div.stories {
   div.byline {
     //padding: 33px 25px;
     margin-left: 40px;
+    .profile-info{
+      position: absolute;
+      bottom: 100px;
+      left: 25px;
+      &:after{
+        @triangleSize: 8px;
+        content:'';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -@triangleSize;
+        width: 0;
+        height: 0;
+        border-top: solid @triangleSize @medium-color;
+        border-left: solid @triangleSize transparent;
+        border-right: solid @triangleSize transparent;
+      }
+    }
     div.pull-left {
       width: 100%;
       position: absolute;
@@ -431,7 +449,7 @@ div.stories {
   }
 
   div.story-container {
-    padding-top: 15px;
+    padding-top: 30px;
     @media @mobile{
       padding-top: 68px;
     }
@@ -456,14 +474,13 @@ div.stories {
   }
 
 
-  div.story {
+  div.story, div.person {
     border: 1px solid @inactive-color;
     background-color: @white-color;
 
     // 540 980+
     // 415 980-
-    height: 100%;
-    min-height: 339px;
+    height: 339px;
     /*for screens between 1200px & 1440px width - 3 stories up*/
     // max-width: 465px;
     // min-width: 375px;
@@ -584,4 +601,69 @@ div.stories {
 .home-loading-footer {
   text-align: center;
   width: 100%;
+}
+
+.profile-section-buttons{
+  display: flex;
+  button{
+    height: @magic-styling-distance;
+    flex: 1;
+    .FFMarkWebBold;
+    font-size: 13px;
+    background-color: @medium-color;
+    &:hover{
+      background-color: @black-color;
+    }
+    &.active{
+      background-color: @social-color;
+    }
+  }
+}
+
+.person{
+  position: relative;
+  .picture {
+    @picture-radius: 126px;
+    display: inline-block;
+    width: @picture-radius;
+    height: @picture-radius;
+    border-radius: @picture-radius;
+    margin-top: @magic-styling-distance;
+    overflow: hidden;
+
+    img {
+      .size-to-fit;
+    }
+  }
+  text-align: center;
+  line-height: normal;
+  .FFMarkWebBold;
+
+  .name{
+    margin-top: 20px;
+    font-size: 20px;
+  }
+  .username{
+    margin-top: 11px;
+    font-size: 13px;
+    color: @inactive-color;
+  }
+  .follow-button-container{
+    text-align: center;
+    bottom: 40px;
+    width: 100%;
+    position: absolute;
+  }
+  .person-icon{
+    position: absolute;
+    top: 33px;
+    right: 37px;
+    .fg{
+      fill: @medium-color;
+    }
+  }
+
+  &.following .person-icon .fg{
+    fill: @social-color;
+  }
 }

@@ -11,8 +11,7 @@
 @placeholder-color: #acacac;
 @danger-color: #fc521f;
 @less-danger-color: #fc521f;
-@panel-color: #815ed9;
-@remix-color: @panel-color;
+@social-color: #815ed9;
 @orange-color: #fc521f;
 @favorite-color: #fc521f;
 @dark-favorite-color: #a82d11;
@@ -671,7 +670,7 @@ div#overlay {
 
       }
       &.placeholder {
-        background-color: @panel-color;
+        background-color: @social-color;
         .background-transition;
         color: white;
       }
@@ -1338,7 +1337,7 @@ div.horizontal-context {
       display: inline-block;
     }
     .remix-button{
-      background-color: @remix-color;
+      background-color: @social-color;
     }
     .popout-button{
       background-color: @action-color;
@@ -1618,7 +1617,7 @@ div.minimap {
   input[type=file] {
     &::before {
       display: inline-block;
-      background: @panel-color;
+      background: @social-color;
       color: @white-color;
     }
     &:hover::before {
@@ -1643,7 +1642,7 @@ div.minimap {
     //position: absolute;
     //bottom: @nonMobileNarrativeSectionPadding;
     //right: @nonMobileNarrativeSectionPadding;
-    background: @panel-color;
+    background: @social-color;
     color: @white-color;
     line-height: 35px;
     padding-top: 5px;
@@ -1916,7 +1915,7 @@ div.loading-container {
     }
 
     .user-action {
-      background-color: @orange-color;
+      background-color: @social-color;
       @profile-picture-size: 25px;
       button{
         line-height: @height;
@@ -1940,11 +1939,11 @@ div.loading-container {
     }
 
     .about-fold {
-      background-color: @panel-color;
+      background-color: @orange-color;
     }
 
     ol.user-menu {
-      background-color: @orange-color;
+      background-color: @social-color;
       width: 180px;
       li {
         float: none;
@@ -1995,12 +1994,12 @@ div.loading-container {
   }
 }
 
-.random-story{
+.random-story, .random-person{
   height: @magic-styling-distance;
   color: @white-color;
   .FFMarkWebBold;
   font-size: 13px;
-  background-color: @panel-color;
+  background-color: @social-color;
   width: 210px;
   display: inline-block;
   button{
@@ -2042,6 +2041,45 @@ div.loading-container {
     display: inline-block;
     max-height: 100%;
     .center-over-parent-div;
+  }
+}
+
+
+.follow-button{
+  width: 180px;
+  height: @magic-styling-distance;
+  display: inline-block;
+  button{
+    .FFMarkWebBold;
+    font-size: 13px;
+    .size-to-fit;
+    &.unfollow{
+      background-color: @social-color;
+      &:hover{
+        background-color: @black-color;
+      }
+    }
+    &.follow{
+      background-color: @medium-color;
+      &:hover{
+        background-color: @social-color;
+      }
+    }
+
+    &.unfollow:hover{
+      &:not(.just-followed){
+        span{
+          display: none;
+        }
+        &:before{
+          content: 'Unfollow';
+        }
+        background-color: @orange-color;
+      }
+      &.just-followed{
+        background-color: @social-color;
+      }
+    }
   }
 }
 

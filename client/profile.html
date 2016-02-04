@@ -6,12 +6,28 @@
     </div>
   </div>
   <div class="stories profile">
-    <div class="story-container profile">
-      {{> user_stories}}
+    <div class="profile-section-buttons">
+      <button class="show-latest {{#if showLatest}}active{{/if}}">{{firstName user}}'s latest</button>
+      <button class="show-favorites {{#if showFavorites}}active{{/if}}">Favorites</button>
+      <button class="show-following {{#if showFollowing}}active{{/if}}">Following</button>
+      <button class="show-followers {{#if showFollowers}}active{{/if}}">Followers</button>
     </div>
-    <div class="horizontal-line"></div>
     <div class="story-container profile">
-      {{> user_favorite_stories}}
+      {{#if showLatest}}
+        {{> user_stories}}
+      {{else}}
+        {{#if showFavorites}}
+          {{> user_favorite_stories}}
+        {{else}}
+          {{#if showFollowing}}
+            {{> user_following}}
+          {{else}}
+            {{#if showFollowers}}
+              {{> user_followers}}
+            {{/if}}
+          {{/if}}
+        {{/if}}
+      {{/if}}
     </div>
   </div>
 </template>
@@ -21,36 +37,42 @@
   {{#if editing}}
     <div class="user-info-form">
       {{#autoForm collection=UsersCollection doc=currentUser id="updateProfileForm" type="method-update" meteormethod="updateProfile" validation="keyup"}}
-      <button type="submit" class="save-profile-button">Save</button>
-      
-       <div class="picture">
-        <input type="file" accept="image/*" class="overlay {{#if uploadingPicture}}uploading{{/if}}">
-        {{#if uploadPreview}}
-          <img class="profile-picture-large" src="{{uploadPreview}}">
-        {{else}}
-          <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>
-        {{/if}}
-     </div>
-      <div class="user-info">
-        {{> afQuickField name='profile.name'}}
-        {{> afQuickField name='profile.bio' class="bio-form" placeholder="Tell the world a little about yourself!"}}
-      </div>
-    {{/autoForm}}
-  </div>
+        <button type="submit" class="save-profile-button">Save</button>
+
+        <div class="picture">
+          <input type="file" accept="image/*" class="overlay {{#if uploadingPicture}}uploading{{/if}}">
+          {{#if uploadPreview}}
+            <img class="profile-picture-large" src="{{uploadPreview}}">
+          {{else}}
+            <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>
+          {{/if}}
+        </div>
+        <div class="user-info">
+          {{> afQuickField name='profile.name'}}
+          {{> afQuickField name='profile.bio' class="bio-form" placeholder="Tell the world a little about yourself!"}}
+        </div>
+      {{/autoForm}}
+    </div>
   {{else}}
     {{#if ownProfile}}
-      <button class="edit-profile">Edit Your Profile</button>
+      <button class="edit-profile">Edit Profile</button>
     {{/if}}
     <div class="picture">
       <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>
     </div>
     <div class="name">{{name}}</div>
     <div class="bio">{{bio}}</div>
+    <div class="following-followers">
+      <div class="following">Following<br>{{#if user.followingTotal}}{{user.followingTotal}}{{else}}0{{/if}}</div>
+      <div class="followers">Followers<br>{{#if user.followersTotal}}{{user.followersTotal}}{{else}}0{{/if}}</div>
+    </div>
+    <div class="follow-button-container">
+      {{> follow_button userId=user._id}}
+    </div>
   {{/if}}
 </template>
 
 <template name="user_stories">
-  <h1>Latest stories</h1>
   {{#if hasPublished}}
     {{#if showAllPublishedButton}}
       <button class="toggle-published">
@@ -85,7 +107,6 @@
 </template>
 
 <template name="user_favorite_stories">
-  <h1>Favorites</h1>
   {{#if hasFavorites}}
     {{#if showAllFavoritesButton}}
       <button class="toggle-favorites">
@@ -100,12 +121,41 @@
   {{else}}
     <div class="message">
       {{#if ownProfile}}
-        You haven't favorited any stories yet.<br>Try your luck? {{> random_story}}
+        You haven't favorited any stories yet.<br><br>Try your luck?<br>{{> random_story}}
       {{else}}
         {{user.profile.name}} hasn't favorited any stories yet, but they just got here. Give 'em some time!
       {{/if}}
     </div>
   {{/if}}
+</template>
+
+<template name="user_following">
+  {{#each usersFollowing}}
+    {{> person_card person=this onProfilePage=true}}
+  {{else}}
+    <div class="message">
+      {{#if ownProfile}}
+        You don't follow anyone yet...<br>{{> random_person}}
+      {{else}}
+        {{user.profile.name}} hasn't followed anyone yet... ¯\_(ツ)_/¯
+      {{/if}}
+    </div>
+  {{/each}}
+
+</template>
+
+<template name="user_followers">
+  {{#each followers}}
+    {{> person_card person=this onProfilePage=true}}
+  {{else}}
+    <div class="message">
+      {{#if ownProfile}}
+        You don't have any followers yet.<br><br>Try writing a story!<br>{{> create_story}}
+      {{else}}
+        Nobody follows {{user.profile.name}} yet... ಠ╭╮ಠ
+      {{/if}}
+    </div>
+  {{/each}}
 </template>
 
 
@@ -150,4 +200,16 @@
       {{/each}}
     {{/if}}
     </div>
+</template>
+
+<template name="person_card">
+  <div class="person {{#if onProfilePage}}profile{{/if}} {{#if userFollowing person._id}}following{{/if}}" data-person-id="{{person._id}}">
+    <a class="author-profile-link" href="{{profileUrl}}">
+      <div class="picture"><img src="{{profileImage person 'large'}}"></div>
+      <div class="name">{{person.profile.name}}</div>
+      <div class="username">({{person.displayUsername}})</div>
+    </a>
+    <div class="follow-button-container">{{>follow_button userId=person._id}}</div>
+    {{> person_icon}}
+  </div>
 </template>

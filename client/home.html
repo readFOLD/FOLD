@@ -188,7 +188,11 @@
   {{/unless}}
 
   {{#each stories}}
-    {{> story_preview story=this }}
+    {{#if profile}}
+      {{> person_card person=this }}
+    {{else}}
+      {{> story_preview story=this }}
+    {{/if}}
   {{else}}
     {{#unless storiesLoading}}
       Sorry, no stories matched your search. Maybe you could write one?
@@ -319,6 +323,11 @@
           </div>
         </div>
       </a>
+      {{#if showProfileInfo}}
+        <div class="profile-info">
+          {{>follow_button userId=authorId}}
+        </div>
+      {{/if}}
 
       <div class="pull-right">
         {{> favorite_button }}

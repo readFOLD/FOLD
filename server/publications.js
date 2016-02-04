@@ -79,6 +79,14 @@ previewStoryFields = {
   keywords: 1
 };
 
+minimalUserFields = {
+    "profile": 1,
+    "username": 1,
+    displayUsername: 1,
+    "services.twitter.id": 1,
+    "followersTotal": 1,
+    "followingTotal": 1
+};
 
 // add preview fields again but nested under draftStory. also authorUsername until migrate
 previewStoryFieldsWithDraft = _.extend({}, previewStoryFields, _.chain(previewStoryFields).keys().map(function(fieldName){return 'draftStory.' + fieldName}).object(_.values(previewStoryFields)).value(), {'authorUsername': 1});
@@ -204,11 +212,7 @@ Meteor.publish("minimalUsersPub", function(userIds) {
   return Meteor.users.find({_id: {
     $in: userIds
   }}, {
-    fields: {
-      "profile.profilePicture": 1,
-      "username": 1,
-      "services.twitter.id": 1
-    }
+    fields: minimalUserFields
   });
 });
 
@@ -218,7 +222,7 @@ Meteor.publish("adminOtherUserPub", function(userId) {
   }
   return Meteor.users.find({ _id: userId }, {
     fields: {
-      "profile.profilePicture": 1,
+      "profile": 1,
       "username": 1,
       "services.twitter.id": 1,
       "services.twitter.screenName": 1,
@@ -301,7 +305,11 @@ Meteor.publish("userProfilePub", function(username) { // includes user profile a
       "profile" : 1,
       "username" : 1,
       "displayUsername" : 1,
-      "services.twitter.id": 1
+      "services.twitter.id": 1,
+      "followers": 1,
+      "followingTotal": 1,
+      "followersTotal": 1,
+      "favoritesTotal": 1
     },
     limit: 1
   });
@@ -357,17 +365,17 @@ Meteor.publish("myStoriesPub", function() {
 Meteor.publish("userData", function () {
   if (this.userId) {
     return Meteor.users.find({_id: this.userId},
-      {
-        fields: {
-          'accessPriority': 1,
-          "services.twitter.id": 1,
-          "displayUsername": 1,
-          'tempUsername': 1,
-          "admin": 1,
-          "privileges": 1,
-          "profile": 1
-        },
-        limit: 1
+      {fields: {
+        'accessPriority': 1,
+        "services.twitter.id": 1,
+        "displayUsername": 1,
+        'tempUsername': 1,
+        "admin": 1,
+        "privileges": 1,
+        "profile": 1,
+        "followers": 1
+      },
+      limit: 1
       });
   } else {
     this.ready();

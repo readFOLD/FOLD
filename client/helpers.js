@@ -110,6 +110,10 @@ Handlebars.registerHelper("userFavorited", function() {
   return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
 });
 
+Handlebars.registerHelper("userFollowing", function(id) {
+  return id === Meteor.userId() || Meteor.user() && _.contains(Meteor.user().profile.following, id);
+});
+
 Handlebars.registerHelper("profileImage", function(user, size) {
   var diameter;
   if (size === 'large'){

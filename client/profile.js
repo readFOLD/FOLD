@@ -10,6 +10,46 @@ formatDate = function(date) {
   return weekDays[date.getDay()] + " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " " + hms;
 };
 
+Template.profile.onCreated(function(){
+  this.sectionToShow = new ReactiveVar('latest');
+});
+
+Template.profile.events({
+  "click .show-latest": function (e, t) {
+    t.sectionToShow.set('latest');
+  },
+  "click .show-favorites": function (e, t) {
+    t.sectionToShow.set('favorites');
+  },
+  "click .show-following": function (e, t) {
+    t.sectionToShow.set('following');
+  },
+  "click .show-followers": function (e, t) {
+    t.sectionToShow.set('followers');
+  },
+  "click .followers": function (e, t) {
+    t.sectionToShow.set('followers');
+  },
+  "click .following": function (e, t) {
+    t.sectionToShow.set('following');
+  }
+});
+
+Template.profile.helpers({
+  "showLatest": function(){
+    return Template.instance().sectionToShow.get() === 'latest';
+  },
+  "showFavorites": function(){
+    return Template.instance().sectionToShow.get() === 'favorites';
+  },
+  "showFollowing": function(){
+    return Template.instance().sectionToShow.get() === 'following';
+  },
+  "showFollowers": function(){
+    return Template.instance().sectionToShow.get() === 'followers';
+  }
+});
+
 
 Template.my_stories.events({
   'click .unpublish': function(){
@@ -79,7 +119,10 @@ Template.user_profile.onCreated(function(){
   var that = this;
 
   this.autorun(function(){
-    that.subscribe('minimalUsersPub', Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}));
+    var usersFromStories = Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId});
+    var user = that.data.user;
+    var usersToSubscribeTo = _.compact(_.union(usersFromStories, user.profile.following, user.followers));
+    that.subscribe('minimalUsersPub', _.sortBy(usersToSubscribeTo, _.identity));
   });
   
   this.editing = new ReactiveVar(false);
@@ -225,4 +268,40 @@ Template.user_favorite_stories.helpers({
     return !_.isEmpty(this.user.profile.favorites);
   },
   ownProfile: ownProfile
+});
+
+Template.user_following.helpers({
+  usersFollowing: function() {
+    var following = this.user.profile.following;
+    if (following && following.length) {
+      return Meteor.users.find({
+        _id: {
+          $in: following
+        }})
+    } else {
+      return [];
+    }
+  },
+  ownProfile: ownProfile
+});
+
+Template.user_followers.helpers({
+  followers: function() {
+    var followers = this.user.followers;
+    if (followers && followers.length) {
+      return Meteor.users.find({
+        _id: {
+          $in: followers
+        }})
+    } else {
+      return [];
+    }
+  },
+  ownProfile: ownProfile
+});
+
+Template.person_card.helpers({
+  profileUrl: function(){
+    return '/profile/' + (Template.instance().data.person.displayUsername);
+  },
 });
