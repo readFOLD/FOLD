@@ -390,6 +390,7 @@ var currentHomeStories = function(){
       sort:[
         ["followersTotal", "desc"],
         ["followingTotal", "desc"],
+        ["favoritesTotal", "desc"],
         ["createdAt", "desc"]
       ]
     });
