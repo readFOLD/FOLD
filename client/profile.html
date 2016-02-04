@@ -62,14 +62,17 @@
     </div>
     <div class="name">{{name}}</div>
     <div class="bio">{{bio}}</div>
-    <div class="following">{{user.followingTotal}} following</div>
-    <div class="followers">{{user.followersTotal}} followers</div>
-    {{> follow_button userId=user._id}}
+    <div class="following-followers">
+      <div class="following">Following<br>{{#if user.followingTotal}}{{user.followingTotal}}{{else}}0{{/if}}</div>
+      <div class="followers">Followers<br>{{#if user.followersTotal}}{{user.followersTotal}}{{else}}0{{/if}}</div>
+    </div>
+    <div class="follow-button-container">
+      {{> follow_button userId=user._id}}
+    </div>
   {{/if}}
 </template>
 
 <template name="user_stories">
-  <h1>Latest stories</h1>
   {{#if hasPublished}}
     {{#if showAllPublishedButton}}
       <button class="toggle-published">
@@ -104,7 +107,6 @@
 </template>
 
 <template name="user_favorite_stories">
-  <h1>Favorites</h1>
   {{#if hasFavorites}}
     {{#if showAllFavoritesButton}}
       <button class="toggle-favorites">
@@ -128,7 +130,6 @@
 </template>
 
 <template name="user_following">
-  <h1>Following</h1>
   {{#if user.followingTotal}}
     {{#each usersFollowing}}
       {{> person_card person=this onProfilePage=true}}
@@ -145,7 +146,6 @@
 </template>
 
 <template name="user_followers">
-  <h1>Followers</h1>
   {{#if user.followersTotal}}
     {{#each followers}}
       {{> person_card person=this onProfilePage=true}}

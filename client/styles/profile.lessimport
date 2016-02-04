@@ -62,7 +62,7 @@ div.profile-section {
 
 div.user-profile {
   position: fixed;
-  padding:20px;
+  padding: @magic-styling-distance/2;
   background-color: @white-color;
   width: @profile-width;
   max-width: 340px;
@@ -90,7 +90,7 @@ div.user-profile {
     width: @picture-radius;
     height: @picture-radius;
     border-radius: @picture-radius;
-    margin: 50px calc(50% ~"-" @picture-radius*0.5) 20px;
+    margin: @magic-styling-distance/2 calc(50% ~"-" @picture-radius*0.5) 20px;
     overflow: hidden;
     position: relative;
     margin-bottom: 35px;
@@ -99,7 +99,30 @@ div.user-profile {
       height: 150px;
       width: 150px;
     }
-  } 
+  }
+
+  .following-followers{
+    margin-top: @magic-styling-distance;
+    .padding-sides(35px);
+    display: flex;
+    text-align: center;
+    color: @social-color;
+    font-size: 13px;
+    line-height: 17px;
+    .FFMarkWebBold;
+    div{
+      display: inline-block;
+      flex: 1;
+    }
+  }
+
+  .follow-button-container{
+    text-align: center;
+    margin-top: @magic-styling-distance - 2px;
+  }
+  .follow-button{
+    display: inline-block;
+  }
 
   div.name, div.bio {
     text-align: center;
@@ -119,6 +142,8 @@ div.user-profile {
   .edit-profile {
     color: @social-color;
     position: absolute;
+    .FFMarkWebBold;
+    font-size: 13px;
     &:hover{
       text-decoration: underline;
     }

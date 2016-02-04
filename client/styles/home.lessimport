@@ -282,7 +282,7 @@ div.signup, div.login, div.user_profile {
 
 div.stories {
   @profile-section: 340px;
-  padding-top: 135px;
+  padding-top: 120px;
   @media @mobile {
     padding-top: 5px;
   }
@@ -450,7 +450,7 @@ div.stories {
   }
 
   div.story-container {
-    padding-top: 15px;
+    padding-top: 30px;
     @media @mobile{
       padding-top: 68px;
     }
