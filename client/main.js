@@ -725,7 +725,10 @@ Template.minimap.helpers({
     return adminMode();
   },
   activityLevel: function(){
-    return((this.activeHeartbeats || 0) / Session.get('story').analytics.heartbeats.active.story) * 100;
+    var story = new Story(Session.get('story'));
+    var activeHeartbeats = (this.activeHeartbeats || 0);
+    var maxActiveHeartbeats = story.maxActiveHeartbeats();
+    return Math.pow( activeHeartbeats / maxActiveHeartbeats , 0.5) * 100;
   }
 });
 
