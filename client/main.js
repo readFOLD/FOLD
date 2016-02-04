@@ -1217,7 +1217,7 @@ Template.follow_button.events({
     t.justFollowed.set(true);
     Meteor.setTimeout(function () {
       t.justFollowed.set(null);
-    }, 700);
+    }, 1500);
 
     return Meteor.call('followUser', t.data.userId, function (err) {
       if (err) {

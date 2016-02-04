@@ -26,6 +26,12 @@ Template.profile.events({
   },
   "click .show-followers": function (e, t) {
     t.sectionToShow.set('followers');
+  },
+  "click .followers": function (e, t) {
+    t.sectionToShow.set('followers');
+  },
+  "click .following": function (e, t) {
+    t.sectionToShow.set('following');
   }
 });
 
@@ -271,11 +277,7 @@ Template.user_following.helpers({
       return Meteor.users.find({
         _id: {
           $in: following
-        }}, {
-          sort: {
-            followersTotal: -1
-            }
-      })
+        }})
     } else {
       return [];
     }
@@ -290,14 +292,16 @@ Template.user_followers.helpers({
       return Meteor.users.find({
         _id: {
           $in: followers
-        }}, {
-          sort: {
-            followersTotal: -1
-            }
-      })
+        }})
     } else {
       return [];
     }
   },
   ownProfile: ownProfile
+});
+
+Template.person_card.helpers({
+  profileUrl: function(){
+    return '/profile/' + (Template.instance().data.person.displayUsername);
+  },
 });

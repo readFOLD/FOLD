@@ -206,10 +206,12 @@
 </template>
 
 <template name="person_card">
-  <div class="person {{#if onProfilePage}}profile{{/if}}" data-person-id="{{person._id}}">
-    <div class="picture"><img src="{{profileImage person 'large'}}"></div>
-    <div class="name">{{person.profile.name}}</div>
-    <div class="username">({{person.displayUsername}})</div>
+  <div class="person {{#if onProfilePage}}profile{{/if}} {{#if userFollowing person._id}}following{{/if}}" data-person-id="{{person._id}}">
+    <a class="author-profile-link" href="{{profileUrl}}">
+      <div class="picture"><img src="{{profileImage person 'large'}}"></div>
+      <div class="name">{{person.profile.name}}</div>
+      <div class="username">({{person.displayUsername}})</div>
+    </a>
     <div class="follow-button-container">{{>follow_button userId=person._id}}</div>
     {{> person_icon}}
   </div>

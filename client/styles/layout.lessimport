@@ -2053,18 +2053,32 @@ div.loading-container {
     .FFMarkWebBold;
     font-size: 13px;
     .size-to-fit;
-    background-color: @social-color;
-    &:hover{
-      background-color: @black-color;
+    &.unfollow{
+      background-color: @social-color;
+      &:hover{
+        background-color: @black-color;
+      }
     }
+    &.follow{
+      background-color: @medium-color;
+      &:hover{
+        background-color: @social-color;
+      }
+    }
+
     &.unfollow:hover{
-      span{
-        display: none;
+      &:not(.just-followed){
+        span{
+          display: none;
+        }
+        &:before{
+          content: 'Unfollow';
+        }
+        background-color: @orange-color;
       }
-      &:before{
-        content: 'Unfollow';
+      &.just-followed{
+        background-color: @social-color;
       }
-      background-color: @orange-color;
     }
   }
 }

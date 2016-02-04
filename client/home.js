@@ -444,14 +444,13 @@ Template.story_preview.helpers({
 
 Template._story_preview_content.onCreated(function(){
   this.showProfileInfoVariable = new ReactiveVar();
-  this.lastBylineHoverEvent = null;
   var that = this;
   var timer = null;
   this.hideProfileInfo = function(){
     timer = Meteor.setTimeout(function(){
       that.showProfileInfoVariable.set(false);
       timer = null;
-    }, 500)
+    }, 300)
   };
   this.cancelHideProfileInfo = function(){
     if(timer){
