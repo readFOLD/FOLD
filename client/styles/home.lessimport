@@ -435,27 +435,34 @@ div.stories {
   }
 
   div.story-container {
-    padding-top: 30px;
-    @media @mobile{
-      padding-top: 68px;
-    }
-    @padding-side: @magic-styling-distance;
-    padding-left: @padding-side;
-    @media @mobile{
-      padding-left: @magic-styling-distance/2;
-    }
-    //padding-right: @padding-side;
     padding-bottom: 75px;
     overflow: hidden;
+    padding-top: 30px;
+    @media @mobile {
+      padding-top: 68px;
+    }
+
+    .published-stories, .unpublished-stories {
+      width: 100%;
+      display: inline-block;
+    }
+
+    &:not(.profile) {
+
+      @padding-side: @magic-styling-distance;
+      padding-left: @padding-side;
+      @media @mobile {
+        padding-left: @magic-styling-distance/2;
+      }
+      //padding-right: @padding-side;
+
+
+      // my stories page
+
+    }
 
     &.profile {
       min-height: 400px
-    }
-
-    // my stories page
-    .published-stories, .unpublished-stories{
-      width: 100%;
-      display: inline-block;
     }
   }
 
@@ -602,6 +609,9 @@ div.stories {
   width: calc(100% ~'-' 340px);
   @media (max-width: 800px) {
     width: 100%;
+  }
+  @media @mobile{
+    top: @magic-styling-distance;
   }
   z-index: 5;
   button{

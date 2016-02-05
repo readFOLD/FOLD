@@ -52,7 +52,10 @@ div.profile-section {
 
   @media (max-width: 800px) {
     position: inherit;
-  } 
+  }
+  @media @mobile {
+    padding-top: @magic-styling-distance * 2;
+  }
 }
 
 
