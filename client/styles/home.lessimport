@@ -442,27 +442,32 @@ div.stories {
       padding-top: 68px;
     }
 
+
+    // my stories page
     .published-stories, .unpublished-stories {
       width: 100%;
       display: inline-block;
     }
 
+    @padding-side: @magic-styling-distance;
+
+    padding-left: @padding-side;
+
     &:not(.profile) {
 
-      @padding-side: @magic-styling-distance;
-      padding-left: @padding-side;
       @media @mobile {
         padding-left: @magic-styling-distance/2;
       }
       //padding-right: @padding-side;
 
 
-      // my stories page
-
     }
 
     &.profile {
-      min-height: 400px
+      min-height: 400px;
+      @media @mobile {
+        padding-left: 0;
+      }
     }
   }
 

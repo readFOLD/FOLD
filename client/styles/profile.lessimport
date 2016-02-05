@@ -219,3 +219,11 @@ div.user-profile {
     }
   }
 }
+
+.profile{
+  .message{
+    @media @mobile {
+      .padding-sides(20px);
+    }
+  }
+}
