@@ -118,10 +118,14 @@ Template.my_stories.events({
 Template.user_profile.onCreated(function(){
   var that = this;
 
-  this.autorun(function(){
-    var usersFromStories = Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId});
-    var user = that.data.user;
+  console.log('happening')
+
+  this.autorun(function(){ // TODO this sometimes runs twice unnecessarily if coming from home (first one does not have full profile user loaded with favorites)
+    var user = Meteor.users.findOne(that.data.user._id);
+    var usersFromStories = Stories.find({ published: true, _id: {$in: user.profile.favorites || []}}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId});
+
     var usersToSubscribeTo = _.compact(_.union(usersFromStories, user.profile.following, user.followers));
+
     that.subscribe('minimalUsersPub', _.sortBy(usersToSubscribeTo, _.identity));
   });
   
