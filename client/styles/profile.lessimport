@@ -48,7 +48,7 @@ h1 {
 div.profile-section {
   padding-top: 120px;
   height: 100%;
-  position: absolute;
+  position: fixed;
 
   @media (max-width: 800px) {
     position: inherit;
