@@ -80,7 +80,8 @@ previewStoryFields = {
 };
 
 minimalUserFields = {
-    "profile": 1,
+    "profile.name": 1,
+    "profile.profilePicture": 1,
     "username": 1,
     displayUsername: 1,
     "services.twitter.id": 1,
