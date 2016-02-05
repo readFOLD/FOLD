@@ -603,9 +603,18 @@ div.stories {
   width: 100%;
 }
 
+.stories.profile{
+  position: relative;
+  padding-top: 120px + @magic-styling-distance;
+}
+
 .profile-section-buttons{
   display: -webkit-flex;
   display: flex;
+  position: fixed;
+  top: 120px;
+  width: calc(100% ~'-' 340px);
+  z-index: 5;
   button{
     height: @magic-styling-distance;
     flex: 1;
