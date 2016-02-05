@@ -118,8 +118,6 @@ Template.my_stories.events({
 Template.user_profile.onCreated(function(){
   var that = this;
 
-  console.log('happening')
-
   this.autorun(function(){ // TODO this sometimes runs twice unnecessarily if coming from home (first one does not have full profile user loaded with favorites)
     var user = Meteor.users.findOne(that.data.user._id);
     var usersFromStories = Stories.find({ published: true, _id: {$in: user.profile.favorites || []}}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId});
@@ -211,7 +209,7 @@ Template.user_stories.helpers({
     return Template.instance().seeAllPublished.get()
   },
   publishedStories: function() {
-    var limit = Template.instance().seeAllPublished.get() ? 0 : numStoriesToDisplay; //when limit=0 -> no limit on stories
+    var limit = 0; // = Template.instance().seeAllPublished.get() ? 0 : numStoriesToDisplay; //when limit=0 -> no limit on stories
     return Stories.find({authorId : this.user._id, published : true}, {
       sort: {
         publishedAt: -1
@@ -246,7 +244,7 @@ Template.user_favorite_stories.helpers({
     return Template.instance().seeAllFavorites.get()
   },
   favoriteStories: function() {
-    var limit = Template.instance().seeAllFavorites.get() ? 0 : numStoriesToDisplay; 
+    var limit = 0; // Template.instance().seeAllFavorites.get() ? 0 : numStoriesToDisplay;
     var favorites = this.user.profile.favorites;
     if (favorites && favorites.length) {
       return Stories.find({

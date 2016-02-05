@@ -74,16 +74,17 @@
 
 <template name="user_stories">
   {{#if hasPublished}}
-    {{#if showAllPublishedButton}}
-      <button class="toggle-published">
-        See {{#if seeAllPublished}}fewer{{else}}all{{/if}} stories
-      </button>
-    {{/if}}
+
     {{#each publishedStories}}
         <div class="profile story" data-story-id="{{_id}}">
           {{> _story_preview_content}}
         </div>
     {{/each}}
+    <!--{{#if showAllPublishedButton}}-->
+      <!--<button class="toggle-published">-->
+        <!--See {{#if seeAllPublished}}fewer{{else}}all{{/if}} stories-->
+      <!--</button>-->
+    <!--{{/if}}-->
   {{else}}
     <div class="message stories-message">
       {{#if ownProfile}}
@@ -108,16 +109,17 @@
 
 <template name="user_favorite_stories">
   {{#if hasFavorites}}
-    {{#if showAllFavoritesButton}}
-      <button class="toggle-favorites">
-        See {{#if seeAllFavorites}}fewer{{else}}all{{/if}} favorites
-      </button>
-    {{/if}}
+
     {{#each favoriteStories}}
         <div class="profile story" data-story-id="{{_id}}">
           {{> _story_preview_content}}
         </div>
     {{/each}}
+    <!--{{#if showAllFavoritesButton}}-->
+      <!--<button class="toggle-favorites">-->
+        <!--See {{#if seeAllFavorites}}fewer{{else}}all{{/if}} favorites-->
+      <!--</button>-->
+    <!--{{/if}}-->
   {{else}}
     <div class="message">
       {{#if ownProfile}}
