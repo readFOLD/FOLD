@@ -692,7 +692,11 @@ Meteor.methods({
   },
   followUser: function(userId) {
     check(userId, String);
-    return changeFollow.call(this, userId, true);
+    var success = changeFollow.call(this, userId, true);
+    if(success){
+      generateFollowActivity(this.userId, userId);
+    }
+    return success
   },
   unfollowUser: function(userId) {
     check(userId, String);
@@ -700,7 +704,11 @@ Meteor.methods({
   },
   favoriteStory: function(storyId) {
     check(storyId, String);
-    return changeFavorite.call(this, storyId, true);
+    var success = changeFavorite.call(this, storyId, true);
+    if(success){
+      generateFavoriteActivity(this.userId, storyId)
+    }
+    return success;
   },
   unfavoriteStory: function(storyId) {
     check(storyId, String);

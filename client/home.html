@@ -187,6 +187,10 @@
     {{/unless}}
   {{/unless}}
 
+  {{#if adminMode}}
+    {{> activity_feed}}
+  {{/if}}
+
   {{#each stories}}
     {{#if profile}}
       {{> person_card person=this }}
@@ -343,5 +347,15 @@
 <template name="edit_or_read_bar">
   <div class="edit-or-read">
 
+  </div>
+</template>
+
+<template name="activity_feed">
+  <div class="activity-feed">
+    {{#each populatedFeedItems}}
+      <div class="feed-item">
+        <a href="{{actor.urlPath}}">{{actor.name}}</a> {{type}}d <a href="{{object.urlPath}}">{{object.name}}</a>
+      </div>
+    {{/each}}
   </div>
 </template>

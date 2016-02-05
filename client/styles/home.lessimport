@@ -471,8 +471,7 @@ div.stories {
     }
   }
 
-
-  div.story, div.person {
+  div.story, div.person, .activity-feed {
     border: 1px solid @inactive-color;
     background-color: @white-color;
 
@@ -680,5 +679,14 @@ div.stories {
 
   &.following .person-icon .fg{
     fill: @social-color;
+  }
+}
+
+.activity-feed{
+  a{
+    color: @action-color;
+    &:hover{
+      text-decoration: underline !important;
+    }
   }
 }
