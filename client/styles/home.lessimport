@@ -357,21 +357,8 @@ div.stories {
     margin-left: 40px;
     .profile-info{
       position: absolute;
-      bottom: 100px;
-      left: 25px;
-      &:after{
-        @triangleSize: 8px;
-        content:'';
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        margin-left: -@triangleSize;
-        width: 0;
-        height: 0;
-        border-top: solid @triangleSize @medium-color;
-        border-left: solid @triangleSize transparent;
-        border-right: solid @triangleSize transparent;
-      }
+      bottom: 95px;
+      left: 35px;
     }
     div.pull-left {
       width: 100%;

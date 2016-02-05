@@ -751,14 +751,26 @@
 </template>
 
 <template name="follow_button">
-  <div class="follow-button">
-    {{#if isYou}}
-      <!--<button type='button' class='is-you {{additionalClasses}}'>This is you</button>-->
-    {{else}}
-      {{#if userFollowing}}
-        <button type='button' class='unfollow {{additionalClasses}}'><span>Following ◕‿◕</span></button>
+  <div class="follow-button {{#if flagStyle}}flag-style{{/if}}">
+    {{#if flagStyle}}
+      {{#if isYou}}
+        <!--<button type='button' class='is-you {{additionalClasses}}'>This is you</button>-->
       {{else}}
-        <button type='button' class='follow {{additionalClasses}}'><span>Follow</span></button>
+        {{#if userFollowing}}
+          <button type='button' class='unfollow {{additionalClasses}}'><span class="check">{{> follow_flag_check}}</span><span class="x">{{> follow_flag_x}}</span></button>
+        {{else}}
+          <button type='button' class='follow {{additionalClasses}}'>><span class="plus">{{> follow_flag_plus}}</span></button>
+        {{/if}}
+      {{/if}}
+    {{else}}
+      {{#if isYou}}
+        <!--<button type='button' class='is-you {{additionalClasses}}'>This is you</button>-->
+      {{else}}
+        {{#if userFollowing}}
+          <button type='button' class='unfollow {{additionalClasses}}'><span>Following ◕‿◕</span></button>
+        {{else}}
+          <button type='button' class='follow {{additionalClasses}}'><span>Follow</span></button>
+        {{/if}}
       {{/if}}
     {{/if}}
 

@@ -2046,38 +2046,69 @@ div.loading-container {
 
 
 .follow-button{
-  width: 180px;
-  height: @magic-styling-distance;
-  display: inline-block;
-  button{
-    .FFMarkWebBold;
-    font-size: 13px;
-    .size-to-fit;
-    &.unfollow{
-      background-color: @social-color;
-      &:hover{
-        background-color: @black-color;
-      }
-    }
-    &.follow{
-      background-color: @medium-color;
-      &:hover{
-        background-color: @social-color;
-      }
-    }
+  &.flag-style{
+    height: @magic-styling-distance + 10px;
+    width: @magic-styling-distance;
 
-    &.unfollow:hover{
-      &:not(.just-followed){
-        span{
-          display: none;
-        }
-        &:before{
-          content: 'Unfollow';
-        }
-        background-color: @orange-color;
+    line-height: 0;
+    button{
+      .size-to-fit;
+      line-height: 0;
+      position: relative;
+      span{
+        .center-over-parent-div;
       }
-      &.just-followed{
+    }
+    .unfollow{
+      .x{
+        opacity: 0;
+      }
+      &:hover{
+        &:not(.just-followed){
+          .check{
+            opacity: 0;
+          }
+          .x{
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+  &:not(.flag-style){
+    width: 180px;
+    height: @magic-styling-distance;
+    display: inline-block;
+    button{
+      .FFMarkWebBold;
+      font-size: 13px;
+      .size-to-fit;
+      &.unfollow{
         background-color: @social-color;
+        &:hover{
+          background-color: @black-color;
+        }
+      }
+      &.follow{
+        background-color: @medium-color;
+        &:hover{
+          background-color: @social-color;
+        }
+      }
+
+      &.unfollow:hover{
+        &:not(.just-followed){
+          span{
+            display: none;
+          }
+          &:before{
+            content: 'Unfollow';
+          }
+          background-color: @orange-color;
+        }
+        &.just-followed{
+          background-color: @social-color;
+        }
       }
     }
   }
