@@ -604,6 +604,7 @@ div.stories {
 }
 
 .profile-section-buttons{
+  display: -webkit-flex;
   display: flex;
   button{
     height: @magic-styling-distance;
@@ -617,6 +618,7 @@ div.stories {
     &.active{
       background-color: @social-color;
     }
+    margin: 0;
   }
 }
 
