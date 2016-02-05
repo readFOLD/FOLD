@@ -1211,7 +1211,7 @@ Template.follow_button.events({
     trackEvent('Click follow button');
 
     if (!Meteor.user()) {
-      openSignInOverlay('Thanks for showing your support!\nPlease sign in to follow this user.');
+      openSignInOverlay("Please sign in to follow this author.\nIt'll only take a second!");
       return
     }
     t.justFollowed.set(true);
