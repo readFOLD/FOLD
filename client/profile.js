@@ -27,10 +27,10 @@ Template.profile.events({
   "click .show-followers": function (e, t) {
     t.sectionToShow.set('followers');
   },
-  "click .followers": function (e, t) {
+  "click .followers-total": function (e, t) {
     t.sectionToShow.set('followers');
   },
-  "click .following": function (e, t) {
+  "click .following-total": function (e, t) {
     t.sectionToShow.set('following');
   }
 });

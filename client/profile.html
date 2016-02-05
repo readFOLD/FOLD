@@ -63,8 +63,8 @@
     <div class="name">{{name}}</div>
     <div class="bio">{{bio}}</div>
     <div class="following-followers">
-      <div class="following">Following<br>{{#if user.followingTotal}}{{user.followingTotal}}{{else}}0{{/if}}</div>
-      <div class="followers">Followers<br>{{#if user.followersTotal}}{{user.followersTotal}}{{else}}0{{/if}}</div>
+      <div class="following-total">Following<br>{{#if user.followingTotal}}{{user.followingTotal}}{{else}}0{{/if}}</div>
+      <div class="followers-total">Followers<br>{{#if user.followersTotal}}{{user.followersTotal}}{{else}}0{{/if}}</div>
     </div>
     <div class="follow-button-container">
       {{> follow_button userId=user._id}}
