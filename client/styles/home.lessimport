@@ -681,3 +681,12 @@ div.stories {
     fill: @social-color;
   }
 }
+
+.activity-feed{
+  a{
+    color: @action-color;
+    &:hover{
+      text-decoration: underline !important;
+    }
+  }
+}

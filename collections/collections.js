@@ -2146,6 +2146,9 @@ var objectSchema = new SimpleSchema({
   },
   name: {
     type: String
+  },
+  urlPath: {
+    type: String
   }
 });
 
