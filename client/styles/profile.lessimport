@@ -48,7 +48,7 @@ h1 {
 div.profile-section {
   padding-top: 120px;
   height: 100%;
-  position: absolute;
+  position: fixed;
 
   @media (max-width: 800px) {
     position: inherit;
@@ -166,13 +166,12 @@ div.user-profile {
 }
 
 .toggle-published, .toggle-favorites {
-  z-index: 3;
-  position: relative;
-  padding: 0; 
+  .FFMarkWebBold;
+  font-size: 13px;
+  padding: 0;
   color: @dark-color;
-  top: -41px;
-  left: calc(92% ~"-" 96px);
   display: block;
+  text-align: center;
 
   @media (max-width: 800px) {
     top: -14px;

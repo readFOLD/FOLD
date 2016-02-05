@@ -168,3 +168,27 @@ i.loading-icon{
     fill: @background-color;
   }
 }
+
+.follow-flag{
+  .fg{
+    fill: @white-color;
+  }
+}
+
+.follow-flag-check{
+  .bg{
+    fill: @social-color;
+  }
+}
+
+.follow-flag-plus{
+  .bg{
+    fill: @inactive-color;
+  }
+}
+
+.follow-flag-x{
+  .bg{
+    fill: @orange-color;
+  }
+}

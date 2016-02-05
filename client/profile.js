@@ -27,10 +27,10 @@ Template.profile.events({
   "click .show-followers": function (e, t) {
     t.sectionToShow.set('followers');
   },
-  "click .followers": function (e, t) {
+  "click .followers-total": function (e, t) {
     t.sectionToShow.set('followers');
   },
-  "click .following": function (e, t) {
+  "click .following-total": function (e, t) {
     t.sectionToShow.set('following');
   }
 });
@@ -118,10 +118,12 @@ Template.my_stories.events({
 Template.user_profile.onCreated(function(){
   var that = this;
 
-  this.autorun(function(){
-    var usersFromStories = Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId});
-    var user = that.data.user;
+  this.autorun(function(){ // TODO this sometimes runs twice unnecessarily if coming from home (first one does not have full profile user loaded with favorites)
+    var user = Meteor.users.findOne(that.data.user._id);
+    var usersFromStories = Stories.find({ published: true, _id: {$in: user.profile.favorites || []}}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId});
+
     var usersToSubscribeTo = _.compact(_.union(usersFromStories, user.profile.following, user.followers));
+
     that.subscribe('minimalUsersPub', _.sortBy(usersToSubscribeTo, _.identity));
   });
   
@@ -207,7 +209,7 @@ Template.user_stories.helpers({
     return Template.instance().seeAllPublished.get()
   },
   publishedStories: function() {
-    var limit = Template.instance().seeAllPublished.get() ? 0 : numStoriesToDisplay; //when limit=0 -> no limit on stories
+    var limit = 0; // = Template.instance().seeAllPublished.get() ? 0 : numStoriesToDisplay; //when limit=0 -> no limit on stories
     return Stories.find({authorId : this.user._id, published : true}, {
       sort: {
         publishedAt: -1
@@ -242,7 +244,7 @@ Template.user_favorite_stories.helpers({
     return Template.instance().seeAllFavorites.get()
   },
   favoriteStories: function() {
-    var limit = Template.instance().seeAllFavorites.get() ? 0 : numStoriesToDisplay; 
+    var limit = 0; // Template.instance().seeAllFavorites.get() ? 0 : numStoriesToDisplay;
     var favorites = this.user.profile.favorites;
     if (favorites && favorites.length) {
       return Stories.find({
