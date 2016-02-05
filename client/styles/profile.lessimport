@@ -1,4 +1,4 @@
-@picture-radius: 150px;
+@picture-radius: 126px;
 @profile-width: 340px;
 
 
@@ -17,7 +17,7 @@ h1 {
   li{
     list-style: disc;
     margin-left: 20px;
-    color: @panel-color;
+    color: @social-color;
   }
   &.stories-message{
     a{
@@ -33,18 +33,14 @@ h1 {
     font-size: 13px;
     .padding-sides(20px);
   }
-  button.create-story, button.view-drafts{
+  button.create-story, button.view-drafts, .random-story, .random-person{
     margin-top: @magic-styling-distance/2;
   }
   .create-story{
     background-color: @action-color;
   }
   .view-drafts{
-    background-color: @orange-color;
-  }
-  .random-story{
-    margin-top: 10px;
-    margin-left: 15px;
+    background-color: @social-color;
   }
 
 }
@@ -62,7 +58,7 @@ div.profile-section {
 
 div.user-profile {
   position: fixed;
-  padding:20px;
+  padding: @magic-styling-distance/2;
   background-color: @white-color;
   width: @profile-width;
   max-width: 340px;
@@ -90,16 +86,41 @@ div.user-profile {
     width: @picture-radius;
     height: @picture-radius;
     border-radius: @picture-radius;
-    margin: 50px calc(50% ~"-" @picture-radius*0.5) 20px;
+    margin: @magic-styling-distance/2 calc(50% ~"-" @picture-radius*0.5) 20px;
     overflow: hidden;
     position: relative;
     margin-bottom: 35px;
 
     .profile-picture-large {
-      height: 150px;
-      width: 150px;
+      height: @picture-radius;
+      width: @picture-radius;
     }
-  } 
+  }
+
+  .following-followers{
+    margin-top: @magic-styling-distance;
+    .padding-sides(35px);
+    display: -webkit-flex;
+    display: flex;
+    text-align: center;
+    color: @social-color;
+    font-size: 13px;
+    line-height: 17px;
+    .FFMarkWebBold;
+    div{
+      display: inline-block;
+      flex: 1;
+      cursor: pointer;
+    }
+  }
+
+  .follow-button-container{
+    text-align: center;
+    margin-top: @magic-styling-distance - 2px;
+  }
+  .follow-button{
+    display: inline-block;
+  }
 
   div.name, div.bio {
     text-align: center;
@@ -117,8 +138,10 @@ div.user-profile {
     line-height: 160%;
   }
   .edit-profile {
-    color: @action-color;
+    color: @social-color;
     position: absolute;
+    .FFMarkWebBold;
+    font-size: 13px;
     &:hover{
       text-decoration: underline;
     }
@@ -178,9 +201,9 @@ div.user-profile {
   }
   .unpublish{
     margin-right: 10px;
-    background-color: @panel-color;
+    background-color: @social-color;
     &:hover{
-      background-color: darken(@panel-color, 10%);
+      background-color: darken(@social-color, 10%);
     }
   }
   .delete{

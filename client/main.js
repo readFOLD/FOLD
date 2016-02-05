@@ -112,6 +112,7 @@ window.hammerSwipeOptions = {
 
 
 var scrollPauseArmed = false;
+var scrollPauseLength = 700;
 
 window.updateCurrentY = function() {
   var actualY, h, i, readMode, scrollTop, stickyTitle, vertTop, _i, _len, _ref;
@@ -153,7 +154,7 @@ window.updateCurrentY = function() {
       $(document).scrollTop(readMode);
       Meteor.setTimeout(function () {
         document.body.style.overflowY = 'auto';
-      }, 500);
+      }, scrollPauseLength);
       scrollPauseArmed = false;
     }
 
@@ -724,7 +725,10 @@ Template.minimap.helpers({
     return adminMode();
   },
   activityLevel: function(){
-    return((this.activeHeartbeats || 0) / Session.get('story').analytics.heartbeats.active.story) * 100;
+    var story = new Story(Session.get('story'));
+    var activeHeartbeats = (this.activeHeartbeats || 0);
+    var maxActiveHeartbeats = story.maxActiveHeartbeats();
+    return Math.pow( activeHeartbeats / maxActiveHeartbeats , 0.5) * 100;
   }
 });
 
@@ -1174,6 +1178,71 @@ Template.share_buttons.events({
   'click .share-embed': function(e, t) {
     notifyFeature('Embedding: coming soon!');
     trackEvent('Click embed button');
+  }
+});
+
+
+Template.follow_button.helpers({
+  additionalClasses: function() {
+    var classes = '';
+
+    if (Template.instance().justFollowed.get()){
+      classes += 'just-followed'
+    }
+    if (Template.instance().justUnfollowed.get()){
+      classes += 'just-unfollowed'
+    }
+    return classes;
+  },
+  userFollowing: function(){
+    return Meteor.user() && _.contains(Meteor.user().profile.following, Template.instance().data.userId);
+  },
+  isYou: function(){
+    return Meteor.userId() === Template.instance().data.userId;
+  }
+});
+
+Template.follow_button.onCreated(function() {
+  this.justFollowed = new ReactiveVar();
+  this.justUnfollowed = new ReactiveVar();
+});
+Template.follow_button.events({
+  "click .follow": function (e, t) {
+    trackEvent('Click follow button');
+
+    if (!Meteor.user()) {
+      openSignInOverlay("Please sign in to follow this author.\nIt'll only take a second!");
+      return
+    }
+    t.justFollowed.set(true);
+    Meteor.setTimeout(function () {
+      t.justFollowed.set(null);
+    }, 1500);
+
+    return Meteor.call('followUser', t.data.userId, function (err) {
+      if (err) {
+        notifyError(err);
+        throw(err);
+      } else {
+        trackEvent('Follow user');
+      }
+
+    })
+
+  },
+  "click .unfollow": function (e, t) {
+    t.justUnfollowed.set(true);
+    Meteor.setTimeout(function(){
+      t.justUnfollowed.set(null);
+    }, 1000);
+    return Meteor.call('unfollowUser', t.data.userId, function (err) {
+      if (err) {
+        notifyError(err);
+        throw(err);
+      } else {
+        trackEvent('Unfollow user');
+      }
+    });
   }
 });
 

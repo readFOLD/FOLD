@@ -1,3 +1,7 @@
 <template name="random_story">
   <a class="random-story" href="{{randomizedLink}}"><button>{{#if rolling}}{{> dice_icon}}{{else}}Take me to a random story{{/if}}</button></a>
 </template>
+
+<template name="random_person">
+  <a class="random-person" href="{{randomizedLink}}"><button>{{#if rolling}}{{> dice_icon}}{{else}}Show me someone new{{/if}}</button></a>
+</template>

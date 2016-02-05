@@ -110,6 +110,10 @@ Handlebars.registerHelper("userFavorited", function() {
   return Meteor.user() && _.contains(Meteor.user().profile.favorites, this._id);
 });
 
+Handlebars.registerHelper("userFollowing", function(id) {
+  return id === Meteor.userId() || Meteor.user() && _.contains(Meteor.user().profile.following, id);
+});
+
 Handlebars.registerHelper("profileImage", function(user, size) {
   var diameter;
   if (size === 'large'){
@@ -117,7 +121,7 @@ Handlebars.registerHelper("profileImage", function(user, size) {
   } else {
     diameter = 60;
   }
-  var defaultProfilePic = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/static/placeholder_image.png';
+  var defaultProfilePic = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='; // transparent gif
   var dprSetting = window.isHighDensity ? ',dpr_2.0' : '';
   var twitterPic;
   if (user && user.services && user.services.twitter) {

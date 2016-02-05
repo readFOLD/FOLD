@@ -547,9 +547,10 @@ div.title-overlay {
     div.story-title {
       max-width: 100%;
       .FFMarkWebBold;
-      margin-top: 20px;
+      margin-top: 17px;
       margin-left: 20px;
       margin-right: 20px;
+      margin-bottom: 3px;
       font-size: 24px;
       line-height: 36px;
       //padding-bottom: 6px;
@@ -568,6 +569,21 @@ div.title-overlay {
       margin-left: 20px;
       margin-right: 20px;
       //font-style: italic;
+    }
+  }
+  .follow-button{
+    font: inherit;
+    margin-left: 5px;
+    height: 25px;
+    width: 80px;
+    button{
+      //background-color: transparent !important;
+      font: inherit;
+
+      overflow: hidden;
+      &.follow:not(:hover){
+        background-color: lighten(@dark-color, 30%);
+      }
     }
   }
 }
@@ -809,7 +825,7 @@ div.horizontal-context {
       }
 
       &:hover{
-        background-color: @panel-color;
+        background-color: @social-color;
       }
       &.active {
         background-color: @action-color;
@@ -1396,7 +1412,7 @@ div.text-section {
     margin-left: -@triangleSize;
     width: 0;
     height: 0;
-    border-top: solid @triangleSize @panel-color;
+    border-top: solid @triangleSize @social-color;
     border-left: solid @triangleSize transparent;
     border-right: solid @triangleSize transparent;
   }
@@ -1409,7 +1425,7 @@ div#fold-editor{
 
   #fold-editor-button-group {
     height: @fold-editor-row-height;
-    background-color: @panel-color;
+    background-color: @social-color;
     .standard-icon-colors;
     svg{
       @size: 40px;
@@ -1560,6 +1576,6 @@ div.bottom-bar{
   position:relative;
   height: 5px;
   width: 100%;
-  background-color: @panel-color;
+  background-color: @social-color;
   z-index: 9000;
 }

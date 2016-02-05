@@ -117,6 +117,14 @@ Story = (function() {
     }
   }
 
+  Story.prototype.maxActiveHeartbeats = function(){
+    return _.chain(this.analytics.heartbeats.active)
+      .omit(['story', 'header', 'footer'])
+      .values()
+      .max()
+      .value()
+  }
+
   return Story;
 
 })();
