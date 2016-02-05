@@ -692,7 +692,11 @@ Meteor.methods({
   },
   followUser: function(userId) {
     check(userId, String);
-    return changeFollow.call(this, userId, true);
+    var success = changeFollow.call(this, userId, true);
+    if(success){
+      generateFollowActivity(this.userId, userId);
+    }
+    return success
   },
   unfollowUser: function(userId) {
     check(userId, String);

@@ -68,6 +68,12 @@ fanoutActivity = function(activity){
         generateActivityFeedItem(story.authorId, activity._id, activity.published);
       }
       break;
+    case 'Follow':
+      fanToObject(activity);
+      break;
+    case 'FollowBack':
+      fanToObject(activity);
+      break;
     default:
       throw new Error('Activity type not matched for activity: ' + activity._id);
   }
