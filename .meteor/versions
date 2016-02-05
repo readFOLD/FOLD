@@ -63,6 +63,7 @@ less@2.5.1
 livedata@1.0.15
 localstorage@1.0.5
 logging@1.0.8
+london:body-class@2.3.0
 meteor@1.1.10
 meteor-base@1.0.1
 meteorhacks:async@1.0.0

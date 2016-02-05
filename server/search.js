@@ -42,7 +42,9 @@ SearchSource.defineSource('people', function(searchText, options) {
 
   if(searchText) {
     var regExp = buildRegExp(searchText);
-    var selector = {$or: [{username: regExp},{ 'profile.name': regExp}]
+    var selector = {
+      username: {$exists: true},
+      $or: [{username: regExp},{ 'profile.name': regExp}]
     };
     return Meteor.users.find(selector, findOptions).fetch();
   } else {

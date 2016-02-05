@@ -295,10 +295,9 @@ div.stories {
     min-width: @profile-section;
 
     @media (max-width: 800px) {
-      padding-top: 75px;
-      @margin-side: 25px;
-      margin-left: @margin-side;
-      min-width: calc(100% ~"-" @margin-side*2);
+      padding-top: 0;
+      margin-left: 0;
+      min-width: 100%;
     }
   }
 
@@ -436,27 +435,39 @@ div.stories {
   }
 
   div.story-container {
-    padding-top: 30px;
-    @media @mobile{
-      padding-top: 68px;
-    }
-    @padding-side: @magic-styling-distance;
-    padding-left: @padding-side;
-    @media @mobile{
-      padding-left: @magic-styling-distance/2;
-    }
-    //padding-right: @padding-side;
     padding-bottom: 75px;
     overflow: hidden;
-
-    &.profile {
-      min-height: 400px
+    padding-top: 30px;
+    @media @mobile {
+      padding-top: 68px;
     }
 
+
     // my stories page
-    .published-stories, .unpublished-stories{
+    .published-stories, .unpublished-stories {
       width: 100%;
       display: inline-block;
+    }
+
+    @padding-side: @magic-styling-distance;
+
+    padding-left: @padding-side;
+
+    &:not(.profile) {
+
+      @media @mobile {
+        padding-left: @magic-styling-distance/2;
+      }
+      //padding-right: @padding-side;
+
+
+    }
+
+    &.profile {
+      min-height: 400px;
+      @media @mobile {
+        padding-left: 0;
+      }
     }
   }
 
@@ -600,6 +611,12 @@ div.stories {
   position: fixed;
   top: 120px;
   width: calc(100% ~'-' 340px);
+  @media (max-width: 800px) {
+    width: 100%;
+  }
+  @media @mobile{
+    top: @magic-styling-distance;
+  }
   z-index: 5;
   button{
     height: @magic-styling-distance;

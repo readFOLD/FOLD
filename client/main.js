@@ -101,6 +101,12 @@ Meteor.startup(function(){
       $(document).off('focusin', restrictFocusToModal);
     }
   })
+
+  Blaze.addBodyClass(function() {
+    if(Router.current()){
+      return Router.current().route.getName();
+    }
+  })
 });
 
 

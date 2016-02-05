@@ -52,7 +52,10 @@ div.profile-section {
 
   @media (max-width: 800px) {
     position: inherit;
-  } 
+  }
+  @media @mobile {
+    padding-top: @magic-styling-distance * 2;
+  }
 }
 
 
@@ -72,8 +75,11 @@ div.user-profile {
     margin-left: @margin-side;
     max-width: 100%;
     width: calc(100% ~"-" @margin-side*2);
+    height: auto;
+    min-height: 0;
     position: initial;
     margin-top: 30px;
+    border-right: none;
   }
 
   @media (max-height: 640px) {
@@ -210,6 +216,14 @@ div.user-profile {
     background-color: @less-danger-color;
     &:hover{
       background-color: darken(@less-danger-color, 10%);
+    }
+  }
+}
+
+.profile{
+  .message{
+    @media @mobile {
+      .padding-sides(20px);
     }
   }
 }

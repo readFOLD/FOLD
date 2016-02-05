@@ -501,11 +501,13 @@ body {
 
   line-height: 23px;
   font-size: 15px;
-  min-height: 1420px;
-  @media @desktop-xtall {
-    min-height: 2000px;
+  &.read, &.edit{
+    min-height: 1420px;
+    @media @desktop-xtall {
+      min-height: 2000px;
+    }
+    overflow-x: hidden;
   }
-  overflow-x: hidden;
 }
 
 .story-footer{
