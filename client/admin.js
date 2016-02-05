@@ -76,3 +76,20 @@ Template.admin_recent_drafts.onCreated(function(){
     that.subscribe("adminRecentDraftsPub", {more: Session.get("adminRecentDraftsMore")})
   });
 });
+
+Template.admin_recent_activities.onCreated(function(){
+  Session.setDefault('adminRecentActivitiesMore', 0);
+
+  var that = this;
+
+  this.autorun(function(){
+    that.subscribe("adminRecentActivitiesPub", {more: Session.get("adminRecentActivitiesMore")})
+  });
+});
+
+
+Template.admin_recent_activities.helpers({
+  activities: function(){
+    return Activities.find({}, {sort: {published: -1}});
+  }
+});

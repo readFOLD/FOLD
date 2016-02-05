@@ -296,6 +296,24 @@ Meteor.publish("adminRecentDraftsPub", function(options) {
   });
 });
 
+Meteor.publish("adminRecentActivitiesPub", function(options) {
+
+
+  options = options || {};
+  options.more = options.more || 0;
+
+  if(!this.userId || !Meteor.users.findOne(this.userId).admin){
+    return this.ready();
+  }
+
+  return Activities.find({}, {
+    sort: {
+      published: -1
+    },
+    limit: 250 * Math.pow(2, options.more)
+  });
+});
+
 
 Meteor.publish("userProfilePub", function(username) { // includes user profile and favorited stories
 

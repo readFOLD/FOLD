@@ -10,6 +10,8 @@
     <br>
     <br>
     {{#linkTo class="green" route="admin-recent-drafts"}}<b>View Recent Drafts</b>{{/linkTo}}
+    <br>
+    {{#linkTo class="green" route="admin-recent-activities"}}<b>View Recent Activities</b>{{/linkTo}}
     {{#if currentUser.privileges.impersonation}}
       <input placeholder="Impersonate by username" type="text" class="impersonate"/>
     {{/if}}
@@ -31,5 +33,18 @@
         {{/linkTo}}
       {{/each}}
     </ol>
+  </div>
+</template>
+
+<template name="admin_recent_activities">
+  <div class="admin-recent-activities">
+    <h1>Welcome {{currentUser.profile.name}}</h1>
+    <h2>Recent activites on FOLD</h2>
+    <button class="show-more">Show More</button>
+    {{#each activities}}
+      <div class="feed-item">
+        <a href="{{actor.urlPath}}">{{actor.name}}</a> {{type}}d <a href="{{object.urlPath}}">{{object.name}}</a>
+      </div>
+    {{/each}}
   </div>
 </template>
