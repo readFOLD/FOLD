@@ -295,10 +295,9 @@ div.stories {
     min-width: @profile-section;
 
     @media (max-width: 800px) {
-      padding-top: 75px;
-      @margin-side: 25px;
-      margin-left: @margin-side;
-      min-width: calc(100% ~"-" @margin-side*2);
+      padding-top: 0;
+      margin-left: 0;
+      min-width: 100%;
     }
   }
 
@@ -601,6 +600,9 @@ div.stories {
   position: fixed;
   top: 120px;
   width: calc(100% ~'-' 340px);
+  @media (max-width: 800px) {
+    width: 100%;
+  }
   z-index: 5;
   button{
     height: @magic-styling-distance;

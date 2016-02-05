@@ -72,8 +72,11 @@ div.user-profile {
     margin-left: @margin-side;
     max-width: 100%;
     width: calc(100% ~"-" @margin-side*2);
+    height: auto;
+    min-height: 0;
     position: initial;
     margin-top: 30px;
+    border-right: none;
   }
 
   @media (max-height: 640px) {
