@@ -56,7 +56,7 @@ fanoutActivity = function(activity){
     case 'Favorite':
       var story = Stories.findOne(activity.object.id, {fields: {authorId: 1}});
       if(story){
-        generateActivityFeedItem(story.authorId, activity._id, activity.published);
+        generateActivityFeedItem(story.authorId, activity._id, activity.published); // fan to author
       }
       break;
     case 'Follow':
@@ -66,7 +66,7 @@ fanoutActivity = function(activity){
       fanToObject(activity);
       break;
     case 'Publish':
-      var author = Meteor.users.findOne(activity.actor.id, {fields: {followers: 1}});
+      var author = Meteor.users.findOne(activity.actor.id, {fields: {followers: 1}}); // fan to followers
       _.each(author.followers, function(follower){
         generateActivityFeedItem(follower, activity._id, activity.published);
       })
