@@ -682,9 +682,9 @@ div.stories {
   }
 }
 
-.activity-feed{
+.activity-feed, .admin-recent-activities{
   a{
-    color: @action-color;
+    .FFMarkWebBold;
     &:hover{
       text-decoration: underline !important;
     }
