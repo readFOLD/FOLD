@@ -645,7 +645,7 @@ Meteor.methods({
         'userPathSegment': user.displayUsername,
         'storyPathSegment': _s.slugify(title.toLowerCase()) + '-' + story.shortId, // TODO DRY
         'publishedAt': new Date,
-        'firstPublishedAt': story.firstPublishedAt || new Date, // only change if not set TODO cleanup and actually don't set if already set
+        'firstPublishedAt': story.firstPublishedAt || new Date, // only change if not set
         'published': true,
         'everPublished': true,
         'authorName': user.profile.name || 'Anonymous',
@@ -657,6 +657,9 @@ Meteor.methods({
 
     if (story.published){ // if was published before, add the current published version to the history
       StoryHistories.insert(_.extend({storyId: story._id}, _.omit(story, ['draftStory', 'history', '_id']))); // TO-DO remove history once migrate all existing stories
+    } else {
+      // if this was the first time published
+      generatePublishActivity(this.userId, story._id);
     }
 
     return updateStory.call(this, { _id: storyId }, {

@@ -39,18 +39,14 @@ generateActivityFeedItem = function(userId, activityId, relevancy){
   })
 };
 
-fanToActor = function(activity){
-  check(activity.actor, Object);
-  generateActivityFeedItem(activity.actor.id, activity._id, activity.published);
-};
 
 fanToObject = function(activity){
   check(activity.object, Object);
   generateActivityFeedItem(activity.object.id, activity._id, activity.published);
 };
 
-fanToTarget = function(activity){
-  check(activity.target, Object);
+fanToActorFollowers = function(activity){
+  check(activity.actor, Object);
   generateActivityFeedItem(activity.target.id, activity._id, activity.published);
 };
 
@@ -74,8 +70,14 @@ fanoutActivity = function(activity){
     case 'FollowBack':
       fanToObject(activity);
       break;
+    case 'Publish':
+      var author = Meteor.users.findOne(activity.actor.id, {fields: {followers: 1}});
+      _.each(author.followers, function(follower){
+        generateActivityFeedItem(follower, activity._id, activity.published);
+      })
+      break;
     default:
-      throw new Error('Activity type not matched for activity: ' + activity._id);
+      throw new Error('Activity type not matched for activity: ' + activity._id + ' Type: ' + activity.type);
   }
 
   // if get here, nothing has thrown
