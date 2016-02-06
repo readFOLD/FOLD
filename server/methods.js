@@ -121,7 +121,7 @@ Meteor.methods({
       throw new Meteor.Error("Only users may get their activity feed");
     }
 
-    var activityIds = ActivityFeedItems.find({uId: this.userId}, {sort:{r: -1}, limit: 50, fields: {'aId' : 1}}).map(function(i){return i.aId}); // FETCH THE ID MAP OR SOMETHING
+    var activityIds = ActivityFeedItems.find({uId: this.userId}, {sort:{r: -1}, limit: 50, fields: {'aId' : 1}}).map(function(i){return i.aId});
     return Activities.find({_id: {$in: activityIds}}).fetch();
   }
 });
