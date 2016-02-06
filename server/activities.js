@@ -45,11 +45,6 @@ fanToObject = function(activity){
   generateActivityFeedItem(activity.object.id, activity._id, activity.published);
 };
 
-fanToActorFollowers = function(activity){
-  check(activity.actor, Object);
-  generateActivityFeedItem(activity.target.id, activity._id, activity.published);
-};
-
 
 fanoutActivity = function(activity){
   check(activity, Object);
