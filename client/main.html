@@ -409,7 +409,7 @@
 
 
 <template name="display_audio_section">
-  <div class="display-context-section audio-section" data-context-id="{{_id}}">
+  <div class="display-context-section audio-section" data-context-id="{{_id}}" data-context-source="{{source}}">
     <div class="active-display {{#unless selected}}hide{{/unless}}">
       <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
     </div>
@@ -431,8 +431,8 @@
 </template>
 
 <template name="display_video_section">
-  <div class="display-context-section video-section">
-    {{#if selected}}
+  <div class="display-context-section video-section" data-context-id="{{_id}}" data-context-source="{{source}}">
+    {{#if showActiveDisplay}}
       <div class="active-display">
         <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
       </div>
