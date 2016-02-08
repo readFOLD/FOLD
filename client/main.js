@@ -1738,11 +1738,23 @@ Template.context_overlay.helpers({
     } else {
       return newTypeSpecificContextBlock(_.findWhere(this.contextBlocks, {_id: id}));
     }
+  },
+  contextLoaded: function(){
+    return Template.instance().contextLoaded.get();
   }
 })
 
 Template.context_overlay.onCreated(function(){
+  this.contextLoaded = new ReactiveVar();
   document.body.style.overflow = 'hidden';
+});
+
+Template.context_overlay.onRendered(function(){
+  var that = this;
+  this.contextLoaded.set(false);
+  $('img, video').load(function(){
+    that.contextLoaded.set(true);
+  });
 });
 
 Template.context_overlay.onDestroyed(function(){

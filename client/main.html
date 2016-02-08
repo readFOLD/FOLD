@@ -569,6 +569,9 @@
     <div class="context-overlay" style="height: {{windowHeight}}px; width: {{windowWidth}}px;">
       <div class="context-overlay-content">
         <img src="{{largeUrl}}" />
+        {{#unless contextLoaded}}
+          {{> loading_icon}}
+        {{/unless}}
       </div>
     </div>
   {{/with}}

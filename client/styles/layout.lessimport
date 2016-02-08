@@ -2043,6 +2043,11 @@ div.loading-container {
     display: inline-block;
     max-height: 100%;
     .center-over-parent-div;
+    z-index: 2;
+  }
+  .loading-icon{
+    .center-over-parent-div;
+    z-index: 1;
   }
 }
 
