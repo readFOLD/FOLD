@@ -682,11 +682,14 @@ div.stories {
   }
 }
 
-.activity-feed, .admin-recent-activities{
+.activity-feed-content{
   a{
     .FFMarkWebBold;
     &:hover{
       text-decoration: underline !important;
     }
+  }
+  img{
+    max-height: @magic-styling-distance;
   }
 }

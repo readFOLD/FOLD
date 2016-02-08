@@ -1987,7 +1987,7 @@ div.loading-container {
   }
 }
 
-.admin-recent-drafts{
+.admin-recent-drafts, .admin-recent-activities{
   .show-more{
     background-color: @black-color;
     position: fixed;

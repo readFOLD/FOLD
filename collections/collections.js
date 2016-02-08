@@ -61,8 +61,32 @@ Story = (function() {
   };
 
   Story.prototype.headerImageUrl = function(size){
+    return Story.getHeaderImageUrl(this.headerImage, size);
+  };
+
+  Story.prototype.headerImageVideoObject = function(size){
+    return // looping video has chops occasionally, don't show it for now
+    if (this.headerImageFormat ==='gif' && !Meteor.Device.isPhone()){
+      var headerImageUrl = this.headerImageUrl(size);
+      return {
+        previewUrl: headerImageUrl + '.jpg',
+        mp4Url: headerImageUrl + '.mp4',
+        webMUrl: headerImageUrl + '.webm'
+      }
+    }
+  };
+
+  Story.prototype.maxActiveHeartbeats = function(){
+    return _.chain(this.analytics.heartbeats.active)
+      .omit(['story', 'header', 'footer'])
+      .values()
+      .max()
+      .value()
+  };
+
+  Story.getHeaderImageUrl = function(headerImageId, size){
     var image, imageFormat, url;
-    image = this.headerImage;
+    image = headerImageId;
 
 
     var maxWidth = (size === 'small') ? 800 : 2048;
@@ -103,26 +127,6 @@ Story = (function() {
       url += '.jpg'; // TODO, this could conflict with headerImageVideoObject if conditional changes
     }
     return url
-  }
-
-  Story.prototype.headerImageVideoObject = function(size){
-    return // looping video has chops occasionally, don't show it for now
-    if (this.headerImageFormat ==='gif' && !Meteor.Device.isPhone()){
-      var headerImageUrl = this.headerImageUrl(size);
-      return {
-        previewUrl: headerImageUrl + '.jpg',
-        mp4Url: headerImageUrl + '.mp4',
-        webMUrl: headerImageUrl + '.webm'
-      }
-    }
-  }
-
-  Story.prototype.maxActiveHeartbeats = function(){
-    return _.chain(this.analytics.heartbeats.active)
-      .omit(['story', 'header', 'footer'])
-      .values()
-      .max()
-      .value()
   }
 
   return Story;
@@ -2149,6 +2153,14 @@ var objectSchema = new SimpleSchema({
   },
   urlPath: {
     type: String
+  },
+  imageId: {
+    type: String,
+    optional: true
+  },
+  twitterId: {
+    type: String,
+    optional: true
   }
 });
 

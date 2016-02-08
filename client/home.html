@@ -352,9 +352,15 @@
 
 <template name="activity_feed">
   <div class="activity-feed">
-    {{#each populatedFeedItems}}
+    {{> _activity_feed_content activities=populatedFeedItems}}
+  </div>
+</template>
+
+<template name="_activity_feed_content">
+  <div class="activity-feed-content">
+    {{#each activities}}
       <div class="feed-item">
-        <a href="{{actor.urlPath}}">{{actor.name}}</a> {{type}}d <a href="{{object.urlPath}}">{{object.name}}</a>
+        <a href="{{actor.urlPath}}">{{#if actorImage}}<img src="{{actorImage}}">{{/if}}{{actor.name}}</a> {{type}}d <a href="{{object.urlPath}}">{{object.name}}{{#if objectImage}}<img src="{{objectImage}}">{{/if}}</a>
       </div>
     {{/each}}
   </div>

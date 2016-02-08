@@ -41,10 +41,6 @@
     <h1>Welcome {{currentUser.profile.name}}</h1>
     <h2>Recent activites on FOLD</h2>
     <button class="show-more">Show More</button>
-    {{#each activities}}
-      <div class="feed-item">
-        <a href="{{actor.urlPath}}">{{actor.name}}</a> {{type}}d <a href="{{object.urlPath}}">{{object.name}}</a>
-      </div>
-    {{/each}}
+    {{> _activity_feed_content activities=activities}}
   </div>
 </template>
