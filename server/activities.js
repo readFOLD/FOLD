@@ -3,7 +3,7 @@ generateActivity = function(type, details){
   check(details, Object);
 
   if(details.fanout){
-    throw new Error('Fanout should not be set');
+    throw new Meteor.Error('Fanout should not be set');
   }
   var fullDetails = _.extend({}, details, {type: type});
 
@@ -17,13 +17,24 @@ generateActivity = function(type, details){
     }
   });
 
-  if(details.content){ // TODO if message or similar, don't want to dedup at all. can send multiple messages that are the same
-    dedupDetails.content = details.content
+  switch(type){
+    case 'Share':
+      // pass through
+      break;
+    case 'Message':
+      // pass through
+      break;
+    default: // don't allow duplicate activities
+      if(details.content){
+        dedupDetails.content = details.content
+      }
+      if(Activities.find(dedupDetails, {limit: 1}).count()){
+        return // if this is a duplicate. stop here.
+      }
+
   }
 
-  if(!Activities.find(dedupDetails, {limit: 1}).count()){
-    Activities.insert(fullDetails);
-  }
+  Activities.insert(fullDetails);
 };
 
 
@@ -45,6 +56,24 @@ fanToObject = function(activity){
   generateActivityFeedItem(activity.object.id, activity._id, activity.published);
 };
 
+fanToObjectAuthor = function(activity){
+  check(activity.object, Object);
+
+  var populatedObject;
+
+  switch (activity.object.type){
+    case 'Story':
+      populatedObject = Stories.findOne(activity.object.id, {fields: {authorId: 1}});
+      break;
+    default:
+      throw new Meteor.Error('Object not found in database for activity: ' + activity._id);
+  }
+
+  if(populatedObject){
+    generateActivityFeedItem(populatedObject.authorId, activity._id, activity.published); // fan to author
+  }
+};
+
 
 fanoutActivity = function(activity){
   check(activity, Object);
@@ -54,10 +83,7 @@ fanoutActivity = function(activity){
 
   switch(activity.type){
     case 'Favorite':
-      var story = Stories.findOne(activity.object.id, {fields: {authorId: 1}});
-      if(story){
-        generateActivityFeedItem(story.authorId, activity._id, activity.published); // fan to author
-      }
+      fanToObjectAuthor(activity);
       break;
     case 'Follow':
       fanToObject(activity);
@@ -69,7 +95,10 @@ fanoutActivity = function(activity){
       var author = Meteor.users.findOne(activity.actor.id, {fields: {followers: 1}}); // fan to followers
       _.each(author.followers, function(follower){
         generateActivityFeedItem(follower, activity._id, activity.published);
-      })
+      });
+      break;
+    case 'Share':
+      fanToObjectAuthor(activity);
       break;
     default:
       throw new Error('Activity type not matched for activity: ' + activity._id + ' Type: ' + activity.type);

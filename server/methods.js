@@ -30,6 +30,9 @@ var countStat = function(storyId, stat, details) {
   if(!_.contains(stats.deepAnalytics[stat].uniqueViewersByConnection, connectionId)){
     addToSet['deepAnalytics.' + stat + '.uniqueViewersByConnection'] = connectionId ;
     inc['analytics.' + stat + '.byConnection'] = 1;
+    if(stat === 'shares'){
+      generateShareActivity(story._id, details.service);
+    }
   }
 
   if(!_.contains(stats.deepAnalytics[stat].uniqueViewersByIP, clientIP)){
