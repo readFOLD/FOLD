@@ -2140,7 +2140,7 @@ this.StoryHistories = new Mongo.Collection("story_histories");
 
 this.Activities = new Mongo.Collection("activities");
 
-var objectSchema = new SimpleSchema({
+var basicObjectSchema = {
   type: {
     type: String,
     allowedValues: ['Person', 'Story', 'ContextCard']
@@ -2162,7 +2162,15 @@ var objectSchema = new SimpleSchema({
     type: String,
     optional: true
   }
-});
+};
+
+var objectSchema = new SimpleSchema(_.extend( basicObjectSchema, {
+    attributedTo: {
+      type: new SimpleSchema(basicObjectSchema),
+      optional: true
+    }
+  })
+);
 
 Schema.Activities = new SimpleSchema({
   type: { // follow, favorite etc...
