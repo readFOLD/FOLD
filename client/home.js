@@ -217,7 +217,12 @@ var homeSubs = new SubsManager({
   expireIn: 99999999
 });
 
-var searchUserSubs = new SubsManager({
+var storySearchUserSubs = new SubsManager({
+  cacheLimit: 1,
+  expireIn: 60
+});
+
+var peopleSearchUserSubs = new SubsManager({
   cacheLimit: 1,
   expireIn: 60
 });
@@ -345,12 +350,12 @@ Template.all_stories.onCreated(function(){
   });
 
   subscribeToStorySearchedMinimalUsers = _.debounce(function(){
-    return searchUserSubs.subscribe('minimalUsersPub', _.sortBy(StorySearch.getData({}, true).map(function(story){return story.authorId}), _.identity));
+    return storySearchUserSubs.subscribe('minimalUsersPub', _.sortBy(StorySearch.getData({}, true).map(function(story){return story.authorId}), _.identity));
   }, 1000);
 
   // TODO, we just loaded this data with the search....
   subscribeToPeopleSearchedMinimalUsers = _.debounce(function(){
-    return searchUserSubs.subscribe('minimalUsersPub', _.sortBy(PersonSearch.getData({}, true).map(function(person){return person._id}), _.identity));
+    return peopleSearchUserSubs.subscribe('minimalUsersPub', _.sortBy(PersonSearch.getData({}, true).map(function(person){return person._id}), _.identity));
   }, 1000);
 
   this.autorun(function(){
