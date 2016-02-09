@@ -361,11 +361,11 @@
     {{#each activities}}
       <div class="feed-item">
         {{#if $eq type 'Share'}}
-          {{#with object}}<a href="{{urlPath}}">{{#if image}}<div class="image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}} was just shared on {{capitalize content}}
+          {{#with object}}<a href="{{urlPath}}">{{#if image}}<div class="image left-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}} was just shared on {{capitalize content}}
           {{else}}
-            {{#with actor}}<a href="{{urlPath}}">{{#if image}}<div class="image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}}
+            {{#with actor}}<a href="{{urlPath}}">{{#if image}}<div class="image left-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}}
             {{#if $eq type 'Follow'}}
-              followed you
+              followed you {{> follow_button}}
               {{else}}
                 {{#if $eq type 'FollowBack'}}
                     followed you back
@@ -376,7 +376,7 @@
                   {{#if $eq type 'Favorite'}}
                     liked
                   {{/if}}
-                  {{#with object}}<a href="{{urlPath}}">{{name}}{{#if image}}<div class="image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}
+                  {{#with object}}<a href="{{urlPath}}">{{name}}{{#if image}}<div class="image right-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}
               {{/if}}
             {{/if}}
         {{/if}}

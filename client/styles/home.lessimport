@@ -697,14 +697,28 @@ div.stories {
       text-decoration: underline !important;
     }
   }
+  .feed-item{
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 35px;
+    padding-right: 34px;
+  }
   .image{
     display: inline-block;
     .size(25px);
     overflow: hidden;
     text-align: center;
-    position: relative;
+    position: absolute;
     &.person-preview-image{
       border-radius: 50%;
+    }
+    top: 9px;
+    &.left-image{
+      left: 0;
+    }
+    &.right-image{
+      right: 0;
     }
   }
   img{
@@ -714,6 +728,20 @@ div.stories {
   .feed-item{
     &:not(:last-child){
       border-bottom: 1px solid @medium-color;
+    }
+  }
+  .follow-button{
+    font: inherit;
+    height: 25px;
+    width: 80px;
+    position: absolute;
+    right: 0;
+    button{
+      font: inherit;
+      overflow: hidden;
+      //&.follow:not(:hover){
+      //  background-color: lighten(@dark-color, 30%);
+      //}
     }
   }
 }
