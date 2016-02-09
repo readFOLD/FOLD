@@ -29,6 +29,9 @@ Template._activity_feed_content.helpers({
   },
   imageClass: function(){
     return this.type.toLowerCase() + '-preview-image';
+  },
+  objectIsYou: function(){
+    return this.object.id === Meteor.userId();
   }
 });
 

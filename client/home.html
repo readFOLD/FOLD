@@ -365,10 +365,10 @@
           {{else}}
             {{#with actor}}<a href="{{urlPath}}">{{#if image}}<div class="image left-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}}
             {{#if $eq type 'Follow'}}
-              followed you {{> follow_button}}
+              followed {{#if objectIsYou}}you{{else}}{{#with object}}<a href="{{urlPath}}">{{name}}{{#if image}}<div class="image right-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}{{/if}} {{> follow_button userId=actor.id}}
               {{else}}
                 {{#if $eq type 'FollowBack'}}
-                    followed you back
+                  followed {{#if objectIsYou}}you{{else}}{{#with object}}<a href="{{urlPath}}">{{name}}{{#if image}}<div class="image right-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}{{/if}} back {{> follow_button userId=actor.id}}
                 {{else}}
                   {{#if $eq type 'Publish'}}
                     just published
