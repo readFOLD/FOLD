@@ -20,17 +20,15 @@ Template.activity_feed.helpers({
 });
 
 Template._activity_feed_content.helpers({
-  actorImage: function(){
-    if(this.actor.type === 'Person'){
-      return getProfileImage(this.actor.imageId, this.actor.twitterId, 'small');
+  image: function(){
+    if(this.type === 'Person'){
+      return getProfileImage(this.imageId, this.twitterId, 'small');
+    } else if (this.type === 'Story'){
+      return Story.getHeaderImageUrl(this.imageId, 'small');
     }
   },
-  objectImage: function(){
-    if(this.object.type === 'Person'){
-      return getProfileImage(this.object.imageId, this.object.twitterId, 'small');
-    } else if (this.object.type === 'Story'){
-      return Story.getHeaderImageUrl(this.object.imageId, 'small');
-    }
+  imageClass: function(){
+    return this.type.toLowerCase() + '-preview-image';
   }
 });
 

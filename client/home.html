@@ -360,7 +360,26 @@
   <div class="activity-feed-content">
     {{#each activities}}
       <div class="feed-item">
-        <a href="{{actor.urlPath}}">{{#if actorImage}}<img src="{{actorImage}}">{{/if}}{{actor.name}}</a> {{type}}d <a href="{{object.urlPath}}">{{object.name}}{{#if objectImage}}<img src="{{objectImage}}">{{/if}}</a>
+        {{#if $eq type 'Share'}}
+          {{#with object}}<a href="{{urlPath}}">{{#if image}}<div class="image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}} was just shared on {{capitalize content}}
+          {{else}}
+            {{#with actor}}<a href="{{urlPath}}">{{#if image}}<div class="image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}}
+            {{#if $eq type 'Follow'}}
+              followed you
+              {{else}}
+                {{#if $eq type 'FollowBack'}}
+                    followed you back
+                {{else}}
+                  {{#if $eq type 'Publish'}}
+                    just published
+                  {{/if}}
+                  {{#if $eq type 'Favorite'}}
+                    liked
+                  {{/if}}
+                  {{#with object}}<a href="{{urlPath}}">{{name}}{{#if image}}<div class="image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}
+              {{/if}}
+            {{/if}}
+        {{/if}}
       </div>
     {{/each}}
   </div>

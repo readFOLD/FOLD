@@ -280,6 +280,67 @@ div.signup, div.login, div.user_profile {
   }
 }
 
+.story-sizing{
+  height: 339px;
+  @margin-side: @magic-styling-distance/2;
+  margin-left: 0;
+  margin-right: @magic-styling-distance;
+  width: calc(33.33% ~"-" @margin-side * 2);
+  float: left;
+
+  /*for screens up to 1200px width - 2 stories up*/
+  @media (max-width: 1200px) {
+    width: calc(50% ~"-" @margin-side * 2);
+  }
+
+  @media (max-width: 800px) {
+    width: calc(100% ~"-" @margin-side * 2);
+  }
+
+  @media (min-width: 1700px) {
+    width: calc(25% ~"-" @margin-side * 2);
+  }
+
+  @media (min-width: 2300px) {
+    width: calc(20% ~"-" @margin-side * 2);
+  }
+
+  @media @mobile{
+    margin-right: @magic-styling-distance/2;
+    width: calc(100% ~"-" @magic-styling-distance/2);
+  }
+
+  &.profile {
+    @margin-side: 2%;
+    margin-right: @magic-styling-distance;
+    width: calc(50% ~"-" @magic-styling-distance);
+
+    @media (max-width: 1200px) {
+      @margin-side: 2%;
+      margin-right: @margin-side*2;
+      width: calc(100% ~"-" @margin-side * 8);
+    }
+
+    @media (max-width: 800px) {
+      @margin-side: 30px;
+      margin-right: @margin-side;
+      margin-left: @margin-side;
+      width: calc(100% ~"-" @margin-side * 2);
+    }
+
+    @media (min-width: 1700px) {
+      width: calc(33.33% ~"-" @margin-side * 2);
+    }
+
+    @media (min-width: 2300px) {
+      width: calc(25% ~"-" @margin-side * 2);
+    }
+
+
+
+  }
+}
+
 div.stories {
   @profile-section: 340px;
   padding-top: 120px;
@@ -471,13 +532,13 @@ div.stories {
     }
   }
 
-  div.story, div.person, .activity-feed {
+  div.story, div.person {
     border: 1px solid @inactive-color;
     background-color: @white-color;
 
     // 540 980+
     // 415 980-
-    height: 339px;
+    .story-sizing;
     /*for screens between 1200px & 1440px width - 3 stories up*/
     // max-width: 465px;
     // min-width: 375px;
@@ -492,63 +553,6 @@ div.stories {
       margin-bottom: 40px;
     }
 
-    @margin-side: @magic-styling-distance/2;
-    margin-left: 0;
-    margin-right: @magic-styling-distance;
-    width: calc(33.33% ~"-" @margin-side * 2);
-    float: left;
-
-    /*for screens up to 1200px width - 2 stories up*/
-    @media (max-width: 1200px) {
-      width: calc(50% ~"-" @margin-side * 2);
-    }
-
-    @media (max-width: 800px) {
-      width: calc(100% ~"-" @margin-side * 2);
-    }
-
-    @media (min-width: 1700px) {
-      width: calc(25% ~"-" @margin-side * 2);
-    }
-
-    @media (min-width: 2300px) {
-      width: calc(20% ~"-" @margin-side * 2);
-    }
-
-    @media @mobile{
-      margin-right: @magic-styling-distance/2;
-      width: calc(100% ~"-" @magic-styling-distance/2);
-    }
-
-    &.profile {
-      @margin-side: 2%;
-      margin-right: @magic-styling-distance;
-      width: calc(50% ~"-" @magic-styling-distance);
-
-      @media (max-width: 1200px) {
-        @margin-side: 2%;
-        margin-right: @margin-side*2;
-        width: calc(100% ~"-" @margin-side * 8);
-      }
-
-      @media (max-width: 800px) {
-        @margin-side: 30px;
-        margin-right: @margin-side;
-        margin-left: @margin-side;
-        width: calc(100% ~"-" @margin-side * 2);
-      }
-
-      @media (min-width: 1700px) {
-        width: calc(33.33% ~"-" @margin-side * 2);
-      }
-
-      @media (min-width: 2300px) {
-        width: calc(25% ~"-" @margin-side * 2);
-      }
-
-
-
-    }
 
     &:hover {
       //box-shadow: 0 0 5px rgba(0,0,0,.2);
@@ -683,13 +687,41 @@ div.stories {
 }
 
 .activity-feed-content{
+  .story-sizing;
+  overflow-y: scroll;
+  .FFMagdaCleanMonoWebProRegular;
+  color: @medium-color;
   a{
-    .FFMarkWebBold;
+    color: @black-color;
     &:hover{
       text-decoration: underline !important;
     }
   }
+  .image{
+    display: inline-block;
+    .size(25px);
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+    &.person-preview-image{
+      border-radius: 50%;
+    }
+  }
   img{
-    max-height: @magic-styling-distance;
+    height: 100%;
+    .center-over-parent-div;
+  }
+  .feed-item{
+    &:not(:last-child){
+      border-bottom: 1px solid @medium-color;
+    }
+  }
+}
+
+.admin-recent-activities{
+  padding-left: 20px;
+  .activity-feed-content{
+    height: auto;
+    padding-left: 20px;
   }
 }
