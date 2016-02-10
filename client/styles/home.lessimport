@@ -560,7 +560,7 @@ div.stories {
     display: inline-block;
     position: relative;
     margin-top: @story-margin-top;
-    margin-bottom: 23px;
+    margin-bottom: @magic-styling-distance - @story-margin-top;
 
     @media @mobile {
       margin-top: 0px;
