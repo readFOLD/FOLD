@@ -388,6 +388,7 @@ div.stories {
   div.top-bar{
     height: @magic-styling-distance;
     display: flex;
+    text-align: center;
     .FFMagdaCleanMonoWebProRegular;
     > div{
       flex: 1;

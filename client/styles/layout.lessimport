@@ -2059,6 +2059,10 @@ div.loading-container {
 
 .follow-button{
   height: @magic-styling-distance;
+  svg{
+    float: left;
+    margin-top: -5px;
+  }
   button{
     .FFMarkWebBold;
     font-size: 13px;
@@ -2093,7 +2097,7 @@ div.loading-container {
         span{
           display: none;
         }
-        &:before{
+        &:after{
           content: 'Unfollow';
         }
         color: @orange-color;
@@ -2112,6 +2116,10 @@ div.loading-container {
 
   &.bar-style{
     width: 100%;
+    button{
+      .FFMagdaCleanMonoWebProRegular;
+      font-size: 15px;
+    }
   }
 
   &:not(.bar-style){
@@ -2140,7 +2148,7 @@ div.loading-container {
           span{
             display: none;
           }
-          &:before{
+          &:after{
             content: 'Unfollow';
           }
           background-color: @orange-color;
