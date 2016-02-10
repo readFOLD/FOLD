@@ -733,7 +733,7 @@ div.stories {
   .follow-button{
     font: inherit;
     height: 25px;
-    width: 80px;
+    width: 85px;
     position: absolute;
     right: 0;
     button{
