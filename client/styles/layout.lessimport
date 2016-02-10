@@ -1194,11 +1194,16 @@ div.horizontal-context {
 
 @context-count-size: 30px;
 
-.context-count {
-  margin-left: 7px;
-  position: absolute;
-  top: -0.5 * @context-count-size;
-  width: 100%;
+.context-count{
+  &:hover{
+    .context-count-details{
+      display: auto;
+    }
+  }
+}
+
+.context-count-details{
+  display: none;
 }
 .context-count-text{
   display: none;

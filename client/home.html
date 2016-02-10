@@ -225,73 +225,88 @@
 
 <template name="_story_preview_content">
   {{#with story}}
-    <div class="context-count">
-      {{#if contextCountOfType 'video'}}
-        <div class="context-count-icon">
-          {{> video_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'video'}}
-          </div>
+    <div class="top-bar">
+      <div class="context-count">
+        C-count
+        <div class="context-count-details">
+          {{#if contextCountOfType 'video'}}
+            <div class="context-count-icon">
+              {{> video_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'video'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'image'}}
+            <div class="context-count-icon">
+              {{> image_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'image'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'gif'}}
+            <div class="context-count-icon">
+              {{> gif_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'gif'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'map'}}
+            <div class="context-count-icon">
+              {{> map_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'map'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'twitter'}}
+            <div class="context-count-icon">
+              {{> twitter_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'twitter'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'audio'}}
+            <div class="context-count-icon">
+              {{> audio_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'audio'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'text'}}
+            <div class="context-count-icon">
+              {{> text_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'text'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'link'}}
+            <div class="context-count-icon">
+              {{> link_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'link'}}
+              </div>
+            </div>
+          {{/if}}
+          <!--TODO - add remix check-->
         </div>
-      {{/if}}
-      {{#if contextCountOfType 'image'}}
-        <div class="context-count-icon">
-          {{> image_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'image'}}
-          </div>
-        </div>
-      {{/if}}
-      {{#if contextCountOfType 'gif'}}
-        <div class="context-count-icon">
-          {{> gif_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'gif'}}
-          </div>
-        </div>
-      {{/if}}
-      {{#if contextCountOfType 'map'}}
-        <div class="context-count-icon">
-          {{> map_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'map'}}
-          </div>
-        </div>
-      {{/if}}
-      {{#if contextCountOfType 'twitter'}}
-        <div class="context-count-icon">
-          {{> twitter_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'twitter'}}
-          </div>
-        </div>
-      {{/if}}
-      {{#if contextCountOfType 'audio'}}
-        <div class="context-count-icon">
-          {{> audio_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'audio'}}
-          </div>
-        </div>
-      {{/if}}
-      {{#if contextCountOfType 'text'}}
-        <div class="context-count-icon">
-          {{> text_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'text'}}
-          </div>
-        </div>
-      {{/if}}
-      {{#if contextCountOfType 'link'}}
-        <div class="context-count-icon">
-          {{> link_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'link'}}
-          </div>
-        </div>
-      {{/if}}
-      <!--TODO - add remix check-->
+      </div>
+      <div class="favorite-count">
+        {{> favorite_button }}
+      </div>
+      <div class="reason">
+        FOLD Pick
+      </div>
+      <div class="">
+        {{> follow_button userId=this.authorId}}
+      </div>
     </div>
+
 
     {{#linkTo route=linkRoute data=this}}
       <div class="overlay-image">
@@ -334,7 +349,6 @@
       {{/if}}
 
       <div class="pull-right">
-        {{> favorite_button }}
         {{#if adminMode}}
           {{> editors_pick_button }}
         {{/if}}

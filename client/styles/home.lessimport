@@ -281,7 +281,7 @@ div.signup, div.login, div.user_profile {
 }
 
 .story-sizing{
-  height: 339px;
+  height: 379px;
   @margin-side: @magic-styling-distance/2;
   margin-left: 0;
   margin-right: @magic-styling-distance;
@@ -382,6 +382,17 @@ div.stories {
 
     @media (max-width: 800px) {
       width: calc(100% ~"-" 4px);
+    }
+  }
+
+  div.top-bar{
+    height: @magic-styling-distance;
+    display: flex;
+    > div{
+      flex: 1;
+    }
+    .follow-button{
+      width: auto;
     }
   }
 
@@ -561,9 +572,6 @@ div.stories {
 
     div.favorite-button {
       font-size: 12px;
-      position: absolute;
-      right: 40px;
-      bottom: 40px;
     }
 
     div.edit-or-read {
