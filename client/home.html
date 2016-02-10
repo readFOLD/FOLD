@@ -187,7 +187,8 @@
     {{/unless}}
   {{/unless}}
 
-  {{#if adminMode}}
+
+  {{#if currentUser}}
     {{> activity_feed}}
   {{/if}}
 
@@ -300,10 +301,12 @@
         {{> favorite_button }}
       </div>
       <div class="reason">
-        FOLD Pick
+        {{#if editorsPick}}
+          FOLD Pick
+        {{/if}}
       </div>
       <div class="">
-        {{> follow_button userId=this.authorId}}
+        {{> follow_button userId=this.authorId barStyle=true}}
       </div>
     </div>
 
@@ -342,11 +345,6 @@
           </div>
         </div>
       </a>
-      {{#if showProfileInfo}}
-        <div class="profile-info">
-          {{>follow_button userId=authorId flagStyle=true}}
-        </div>
-      {{/if}}
 
       <div class="pull-right">
         {{#if adminMode}}

@@ -388,8 +388,10 @@ div.stories {
   div.top-bar{
     height: @magic-styling-distance;
     display: flex;
+    .FFMagdaCleanMonoWebProRegular;
     > div{
       flex: 1;
+      line-height: @magic-styling-distance;
     }
     .follow-button{
       width: auto;
@@ -696,7 +698,7 @@ div.stories {
 
 .activity-feed-content{
   .story-sizing;
-  overflow-y: scroll;
+  overflow-y: auto;
   .FFMagdaCleanMonoWebProRegular;
   color: @medium-color;
   a{

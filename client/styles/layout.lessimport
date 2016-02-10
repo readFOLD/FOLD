@@ -2058,41 +2058,68 @@ div.loading-container {
 
 
 .follow-button{
-  &.flag-style{
-    height: @magic-styling-distance + 10px;
-    width: @magic-styling-distance;
-
-    line-height: 0;
-    button{
-      .size-to-fit;
-      line-height: 0;
-      position: relative;
-      span{
-        .center-over-parent-div;
-      }
-    }
-    .unfollow{
-      .x{
-        opacity: 0;
+  height: @magic-styling-distance;
+  button{
+    .FFMarkWebBold;
+    font-size: 13px;
+    .size-to-fit;
+    &.unfollow{
+      color: @social-color;
+      .fg{
+        fill: @social-color;
       }
       &:hover{
-        &:not(.just-followed){
-          .check{
-            opacity: 0;
-          }
-          .x{
-            opacity: 1;
-          }
+        color: @black-color;
+        .fg{
+          fill: @black-color;
+        }
+      }
+    }
+    &.follow{
+      color: @medium-color;
+      .fg{
+        fill: @medium-color;
+      }
+      &:hover{
+        color: @social-color;
+        .fg{
+          fill: @social-color;
+        }
+      }
+    }
+
+    &.unfollow:hover{
+      &:not(.just-followed){
+        span{
+          display: none;
+        }
+        &:before{
+          content: 'Unfollow';
+        }
+        color: @orange-color;
+        .fg{
+          fill: @orange-color;
+        }
+      }
+      &.just-followed{
+        color: @social-color;
+        .fg{
+          fill: @social-color;
         }
       }
     }
   }
-  &:not(.flag-style){
+
+  &.bar-style{
+    width: 100%;
+  }
+
+  &:not(.bar-style){
     width: 180px;
-    height: @magic-styling-distance;
     display: inline-block;
     button{
       .FFMarkWebBold;
+      color: @white-color !important;
       font-size: 13px;
       .size-to-fit;
       &.unfollow{

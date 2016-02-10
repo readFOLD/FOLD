@@ -13,6 +13,19 @@ Template.activity_feed.onCreated(function(){
   })
 });
 
+Template.activity_feed.onDestroyed(function(){
+  document.body.style.overflow = 'auto';
+});
+
+Template.activity_feed.events({
+  'mouseenter': function() {
+    document.body.style.overflow = 'hidden';
+  },
+  'mouseleave': function(){
+    document.body.style.overflow='auto';
+  }
+});
+
 Template.activity_feed.helpers({
   populatedFeedItems: function(){
     return ActivityItems.find({}, {sort: {published: -1}});

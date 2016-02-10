@@ -469,42 +469,6 @@ Template.story_preview.helpers({
   }
 });
 
-
-Template._story_preview_content.onCreated(function(){
-  this.showProfileInfoVariable = new ReactiveVar();
-  var that = this;
-  var timer = null;
-  this.hideProfileInfo = function(){
-    timer = Meteor.setTimeout(function(){
-      that.showProfileInfoVariable.set(false);
-      timer = null;
-    }, 300)
-  };
-  this.cancelHideProfileInfo = function(){
-    if(timer){
-      Meteor.clearTimeout(timer);
-    }
-  };
-  this.showProfileInfo = function(){
-    that.cancelHideProfileInfo();
-    that.showProfileInfoVariable.set(true);
-  }
-});
-
-Template._story_preview_content.helpers({
-  showProfileInfo: function(){
-    return Template.instance().showProfileInfoVariable.get()
-  }
-});
-Template._story_preview_content.events({
-  "mouseenter .byline": function(d) {
-    Template.instance().showProfileInfo();
-  },
-  "mouseleave .byline": function(d) {
-    Template.instance().hideProfileInfo();
-  },
-});
-
 Template._story_preview_content.helpers({
   lastPublishDate: function() {
     if(this.publishedAt) {
