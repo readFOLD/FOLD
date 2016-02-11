@@ -24,6 +24,10 @@ StoryStats._ensureIndex({
   storyId: 1
 });
 
+ActivityFeedItems._ensureIndex({
+  uId: 1
+});
+
 Meteor.users._ensureIndex({
   username: 1
 });
@@ -365,6 +369,21 @@ Meteor.publish("userStoriesPub", function(username) { // only published stories
     fields : previewStoryFields,
     limit: 100 // initial limit
   });
+});
+
+Meteor.publish("activityFeedItemsPub", function() {
+  if (this.userId) {
+    return ActivityFeedItems.find({
+      uId: this.userId
+    }, {
+      limit: 50,
+      sort: {
+        r: -1
+      }
+    });
+  } else {
+    return this.ready();
+  }
 });
 
 Meteor.publish("myStoriesPub", function() {
