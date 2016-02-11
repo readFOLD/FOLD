@@ -50,7 +50,10 @@ var loadInitialActivities = function(cb) {
 Template.activity_feed.onCreated(function(){
   var that = this;
 
+  this.activityFeedLoading = new ReactiveVar(true);
+
   loadInitialActivities(function(err, loadedActivities){
+    that.activityFeedLoading.set(false);
 
     subscribeToActivityFeedItems(function(){
       var query = ActivityFeedItems.find({uId: Meteor.userId()}, {sort:{r: -1}, fields: {'aId' : 1}});
@@ -99,6 +102,12 @@ Template.activity_feed.events({
 Template.activity_feed.helpers({
   populatedFeedItems: function(){
     return ActivityItems.find({}, {sort: {published: -1}});
+  },
+  loading: function(){
+    return Template.instance().activityFeedLoading.get();
+  },
+  hasButton: function(){
+    return _.contains(['Follow', 'FollowBack'], this.type)
   }
 });
 

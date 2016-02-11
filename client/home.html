@@ -364,14 +364,18 @@
 
 <template name="activity_feed">
   <div class="activity-feed">
-    {{> _activity_feed_content activities=populatedFeedItems}}
+
+    {{> _activity_feed_content activities=populatedFeedItems loading=loading}}
   </div>
 </template>
 
 <template name="_activity_feed_content">
   <div class="activity-feed-content">
+    {{#if loading}}
+      <div class="loading">Activity feed coming right up!</div>
+    {{/if}}
     {{#each activities}}
-      <div class="feed-item">
+      <div class="feed-item {{#if hasButton}}has-button{{/if}}">
         {{#if $eq type 'Share'}}
           {{#with object}}<a href="{{urlPath}}">{{#if image}}<div class="image left-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}} was just shared on {{capitalize content}}
           {{else}}
@@ -392,6 +396,35 @@
               {{/if}}
             {{/if}}
         {{/if}}
+      </div>
+    {{else}}
+      <div class="feed-item has-button">
+        <a href="/profile/alexishope"><div class="image left-image person-preview-image"><img src="//res.cloudinary.com/fold/image/twitter/w_60,h_60,c_fill,g_face/14554998"></div>Alexis Hope</a>
+        welcomes you to FOLD! °\(^o^)/°
+        {{> follow_button userId="Huhi8wGaaatz5kYZT"}}
+      </div>
+      <div class="feed-item has-button">
+        <a href="/profile/joegoldbeck"><div class="image left-image person-preview-image"><img src="//res.cloudinary.com/fold/image/twitter/w_60,h_60,c_fill,g_face/2200223750"></div>Joe Goldbeck</a>
+        welcomes you to FOLD!
+        {{> follow_button userId="KkhkSk3iqbDywx5Aj"}}
+      </div>
+      <div class="feed-item">
+        <a href="/profile/FOLD"><div class="image left-image person-preview-image"><img src="//res.cloudinary.com/fold/image/twitter/w_60,h_60,c_fill,g_face/2550922014"></div>FOLD</a>
+        just published
+        <a href="/about">What is FOLD?<div class="image right-image story-preview-image"><img src="//res.cloudinary.com/fold/image/upload/c_lfill,g_north,h_230,w_800/imcxwzyxtoydfcgkjzur"></div></a>
+      </div>
+
+      <div class="feed-item">
+      </div>
+      <div class="feed-item">
+      </div>
+      <div class="feed-item">
+      </div>
+      <div class="feed-item">
+      </div>
+      <div class="feed-item">
+      </div>
+      <div class="feed-item">
       </div>
     {{/each}}
   </div>

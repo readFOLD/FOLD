@@ -697,8 +697,17 @@ div.stories {
   }
 }
 
+.activity-feed{
+}
+
 .activity-feed-content{
   .story-sizing;
+  position: relative;
+  .loading{
+    .center-over-parent-div;
+    text-align: center;
+    width: 90%;
+  }
   overflow-y: auto;
   .FFMagdaCleanMonoWebProRegular;
   color: @medium-color;
@@ -709,11 +718,15 @@ div.stories {
     }
   }
   .feed-item{
+    min-height: @magic-styling-distance;
     position: relative;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 35px;
     padding-right: 34px;
+    &.has-button{
+      padding-right: 90px;
+    }
   }
   .image{
     display: inline-block;
@@ -746,6 +759,7 @@ div.stories {
     height: 25px;
     width: 85px;
     position: absolute;
+    top: 9px;
     right: 0;
     button{
       font: inherit;
