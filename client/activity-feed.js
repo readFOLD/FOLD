@@ -22,19 +22,18 @@ var subscribeToActivityFeedItems = function(cb){
   }
 };
 
+var loadedActivities;
+var loadedActivitiesDep = new Tracker.Dependency();
+
 var loadInitialActivities = function(cb) {
-
-  var loadedActivities = ActivityItems.find({}).map(function (a) {
-    return a._id
-  });
-
-  if (!loadedActivities.length) { // only load if haven't loaded
+  if (!loadedActivities) { // only load if haven't loaded
     Meteor.call('getActivityFeed', function (err, feedItems) {
       if (err) {
         throw err
       }
 
       loadedActivities = _.pluck(feedItems, '_id');
+      loadedActivitiesDep.changed();
 
       _.each(feedItems, function (feedItem) {
         ActivityItems.insert(feedItem);
@@ -43,6 +42,11 @@ var loadInitialActivities = function(cb) {
       cb(null, loadedActivities);
     });
   } else {
+
+    loadedActivities = ActivityItems.find({}).map(function (a) {
+      return a._id
+    });
+    loadedActivitiesDep.changed();
     cb(null, loadedActivities)
   }
 };
@@ -99,15 +103,20 @@ Template.activity_feed.events({
   }
 });
 
+var feedLimit = Meteor.Device.isPhone() ? 5 : 50;
+
 Template.activity_feed.helpers({
   populatedFeedItems: function(){
-    return ActivityItems.find({}, {sort: {published: -1}});
+    return ActivityItems.find({}, {sort: {published: -1}, limit: feedLimit});
   },
   loading: function(){
     return Template.instance().activityFeedLoading.get();
   },
-  hasButton: function(){
-    return _.contains(['Follow', 'FollowBack'], this.type)
+  hideContent: function(){
+    loadedActivitiesDep.depend();
+    console.log(loadedActivities)
+    console.log(loadedActivities ? false : true);
+    return loadedActivities ? false : true;
   }
 });
 
@@ -126,9 +135,12 @@ Template._activity_feed_content.helpers({
     return this.object.id === Meteor.userId();
   },
   includeBaselineActivityFeedContent: function(){
-    return Template.instance().data.activities.count() < 48;
+    return Template.instance().data.activities.count() <= (feedLimit - 3);
   },
   activityPlaceholders: function(){
+    if(Meteor.Device.isPhone()){
+      return 0;
+    }
     var numPlaceholders;
     var numActivities = Template.instance().data.activities.count();
     if (numActivities <= 3 ) {
@@ -137,6 +149,12 @@ Template._activity_feed_content.helpers({
       numPlaceholders = 0;
     }
     return _.range(numPlaceholders);
+  },
+  hasButton: function(){
+    return _.contains(['Follow', 'FollowBack'], this.type);
+  },
+  noRightImage: function(){
+    return _.contains(['Share'], this.type);
   }
 });
 
