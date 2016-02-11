@@ -285,6 +285,13 @@ div.signup, div.login, div.user_profile {
   @margin-side: @magic-styling-distance/2;
   margin-left: 0;
   margin-right: @magic-styling-distance;
+  margin-top: @story-margin-top;
+  margin-bottom: @magic-styling-distance - @story-margin-top;
+
+  @media @mobile {
+    margin-top: 0px;
+    margin-bottom: 40px;
+  }
   width: calc(33.33% ~"-" @margin-side * 2);
   float: left;
 
@@ -559,13 +566,7 @@ div.stories {
     z-index: 2;
     display: inline-block;
     position: relative;
-    margin-top: @story-margin-top;
-    margin-bottom: @magic-styling-distance - @story-margin-top;
 
-    @media @mobile {
-      margin-top: 0px;
-      margin-bottom: 40px;
-    }
 
 
     &:hover {
@@ -698,10 +699,13 @@ div.stories {
 }
 
 .activity-feed{
+  .story-sizing;
 }
 
 .activity-feed-content{
-  .story-sizing;
+  height: 100%;
+  width: calc(100% ~'+' 12px);
+  padding-right: 12px;
   position: relative;
   .loading{
     .center-over-parent-div;
@@ -718,14 +722,14 @@ div.stories {
     }
   }
   .feed-item{
-    min-height: @magic-styling-distance;
+    min-height: 44px;
     position: relative;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 35px;
     padding-right: 34px;
     &.has-button{
-      padding-right: 90px;
+      padding-right: 94px;
     }
   }
   .image{

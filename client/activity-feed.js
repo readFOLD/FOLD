@@ -124,6 +124,19 @@ Template._activity_feed_content.helpers({
   },
   objectIsYou: function(){
     return this.object.id === Meteor.userId();
+  },
+  includeBaselineActivityFeedContent: function(){
+    return Template.instance().data.activities.count() < 48;
+  },
+  activityPlaceholders: function(){
+    var numPlaceholders;
+    var numActivities = Template.instance().data.activities.count();
+    if (numActivities <= 3 ) {
+      numPlaceholders = 5 - numActivities;
+    } else {
+      numPlaceholders = 0;
+    }
+    return _.range(numPlaceholders);
   }
 });
 
