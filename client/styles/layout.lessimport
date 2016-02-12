@@ -1194,17 +1194,71 @@ div.horizontal-context {
 
 @context-count-size: 30px;
 
-.context-count{
-  &:hover{
+
+
+.context-count-details{
+  display: none;
+  height: @magic-styling-distance;
+  background-color: @dark-color;
+  position: absolute;
+  left: 0;
+  right: auto;
+  bottom: @magic-styling-distance + 10px;
+  min-width: 75px;
+  &:after{
+    @triangleSize: 14px;
+    content:'';
+    position: absolute;
+    top: 100%;
+    left: 55px;
+    margin-left: -@triangleSize;
+    width: 0;
+    height: 0;
+    border-top: solid @triangleSize @dark-color;
+    border-left: solid @triangleSize transparent;
+    border-right: solid @triangleSize transparent;
+  }
+}
+
+
+.context-count-transparent-bridge{
+  height: 10px;
+  width: 100%;
+  position: absolute;
+  bottom: -10px;
+}
+
+.story{
+  &:nth-child(1), &:nth-child(2), &:nth-child(3){
     .context-count-details{
-      display: auto;
+      top: @magic-styling-distance + 10;
+      &:after{
+        @triangleSize: 14px;
+        top: auto;
+        bottom: 100%;
+        margin-left: -@triangleSize;
+        border-top: none;
+        border-bottom: solid @triangleSize @dark-color;
+        border-left: solid @triangleSize transparent;
+        border-right: solid @triangleSize transparent;
+      }
+    }
+    .context-count-transparent-bridge{
+      top: -10px;
     }
   }
 }
 
-.context-count-details{
-  display: none;
+.context-count{
+  overflow: visible;
+  &:hover{
+    .context-count-details{
+      display: inline-block;
+    }
+
+  }
 }
+
 .context-count-text{
   display: none;
 }
@@ -1212,8 +1266,34 @@ div.horizontal-context {
 .context-count-icon {
   display: inline-block;
   position: relative;
+  float: left;
+  &:first-child:nth-last-child(2){
+    float: right;
+    &:before{
+      content:'';
+      position: absolute;
+      left: -40px;
+      bottom:-5px;
+      height: @magic-styling-distance;
+      width: 35px;
+      background-color: @white-color;
+    }
+    &:after{
+      content:'';
+      position: absolute;
+      left: -40px;
+      bottom:-5px;
+      height: @magic-styling-distance - 8px;
+      border-top: 1px solid @medium-color;
+      width: 35px;
+    }
+  }
   .size(@context-count-size);
-  margin-left: 7px;
+  &:first-child{
+    margin-left: 5px;
+  }
+  margin-right: 5px;
+  margin-top: 5px;
   border-radius: @context-count-size;
   background-color: @action-color;
   svg{
@@ -1222,8 +1302,7 @@ div.horizontal-context {
       fill: white;
     }
     .size(@context-count-size + @bonus-size);
-    margin-left: -@bonus-size * 0.5;
-    margin-top: -@bonus-size * 0.5;
+    .center-over-parent-div;
   }
 
   &:hover{
@@ -1231,13 +1310,11 @@ div.horizontal-context {
       display: none;
     }
     .context-count-text {
-      .FFMarkWebBold;
-      font-size: 14px;
-      position: absolute;
+      .FFMagdaCleanMonoWebProRegular;
+      font-size: 13px;
       cursor: default;
       color: @white-color;
-      top: 18%;
-      left: 35%;
+      .center-over-parent-div;
       display: inline;
     }
   }

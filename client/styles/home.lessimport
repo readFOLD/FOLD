@@ -395,19 +395,19 @@ div.stories {
   div.top-bar{
     height: @magic-styling-distance;
     display: flex;
+    position: relative;
     text-align: center;
     color: @medium-color;
     .FFMagdaCleanMonoWebProRegular;
     font-size: 13px;
     > div{
-      height: 100%;
       line-height: @magic-styling-distance;
     }
     .context-count{
       flex: 0 0 46px;
       line-height: @magic-styling-distance;
 
-      svg{
+      .remix-icon-bare{
         float: left;
         width: 20px;
         margin-top: 13px;
