@@ -61,6 +61,12 @@
   text-overflow: ellipsis;
 }
 
+.display-flex{
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -931,7 +937,7 @@ div.link-section {
       overflow:hidden;
 
       &.image-on-left {
-        display: flex;
+        .display-flex;
         align-items: center;
         background-color: @dark-color;
         float: right;
@@ -1504,9 +1510,7 @@ div.minimap {
   }
 
   .section {
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
+    .display-flex;
 
     -ms-flex-align: center;
     -webkit-align-items: center;
@@ -1899,7 +1903,7 @@ body.konami{
 
 div.loading-container {
   margin-top: 100px;
-  display: flex;
+  .display-flex;
   align-items: center;
   justify-content: center;
   &.header {

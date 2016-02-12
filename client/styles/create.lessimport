@@ -790,8 +790,7 @@ div.horizontal-context {
   @contentIconBannerHeight: 60px;
 
   div.content-icons {
-    display: -webkit-flex;
-    display: flex;
+    .display-flex;
     -webkit-justify-content: space-between;
     justify-content: space-between;
 

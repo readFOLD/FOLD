@@ -106,8 +106,7 @@ div.user-profile {
   .following-followers{
     margin-top: @magic-styling-distance;
     .padding-sides(35px);
-    display: -webkit-flex;
-    display: flex;
+    .display-flex;
     text-align: center;
     color: @social-color;
     font-size: 13px;

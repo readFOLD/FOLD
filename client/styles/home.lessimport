@@ -394,7 +394,7 @@ div.stories {
 
   div.top-bar{
     height: @magic-styling-distance;
-    display: flex;
+    .display-flex;
     position: relative;
     text-align: center;
     color: @medium-color;
@@ -679,8 +679,7 @@ div.stories {
 }
 
 .profile-section-buttons{
-  display: -webkit-flex;
-  display: flex;
+  .display-flex;
   position: fixed;
   top: 120px;
   width: calc(100% ~'-' 340px);
