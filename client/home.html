@@ -227,8 +227,9 @@
 <template name="_story_preview_content">
   {{#with story}}
     <div class="top-bar">
+      <div class="empty"></div>
       <div class="context-count">
-        C-count
+        {{> remix_icon_square}}
         <div class="context-count-details">
           {{#if contextCountOfType 'video'}}
             <div class="context-count-icon">
@@ -297,17 +298,21 @@
           <!--TODO - add remix check-->
         </div>
       </div>
+      <div class="empty"></div>
       <div class="favorite-count">
         {{> favorite_button }}
       </div>
-      <div class="reason">
+      <div class="empty"></div>
+      <div class="reason {{#if editorsPick}}fold-pick{{/if}}">
         {{#if editorsPick}}
           FOLD Pick
         {{/if}}
       </div>
-      <div class="">
+      <div class="empty"></div>
+      <div class="follow-section">
         {{> follow_button userId=this.authorId barStyle=true}}
       </div>
+      <div class="empty"></div>
     </div>
 
 

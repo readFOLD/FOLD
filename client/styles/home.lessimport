@@ -397,12 +397,59 @@ div.stories {
     display: flex;
     text-align: center;
     .FFMagdaCleanMonoWebProRegular;
+    font-size: 13px;
     > div{
-      flex: 1;
+      height: 100%;
       line-height: @magic-styling-distance;
     }
-    .follow-button{
-      width: auto;
+    .context-count{
+      flex: 0 0 42px;
+      svg{
+        .size(30px);
+        .fg{
+          fill: @medium-color;
+        }
+      }
+    }
+    .empty{
+      flex: 1;
+    }
+    .favorite-count{
+      flex: 0 0 46px;
+    }
+    .favorite-button{
+      .size-to-fit;
+      button{
+        .size-to-fit;
+        font-size: 13px;
+        line-height: @magic-styling-distance;
+        &.favorite{
+          color: @medium-color;
+        }
+        &.unfavorite{
+          color: @orange-color;
+        }
+      }
+      svg{
+        height: 18px;
+        margin-top: 10px;
+        float: left;
+      }
+      span{
+        text-align: center;
+        float: right;
+        width: 20px;
+      }
+    }
+    .follow-section{
+      flex: none;
+    }
+    .fold-pick{
+      color: @action-color;
+      flex: 0 0 65px;
+    }
+    .fold-section{
+      flex: 0 0 69px;
     }
   }
 
@@ -433,7 +480,7 @@ div.stories {
 
 
 
-  div.byline {
+  .byline {
     //padding: 33px 25px;
     margin-left: 40px;
     .profile-info{
@@ -441,7 +488,7 @@ div.stories {
       bottom: 95px;
       left: 35px;
     }
-    div.pull-left {
+    .pull-left {
       width: 100%;
       position: absolute;
       bottom: 25px;
@@ -454,36 +501,35 @@ div.stories {
         text-align: center;
         vertical-align: middle;
       }
-      div.author-image-placeholder {
+      .author-image-placeholder {
         background-color: @black-color;
         .size(@profile-picture-size);
         border-radius: @profile-picture-size/2;
       }
 
-      div.author-name-date {
+      .author-name-date {
         @margin: 25px;
         font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
         display: inline-block;
         margin-left: @margin;
         & > div {
           line-height: 18px;
-          font-size: 14px;
+          font-size: 15px;
         }
         width: calc(100% ~"-"  @profile-picture-size ~"-" @margin * 2);
-        div.author-name {
+        .author-name {
           color: @dark-color;
           .ellipsis-text;
           width: 100%;
           margin-top: 12px;
           font-size: 15px;
         }
-        div.publish-date {
+        .publish-date {
           color: @inactive-color;
-          font-size: 13px;
         }
       }
     }
-    a.author-profile-link:hover {
+    .author-profile-link:hover {
       span{
         text-decoration: none;
         color: @action-color;
@@ -491,7 +537,7 @@ div.stories {
     }
   }
 
-  div.story-card {
+  .story-card {
     position: absolute;
     width:100%;
     height: calc(100% ~"-" 110px);

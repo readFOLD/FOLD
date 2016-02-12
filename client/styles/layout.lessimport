@@ -2061,7 +2061,9 @@ div.loading-container {
   height: @magic-styling-distance;
   svg{
     float: left;
-    margin-top: -5px;
+    height: 18px;
+    margin-top: -4px;
+    margin-right: 10px;
   }
   button{
     .FFMarkWebBold;
@@ -2115,10 +2117,14 @@ div.loading-container {
   }
 
   &.bar-style{
-    width: 100%;
     button{
       .FFMagdaCleanMonoWebProRegular;
-      font-size: 15px;
+      font-size: 13px;
+      padding: 0;
+      text-align: left;
+    }
+    &.unfollow-style{
+      width: 95px;
     }
   }
 

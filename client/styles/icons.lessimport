@@ -56,7 +56,9 @@ svg.mobile-back-icon{
   button {
     height: @height;
     width: @height;
-    margin-right: 5px;
+    svg{
+      width: auto;
+    }
     padding: 0;
     background-color: transparent;
     border: none;
@@ -86,7 +88,9 @@ svg.mobile-back-icon{
     .fg {
       fill: @favorite-color;
     }
-    .animation(grow 0.5s 1);
+    svg{
+      .animation(grow 0.5s 1);
+    }
   }
   .just-unfavorited{
     .fg {
