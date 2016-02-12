@@ -1246,6 +1246,13 @@ div.horizontal-context {
     .context-count-transparent-bridge{
       top: -10px;
     }
+    .context-count-icon {
+      &:first-child:nth-last-child(2) {
+        &:before, &:after {
+          display: none;
+        }
+      }
+    }
   }
 }
 
