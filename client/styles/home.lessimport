@@ -404,21 +404,21 @@ div.stories {
       line-height: @magic-styling-distance;
     }
     .context-count{
-      flex: 0 0 42px;
+      flex: 0 0 46px;
       line-height: @magic-styling-distance;
 
       svg{
         float: left;
         width: 20px;
-        margin-top: 10px;
+        margin-top: 13px;
         .fg{
           fill: @medium-color;
         }
       }
       span{
-        text-align: center;
+        text-align: left;
         float: right;
-        width: 20px;
+        width: 18px;
       }
     }
     .empty{

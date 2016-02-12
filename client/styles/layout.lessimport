@@ -2062,7 +2062,7 @@ div.loading-container {
   svg{
     float: left;
     height: 18px;
-    margin-top: -4px;
+    margin-top: -3px;
     margin-right: 10px;
   }
   button{
