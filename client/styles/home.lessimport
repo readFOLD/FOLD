@@ -396,6 +396,7 @@ div.stories {
     height: @magic-styling-distance;
     display: flex;
     text-align: center;
+    color: @medium-color;
     .FFMagdaCleanMonoWebProRegular;
     font-size: 13px;
     > div{
@@ -404,11 +405,20 @@ div.stories {
     }
     .context-count{
       flex: 0 0 42px;
+      line-height: @magic-styling-distance;
+
       svg{
-        .size(30px);
+        float: left;
+        width: 20px;
+        margin-top: 10px;
         .fg{
           fill: @medium-color;
         }
+      }
+      span{
+        text-align: center;
+        float: right;
+        width: 20px;
       }
     }
     .empty{
@@ -423,6 +433,7 @@ div.stories {
         .size-to-fit;
         font-size: 13px;
         line-height: @magic-styling-distance;
+
         &.favorite{
           color: @medium-color;
         }
@@ -540,7 +551,7 @@ div.stories {
   .story-card {
     position: absolute;
     width:100%;
-    height: calc(100% ~"-" 110px);
+    height: calc(100% ~"-" 150px);
     z-index: -1;
   }
 
@@ -790,7 +801,7 @@ div.stories {
   }
   .image{
     display: inline-block;
-    .size(25px);
+    .size(26px);
     overflow: hidden;
     text-align: center;
     position: absolute;

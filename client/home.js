@@ -491,6 +491,9 @@ Template._story_preview_content.helpers({
   profileUrl: function(){
     return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate drafts and only use authorDisplayUsername
   },
+  narrativeCount: function(){
+    return this.narrativeBlockCount ? this.narrativeBlockCount : this.narrativeCount();
+  },
   contextCountOfType: function(type){
     return this.contextBlockTypeCount ? this.contextBlockTypeCount[type] : this.contextCountOfType(type);
   }

@@ -613,6 +613,7 @@ Meteor.methods({
     var contextBlocks = ContextBlocks.find({_id: {$in: contextBlockIds}}).fetch();
 
     var contextBlockTypeCount = _.chain(contextBlocks).pluck('type').countBy(_.identity).value();
+    var narrativeBlockCount = draftStory.verticalSections.length;
 
     // TO-DO
     // Maybe a list of which cards are original and which are remixed
@@ -642,6 +643,7 @@ Meteor.methods({
         'contextBlocks': contextBlocks,
         'contextBlockIds': contextBlockIds,
         'contextBlockTypeCount': contextBlockTypeCount,
+        'narrativeBlockCount': narrativeBlockCount,
         'userPathSegment': user.displayUsername,
         'storyPathSegment': _s.slugify(title.toLowerCase()) + '-' + story.shortId, // TODO DRY
         'publishedAt': new Date,

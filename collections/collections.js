@@ -45,7 +45,13 @@ Story = (function() {
     return this.title = "";
   };
 
-  var sum = function(a,b){ return a+b; };
+  Story.prototype.narrativeCount = function() {
+    return this.verticalSections ? this.verticalSections.length : null;
+  };
+
+  Story.prototype.contextCount = function() {
+    return this.contextBlocks.length;
+  };
 
   Story.prototype.contextCountOfType = function(type) {
     return this.contextBlocks.reduce(function(count, contextBlock){
@@ -2042,6 +2048,10 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchema(), {
       type: Object,
       optional: true,
       blackbox: true
+    },
+    narrativeBlockCount:{
+      type: Number,
+      optional: true
     },
     draftStory: {
       type: draftStorySchema

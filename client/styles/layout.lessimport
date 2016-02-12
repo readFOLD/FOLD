@@ -1923,7 +1923,7 @@ div.loading-container {
 
     .user-action {
       background-color: @social-color;
-      @profile-picture-size: 25px;
+      @profile-picture-size: 26px;
       button{
         line-height: @height;
       }
@@ -1937,7 +1937,7 @@ div.loading-container {
       img.profile-picture {
         margin:auto;
         margin-right: 2px;
-        margin-bottom: -9px;
+        margin-bottom: -10px;
         z-index: 10;
         border-radius: @profile-picture-size/2;
         width: @profile-picture-size;

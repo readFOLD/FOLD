@@ -75,6 +75,7 @@ previewStoryFields = {
   editorsPickAt: 1,
   //'analytics.views': 1,  // will need to add this back in for non-curated stories to use preview
   contextBlockTypeCount: 1,
+  narrativeBlockCount: 1,
   headerImageFormat: 1,
   headerImage: 1,
   favoritedTotal: 1,
