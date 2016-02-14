@@ -114,6 +114,39 @@ Meteor.publish("curatedStoriesPub", function(options) {
   });
 });
 
+Meteor.publish("userFollowingStoriesPub", function(options) {
+  options = options ? options : {};
+  _.defaults(options, {page: 0});
+
+  if(!this.userId){
+    return this.ready();
+  }
+
+  var user = Meteor.users.findOne(this.userId, {
+    fields: {
+      "profile.following" : 1
+    }
+  });
+
+  var userFollowing = user.profile.following || [];
+
+  if(!userFollowing || !userFollowing.length){
+    return this.ready()
+  }
+
+  return Stories.find({
+    published: true,
+    authorId: {$in: userFollowing}
+  }, {
+    fields: options.preview ? previewStoryFields : readStoryFields,
+    skip: options.page * PUB_SIZE,
+    sort: {
+      publishedAt: -1
+    },
+    limit: PUB_SIZE
+  });
+});
+
 Meteor.publish("newestStoriesPub", function(options) { // for now, it's just publishedAt (later should maybe be firstPublishedAt)
   options = options ? options : {};
   _.defaults(options, {page: 0});

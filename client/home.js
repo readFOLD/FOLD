@@ -297,20 +297,16 @@ var whichUserPics = new Tracker.Dependency();
 Template.all_stories.onCreated(function(){
   var that = this;
   createHomePageDate = Date.now();
-  subscribeToCuratedStories(function(){
-    if (!that.view.isDestroyed){ // because this happens asynchronously, the user may have already navigated away
-      that.autorun(function(){
+  subscribeToCuratedStories(function () {
+    if (!that.view.isDestroyed) { // because this happens asynchronously, the user may have already navigated away
+      that.autorun(function () {
         whichUserPics.depend();
-        that.subscribe('minimalUsersPub', _.sortBy(Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}), _.identity));
+        that.subscribe('minimalUsersPub', _.sortBy(Stories.find({published: true}, { fields: {authorId: 1}, reactive: false }).map(function (story) {
+          return story.authorId
+        }), _.identity));
       });
     }
-    subscribeToTrendingStories(function() {
-      subscribeToNewestStories(function(){
-        subscribeToStarredStories(function(){
-          whichUserPics.changed();
-        })
-      })
-    });
+      whichUserPics.changed();
   });
 
   var notFirstRun = false;
@@ -320,6 +316,18 @@ Template.all_stories.onCreated(function(){
       $(window).scrollTop(0)
     }
     notFirstRun = true;
+  });
+
+  this.autorun(function () {
+    if (adminMode()) {
+      subscribeToNewestStories(function () {
+        subscribeToTrendingStories(function () {
+          subscribeToStarredStories(function () {
+            whichUserPics.changed();
+          });
+        });
+      });
+    }
   });
 
   // first page of search results, or when flip back to query
@@ -408,7 +416,24 @@ var currentHomeStories = function(){
 
   switch (Session.get('filterValue')) {
     case 'curated': // preview versions of all these stories come from fast-render so we can show them right away
-      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: limit, reactive: true}); // .fetch() prevents a weird "Bad index" error
+      var editorsPicks = Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: limit, reactive: true}).fetch();
+      var followingStories = Stories.find({ published: true, authorId: {$in: Meteor.user().profile.following }, editorsPick: {$ne: true}}, {sort: {'publishedAt': -1}, limit: limit, reactive: true}).fetch()
+
+      var now = Date.now();
+      var sortedStories = _.sortBy(editorsPicks.concat(followingStories), function(story){
+        if(story.editorsPick && (story.editorsPickAt > story.publishedAt)){
+          return now - story.editorsPickAt;
+        } else {
+          return now - story.publishedAt;
+        }
+      });
+
+      sortedStories.count = function(){
+        return this.length;
+      };
+
+      return sortedStories;
+
       break;
     case 'newest':
       return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: limit, reactive: true});

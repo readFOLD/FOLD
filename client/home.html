@@ -9,10 +9,11 @@
         {{/linkTo}}
       </div>
       {{#if showFilters}}
-        <div class="filter {{#if slim}}slim{{else}}fat{{/if}}">
-          {{> filters slim=slim}}
-          <!--{{> filters}} in {{> categories}}-->
-        </div>
+        {{#if adminMode}}
+          <div class="filter {{#if slim}}slim{{else}}fat{{/if}}">
+            {{> filters slim=slim}}
+          </div>
+        {{/if}}
         <div class="search {{#if slim}}slim{{else}}fat{{/if}}">
           {{> search slim=slim}}
         </div>
