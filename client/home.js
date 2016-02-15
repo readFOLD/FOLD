@@ -236,8 +236,6 @@ var peopleSearchUserSubs = new SubsManager({
 var subscribeToCuratedStories = function(cb){
   if(!curatedStoriesSub){
     curatedStoriesSub = homeSubs.subscribe("curatedStoriesPub", function(){
-      var timeToLoadStories = Date.now() - createHomePageDate;
-      trackTiming('Subscription', 'Full curated stories ready (time since created template)', timeToLoadStories);
       subscriptionsReady.set('curatedStories', true);
       if(cb){
         cb();
