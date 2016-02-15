@@ -1952,6 +1952,10 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchema(), {
         }
       }
     },
+    'r': { // relevancy for published stories. determines order of results on homepage
+      type: Date,
+      optional: true
+    },
     publishedAt: {
       type: Date,
       optional: true
@@ -2057,10 +2061,6 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchema(), {
       type: draftStorySchema
     },
     'version': {
-      type: String,
-      optional: true
-    },
-    'r': { // relevancy for published stories. determines order of results on homepage
       type: String,
       optional: true
     }

@@ -308,11 +308,8 @@ Template.all_stories.onCreated(function(){
     }), _.identity));
   });
 
-  if(Meteor.userId()){
-
-  } else {
-    subscriptionsReady.set('curatedStories', true); // we loaded a preview of these up front
-  }
+  subscriptionsReady.set('curatedStories', true); // we loaded a preview of these up front
+  subscriptionsReady.set('curatedAndAuthorsStories', true); // we loaded a preview of these up front
 
   Meteor.setTimeout(function(){
     if (!that.view.isDestroyed && !Meteor.userId()) { // because this happens asynchronously, the user may have already navigated away
@@ -334,9 +331,9 @@ Template.all_stories.onCreated(function(){
     if(notFirstRunA){
       var following = user.profile.following;
 
-      followingHomeSub.subscribe("authorsStoriesPub", {authors: following, preview: true}, function(){ // preview for memory savings on server. can remove preview to make it faster to visit stories you're following
+      followingHomeSub.subscribe("curatedAndAuthorsStoriesPub", {authors: _.sortBy(following, _.identity), preview: true}, function(){ // preview for memory savings on server. can remove preview to make it faster to visit stories you're following
         //incrementSubscriptionPage('following');
-        subscriptionsReady.set('followingStories', true);
+        subscriptionsReady.set('curatedAndAuthorsStoriesPub', true);
         whichUserPics.changed();
       })
     }

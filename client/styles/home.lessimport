@@ -455,9 +455,11 @@ div.stories {
     .follow-section{
       flex: none;
     }
+    .reason{
+      flex: 0 0 65px;
+    }
     .fold-pick{
       color: @action-color;
-      flex: 0 0 65px;
     }
     .fold-section{
       flex: 0 0 69px;

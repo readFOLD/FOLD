@@ -63,6 +63,7 @@ readStoryFields = {
 previewStoryFields = {
   shortId: 1,
   savedAt: 1,
+  r: 1,
   publishedAt: 1,
   published: 1,
   userPathSegment: 1,
@@ -114,58 +115,78 @@ Meteor.publish("curatedStoriesPub", function(options) {
   });
 });
 
-Meteor.publish("userFollowingStoriesPub", function(options) {
-  options = options ? options : {};
-  _.defaults(options, {page: 0});
-
-  if(!this.userId){
-    return this.ready();
-  }
-
-  var user = Meteor.users.findOne(this.userId, {
-    fields: {
-      "profile.following" : 1
-    }
-  });
-
-  var userFollowing = user.profile.following || [];
-
-  if(!userFollowing || !userFollowing.length){
-    return this.ready()
-  }
-
+var doOnlyCurated = function(options){
   return Stories.find({
     published: true,
-    authorId: {$in: userFollowing}
+    editorsPick: true
   }, {
     fields: options.preview ? previewStoryFields : readStoryFields,
     skip: options.page * PUB_SIZE,
     sort: {
-      publishedAt: -1
+      editorsPickAt: -1
     },
     limit: PUB_SIZE
   });
-});
+};
 
-Meteor.publish("authorsStoriesPub", function(options) {
+Meteor.publish("curatedAndUserFollowingStoriesPub", function(options) {
   options = options ? options : {};
   _.defaults(options, {page: 0});
 
-  if(!options.authors || !options.authors.length){
-    return this.ready();
+
+  if(!this.userId){
+    return doOnlyCurated(options);
+  } else {
+    var user = Meteor.users.findOne(this.userId, {
+      fields: {
+        "profile.following" : 1
+      }
+    });
+
+    var userFollowing = user.profile.following || [];
+
+    if(!userFollowing || !userFollowing.length){
+      return doOnlyCurated(options)
+    }
   }
+
+  // if user is following people, then return the follows and the curated
+  return Stories.find({
+    published: true,
+    $or:[
+      {authorId: {$in: _.sortBy(userFollowing, _.identity)}},
+      {editorsPick: true}
+    ]
+  }, {
+    fields: options.preview ? previewStoryFields : readStoryFields,
+    skip: options.page * PUB_SIZE,
+    sort: {
+      r: -1
+    },
+    limit: PUB_SIZE
+  });
+
+});
+
+Meteor.publish("curatedAndAuthorsStoriesPub", function(options) {
+  options = options ? options : {};
+  _.defaults(options, {page: 0, authors: []});
+
   if(!this.userId){
     return this.ready();
   }
 
   return Stories.find({
     published: true,
-    authorId: {$in: options.authors}
+    $or:[
+      {authorId: {$in: _.sortBy(userFollowing, _.identity)}},
+      {editorsPick: true}
+    ]
   }, {
     fields: options.preview ? previewStoryFields : readStoryFields,
     skip: options.page * PUB_SIZE,
     sort: {
-      publishedAt: -1
+      r: -1
     },
     limit: PUB_SIZE
   });
@@ -304,7 +325,7 @@ Meteor.publish("adminMostFavoritesUsersPub", function() {
       "services.twitter.screenName": 1,
       "emails.address": 1,
       "profile": 1
-    },
+    }
   });
 });
 
@@ -379,7 +400,7 @@ Meteor.publish("adminRecentActivitiesPub", function(options) {
 
 Meteor.publish("userProfilePub", function(username) { // includes user profile and favorited stories
 
-  userCursor = Meteor.users.find({
+  var userCursor = Meteor.users.find({
     username: username.toLowerCase()
   }, {
     fields: {

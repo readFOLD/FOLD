@@ -717,7 +717,7 @@ Meteor.methods({
       _id: storyId
     }, {
       $set: {
-        editorsPick: isPick,
+        editorsPick: true,
         editorsPickAt: date,
         r: date
       }
@@ -735,8 +735,7 @@ Meteor.methods({
       _id: storyId
     }, {
       $set: {
-        editorsPick: isPick,
-        editorsPickAt: new Date,
+        editorsPick: false,
         r: story.publishedAt
       }
     });
