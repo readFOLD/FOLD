@@ -310,9 +310,9 @@ Template.all_stories.onCreated(function(){
     }), _.identity));
   });
 
-  subscribeToCuratedStories(function () {
-    // do nothing for now
-  });
+  //subscribeToCuratedStories(function () {
+  //  // do nothing for now
+  //});
 
   var notFirstRunA = false;
   this.autorun(function(){
