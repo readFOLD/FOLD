@@ -2059,6 +2059,10 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchema(), {
     'version': {
       type: String,
       optional: true
+    },
+    'r': { // relevancy for published stories. determines order of results on homepage
+      type: String,
+      optional: true
     }
   })
 );
