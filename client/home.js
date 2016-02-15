@@ -476,13 +476,20 @@ Template.all_stories.events({
     var storySearchQuery = Session.get('storySearchQuery');
     if(storySearchQuery){
       incrementCurrentSubscriptionPage();
-    } else {
+    } else if (adminMode()) { // legacy behavior
       var filterValue = Session.get('filterValue');
       subscriptionsReady.set(filterValue + 'Stories', false);
       homeSubs.subscribe(filterValue + 'StoriesPub', {page: getCurrentSubscriptionPage() + 1}, function(){
         incrementCurrentSubscriptionPage();
         whichUserPics.changed();
         subscriptionsReady.set(filterValue + 'Stories', true);
+      })
+    } else {
+      // TODO subscribe to more following stories, but also in the autorun
+      homeSubs.subscribe('curatedStoriesPub', {page: getCurrentSubscriptionPage() + 1}, function(){
+        incrementCurrentSubscriptionPage();
+        whichUserPics.changed();
+        subscriptionsReady.set('curatedStories', true);
       })
     }
 
@@ -499,6 +506,7 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
     || StorySearch.getStatus().loading)
   },
   moreToShow: function(){
+    // TODO make this work for mixed curated and following stories
     var stories = currentHomeStories();
     if (!stories){
       return false
