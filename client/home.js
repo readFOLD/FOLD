@@ -302,16 +302,17 @@ var whichUserPics = new Tracker.Dependency();
 Template.all_stories.onCreated(function(){
   var that = this;
   createHomePageDate = Date.now();
+
+  that.autorun(function () {
+    whichUserPics.depend();
+    that.subscribe('minimalUsersPub', _.sortBy(Stories.find({published: true}, { fields: {authorId: 1}, reactive: false }).map(function (story) {
+      return story.authorId
+    }), _.identity));
+  });
+
   subscribeToCuratedStories(function () {
-    if (!that.view.isDestroyed) { // because this happens asynchronously, the user may have already navigated away
-      that.autorun(function () {
-        whichUserPics.depend();
-        that.subscribe('minimalUsersPub', _.sortBy(Stories.find({published: true}, { fields: {authorId: 1}, reactive: false }).map(function (story) {
-          return story.authorId
-        }), _.identity));
-      });
-    }
-  })
+    // do nothing for now
+  });
 
   var notFirstRunA = false;
   this.autorun(function(){
