@@ -310,9 +310,21 @@ Template.all_stories.onCreated(function(){
     }), _.identity));
   });
 
-  //subscribeToCuratedStories(function () {
-  //  // do nothing for now
-  //});
+  if(Meteor.userId()){
+
+  } else {
+    subscriptionsReady.set('curatedStories', true); // we loaded a preview of these up front
+  }
+
+  Meteor.setTimeout(function(){
+    if (!that.view.isDestroyed && !Meteor.userId()) { // because this happens asynchronously, the user may have already navigated away
+      subscribeToCuratedStories(function () { // might as well load the full versions of stories for a faster experience
+        // do nothing for now
+      });
+    }
+  }, 5000); // wait a few seconds to let the user orient before potentially slowing down the page for another couple seconds
+
+
 
   var notFirstRunA = false;
   this.autorun(function(){
@@ -438,26 +450,13 @@ var currentHomeStories = function(){
     return searchResults;
   }
 
+  if(!Meteor.userId()){
+    return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: limit, reactive: true});
+  }
+
   switch (Session.get('filterValue')) {
     case 'curated': // preview versions of all these stories come from fast-render so we can show them right away
-      var editorsPicks = Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: limit, reactive: true}).fetch();
-      var followingStories = Stories.find({ published: true, authorId: {$in: Meteor.user().profile.following }, editorsPick: {$ne: true}}, {sort: {'publishedAt': -1}, limit: limit, reactive: true}).fetch()
-
-      var now = Date.now();
-      var sortedStories = _.sortBy(editorsPicks.concat(followingStories), function(story){
-        if(story.editorsPick && (story.editorsPickAt > story.publishedAt)){
-          return now - story.editorsPickAt;
-        } else {
-          return now - story.publishedAt;
-        }
-      });
-
-      sortedStories.count = function(){
-        return this.length;
-      };
-
-      return sortedStories;
-
+      return Stories.find({ published: true, $or: [{editorsPick: true}, {authorId: {$in: Meteor.user().profile.following || []}}]}, {sort: {'r': -1}, limit: limit, reactive: true});
       break;
     case 'newest':
       return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: limit, reactive: true});
@@ -485,13 +484,15 @@ Template.all_stories.events({
         whichUserPics.changed();
         subscriptionsReady.set(filterValue + 'Stories', true);
       })
-    } else {
+    } else if (Meteor.userId()) {
       // TODO subscribe to more following stories, but also in the autorun
-      homeSubs.subscribe('curatedStoriesPub', {page: getCurrentSubscriptionPage() + 1}, function(){
+    } else {
+      subscriptionsReady.set('curatedStories', false);
+      homeSubs.subscribe('curatedStoriesPub', {page: getCurrentSubscriptionPage() + 1, preview: true}, function(){
         incrementCurrentSubscriptionPage();
-        whichUserPics.changed();
         subscriptionsReady.set('curatedStories', true);
-      })
+        whichUserPics.changed();
+      });
     }
 
   },
