@@ -114,8 +114,6 @@ Template.activity_feed.helpers({
   },
   hideContent: function(){
     loadedActivitiesDep.depend();
-    console.log(loadedActivities)
-    console.log(loadedActivities ? false : true);
     return loadedActivities ? false : true;
   }
 });

@@ -217,6 +217,11 @@ var homeSubs = new SubsManager({
   expireIn: 99999999
 });
 
+var followingHomeSub = new SubsManager({
+  cacheLimit: 1,
+  expireIn: 99999999
+});
+
 var storySearchUserSubs = new SubsManager({
   cacheLimit: 1,
   expireIn: 60
@@ -306,16 +311,34 @@ Template.all_stories.onCreated(function(){
         }), _.identity));
       });
     }
-      whichUserPics.changed();
+  })
+
+  var notFirstRunA = false;
+  this.autorun(function(){
+    var user = Meteor.users.find(Meteor.userId(), {fields: {'profile.following': 1}}).fetch()[0];
+    if(!user){
+      return;
+    }
+
+    if(notFirstRunA){
+      var following = user.profile.following;
+
+      followingHomeSub.subscribe("authorsStoriesPub", {authors: following, preview: true}, function(){ // preview for memory savings on server. can remove preview to make it faster to visit stories you're following
+        //incrementSubscriptionPage('following');
+        subscriptionsReady.set('followingStories', true);
+        whichUserPics.changed();
+      })
+    }
+    notFirstRunA = true;
   });
 
-  var notFirstRun = false;
+  var notFirstRunB = false;
   this.autorun(function(){
     Session.get('filterValue'); // re-run whenever filter value changes
-    if (notFirstRun){
+    if (notFirstRunB){
       $(window).scrollTop(0)
     }
-    notFirstRun = true;
+    notFirstRunB = true;
   });
 
   this.autorun(function () {
