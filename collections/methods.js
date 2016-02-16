@@ -116,7 +116,7 @@ changeFollow = function(userId, toFollow) {
 
   if(Meteor.isClient){
     if(toFollow && actor.profile.following.length === 0){
-      notifySuccess("You just followed your first friend! In a few weeks, we’ll be launching a newsfeed to go along with it, but until then, follow away!");
+      notifySuccess("You just followed your first friend!");
     }
   }
 
