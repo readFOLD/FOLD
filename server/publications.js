@@ -179,7 +179,7 @@ Meteor.publish("curatedAndAuthorsStoriesPub", function(options) {
   return Stories.find({
     published: true,
     $or:[
-      {authorId: {$in: _.sortBy(userFollowing, _.identity)}},
+      {authorId: {$in: _.sortBy(options.authors, _.identity)}},
       {editorsPick: true}
     ]
   }, {
