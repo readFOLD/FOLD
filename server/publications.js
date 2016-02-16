@@ -168,7 +168,7 @@ Meteor.publish("curatedAndUserFollowingStoriesPub", function(options) {
 
 });
 
-Meteor.publish("curatedAndAuthorsStoriesPub", function(options) {
+Meteor.publish("mixedStoriesPub", function(options) { // curated and specific authors
   options = options ? options : {};
   _.defaults(options, {page: 0, authors: []});
 

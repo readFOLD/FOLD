@@ -18,7 +18,7 @@ formatDateNice = function(date) {
 };
 
 
-var filters = ['curated', 'trending', 'starred', 'newest'];
+var filters = ['mixed', 'curated', 'trending', 'starred', 'newest'];
 Session.setDefault('filterValue', filters[0]); // this must correspond to the first thing in the dropdown
 
 Template.home.helpers({
@@ -208,6 +208,7 @@ _.each(filters, function(filter){
   setSubscriptionPage(filter, -1);
 });
 
+setSubscriptionPage('mixed', 0); // curated stories are preloaded
 setSubscriptionPage('curated', 0); // curated stories are preloaded
 
 
@@ -217,8 +218,8 @@ var homeSubs = new SubsManager({
   expireIn: 99999999
 });
 
-var followingHomeSub = new SubsManager({
-  cacheLimit: 1,
+var followingHomeSubs = new SubsManager({
+  cacheLimit: 99,
   expireIn: 99999999
 });
 
@@ -296,6 +297,7 @@ var subscribeToStarredStories = function(cb){
 
 var createHomePageDate;
 var whichUserPics = new Tracker.Dependency();
+var additionalMixedPages = new Tracker.Dependency();
 
 Template.all_stories.onCreated(function(){
   var that = this;
@@ -309,19 +311,20 @@ Template.all_stories.onCreated(function(){
   });
 
   subscriptionsReady.set('curatedStories', true); // we loaded a preview of these up front
-  subscriptionsReady.set('curatedAndAuthorsStories', true); // we loaded a preview of these up front
+  subscriptionsReady.set('mixedStories', true); // we loaded a preview of these up front
 
   Meteor.setTimeout(function(){
-    if (!that.view.isDestroyed && !Meteor.userId()) { // because this happens asynchronously, the user may have already navigated away
-      subscribeToCuratedStories(function () { // might as well load the full versions of stories for a faster experience
+    if (!that.view.isDestroyed) { // because this happens asynchronously, the user may have already navigated away
+      subscribeToCuratedStories(function () { // might as well load the full versions of curated stories for a faster experience
         // do nothing for now
       });
     }
-  }, 5000); // wait a few seconds to let the user orient before potentially slowing down the page for another couple seconds
+  }, 4500); // wait a few seconds to let the user orient before potentially slowing down the page for another couple seconds
 
 
 
   var notFirstRunA = false;
+
   this.autorun(function(){
     var user = Meteor.users.find(Meteor.userId(), {fields: {'profile.following': 1}}).fetch()[0];
     if(!user){
@@ -331,9 +334,12 @@ Template.all_stories.onCreated(function(){
     if(notFirstRunA){
       var following = user.profile.following;
 
-      followingHomeSub.subscribe("curatedAndAuthorsStoriesPub", {authors: _.sortBy(following, _.identity), preview: true}, function(){ // preview for memory savings on server. can remove preview to make it faster to visit stories you're following
-        //incrementSubscriptionPage('following');
-        subscriptionsReady.set('curatedAndAuthorsStoriesPub', true);
+      followingHomeSubs.clear();
+
+      additionalMixedPages.changed();
+
+      followingHomeSubs.subscribe("mixedStoriesPub", {authors: _.sortBy(following, _.identity), preview: true}, function(){ // preview for memory savings on server. can remove preview to make it faster to visit stories you're following
+        subscriptionsReady.set('mixedStories', true);
         whichUserPics.changed();
       })
     }
@@ -351,10 +357,12 @@ Template.all_stories.onCreated(function(){
 
   this.autorun(function () {
     if (adminMode()) {
-      subscribeToNewestStories(function () {
-        subscribeToTrendingStories(function () {
-          subscribeToStarredStories(function () {
-            whichUserPics.changed();
+      subscribeToCuratedStories(function () {
+        subscribeToNewestStories(function () {
+          subscribeToTrendingStories(function () {
+            subscribeToStarredStories(function () {
+              whichUserPics.changed();
+            });
           });
         });
       });
@@ -392,7 +400,7 @@ Template.all_stories.onCreated(function(){
     return storySearchUserSubs.subscribe('minimalUsersPub', _.sortBy(StorySearch.getData({}, true).map(function(story){return story.authorId}), _.identity));
   }, 1000);
 
-  // TODO, we just loaded this data with the search....
+  // TO-DO, we just loaded this data with the search....
   subscribeToPeopleSearchedMinimalUsers = _.debounce(function(){
     return peopleSearchUserSubs.subscribe('minimalUsersPub', _.sortBy(PersonSearch.getData({}, true).map(function(person){return person._id}), _.identity));
   }, 1000);
@@ -450,8 +458,11 @@ var currentHomeStories = function(){
   }
 
   switch (Session.get('filterValue')) {
-    case 'curated': // preview versions of all these stories come from fast-render so we can show them right away
+    case 'mixed':
       return Stories.find({ published: true, $or: [{editorsPick: true}, {authorId: {$in: Meteor.user().profile.following || []}}]}, {sort: {'r': -1}, limit: limit, reactive: true});
+      break;
+    case 'curated':
+      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: limit, reactive: true});
       break;
     case 'newest':
       return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: limit, reactive: true});
@@ -480,7 +491,30 @@ Template.all_stories.events({
         subscriptionsReady.set(filterValue + 'Stories', true);
       })
     } else if (Meteor.userId()) {
-      // TODO subscribe to more following stories, but also in the autorun
+      var nextPage = getCurrentSubscriptionPage() + 1;
+
+      t.autorun(function(){ // autorun and depend is so that subs update when list of following users does
+        additionalMixedPages.depend();
+        var user;
+        var currentPage;
+
+        Tracker.nonreactive(function(){
+          user = Meteor.user();
+          currentPage = getCurrentSubscriptionPage();
+        });
+
+        var following = user.profile.following;
+
+        subscriptionsReady.set('mixedStories', false);
+
+        followingHomeSubs.subscribe("mixedStoriesPub", {authors: _.sortBy(following, _.identity), preview: true, page: nextPage}, function(){
+          subscriptionsReady.set('mixedStories', true);
+          if(nextPage === currentPage + 1){
+            incrementCurrentSubscriptionPage();
+          }
+          whichUserPics.changed(); // TO-DO this gets run more often than it needs to when authors user is following changes
+        })
+      });
     } else {
       subscriptionsReady.set('curatedStories', false);
       homeSubs.subscribe('curatedStoriesPub', {page: getCurrentSubscriptionPage() + 1, preview: true}, function(){
@@ -503,7 +537,6 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
     || StorySearch.getStatus().loading)
   },
   moreToShow: function(){
-    // TODO make this work for mixed curated and following stories
     var stories = currentHomeStories();
     if (!stories){
       return false
