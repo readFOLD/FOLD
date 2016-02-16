@@ -8,6 +8,7 @@ if(!this.Schema){
   Schema = {};
 };
 
+
 Story = (function() {
   function Story(doc) {
     _.extend(this, doc);
@@ -32,7 +33,12 @@ Story = (function() {
   Story.prototype.contentPreview = function() {
     var content;
     if (content = this.verticalSections[0].content) {
-      return $($.parseHTML(content)).text();
+      if(Meteor.isClient){
+        return $($.parseHTML(content)).text();
+      } else {
+        return cheerio.load('<body>' + content + '</body>')('body').text();
+      }
+
     }
   };
 

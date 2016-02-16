@@ -79,7 +79,7 @@ Meteor.methods({
 
     if(success){
       Meteor.defer(function(){
-        sendWelcomeEmail(Meteor.user());
+        sendWelcomeEmail(Meteor.userId());
       });
     }
 
