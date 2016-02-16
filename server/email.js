@@ -1,5 +1,4 @@
-sendWelcomeEmail = function(userId){
-  var user = Meteor.users.findOne(userId, {fields: {'emails': 1, 'profile.name': 1}});
+sendWelcomeEmail = function(user){ // this takes actual user instead of userId because user might be in process of being created in db
   var email = user.emails[0].address;
   var emailName = user.profile.name;
 
