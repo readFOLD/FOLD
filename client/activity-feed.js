@@ -88,18 +88,18 @@ Template.activity_feed.onCreated(function(){
 });
 
 Template.activity_feed.onDestroyed(function(){
-  document.body.style.overflow = 'auto';
+  unfreezePageScroll();
   if(this.activityFeedObserver){
     this.activityFeedObserver.stop();
   }
 });
 
 Template.activity_feed.events({
-  'mouseenter': function() {
-    document.body.style.overflow = 'hidden';
+  'mouseenter .activity-feed': function() {
+    freezePageScroll();
   },
-  'mouseleave': function(){
-    document.body.style.overflow='auto';
+  'mouseleave .activity-feed': function(){
+    unfreezePageScroll();
   }
 });
 

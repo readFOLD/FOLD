@@ -190,3 +190,18 @@ window.trackEvent = function(){
   analytics.track.apply(this, arguments);
 };
 
+window.freezePageScroll = function(){
+  var b = $('body');
+  var normalw = window.innerWidth;
+  var scrollBarWidth = normalw - b.width();
+
+  document.body.style.overflowY = 'hidden';
+  document.body.style.marginRight = scrollBarWidth + 'px';
+  $('.home-top.fat').width('calc(100% - ' + scrollBarWidth +'px');
+};
+
+window.unfreezePageScroll = function(){
+  document.body.style.overflowY = 'auto';
+  document.body.style.marginRight = 0;
+  $('.home-top.fat').width('100%');
+}
