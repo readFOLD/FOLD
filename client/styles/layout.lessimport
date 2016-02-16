@@ -39,7 +39,7 @@
 @card-spacing: 20px;
 
 @home-banner-break-1:  ~"(max-width: 1300px)";
-@home-banner-break-2:  ~"(max-width: 1200px)";
+@home-banner-break-2:  ~"(max-width: 1100px)";
 @home-banner-break-3:  ~"(max-width: 1000px)";
 @home-banner-break-4:  ~"(max-width: 800px)";
 
@@ -1961,7 +1961,7 @@ div.loading-container {
       top: @magic-styling-distance;
       @media @not-mobile{
         right: 140px;
-        @media @home-banner-break-1{
+        @media @home-banner-break-2{
           right: 40px;
         }
       }
@@ -2008,7 +2008,7 @@ div.loading-container {
         &:not(:last-child) {
           margin-right: @magic-styling-distance / 2;
         }
-        @media @home-banner-break-2{
+        @media @home-banner-break-3{
           &:last-child {
             display: none;
           }
@@ -2068,7 +2068,7 @@ div.loading-container {
       width: @magic-styling-distance;
       text-align: center;
     }
-    @media @home-banner-break-1 {
+    @media @home-banner-break-2 {
       display: none;
     }
   }

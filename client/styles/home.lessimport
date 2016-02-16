@@ -105,21 +105,21 @@ div.home-top {
       }
     }
     @media @mobile{
-      top: 0;
-      .sod_select{
-        border-color: transparent;
-      }
-      right: 0;
+      display: none;
     }
     @media @not-mobile{
-      left: 196px;
+      left: 400px;
       &.fat{
         top: @magic-styling-distance;
+        @media @home-banner-break-2 {
+          left: 196px;
+        }
         @media @home-banner-break-3 {
           display: none;
         }
       }
     }
+
 
     height: @magic-styling-distance;
 
@@ -154,21 +154,24 @@ div.home-top {
     &.slim{
       top: 0;
     }
+
     @media @mobile{
-      display: none;
+      top: 0;
+      .sod_select{
+        border-color: transparent;
+      }
+      right: 0;
     }
     @media @not-mobile{
-      left: 400px;
+      left: 196px;
       &.fat{
         top: @magic-styling-distance;
-        @media @home-banner-break-3 {
-          left: 196px;
-        }
         @media @home-banner-break-4 {
           display: none;
         }
       }
     }
+
     input{
       .size-to-fit;
       background-color: transparent;
