@@ -87,6 +87,7 @@ fanoutActivity = function(activity){
       break;
     case 'Follow':
       fanToObject(activity);
+      sendFollowedYouEmail(activity.object.id, activity.actor.id);
       break;
     case 'FollowBack':
       fanToObject(activity);
@@ -96,6 +97,7 @@ fanoutActivity = function(activity){
       _.each(author.followers, function(follower){
         generateActivityFeedItem(follower, activity._id, activity.published);
       });
+      sendFollowingPublishedEmail(author.followers, activity.object.id);
       break;
     case 'Share':
       fanToObjectAuthor(activity);
