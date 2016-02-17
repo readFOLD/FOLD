@@ -20,6 +20,10 @@ ContextBlocks._ensureIndex({
   authorId: 1
 });
 
+ContextBlocks._ensureIndex({
+  storyShortId:1
+});
+
 StoryStats._ensureIndex({
   storyId: 1
 });
