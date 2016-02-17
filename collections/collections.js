@@ -2195,7 +2195,7 @@ var objectSchema = new SimpleSchema(_.extend( basicObjectSchema, {
 Schema.Activities = new SimpleSchema({
   type: { // follow, favorite etc...
     type: String,
-    allowedValues: ['Favorite', 'Follow', 'FollowBack', 'Publish', 'Share']
+    allowedValues: ['Favorite', 'Follow', 'FollowBack', 'Publish', 'Share', 'ViewThreshold']
   },
   content: { // for ex., message contents
     type: String,

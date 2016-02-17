@@ -102,6 +102,9 @@ fanoutActivity = function(activity){
     case 'Share':
       fanToObjectAuthor(activity);
       break;
+    case 'ViewThreshold':
+      fanToObjectAuthor(activity);
+      break;
     default:
       throw new Error('Activity type not matched for activity: ' + activity._id + ' Type: ' + activity.type);
   }

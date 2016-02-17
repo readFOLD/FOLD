@@ -387,20 +387,24 @@
           {{#if $eq type 'Share'}}
             {{#with object}}<a href="{{urlPath}}">{{#if image}}<div class="image left-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}} was just shared on {{capitalize content}}
             {{else}}
-              {{#with actor}}<a href="{{urlPath}}">{{#if image}}<div class="image left-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}}
-              {{#if $eq type 'Follow'}}
-                followed {{#if objectIsYou}}you {{> follow_button userId=actor.id}}{{else}}{{#with object}}<a href="{{urlPath}}">{{name}}{{#if image}}<div class="image right-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}{{/if}}
-                {{else}}
-                  {{#if $eq type 'FollowBack'}}
-                    followed {{#if objectIsYou}}you back {{> follow_button userId=actor.id}}{{else}}{{#with object}}<a href="{{urlPath}}">{{name}} back{{#if image}}<div class="image right-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}{{/if}}
+            {{#if $eq type 'ViewThreshold'}}
+              {{#with object}}<a href="{{urlPath}}">{{#if image}}<div class="image left-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}} has been viewed over {{content}} times
+              {{else}}
+                {{#with actor}}<a href="{{urlPath}}">{{#if image}}<div class="image left-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}}
+                {{#if $eq type 'Follow'}}
+                  followed {{#if objectIsYou}}you {{> follow_button userId=actor.id}}{{else}}{{#with object}}<a href="{{urlPath}}">{{name}}{{#if image}}<div class="image right-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}{{/if}}
                   {{else}}
-                    {{#if $eq type 'Publish'}}
-                      just published
-                    {{/if}}
-                    {{#if $eq type 'Favorite'}}
-                      liked
-                    {{/if}}
-                    {{#with object}}<a href="{{urlPath}}">{{name}}{{#if image}}<div class="image right-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}
+                    {{#if $eq type 'FollowBack'}}
+                      followed {{#if objectIsYou}}you back {{> follow_button userId=actor.id}}{{else}}{{#with object}}<a href="{{urlPath}}">{{name}} back{{#if image}}<div class="image right-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}{{/if}}
+                    {{else}}
+                      {{#if $eq type 'Publish'}}
+                        just published
+                      {{/if}}
+                      {{#if $eq type 'Favorite'}}
+                        liked
+                      {{/if}}
+                      {{#with object}}<a href="{{urlPath}}">{{name}}{{#if image}}<div class="image right-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}
+                  {{/if}}
                 {{/if}}
               {{/if}}
           {{/if}}
