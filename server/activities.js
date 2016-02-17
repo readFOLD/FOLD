@@ -94,10 +94,12 @@ fanoutActivity = function(activity){
       break;
     case 'Publish':
       var author = Meteor.users.findOne(activity.actor.id, {fields: {followers: 1}}); // fan to followers
-      _.each(author.followers, function(follower){
-        generateActivityFeedItem(follower, activity._id, activity.published);
-      });
-      sendFollowingPublishedEmail(author.followers, activity.object.id);
+      if(author.followers && author.followers.length){
+        _.each(author.followers, function(follower){
+          generateActivityFeedItem(follower, activity._id, activity.published);
+        });
+        sendFollowingPublishedEmail(author.followers, activity.object.id);
+      }
       break;
     case 'Share':
       fanToObjectAuthor(activity);
