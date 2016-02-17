@@ -170,9 +170,14 @@ window.goUpOneCard = function() {
 
 window.goRightOneCard = function() {
   var currentX, horizontalSection, newX;
-  horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
+  var currentY = Session.get("currentY");
+
+  var h = Session.get("horizontalSectionsMap")[currentY];
+  if(!h){
+    return
+  }
+  horizontalSection = h.horizontal;
   currentX = Session.get("currentX");
-  currentY = Session.get("currentY");
   currentYId = Session.get("currentYId");
   if (currentX === (horizontalSection.length - 1)) { // end of our rope
     newX = 0;
@@ -187,7 +192,11 @@ window.goRightOneCard = function() {
 
 window.goLeftOneCard = function() {
   var currentX, horizontalSection, newX;
-  horizontalSection = Session.get("horizontalSectionsMap")[Session.get("currentY")].horizontal;
+  var h = Session.get("horizontalSectionsMap")[Session.get("currentY")];
+  if(!h){
+    return
+  }
+  horizontalSection = h.horizontal;
   currentX = Session.get("currentX");
   newX = currentX ? currentX - 1 : horizontalSection.length - 1;
   goToX(newX);
