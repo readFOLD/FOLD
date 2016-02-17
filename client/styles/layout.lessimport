@@ -2096,6 +2096,7 @@ div.loading-container {
     position: fixed;
     right: 0;
     bottom: 0;
+    z-index: 1;
   }
 }
 

@@ -87,6 +87,12 @@ Template.admin_recent_activities.onCreated(function(){
   });
 });
 
+Template.admin_recent_activities.events({
+  'click .show-more': function(){
+    Session.set("adminRecentActivitiesMore", Session.get("adminRecentActivitiesMore") + 1);
+  }
+});
+
 
 Template.admin_recent_activities.helpers({
   activities: function(){
