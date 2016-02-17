@@ -754,15 +754,15 @@
 </template>
 
 <template name="follow_button">
-  <div class="follow-button {{#if flagStyle}}flag-style{{/if}}">
-    {{#if flagStyle}}
+  <div class="follow-button {{#if barStyle}}bar-style{{/if}} {{#if userFollowing}}unfollow-style{{else}}follow-style{{/if}}">
+    {{#if barStyle}}
       {{#if isYou}}
         <!--<button type='button' class='is-you {{additionalClasses}}'>This is you</button>-->
       {{else}}
         {{#if userFollowing}}
-          <button type='button' class='unfollow {{additionalClasses}}'><span class="check">{{> follow_flag_check}}</span><span class="x">{{> follow_flag_x}}</span></button>
+          <button type='button' class='unfollow {{additionalClasses}}'>{{> person_icon}}<span> Following</span></button>
         {{else}}
-          <button type='button' class='follow {{additionalClasses}}'>><span class="plus">{{> follow_flag_plus}}</span></button>
+          <button type='button' class='follow {{additionalClasses}}'>{{> person_icon}}<span> Follow</span></button>
         {{/if}}
       {{/if}}
     {{else}}
@@ -783,11 +783,10 @@
 <template name="favorite_button">
   <div class="favorite-button">
     {{#if userFavorited}}
-      <button type='button' class='unfavorite {{additionalClasses}}'>{{> favorite_icon }}</button>
+      <button type='button' class='unfavorite {{additionalClasses}}'>{{> favorite_icon }}<span>{{favoritedTotal}}</span></button>
     {{else}}
-      <button type='button' class='favorite {{additionalClasses}}'>{{> favorite_icon }}</button>
+      <button type='button' class='favorite {{additionalClasses}}'>{{> favorite_icon }}<span>{{favoritedTotal}}</span></button>
     {{/if}}
-    {{favoritedTotal}}
   </div>
 </template>
 

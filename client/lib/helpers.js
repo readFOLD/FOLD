@@ -190,37 +190,18 @@ window.trackEvent = function(){
   analytics.track.apply(this, arguments);
 };
 
-window.getProfileImage = function(profilePicture, twitterId, size){
-  var diameter;
-  if (size === 'large'){
-    diameter = 150;
-  } else {
-    diameter = 60;
-  }
-  var defaultProfilePic = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='; // transparent gif
-  var dprSetting = window.isHighDensity ? ',dpr_2.0' : '';
-  var twitterPic;
-  if (twitterId) {
-    twitterPic = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/twitter/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + twitterId
-  }
+window.freezePageScroll = function(){
+  var b = $('body');
+  var normalw = window.innerWidth;
+  var scrollBarWidth = normalw - b.width();
 
+  document.body.style.overflowY = 'hidden';
+  document.body.style.marginRight = scrollBarWidth + 'px';
+  $('.home-top.fat').width('calc(100% - ' + scrollBarWidth +'px');
+};
 
-  if (profilePicture || twitterId) {
-    if ( profilePicture) {
-      if ( profilePicture < 20) { // it's a monster
-        if (twitterPic){
-          return twitterPic
-        } else { // show monster
-          return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/static/profile_monster_' + profilePicture + '.svg';
-        }
-      } else {
-        return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/w_' + diameter + ',h_' + diameter + ',c_fill,g_face' + dprSetting + '/' + profilePicture
-      }
-    } else if (twitterPic) {
-      return twitterPic
-    }
-  }
-
-  // if nothing else served up
-  return defaultProfilePic
+window.unfreezePageScroll = function(){
+  document.body.style.overflowY = 'auto';
+  document.body.style.marginRight = 0;
+  $('.home-top.fat').width('100%');
 }

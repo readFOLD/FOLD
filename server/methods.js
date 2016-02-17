@@ -119,12 +119,15 @@ Meteor.methods({
     this.setUserId(otherUser._id);
     return otherUser._id
   },
-  getActivityFeed: function(){
+  getActivityFeed: function(aId){
+    check(aId, Match.Optional(String));
     if(!this.userId){
       throw new Meteor.Error("Only users may get their activity feed");
     }
 
-    var activityIds = ActivityFeedItems.find({uId: this.userId}, {sort:{r: -1}, limit: 50, fields: {'aId' : 1}}).map(function(i){return i.aId});
+    var query = aId ? {uId: this.userId, aId: aId} : {uId: this.userId};
+
+    var activityIds = ActivityFeedItems.find(query, {sort:{r: -1}, limit: 50, fields: {'aId' : 1}}).map(function(i){return i.aId});
     return Activities.find({_id: {$in: activityIds}}).fetch();
   }
 });

@@ -8,6 +8,7 @@ if(!this.Schema){
   Schema = {};
 };
 
+
 Story = (function() {
   function Story(doc) {
     _.extend(this, doc);
@@ -32,7 +33,12 @@ Story = (function() {
   Story.prototype.contentPreview = function() {
     var content;
     if (content = this.verticalSections[0].content) {
-      return $($.parseHTML(content)).text();
+      if(Meteor.isClient){
+        return $($.parseHTML(content)).text();
+      } else {
+        return cheerio.load('<body>' + content + '</body>')('body').text();
+      }
+
     }
   };
 
@@ -45,7 +51,13 @@ Story = (function() {
     return this.title = "";
   };
 
-  var sum = function(a,b){ return a+b; };
+  Story.prototype.narrativeCount = function() {
+    return this.verticalSections ? this.verticalSections.length : null;
+  };
+
+  Story.prototype.contextCount = function() {
+    return this.contextBlocks.length;
+  };
 
   Story.prototype.contextCountOfType = function(type) {
     return this.contextBlocks.reduce(function(count, contextBlock){
@@ -1946,6 +1958,10 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchema(), {
         }
       }
     },
+    'r': { // relevancy for published stories. determines order of results on homepage
+      type: Date,
+      optional: true
+    },
     publishedAt: {
       type: Date,
       optional: true
@@ -2042,6 +2058,10 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchema(), {
       type: Object,
       optional: true,
       blackbox: true
+    },
+    narrativeBlockCount:{
+      type: Number,
+      optional: true
     },
     draftStory: {
       type: draftStorySchema

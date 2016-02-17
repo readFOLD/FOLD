@@ -24,6 +24,10 @@ StoryStats._ensureIndex({
   storyId: 1
 });
 
+ActivityFeedItems._ensureIndex({
+  uId: 1
+});
+
 Meteor.users._ensureIndex({
   username: 1
 });
@@ -59,6 +63,7 @@ readStoryFields = {
 previewStoryFields = {
   shortId: 1,
   savedAt: 1,
+  r: 1,
   publishedAt: 1,
   published: 1,
   userPathSegment: 1,
@@ -71,6 +76,7 @@ previewStoryFields = {
   editorsPickAt: 1,
   //'analytics.views': 1,  // will need to add this back in for non-curated stories to use preview
   contextBlockTypeCount: 1,
+  narrativeBlockCount: 1,
   headerImageFormat: 1,
   headerImage: 1,
   favoritedTotal: 1,
@@ -104,6 +110,83 @@ Meteor.publish("curatedStoriesPub", function(options) {
     skip: options.page * PUB_SIZE,
     sort: {
       editorsPickAt: -1
+    },
+    limit: PUB_SIZE
+  });
+});
+
+var doOnlyCurated = function(options){
+  return Stories.find({
+    published: true,
+    editorsPick: true
+  }, {
+    fields: options.preview ? previewStoryFields : readStoryFields,
+    skip: options.page * PUB_SIZE,
+    sort: {
+      editorsPickAt: -1
+    },
+    limit: PUB_SIZE
+  });
+};
+
+Meteor.publish("curatedAndUserFollowingStoriesPub", function(options) {
+  options = options ? options : {};
+  _.defaults(options, {page: 0});
+
+
+  if(!this.userId){
+    return doOnlyCurated(options);
+  } else {
+    var user = Meteor.users.findOne(this.userId, {
+      fields: {
+        "profile.following" : 1
+      }
+    });
+
+    var userFollowing = user.profile.following || [];
+
+    if(!userFollowing || !userFollowing.length){
+      return doOnlyCurated(options)
+    }
+  }
+
+  // if user is following people, then return the follows and the curated
+  return Stories.find({
+    published: true,
+    $or:[
+      {authorId: {$in: _.sortBy(userFollowing, _.identity)}},
+      {editorsPick: true}
+    ]
+  }, {
+    fields: options.preview ? previewStoryFields : readStoryFields,
+    skip: options.page * PUB_SIZE,
+    sort: {
+      r: -1
+    },
+    limit: PUB_SIZE
+  });
+
+});
+
+Meteor.publish("mixedStoriesPub", function(options) { // curated and specific authors
+  options = options ? options : {};
+  _.defaults(options, {page: 0, authors: []});
+
+  if(!this.userId){
+    return this.ready();
+  }
+
+  return Stories.find({
+    published: true,
+    $or:[
+      {authorId: {$in: _.sortBy(options.authors, _.identity)}},
+      {editorsPick: true}
+    ]
+  }, {
+    fields: options.preview ? previewStoryFields : readStoryFields,
+    skip: options.page * PUB_SIZE,
+    sort: {
+      r: -1
     },
     limit: PUB_SIZE
   });
@@ -242,7 +325,7 @@ Meteor.publish("adminMostFavoritesUsersPub", function() {
       "services.twitter.screenName": 1,
       "emails.address": 1,
       "profile": 1
-    },
+    }
   });
 });
 
@@ -317,7 +400,7 @@ Meteor.publish("adminRecentActivitiesPub", function(options) {
 
 Meteor.publish("userProfilePub", function(username) { // includes user profile and favorited stories
 
-  userCursor = Meteor.users.find({
+  var userCursor = Meteor.users.find({
     username: username.toLowerCase()
   }, {
     fields: {
@@ -365,6 +448,21 @@ Meteor.publish("userStoriesPub", function(username) { // only published stories
     fields : previewStoryFields,
     limit: 100 // initial limit
   });
+});
+
+Meteor.publish("activityFeedItemsPub", function() {
+  if (this.userId) {
+    return ActivityFeedItems.find({
+      uId: this.userId
+    }, {
+      limit: 50,
+      sort: {
+        r: -1
+      }
+    });
+  } else {
+    return this.ready();
+  }
 });
 
 Meteor.publish("myStoriesPub", function() {

@@ -48,9 +48,9 @@ Meteor.startup(function(){
 
   Tracker.autorun(function(){
     if (Session.get('mobileContextView')){
-      document.body.style.overflowY = "hidden";
+      freezePageScroll();
     } else {
-      document.body.style.overflowY = "auto"; // TODO is this helping?
+      unfreezePageScroll(); // TODO is this helping
     }
   });
 
@@ -100,13 +100,13 @@ Meteor.startup(function(){
     } else {
       $(document).off('focusin', restrictFocusToModal);
     }
-  })
+  });
 
   Blaze.addBodyClass(function() {
     if(Router.current()){
       return Router.current().route.getName();
     }
-  })
+  });
 });
 
 
@@ -156,10 +156,10 @@ window.updateCurrentY = function() {
     $("div.horizontal-context").addClass("fixed");
 
     if(scrollPauseArmed){
-      document.body.style.overflowY = 'hidden';
+      freezePageScroll();
       $(document).scrollTop(readMode);
       Meteor.setTimeout(function () {
-        document.body.style.overflowY = 'auto';
+        unfreezePageScroll();
       }, scrollPauseLength);
       scrollPauseArmed = false;
     }

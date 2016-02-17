@@ -1,6 +1,6 @@
 var runFanout = function (options) {
   options = options || {};
-  _.defaults(options, {logging: true})
+  _.defaults(options, {logging: true});
   if(options.logging){
     console.log('Running fanout...');
   }

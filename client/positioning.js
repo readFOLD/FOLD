@@ -204,47 +204,50 @@ window.moveOneCard = function(d) {
 window.horizontalExists = function(){
   var currentY = Session.get('currentY');
   return ((_ref = Session.get('horizontalSectionsMap')[currentY]) != null ? _ref.horizontal.length : void 0) > 1
-}
+};
 
-$(document).keydown(function(e) {
-  var routeName = Router.current().route.getName();
-  if ((routeName === 'read' || (routeName === 'edit' && Session.get('read'))) && !signingIn()){
-    var letter = String.fromCharCode(e.keyCode);
-    switch(letter){
-      case 'J':
-        goDownOneCard();
-        break;
-      case 'K':
-        goUpOneCard();
-        break;
-      case 'H':
-        if(Session.get('pastHeader')){
-          goLeftOneCard();
-        }
-        break;
-      case 'L':
-        if(Session.get('pastHeader')) {
-          goRightOneCard();
-        }
-        break;
-      case '%': // left arrow
-        if(Session.get('pastHeader')){
-          goLeftOneCard();
-        }
-        break;
-      case '\'': // right arrow
-        if(Session.get('pastHeader')) {
-          goRightOneCard();
-        }
-        break;
-      case ' ': // spacebar
-        break;
+Meteor.startup(function(){
+  $(document).keydown(function(e) {
+    var currentRoute = Router.current();
+    var routeName = currentRoute ? currentRoute.route.getName() : '';
+    if ((routeName === 'read' || (routeName === 'edit' && Session.get('read'))) && !signingIn()){
+      var letter = String.fromCharCode(e.keyCode);
+      switch(letter){
+        case 'J':
+          goDownOneCard();
+          break;
+        case 'K':
+          goUpOneCard();
+          break;
+        case 'H':
+          if(Session.get('pastHeader')){
+            goLeftOneCard();
+          }
+          break;
+        case 'L':
+          if(Session.get('pastHeader')) {
+            goRightOneCard();
+          }
+          break;
+        case '%': // left arrow
+          if(Session.get('pastHeader')){
+            goLeftOneCard();
+          }
+          break;
+        case '\'': // right arrow
+          if(Session.get('pastHeader')) {
+            goRightOneCard();
+          }
+          break;
+        case ' ': // spacebar
+          break;
+      }
+    } else if (signingIn() && Session.equals('signinStage', 'signup')){
+      if(e.keyCode === 27){ // esc
+        closeSignInOverlay();
+      }
     }
-  } else if (signingIn() && Session.equals('signinStage', 'signup')){
-    if(e.keyCode === 27){ // esc
-      closeSignInOverlay();
-    }
-  }
+  });
 });
 
 window.resetXPositionMemory = function () {

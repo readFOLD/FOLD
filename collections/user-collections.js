@@ -160,6 +160,11 @@ Schema.User = new SimpleSchema({
     type: Object,
     optional: true,
     blackbox: true
+  },
+  unsubscribes: {
+    type: [String],
+    allowedValues: ['followed-you', 'following-published'],
+    optional: true
   }
 });
 

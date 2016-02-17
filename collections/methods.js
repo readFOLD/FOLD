@@ -116,7 +116,7 @@ changeFollow = function(userId, toFollow) {
 
   if(Meteor.isClient){
     if(toFollow && actor.profile.following.length === 0){
-      notifySuccess("You just followed your first friend! In a few weeks, we’ll be launching a newsfeed to go along with it, but until then, follow away!");
+      notifySuccess("You just followed your first friend!");
     }
   }
 
@@ -138,23 +138,6 @@ changeFollow = function(userId, toFollow) {
   return Meteor.users.update({
     _id: this.userId
   }, actorOperation);
-};
-
-var changeEditorsPick = function(storyId, isPick) {
-
-  this.unblock();
-  if (!Meteor.user().admin) {
-    throw new Meteor.Error('not-admin', 'Sorry, you must be an admin to designate an editors pick');
-  }
-
-  Stories.update({
-    _id: storyId
-  }, {
-    $set: {
-      editorsPick: isPick,
-      editorsPickAt: new Date
-    }
-  });
 };
 
 var changeHasTitle = function(storyId, index, newValue){
@@ -613,6 +596,7 @@ Meteor.methods({
     var contextBlocks = ContextBlocks.find({_id: {$in: contextBlockIds}}).fetch();
 
     var contextBlockTypeCount = _.chain(contextBlocks).pluck('type').countBy(_.identity).value();
+    var narrativeBlockCount = draftStory.verticalSections.length;
 
     // TO-DO
     // Maybe a list of which cards are original and which are remixed
@@ -634,6 +618,7 @@ Meteor.methods({
       'draftStory.narrativeRightsReserved': narrativeRightsReserved,
     };
 
+    var date = new Date;
 
     var setObject = _.extend({},
       _.pick(draftStory, fieldsToCopyFromDraft), // copy all safe fields from draftStory.
@@ -642,10 +627,12 @@ Meteor.methods({
         'contextBlocks': contextBlocks,
         'contextBlockIds': contextBlockIds,
         'contextBlockTypeCount': contextBlockTypeCount,
+        'narrativeBlockCount': narrativeBlockCount,
         'userPathSegment': user.displayUsername,
         'storyPathSegment': _s.slugify(title.toLowerCase()) + '-' + story.shortId, // TODO DRY
-        'publishedAt': new Date,
-        'firstPublishedAt': story.firstPublishedAt || new Date, // only change if not set
+        'publishedAt': date,
+        'r': date,
+        'firstPublishedAt': story.firstPublishedAt || date, // only change if not set
         'published': true,
         'everPublished': true,
         'authorName': user.profile.name || 'Anonymous',
@@ -719,11 +706,39 @@ Meteor.methods({
   },
   designateEditorsPick: function(storyId) {
     check(storyId, String);
-    return changeEditorsPick.call(this, storyId, true);
+    this.unblock();
+    if (!Meteor.user().admin) {
+      throw new Meteor.Error('not-admin', 'Sorry, you must be an admin to designate an editors pick');
+    }
+
+    var date = new Date;
+
+    Stories.update({
+      _id: storyId
+    }, {
+      $set: {
+        editorsPick: true,
+        editorsPickAt: date,
+        r: date
+      }
+    });
   },
   stripEditorsPick: function(storyId) {
-    check(storyId, String);
-    return changeEditorsPick.call(this, storyId, false);
+    this.unblock();
+    if (!Meteor.user().admin) {
+      throw new Meteor.Error('not-admin', 'Sorry, you must be an admin to designate an editors pick');
+    }
+
+    var story = Stories.findOne(storyId, {fields: {publishedAt: 1}});
+
+    Stories.update({
+      _id: storyId
+    }, {
+      $set: {
+        editorsPick: false,
+        r: story.publishedAt
+      }
+    });
   },
   createStory: function(shortId, verticalSectionId) { // TO-DO find a way to generate these in a trusted way server without compromising UI speed
     var user = Meteor.user();

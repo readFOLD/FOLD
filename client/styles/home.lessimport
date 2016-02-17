@@ -105,21 +105,21 @@ div.home-top {
       }
     }
     @media @mobile{
-      top: 0;
-      .sod_select{
-        border-color: transparent;
-      }
-      right: 0;
+      display: none;
     }
     @media @not-mobile{
-      left: 196px;
+      left: 400px;
       &.fat{
         top: @magic-styling-distance;
+        @media @home-banner-break-2 {
+          left: 196px;
+        }
         @media @home-banner-break-3 {
           display: none;
         }
       }
     }
+
 
     height: @magic-styling-distance;
 
@@ -154,21 +154,24 @@ div.home-top {
     &.slim{
       top: 0;
     }
+
     @media @mobile{
-      display: none;
+      top: 0;
+      .sod_select{
+        border-color: transparent;
+      }
+      right: 0;
     }
     @media @not-mobile{
-      left: 400px;
+      left: 196px;
       &.fat{
         top: @magic-styling-distance;
-        @media @home-banner-break-3 {
-          left: 196px;
-        }
         @media @home-banner-break-4 {
           display: none;
         }
       }
     }
+
     input{
       .size-to-fit;
       background-color: transparent;
@@ -281,10 +284,17 @@ div.signup, div.login, div.user_profile {
 }
 
 .story-sizing{
-  height: 339px;
+  height: 379px;
   @margin-side: @magic-styling-distance/2;
   margin-left: 0;
   margin-right: @magic-styling-distance;
+  margin-top: @story-margin-top;
+  margin-bottom: @magic-styling-distance - @story-margin-top;
+
+  @media @mobile {
+    margin-top: 0px;
+    margin-bottom: 40px;
+  }
   width: calc(33.33% ~"-" @margin-side * 2);
   float: left;
 
@@ -385,6 +395,80 @@ div.stories {
     }
   }
 
+  div.top-bar{
+    height: @magic-styling-distance;
+    .display-flex;
+    position: relative;
+    text-align: center;
+    color: @medium-color;
+    .FFMagdaCleanMonoWebProRegular;
+    font-size: 13px;
+    > div{
+      line-height: @magic-styling-distance;
+    }
+    .context-count{
+      flex: 0 0 46px;
+      line-height: @magic-styling-distance;
+
+      .remix-icon-bare{
+        float: left;
+        width: 20px;
+        margin-top: 13px;
+        .fg{
+          fill: @medium-color;
+        }
+      }
+      span{
+        text-align: left;
+        float: right;
+        width: 18px;
+      }
+    }
+    .empty{
+      flex: 1;
+    }
+    .favorite-count{
+      flex: 0 0 46px;
+    }
+    .favorite-button{
+      .size-to-fit;
+      button{
+        .size-to-fit;
+        font-size: 13px;
+        line-height: @magic-styling-distance;
+
+        &.favorite{
+          color: @medium-color;
+        }
+        &.unfavorite{
+          color: @orange-color;
+        }
+      }
+      svg{
+        height: 18px;
+        margin-top: 10px;
+        float: left;
+      }
+      span{
+        text-align: center;
+        float: right;
+        width: 20px;
+      }
+    }
+    .follow-section{
+      flex: none;
+    }
+    .reason{
+      flex: 0 0 65px;
+    }
+    .fold-pick{
+      color: @action-color;
+    }
+    .fold-section{
+      flex: 0 0 69px;
+    }
+  }
+
   div.overlay-image {
     height: 110px;
     overflow: hidden;
@@ -412,7 +496,7 @@ div.stories {
 
 
 
-  div.byline {
+  .byline {
     //padding: 33px 25px;
     margin-left: 40px;
     .profile-info{
@@ -420,7 +504,7 @@ div.stories {
       bottom: 95px;
       left: 35px;
     }
-    div.pull-left {
+    .pull-left {
       width: 100%;
       position: absolute;
       bottom: 25px;
@@ -433,36 +517,35 @@ div.stories {
         text-align: center;
         vertical-align: middle;
       }
-      div.author-image-placeholder {
+      .author-image-placeholder {
         background-color: @black-color;
         .size(@profile-picture-size);
         border-radius: @profile-picture-size/2;
       }
 
-      div.author-name-date {
+      .author-name-date {
         @margin: 25px;
         font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
         display: inline-block;
         margin-left: @margin;
         & > div {
           line-height: 18px;
-          font-size: 14px;
+          font-size: 15px;
         }
         width: calc(100% ~"-"  @profile-picture-size ~"-" @margin * 2);
-        div.author-name {
+        .author-name {
           color: @dark-color;
           .ellipsis-text;
           width: 100%;
           margin-top: 12px;
           font-size: 15px;
         }
-        div.publish-date {
+        .publish-date {
           color: @inactive-color;
-          font-size: 13px;
         }
       }
     }
-    a.author-profile-link:hover {
+    .author-profile-link:hover {
       span{
         text-decoration: none;
         color: @action-color;
@@ -470,10 +553,10 @@ div.stories {
     }
   }
 
-  div.story-card {
+  .story-card {
     position: absolute;
     width:100%;
-    height: calc(100% ~"-" 110px);
+    height: calc(100% ~"-" 150px);
     z-index: -1;
   }
 
@@ -545,13 +628,7 @@ div.stories {
     z-index: 2;
     display: inline-block;
     position: relative;
-    margin-top: @story-margin-top;
-    margin-bottom: 23px;
 
-    @media @mobile {
-      margin-top: 0px;
-      margin-bottom: 40px;
-    }
 
 
     &:hover {
@@ -561,9 +638,6 @@ div.stories {
 
     div.favorite-button {
       font-size: 12px;
-      position: absolute;
-      right: 40px;
-      bottom: 40px;
     }
 
     div.edit-or-read {
@@ -610,8 +684,7 @@ div.stories {
 }
 
 .profile-section-buttons{
-  display: -webkit-flex;
-  display: flex;
+  .display-flex;
   position: fixed;
   top: 120px;
   width: calc(100% ~'-' 340px);
@@ -686,9 +759,28 @@ div.stories {
   }
 }
 
-.activity-feed-content{
+.activity-feed{
   .story-sizing;
-  overflow-y: scroll;
+  @media @mobile{
+    height: auto;
+  }
+}
+
+.activity-feed-content{
+  height: 100%;
+  @media @mobile{
+    height: auto;
+    min-height: 3 * 44px;
+  }
+  width: calc(100% ~'+' 12px);
+  padding-right: 12px;
+  position: relative;
+  .loading{
+    .center-over-parent-div;
+    text-align: center;
+    width: 90%;
+  }
+  overflow-y: auto;
   .FFMagdaCleanMonoWebProRegular;
   color: @medium-color;
   a{
@@ -698,15 +790,22 @@ div.stories {
     }
   }
   .feed-item{
+    min-height: 44px;
     position: relative;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 35px;
     padding-right: 34px;
+    &.has-button{
+      padding-right: 94px;
+    }
+    &.no-right-image{
+      padding-right: 0;
+    }
   }
   .image{
     display: inline-block;
-    .size(25px);
+    .size(26px);
     overflow: hidden;
     text-align: center;
     position: absolute;
@@ -735,6 +834,7 @@ div.stories {
     height: 25px;
     width: 85px;
     position: absolute;
+    top: 9px;
     right: 0;
     button{
       font: inherit;
