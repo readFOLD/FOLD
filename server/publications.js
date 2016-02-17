@@ -202,7 +202,7 @@ Meteor.publish("newestStoriesPub", function(options) { // for now, it's just pub
   return Stories.find({
     published: true
   }, {
-    fields: readStoryFields,
+    fields: options.preview ? previewStoryFields : readStoryFields,
     skip: options.page * PUB_SIZE,
     sort: {
       publishedAt: -1
@@ -217,7 +217,7 @@ Meteor.publish("trendingStoriesPub", function(options) { // for now, it's just t
   return Stories.find({
     published: true
   }, {
-    fields: readStoryFields,
+    fields: options.preview ? previewStoryFields : readStoryFields,
     skip: options.page * PUB_SIZE,
     sort: {
       'analytics.views.total': -1
@@ -231,7 +231,7 @@ Meteor.publish("starredStoriesPub", function(options) {
   _.defaults(options, {page: 0});
   return Stories.find({
     published: true,
-    fields: readStoryFields,
+    fields: options.preview ? previewStoryFields : readStoryFields,
     skip: options.page * PUB_SIZE,
     sort: {
       'favoritedTotal': -1

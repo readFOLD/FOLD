@@ -47,6 +47,9 @@ Template.home.events({
     t.$("select.filters-select").val(filters[0]);
     t.$("select.filters-select").selectOrDie("update");
 
+  },
+  "click .show-newest": function(e, t){
+    Session.set('filterValue', 'newest');
   }
 });
 
@@ -250,7 +253,7 @@ var subscribeToCuratedStories = function(cb){
 };
 var subscribeToTrendingStories = function(cb){
   if(!trendingStoriesSub){
-    trendingStoriesSub = homeSubs.subscribe("trendingStoriesPub", function(){
+    trendingStoriesSub = homeSubs.subscribe("trendingStoriesPub", {preview: true}, function(){
       incrementSubscriptionPage('trending');
       subscriptionsReady.set('trendingStories', true);
       if(cb){
@@ -265,7 +268,7 @@ var subscribeToTrendingStories = function(cb){
 };
 var subscribeToNewestStories = function(cb){
   if(!newestStoriesSub){
-    newestStoriesSub = homeSubs.subscribe("newestStoriesPub", function(){
+    newestStoriesSub = homeSubs.subscribe("newestStoriesPub", {preview: true}, function(){
       incrementSubscriptionPage('newest');
       subscriptionsReady.set('newestStories', true);
       if(cb){
@@ -281,7 +284,7 @@ var subscribeToNewestStories = function(cb){
 
 var subscribeToStarredStories = function(cb){
   if(!starredStoriesSub){
-    starredStoriesSub = homeSubs.subscribe("starredStoriesPub", function(){
+    starredStoriesSub = homeSubs.subscribe("starredStoriesPub", {preview: true}, function(){
       incrementSubscriptionPage('starred');
       subscriptionsReady.set('starredStories', true);
       if(cb){
@@ -365,6 +368,17 @@ Template.all_stories.onCreated(function(){
             });
           });
         });
+      });
+    }
+  });
+
+  this.autorun(function () {
+    if (Session.equals('filterValue', 'newest')) {
+      subscriptionsReady.set('newestStories', false);
+      console.log('lalala')
+      subscribeToNewestStories(function () {
+        subscriptionsReady.set('newestStories', true);
+        whichUserPics.changed();
       });
     }
   });
@@ -482,7 +496,7 @@ Template.all_stories.events({
     var storySearchQuery = Session.get('storySearchQuery');
     if(storySearchQuery){
       incrementCurrentSubscriptionPage();
-    } else if (adminMode()) { // legacy behavior
+    } else if (adminMode() || (Session.get('filterValue') === 'newest')) { // legacy behavior + newest
       var filterValue = Session.get('filterValue');
       subscriptionsReady.set(filterValue + 'Stories', false);
       homeSubs.subscribe(filterValue + 'StoriesPub', {page: getCurrentSubscriptionPage() + 1}, function(){
