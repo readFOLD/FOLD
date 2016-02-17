@@ -797,7 +797,7 @@ div.stories {
     padding-left: 35px;
     padding-right: 34px;
     &.has-button{
-      padding-right: 94px;
+      padding-right: 95px;
     }
     &.no-right-image{
       padding-right: 0;
@@ -832,7 +832,7 @@ div.stories {
   .follow-button{
     font: inherit;
     height: 25px;
-    width: 85px;
+    width: 86px;
     position: absolute;
     top: 9px;
     right: 0;
