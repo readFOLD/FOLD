@@ -22,6 +22,7 @@ Story = (function() {
         authorId: this.authorId,
         authorName: this.authorName,
         contextCountOfType:  function(){}, // stub out for now
+        narrativeCount:  function(){}, // stub out for now
         countContextTypes:  function(){}, // stub out for now
         headerImageUrl: this.headerImageUrl.bind(this.draftStory),
         headerImageVideoObject: this.headerImageVideoObject.bind(this.draftStory),
