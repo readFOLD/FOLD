@@ -78,8 +78,8 @@ Meteor.methods({
     });
 
     if(success){
-      Meteor.defer(function(){
-        sendWelcomeEmail(Meteor.user());
+      Meteor.defer(() => {
+        sendWelcomeEmail(Meteor.users.findOne(this.userId));
       });
     }
 
