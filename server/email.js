@@ -17,8 +17,19 @@ sendWelcomeEmail = function(user){ // this takes actual user instead of userId b
   });
 };
 
+var emailTypeForUnsubscribe = function(emailType){
+  switch(emailType){
+    case 'followed-you-back':
+      return 'followed-you' // these are effectively the same
+      break;
+    default:
+      return emailType;
+  }
+};
+
 var getToFromUserIds = function(userIds, emailType){
-  var users = Meteor.users.find({_id: {$in: userIds}, unsubscribes: {$ne: emailType}}, {fields: {'emails': 1, 'profile.name': 1}});
+  var unsubscribeCheck = emailTypeForUnsubscribe(emailType);
+  var users = Meteor.users.find({_id: {$in: userIds}, unsubscribes: {$ne: unsubscribeCheck}}, {fields: {'emails': 1, 'profile.name': 1}});
   return users.map(function(user){
     return {
       email: user.emails[0].address,
@@ -52,7 +63,7 @@ var sendEmail = function(emailType, userIds, subject, bareMergeVars){
     message: {
       to: to,
       subject: subject,
-      global_merge_vars: getMergeVarsFromObj(_.extend({ unsubscribeUrl: Meteor.absoluteUrl('unsubscribe?email_type=' + emailType)}, bareMergeVars))
+      global_merge_vars: getMergeVarsFromObj(_.extend({ unsubscribeUrl: Meteor.absoluteUrl('unsubscribe?email_type=' + emailTypeForUnsubscribe(emailType))}, bareMergeVars))
     },
     preserve_recipients: false
   }));
@@ -101,6 +112,27 @@ sendFollowedYouEmail = function(userId, followingUserId){
 
 
   sendEmail('followed-you', [userId], subject, bareMergeVars);
+
+};
+
+sendFollowedYouBackEmail = function(userId, followingUserId){
+  var followingUser = Meteor.users.findOne(followingUserId, {fields: {'profile.name': 1,'profile.bio': 1,'profile.profilePicture': 1, 'displayUsername': 1, 'services.twitter.id': 1}});
+
+  var fullName = followingUser.profile.name; // = story.authorName;
+  var username = followingUser.displayUsername; // = story.authorName;
+  var subject = fullName + ' (' + username + ') just followed you back on FOLD';
+
+  var bareMergeVars = {};
+
+  bareMergeVars.fullName = fullName;
+  bareMergeVars.subject = subject;
+  bareMergeVars.bio = followingUser.profile.bio;
+  bareMergeVars.firstName = fullName.split(' ')[0];
+  bareMergeVars.profilePicUrl = 'https:' + getProfileImage(followingUser.profile.profilePicture, (followingUser.services && followingUser.services.twitter) ? followingUser.services.twitter.id : null, 'large');
+  bareMergeVars.profileUrl = Meteor.absoluteUrl('profile/' + followingUser.displayUsername);
+
+
+  sendEmail('followed-you-back', [userId], subject, bareMergeVars);
 
 };
 

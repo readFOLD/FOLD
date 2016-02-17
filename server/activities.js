@@ -91,6 +91,7 @@ fanoutActivity = function(activity){
       break;
     case 'FollowBack':
       fanToObject(activity);
+      sendFollowedYouBackEmail(activity.object.id, activity.actor.id);
       break;
     case 'Publish':
       var author = Meteor.users.findOne(activity.actor.id, {fields: {followers: 1}}); // fan to followers
