@@ -73,25 +73,23 @@ _.each(['random_story', 'random_person'], function(templateName){
   });
 
   Template[templateName].onRendered(function(){
-    var that = this;
-
-    this.autorun(function(){
+    this.autorun(() => {
       var currentUrl = Router.current().url;
-      that.links = _.reject(that.options, function(url){
+      this.links = _.reject(this.options, function(url){
         return _s.include(url, idFromPathSegment(currentUrl));
       });
 
-      that.randomizedLink.set(_.sample(that.links));
+      this.randomizedLink.set(_.sample(this.links));
     });
 
-    this.rollTheDice = function(cb) {
-      that.rolling.set(true);
+    this.rollTheDice = (cb) => {
+      this.rolling.set(true);
       //var keepRolling = Meteor.setInterval(function(){
-      //  that.randomizedLink.set(_.sample(that.links));
+      //  this.randomizedLink.set(_.sample(this.links));
       //}, 50);
-      Meteor.setTimeout(function(){
+      Meteor.setTimeout(() => {
         //clearInterval(keepRolling);
-        that.rolling.set(false);
+        this.rolling.set(false);
         if(cb){
           cb();
         }

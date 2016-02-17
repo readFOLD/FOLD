@@ -517,7 +517,6 @@ Template.vertical_section_block.events({
   "click" (e, t) {
     var afterGoToY;
     var enclosingAnchor;
-    var that = this;
 
     if($(e.target).is('div')){
       // do nothing
@@ -528,13 +527,13 @@ Template.vertical_section_block.events({
       afterGoToY = function(){
         goToContext(contextId);
       };
-      Meteor.setTimeout(function(){
+      Meteor.setTimeout(() => {
         trackEvent('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
-          verticalIndex: that.index,
+          verticalIndex: this.index,
           contextId: contextId,
           contextType: $(e.currentTarget).data('contextType'),
           contextSource: $(e.currentTarget).data('contextSource'),
-          numberOfContextCardsOnVertical: that.contextBlocks.length,
+          numberOfContextCardsOnVertical: this.contextBlocks.length,
           inReadMode: Session.get('read')
         }));
       });
@@ -600,22 +599,10 @@ var saveMetaviewOrdering = function() {
   Session.set('saveState', 'saving');
 
   Meteor.call('reorderStory', Session.get("storyId"), idMap, saveCallback);
-
-
-  //var originalVerticalSections = that.data.verticalSections;
-
-  //var newVerticalSections = []
-  //_.map(newVerticalSectionIDs, function(id, i) {
-  //  var newVerticalSection = _.findWhere(originalVerticalSections, {_id: id});
-  //  newVerticalSection.contextBlocks = newContextBlocks[i];
-  //  newVerticalSections.push(newVerticalSection);
-  //});
-  //Meteor.call('saveStory', {_id: Session.get("storyId")}, {$set: {'draftStory.verticalSections': newVerticalSections}})
 };
 
 Template.metaview.onRendered(function() {
   document.body.style.overflow = 'hidden'; // prevent document scroll while in metaview
-  var that = this;
   this.$(".sortable-rows").sortable({
     stop: saveMetaviewOrdering
   });
@@ -951,11 +938,10 @@ Template.horizontal_section_block.helpers({
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 
     "blur .text-content.editable" (d, template) {
-      var that = this;
       if (!Session.get('read') && !Session.get('addingContext')) {
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
-        Meteor.call(meteorMethod, that._id, textContent, saveCallback);
+        Meteor.call(meteorMethod, this._id, textContent, saveCallback);
       }
     },
     "mouseenter .text-content.editable" (d, template) {
@@ -965,12 +951,11 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
       document.body.style.overflow = 'auto';
     },
     "keypress .image-section .text-content.editable" (e, template) { // save on Enter
-      var that = this;
       if (!Session.get('read') && !Session.get('addingContext') && e.which === 13 ) {
         e.preventDefault();
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
-        Meteor.call(meteorMethod, that._id, textContent, saveCallback);
+        Meteor.call(meteorMethod, this._id, textContent, saveCallback);
       }
     }
   }
@@ -1044,10 +1029,9 @@ Template.display_link_section.events({
     }
   },
   'blur textarea.link-title' (e,t){
-    var that = this;
     if(!Session.get('read') && !Session.get('addingContext')){
       Session.set('saveState', 'saving');
-      Meteor.call('editLinkTitle', that._id, t.$('textarea.link-title').val(), function(err, result){
+      Meteor.call('editLinkTitle', this._id, t.$('textarea.link-title').val(), (err, result) =>{
         if(result){
           t.editingTitle.set(false);
         }
@@ -1064,10 +1048,9 @@ Template.display_link_section.events({
     }
   },
   'blur textarea.link-description' (e,t){
-    var that = this;
     if(!Session.get('read') && !Session.get('addingContext')){
       Session.set('saveState', 'saving');
-      Meteor.call('editLinkDescription', that._id, t.$('textarea.link-description').val(), function(err, result){
+      Meteor.call('editLinkDescription', this._id, t.$('textarea.link-description').val(), (err, result) => {
         if(result){
           t.editingDescription.set(false);
         }
@@ -1079,7 +1062,6 @@ Template.display_link_section.events({
     return template.editingThumbnail.set(true);
   },
   "change input[type=file]" (e, template){
-    var that = this;
     var finish = function(){
       template.uploadingThumbnail.set(false);
       return template.editingThumbnail.set(false);
@@ -1092,7 +1074,7 @@ Template.display_link_section.events({
         return finish()
       }
       template.uploadingThumbnail.set(true);
-      Cloudinary.upload([file], {}, function(err, doc) {
+      Cloudinary.upload([file], {}, (err, doc) => {
         if(err){
           var input = template.$('input[type=file]');
           input.val(null);
@@ -1106,7 +1088,7 @@ Template.display_link_section.events({
             width: doc.width,
             height: doc.height
           };
-          Meteor.call('editLinkThumbnail', that._id, cloudinaryImageInfo, function(err, result){
+          Meteor.call('editLinkThumbnail', this._id, cloudinaryImageInfo, (err, result) => {
             saveCallback(err, result);
             return finish()
           });
@@ -1279,13 +1261,12 @@ Template.favorite_button.events({
       openSignInOverlay('Thanks for showing your love!\nPlease sign in to favorite this FOLD.');
       return
     }
-    var that = this;
     t.justFavorited.set(true);
-    Meteor.setTimeout(function () {
+    Meteor.setTimeout(() => {
       t.justFavorited.set(null);
     }, 700);
 
-    return Meteor.call('favoriteStory', that._id, function (err) {
+    return Meteor.call('favoriteStory', this._id, (err) => {
       if (err) {
         notifyError(err);
         throw(err);
@@ -1553,11 +1534,10 @@ Template.audio_popout.events({
 });
 
 Template.audio_popout.onRendered(function(){
-  var that = this;
-  this.autorun(function(){
+  this.autorun(() => {
     var relativePosition = poppedOutPlayerInfo.get('relativePosition');
     if(typeof relativePosition === 'number'){
-      that.$('input.progress').val(relativePosition * 1000);
+      this.$('input.progress').val(relativePosition * 1000);
     }
   });
 });
@@ -1612,13 +1592,12 @@ Template.read.onCreated(function(){
   });
 
 
-  var that = this;
 
-  this.autorun(function () {
+  this.autorun(() => {
     if(adminMode()){
-      that.subscribe('adminOtherUserPub', that.data.authorId);
+      this.subscribe('adminOtherUserPub', this.data.authorId);
     } else {
-      that.subscribe('minimalUsersPub', [that.data.authorId]);
+      this.subscribe('minimalUsersPub', [this.data.authorId]);
     }
   });
 });
@@ -1750,10 +1729,9 @@ Template.context_overlay.onCreated(function(){
 });
 
 Template.context_overlay.onRendered(function(){
-  var that = this;
   this.contextLoaded.set(false);
-  $('img, video').load(function(){
-    that.contextLoaded.set(true);
+  $('img, video').load(() => {
+    this.contextLoaded.set(true);
   });
 });
 

@@ -70,20 +70,16 @@ Template.admin_recent_drafts.events({
 Template.admin_recent_drafts.onCreated(function(){
   Session.setDefault('adminRecentDraftsMore', 0);
 
-  var that = this;
-
-  this.autorun(function(){
-    that.subscribe("adminRecentDraftsPub", {more: Session.get("adminRecentDraftsMore")})
+  this.autorun(() => {
+    this.subscribe("adminRecentDraftsPub", {more: Session.get("adminRecentDraftsMore")})
   });
 });
 
 Template.admin_recent_activities.onCreated(function(){
   Session.setDefault('adminRecentActivitiesMore', 0);
 
-  var that = this;
-
-  this.autorun(function(){
-    that.subscribe("adminRecentActivitiesPub", {more: Session.get("adminRecentActivitiesMore")})
+  this.autorun(() => {
+    this.subscribe("adminRecentActivitiesPub", {more: Session.get("adminRecentActivitiesMore")})
   });
 });
 

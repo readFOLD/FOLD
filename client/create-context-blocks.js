@@ -175,8 +175,6 @@ var searchAPI = function(query) {
   this.noMoreResults.set(false);
   this.loadingResults.set(true);
 
-
-  var that = this;
   searchDep.changed();
 
   integrationDetails = ContextBlock.searchMappings[source];
@@ -185,10 +183,10 @@ var searchAPI = function(query) {
     return
   }
 
-  Meteor.call(integrationDetails.methodName, query, option, page, function(err, results) {
-    that.loadingResults.set(false);
+  Meteor.call(integrationDetails.methodName, query, option, page, (err, results) => {
+    this.loadingResults.set(false);
     if (err) {
-      that.noMoreResults.set('No more results'); // TO-DO - surface error to user?
+      this.noMoreResults.set('No more results'); // TO-DO - surface error to user?
       throw(err);
       return;
     }
@@ -197,7 +195,7 @@ var searchAPI = function(query) {
     var nextPage = results.nextPage;
 
     if (!items || !items.length) {
-      that.noMoreResults.set('No results found');
+      this.noMoreResults.set('No results found');
       return;
     }
     _.chain(items)
@@ -269,7 +267,6 @@ Template.create_gif_section.events({
 
 searchTemplateCreatedBoilerplate = function(type, defaultSource) {
   return function() {
-    var that = this;
 
     this.type = type;
     var previousSource = Session.get('newHorizontalDataSource');
@@ -283,10 +280,10 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
 
     this.addingDescription = new ReactiveVar(false);
 
-    this.autorun(function(){
-      if(that.addingDescription.get()){
+    this.autorun(() =>{
+      if(this.addingDescription.get()){
         Meteor.setTimeout(function(){
-          that.$('textarea').focus();
+          this.$('textarea').focus();
         });
       }
     });
@@ -297,16 +294,15 @@ searchTemplateCreatedBoilerplate = function(type, defaultSource) {
     this.setSearchInput = _.bind(setSearchInput, this);
 
 
-    this.autorun(function(){
+    this.autorun(() => {
       searchDep.depend();
-      that.noMoreResults.set(false);
+      this.noMoreResults.set(false);
     });
   };
 };
 
 searchTemplateRenderedBoilerplate  = function() {
   return function() {
-    var that = this;
 
     // set initial search query to session query
     this.setSearchInput(Session.get('query'));
@@ -316,16 +312,16 @@ searchTemplateRenderedBoilerplate  = function() {
     this.$('input[type="search"]').focus();
 
     // update session query whenever search input changes
-    this.autorun(function(){
+    this.autorun(() => {
       searchDep.depend();
-      Session.set('query', that.getSearchInput().query);
+      Session.set('query', this.getSearchInput().query);
     });
 
     // search when initially arrive and when source changes (if there aren't already results)
-    this.autorun(function(){
+    this.autorun(() => {
       Session.get('newHorizontalDataSource');
-      if (Session.get('addingContext') && that.getSearchInput().query && !that.existingSearchResults({reactive: false}).count()) {
-        that.search();
+      if (Session.get('addingContext') && this.getSearchInput().query && !this.existingSearchResults({reactive: false}).count()) {
+        this.search();
       }
     });
 
@@ -340,7 +336,6 @@ Template.create_twitter_section.onCreated(searchTemplateCreatedBoilerplate('twit
 Template.create_twitter_section.onRendered(searchTemplateRenderedBoilerplate());
 
 Template.create_image_section.onCreated(function(){
-  var that = this;
   this.uploadPreview = new ReactiveVar();
   this.uploadStatus = new ReactiveVar();
 });

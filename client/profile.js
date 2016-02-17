@@ -53,10 +53,9 @@ Template.profile.helpers({
 
 Template.my_stories.events({
   'click .unpublish' (){
-    var that = this;
     if (confirm('Are you sure you want to unpublish this story?')){
-      $('.story[data-story-id=' + that._id + ']').fadeOut(500, function(){
-        Meteor.call('unpublishStory', that._id, function(err, result) {
+      $('.story[data-story-id=' + this._id + ']').fadeOut(500, () => {
+        Meteor.call('unpublishStory', this._id, (err, result) => {
           if(err || !result){
             notifyError('Unpublish failed.');
           }
@@ -66,10 +65,9 @@ Template.my_stories.events({
     }
   },
   'click .delete' (){
-    var that = this;
     if (confirm('Are you sure you want to delete this story? This cannot be undone.')){
-      $('.story[data-story-id=' + that._id + ']').fadeOut(500, function(){
-        Meteor.call('deleteStory', that._id, function(err, result) {
+      $('.story[data-story-id=' + this._id + ']').fadeOut(500, () => {
+        Meteor.call('deleteStory', this._id, (err, result) => {
           if(err || !result){
             notifyError('Delete failed.');
           }
@@ -116,15 +114,14 @@ Template.my_stories.events({
 });
 
 Template.user_profile.onCreated(function(){
-  var that = this;
 
-  this.autorun(function(){ // TODO this sometimes runs twice unnecessarily if coming from home (first one does not have full profile user loaded with favorites)
-    var user = Meteor.users.findOne(that.data.user._id);
+  this.autorun(() => { // TODO this sometimes runs twice unnecessarily if coming from home (first one does not have full profile user loaded with favorites)
+    var user = Meteor.users.findOne(this.data.user._id);
     var usersFromStories = Stories.find({ published: true, _id: {$in: user.profile.favorites || []}}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId});
 
     var usersToSubscribeTo = _.compact(_.union(usersFromStories, user.profile.following, user.followers));
 
-    that.subscribe('minimalUsersPub', _.sortBy(usersToSubscribeTo, _.identity));
+    this.subscribe('minimalUsersPub', _.sortBy(usersToSubscribeTo, _.identity));
   });
   
   this.editing = new ReactiveVar(false);

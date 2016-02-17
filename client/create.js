@@ -100,13 +100,11 @@ Template.create.onCreated(function() {
   this.publishing = new ReactiveVar();
   this.headerImageLoading = new ReactiveVar();
 
-  var that = this;
-
-  this.autorun(function () {
-    if(adminMode()){
-      that.subscribe('adminOtherUserPub', that.data.authorId); // for admins to see author info when read draft
+  this.autorun(() => {
+    if (adminMode) {
+      this.subscribe('adminOtherUserPub', this.data.authorId); // for admins to see author info when read draft
     }
-  });
+  })
 });
 
 Template.create.onRendered(function() {
@@ -398,30 +396,28 @@ window.refreshContentDep = new Tracker.Dependency();
 Template.vertical_section_block.onCreated(function() {
   this.semiReactiveContent = new ReactiveVar(); // used in edit mode so that browser undo functionality doesn't break when autosave
   this.babyburgerOpen = new ReactiveVar(false);
-  var that = this;
-  this.autorun(function() {
+  this.autorun(() => {
     window.refreshContentDep.depend();
-    that.semiReactiveContent.set(that.data.content)
+    this.semiReactiveContent.set(this.data.content)
   });
 });
 
 Template.vertical_section_block.onRendered(function() {
-  var that = this;
   if (!Meteor.Device.isPhone()){ // highlight active context card link except on mobile
-    this.autorun(function() {
+    this.autorun(() => {
       Session.get('read') // make reactive to switching between preview and edit
       var currentXId = Session.get('currentXId');
       var pastHeader = Session.get("pastHeader");
-      if(Session.equals("currentYId", that.data._id) && pastHeader){ // if block is selected
+      if(Session.equals("currentYId", this.data._id) && pastHeader){ // if block is selected
         if (currentXId){ // if there is a current context card
-          Meteor.setTimeout(function(){
-            that.$('a[data-context-id="' + currentXId + '"]').addClass('active');
-            that.$('a[data-context-id!="' + currentXId + '"]').removeClass('active');
+          Meteor.setTimeout(() => {
+            this.$('a[data-context-id="' + currentXId + '"]').addClass('active');
+            this.$('a[data-context-id!="' + currentXId + '"]').removeClass('active');
           }, 0)
         }
       } else {
-        Meteor.setTimeout(function(){
-          that.$('a').removeClass('active');
+        Meteor.setTimeout(() => {
+          this.$('a').removeClass('active');
         }, 0)
       }
     });
@@ -480,14 +476,13 @@ Template.create.events({
     trackEvent('Click cancel publish button');
   },
   "click .confirm-publish"  (e, template) {
-    var that = this;
     var title = template.$('input[name=confirm-title]').val();
     var keywords = _.compact(template.$('input[name=keywords]').val().split(','));
     var narrativeRightsReserved = template.$('input[name=reserve-rights]').is(':checked');
-    return Meteor.call('publishStory', this._id, title, keywords, narrativeRightsReserved, function(err, numDocs) {
+    return Meteor.call('publishStory', this._id, title, keywords, narrativeRightsReserved, (err, numDocs) => {
       template.publishing.set(false);
       if (err) {
-        setTimeout(function () {
+        setTimeout(() => {
           throw(err);
         });
       }
@@ -496,12 +491,11 @@ Template.create.events({
       } else {
         Router.go('/profile/' + Meteor.user().username);
         notifySuccess('You story has been published!');
-        trackEvent('Publish story', window.trackingInfoFromStory(Stories.findOne(that._id))); // TODO add info about author
+        trackEvent('Publish story', window.trackingInfoFromStory(Stories.findOne(this._id))); // TODO add info about author
       }
     });
   },
   "change input.header-upload" (e, template){
-    var that = this;
     var file = _.first(e.target.files);
     if (file) {
       if (file.size > CLOUDINARY_FILE_SIZE) {
@@ -510,13 +504,13 @@ Template.create.events({
       template.headerImageLoading.set(true);
       Session.set('saveState', 'saving');
       console.log('bbbbb')
-      Cloudinary.upload([file], {}, function (err, doc) {
+      Cloudinary.upload([file], {}, (err, doc) => {
         console.log('lalalalal')
         if (err) {
           template.headerImageLoading.set(false);
           return saveCallback(err)
         }
-        return Meteor.call('updateHeaderImage', that._id, doc.public_id, doc.format, function (err, success) {
+        return Meteor.call('updateHeaderImage', this._id, doc.public_id, doc.format, (err, success) => {
           template.headerImageLoading.set(false);
           saveCallback(err, success)
         });

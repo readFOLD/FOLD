@@ -52,23 +52,21 @@ var loadInitialActivities = function(cb) {
 };
 
 Template.activity_feed.onCreated(function(){
-  var that = this;
-
   this.activityFeedLoading = new ReactiveVar(true);
 
-  loadInitialActivities(function(err, loadedActivities){
-    that.activityFeedLoading.set(false);
+  loadInitialActivities((err, loadedActivities) => {
+    this.activityFeedLoading.set(false);
 
-    subscribeToActivityFeedItems(function(){
+    subscribeToActivityFeedItems(() => {
       var query = ActivityFeedItems.find({uId: Meteor.userId()}, {sort:{r: -1}, fields: {'aId' : 1}});
 
-      if(that.activityFeedObserver){
-        that.activityFeedObserver.stop();
+      if(this.activityFeedObserver){
+        this.activityFeedObserver.stop();
       }
-      that.activityFeedObserver = query.observeChanges({
+      this.activityFeedObserver = query.observeChanges({
         added (id, aFI) {
           if (!_.contains(loadedActivities, aFI.aId)) {
-            Meteor.call('getActivityFeed', aFI.aId, function (err, feedItems) {
+            Meteor.call('getActivityFeed', aFI.aId, (err, feedItems) => {
               if (err) {
                 throw err
               }

@@ -303,12 +303,11 @@ var whichUserPics = new Tracker.Dependency();
 var additionalMixedPages = new Tracker.Dependency();
 
 Template.all_stories.onCreated(function(){
-  var that = this;
   createHomePageDate = Date.now();
 
-  that.autorun(function () {
+  this.autorun(() => {
     whichUserPics.depend();
-    that.subscribe('minimalUsersPub', _.sortBy(Stories.find({published: true}, { fields: {authorId: 1}, reactive: false }).map(function (story) {
+    this.subscribe('minimalUsersPub', _.sortBy(Stories.find({published: true}, { fields: {authorId: 1}, reactive: false }).map(function (story) {
       return story.authorId
     }), _.identity));
   });
@@ -316,9 +315,9 @@ Template.all_stories.onCreated(function(){
   subscriptionsReady.set('curatedStories', true); // we loaded a preview of these up front
   subscriptionsReady.set('mixedStories', true); // we loaded a preview of these up front
 
-  Meteor.setTimeout(function(){
-    if (!that.view.isDestroyed) { // because this happens asynchronously, the user may have already navigated away
-      subscribeToCuratedStories(function () { // might as well load the full versions of curated stories for a faster experience
+  Meteor.setTimeout(() =>{
+    if (!this.view.isDestroyed) { // because this happens asynchronously, the user may have already navigated away
+      subscribeToCuratedStories(() => { // might as well load the full versions of curated stories for a faster experience
         // do nothing for now
       });
     }
@@ -507,7 +506,7 @@ Template.all_stories.events({
     } else if (Meteor.userId()) {
       var nextPage = getCurrentSubscriptionPage() + 1;
 
-      t.autorun(function(){ // autorun and depend is so that subs update when list of following users does
+      t.autorun(() =>{ // autorun and depend is so that subs update when list of following users does
         additionalMixedPages.depend();
         var user;
         var currentPage;
