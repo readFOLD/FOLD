@@ -107,7 +107,7 @@ sendFollowedYouEmail = function(userId, followingUserId){
   bareMergeVars.subject = subject;
   bareMergeVars.bio = followingUser.profile.bio || '';
   bareMergeVars.firstName = fullName.split(' ')[0];
-  bareMergeVars.profilePicUrl = 'https:' + getProfileImage(followingUser.profile.profilePicture, (followingUser.services && followingUser.services.twitter) ? followingUser.services.twitter.id : null, 'large');
+  bareMergeVars.profilePicUrl = 'https:' + getProfileImage(followingUser.profile.profilePicture, (followingUser.services && followingUser.services.twitter) ? followingUser.services.twitter.id : null, 'large', true);
   bareMergeVars.profileUrl = Meteor.absoluteUrl('profile/' + followingUser.displayUsername);
 
 
@@ -128,7 +128,7 @@ sendFollowedYouBackEmail = function(userId, followingUserId){
   bareMergeVars.subject = subject;
   bareMergeVars.bio = followingUser.profile.bio || '';
   bareMergeVars.firstName = fullName.split(' ')[0];
-  bareMergeVars.profilePicUrl = 'https:' + getProfileImage(followingUser.profile.profilePicture, (followingUser.services && followingUser.services.twitter) ? followingUser.services.twitter.id : null, 'large');
+  bareMergeVars.profilePicUrl = 'https:' + getProfileImage(followingUser.profile.profilePicture, (followingUser.services && followingUser.services.twitter) ? followingUser.services.twitter.id : null, 'large', true);
   bareMergeVars.profileUrl = Meteor.absoluteUrl('profile/' + followingUser.displayUsername);
 
 
