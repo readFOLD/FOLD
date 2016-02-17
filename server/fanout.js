@@ -77,10 +77,10 @@ if (process.env.PROCESS_TYPE === 'fanout_worker') { // if a worker process
     runFanout({cleanup: true});
     process.exit();
   });
-} else if (process.env.PROCESS_TYPE === 'initial_view_threshold_worker') { // don't run this while fanout worker is running
+} else if (process.env.PROCESS_TYPE === 'initial_view_threshold_worker') {
   Meteor.startup(function () {
     generateInitialViewActivities();
-    process.exit();
+    // don't exit because activities are generate asynchronously
   });
 } else if (process.env.NODE_ENV === 'development') { // however, in developement, run fanout more quickly
   Meteor.startup(function () {
