@@ -233,7 +233,7 @@ Tracker.autorun(function(){
   var story = Session.get('story');
   var currentY = Session.get("currentY");
   var currentXByYId = Session.get("currentXByYId"); // for reactivity
-  if(!story){
+  if(!story || !story.verticalSections){
     return
   }
   var verticalSection = story.verticalSections[currentY];
