@@ -17,8 +17,8 @@ sendWelcomeEmail = function(user){ // this takes actual user instead of userId b
   });
 };
 
-var getToFromUserIds = function(userIds){
-  var users = Meteor.users.find({_id: {$in: userIds}}, {fields: {'emails': 1, 'profile.name': 1}});
+var getToFromUserIds = function(userIds, emailType){
+  var users = Meteor.users.find({_id: {$in: userIds}, unsubscribes: {$ne: emailType}}, {fields: {'emails': 1, 'profile.name': 1}});
   return users.map(function(user){
     return {
       email: user.emails[0].address,
@@ -39,10 +39,27 @@ var getMergeVarsFromObj = function(obj){
     .value()
 }
 
+var sendEmail = function(emailType, userIds, subject, bareMergeVars){
+  var to = getToFromUserIds(userIds, emailType);
+  if(to.length === 0){
+    return
+  }
+
+  console.log(Mandrill.messages.sendTemplate({
+    template_name: emailType,
+    template_content: [
+    ],
+    message: {
+      to: to,
+      subject: subject,
+      global_merge_vars: getMergeVarsFromObj(_.extend({ unsubscribeUrl: Meteor.absoluteUrl('unsubscribe?email_type=' + emailType)}, bareMergeVars))
+    },
+    preserve_recipients: false
+  }));
+}
+
 
 sendFollowingPublishedEmail = function(userIds, storyId){
-  var to = getToFromUserIds(userIds);
-
   var story = Stories.findOne(storyId, {fields: readStoryFields});
 
   var title = story.title;
@@ -61,22 +78,10 @@ sendFollowingPublishedEmail = function(userIds, storyId){
   bareMergeVars.profileUrl = Meteor.absoluteUrl('profile/' + (story.authorDisplayUsername || story.authorUsername));
   bareMergeVars.storyUrl = Meteor.absoluteUrl('read/' + story.userPathSegment + '/' + story.storyPathSegment);
 
-  console.log(Mandrill.messages.sendTemplate({
-    template_name: 'following-published',
-    template_content: [
-    ],
-    message: {
-      to: to,
-      subject: subject,
-      global_merge_vars: getMergeVarsFromObj(bareMergeVars)
-    },
-    preserve_recipients: false
-  }));
+  sendEmail('following-published', userIds, subject, bareMergeVars);
 };
 
 sendFollowedYouEmail = function(userId, followingUserId){
-  var to = getToFromUserIds([userId]);
-
   var followingUser = Meteor.users.findOne(followingUserId, {fields: {'profile.name': 1,'profile.bio': 1,'profile.profilePicture': 1, 'displayUsername': 1, 'services.twitter.id': 1}});
 
   var fullName = followingUser.profile.name; // = story.authorName;
@@ -92,19 +97,8 @@ sendFollowedYouEmail = function(userId, followingUserId){
   bareMergeVars.profilePicUrl = 'https:' + getProfileImage(followingUser.profile.profilePicture, (followingUser.services && followingUser.services.twitter) ? followingUser.services.twitter.id : null, 'large');
   bareMergeVars.profileUrl = Meteor.absoluteUrl('profile/' + followingUser.displayUsername);
 
-  console.log(bareMergeVars)
 
+  sendEmail('followed-you', [userId], subject, bareMergeVars);
 
-  console.log(Mandrill.messages.sendTemplate({
-    template_name: 'followed-you',
-    template_content: [
-    ],
-    message: {
-      to: to,
-      subject: subject,
-      global_merge_vars: getMergeVarsFromObj(bareMergeVars)
-    },
-    preserve_recipients: false
-  }));
 };
 

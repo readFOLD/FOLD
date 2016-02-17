@@ -111,5 +111,25 @@ Meteor.methods({
     check(userInfo.email, String);
     userInfo.emails = [{address: userInfo.email}];
     return validateNewUser(userInfo);
+  },
+  unsubscribe (emailType){
+    check(emailType, String);
+    return Meteor.users.update({
+      _id: this.userId
+    }, {
+      $addToSet: {
+        "unsubscribes": emailType
+      }
+    });
+  },
+  resubscribe (emailType){
+    check(emailType, String);
+    return Meteor.users.update({
+      _id: this.userId
+    }, {
+      $pull: {
+        "unsubscribes": emailType
+      }
+    });
   }
 });

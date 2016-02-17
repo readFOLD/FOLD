@@ -2281,3 +2281,17 @@ div.loading-container {
 .amaran-wrapper{
   z-index: 9999999;
 }
+
+.unsubscribe{
+  .rest{
+    padding-top: 150px;
+    text-align: center;
+    button{
+      width: 180px;
+      height: @magic-styling-distance;
+      background-color: @action-color;
+      margin-left: 15px;
+    }
+    .padding-sides(20px);
+  }
+}
