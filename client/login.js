@@ -10,44 +10,44 @@ Template.signin_overlay.onCreated(function(){
 });
 
 Template.signin_overlay.helpers({
-  explanation: function(){
+  explanation (){
     var signingIn = Session.get('signingIn');
     if(typeof signingIn === 'string'){
       return signingIn
     }
   },
-  onSignupStage: function(){
+  onSignupStage (){
     return Session.equals('signinStage', 'signup');
   },
-  onLoginStage: function(){
+  onLoginStage (){
     return Session.equals('signinStage', 'login');
   },
-  onInfoStage: function(){
+  onInfoStage (){
     return Session.equals('signinStage', 'info');
   },
-  onPasswordStage: function(){
+  onPasswordStage (){
     return Session.equals('signinStage', 'password');
   },
-  onOnboardingStage: function(){
+  onOnboardingStage (){
     return Session.equals('signinStage', 'onboarding');
   },
-  onForgotStage: function(){
+  onForgotStage (){
     return Session.equals('signinStage', 'forgot');
   }
 });
 
 Template.signin_overlay.events({
-  "click .close": function(d) {
+  "click .close" (d) {
     closeSignInOverlay();
     trackEvent('Click close sign-in overlay');
   },
-  "click": function(e){
+  "click" (e){
     if($(e.currentTarget).hasClass('signin-overlay') && Session.equals('signinStage', 'signup')){
       closeSignInOverlay();
       trackEvent('Click outside sign-in overlay and close');
     }
   },
-  "click .twitter-signin": function(d) {
+  "click .twitter-signin" (d) {
     Meteor.loginWithTwitter({
       requestPermissions: ['user']
     }, function (err) {
@@ -64,23 +64,23 @@ Template.signin_overlay.events({
 
     trackEvent('Click login with Twitter');
   },
-  "click .email-signup": function(d) {
+  "click .email-signup" (d) {
     Session.set('signinStage', 'info');
     trackEvent('Click sign up with email');
   },
-  "click .go-to-login": function(e, t){
+  "click .go-to-login" (e, t){
     Session.set('signinStage', 'login');
   },
-  "click .back-to-info": function(e, t){
+  "click .back-to-info" (e, t){
     Session.set('signinStage', 'info');
   },
-  "click .back-to-signup": function(e, t){
+  "click .back-to-signup" (e, t){
     Session.set('signinStage', 'signup');
   },
-  "click .back-to-login": function(e, t){
+  "click .back-to-login" (e, t){
     Session.set('signinStage', 'login');
   },
-  "click .forgot-password": function(e, t){
+  "click .forgot-password" (e, t){
     Session.set('signinStage', 'forgot');
   }
 });
@@ -98,37 +98,37 @@ Template.info_form.onCreated(function() {
 });
 
 Template.info_form.helpers({
-  tempUsername: function() {
+  tempUsername () {
     if (Meteor.user()) {
       return Meteor.user().tempUsername;
     }
     return;
   },
-  signupError: function() {
+  signupError () {
     return Template.instance().signupError.get();
   },
-  emailError: function () {
+  emailError  () {
     return Template.instance().emailError.get();
   },
-  nameError: function () {
+  nameError  () {
     return Template.instance().nameError.get();
   },
-  usernameError: function () {
+  usernameError  () {
     return Template.instance().usernameError.get();
   },
-  emailComplete: function () {
+  emailComplete  () {
     return Template.instance().emailComplete.get();
   },
-  nameComplete: function () {
+  nameComplete  () {
     return Template.instance().nameComplete.get();
   },
-  usernameComplete: function () {
+  usernameComplete  () {
     return Template.instance().usernameComplete.get();
   },
-  submitting: function () {
+  submitting  () {
     Template.instance().submitting.get()
   },
-  disableSignup: function () {
+  disableSignup  () {
     return Template.instance().submitting.get()
       || !Template.instance().emailComplete.get()
       || !Template.instance().nameComplete.get()
@@ -219,7 +219,7 @@ Template.info_form.onRendered(function(){
 });
 
 Template.info_form.helpers({
-  initialName: function(){
+  initialName (){
     if (newUserInfo.profile && newUserInfo.profile.name ){
       return newUserInfo.profile.name
     } else {
@@ -229,12 +229,12 @@ Template.info_form.helpers({
       }
     }
   },
-  initialEmail: function(){
+  initialEmail (){
     if (newUserInfo.email){
       return newUserInfo.email
     }
   },
-  initialUsername: function(){
+  initialUsername (){
     if (newUserInfo.username){
       return newUserInfo.username
     } else {
@@ -248,7 +248,7 @@ Template.info_form.helpers({
 })
 Template.info_form.events({
   'blur input.signup-email': checkEmailField,
-  'keyup input.signup-email': function(e,t) {
+  'keyup input.signup-email' (e,t) {
     if (enterPress(e) || t.emailError.get()) {
       Meteor.setTimeout(function() {
         checkEmailField(e, t);
@@ -256,20 +256,20 @@ Template.info_form.events({
     }
   },
   'blur input.signup-name': checkNameField,
-  'keyup input.signup-name': function(e,t) {
+  'keyup input.signup-name' (e,t) {
     Meteor.setTimeout(function(){
       checkNameField(e, t);
     });
   },
   'blur input.signup-username': checkUsernameField,
-  'keyup input.signup-username': function(e,t) {
+  'keyup input.signup-username' (e,t) {
     if (enterPress(e) || t.usernameError.get()) {
       Meteor.setTimeout(function() {
         checkUsernameField(e, t);
       });
     }
   },
-  'submit': function (e, t) {
+  'submit'  (e, t) {
     var key;
     e.preventDefault();
 
@@ -353,25 +353,25 @@ Template.password_form.onRendered(function(){
 
 
 Template.password_form.helpers({
-  signupError: function() {
+  signupError () {
     return Template.instance().signupError.get();
   },
-  passwordError: function () {
+  passwordError  () {
     return Template.instance().passwordError.get();
   },
-  password2Error: function () {
+  password2Error  () {
     return Template.instance().password2Error.get();
   },
-  passwordComplete: function () {
+  passwordComplete  () {
     return Template.instance().passwordComplete.get();
   },
-  password2Complete: function () {
+  password2Complete  () {
     return Template.instance().password2Complete.get();
   },
-  submitting: function () {
+  submitting  () {
     return Template.instance().submitting.get();
   },
-  disableSignup: function () {
+  disableSignup  () {
     return Template.instance().submitting.get()
       || !Template.instance().passwordComplete.get()
       || !Template.instance().password2Complete.get()
@@ -383,19 +383,19 @@ Template.password_form.helpers({
 
 Template.password_form.events({
   'blur input.signup-password': checkPassword,
-  'keyup input.signup-password': function(e,t) {
+  'keyup input.signup-password' (e,t) {
     if (enterPress(e) || t.passwordError.get()) {
       Meteor.setTimeout(function() {
         checkPassword(e, t);
       });
     }
   },
-  'keyup input.signup-password2': function(e,t) {
+  'keyup input.signup-password2' (e,t) {
     Meteor.setTimeout(function() {
       checkPasswordConfirmation(e, t);
     });
   },
-  'submit': function (e, t) {
+  'submit'  (e, t) {
     e.preventDefault();
     checkPassword(e, t);
     checkPasswordConfirmation(e, t);
@@ -439,7 +439,7 @@ Template.password_form.events({
 
 
 Template.onboarding_screen.events({
-  'click a, click button': function(){
+  'click a, click button' (){
     closeSignInOverlay();
   }
 });
@@ -455,16 +455,16 @@ Template.login_form.onRendered(function(){
 
 
 Template.login_form.helpers({
-  loginError: function() {
+  loginError () {
     return Template.instance().loginError.get();
   }
 });
 
 Template.login_form.events({
-  'keypress input': function(e, template) {
+  'keypress input' (e, template) {
     template.loginError.set(false);
   },
-  'submit #login-form' : function(e, template) {
+  'submit #login-form'  (e, template) {
     e.preventDefault();
 
 

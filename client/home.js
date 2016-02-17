@@ -22,23 +22,23 @@ var filters = ['mixed', 'curated', 'trending', 'starred', 'newest'];
 Session.setDefault('filterValue', filters[0]); // this must correspond to the first thing in the dropdown
 
 Template.home.helpers({
-  user: function() {
+  user () {
     return Meteor.user();
   },
-  filterOpen: function() {
+  filterOpen () {
     return Session.get("filterOpen");
   },
-  filter: function() {
+  filter () {
     return Session.get("filter");
   },
-  category: function() {
+  category () {
     return Session.get("category");
   }
 });
 
 
 Template.home.events({
-  "click .logo-title a": function(e, t) {
+  "click .logo-title a" (e, t) {
     // reset search query
     Session.set('storySearchQuery', null);
 
@@ -48,7 +48,7 @@ Template.home.events({
     t.$("select.filters-select").selectOrDie("update");
 
   },
-  "click .show-newest": function(e, t){
+  "click .show-newest" (e, t){
     Session.set('filterValue', 'newest');
   }
 });
@@ -75,13 +75,13 @@ Template.search.onRendered(function() {
 });
 
 Template.search.helpers({
-  showClearSearch: function(){
+  showClearSearch (){
     return Session.get('storySearchQuery');
   }
 });
 
 Template.search.events({
-  'click .clear-search': function(e, t){
+  'click .clear-search' (e, t){
     // this is the business logic
     Meteor.defer(function(){
       return Session.set('storySearchQuery', null);
@@ -92,7 +92,7 @@ Template.search.events({
     t.$("button").hide();
 
   },
-  'keydown': function(e, t){
+  'keydown' (e, t){
     if(t.data.slim){
       t.$("button").show(); // compensate for hack from above
     }
@@ -101,16 +101,16 @@ Template.search.events({
 
 
 Template.categories.helpers({
-  categories: function() {
+  categories () {
     return ['all', 'news', 'history', 'art', 'technology', 'politics', 'e-sports', 'music', 'gaming', 'sponsored'];
   },
-  selected: function() {
+  selected () {
     return Session.equals("category", this.toString());
   }
 });
 
 Template.categories.events({
-  "click li": function(d) {
+  "click li" (d) {
     var srcE;
     srcE = d.srcElement ? d.srcElement : d.target;
     return Session.set('category', $(srcE).data('category'));
@@ -133,7 +133,7 @@ Template.filters.onRendered(function() {
 
 
 Template.filters.helpers({
-  filters: function() {
+  filters () {
     return _.map(filters, function(filter){
       return {
         value: filter,
@@ -141,13 +141,13 @@ Template.filters.helpers({
       }
     })
   },
-  conditionallySelected: function(){
+  conditionallySelected (){
     return Session.equals('filterValue', this.toString()) ? 'selected' : '';
   }
 });
 
 Template.filters.events({
-  "change select": function(e, t) {
+  "change select" (e, t) {
     var filterValue = $(e.target).val();
     Session.set('filterValue', filterValue);
     Session.set('storySearchQuery', null);
@@ -448,7 +448,7 @@ var currentHomeStories = function(){
         ["favoritedTotal", "desc"],
         ["savedAt", "desc"]
       ],
-      docTransform: function(doc){
+      docTransform (doc){
         return new Story(doc);
       }
     });
@@ -491,7 +491,7 @@ var currentHomeStories = function(){
 };
 
 Template.all_stories.events({
-  'click .show-more' : function(e,t){
+  'click .show-more'  (e,t){
 
     var storySearchQuery = Session.get('storySearchQuery');
     if(storySearchQuery){
@@ -539,68 +539,68 @@ Template.all_stories.events({
     }
 
   },
-  'click .dismiss-box': function (e,t) {
+  'click .dismiss-box'  (e,t) {
     Session.set('boxDismissed', true);
   }
 });
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   stories: currentHomeStories,
-  storiesLoading: function(){
+  storiesLoading (){
     return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')) || PersonSearch.getStatus().loading
     || StorySearch.getStatus().loading)
   },
-  moreToShow: function(){
+  moreToShow (){
     var stories = currentHomeStories();
     if (!stories){
       return false
     }
     return currentHomeStories().count() >= (getCurrentSubscriptionPage() + 1) * PUB_SIZE
   },
-  boxDismissed: function(){
+  boxDismissed (){
     return Session.get('boxDismissed')
   }
 });
 
 
 Template.story_preview.helpers({
-  story: function(){
+  story (){
     return Template.instance().data.story || Stories.findOne(this._id);
   }
 });
 
 Template._story_preview_content.helpers({
-  lastPublishDate: function() {
+  lastPublishDate () {
     if(this.publishedAt) {
       return formatDateNice(this.publishedAt);
     }
   },
-  story: function(){
+  story (){
     if (Template.instance().data.useDraftStory){
       return this.draftStory;
     } else {
       return this;
     }
   },
-  linkRoute: function(){
+  linkRoute (){
     return Template.instance().data.useDraftStory ? 'edit' : 'read';
   },
-  author: function(){
+  author (){
     return Meteor.users.findOne(this.authorId)
   },
-  profileUrl: function(){
+  profileUrl (){
     return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate drafts and only use authorDisplayUsername
   },
-  narrativeCount: function(){
+  narrativeCount (){
     return this.narrativeBlockCount ? this.narrativeBlockCount : this.narrativeCount();
   },
-  contextCountOfType: function(type){
+  contextCountOfType (type){
     return this.contextBlockTypeCount ? this.contextBlockTypeCount[type] : this.contextCountOfType(type);
   }
 });
 
 Template.login_buttons.helpers({
-  showUserInfo: function() {
+  showUserInfo () {
     return Template.instance().showUserInfo.get();
   }
 });
@@ -610,16 +610,16 @@ Template.login_buttons.onCreated(function() {
 });
 
 Template.login_buttons.events({
-  "mouseenter .user-action": function(d) {
+  "mouseenter .user-action" (d) {
     Template.instance().showUserInfo.set(true);
   },
-  "mouseleave .user-action": function(d) {
+  "mouseleave .user-action" (d) {
     Template.instance().showUserInfo.set(false);
   },
-  "click .signin": function(d) {
+  "click .signin" (d) {
     openSignInOverlay();
   },
-  "click .logout" : function(e) {
+  "click .logout"  (e) {
     e.preventDefault();
     Template.instance().showUserInfo.set(false);
     Meteor.logout();

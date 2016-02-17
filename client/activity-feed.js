@@ -66,7 +66,7 @@ Template.activity_feed.onCreated(function(){
         that.activityFeedObserver.stop();
       }
       that.activityFeedObserver = query.observeChanges({
-        added: function(id, aFI) {
+        added (id, aFI) {
           if (!_.contains(loadedActivities, aFI.aId)) {
             Meteor.call('getActivityFeed', aFI.aId, function (err, feedItems) {
               if (err) {
@@ -95,10 +95,10 @@ Template.activity_feed.onDestroyed(function(){
 });
 
 Template.activity_feed.events({
-  'mouseenter .activity-feed': function() {
+  'mouseenter .activity-feed' () {
     freezePageScroll();
   },
-  'mouseleave .activity-feed': function(){
+  'mouseleave .activity-feed' (){
     unfreezePageScroll();
   }
 });
@@ -106,36 +106,36 @@ Template.activity_feed.events({
 var feedLimit = Meteor.Device.isPhone() ? 5 : 50;
 
 Template.activity_feed.helpers({
-  populatedFeedItems: function(){
+  populatedFeedItems (){
     return ActivityItems.find({}, {sort: {published: -1}, limit: feedLimit});
   },
-  loading: function(){
+  loading (){
     return Template.instance().activityFeedLoading.get();
   },
-  hideContent: function(){
+  hideContent (){
     loadedActivitiesDep.depend();
     return loadedActivities ? false : true;
   }
 });
 
 Template._activity_feed_content.helpers({
-  image: function(){
+  image (){
     if(this.type === 'Person'){
       return getProfileImage(this.imageId, this.twitterId, 'small');
     } else if (this.type === 'Story'){
       return Story.getHeaderImageUrl(this.imageId, 'small');
     }
   },
-  imageClass: function(){
+  imageClass (){
     return this.type.toLowerCase() + '-preview-image';
   },
-  objectIsYou: function(){
+  objectIsYou (){
     return this.object.id === Meteor.userId();
   },
-  includeBaselineActivityFeedContent: function(){
+  includeBaselineActivityFeedContent (){
     return Template.instance().data.activities.count() <= (feedLimit - 3);
   },
-  activityPlaceholders: function(){
+  activityPlaceholders (){
     if(Meteor.Device.isPhone()){
       return 0;
     }
@@ -148,10 +148,10 @@ Template._activity_feed_content.helpers({
     }
     return _.range(numPlaceholders);
   },
-  hasButton: function(){
+  hasButton (){
     return _.contains(['Follow', 'FollowBack'], this.type);
   },
-  noRightImage: function(){
+  noRightImage (){
     return _.contains(['Share'], this.type);
   }
 });

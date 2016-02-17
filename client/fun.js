@@ -100,16 +100,16 @@ _.each(['random_story', 'random_person'], function(templateName){
   });
 
   Template[templateName].helpers({
-    rolling: function(){
+    rolling (){
       return Template.instance().rolling.get();
     },
-    randomizedLink: function(){
+    randomizedLink (){
       return Template.instance().randomizedLink.get();
     }
   });
 
   Template[templateName].events({
-    'click': function(e, t){
+    'click' (e, t){
       e.preventDefault();
       t.rollTheDice(function(){
         Router.go(t.randomizedLink.get());
