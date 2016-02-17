@@ -74,7 +74,9 @@ sendFollowingPublishedEmail = function(userIds, storyId){
   bareMergeVars.subject = subject;
 
   bareMergeVars.headerImageUrl = 'https:' + story.headerImageUrl();
-  bareMergeVars.contentPreview = longContentPreview.length > 203 ? longContentPreview.substring(0, 200).replace(/\s+\S*$/, "...") : longContentPreview;
+  if(longContentPreview){
+    bareMergeVars.contentPreview = longContentPreview.length > 203 ? longContentPreview.substring(0, 200).replace(/\s+\S*$/, "...") : longContentPreview;
+  }
   bareMergeVars.profileUrl = Meteor.absoluteUrl('profile/' + (story.authorDisplayUsername || story.authorUsername));
   bareMergeVars.storyUrl = Meteor.absoluteUrl('read/' + story.userPathSegment + '/' + story.storyPathSegment);
 
