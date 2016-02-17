@@ -43,25 +43,6 @@ var runFanout = function (options) {
 };
 
 
-var generateInitialViewActivities = function(){
-  var stories = Stories.find({published: true}, {fields : {'analytics.views.byIP': 1}});
-  stories.forEach((story) => {
-    if(story && story.analytics && story.analytics.views){
-      var uniqueViews = story.analytics.views.byIP;
-      if(uniqueViews){
-        var viewThresholdCrossed = (VIEW_THRESHOLDS[_.sortedIndex(VIEW_THRESHOLDS, uniqueViews) - 1]);
-        if(viewThresholdCrossed){
-          generateViewThresholdActivity(story._id, viewThresholdCrossed);
-        }
-      }
-    }
-  })
-
-  console.log('View Activities Added!!')
-}
-
-
-
 var fanOutWaitInSeconds = parseInt(process.env.FANOUT_WAIT) || 5 * 60; // default is every 5 minutes
 
 
@@ -76,11 +57,6 @@ if (process.env.PROCESS_TYPE === 'fanout_worker') { // if a worker process
   Meteor.startup(function () {
     runFanout({cleanup: true});
     process.exit();
-  });
-} else if (process.env.PROCESS_TYPE === 'initial_view_threshold_worker') {
-  Meteor.startup(function () {
-    generateInitialViewActivities();
-    // don't exit because activities are generate asynchronously
   });
 } else if (process.env.NODE_ENV === 'development') { // however, in developement, run fanout more quickly
   Meteor.startup(function () {
