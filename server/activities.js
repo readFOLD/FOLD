@@ -26,7 +26,7 @@ generateActivity = function(type, details){
       break;
     default: // don't allow duplicate activities
       if(details.content){
-        dedupDetails.content = details.content
+        dedupDetails.content = details.content.toString();
       }
       if(Activities.find(dedupDetails, {limit: 1}).count()){
         return // if this is a duplicate. stop here.
