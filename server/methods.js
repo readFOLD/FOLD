@@ -40,7 +40,6 @@ var countStat = function(storyId, stat, details) {
     inc['analytics.' + stat + '.byIP'] = 1;
     if((stat === 'views') && stats.analytics && stats.analytics.views){
       var uniqueViews = stats.analytics.views.byIP + 1;
-      console.log(uniqueViews)
       if(_.contains(VIEW_THRESHOLDS, uniqueViews)){
         generateViewThresholdActivity(story._id, uniqueViews);
       }
