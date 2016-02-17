@@ -105,7 +105,7 @@ sendFollowedYouEmail = function(userId, followingUserId){
 
   bareMergeVars.fullName = fullName;
   bareMergeVars.subject = subject;
-  bareMergeVars.bio = followingUser.profile.bio;
+  bareMergeVars.bio = followingUser.profile.bio || '';
   bareMergeVars.firstName = fullName.split(' ')[0];
   bareMergeVars.profilePicUrl = 'https:' + getProfileImage(followingUser.profile.profilePicture, (followingUser.services && followingUser.services.twitter) ? followingUser.services.twitter.id : null, 'large');
   bareMergeVars.profileUrl = Meteor.absoluteUrl('profile/' + followingUser.displayUsername);
@@ -126,7 +126,7 @@ sendFollowedYouBackEmail = function(userId, followingUserId){
 
   bareMergeVars.fullName = fullName;
   bareMergeVars.subject = subject;
-  bareMergeVars.bio = followingUser.profile.bio;
+  bareMergeVars.bio = followingUser.profile.bio || '';
   bareMergeVars.firstName = fullName.split(' ')[0];
   bareMergeVars.profilePicUrl = 'https:' + getProfileImage(followingUser.profile.profilePicture, (followingUser.services && followingUser.services.twitter) ? followingUser.services.twitter.id : null, 'large');
   bareMergeVars.profileUrl = Meteor.absoluteUrl('profile/' + followingUser.displayUsername);
