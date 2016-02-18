@@ -164,10 +164,18 @@ Template.search.events({
   "keyup input": _.throttle(function(e, t) {
     var text = $(e.target).val().trim();
     Session.set('storySearchQuery', text);
-    if(enterPress(e) && t.data.slim){
-      Router.go('/');
+    if(enterPress(e)){
+      $(e.target).blur();
+      if(t.data.slim){
+        Router.go('/');
+      }
     }
-    $('html, body').scrollTop(0);
+
+    if(!t.data.slim){
+      $('html, body').scrollTop(0);
+    }
+
+
   }, 200, {leading: false})
 });
 
