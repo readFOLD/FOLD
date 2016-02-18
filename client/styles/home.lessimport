@@ -216,6 +216,7 @@ div.home-top {
       .size-to-fit;
       background-color: transparent;
       padding-right: 35px;
+      padding-left: 12px;
     }
     &.fat{
       input{
