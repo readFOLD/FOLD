@@ -15,9 +15,9 @@
           </div>
         {{else}}
           {{#unless slim}}
-            <div class="newest-toggle">
+            <div class="newest-toggle {{#unless showingFeed}}{{#unless showingLatest}}neither-active{{/unless}}{{/unless}}">
               <button class="show-feed" disabled="{{#if showingFeed}}disabled{{/if}}">{{#if currentUser}}My Feed{{else}}FOLD Picks{{/if}}</button>
-              <button class="show-newest" disabled="{{#unless showingFeed}}disabled{{/unless}}">Latest</button>
+              <button class="show-newest" disabled="{{#if showingLatest}}disabled{{/if}}">Latest</button>
             </div>
           {{/unless}}
         {{/if}}

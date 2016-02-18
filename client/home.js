@@ -52,16 +52,37 @@ Template.home.events({
 
 Template.top_banner.helpers({
   showingFeed () {
-    return Session.equals('filterValue', 'mixed');
+    return Session.equals('filterValue', 'mixed') && !Session.get('storySearchQuery');
+  },
+  showingLatest () {
+    return Session.equals('filterValue', 'newest') && !Session.get('storySearchQuery');
   }
 });
 
 Template.top_banner.events({
   "click .show-newest": function (e, t) {
-    Session.set('filterValue', 'newest');
+    Meteor.defer(() => {
+      Session.set('filterValue', 'newest');
+      Session.set('storySearchQuery', null);
+    });
+
+    // do this so the ui is snappy
+    t.$('.newest-toggle button').prop("disabled", "");
+    t.$("input").val(null);
+    t.$(".clear-search").hide();
+    $(e.target).prop("disabled", "disabled");
   },
   "click .show-feed": function (e, t) {
-    Session.set('filterValue', 'mixed');
+    Meteor.defer(() => {
+      Session.set('filterValue', 'mixed');
+      Session.set('storySearchQuery', null);
+    });
+
+    // do this so the ui is snappy
+    t.$('.newest-toggle button').prop("disabled", "");
+    t.$("input").val(null);
+    t.$(".clear-search").hide();
+    $(e.target).prop("disabled", "disabled");
   }
 });
 
@@ -580,7 +601,7 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
     return Session.get('boxDismissed')
   },
   hideActivityFeed (){ // we'll hide it so it doesn't need to reload all activities
-    return !Session.equals('filterValue', 'mixed');
+    return !Session.equals('filterValue', 'mixed') || Session.get('storySearchQuery');
   }
 });
 
