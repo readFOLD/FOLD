@@ -94,9 +94,44 @@ div.home-top {
     }
   }
 
-  div.filter {
-    position: absolute;
+  .newest-toggle{
+    top: 40px;
+    &:hover{
+      text-decoration: underline;
+    }
+    @media @home-banner-break-3 {
+      display: none;
+    }
+    font-size: 0;
+    button{
+      font-size: 14px;
+      height: 100%;
+      width: 95px;
+      color: @medium-color;
+      border: 1px solid @medium-color;
+
+      &:disabled{
+        background-color: @social-color;
+        color: @white-color;
+        border-color: @social-color;
+      }
+      &:first-child{
+        border-right: none;
+      }
+      &:last-child{
+        border-left: none;
+      }
+    }
+
+
+  }
+
+  div.filter{
     font-size: 14px;
+  }
+
+  div.filter, .newest-toggle {
+    position: absolute;
 
     &.slim{
       top: 0;
@@ -111,9 +146,6 @@ div.home-top {
       left: 400px;
       &.fat{
         top: @magic-styling-distance;
-        @media @home-banner-break-2 {
-          left: 196px;
-        }
         @media @home-banner-break-3 {
           display: none;
         }
