@@ -479,7 +479,7 @@ div.stories {
     }
   }
 
-  div.headline {
+  .headline {
     background-color: @white-color;
     .FFMarkWebBold;
     height: auto;
@@ -490,6 +490,9 @@ div.stories {
     position: relative;
     line-height: 31px;
     font-size: 21px;
+    @media @mobile {
+      font-size: 19px;
+    }
     padding: 20px 30px calc(9% ~"-" 27px) 30px;
     //margin-bottom: calc(9% ~"-" 27px);
   }
