@@ -71,43 +71,22 @@ changeFollow = function(userId, toFollow) {
   }
 
   var recipient = Meteor.users.findOne({
-    _id: userId,
+    _id: userId
   }, {
     fields: {
       followers: 1
     }
   });
 
-  if (!recipient) {
-    throw new Meteor.Error('user-not-found', "Sorry, we couldn't find that user");
-  }
-
   var actor = Meteor.users.findOne({
-    _id: this.userId,
+    _id: this.userId
   }, {
     fields: {
       'profile.following': 1
     }
   });
 
-
-
   operator = toFollow ? '$addToSet' : '$pull';
-  recipientOperation = {};
-  recipientOperation[operator] = {
-    followers: this.userId
-  };
-
-  var currentlyFollowed = (_.contains(recipient.followers, this.userId));
-
-  recipient.followers = recipient.followers || [];
-
-  if (toFollow && !currentlyFollowed){
-    recipientOperation['$set'] = { followersTotal : recipient.followers.length + 1 };
-  } else if (!toFollow && currentlyFollowed){
-    recipientOperation['$set'] = { followersTotal : recipient.followers.length - 1 };
-  }
-
 
   var currentlyFollowing = (_.contains(actor.profile.following, userId));
 
@@ -132,9 +111,34 @@ changeFollow = function(userId, toFollow) {
   }
 
 
-  Meteor.users.update({
-    _id: userId
-  }, recipientOperation);
+  if(recipient){
+    operator = toFollow ? '$addToSet' : '$pull';
+    recipientOperation = {};
+    recipientOperation[operator] = {
+      followers: this.userId
+    };
+
+    var currentlyFollowed = (_.contains(recipient.followers, this.userId));
+
+    recipient.followers = recipient.followers || [];
+
+    if (toFollow && !currentlyFollowed){
+      recipientOperation['$set'] = { followersTotal : recipient.followers.length + 1 };
+    } else if (!toFollow && currentlyFollowed){
+      recipientOperation['$set'] = { followersTotal : recipient.followers.length - 1 };
+    }
+
+    Meteor.users.update({
+      _id: userId
+    }, recipientOperation);
+  } else {
+
+    if(Meteor.isServer){ // on client, it's fine if can't find that user, maybe they aren't loaded
+      throw new Meteor.Error('user-not-found', "Sorry, we couldn't find that user");
+    }
+
+  }
+
   return Meteor.users.update({
     _id: this.userId
   }, actorOperation);
