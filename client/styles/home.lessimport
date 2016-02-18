@@ -407,7 +407,7 @@ div.stories {
       line-height: @magic-styling-distance;
     }
     .context-count{
-      flex: 0 0 46px;
+      .flex(0 0 46px);
       line-height: @magic-styling-distance;
 
       .remix-icon-bare{
@@ -425,10 +425,10 @@ div.stories {
       }
     }
     .empty{
-      flex: 1;
+      .flex(1);
     }
     .favorite-count{
-      flex: 0 0 46px;
+      .flex(0 0 46px);
     }
     .favorite-button{
       .size-to-fit;
@@ -456,16 +456,16 @@ div.stories {
       }
     }
     .follow-section{
-      flex: none;
+      .flex(none);
     }
     .reason{
-      flex: 0 0 65px;
+      .flex(0 0 65px);
     }
     .fold-pick{
       color: @action-color;
     }
     .fold-section{
-      flex: 0 0 69px;
+      .flex(0 0 69px);
     }
   }
 
@@ -697,7 +697,7 @@ div.stories {
   z-index: 5;
   button{
     height: @magic-styling-distance;
-    flex: 1;
+    .flex(1);
     .FFMarkWebBold;
     font-size: 13px;
     background-color: @medium-color;

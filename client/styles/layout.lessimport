@@ -61,12 +61,6 @@
   text-overflow: ellipsis;
 }
 
-.display-flex{
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-}
-
 html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -188,6 +182,20 @@ html {
   -ms-transform: @string;
   -o-transform: @string;
   transform: @string;
+}
+
+
+.flex(@string){
+  -webkit-flex: @string;
+  -ms-flex: @string;
+  flex: @string;
+}
+
+
+.display-flex{
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
 }
 
 

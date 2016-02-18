@@ -114,7 +114,7 @@ div.user-profile {
     .FFMarkWebBold;
     div{
       display: inline-block;
-      flex: 1;
+      .flex(1);
       cursor: pointer;
     }
   }
