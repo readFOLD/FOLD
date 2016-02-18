@@ -13,6 +13,13 @@
           <div class="filter {{#if slim}}slim{{else}}fat{{/if}}">
             {{> filters slim=slim}}
           </div>
+        {{else}}
+          {{#unless slim}}
+            <div class="newest-toggle">
+              <button class="show-feed" disabled="{{#if showingFeed}}disabled{{/if}}">{{#if currentUser}}My Feed{{else}}FOLD Picks{{/if}}</button>
+              <button class="show-newest" disabled="{{#unless showingFeed}}disabled{{/unless}}">Latest</button>
+            </div>
+          {{/unless}}
         {{/if}}
         <div class="search {{#if slim}}slim{{else}}fat{{/if}}">
           {{> search slim=slim}}
@@ -190,7 +197,7 @@
 
 
   {{#if currentUser}}
-    {{> activity_feed}}
+    {{> activity_feed hide=hideActivityFeed}}
   {{/if}}
 
   {{#each stories}}
@@ -370,7 +377,7 @@
 </template>
 
 <template name="activity_feed">
-  <div class="activity-feed">
+  <div class="activity-feed {{#if hide}}display-none{{/if}}">
 
     {{> _activity_feed_content activities=populatedFeedItems loading=loading hideContent=hideContent}}
   </div>

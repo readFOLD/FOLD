@@ -47,9 +47,21 @@ Template.home.events({
     t.$("select.filters-select").val(filters[0]);
     t.$("select.filters-select").selectOrDie("update");
 
-  },
-  "click .show-newest": function(e, t){
+  }
+});
+
+Template.top_banner.helpers({
+  showingFeed () {
+    return Session.equals('filterValue', 'mixed');
+  }
+});
+
+Template.top_banner.events({
+  "click .show-newest": function (e, t) {
     Session.set('filterValue', 'newest');
+  },
+  "click .show-feed": function (e, t) {
+    Session.set('filterValue', 'mixed');
   }
 });
 
@@ -375,7 +387,6 @@ Template.all_stories.onCreated(function(){
   this.autorun(function () {
     if (Session.equals('filterValue', 'newest')) {
       subscriptionsReady.set('newestStories', false);
-      console.log('lalala')
       subscribeToNewestStories(function () {
         subscriptionsReady.set('newestStories', true);
         whichUserPics.changed();
@@ -467,13 +478,13 @@ var currentHomeStories = function(){
     return searchResults;
   }
 
-  if(!Meteor.userId()){
-    return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: limit, reactive: true});
-  }
-
   switch (Session.get('filterValue')) {
     case 'mixed':
-      return Stories.find({ published: true, $or: [{editorsPick: true}, {authorId: {$in: Meteor.user().profile.following || []}}]}, {sort: {'r': -1}, limit: limit, reactive: true});
+      if(!Meteor.userId()){
+        return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: limit, reactive: true});
+      } else {
+        return Stories.find({ published: true, $or: [{editorsPick: true}, {authorId: {$in: Meteor.user().profile.following || []}}]}, {sort: {'r': -1}, limit: limit, reactive: true});
+      }
       break;
     case 'curated':
       return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: limit, reactive: true});
@@ -559,6 +570,9 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
   },
   boxDismissed: function(){
     return Session.get('boxDismissed')
+  },
+  hideActivityFeed (){ // we'll hide it so it doesn't need to reload all activities
+    return !Session.equals('filterValue', 'mixed');
   }
 });
 
