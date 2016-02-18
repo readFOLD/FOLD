@@ -151,7 +151,7 @@ div.home-top {
       display: none;
     }
     @media @not-mobile{
-      left: 400px;
+      left: 396px;
       &.fat{
         top: @magic-styling-distance;
         @media @home-banner-break-3 {
