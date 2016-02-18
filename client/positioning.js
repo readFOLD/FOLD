@@ -219,6 +219,11 @@ Meteor.startup(function(){
   $(document).keydown(function(e) {
     var currentRoute = Router.current();
     var routeName = currentRoute ? currentRoute.route.getName() : '';
+
+    if($(e.target).is('input, textarea')){
+      return
+    }
+    
     if ((routeName === 'read' || (routeName === 'edit' && Session.get('read'))) && !signingIn()){
       var letter = String.fromCharCode(e.keyCode);
       switch(letter){
