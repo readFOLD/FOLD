@@ -923,8 +923,11 @@ div.link-section {
         float: left;
         width: 130px;
         height: 130px;
+        overflow: hidden;
         img{
-          .size-to-fit;
+          min-height: 100%;
+          width: 100%;
+          .center-over-parent-div;
         }
       }
       &.top {
