@@ -924,6 +924,7 @@ div.link-section {
         width: 130px;
         height: 130px;
         overflow: hidden;
+        background-color: @black-color;
         img{
           min-height: 100%;
           width: 100%;
