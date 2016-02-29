@@ -204,4 +204,13 @@ window.unfreezePageScroll = function(){
   document.body.style.overflowY = 'auto';
   document.body.style.marginRight = 0;
   $('.home-top.fat').width('100%');
-}
+};
+
+
+window.embedMode = function(){
+  return Session.equals('embedMode', true);
+};
+
+window.activateEmbedMode = function(){
+  return Session.set('embedMode', true);
+};

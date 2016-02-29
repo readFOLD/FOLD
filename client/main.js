@@ -103,11 +103,27 @@ Meteor.startup(function(){
   });
 
   Blaze.addBodyClass(function() {
-    if(Router.current()){
+    if(Router.current() && Router.current().route){
       return Router.current().route.getName();
     }
   });
 });
+
+Meteor.startup(function(){
+  var inIFrame = function(){
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
+  };
+
+  if (inIFrame()){
+    // TODO, ensure on watch / embed page. don't allow whole site to be embedded...
+    activateEmbedMode();
+  }
+});
+
 
 
 window.hammerSwipeOptions = {

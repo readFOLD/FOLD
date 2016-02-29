@@ -2,7 +2,6 @@
 analytics.load(Meteor.settings["public"].SEGMENT_WRITE_KEY);
 
 Router.onRun(function() {
-
   Meteor.setTimeout(() => {
     $('meta[property="og:url"]').attr('content', window.location.href);
     analytics.page(this.route.getName()); // maybe should be more page info here

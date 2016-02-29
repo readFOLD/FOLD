@@ -145,3 +145,7 @@ Handlebars.registerHelper('capitalize',
     return _s.capitalize(s);
   }
 );
+
+Handlebars.registerHelper("embedMode", function () {
+  return window.embedMode();
+});

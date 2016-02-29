@@ -224,7 +224,7 @@ Meteor.startup(function(){
       return
     }
     
-    if ((routeName === 'read' || (routeName === 'edit' && Session.get('read'))) && !signingIn()){
+    if ((routeName === 'read' || routeName === 'embed' || (routeName === 'edit' && Session.get('read'))) && !signingIn()){
       var letter = String.fromCharCode(e.keyCode);
       switch(letter){
         case 'J':
