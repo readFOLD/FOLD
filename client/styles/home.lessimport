@@ -41,7 +41,7 @@ div.home-top {
 
     &.slim{
       .title{
-        img{
+        .fold-title{
           height: @slimHeight;
         }
       }
@@ -49,7 +49,7 @@ div.home-top {
 
     @media @mobile{
       .title {
-        img {
+        .fold-title {
           height: @slimHeight;
         }
       }
@@ -59,7 +59,7 @@ div.home-top {
       &.fat{
         .title{
           margin-top: 5px;
-          img{
+          .fold-title{
             height: @magic-styling-distance * .75;
           }
         }

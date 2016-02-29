@@ -5,7 +5,7 @@
       <div class="signin-modal">
         <button class="close">✕</button>
         {{#if onSignupStage}}
-          <div class="title {{#if explanation}}has-explanation{{/if}}"><img src="{{c.url 'static/foldtitle.svg'}}"></div>
+          <div class="title {{#if explanation}}has-explanation{{/if}}">{{> fold_title}}</div>
           {{#if explanation}}
             <div class="explanation">{{explanation}}</div>
           {{else}}
@@ -49,7 +49,7 @@
     <button class="back back-to-signup text">Go back</button>
   {{/unless}}
   {{#if twitterUser}}
-    <div class="absolute title"><img src="{{c.url 'static/foldtitle.svg'}}"></div>
+    <div class="absolute title">{{> fold_title}}</div>
   {{/if}}
   <form id="info-form" disabled="{{disableSignup}}" action="action">
     <!-- Email -->

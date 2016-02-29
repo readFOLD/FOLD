@@ -601,6 +601,12 @@ div.story-browser {
       height: 340px - @remix-bar-height;
     }
   }
+
+  &.sandwich-mode{
+    div{
+      margin-top: 20px;
+    }
+  }
   svg {
     cursor: pointer;
     .center-over-parent-div;
@@ -1188,6 +1194,59 @@ div#banner-overlay {
     position: absolute;
     top: -350px;
   }
+
+  .left{
+    position: absolute;
+    left: 0;
+    height: 100%;
+  }
+
+  .fg{
+    fill: @white-color;
+  }
+  color: @white-color;
+  line-height: @magic-styling-distance;
+
+  .open{
+    float: left;
+    margin-left: 10px;
+    width: 40px;
+    height: 100%;
+  }
+  
+  .share-buttons{
+    float: left;
+    margin-left: 20px;
+
+    div, button{
+      float: left;
+    }
+  }
+  
+  .favorite-button{
+    float: left;
+    height: 100%;
+    margin-top: 10px;
+    margin-left: 10px;
+    .favorite .fg{
+      fill: @white-color;
+    }
+    span{
+      display: none;
+    }
+  }
+
+  .title{
+    height: 20px;
+    position: absolute;
+    right: -20px;
+    top: 10px;
+    line-height: 0;
+    .fg{
+      fill: @white-color;
+    }
+  }
+
 
   .footer-overlay{
     position: absolute;

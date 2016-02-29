@@ -4,7 +4,7 @@
       <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}}">
         {{#linkTo route="home"}}
         <div class="title {{#if slim}}slim{{else}}fat{{/if}}">
-          <img src="{{c.url 'static/foldtitle.svg'}}">
+          {{> fold_title}}
         </div>
         {{/linkTo}}
       </div>
@@ -37,7 +37,7 @@
       <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}}">
         <!--{{#linkTo route="home"}}-->
           <div class="title {{#if slim}}slim{{else}}fat{{/if}}">
-            <img src="{{c.url 'static/foldtitle.svg'}}">
+            {{> fold_title}}
           </div>
         <!--{{/linkTo}}-->
       </div>
@@ -51,7 +51,7 @@
       <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}}">
         {{#linkTo route="home"}}
           <div class="title {{#if slim}}slim{{else}}fat{{/if}}">
-            <img src="{{c.url 'static/foldtitle.svg'}}">
+            {{> fold_title}}
           </div>
         {{/linkTo}}
       </div>

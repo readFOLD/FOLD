@@ -130,24 +130,6 @@ div.floating-story-buttons {
     margin-right: 10px;
     line-height: @height;
     color: @black-color;
-    font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
-    .text{
-      float: left;
-      display: inline-block;
-      height: @height;
-      margin-top: 1px;
-      margin-right: 5px;
-      svg{
-        margin-left: 10px;
-      }
-    }
-    button {
-      width: @height;
-      height: @height;
-      svg{
-        height: @height;
-      }
-    }
   }
 
   .facebook-social-icon{
@@ -166,6 +148,30 @@ div.floating-story-buttons {
   right: 0px;
 
 }
+
+.share-buttons{
+  @height: 40px;
+
+  font-family: 'FFMagdaCleanMonoWebProRegular', monospace;
+  .text{
+    float: left;
+    display: inline-block;
+    height: @height;
+    margin-top: 1px;
+    margin-right: 5px;
+    svg{
+      margin-left: 10px;
+    }
+  }
+  button {
+    width: @height;
+    height: @height;
+    svg{
+      height: @height;
+    }
+  }
+}
+
 
 .floating-story-buttons, .floating-story-buttons-left, .floating-story-buttons-right{
   z-index: 45;

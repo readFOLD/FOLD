@@ -144,8 +144,6 @@ window.updateCurrentY = function() {
 
   stickyTitle = 120;
 
-  console.log('1111')
-
   if(!sandwichMode()){
     $("div#banner-overlay").css({
       opacity: Math.min(1.0, scrollTop / readMode)
@@ -178,7 +176,7 @@ window.updateCurrentY = function() {
     Session.set("pastHeader", true);
     $("div.horizontal-context").addClass("fixed");
 
-    if(scrollPauseArmed){
+    if(scrollPauseArmed && !sandwichMode()){
       freezePageScroll();
       $(document).scrollTop(readMode);
       Meteor.setTimeout(function () {

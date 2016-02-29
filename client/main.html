@@ -587,7 +587,7 @@
 
 
 <template name="story_browser">
-  <div class="story-browser {{#unless read}}edit-mode{{/unless}}">
+  <div class="story-browser {{#unless read}}edit-mode{{/unless}} {{#if sandwichMode}}sandwich-mode{{/if}}">
     {{#if showLeftArrow}}
       <div class="left">
         {{> browse_arrow_left}}
