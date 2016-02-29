@@ -206,11 +206,16 @@ window.unfreezePageScroll = function(){
   $('.home-top.fat').width('100%');
 };
 
+window.sandwichMode = function(){
+  return window.embedMode();
+};
+
 
 window.embedMode = function(){
   return Session.equals('embedMode', true);
 };
 
 window.activateEmbedMode = function(){
+  window.constants.selectOffset = window.constants.selectOffset - 92
   return Session.set('embedMode', true);
 };

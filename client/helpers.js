@@ -146,6 +146,10 @@ Handlebars.registerHelper('capitalize',
   }
 );
 
+Handlebars.registerHelper("sandwichMode", function () {
+  return window.sandwichMode();
+});
+
 Handlebars.registerHelper("embedMode", function () {
   return window.embedMode();
 });

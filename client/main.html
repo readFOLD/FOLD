@@ -34,14 +34,16 @@
 -->
 
 <template name="story_header">
-  {{> top_banner showFilters=showPublished hideMakeAStory=showDraft slim=true}}
-  <div class="title-overlay {{#unless read}}write{{/unless}}">
+  {{#unless sandwichMode}}
+    {{> top_banner showFilters=showPublished hideMakeAStory=showDraft slim=true}}
+  {{/unless}}
+  <div class="title-overlay {{#unless read}}write{{/unless}} {{#if sandwichMode}}sandwich-mode{{/if}}">
     {{#with headerImageVideoObject}}
       {{> looping_video}}
     {{else}}
       <img class="header-overlay-image" src={{headerImageUrl}}>
     {{/with}}
-    <div id="banner-overlay">
+    <div id="banner-overlay" class="{{#if sandwichMode}}sandwich-mode{{/if}}">
     </div>
     <div class="title-author">
       {{> story_title }}
@@ -51,9 +53,15 @@
         </a>
         {{> follow_button userId=authorId}}
       </div>
-      <a class="author-image" href="{{profileUrl}}">
-        <img class="profile-picture" src="{{profileImage author}}"/>
-      </a>
+      {{#if embedMode}}
+        <div class="author-image" href="{{profileUrl}}">
+          <img class="profile-picture" src="{{profileImage author}}"/>
+        </div>
+      {{else}}
+        <a class="author-image" href="{{profileUrl}}">
+          <img class="profile-picture" src="{{profileImage author}}"/>
+        </a>
+      {{/if}}
     </div>
     {{#if popoutExists}}{{> audio_popout}}{{/if}}
 
@@ -96,13 +104,13 @@
   <!-- Mesh Background Overlay -->
   <!-- <div id="overlay"></div> -->
   <article class="content entire-story">
-    <div class="vertical-narrative"
+    <div class="vertical-narrative {{#if sandwichMode}}sandwich-mode{{/if}}"
          style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
       {{> vertical_narrative}}
 
       {{> story_footer}}
     </div>
-    <div class="horizontal-context">
+    <div class="horizontal-context {{#if sandwichMode}}sandwich-mode{{/if}}">
       {{> horizontal_context}}
     </div>
   </article>

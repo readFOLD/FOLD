@@ -903,6 +903,10 @@ div.vertical-narrative {
   &.free-scroll{
     top: 471px;
   }
+
+  &.sandwich-mode{
+    top: 185px;
+  }
 }
 
 div.oec-section {
@@ -1163,8 +1167,33 @@ div#banner-overlay {
   opacity: 0.0;
   position: absolute;
 
-  &.fixed {
+  &.fixed, &.sandwich-mode {
     height: @fixed-banner-height;
+  }
+  &.sandwich-mode{
+    opacity: 1;
+  }
+}
+
+.story-sandwich-footer{
+  position: fixed;
+  height: @magic-styling-distance;
+  width: 100%;
+  bottom: 0;
+  z-index: 100;
+  overflow: hidden;
+
+  .footer-overlay-image, video{
+    min-width: 100%;
+    position: absolute;
+    top: -350px;
+  }
+
+  .footer-overlay{
+    position: absolute;
+    .size-to-fit;
+    top: 0;
+    background-color: fade(@dark-color, 60%);
   }
 }
 
@@ -1173,7 +1202,8 @@ div#banner-overlay {
 div.horizontal-context {
   float: right;
   top: 350px;
-  
+
+
   margin-top: @horizontal-context-margin-top + 40px;
   margin-bottom: 500px;
   .size-to-fit;
@@ -1191,6 +1221,11 @@ div.horizontal-context {
       top: 90px;
     }*/
   }
+
+  &.sandwich-mode{
+    top: @horizontal-context-top - @magic-styling-distance;
+  }
+
   div.preview {
     position: absolute;
     top: 0;

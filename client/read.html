@@ -4,6 +4,9 @@
     {{> story_header}}
     {{> story}}
     {{> read_options}}
+    {{#if sandwichMode}}
+      {{> story_sandwich_footer}}
+    {{/if}}
   {{/if}}
 </template>
 
@@ -30,13 +33,15 @@
 <template name="read_options">
   <div class="floating-story-buttons">
     {{#unless isPhone}}
-      {{#with reactiveStory}}
-        {{> share_buttons}}
-        {{> favorite_button}}
-        {{#if adminMode}}
-          {{> editors_pick_button}}
-        {{/if}}
-      {{/with}}
+      {{#unless sandwichMode}}
+        {{#with reactiveStory}}
+          {{> share_buttons}}
+          {{> favorite_button}}
+          {{#if adminMode}}
+            {{> editors_pick_button}}
+          {{/if}}
+        {{/with}}
+      {{/unless}}
     {{/unless}}
 
 
@@ -51,5 +56,17 @@
         {{/linkTo}}
       {{/unless}}
     {{/if}}
+  </div>
+</template>
+
+<template name="story_sandwich_footer">
+  <div class="story-sandwich-footer">
+    {{#with headerImageVideoObject}}
+      {{> looping_video}}
+    {{else}}
+      <img class="footer-overlay-image" src={{headerImageUrl}}>
+    {{/with}}
+    <div class="footer-overlay">
+    </div>
   </div>
 </template>

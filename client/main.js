@@ -119,7 +119,6 @@ Meteor.startup(function(){
   };
 
   if (inIFrame()){
-    // TODO, ensure on watch / embed page. don't allow whole site to be embedded...
     activateEmbedMode();
   }
 });
@@ -138,19 +137,27 @@ var scrollPauseLength = 700;
 
 window.updateCurrentY = function() {
   var actualY, h, i, readMode, scrollTop, stickyTitle, vertTop, _i, _len, _ref;
+
   scrollTop = $(document).scrollTop();
-  Session.set("scrollTop", scrollTop);
 
   readMode = window.constants.readModeOffset - 1;
 
   stickyTitle = 120;
-  $("div#banner-overlay").css({
-    opacity: Math.min(1.0, scrollTop / readMode)
-  });
-  $(".horizontal-context").css({
-    opacity: 0.5 + Math.min(1.0, scrollTop / readMode) / 2
-  });
-  if (scrollTop >= readMode){
+
+  console.log('1111')
+
+  if(!sandwichMode()){
+    $("div#banner-overlay").css({
+      opacity: Math.min(1.0, scrollTop / readMode)
+    });
+    $(".horizontal-context").css({
+      opacity: 0.5 + Math.min(1.0, scrollTop / readMode) / 2
+    });
+
+    Session.set("scrollTop", scrollTop);
+  }
+
+  if (sandwichMode() || (scrollTop >= readMode)){
     $("div.title-author").addClass("c");
     $("div.title-author").removeClass("a");
     $("div.title-author").removeClass("b");
@@ -166,7 +173,7 @@ window.updateCurrentY = function() {
     $("div.title-author").removeClass("c");
   }
 
-  if (scrollTop >= readMode) {
+  if (sandwichMode() || (scrollTop >= readMode)) {
     $("div.title-overlay, div#banner-overlay").addClass("fixed");
     Session.set("pastHeader", true);
     $("div.horizontal-context").addClass("fixed");
@@ -193,7 +200,8 @@ window.updateCurrentY = function() {
   }
 
 
-  if (scrollTop >= readMode) {
+
+  if (sandwichMode() || (scrollTop >= readMode)) {
     _ref = _.map(window.getVerticalHeights(), function(height){ return height + window.constants.selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
@@ -1677,7 +1685,14 @@ var addActiveHeartbeat = function(key){
 };
 
 Template.read.onRendered(function(){
-  $(window).scrollTop(Session.get('scrollTop'));
+
+  if(sandwichMode()){
+    updateCurrentY();
+  } else {
+    $(window).scrollTop(Session.get('scrollTop'));
+  }
+
+
   this.heartbeatInterval = Meteor.setInterval(function(){
     var currentYId = Session.get('currentYId');
     var currentXId = Session.get('currentXId');

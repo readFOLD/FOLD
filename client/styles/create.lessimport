@@ -290,6 +290,9 @@ div.save-background-image {
 
 div.title-overlay {
   top: @magic-styling-distance;
+  &.sandwich-mode{
+    top: 0;
+  }
 
   @starting-height: 350px;
   @ending-height: @title-overlay-ending-height;
