@@ -229,7 +229,7 @@ var unpublishStory = function(storyId) {
 };
 
 Meteor.methods({
-  addContextToStory: function(storyId, storyShortId, contextBlock, verticalIndex){
+  addContextToStory (storyId, storyShortId, contextBlock, verticalIndex){
     check(storyId, String);
     check(storyShortId, String);
     check(contextBlock, Object);
@@ -276,7 +276,7 @@ Meteor.methods({
     }
     return contextId;
   },
-  removeContextFromStory: function(storyId, contextId, verticalSectionIndex) {
+  removeContextFromStory (storyId, contextId, verticalSectionIndex) {
     check(storyId, String);
     check(contextId, String);
     check(verticalSectionIndex, Number);
@@ -303,14 +303,14 @@ Meteor.methods({
 
     return numRemoved
   },
-  updateStoryTitle: function(storyId, title){
+  updateStoryTitle (storyId, title){
     check(storyId, String);
     check(title, String);
     // TODO DRY
     var storyPathSegment = _s.slugify(title.toLowerCase() || 'new-story')+ '-' + Stories.findOne({_id: storyId}).shortId;
     return updateStory.call(this, {_id: storyId}, {$set: {'draftStory.title' : title, 'draftStory.storyPathSegment' : storyPathSegment }});
   },
-  updateVerticalSectionTitle: function(storyId, index, title){ // TO-DO switch to using id instead of index
+  updateVerticalSectionTitle (storyId, index, title){ // TO-DO switch to using id instead of index
     check(storyId, String);
     check(index, Number);
     check(title, String);
@@ -319,7 +319,7 @@ Meteor.methods({
 
     return updateStory.call(this, {_id: storyId}, setObject, {removeEmptyStrings: false})
   },
-  updateVerticalSectionContent: function(storyId, index, content){ // TO-DO switch to using id instead of index
+  updateVerticalSectionContent (storyId, index, content){ // TO-DO switch to using id instead of index
     check(storyId, String);
     check(index, Number);
     check(content, String);
@@ -329,7 +329,7 @@ Meteor.methods({
 
     return updateStory.call(this, {_id: storyId}, setObject, {removeEmptyStrings: false, autoConvert: false}); // don't autoconvert because https://github.com/aldeed/meteor-simple-schema/issues/348
   },
-  updateHeaderImage: function(storyId, filePublicId, fileFormat) {
+  updateHeaderImage (storyId, filePublicId, fileFormat) {
     check(storyId, String);
     check(filePublicId, String);
     check(fileFormat, String);
@@ -340,37 +340,37 @@ Meteor.methods({
       }
     })
   },
-  addTitle: function(storyId, index) {
+  addTitle (storyId, index) {
     check(storyId, String);
     check(index, Number);
     return changeHasTitle.call(this, storyId, index, true);
   },
-  removeTitle: function(storyId, index) {
+  removeTitle (storyId, index) {
     check(storyId, String);
     check(index, Number);
     return changeHasTitle.call(this, storyId, index, false);
   },
-  editHorizontalBlockDescription: function(horizontalId, description) {
+  editHorizontalBlockDescription (horizontalId, description) {
     check(horizontalId, String);
     check(description, String);
     return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"description": description}});
   },
-  editTextSection: function(horizontalId, content) {
+  editTextSection (horizontalId, content) {
     check(horizontalId, String);
     check(content, String);
     return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"content": content}});
   },
-  editLinkTitle: function(horizontalId, content) {
+  editLinkTitle (horizontalId, content) {
     check(horizontalId, String);
     check(content, String);
     return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"override.title": content.replace(/\n/g, "") }});
   },
-  editLinkDescription: function(horizontalId, content) {
+  editLinkDescription (horizontalId, content) {
     check(horizontalId, String);
     check(content, String);
     return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"override.description": content.replace(/\n/g, "") }});
   },
-  editLinkThumbnail: function(horizontalId, cloudinaryImageInfo) {
+  editLinkThumbnail (horizontalId, cloudinaryImageInfo) {
     check(horizontalId, String);
     check(cloudinaryImageInfo, Object);
     check(cloudinaryImageInfo.id, String);
@@ -385,7 +385,7 @@ Meteor.methods({
       "override.thumbnailFileExtension": cloudinaryImageInfo.fileExtension
     }});
   },
-  reorderStory: function(storyId, idMap) {
+  reorderStory (storyId, idMap) {
     check(storyId, String);
     check(idMap, [Object]);
 
@@ -420,7 +420,7 @@ Meteor.methods({
       }
     })
   },
-  insertVerticalSection: function(storyId, index, verticalSectionId) { // TO-DO find a good way to generate this id in a trusted way
+  insertVerticalSection (storyId, index, verticalSectionId) { // TO-DO find a good way to generate this id in a trusted way
     check(storyId, String);
     check(index, Number);
     var newSection = {
@@ -446,7 +446,7 @@ Meteor.methods({
 
     return numUpdated;
   },
-  moveVerticalSectionUpOne: function(storyId, index) {
+  moveVerticalSectionUpOne (storyId, index) {
     check(storyId, String);
     check(index, Number);
     if (!index){
@@ -479,7 +479,7 @@ Meteor.methods({
 
     return numUpdated
   },
-  moveVerticalSectionDownOne: function(storyId, index) {
+  moveVerticalSectionDownOne (storyId, index) {
     check(storyId, String);
     check(index, Number);
 
@@ -514,7 +514,7 @@ Meteor.methods({
 
     return numUpdated
   },
-  deleteVerticalSection: function(storyId, index) {
+  deleteVerticalSection (storyId, index) {
     check(storyId, String);
     check(index, Number);
 
@@ -546,7 +546,7 @@ Meteor.methods({
       }
     })
   },
-  publishStory: function(storyId, title, keywords, narrativeRightsReserved) {
+  publishStory (storyId, title, keywords, narrativeRightsReserved) {
     check(storyId, String);
     check(title, String);
     check(keywords, [String]);
@@ -658,7 +658,7 @@ Meteor.methods({
     });
   },
   unpublishStory: unpublishStory,
-  deleteStory: function(storyId){
+  deleteStory (storyId){
     check(storyId, String);
     if (!this.userId) {
       throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to delete a story');
@@ -684,7 +684,7 @@ Meteor.methods({
       }
     });
   },
-  followUser: function(userId) {
+  followUser (userId) {
     check(userId, String);
     var success = changeFollow.call(this, userId, true);
     if(success){
@@ -692,11 +692,11 @@ Meteor.methods({
     }
     return success
   },
-  unfollowUser: function(userId) {
+  unfollowUser (userId) {
     check(userId, String);
     return changeFollow.call(this, userId, false);
   },
-  favoriteStory: function(storyId) {
+  favoriteStory (storyId) {
     check(storyId, String);
     var success = changeFavorite.call(this, storyId, true);
     if(success){
@@ -704,11 +704,11 @@ Meteor.methods({
     }
     return success;
   },
-  unfavoriteStory: function(storyId) {
+  unfavoriteStory (storyId) {
     check(storyId, String);
     return changeFavorite.call(this, storyId, false);
   },
-  designateEditorsPick: function(storyId) {
+  designateEditorsPick (storyId) {
     check(storyId, String);
     this.unblock();
     if (!Meteor.user().admin) {
@@ -727,7 +727,7 @@ Meteor.methods({
       }
     });
   },
-  stripEditorsPick: function(storyId) {
+  stripEditorsPick (storyId) {
     this.unblock();
     if (!Meteor.user().admin) {
       throw new Meteor.Error('not-admin', 'Sorry, you must be an admin to designate an editors pick');
@@ -744,7 +744,7 @@ Meteor.methods({
       }
     });
   },
-  createStory: function(shortId, verticalSectionId) { // TO-DO find a way to generate these in a trusted way server without compromising UI speed
+  createStory (shortId, verticalSectionId) { // TO-DO find a way to generate these in a trusted way server without compromising UI speed
     var user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('not-logged-in', 'Sorry, you must be logged in to create a story');

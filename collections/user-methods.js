@@ -1,5 +1,5 @@
 Meteor.methods({
-  saveProfilePicture: function (userId, pictureId) {
+  saveProfilePicture  (userId, pictureId) {
     check(userId, String);
     check(pictureId, String);
     if (this.userId === userId) {
@@ -14,7 +14,7 @@ Meteor.methods({
       throw new Meteor.Error("Only the account owner may edit this profile")
     }
   },
-  updateProfile: function (modifier, userId) { // TO-DO cleanup
+  updateProfile  (modifier, userId) { // TO-DO cleanup
     check(userId, String);
     check(modifier, Object);
 

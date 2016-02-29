@@ -21,9 +21,9 @@ Story = (function() {
         authorDisplayUsername: this.authorDisplayUsername,
         authorId: this.authorId,
         authorName: this.authorName,
-        contextCountOfType:  function(){}, // stub out for now
-        narrativeCount:  function(){}, // stub out for now
-        countContextTypes:  function(){}, // stub out for now
+        contextCountOfType (){}, // stub out for now
+        narrativeCount (){}, // stub out for now
+        countContextTypes (){}, // stub out for now
         headerImageUrl: this.headerImageUrl.bind(this.draftStory),
         headerImageVideoObject: this.headerImageVideoObject.bind(this.draftStory),
         _id: this._id
@@ -182,19 +182,19 @@ if (Meteor.isClient) {
 }
 
 this.Stories = new Mongo.Collection("stories", {
-  transform: function(doc) {
+  transform (doc) {
     return new Story(doc);
   }
 });
 
 this.Stories.deny({
-  insert: function() {
+  insert () {
     return true;
   },
-  update: function() {
+  update () {
     return true
   },
-  remove: function() {
+  remove () {
     return true;
   }
 });
@@ -206,13 +206,13 @@ ContextBlocks = new Mongo.Collection("context_blocks", {
 
 
 this.ContextBlocks.deny({
-  insert: function() {
+  insert () {
     return true;
   },
-  update: function() {
+  update () {
     return true
   },
-  remove: function() {
+  remove () {
     return true
   }
 });
@@ -300,7 +300,7 @@ bambuserMapFn = function (e) {
 ContextBlock.searchMappings = {
   all_streaming_services: {
     methodName: 'streamSearchList',
-    mapFn: function (e) {
+    mapFn  (e) {
       switch (e._source) {
         case 'youtube':
           return youtubeMapFn(e);
@@ -327,7 +327,7 @@ ContextBlock.searchMappings = {
   },
   vimeo: {
     methodName: 'vimeoVideoSearchList',
-    mapFn: function (e) {
+    mapFn  (e) {
       return {
         reference: {
           title: e.name,
@@ -342,7 +342,7 @@ ContextBlock.searchMappings = {
   },
   soundcloud: {
     methodName: 'soundcloudAudioSearchList',
-    mapFn: function (e) {
+    mapFn  (e) {
       return {
         reference: {
           title: e.title,
@@ -358,7 +358,7 @@ ContextBlock.searchMappings = {
   },
   twitter: {
     methodName: 'twitterSearchList',
-    mapFn: function (e) {
+    mapFn  (e) {
       var item = {
         reference: {
           text: e.text,
@@ -377,7 +377,7 @@ ContextBlock.searchMappings = {
   },
   imgur: {
     methodName: 'imgurImageSearchList',
-    mapFn: function (e) {
+    mapFn  (e) {
       return {
         reference: {
           id: e.id,
@@ -393,7 +393,7 @@ ContextBlock.searchMappings = {
   },
   flickr: {
     methodName: 'flickrImageSearchList',
-    mapFn: function (e) {
+    mapFn  (e) {
       var username, uploadDate, title, lgUrl, lgHeight, lgWidth, flickrSecretOrig, formatOrig;
       if (e.media) {
         //if single image result
@@ -453,7 +453,7 @@ ContextBlock.searchMappings = {
   },
   giphy: {
     methodName: 'giphyGifSearchList',
-    mapFn: function (e) {
+    mapFn  (e) {
       return {
         reference: {
           id: e.id,
@@ -1771,7 +1771,7 @@ Schema.ContextBlocks = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    autoValue: function() {
+    autoValue () {
       if (this.isInsert) {
         return new Date;
       } else if (this.isUpsert) {
@@ -1874,7 +1874,7 @@ var sharedStorySchema = function(options) {
     headerImage: {
       type: String,
       optional: true,
-      autoValue: function() {
+      autoValue () {
         if(options.draft){
           if (this.isSet) {
             return this.value;
@@ -1949,7 +1949,7 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchema(), {
     },
     createdAt: {
       type: Date,
-      autoValue: function() {
+      autoValue () {
         if (this.isInsert) {
           return new Date;
         } else if (this.isUpsert) {
@@ -2082,13 +2082,13 @@ this.StoryStats = new Mongo.Collection("story_stats");
 
 
 this.StoryStats.deny({
-  insert: function() {
+  insert () {
     return true;
   },
-  update: function() {
+  update () {
     return true
   },
-  remove: function() {
+  remove () {
     return true
   }
 });
@@ -2204,7 +2204,7 @@ Schema.Activities = new SimpleSchema({
   },
   published: { // when this happened
     type: Date,
-    autoValue: function() {
+    autoValue () {
       if (this.isInsert) {
         return new Date;
       } else if (this.isUpsert) {
