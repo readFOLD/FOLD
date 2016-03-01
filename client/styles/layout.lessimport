@@ -522,7 +522,7 @@ body {
 
   line-height: 23px;
   font-size: 15px;
-  &.read, &.edit{
+  &.read, &.edit, &.embed{
     min-height: 1420px;
     @media @desktop-xtall {
       min-height: 2000px;
@@ -530,6 +530,10 @@ body {
     overflow-x: hidden;
 
     @media @mobile {
+      background-color: @unselected-link-color;
+    }
+
+    @media @thin-window {
       background-color: @unselected-link-color;
     }
   }
@@ -646,6 +650,10 @@ div#overlay {
   user-select: none;
 }
 
+article{
+  background-color: inherit;
+}
+
 @nonMobileNarrativeSectionPadding: 30px;
 
 .vertical-narrative-section {
@@ -676,7 +684,7 @@ div#overlay {
     min-height: @magic-styling-distance;
   }
 
-  &.read {
+  &.read, &.embed {
     margin-bottom: @card-spacing;
     @media @mobile {
       margin-bottom: @mobile-card-spacing;
@@ -951,7 +959,7 @@ div.vertical-narrative {
   &.hidden-context-mode{
     left: @card-spacing !important;
     width: calc(100% ~'-' @card-spacing * 2) !important;
-    background-color: @white-color;
+    background-color: inherit;
   }
 
   @media @mobile{

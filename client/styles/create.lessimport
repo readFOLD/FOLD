@@ -452,7 +452,7 @@ div.title-overlay {
   }
 
 
-  &.read:hover {
+  &.read:hover, &.embed:hover {
     border-bottom: 1px dashed grey;
   }
 
