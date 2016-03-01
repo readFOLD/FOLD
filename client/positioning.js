@@ -6,7 +6,7 @@ window.constants = {
 };
 
 if(Meteor.Device.isPhone()){
-  window.constants.readModeOffset = window.constants.readModeOffset + 92
+  window.constants.readModeOffset = 0;
 }
 
 window.getVerticalLeft = function() {

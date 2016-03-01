@@ -145,61 +145,71 @@ window.updateCurrentY = function() {
   stickyTitle = 120;
 
   if(!sandwichMode()){
-    $("div#banner-overlay").css({
-      opacity: Math.min(1.0, scrollTop / readMode)
-    });
-    $(".horizontal-context").css({
-      opacity: 0.5 + Math.min(1.0, scrollTop / readMode) / 2
-    });
-
     Session.set("scrollTop", scrollTop);
-  }
 
-  if (sandwichMode() || (scrollTop >= readMode)){
-    $("div.title-author").addClass("c");
-    $("div.title-author").removeClass("a");
-    $("div.title-author").removeClass("b");
-  } else if (scrollTop >= stickyTitle) {
-    $("div.title-author").addClass("b");
-    $("div.title-author").removeClass("a");
-    $("div.title-author").removeClass("c");
-  } else {
-    scrollPauseArmed = true;
-
-    $("div.title-author").addClass("a");
-    $("div.title-author").removeClass("b");
-    $("div.title-author").removeClass("c");
-  }
-
-  if (sandwichMode() || (scrollTop >= readMode)) {
-    $("div.title-overlay, div#banner-overlay").addClass("fixed");
-    Session.set("pastHeader", true);
-    $("div.horizontal-context").addClass("fixed");
-
-    if(scrollPauseArmed && !sandwichMode()){
-      freezePageScroll();
-      $(document).scrollTop(readMode);
-      Meteor.setTimeout(function () {
-        unfreezePageScroll();
-      }, scrollPauseLength);
-      scrollPauseArmed = false;
+    if(!Meteor.Device.isPhone()) {
+      $("div#banner-overlay").css({
+        opacity: Math.min(1.0, scrollTop / readMode)
+      });
+      $(".horizontal-context").css({
+        opacity: 0.5 + Math.min(1.0, scrollTop / readMode) / 2
+      });
     }
 
-    $("div.vertical-narrative").removeClass("fixed");
-    $("div.vertical-narrative").addClass("free-scroll");
+  }
 
 
-  } else {
-    $("div.title-overlay, div#banner-overlay").removeClass("fixed");
-    Session.set("pastHeader", false);
-    $("div.horizontal-context").removeClass("fixed");
-    $("div.vertical-narrative").removeClass("fixed");
-    $("div.vertical-narrative").removeClass("free-scroll");
+  if(!Meteor.Device.isPhone()){
+    if (sandwichMode() || (scrollTop >= readMode)){
+      $("div.title-author").addClass("c");
+      $("div.title-author").removeClass("a");
+      $("div.title-author").removeClass("b");
+    } else if (scrollTop >= stickyTitle) {
+      $("div.title-author").addClass("b");
+      $("div.title-author").removeClass("a");
+      $("div.title-author").removeClass("c");
+    } else {
+      scrollPauseArmed = true;
+
+      $("div.title-author").addClass("a");
+      $("div.title-author").removeClass("b");
+      $("div.title-author").removeClass("c");
+    }
+
+
+    if (sandwichMode() || (scrollTop >= readMode)) {
+      $("div.title-overlay, div#banner-overlay").addClass("fixed");
+      Session.set("pastHeader", true);
+      $("div.horizontal-context").addClass("fixed");
+
+      if(scrollPauseArmed && !sandwichMode()){
+        freezePageScroll();
+        $(document).scrollTop(readMode);
+        Meteor.setTimeout(function () {
+          unfreezePageScroll();
+        }, scrollPauseLength);
+        scrollPauseArmed = false;
+      }
+
+      $("div.vertical-narrative").removeClass("fixed");
+      $("div.vertical-narrative").addClass("free-scroll");
+
+
+    } else {
+      $("div.title-overlay, div#banner-overlay").removeClass("fixed");
+      Session.set("pastHeader", false);
+      $("div.horizontal-context").removeClass("fixed");
+      $("div.vertical-narrative").removeClass("fixed");
+      $("div.vertical-narrative").removeClass("free-scroll");
+    }
+
+
   }
 
 
 
-  if (sandwichMode() || (scrollTop >= readMode)) {
+
+  if (sandwichMode() || Meteor.Device.isPhone() || (scrollTop >= readMode)) {
     _ref = _.map(window.getVerticalHeights(), function(height){ return height + window.constants.selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
@@ -744,33 +754,6 @@ Template.minimap.helpers({
     var activeHeartbeats = (this.activeHeartbeats || 0);
     var maxActiveHeartbeats = story.maxActiveHeartbeats();
     return Math.pow( activeHeartbeats / maxActiveHeartbeats , 0.5) * 100;
-  }
-});
-
-Template.mobile_minimap.helpers({
-  verticalSelectedArray () {
-    var currentYId = Session.get('currentYId')
-    return _.map(this.verticalSections, function(v){
-      return {selected: currentYId === v._id};
-    });
-  },
-  horizontalSelectedArray () {
-    var currentXId = Session.get('currentXId');
-    var currentY = Session.get('currentY');
-    var mobileContextView = Session.get('mobileContextView');
-    if (this.verticalSections[currentY]){
-      return _.map(this.verticalSections[currentY].contextBlocks, function(cId){
-        return {selected: mobileContextView && (currentXId === cId)};
-      });
-    } else {
-      return [];
-    }
-  },
-  horizontalWidth (){
-    return Session.get('windowWidth') - Session.get('mobileMargin');
-  },
-  verticalHeight (){
-    return Session.get('windowHeight') - Session.get('mobileMargin');
   }
 });
 

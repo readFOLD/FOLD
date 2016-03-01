@@ -540,8 +540,13 @@ body {
   }
 
   position:absolute;
+  @media @mobile {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
   left: 0;
-  right:0;;
+  right:0;
   display: inline-block;
   text-align: center;
   .call-to-action{
@@ -709,6 +714,9 @@ div#overlay {
   }
   @media @mobile {
     .selected-styling;
+    .random-story{
+      background-color: @social-color;
+    }
   }
 }
 
@@ -893,9 +901,7 @@ div.broken-section {
 
 div.vertical-narrative {
   position: absolute;
-  @media @mobile{
-    .left-transition;
-  }
+
   top: 475px;
   margin-top: -65px;
   z-index: 10;
@@ -912,6 +918,13 @@ div.vertical-narrative {
 
   &.sandwich-mode{
     top: 185px;
+  }
+
+  @media @mobile{
+    position: static;
+    margin-top: @magic-styling-distance + 10px;
+    float: none;
+    width: auto !important;
   }
 }
 
@@ -1178,6 +1191,10 @@ div#banner-overlay {
   }
   &.sandwich-mode{
     opacity: 1;
+  }
+  @media @mobile {
+    opacity: 1;
+    z-index: -1;
   }
 }
 

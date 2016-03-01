@@ -304,6 +304,12 @@ div.title-overlay {
   @ending-height: @title-overlay-ending-height;
   height: @starting-height;
 
+  @media @mobile {
+    min-height: @ending-height;
+    height: auto;
+    z-index: 0;
+  }
+
   color: @white-color;
   position: relative;
   overflow: hidden;
@@ -315,6 +321,7 @@ div.title-overlay {
     min-width: 100%;
     @media @mobile {
       max-height: 100%;
+      z-index: -2;
     }
   }
 
@@ -509,13 +516,20 @@ div.title-overlay {
     margin-top: 125px;
     max-width: 1300px;
     color: @white-color;
+    background-color: @dark-color;
+    .background-transition;
+
     @media @mobile {
       margin-left: 20px;
       margin-right: 20px;
-      max-width: calc(100% ~"-" 40px);
+      max-width: calc(100% ~ "-" 40px);
+      position: static;
+      .author-image {
+        display: auto !important;
+      }
+      margin-top: 0;
+      background-color: transparent;
     }
-    background-color: @dark-color;
-    .background-transition;
 
     .author-image{
       display: none;
