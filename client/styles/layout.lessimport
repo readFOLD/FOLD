@@ -31,12 +31,13 @@
 @content-font-size: 16.5px;
 @content-line-height: 27px;
 
-@mobile-content-font-size: 15.5px;
-@mobile-content-line-height: 24px;
+@mobile-content-font-size: 17px;
+@mobile-content-line-height: 1.5;
 
 @magic-styling-distance: 40px;
 
 @card-spacing: 20px;
+@mobile-card-spacing: 15px;
 
 @home-banner-break-1:  ~"(max-width: 1320px)";
 @home-banner-break-2:  ~"(max-width: 1220px)";
@@ -526,6 +527,10 @@ body {
       min-height: 2000px;
     }
     overflow-x: hidden;
+
+    @media @mobile {
+      background-color: @unselected-link-color;
+    }
   }
 }
 
@@ -666,9 +671,15 @@ div#overlay {
   width: 100%;
   min-height: @horizontal-content-height + @remix-bar-height;
   color: @unselected-text-color;
+  @media @mobile {
+    min-height: @magic-styling-distance;
+  }
 
   &.read {
     margin-bottom: @card-spacing;
+    @media @mobile {
+      margin-bottom: @mobile-card-spacing;
+    }
   }
 
   background-color: @unselected-background-color;
@@ -714,6 +725,7 @@ div#overlay {
   }
   @media @mobile {
     .selected-styling;
+    border: none !important;
     .random-story{
       background-color: @social-color;
     }
@@ -767,6 +779,12 @@ div#overlay {
   &.has-title {
     .content {
       min-height: @normalContentHeight;
+    }
+  }
+
+  @media @mobile {
+    .content {
+      min-height: @magic-styling-distance !important;
     }
   }
 }

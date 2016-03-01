@@ -7,6 +7,7 @@ window.constants = {
 
 if(Meteor.Device.isPhone()){
   window.constants.readModeOffset = 0;
+  window.constants.verticalSpacing = 15;
 }
 
 window.getVerticalLeft = function() {
@@ -86,7 +87,12 @@ window.getHorizontalLeft = function() {
 
 window.getVerticalHeights = function() {
   var sum, verticalHeights;
-  var offset = Session.get('read') ? constants.readModeOffset : constants.readModeOffset + constants.verticalSpacing;
+  var offset;
+  if(Meteor.Device.isPhone()){
+    offset = constants.readModeOffset + $('.title-overlay').height();
+  } else {
+    offset = Session.get('read') ? constants.readModeOffset : constants.readModeOffset + constants.verticalSpacing;
+  }
   verticalHeights = [offset];
   sum = offset;
   $('.vertical-narrative-section').each(function() {

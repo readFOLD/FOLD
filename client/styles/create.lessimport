@@ -306,6 +306,7 @@ div.title-overlay {
 
   @media @mobile {
     min-height: @ending-height;
+    max-height: @starting-height;
     height: auto;
     z-index: 0;
   }
