@@ -104,13 +104,13 @@
   <!-- Mesh Background Overlay -->
   <!-- <div id="overlay"></div> -->
   <article class="content entire-story">
-    <div class="vertical-narrative {{#if sandwichMode}}sandwich-mode{{/if}}"
+    <div class="vertical-narrative {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}"
          style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
       {{> vertical_narrative}}
 
       {{> story_footer}}
     </div>
-    <div class="horizontal-context {{#if sandwichMode}}sandwich-mode{{/if}}">
+    <div class="horizontal-context {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}">
       {{> horizontal_context}}
     </div>
   </article>
@@ -125,9 +125,11 @@
     {{/if}}
     {{#if horizontalExists}}
       {{#unless addingContext}}
-        <div class="browser-offset">
-          {{> story_browser}}
-        </div>
+        {{#unless hiddenContextMode}}
+          <div class="browser-offset">
+            {{> story_browser}}
+          </div>
+        {{/unless}}
       {{/unless}}
     {{/if}}
   {{/if}}

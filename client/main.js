@@ -37,7 +37,7 @@ Meteor.startup(function(){
 
     Session.set("cardWidth", cardWidth);
 
-    Session.set("verticalLeft", Session.get('mobileContextView') ? getVerticalLeft(windowWidth) - cardWidth : getVerticalLeft(windowWidth));
+    Session.set("verticalLeft", Session.get('showHiddenContext') ? getVerticalLeft(windowWidth) - cardWidth : getVerticalLeft(windowWidth));
 
     if (Meteor.Device.isPhone()) {
       document.body.style.overflowX = "hidden";
@@ -47,7 +47,7 @@ Meteor.startup(function(){
   });
 
   Tracker.autorun(function(){
-    if (Session.get('mobileContextView')){
+    if (Session.get('showHiddenContext')){
       freezePageScroll();
     } else {
       unfreezePageScroll(); // TODO is this helping
@@ -78,6 +78,30 @@ Meteor.startup(function(){
     }
 
     justReloaded = false;
+  });
+
+  Tracker.autorun(function(){
+    if( Meteor.Device.isPhone()){
+      return activateHiddenContextMode()
+    } else {
+      var windowWidth = Session.get('windowWidth');
+
+      var inHiddenContextMode;
+      Tracker.nonreactive(function(){
+        inHiddenContextMode = hiddenContextMode();
+        inEmbedMode = embedMode();
+      });
+
+      var cutoff = inEmbedMode ? 1000 : 800;
+
+      if (windowWidth < cutoff){
+        if(!inHiddenContextMode){
+          activateHiddenContextMode();
+        }
+      } else if (inHiddenContextMode) {
+        deactivateHiddenContextMode();
+      }
+    }
   });
 
   var restrictFocusToModal = function( event ) {
@@ -157,7 +181,6 @@ window.updateCurrentY = function() {
     }
 
   }
-
 
   if(!Meteor.Device.isPhone()){
     if (sandwichMode() || (scrollTop >= readMode)){
@@ -478,10 +501,7 @@ Template.story.helpers({
     return Session.get("metaview")
   },
   showMinimap () {
-    return Session.get("showMinimap") && (!Meteor.Device.isPhone());
-  },
-  showMobileMinimap () {
-    return Session.get("showMinimap") && (Meteor.Device.isPhone());
+    return Session.get("showMinimap") && !hiddenContextMode();
   },
   showContextOverlay (){
     return Session.get('contextOverlayId');
@@ -590,22 +610,18 @@ Template.story.onRendered(function(){
   if(Meteor.Device.isPhone() || Meteor.Device.isTablet()){
     this.$('.entire-story').hammer(hammerSwipeOptions).bind('swipeleft',function(){
         if(horizontalExists()){
-          if (Meteor.Device.isTablet() || Session.get('mobileContextView')){
+          if (!hiddenContextMode() || Session.get('showHiddenContext')){
             goRightOneCard();
-          } else {
-            Session.set('mobileContextView', true);
           }
         }
       }
     );
 
     this.$('.entire-story').hammer(hammerSwipeOptions).bind('swiperight',function(){
-        if(Meteor.Device.isTablet()){
-          if(horizontalExists()){
+        if(horizontalExists()){
+          if (!hiddenContextMode() || Session.get('showHiddenContext')){
             goLeftOneCard();
           }
-        } else {
-          Session.set('mobileContextView', false);
         }
       }
     );
@@ -918,7 +934,7 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 
 Template.horizontal_section_block.events({
   'click .mobile-context-back-button' (e, t){
-    Session.set('mobileContextView', false);
+    Session.set('showHiddenContext', false);
     trackEvent('Click mobile back button');
   }
 });
@@ -1391,11 +1407,11 @@ getAudioIFrame = function(contextId){
 
 Tracker.autorun(function() {
   var currentXId = Session.get('currentXId');
-  var mobileContextView = Session.get('mobileContextView');
+  var showHiddenContext = Session.get('showHiddenContext');
 
   Tracker.nonreactive(function(){
     if (currentXId === Session.get('poppedOutContextId')){ // if new card is popped out audio
-      if(!Meteor.Device.isPhone() || mobileContextView){
+      if(!hiddenContextMode() || showHiddenContext){
         Session.set('poppedOutContextId', null);  // new card was previously popped out, so pop it back in
       }
     } else if(mostRecentAudioCardWidget){ // otherwise there is a most recent audio card

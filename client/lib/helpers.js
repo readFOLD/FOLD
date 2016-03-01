@@ -211,6 +211,19 @@ window.sandwichMode = function(){
 };
 
 
+window.activateHiddenContextMode = function(){
+  return Session.set('hiddenContextMode', true);
+};
+
+window.deactivateHiddenContextMode = function(){
+  return Session.set('hiddenContextMode', false);
+};
+
+window.hiddenContextMode = function(){
+  console.log('lalalala')
+  return Session.equals('hiddenContextMode', true);
+};
+
 window.embedMode = function(){
   return Session.equals('embedMode', true);
 };

@@ -166,6 +166,7 @@ html {
 ~"only screen and (min-device-pixel-ratio: 1.5)";
 @mobile:      ~"only screen and (max-device-width: 529px)";
 @not-mobile:  ~"(min-device-width: 530px)";
+@thin-window:  ~"(max-width: 400px)";
 @tablet:      ~"only screen and (min-device-width: 530px) and (max-device-width: 949px)";
 @desktop:     ~"only screen and (min-device-width: 950px) and (max-device-width: 1128px)";
 @desktop-xl:  ~"only screen and (min-device-width: 1129px)";
@@ -723,12 +724,21 @@ div#overlay {
   &.selected {
     .selected-styling;
   }
-  @media @mobile {
+
+  .edge-to-edge-mode{
     .selected-styling;
     border: none !important;
     .random-story{
       background-color: @social-color;
     }
+  }
+
+  @media @mobile {
+    .edge-to-edge-mode;
+  }
+
+  @media @thin-window {
+    .edge-to-edge-mode;
   }
 }
 
@@ -936,6 +946,12 @@ div.vertical-narrative {
 
   &.sandwich-mode{
     top: 185px;
+  }
+
+  &.hidden-context-mode{
+    left: @card-spacing !important;
+    width: calc(100% ~'-' @card-spacing * 2) !important;
+    background-color: @white-color;
   }
 
   @media @mobile{
@@ -1318,6 +1334,12 @@ div.horizontal-context {
 
   &.sandwich-mode{
     top: @horizontal-context-top - @magic-styling-distance;
+  }
+
+  &.hidden-context-mode{
+    position: fixed;
+    z-index: -1;
+    top: -1000px;
   }
 
   div.preview {

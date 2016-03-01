@@ -146,6 +146,10 @@ Handlebars.registerHelper('capitalize',
   }
 );
 
+Handlebars.registerHelper("hiddenContextMode", function () {
+  return window.hiddenContextMode();
+});
+
 Handlebars.registerHelper("sandwichMode", function () {
   return window.sandwichMode();
 });
