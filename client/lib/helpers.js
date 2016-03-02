@@ -220,7 +220,6 @@ window.deactivateHiddenContextMode = function(){
 };
 
 window.hiddenContextMode = function(){
-  console.log('lalalala')
   return Session.equals('hiddenContextMode', true);
 };
 
@@ -229,6 +228,7 @@ window.embedMode = function(){
 };
 
 window.activateEmbedMode = function(){
-  window.constants.selectOffset = window.constants.selectOffset - 92
+  window.constants.selectOffset = - 200;
+  window.constants.readModeOffset = 0;
   return Session.set('embedMode', true);
 };

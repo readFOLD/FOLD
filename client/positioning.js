@@ -8,10 +8,11 @@ window.constants = {
 if(Meteor.Device.isPhone()){
   window.constants.readModeOffset = 0;
   window.constants.verticalSpacing = 15;
+  window.constants.selectOffset = - 200;
 }
 
 window.getVerticalLeft = function() {
-  return Meteor.Device.isPhone() ? (Session.get('windowWidth') > 340 ? 30 : 20) : (Session.get('windowWidth') / 2 - Session.get('cardWidth') - Session.get('separation'));
+  return 90;
 };
 
 window.getHorizontalLeft = function() {

@@ -92,7 +92,7 @@ Meteor.startup(function(){
         inEmbedMode = embedMode();
       });
 
-      var cutoff = inEmbedMode ? 1000 : 800;
+      var cutoff = inEmbedMode || Meteor.Device.isTablet() ? 1000 : 800;
 
       if (windowWidth < cutoff){
         if(!inHiddenContextMode){
