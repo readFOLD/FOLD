@@ -37,8 +37,6 @@ Meteor.startup(function(){
 
     Session.set("cardWidth", cardWidth);
 
-    Session.set("verticalLeft", Session.get('showHiddenContext') ? getVerticalLeft(windowWidth) - cardWidth : getVerticalLeft(windowWidth));
-
     if (Meteor.Device.isPhone()) {
       document.body.style.overflowX = "hidden";
       $('body').css('max-width', windowWidth);

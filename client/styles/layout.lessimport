@@ -36,6 +36,7 @@
 
 @magic-styling-distance: 40px;
 
+@vertical-left: 90px;
 @card-spacing: 20px;
 @mobile-card-spacing: 15px;
 
@@ -956,8 +957,10 @@ div.vertical-narrative {
     top: 185px;
   }
 
+  left: @vertical-left;
+
   &.hidden-context-mode{
-    left: @card-spacing !important;
+    left: @card-spacing;
     width: calc(100% ~'-' @card-spacing * 2) !important;
     background-color: inherit;
   }

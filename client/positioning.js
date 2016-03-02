@@ -8,11 +8,10 @@ window.constants = {
 if(Meteor.Device.isPhone()){
   window.constants.readModeOffset = 0;
   window.constants.verticalSpacing = 15;
-  window.constants.selectOffset = - 200;
 }
 
 window.getVerticalLeft = function() {
-  return 90;
+  return 90; // corresponds to css
 };
 
 window.getHorizontalLeft = function() {
@@ -22,7 +21,7 @@ window.getHorizontalLeft = function() {
   cardWidth = Session.get("cardWidth");
   cardSeparation = Session.get("separation");
   addContextBlockWidth = 75;
-  verticalLeft = Session.get("verticalLeft");
+  verticalLeft = getVerticalLeft();
   verticalRight = verticalLeft + cardWidth;
 
   // Offset of first card, different on create page because of (+) button

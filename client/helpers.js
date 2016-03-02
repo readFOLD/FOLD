@@ -76,7 +76,7 @@ Handlebars.registerHelper("windowHeight", function() {
 });
 
 Handlebars.registerHelper("verticalLeft", function() {
-  return Session.get("verticalLeft");
+  return getVerticalLeft();
 });
 
 Handlebars.registerHelper("mobileMargin", function(){

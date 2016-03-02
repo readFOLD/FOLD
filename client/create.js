@@ -600,7 +600,7 @@ Template.vertical_edit_menu.events({
 
 Template.add_horizontal.helpers({
   left () {
-    return Session.get("verticalLeft") + Session.get("cardWidth") + Session.get("separation");
+    return getVerticalLeft() + Session.get("cardWidth") + Session.get("separation");
   }
 });
 
@@ -678,7 +678,7 @@ Template.create_horizontal_section_block.helpers({
 Template.create_horizontal_section_block.helpers({
   left () {
     var addBlockWidth = 75;
-    return addBlockWidth + Session.get("verticalLeft") + Session.get("cardWidth") + 2 * Session.get("separation");
+    return addBlockWidth + getVerticalLeft() + Session.get("cardWidth") + 2 * Session.get("separation");
   }
 });
 

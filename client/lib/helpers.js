@@ -228,7 +228,6 @@ window.embedMode = function(){
 };
 
 window.activateEmbedMode = function(){
-  window.constants.selectOffset = - 200;
   window.constants.readModeOffset = 0;
   return Session.set('embedMode', true);
 };
