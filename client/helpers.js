@@ -150,6 +150,10 @@ Handlebars.registerHelper("hiddenContextMode", function () {
   return window.hiddenContextMode();
 });
 
+Handlebars.registerHelper("hiddenContextShown", function () {
+  return window.hiddenContextShown();
+});
+
 Handlebars.registerHelper("sandwichMode", function () {
   return window.sandwichMode();
 });

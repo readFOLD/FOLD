@@ -1351,6 +1351,24 @@ div.horizontal-context {
     position: fixed;
     z-index: -1;
     top: -1000px;
+    &.hidden-context-shown{
+      top: 100px;
+      margin-top: 0;
+      z-index: 50;
+      background-color: @light-transparent-color;
+      .narrative-section{
+        margin-top: 100px;
+      }
+    }
+    .hidden-context-overlay{
+      background-color: @light-transparent-color;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+    }
   }
 
   div.preview {

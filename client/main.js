@@ -45,7 +45,7 @@ Meteor.startup(function(){
   });
 
   Tracker.autorun(function(){
-    if (Session.get('showHiddenContext')){
+    if (Session.get('hiddenContextShown')){
       freezePageScroll();
     } else {
       unfreezePageScroll(); // TODO is this helping
@@ -83,6 +83,7 @@ Meteor.startup(function(){
       return activateHiddenContextMode()
     } else {
       var windowWidth = Session.get('windowWidth');
+      var read = Session.get("read");
 
       var inHiddenContextMode;
       Tracker.nonreactive(function(){
@@ -92,13 +93,18 @@ Meteor.startup(function(){
 
       var cutoff = inEmbedMode || Meteor.Device.isTablet() ? 1000 : 800;
 
-      if (windowWidth < cutoff){
-        if(!inHiddenContextMode){
-          activateHiddenContextMode();
+      if (read){
+        if (windowWidth < cutoff){
+          if(!inHiddenContextMode){
+            activateHiddenContextMode();
+          }
+        } else if (inHiddenContextMode) {
+          deactivateHiddenContextMode();
         }
       } else if (inHiddenContextMode) {
         deactivateHiddenContextMode();
       }
+
     }
   });
 
@@ -608,7 +614,7 @@ Template.story.onRendered(function(){
   if(Meteor.Device.isPhone() || Meteor.Device.isTablet()){
     this.$('.entire-story').hammer(hammerSwipeOptions).bind('swipeleft',function(){
         if(horizontalExists()){
-          if (!hiddenContextMode() || Session.get('showHiddenContext')){
+          if (!hiddenContextMode() || hiddenContextShown()){
             goRightOneCard();
           }
         }
@@ -617,7 +623,7 @@ Template.story.onRendered(function(){
 
     this.$('.entire-story').hammer(hammerSwipeOptions).bind('swiperight',function(){
         if(horizontalExists()){
-          if (!hiddenContextMode() || Session.get('showHiddenContext')){
+          if (!hiddenContextMode() || hiddenContextShown()){
             goLeftOneCard();
           }
         }
@@ -776,6 +782,9 @@ Template.horizontal_context.events({
     if(Session.equals('currentY', null)){
       goToY(0);
     }
+  },
+  'click .hidden-context-overlay' (){
+    Session.set('hiddenContextShown', false);
   }
 });
 Template.horizontal_context.helpers({
@@ -932,7 +941,7 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 
 Template.horizontal_section_block.events({
   'click .mobile-context-back-button' (e, t){
-    Session.set('showHiddenContext', false);
+    Session.set('hiddenContextShown', false);
     trackEvent('Click mobile back button');
   }
 });
@@ -1405,11 +1414,10 @@ getAudioIFrame = function(contextId){
 
 Tracker.autorun(function() {
   var currentXId = Session.get('currentXId');
-  var showHiddenContext = Session.get('showHiddenContext');
 
   Tracker.nonreactive(function(){
     if (currentXId === Session.get('poppedOutContextId')){ // if new card is popped out audio
-      if(!hiddenContextMode() || showHiddenContext){
+      if(!hiddenContextMode() || hiddenContextShown()){
         Session.set('poppedOutContextId', null);  // new card was previously popped out, so pop it back in
       }
     } else if(mostRecentAudioCardWidget){ // otherwise there is a most recent audio card

@@ -146,7 +146,7 @@ window.goToContext = function(id) {
     contextIndex = _.indexOf(_.pluck(Session.get('horizontalSectionsMap')[currentY].horizontal, '_id'), id.toString());
     if (contextIndex >= 0) {
       if (hiddenContextMode()){
-        Session.set('showHiddenContext', true);
+        Session.set('hiddenContextShown', true);
       }
       return goToX(contextIndex);
     }

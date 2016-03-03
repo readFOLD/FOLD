@@ -110,7 +110,7 @@
 
       {{> story_footer}}
     </div>
-    <div class="horizontal-context {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}">
+    <div class="horizontal-context {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}} {{#if hiddenContextShown}}hidden-context-shown{{/if}}">
       {{> horizontal_context}}
     </div>
   </article>
@@ -195,6 +195,9 @@
 
 
 <template name="horizontal_context">
+  {{#if hiddenContextShown}}
+    <div class="hidden-context-overlay"></div>
+  {{/if}}
   {{#unless read}}
     {{#if verticalExists}}
       {{#if currentYId}}

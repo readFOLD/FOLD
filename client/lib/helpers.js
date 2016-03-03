@@ -223,6 +223,10 @@ window.hiddenContextMode = function(){
   return Session.equals('hiddenContextMode', true);
 };
 
+window.hiddenContextShown = function(){
+  return Session.equals('hiddenContextShown', true);
+};
+
 window.embedMode = function(){
   return Session.equals('embedMode', true);
 };
