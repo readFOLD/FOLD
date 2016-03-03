@@ -24,6 +24,12 @@ window.getHorizontalLeft = function() {
   verticalLeft = getVerticalLeft();
   verticalRight = verticalLeft + cardWidth;
 
+  var currentY = Session.get("currentY");
+  var currentX = Session.get("currentX");
+  var wrap = Session.get("wrap");
+  var horizontalSectionsMap = Session.get("horizontalSectionsMap");
+  var inHiddenContextMode = hiddenContextMode()
+
   // Offset of first card, different on create page because of (+) button
   if (Session.get("read")) {
     offset = 0;
@@ -34,16 +40,16 @@ window.getHorizontalLeft = function() {
     offset += cardWidth + cardSeparation;
   }
 
-  if(this.verticalIndex === Session.get("currentY")){
-    currentHorizontal = Session.get("horizontalSectionsMap")[Session.get("currentY")];
+  if(this.verticalIndex === currentY){
+    currentHorizontal = horizontalSectionsMap[currentY];
     if (!currentHorizontal) {
       return
     }
-    currentPos = this.index - Session.get("currentX");
+    currentPos = this.index - currentX;
     numCards = currentHorizontal.horizontal.length;
   } else { // card is from another row
     currentPos = this.index - getXByYId(this.verticalId);
-    numCards = Session.get("horizontalSectionsMap")[this.verticalIndex].horizontal.length;
+    numCards = horizontalSectionsMap[this.verticalIndex].horizontal.length;
   }
 
 
@@ -51,7 +57,7 @@ window.getHorizontalLeft = function() {
     return verticalRight + offset + cardSeparation;
   }
 
-  if (Session.get("wrap")[this.verticalId] || numCards === 2) { // wrapping (and always position as if wrapping when two cards)
+  if (wrap[this.verticalId] || numCards === 2) { // wrapping (and always position as if wrapping when two cards)
 
     if (currentPos < 0) { // makes the first card appear at the end of the last card
       currentPos = numCards + currentPos;

@@ -509,6 +509,9 @@ Template.story.helpers({
   },
   showContextOverlay (){
     return Session.get('contextOverlayId');
+  },
+  showStoryBrowser (){
+    return !Session.get('addingContext') && (!hiddenContextMode() || hiddenContextShown())
   }
 });
 
