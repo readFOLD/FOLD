@@ -2509,3 +2509,14 @@ div.loading-container {
     .padding-sides(20px);
   }
 }
+
+.mobile-embed-placeholder{
+  background-color: @action-color;
+  a{
+    .size-to-fit;
+    display: block;
+    span{
+      .center-over-parent-div;
+    }
+  }
+}

@@ -1745,6 +1745,12 @@ Template.read.onDestroyed(function(){
   activeHeartbeatCountSender(true);
 });
 
+Template.read.helpers({
+  showMobileEmbedPlaceholder () {
+    return Meteor.Device.isPhone() && embedMode();
+  }
+});
+
 
 Template.context_overlay.helpers({
   overlaidContext (){

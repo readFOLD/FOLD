@@ -1,13 +1,24 @@
 <template name="read">
   {{!hasContext suppresses a firefox error when story not found because page gets rendered without any context, probably right before story not found gets shown, should probably not be necessary}}
-  {{#if hasContext}}
-    {{> story_header}}
-    {{> story}}
-    {{> read_options}}
-    {{#if sandwichMode}}
-      {{> story_sandwich_footer}}
+    {{#if showMobileEmbedPlaceholder}}
+      {{> mobile_embed_placeholder}}
+    {{else}}
+      {{#if hasContext}}
+        {{> story_header}}
+        {{> story}}
+        {{> read_options}}
+        {{#if sandwichMode}}
+          {{> story_sandwich_footer}}
+        {{/if}}
+      {{/if}}
     {{/if}}
-  {{/if}}
+
+</template>
+
+<template name="mobile_embed_placeholder">
+  <div class="mobile-embed-placeholder" style="height: {{windowHeight}}px; width: {{windowWidth}}px;">
+    <a class="open" href="{{readPath}}" target="_blank"><span>Please visit the FOLD to view {{title}}</span></a>
+  </div>
 </template>
 
 <template name="read_admin_ui">
