@@ -28,7 +28,7 @@ window.getHorizontalLeft = function() {
   var currentX = Session.get("currentX");
   var wrap = Session.get("wrap");
   var horizontalSectionsMap = Session.get("horizontalSectionsMap");
-  var inHiddenContextMode = hiddenContextMode()
+  var inHiddenContextMode = hiddenContextMode();
 
   // Offset of first card, different on create page because of (+) button
   if (Session.get("read")) {
@@ -51,6 +51,37 @@ window.getHorizontalLeft = function() {
     currentPos = this.index - getXByYId(this.verticalId);
     numCards = horizontalSectionsMap[this.verticalIndex].horizontal.length;
   }
+
+
+  if(inHiddenContextMode){
+    // we do something different
+    console.log(currentPos)
+    var focusCardLeft = (Session.get('windowWidth') - cardWidth) / 2;
+    if(currentPos === 0){
+      return focusCardLeft
+    }
+
+    var positiveWrapPoint;
+    var negativeWrapPoint;
+
+    if(numCards <= 3){
+      positiveWrapPoint = 1;
+      negativeWrapPoint = -1;
+    } else {
+      positiveWrapPoint = 2;
+      negativeWrapPoint = -2;
+    }
+
+    if(currentPos > positiveWrapPoint){
+      currentPos -= numCards;
+    } else if (currentPos < negativeWrapPoint){
+      currentPos += numCards;
+    }
+
+
+    return (Session.get('windowWidth') - cardWidth) / 2 + currentPos * (cardWidth + cardSeparation)
+  }
+
 
 
   if (numCards === 1){

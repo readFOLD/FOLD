@@ -195,6 +195,7 @@
 <template name="horizontal_context">
   {{#if hiddenContextShown}}
     <div class="hidden-context-overlay"></div>
+    <div class="hidden-context-reel"></div>
   {{/if}}
   {{#unless read}}
     {{#if verticalExists}}
@@ -301,7 +302,7 @@
         {{> display_broken_section}}
       {{/if}}
       {{#if read}}
-        {{#unless isPhone}}
+        {{#unless hiddenContextMode}}
           {{> remix_bar}}
         {{/unless}}
       {{/if}}

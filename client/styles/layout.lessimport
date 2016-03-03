@@ -1358,16 +1358,31 @@ div.horizontal-context {
       background-color: @light-transparent-color;
       .narrative-section{
         margin-top: 100px;
+        opacity: 1 !important;
+        outline: (@card-spacing - 2px) solid @black-color;
+        &.selected{
+          z-index: 9999;
+        }
       }
+
     }
     .hidden-context-overlay{
       background-color: @light-transparent-color;
       position: absolute;
-      z-index: -1;
+      z-index: -2;
       top: 0;
       right: 0;
       left: 0;
       bottom: 0;
+    }
+    .hidden-context-reel{
+      background-color: @black-color;
+      position: absolute;
+      z-index: -1;
+      top: 80px;
+      right: 0;
+      left: 0;
+      height: 375px;
     }
   }
 
