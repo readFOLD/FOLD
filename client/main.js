@@ -1349,7 +1349,7 @@ Template.editors_pick_button.events({
 
 Template.remix_bar.helpers({
   showPopoutButton (){
-    return this.type === 'audio';
+    return _.contains(['audio', 'video'], this.type);
   }
 });
 

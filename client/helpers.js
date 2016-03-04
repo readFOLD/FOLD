@@ -87,8 +87,9 @@ Handlebars.registerHelper("adminMode", function() {
   return adminMode();
 });
 
-Handlebars.registerHelper("popoutExists", function() {
-  return Session.get('poppedOutContextId') ? true : false;
+Handlebars.registerHelper("audioPopoutExists", function() {
+
+  return Session.get('poppedOutContextId') ? poppedOutWidget.source === 'soundcloud' : false;
 });
 
 Handlebars.registerHelper("reactiveStory", function(){

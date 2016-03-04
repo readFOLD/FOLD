@@ -55,7 +55,7 @@
         <img class="profile-picture" src="{{profileImage author}}"/>
       </a>
     </div>
-    {{#if popoutExists}}{{> audio_popout}}{{/if}}
+    {{#if audioPopoutExists}}{{> audio_popout}}{{/if}}
 
     {{#unless isPhone}}
       {{#if headerImageAttribution}}
@@ -315,7 +315,7 @@
       {{> remix_icon_square }}
     </button>
     {{#if showPopoutButton}}
-      <button title="Pop-out audio" class="popout-button">
+      <button title="Pop-out audio or video" class="popout-button">
         {{> popout_icon}}
       </button>
     {{/if}}
@@ -440,6 +440,14 @@
     <div class="preview">
       <img src="{{previewUrl}}"/>
     </div>
+    {{#if poppedOut}}
+      <div class="popout-message">
+        <p>Currently watching:
+          <br>
+          <em>{{title}}</em>
+        </p>
+      </div>
+    {{/if}}
     {{#if description}}
         <div class="description-overlay" dir="auto">
           {{! description}}
