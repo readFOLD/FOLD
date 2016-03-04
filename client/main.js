@@ -940,7 +940,7 @@ Template.horizontal_section_block.helpers({
 });
 
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
-  return { 
+  return {
     "blur .text-content.editable" (d, template) {
       if (!Session.get('read') && !Session.get('addingContext')) {
         var textContent = template.$('textarea[name=content]').val();
@@ -1555,7 +1555,25 @@ window.setPoppedOutWidget = function (id){
 
   var source = $(".display-context-section[data-context-id='" + id + "']").data('contextSource');
 
+  poppedOutWidget.id = id;
+
+  console.log('set popped out')
+
+  console.log(id)
+  console.log(mostRecentRelevantCardId)
+
+  if (id === mostRecentRelevantCardId){ // if this is also the most recent card (probably)
+    console.log('just assign')
+    poppedOutWidget = mostRecentWidget; // the apis are already set up. just assign it
+    return
+  }
+
+  console.log('do something else ')
+
+  poppedOutWidget = createWidget();
+
   poppedOutWidget.activeSource = source;
+
 
   switch(source){
     case 'soundcloud':
@@ -1570,31 +1588,39 @@ window.setPoppedOutWidget = function (id){
   }
 }
 
-
-window.clearPoppedOutWidget = function(){
-  poppedOutWidget.activeSource = null;
+window.popOutMostRecentWidget = function(){
+  poppedOutWidget = mostRecentWidget;
+  Session.set('poppedOutContextId', mostRecentWidget.id);
 }
 
 window.setMostRecentWidget = function (id){
   var source = $(".display-context-section[data-context-id='" + id + "']").data('contextSource');
 
-  mostRecentWidget.activeSource = source;
-
-  console.log('lalala')
-
-
-  switch(source){
-    case 'soundcloud':
-      mostRecentWidget._soundcloudWidget = SC.Widget(getAudioIFrame(id));
-      break;
-    case 'youtube':
-      console.log(getVideoIFrame(id))
-      mostRecentWidget._youTubeWidget = new YT.Player(getVideoIFrame(id)); // TODO, this breaks if the same video is assigned twice. will need to track all the darn videos...
-      break;
-    case 'vimeo':
-      mostRecentWidget._vimeoWidget = $f(getVideoIFrame(id));
-      break;
+  if (id === poppedOutWidget.id){ // if this is also the popped out card
+    mostRecentWidget = poppedOutWidget; // the apis are already set up. just assign it
+    return
   }
+
+  mostRecentWidget = createWidget();
+
+  mostRecentWidget.id = id;
+
+  Meteor.setTimeout(() => {
+
+    mostRecentWidget.activeSource = source;
+
+    switch(source){
+      case 'soundcloud':
+        mostRecentWidget._soundcloudWidget = SC.Widget(getAudioIFrame(id));
+        break;
+      case 'youtube':
+        mostRecentWidget._youTubeWidget = new YT.Player(getVideoIFrame(id)); // TODO, this breaks if the same video is assigned twice.
+        break;
+      case 'vimeo':
+        mostRecentWidget._vimeoWidget = $f(getVideoIFrame(id));
+        break;
+    }
+  }, 100); // hack to make sure video is in DOM when assign it.
 };
 
 window.clearMostRecentWidget = function(){
@@ -1608,34 +1634,30 @@ getAudioIFrame = function(contextId){
 Tracker.autorun(function() {
   var currentXId = Session.get('currentXId');
   var mobileContextView = Session.get('mobileContextView');
-  console.log('111111')
-
 
   Tracker.nonreactive(function(){
     if (currentXId === Session.get('poppedOutContextId')){ // if new card is popped out
       if(!Meteor.Device.isPhone() || mobileContextView){
+        setMostRecentWidget(currentXId);
         Session.set('poppedOutContextId', null);  // new card was previously popped out, so pop it back in
+        return
       }
     } else if(mostRecentWidget.activated()){ // otherwise there is a most recent audio card
       var associatedCardId = mostRecentRelevantCardId;
+
       mostRecentWidget.isPlaying(function(playing){
         if (playing){ // and it's playing
-          Session.set('poppedOutContextId', associatedCardId);  // pop it out
+          popOutMostRecentWidget();
         }
       })
     }
 
-    console.log(getAudioIFrame(currentXId))
-    console.log(document.querySelector(".video-section[data-context-id='" + currentXId + "']"))
-
-
     if (currentXId && (getAudioIFrame(currentXId) || document.querySelector(".video-section[data-context-id='" + currentXId + "']"))){ // also, if the new card is an audio or video card
-      console.log('happening')
-      setMostRecentWidget(currentXId); // it's now the most recent card
       window.mostRecentRelevantCardId = currentXId;
+      setMostRecentWidget(currentXId); // it's now the most recent card
     } else {
-      window.clearMostRecentWidget();
       window.mostRecentRelevantCardId = null;
+      window.clearMostRecentWidget();
     }
   })
 });
@@ -1654,7 +1676,9 @@ Tracker.autorun(function(){
   var poppedOutContextId;
   if(poppedOutContextId = Session.get('poppedOutContextId')) {
     // TODO get context type & service
-    setPoppedOutWidget(poppedOutContextId);
+    if(poppedOutWidget.id !== poppedOutContextId){
+      setPoppedOutWidget(poppedOutContextId);
+    }
 
     if(poppedOutWidget.hasOwnPlayer()){
       var updateBasicPlayerInfo = function(){
