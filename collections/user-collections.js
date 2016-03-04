@@ -8,7 +8,7 @@ Schema.UserProfile = new SimpleSchema({
     optional: true,
     min: 2,
     max: 127,
-    autoValue: function () { // trim off whitespace
+    autoValue  () { // trim off whitespace
       if (this.isSet && typeof this.value === "string") {
         return this.value.trim();
       } else {
@@ -20,7 +20,7 @@ Schema.UserProfile = new SimpleSchema({
     type: String,
     optional: true,
     max: 160,
-    autoValue: function () { // trim off whitespace
+    autoValue  () { // trim off whitespace
       if (this.isSet && typeof this.value === "string") {
         return this.value.trim();
       } else {
@@ -43,7 +43,7 @@ Schema.UserProfile = new SimpleSchema({
   },
   profilePicture: {
     type: String,
-    autoValue: function() {
+    autoValue () {
       var monster = _.random(1,10).toString();
       if (this.isSet) {
         return this.value;
@@ -65,7 +65,7 @@ Schema.User = new SimpleSchema({
     min: 3,
     max: 15,
     optional: true,
-    autoValue: function () {
+    autoValue  () {
       if (this.isSet && typeof this.value === "string") {
         return this.value.toLowerCase().trim();
       } else {
@@ -76,7 +76,7 @@ Schema.User = new SimpleSchema({
   displayUsername: { // allows for caps
     type: String,
     optional: true,
-    autoValue: function () { // TODO ensure this matches username except for capitalization
+    autoValue  () { // TODO ensure this matches username except for capitalization
       if (this.isSet && typeof this.value === "string") {
         return this.value.trim();
       } else {
@@ -96,7 +96,7 @@ Schema.User = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Email,
     label: "Email address",
-    autoValue: function () {
+    autoValue  () {
       if (this.isSet && typeof this.value === "string") {
         return this.value.toLowerCase();
       } else {
@@ -115,7 +115,7 @@ Schema.User = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    autoValue: function() {
+    autoValue () {
       if (this.isInsert) {
         return new Date;
       } else if (this.isUpsert) {
@@ -128,7 +128,7 @@ Schema.User = new SimpleSchema({
   admin: {
     type: Boolean,
     optional: true,
-    autoValue: function(){
+    autoValue (){
       this.unset(); // don't allow to be set from anywhere within the code
     }
   },
@@ -160,6 +160,11 @@ Schema.User = new SimpleSchema({
     type: Object,
     optional: true,
     blackbox: true
+  },
+  unsubscribes: {
+    type: [String],
+    allowedValues: ['followed-you', 'following-published'],
+    optional: true
   }
 });
 

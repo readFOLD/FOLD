@@ -133,3 +133,15 @@ Handlebars.registerHelper("formatNumber", function(num){
 Handlebars.registerHelper("formatDate", window.formatDate);
 Handlebars.registerHelper("formatDateNice", window.formatDateNice);
 Handlebars.registerHelper("formatDateCompact", window.formatDateCompact);
+
+Handlebars.registerHelper('$eq',
+  function(v1, v2) {
+    return (v1 === v2);
+  }
+);
+
+Handlebars.registerHelper('capitalize',
+  function(s) {
+    return _s.capitalize(s);
+  }
+);

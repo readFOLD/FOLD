@@ -250,9 +250,12 @@
               <div class="top">
               {{#if thumbnailUrl}}
                 {{#if imageOnLeft}}
-                  <img class="thumbnail left" src="{{thumbnailUrl}}" />
+                  <div class="thumbnail left">
+                    <img src="{{thumbnailUrl}}" />
+                  </div>
                 {{else}}
-                  <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'></div>
+                  <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'>
+                  </div>
                 {{/if}}
                 <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</div>
               {{/if}}

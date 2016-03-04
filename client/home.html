@@ -9,10 +9,18 @@
         {{/linkTo}}
       </div>
       {{#if showFilters}}
-        <div class="filter {{#if slim}}slim{{else}}fat{{/if}}">
-          {{> filters slim=slim}}
-          <!--{{> filters}} in {{> categories}}-->
-        </div>
+        {{#if adminMode}}
+          <div class="filter {{#if slim}}slim{{else}}fat{{/if}}">
+            {{> filters slim=slim}}
+          </div>
+        {{else}}
+          {{#unless slim}}
+            <div class="newest-toggle {{#unless showingFeed}}{{#unless showingLatest}}neither-active{{/unless}}{{/unless}}">
+              <button class="show-feed" disabled="{{#if showingFeed}}disabled{{/if}}">{{#if currentUser}}My Feed{{else}}FOLD Picks{{/if}}</button>
+              <button class="show-newest" disabled="{{#if showingLatest}}disabled{{/if}}">Latest</button>
+            </div>
+          {{/unless}}
+        {{/if}}
         <div class="search {{#if slim}}slim{{else}}fat{{/if}}">
           {{> search slim=slim}}
         </div>
@@ -187,8 +195,9 @@
     {{/unless}}
   {{/unless}}
 
-  {{#if adminMode}}
-    {{> activity_feed}}
+
+  {{#if currentUser}}
+    {{> activity_feed hide=hideActivityFeed}}
   {{/if}}
 
   {{#each stories}}
@@ -225,73 +234,96 @@
 
 <template name="_story_preview_content">
   {{#with story}}
-    <div class="context-count">
-      {{#if contextCountOfType 'video'}}
-        <div class="context-count-icon">
-          {{> video_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'video'}}
-          </div>
+    <div class="top-bar">
+      <div class="empty"></div>
+      <div class="context-count">
+        {{> remix_icon_bare}}<span>{{narrativeCount}}</span>
+        <div class="context-count-details">
+          {{#if contextCountOfType 'video'}}
+            <div class="context-count-icon">
+              {{> video_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'video'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'image'}}
+            <div class="context-count-icon">
+              {{> image_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'image'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'gif'}}
+            <div class="context-count-icon">
+              {{> gif_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'gif'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'map'}}
+            <div class="context-count-icon">
+              {{> map_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'map'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'twitter'}}
+            <div class="context-count-icon">
+              {{> twitter_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'twitter'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'audio'}}
+            <div class="context-count-icon">
+              {{> audio_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'audio'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'text'}}
+            <div class="context-count-icon">
+              {{> text_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'text'}}
+              </div>
+            </div>
+          {{/if}}
+          {{#if contextCountOfType 'link'}}
+            <div class="context-count-icon">
+              {{> link_icon }}
+              <div class="context-count-text">
+                {{contextCountOfType 'link'}}
+              </div>
+            </div>
+          {{/if}}
+          <!--TODO - add remix check-->
+          <div class="context-count-transparent-bridge"></div>
         </div>
-      {{/if}}
-      {{#if contextCountOfType 'image'}}
-        <div class="context-count-icon">
-          {{> image_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'image'}}
-          </div>
-        </div>
-      {{/if}}
-      {{#if contextCountOfType 'gif'}}
-        <div class="context-count-icon">
-          {{> gif_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'gif'}}
-          </div>
-        </div>
-      {{/if}}
-      {{#if contextCountOfType 'map'}}
-        <div class="context-count-icon">
-          {{> map_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'map'}}
-          </div>
-        </div>
-      {{/if}}
-      {{#if contextCountOfType 'twitter'}}
-        <div class="context-count-icon">
-          {{> twitter_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'twitter'}}
-          </div>
-        </div>
-      {{/if}}
-      {{#if contextCountOfType 'audio'}}
-        <div class="context-count-icon">
-          {{> audio_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'audio'}}
-          </div>
-        </div>
-      {{/if}}
-      {{#if contextCountOfType 'text'}}
-        <div class="context-count-icon">
-          {{> text_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'text'}}
-          </div>
-        </div>
-      {{/if}}
-      {{#if contextCountOfType 'link'}}
-        <div class="context-count-icon">
-          {{> link_icon }}
-          <div class="context-count-text">
-            {{contextCountOfType 'link'}}
-          </div>
-        </div>
-      {{/if}}
-      <!--TODO - add remix check-->
+      </div>
+      <div class="empty"></div>
+      <div class="favorite-count">
+        {{> favorite_button }}
+      </div>
+      <div class="empty"></div>
+      <div class="reason {{#if editorsPick}}fold-pick{{/if}}">
+        {{#if editorsPick}}
+          FOLD Pick
+        {{/if}}
+      </div>
+      <div class="empty"></div>
+      <div class="follow-section">
+        {{> follow_button userId=this.authorId barStyle=true}}
+      </div>
+      <div class="empty"></div>
     </div>
+
 
     {{#linkTo route=linkRoute data=this}}
       <div class="overlay-image">
@@ -327,14 +359,8 @@
           </div>
         </div>
       </a>
-      {{#if showProfileInfo}}
-        <div class="profile-info">
-          {{>follow_button userId=authorId flagStyle=true}}
-        </div>
-      {{/if}}
 
       <div class="pull-right">
-        {{> favorite_button }}
         {{#if adminMode}}
           {{> editors_pick_button }}
         {{/if}}
@@ -351,17 +377,71 @@
 </template>
 
 <template name="activity_feed">
-  <div class="activity-feed">
-    {{> _activity_feed_content activities=populatedFeedItems}}
+  <div class="activity-feed {{#if hide}}display-none{{/if}}">
+
+    {{> _activity_feed_content activities=populatedFeedItems loading=loading hideContent=hideContent}}
   </div>
 </template>
 
 <template name="_activity_feed_content">
   <div class="activity-feed-content">
-    {{#each activities}}
-      <div class="feed-item">
-        <a href="{{actor.urlPath}}">{{#if actorImage}}<img src="{{actorImage}}">{{/if}}{{actor.name}}</a> {{type}}d <a href="{{object.urlPath}}">{{object.name}}{{#if objectImage}}<img src="{{objectImage}}">{{/if}}</a>
-      </div>
-    {{/each}}
+    {{#if loading}}
+      <div class="loading">Activity feed coming right up!</div>
+    {{/if}}
+    {{#unless hideContent}}
+      {{#each activities}}
+        <div class="feed-item {{#if hasButton}}has-button{{/if}} {{#if noRightImage}}no-right-image{{/if}}">
+          {{#if $eq type 'Share'}}
+            {{#with object}}<a href="{{urlPath}}">{{#if image}}<div class="image left-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}} was just shared on {{capitalize content}}
+            {{else}}
+            {{#if $eq type 'ViewThreshold'}}
+              {{#with object}}<a href="{{urlPath}}">{{#if image}}<div class="image left-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}} has been viewed over {{content}} times
+              {{else}}
+                {{#with actor}}<a href="{{urlPath}}">{{#if image}}<div class="image left-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}{{name}}</a>{{/with}}
+                {{#if $eq type 'Follow'}}
+                  followed {{#if objectIsYou}}you {{> follow_button userId=actor.id}}{{else}}{{#with object}}<a href="{{urlPath}}">{{name}}{{#if image}}<div class="image right-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}{{/if}}
+                  {{else}}
+                    {{#if $eq type 'FollowBack'}}
+                      followed {{#if objectIsYou}}you back {{> follow_button userId=actor.id}}{{else}}{{#with object}}<a href="{{urlPath}}">{{name}}</a> back<a href="{{urlPath}}">{{#if image}}<div class="image right-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}{{/if}}
+                    {{else}}
+                      {{#if $eq type 'Publish'}}
+                        just published
+                      {{/if}}
+                      {{#if $eq type 'Favorite'}}
+                        liked
+                      {{/if}}
+                      {{#with object}}<a href="{{urlPath}}">{{name}}{{#if image}}<div class="image right-image {{imageClass}}"><img src="{{image}}"></div>{{/if}}</a>{{/with}}
+                  {{/if}}
+                {{/if}}
+              {{/if}}
+          {{/if}}
+        </div>
+      {{/each}}
+      {{#if includeBaselineActivityFeedContent}}
+        {{> _baseline_activity_feed_content}}
+        {{#each activityPlaceholders}}
+          <div class="feed-item">
+          </div>
+        {{/each}}
+      {{/if}}
+    {{/unless}}
+  </div>
+</template>
+
+<template name="_baseline_activity_feed_content">
+  <div class="feed-item">
+    <a href="/profile/FOLD"><div class="image left-image person-preview-image"><img src="//res.cloudinary.com/fold/image/twitter/w_60,h_60,c_fill,g_face/2550922014"></div>FOLD</a>
+    just published
+    <a href="/about">What is FOLD?<div class="image right-image story-preview-image"><img src="//res.cloudinary.com/fold/image/upload/c_lfill,g_north,h_230,w_800/imcxwzyxtoydfcgkjzur"></div></a>
+  </div>
+  <div class="feed-item has-button">
+    <a href="/profile/alexishope"><div class="image left-image person-preview-image"><img src="//res.cloudinary.com/fold/image/twitter/w_60,h_60,c_fill,g_face/14554998"></div>Alexis Hope</a>
+    welcomes you to FOLD!<br>°\(^o^)/°
+    {{> follow_button userId="Huhi8wGaaatz5kYZT"}}
+  </div>
+  <div class="feed-item has-button">
+    <a href="/profile/joegoldbeck"><div class="image left-image person-preview-image"><img src="//res.cloudinary.com/fold/image/twitter/w_60,h_60,c_fill,g_face/2200223750"></div>Joe Goldbeck</a>
+    welcomes you to FOLD!<br>♪ヘ(^o^)ヘ♬
+    {{> follow_button userId="KkhkSk3iqbDywx5Aj"}}
   </div>
 </template>

@@ -38,6 +38,12 @@ var countStat = function(storyId, stat, details) {
   if(!_.contains(stats.deepAnalytics[stat].uniqueViewersByIP, clientIP)){
     addToSet['deepAnalytics.' + stat + '.uniqueViewersByIP'] = clientIP ;
     inc['analytics.' + stat + '.byIP'] = 1;
+    if((stat === 'views') && stats.analytics && stats.analytics.views){
+      var uniqueViews = stats.analytics.views.byIP + 1;
+      if(_.contains(VIEW_THRESHOLDS, uniqueViews)){
+        generateViewThresholdActivity(story._id, uniqueViews);
+      }
+    }
   }
 
   if (this.userId && !_.contains(stats.deepAnalytics[stat].uniqueViewersByUserId, this.userId)){
@@ -119,12 +125,15 @@ Meteor.methods({
     this.setUserId(otherUser._id);
     return otherUser._id
   },
-  getActivityFeed: function(){
+  getActivityFeed: function(aId){
+    check(aId, Match.Optional(String));
     if(!this.userId){
       throw new Meteor.Error("Only users may get their activity feed");
     }
 
-    var activityIds = ActivityFeedItems.find({uId: this.userId}, {sort:{r: -1}, limit: 50, fields: {'aId' : 1}}).map(function(i){return i.aId});
+    var query = aId ? {uId: this.userId, aId: aId} : {uId: this.userId};
+
+    var activityIds = ActivityFeedItems.find(query, {sort:{r: -1}, limit: 50, fields: {'aId' : 1}}).map(function(i){return i.aId});
     return Activities.find({_id: {$in: activityIds}}).fetch();
   }
 });

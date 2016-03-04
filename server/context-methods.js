@@ -642,15 +642,10 @@ Meteor.methods({
       params: requestParams
     });
 
-    console.log('aaaaaaaaaaa')
-    console.log(res)
-
-
     items = res.data.result;
 
     if (items && items.length) {
       nextPageToken = page + 1;
-      console.log(items[0])
     } else {
       nextPageToken = 'end';
     }

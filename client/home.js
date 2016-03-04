@@ -18,27 +18,27 @@ formatDateNice = function(date) {
 };
 
 
-var filters = ['curated', 'trending', 'starred', 'newest'];
+var filters = ['mixed', 'curated', 'trending', 'starred', 'newest'];
 Session.setDefault('filterValue', filters[0]); // this must correspond to the first thing in the dropdown
 
 Template.home.helpers({
-  user: function() {
+  user () {
     return Meteor.user();
   },
-  filterOpen: function() {
+  filterOpen () {
     return Session.get("filterOpen");
   },
-  filter: function() {
+  filter () {
     return Session.get("filter");
   },
-  category: function() {
+  category () {
     return Session.get("category");
   }
 });
 
 
 Template.home.events({
-  "click .logo-title a": function(e, t) {
+  "click .logo-title a" (e, t) {
     // reset search query
     Session.set('storySearchQuery', null);
 
@@ -47,6 +47,42 @@ Template.home.events({
     t.$("select.filters-select").val(filters[0]);
     t.$("select.filters-select").selectOrDie("update");
 
+  }
+});
+
+Template.top_banner.helpers({
+  showingFeed () {
+    return Session.equals('filterValue', 'mixed') && !Session.get('storySearchQuery');
+  },
+  showingLatest () {
+    return Session.equals('filterValue', 'newest') && !Session.get('storySearchQuery');
+  }
+});
+
+Template.top_banner.events({
+  "click .show-newest" (e, t) {
+    Meteor.defer(() => {
+      Session.set('filterValue', 'newest');
+      Session.set('storySearchQuery', null);
+    });
+
+    // do this so the ui is snappy
+    t.$('.newest-toggle button').prop("disabled", "");
+    t.$("input").val(null);
+    t.$(".clear-search").hide();
+    $(e.target).prop("disabled", "disabled");
+  },
+  "click .show-feed" (e, t) {
+    Meteor.defer(() => {
+      Session.set('filterValue', 'mixed');
+      Session.set('storySearchQuery', null);
+    });
+
+    // do this so the ui is snappy
+    t.$('.newest-toggle button').prop("disabled", "");
+    t.$("input").val(null);
+    t.$(".clear-search").hide();
+    $(e.target).prop("disabled", "disabled");
   }
 });
 
@@ -72,13 +108,13 @@ Template.search.onRendered(function() {
 });
 
 Template.search.helpers({
-  showClearSearch: function(){
+  showClearSearch (){
     return Session.get('storySearchQuery');
   }
 });
 
 Template.search.events({
-  'click .clear-search': function(e, t){
+  'click .clear-search' (e, t){
     // this is the business logic
     Meteor.defer(function(){
       return Session.set('storySearchQuery', null);
@@ -89,7 +125,7 @@ Template.search.events({
     t.$("button").hide();
 
   },
-  'keydown': function(e, t){
+  'keydown' (e, t){
     if(t.data.slim){
       t.$("button").show(); // compensate for hack from above
     }
@@ -98,16 +134,16 @@ Template.search.events({
 
 
 Template.categories.helpers({
-  categories: function() {
+  categories () {
     return ['all', 'news', 'history', 'art', 'technology', 'politics', 'e-sports', 'music', 'gaming', 'sponsored'];
   },
-  selected: function() {
+  selected () {
     return Session.equals("category", this.toString());
   }
 });
 
 Template.categories.events({
-  "click li": function(d) {
+  "click li" (d) {
     var srcE;
     srcE = d.srcElement ? d.srcElement : d.target;
     return Session.set('category', $(srcE).data('category'));
@@ -130,7 +166,7 @@ Template.filters.onRendered(function() {
 
 
 Template.filters.helpers({
-  filters: function() {
+  filters () {
     return _.map(filters, function(filter){
       return {
         value: filter,
@@ -138,13 +174,13 @@ Template.filters.helpers({
       }
     })
   },
-  conditionallySelected: function(){
+  conditionallySelected (){
     return Session.equals('filterValue', this.toString()) ? 'selected' : '';
   }
 });
 
 Template.filters.events({
-  "change select": function(e, t) {
+  "change select" (e, t) {
     var filterValue = $(e.target).val();
     Session.set('filterValue', filterValue);
     Session.set('storySearchQuery', null);
@@ -161,10 +197,18 @@ Template.search.events({
   "keyup input": _.throttle(function(e, t) {
     var text = $(e.target).val().trim();
     Session.set('storySearchQuery', text);
-    if(enterPress(e) && t.data.slim){
-      Router.go('/');
+    if(enterPress(e)){
+      $(e.target).blur();
+      if(t.data.slim){
+        Router.go('/');
+      }
     }
-    $('html, body').scrollTop(0);
+
+    if(!t.data.slim){
+      $('html, body').scrollTop(0);
+    }
+
+
   }, 200, {leading: false})
 });
 
@@ -208,6 +252,7 @@ _.each(filters, function(filter){
   setSubscriptionPage(filter, -1);
 });
 
+setSubscriptionPage('mixed', 0); // curated stories are preloaded
 setSubscriptionPage('curated', 0); // curated stories are preloaded
 
 
@@ -217,7 +262,17 @@ var homeSubs = new SubsManager({
   expireIn: 99999999
 });
 
-var searchUserSubs = new SubsManager({
+var followingHomeSubs = new SubsManager({
+  cacheLimit: 99,
+  expireIn: 99999999
+});
+
+var storySearchUserSubs = new SubsManager({
+  cacheLimit: 1,
+  expireIn: 60
+});
+
+var peopleSearchUserSubs = new SubsManager({
   cacheLimit: 1,
   expireIn: 60
 });
@@ -226,8 +281,6 @@ var searchUserSubs = new SubsManager({
 var subscribeToCuratedStories = function(cb){
   if(!curatedStoriesSub){
     curatedStoriesSub = homeSubs.subscribe("curatedStoriesPub", function(){
-      var timeToLoadStories = Date.now() - createHomePageDate;
-      trackTiming('Subscription', 'Full curated stories ready (time since created template)', timeToLoadStories);
       subscriptionsReady.set('curatedStories', true);
       if(cb){
         cb();
@@ -241,7 +294,7 @@ var subscribeToCuratedStories = function(cb){
 };
 var subscribeToTrendingStories = function(cb){
   if(!trendingStoriesSub){
-    trendingStoriesSub = homeSubs.subscribe("trendingStoriesPub", function(){
+    trendingStoriesSub = homeSubs.subscribe("trendingStoriesPub", {preview: true}, function(){
       incrementSubscriptionPage('trending');
       subscriptionsReady.set('trendingStories', true);
       if(cb){
@@ -256,7 +309,7 @@ var subscribeToTrendingStories = function(cb){
 };
 var subscribeToNewestStories = function(cb){
   if(!newestStoriesSub){
-    newestStoriesSub = homeSubs.subscribe("newestStoriesPub", function(){
+    newestStoriesSub = homeSubs.subscribe("newestStoriesPub", {preview: true}, function(){
       incrementSubscriptionPage('newest');
       subscriptionsReady.set('newestStories', true);
       if(cb){
@@ -272,7 +325,7 @@ var subscribeToNewestStories = function(cb){
 
 var subscribeToStarredStories = function(cb){
   if(!starredStoriesSub){
-    starredStoriesSub = homeSubs.subscribe("starredStoriesPub", function(){
+    starredStoriesSub = homeSubs.subscribe("starredStoriesPub", {preview: true}, function(){
       incrementSubscriptionPage('starred');
       subscriptionsReady.set('starredStories', true);
       if(cb){
@@ -288,33 +341,85 @@ var subscribeToStarredStories = function(cb){
 
 var createHomePageDate;
 var whichUserPics = new Tracker.Dependency();
+var additionalMixedPages = new Tracker.Dependency();
 
 Template.all_stories.onCreated(function(){
-  var that = this;
   createHomePageDate = Date.now();
-  subscribeToCuratedStories(function(){
-    if (!that.view.isDestroyed){ // because this happens asynchronously, the user may have already navigated away
-      that.autorun(function(){
-        whichUserPics.depend();
-        that.subscribe('minimalUsersPub', _.sortBy(Stories.find({ published: true}, {fields: {authorId:1}, reactive: false}).map(function(story){return story.authorId}), _.identity));
-      });
-    }
-    subscribeToTrendingStories(function() {
-      subscribeToNewestStories(function(){
-        subscribeToStarredStories(function(){
-          whichUserPics.changed();
-        })
-      })
-    });
+
+  this.autorun(() => {
+    whichUserPics.depend();
+    this.subscribe('minimalUsersPub', _.sortBy(Stories.find({published: true}, { fields: {authorId: 1}, reactive: false }).map(function (story) {
+      return story.authorId
+    }), _.identity));
   });
 
-  var notFirstRun = false;
+  subscriptionsReady.set('curatedStories', true); // we loaded a preview of these up front
+  subscriptionsReady.set('mixedStories', true); // we loaded a preview of these up front
+
+  Meteor.setTimeout(() =>{
+    if (!this.view.isDestroyed) { // because this happens asynchronously, the user may have already navigated away
+      subscribeToCuratedStories(() => { // might as well load the full versions of curated stories for a faster experience
+        // do nothing for now
+      });
+    }
+  }, 4500); // wait a few seconds to let the user orient before potentially slowing down the page for another couple seconds
+
+
+
+  var notFirstRunA = false;
+
+  this.autorun(function(){
+    var user = Meteor.users.find(Meteor.userId(), {fields: {'profile.following': 1}}).fetch()[0];
+    if(!user){
+      return;
+    }
+
+    if(notFirstRunA){
+      var following = user.profile.following;
+
+      followingHomeSubs.clear();
+
+      additionalMixedPages.changed();
+
+      followingHomeSubs.subscribe("mixedStoriesPub", {authors: _.sortBy(following, _.identity), preview: true}, function(){ // preview for memory savings on server. can remove preview to make it faster to visit stories you're following
+        subscriptionsReady.set('mixedStories', true);
+        whichUserPics.changed();
+      })
+    }
+    notFirstRunA = true;
+  });
+
+  var notFirstRunB = false;
   this.autorun(function(){
     Session.get('filterValue'); // re-run whenever filter value changes
-    if (notFirstRun){
+    if (notFirstRunB){
       $(window).scrollTop(0)
     }
-    notFirstRun = true;
+    notFirstRunB = true;
+  });
+
+  this.autorun(function () {
+    if (adminMode()) {
+      subscribeToCuratedStories(function () {
+        subscribeToNewestStories(function () {
+          subscribeToTrendingStories(function () {
+            subscribeToStarredStories(function () {
+              whichUserPics.changed();
+            });
+          });
+        });
+      });
+    }
+  });
+
+  this.autorun(function () {
+    if (Session.equals('filterValue', 'newest')) {
+      subscriptionsReady.set('newestStories', false);
+      subscribeToNewestStories(function () {
+        subscriptionsReady.set('newestStories', true);
+        whichUserPics.changed();
+      });
+    }
   });
 
   // first page of search results, or when flip back to query
@@ -345,12 +450,12 @@ Template.all_stories.onCreated(function(){
   });
 
   subscribeToStorySearchedMinimalUsers = _.debounce(function(){
-    return searchUserSubs.subscribe('minimalUsersPub', _.sortBy(StorySearch.getData({}, true).map(function(story){return story.authorId}), _.identity));
+    return storySearchUserSubs.subscribe('minimalUsersPub', _.sortBy(StorySearch.getData({}, true).map(function(story){return story.authorId}), _.identity));
   }, 1000);
 
-  // TODO, we just loaded this data with the search....
+  // TO-DO, we just loaded this data with the search....
   subscribeToPeopleSearchedMinimalUsers = _.debounce(function(){
-    return searchUserSubs.subscribe('minimalUsersPub', _.sortBy(PersonSearch.getData({}, true).map(function(person){return person._id}), _.identity));
+    return peopleSearchUserSubs.subscribe('minimalUsersPub', _.sortBy(PersonSearch.getData({}, true).map(function(person){return person._id}), _.identity));
   }, 1000);
 
   this.autorun(function(){
@@ -382,7 +487,7 @@ var currentHomeStories = function(){
         ["favoritedTotal", "desc"],
         ["savedAt", "desc"]
       ],
-      docTransform: function(doc){
+      docTransform (doc){
         return new Story(doc);
       }
     });
@@ -402,8 +507,15 @@ var currentHomeStories = function(){
   }
 
   switch (Session.get('filterValue')) {
-    case 'curated': // preview versions of all these stories come from fast-render so we can show them right away
-      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: limit, reactive: true}); // .fetch() prevents a weird "Bad index" error
+    case 'mixed':
+      if(!Meteor.userId()){
+        return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: limit, reactive: true});
+      } else {
+        return Stories.find({ published: true, $or: [{editorsPick: true}, {authorId: {$in: Meteor.user().profile.following || []}}]}, {sort: {'r': -1}, limit: limit, reactive: true});
+      }
+      break;
+    case 'curated':
+      return Stories.find({ published: true, editorsPick: true}, {sort: {'editorsPickAt': -1}, limit: limit, reactive: true});
       break;
     case 'newest':
       return Stories.find({published: true}, {sort: {'publishedAt': -1}, limit: limit, reactive: true});
@@ -418,12 +530,12 @@ var currentHomeStories = function(){
 };
 
 Template.all_stories.events({
-  'click .show-more' : function(e,t){
+  'click .show-more'  (e,t){
 
     var storySearchQuery = Session.get('storySearchQuery');
     if(storySearchQuery){
       incrementCurrentSubscriptionPage();
-    } else {
+    } else if (adminMode() || (Session.get('filterValue') === 'newest')) { // legacy behavior + newest
       var filterValue = Session.get('filterValue');
       subscriptionsReady.set(filterValue + 'Stories', false);
       homeSubs.subscribe(filterValue + 'StoriesPub', {page: getCurrentSubscriptionPage() + 1}, function(){
@@ -431,104 +543,106 @@ Template.all_stories.events({
         whichUserPics.changed();
         subscriptionsReady.set(filterValue + 'Stories', true);
       })
+    } else if (Meteor.userId()) {
+      var nextPage = getCurrentSubscriptionPage() + 1;
+
+      t.autorun(() =>{ // autorun and depend is so that subs update when list of following users does
+        additionalMixedPages.depend();
+        var user;
+        var currentPage;
+
+        Tracker.nonreactive(function(){
+          user = Meteor.user();
+          currentPage = getCurrentSubscriptionPage();
+        });
+
+        var following = user.profile.following;
+
+        subscriptionsReady.set('mixedStories', false);
+
+        followingHomeSubs.subscribe("mixedStoriesPub", {authors: _.sortBy(following, _.identity), preview: true, page: nextPage}, function(){
+          subscriptionsReady.set('mixedStories', true);
+          if(nextPage === currentPage + 1){
+            incrementCurrentSubscriptionPage();
+          }
+          whichUserPics.changed(); // TO-DO this gets run more often than it needs to when authors user is following changes
+        })
+      });
+    } else {
+      subscriptionsReady.set('curatedStories', false);
+      homeSubs.subscribe('curatedStoriesPub', {page: getCurrentSubscriptionPage() + 1, preview: true}, function(){
+        incrementCurrentSubscriptionPage();
+        subscriptionsReady.set('curatedStories', true);
+        whichUserPics.changed();
+      });
     }
 
   },
-  'click .dismiss-box': function (e,t) {
+  'click .dismiss-box'  (e,t) {
     Session.set('boxDismissed', true);
   }
 });
 
 Template.all_stories.helpers({ // most of these are reactive false, but they will react when switch back and forth due to nesting inside ifs (so they rerun when switching between filters)
   stories: currentHomeStories,
-  storiesLoading: function(){
+  storiesLoading (){
     return(!(subscriptionsReady.get(Session.get('filterValue') + 'Stories')) || PersonSearch.getStatus().loading
     || StorySearch.getStatus().loading)
   },
-  moreToShow: function(){
+  moreToShow (){
     var stories = currentHomeStories();
     if (!stories){
       return false
     }
     return currentHomeStories().count() >= (getCurrentSubscriptionPage() + 1) * PUB_SIZE
   },
-  boxDismissed: function(){
+  boxDismissed (){
     return Session.get('boxDismissed')
+  },
+  hideActivityFeed (){ // we'll hide it so it doesn't need to reload all activities
+    return !Session.equals('filterValue', 'mixed') || Session.get('storySearchQuery');
   }
 });
 
 
 Template.story_preview.helpers({
-  story: function(){
+  story (){
     return Template.instance().data.story || Stories.findOne(this._id);
   }
 });
 
-
-Template._story_preview_content.onCreated(function(){
-  this.showProfileInfoVariable = new ReactiveVar();
-  var that = this;
-  var timer = null;
-  this.hideProfileInfo = function(){
-    timer = Meteor.setTimeout(function(){
-      that.showProfileInfoVariable.set(false);
-      timer = null;
-    }, 300)
-  };
-  this.cancelHideProfileInfo = function(){
-    if(timer){
-      Meteor.clearTimeout(timer);
-    }
-  };
-  this.showProfileInfo = function(){
-    that.cancelHideProfileInfo();
-    that.showProfileInfoVariable.set(true);
-  }
-});
-
 Template._story_preview_content.helpers({
-  showProfileInfo: function(){
-    return Template.instance().showProfileInfoVariable.get()
-  }
-});
-Template._story_preview_content.events({
-  "mouseenter .byline": function(d) {
-    Template.instance().showProfileInfo();
-  },
-  "mouseleave .byline": function(d) {
-    Template.instance().hideProfileInfo();
-  },
-});
-
-Template._story_preview_content.helpers({
-  lastPublishDate: function() {
+  lastPublishDate () {
     if(this.publishedAt) {
       return formatDateNice(this.publishedAt);
     }
   },
-  story: function(){
+  story (){
     if (Template.instance().data.useDraftStory){
       return this.draftStory;
     } else {
       return this;
     }
   },
-  linkRoute: function(){
+  linkRoute (){
     return Template.instance().data.useDraftStory ? 'edit' : 'read';
   },
-  author: function(){
+  author (){
     return Meteor.users.findOne(this.authorId)
   },
-  profileUrl: function(){
+  profileUrl (){
     return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate drafts and only use authorDisplayUsername
   },
-  contextCountOfType: function(type){
+  narrativeCount (){
+    return this.narrativeBlockCount ? this.narrativeBlockCount : this.narrativeCount();
+  },
+  contextCountOfType (type){
     return this.contextBlockTypeCount ? this.contextBlockTypeCount[type] : this.contextCountOfType(type);
   }
 });
 
 Template.login_buttons.helpers({
-  showUserInfo: function() {
+  showUserInfo () {
     return Template.instance().showUserInfo.get();
   }
 });
@@ -538,16 +652,16 @@ Template.login_buttons.onCreated(function() {
 });
 
 Template.login_buttons.events({
-  "mouseenter .user-action": function(d) {
+  "mouseenter .user-action" (d) {
     Template.instance().showUserInfo.set(true);
   },
-  "mouseleave .user-action": function(d) {
+  "mouseleave .user-action" (d) {
     Template.instance().showUserInfo.set(false);
   },
-  "click .signin": function(d) {
+  "click .signin" (d) {
     openSignInOverlay();
   },
-  "click .logout" : function(e) {
+  "click .logout"  (e) {
     e.preventDefault();
     Template.instance().showUserInfo.set(false);
     Meteor.logout();

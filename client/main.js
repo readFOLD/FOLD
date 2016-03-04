@@ -48,9 +48,9 @@ Meteor.startup(function(){
 
   Tracker.autorun(function(){
     if (Session.get('mobileContextView')){
-      document.body.style.overflowY = "hidden";
+      freezePageScroll();
     } else {
-      document.body.style.overflowY = "auto"; // TODO is this helping?
+      unfreezePageScroll(); // TODO is this helping
     }
   });
 
@@ -100,13 +100,13 @@ Meteor.startup(function(){
     } else {
       $(document).off('focusin', restrictFocusToModal);
     }
-  })
+  });
 
   Blaze.addBodyClass(function() {
     if(Router.current()){
       return Router.current().route.getName();
     }
-  })
+  });
 });
 
 
@@ -156,10 +156,10 @@ window.updateCurrentY = function() {
     $("div.horizontal-context").addClass("fixed");
 
     if(scrollPauseArmed){
-      document.body.style.overflowY = 'hidden';
+      freezePageScroll();
       $(document).scrollTop(readMode);
       Meteor.setTimeout(function () {
-        document.body.style.overflowY = 'auto';
+        unfreezePageScroll();
       }, scrollPauseLength);
       scrollPauseArmed = false;
     }
@@ -233,7 +233,7 @@ Tracker.autorun(function(){
   var story = Session.get('story');
   var currentY = Session.get("currentY");
   var currentXByYId = Session.get("currentXByYId"); // for reactivity
-  if(!story){
+  if(!story || !story.verticalSections){
     return
   }
   var verticalSection = story.verticalSections[currentY];
@@ -333,13 +333,13 @@ Meteor.startup(function() {
 Meteor.startup(function(){
   $( window ).konami({
     code : [38,38,40,40,37,39,37,39, 66, 65],
-    cheat: function() {
+    cheat () {
       $('body').addClass('konami');
     }
   });
   $( window ).konami({
     code : [70, 79, 76, 68, 65, 68, 77, 73, 78],
-    cheat: function() {
+    cheat () {
       Session.set('adminMode', true);
     }
   });
@@ -349,31 +349,31 @@ Meteor.startup(function(){
 
 
 typeHelpers = {
-  text: function() {
+  text () {
     return this.type === "text";
   },
-  image: function() {
+  image () {
     return this.type === "image";
   },
-  gif: function() {
+  gif () {
     return this.type === "gif";
   },
-  map: function() {
+  map () {
     return this.type === "map";
   },
-  video: function() {
+  video () {
     return this.type === "video";
   },
-  viz: function() {
+  viz () {
     return this.type === "viz";
   },
-  twitter: function() {
+  twitter () {
     return this.type === "twitter";
   },
-  audio: function() {
+  audio () {
     return this.type === "audio";
   },
-  link: function() {
+  link () {
     return this.type === "link";
   }
 };
@@ -397,35 +397,35 @@ Template.story_header.onRendered(function() {
 });
 
 Template.story_header.helpers({
-  title: function() {
+  title () {
     if (this.title) {
       return this.title;
     } else {
       return Session.get("storyTitle");
     }
   },
-  profileUrl: function(){
+  profileUrl (){
     return '/profile/' + (this.authorDisplayUsername || this.authorUsername); // TODO migrate and only use authorDisplayUsername
   },
-  author: function(){
+  author (){
     return Meteor.users.findOne(this.authorId)
   }
 });
 
 Template.story_header.events = {
-  "click #to-story": function() {
+  "click #to-story" () {
     $('#to-story, .attribution').fadeOut();
     goToX(0);
     return goToY(0);
   },
-  "click #banner-overlay": function() {
+  "click #banner-overlay" () {
     if (!Session.get("pastHeader")) {
       $('#to-story, .attribution').fadeOut();
       goToX(0);
       return goToY(0);
     }
   },
-  "keydown": function (e) {
+  "keydown"  (e) {
     if (enterPress(e) && !Session.get('read')) { // enter
       e.preventDefault();
       $(':focus').blur(); // TO-DO this should move focus to the first block
@@ -438,26 +438,26 @@ Template.story_header.events = {
 
 Template.story.helpers({
   horizontalExists: horizontalExists,
-  pastHeader: function() {
+  pastHeader () {
     return Session.get("pastHeader");
   },
 
-  metaviewOpen: function() {
+  metaviewOpen () {
     return Session.get("metaview")
   },
-  showMinimap: function() {
+  showMinimap () {
     return Session.get("showMinimap") && (!Meteor.Device.isPhone());
   },
-  showMobileMinimap: function() {
+  showMobileMinimap () {
     return Session.get("showMinimap") && (Meteor.Device.isPhone());
   },
-  showContextOverlay: function(){
+  showContextOverlay (){
     return Session.get('contextOverlayId');
   }
 });
 
 Template.story_title.helpers({
-  storyTitleDiv: function(){
+  storyTitleDiv (){
     var initialClasses = Session.get('showDraft') ? 'story-title notranslate' : 'story-title';
     if (Session.get('read')) {
       return '<div class="' + initialClasses + '">' + _.escape(this.title) + '</div>';
@@ -469,16 +469,16 @@ Template.story_title.helpers({
 });
 
 Template.vertical_section_block.helpers({
-  notFirst: function() {
+  notFirst () {
     return !Session.equals("currentY", 0);
   },
-  verticalSelected: function() {
+  verticalSelected () {
     return Session.equals("currentY", this.index) && Session.get("pastHeader") || Session.equals("currentY", null) && this.index === 0;
   },
-  validTitle: function() {
+  validTitle () {
     return this.title === !"title";
   },
-  titleDiv: function() {
+  titleDiv () {
     var initialClasses = Session.get('showDraft') ? 'title notranslate' : 'title';
     if (Session.get('read')) {
       return '<div class="' + initialClasses + '" dir="auto">' + _.escape(this.title) + '</div>';
@@ -488,7 +488,7 @@ Template.vertical_section_block.helpers({
     }
   },
   // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
-  contentDiv: function() {
+  contentDiv () {
     var initialClasses = Session.get('showDraft') ? 'content notranslate' : 'content';
     if (Session.get('read')) {
       return '<div class="' + initialClasses + '" dir="auto">' + cleanVerticalSectionContent(this.content) + '</div>';
@@ -501,7 +501,7 @@ Template.vertical_section_block.helpers({
 });
 
 Template.vertical_narrative.helpers({
-  verticalSectionsWithIndex: function() {
+  verticalSectionsWithIndex () {
     if(!this.verticalSections){ // catch error coming from my_stories for some reason
       return
     }
@@ -514,10 +514,9 @@ Template.vertical_narrative.helpers({
 });
 
 Template.vertical_section_block.events({
-  "click": function(e, t) {
+  "click" (e, t) {
     var afterGoToY;
     var enclosingAnchor;
-    var that = this;
 
     if($(e.target).is('div')){
       // do nothing
@@ -528,13 +527,13 @@ Template.vertical_section_block.events({
       afterGoToY = function(){
         goToContext(contextId);
       };
-      Meteor.setTimeout(function(){
+      Meteor.setTimeout(() => {
         trackEvent('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
-          verticalIndex: that.index,
+          verticalIndex: this.index,
           contextId: contextId,
           contextType: $(e.currentTarget).data('contextType'),
           contextSource: $(e.currentTarget).data('contextSource'),
-          numberOfContextCardsOnVertical: that.contextBlocks.length,
+          numberOfContextCardsOnVertical: this.contextBlocks.length,
           inReadMode: Session.get('read')
         }));
       });
@@ -600,28 +599,16 @@ var saveMetaviewOrdering = function() {
   Session.set('saveState', 'saving');
 
   Meteor.call('reorderStory', Session.get("storyId"), idMap, saveCallback);
-
-
-  //var originalVerticalSections = that.data.verticalSections;
-
-  //var newVerticalSections = []
-  //_.map(newVerticalSectionIDs, function(id, i) {
-  //  var newVerticalSection = _.findWhere(originalVerticalSections, {_id: id});
-  //  newVerticalSection.contextBlocks = newContextBlocks[i];
-  //  newVerticalSections.push(newVerticalSection);
-  //});
-  //Meteor.call('saveStory', {_id: Session.get("storyId")}, {$set: {'draftStory.verticalSections': newVerticalSections}})
 };
 
 Template.metaview.onRendered(function() {
   document.body.style.overflow = 'hidden'; // prevent document scroll while in metaview
-  var that = this;
   this.$(".sortable-rows").sortable({
     stop: saveMetaviewOrdering
   });
   this.$(".sortable-blocks").sortable({
     connectWith: ".sortable-blocks",
-    stop: function() {
+    stop () {
       resetXPositionMemory(); // prevent XId stuff from getting all crazy
       saveMetaviewOrdering();
     }
@@ -635,18 +622,18 @@ Template.metaview.onDestroyed(function() {
 });
 
 Template.metaview.events({
-  "click .close": function(d, t) {
+  "click .close" (d, t) {
     Session.set("metaview", false);
   },
-  "click": function(d, t) {
+  "click" (d, t) {
     d.preventDefault();
   },
   // these lines below prevent mouseout and mouseover from getting to other dom elements that will release the scroll lock
-  mouseover: function(d){
+  mouseover (d){
     d.preventDefault();
     d.stopPropagation();
   },
-  mouseout: function(d){
+  mouseout (d){
     d.preventDefault();
     d.stopPropagation();
   }
@@ -655,14 +642,14 @@ Template.metaview.events({
 Template.metaview_context_block.helpers(typeHelpers)
 
 Template.metaview.helpers({
-  verticalSectionsWithIndex: function() {
+  verticalSectionsWithIndex () {
     return this.verticalSections.map(function(v, i) {
       return _.extend(v, {
         index: i
       });
     });
   },
-  horizontalSections: function() {
+  horizontalSections () {
     var blocks = this.contextBlocks
        .map(function(id) {
          return ContextBlocks.findOne({ // by finding one at a time, this keeps in broken links. TO-DO maybe should find a better soln that uses $in
@@ -671,13 +658,13 @@ Template.metaview.helpers({
        });
     return blocks;
   },
-  textContent: function(){
+  textContent (){
     return $($.parseHTML(this.content)).text();
   }
 });
 
 Template.minimap.events({
-  "click .minimap": function(d, t) {
+  "click .minimap" (d, t) {
     if (!Session.get('read')){ // only metaview in create for now
       Session.set("metaview", true);
       trackEvent('Click minimap in create mode');
@@ -689,16 +676,16 @@ Template.minimap.events({
 });
 
 Template.minimap.helpers({
-  horizontalSectionsMap: function() {
+  horizontalSectionsMap () {
     return Session.get("horizontalSectionsMap");
   },
-  selectedX: function() {
+  selectedX () {
     return Session.equals("currentX", this.horizontalIndex);
   },
-  selectedY: function() {
+  selectedY () {
     return Session.equals("currentY", this.verticalIndex);
   },
-  minimapLargeEnough: function() {
+  minimapLargeEnough () {
     // Ensure minimap height is greater than 0 and sections are at least 5 pixels tall
     if (Session.get("minimapMaxHeight") <= 0 || (Session.get("minimapMaxHeight") / Session.get("horizontalSectionsMap").length < 5)) {
       return false;
@@ -706,31 +693,31 @@ Template.minimap.helpers({
       return true;
     }
   },
-  responsive: function() {
+  responsive () {
     var maxHeight = Session.get("minimapMaxHeight");
     var defaultSectionHeight = 17 + 5;  // Section height + margin-bottom
     return (Session.get("horizontalSectionsMap").length * defaultSectionHeight >= maxHeight)
   },
-  sectionHeight: function() {
+  sectionHeight () {
     var maxHeight = Session.get("minimapMaxHeight");
     return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75;  // 75% of available space
   },
-  verticalCardWidth: function() {
+  verticalCardWidth () {
     var maxHeight = Session.get("minimapMaxHeight");
     return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 1.53333;  //  1.53333 aspect ratio
   },
-  horizontalCardWidth: function() {
+  horizontalCardWidth () {
     var maxHeight = Session.get("minimapMaxHeight");
     return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.75 * 0.7645 * 1.53333;  // Horizontal block is 76.45% of section
   },
-  sectionMargin: function() {
+  sectionMargin () {
     var maxHeight = Session.get("minimapMaxHeight");
     return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.25;  // 25% of available space (33% of section)
   },
-  showActivity: function(){
+  showActivity (){
     return adminMode();
   },
-  activityLevel: function(){
+  activityLevel (){
     var story = new Story(Session.get('story'));
     var activeHeartbeats = (this.activeHeartbeats || 0);
     var maxActiveHeartbeats = story.maxActiveHeartbeats();
@@ -739,13 +726,13 @@ Template.minimap.helpers({
 });
 
 Template.mobile_minimap.helpers({
-  verticalSelectedArray: function() {
+  verticalSelectedArray () {
     var currentYId = Session.get('currentYId')
     return _.map(this.verticalSections, function(v){
       return {selected: currentYId === v._id};
     });
   },
-  horizontalSelectedArray: function() {
+  horizontalSelectedArray () {
     var currentXId = Session.get('currentXId');
     var currentY = Session.get('currentY');
     var mobileContextView = Session.get('mobileContextView');
@@ -757,26 +744,26 @@ Template.mobile_minimap.helpers({
       return [];
     }
   },
-  horizontalWidth: function(){
+  horizontalWidth (){
     return Session.get('windowWidth') - Session.get('mobileMargin');
   },
-  verticalHeight: function(){
+  verticalHeight (){
     return Session.get('windowHeight') - Session.get('mobileMargin');
   }
 });
 
 Template.horizontal_context.events({
-  click: function () {
+  click  () {
     if(Session.equals('currentY', null)){
       goToY(0);
     }
   }
 });
 Template.horizontal_context.helpers({
-  verticalExists: function() {
+  verticalExists () {
     return Session.get("horizontalSectionsMap").length;
   },
-  horizontalSections: function() {
+  horizontalSections () {
     var that = this;
     if(!this.verticalSections){ // catch error coming from my_stories for some reason
       return
@@ -833,16 +820,16 @@ Template.horizontal_context.helpers({
       }
     });
   },
-  last: function() {
+  last () {
     var lastIndex, _ref;
     lastIndex = ((_ref = Session.get("horizontalSectionsMap")[Session.get("currentY")]) != null ? _ref.horizontal.length : void 0) - 1;
     return (this.index === lastIndex) && (lastIndex > 0);
   },
-  horizontalSectionInDOM: function() {
+  horizontalSectionInDOM () {
     // on this row, or this card is the current X for another hidden row
     return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId') || this.type === 'audio';
   },
-  horizontalShown: function() {
+  horizontalShown () {
     return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone());
   }
 });
@@ -887,7 +874,7 @@ var poppedOut = function(){
 horizontalBlockHelpers = _.extend({}, typeHelpers, {
   selected: selected,
   poppedOut: poppedOut,
-  textContent: function() {
+  textContent () {
     var textContent, rows;
     if (this.type === 'text'){
       textContent = this.content || '';
@@ -929,7 +916,7 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 //});
 
 Template.horizontal_section_block.events({
-  'click .mobile-context-back-button': function(e, t){
+  'click .mobile-context-back-button' (e, t){
     Session.set('mobileContextView', false);
     trackEvent('Click mobile back button');
   }
@@ -940,41 +927,39 @@ Template.horizontal_section_block.helpers(horizontalBlockHelpers);
 // Magic layout function
 Template.horizontal_section_block.helpers({
   left: getHorizontalLeft,
-  lastUpdate: function() {
+  lastUpdate () {
     Session.get('lastUpdate');
   },
-  hide: function() {
+  hide () {
     return !Session.equals("currentY", this.verticalIndex) && !(Session.equals("currentY", null) && this.verticalIndex === 0) && !(this._id === Session.get('poppedOutContextId'));
   },
 
-  hideContainer: function() {
+  hideContainer () {
     return this.type === 'audio' && this._id === Session.get('poppedOutContextId') && !(Session.equals("currentY", this.verticalIndex) || Session.equals("currentY", null) && this.verticalIndex === 0);
   }
 });
 
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
   return { 
-    "blur .text-content.editable": function(d, template) {
-      var that = this;
+    "blur .text-content.editable" (d, template) {
       if (!Session.get('read') && !Session.get('addingContext')) {
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
-        Meteor.call(meteorMethod, that._id, textContent, saveCallback);
+        Meteor.call(meteorMethod, this._id, textContent, saveCallback);
       }
     },
-    "mouseenter .text-content.editable": function(d, template) {
+    "mouseenter .text-content.editable" (d, template) {
       document.body.style.overflow = 'hidden';
     },
-    "mouseleave .text-content.editable": function(d, template) {
+    "mouseleave .text-content.editable" (d, template) {
       document.body.style.overflow = 'auto';
     },
-    "keypress .image-section .text-content.editable": function(e, template) { // save on Enter
-      var that = this;
+    "keypress .image-section .text-content.editable" (e, template) { // save on Enter
       if (!Session.get('read') && !Session.get('addingContext') && e.which === 13 ) {
         e.preventDefault();
         var textContent = template.$('textarea[name=content]').val();
         Session.set('saveState', 'saving');
-        Meteor.call(meteorMethod, that._id, textContent, saveCallback);
+        Meteor.call(meteorMethod, this._id, textContent, saveCallback);
       }
     }
   }
@@ -987,7 +972,7 @@ Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
 Template.display_image_section.helpers(horizontalBlockHelpers);
 Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 Template.display_image_section.events({
-    'click': function (e, t) {
+    'click'  (e, t) {
       if (Session.get('read') && !($(e.target).is('a')) && !Meteor.Device.isPhone()){
         Session.set('contextOverlayId', this._id);
         trackEvent('Expand image card');
@@ -1041,21 +1026,21 @@ Template.display_link_section.onCreated(function(){
   this.uploadingThumbnail = new ReactiveVar();
 });
 Template.display_link_section.helpers({
-  editingTitle: function(){
+  editingTitle (){
     return Template.instance().editingTitle.get()
   },
-  editingDescription: function(){
+  editingDescription (){
     return Template.instance().editingDescription.get()
   },
-  editThumbnailPrompt: function(){
+  editThumbnailPrompt (){
     return !Session.get('read');
   },
-  uploadingThumbnail: function(){
+  uploadingThumbnail (){
     return Template.instance().uploadingThumbnail.get();
   }
 });
 Template.display_link_section.events({
-  'click a': function (e, t) {
+  'click a'  (e, t) {
     if(!Session.get('read') && !$(e.target).is('input')){
       e.preventDefault();
       return false
@@ -1067,7 +1052,7 @@ Template.display_link_section.events({
       targetClassName: e.target.className
     })
   },
-  'click div.link-title': function(e,t){
+  'click div.link-title' (e,t){
     if(!Session.get('read') && !Session.get('addingContext')){
       t.editingTitle.set(true);
       Meteor.setTimeout(function(){
@@ -1075,11 +1060,10 @@ Template.display_link_section.events({
       })
     }
   },
-  'blur textarea.link-title': function(e,t){
-    var that = this;
+  'blur textarea.link-title' (e,t){
     if(!Session.get('read') && !Session.get('addingContext')){
       Session.set('saveState', 'saving');
-      Meteor.call('editLinkTitle', that._id, t.$('textarea.link-title').val(), function(err, result){
+      Meteor.call('editLinkTitle', this._id, t.$('textarea.link-title').val(), (err, result) =>{
         if(result){
           t.editingTitle.set(false);
         }
@@ -1087,7 +1071,7 @@ Template.display_link_section.events({
       });
     }
   },
-  'click div.link-description': function(e,t){
+  'click div.link-description' (e,t){
     if(!Session.get('read') && !Session.get('addingContext')){
       t.editingDescription.set(true);
       Meteor.setTimeout(function(){
@@ -1095,11 +1079,10 @@ Template.display_link_section.events({
       })
     }
   },
-  'blur textarea.link-description': function(e,t){
-    var that = this;
+  'blur textarea.link-description' (e,t){
     if(!Session.get('read') && !Session.get('addingContext')){
       Session.set('saveState', 'saving');
-      Meteor.call('editLinkDescription', that._id, t.$('textarea.link-description').val(), function(err, result){
+      Meteor.call('editLinkDescription', this._id, t.$('textarea.link-description').val(), (err, result) => {
         if(result){
           t.editingDescription.set(false);
         }
@@ -1107,11 +1090,10 @@ Template.display_link_section.events({
       });
     }
   },
-  "click input[type=file]": function(d, template) {
+  "click input[type=file]" (d, template) {
     return template.editingThumbnail.set(true);
   },
-  "change input[type=file]": function(e, template){
-    var that = this;
+  "change input[type=file]" (e, template){
     var finish = function(){
       template.uploadingThumbnail.set(false);
       return template.editingThumbnail.set(false);
@@ -1124,7 +1106,7 @@ Template.display_link_section.events({
         return finish()
       }
       template.uploadingThumbnail.set(true);
-      Cloudinary.upload([file], {}, function(err, doc) {
+      Cloudinary.upload([file], {}, (err, doc) => {
         if(err){
           var input = template.$('input[type=file]');
           input.val(null);
@@ -1138,7 +1120,7 @@ Template.display_link_section.events({
             width: doc.width,
             height: doc.height
           };
-          Meteor.call('editLinkThumbnail', that._id, cloudinaryImageInfo, function(err, result){
+          Meteor.call('editLinkThumbnail', this._id, cloudinaryImageInfo, (err, result) => {
             saveCallback(err, result);
             return finish()
           });
@@ -1159,20 +1141,20 @@ Template.display_text_section.events(editableDescriptionEventsBoilerplate('editT
 Template.horizontal_section_edit_delete.helpers(horizontalBlockHelpers);
 
 Template.story_browser.helpers({
-  showLeftArrow: function() {
+  showLeftArrow () {
     return !Meteor.Device.isPhone() && (Session.get("currentX") !== 0 || Session.get("wrap")[Session.get('currentYId')]);
   },
-  showRightArrow: function() {
+  showRightArrow () {
     return !Meteor.Device.isPhone();
   }
 });
 
 Template.story_browser.events({
-  "click .right": function(d) {
+  "click .right" (d) {
     window.goRightOneCard();
     trackEvent('Click right arrow');
   },
-  "click .left": function(d) {
+  "click .left" (d) {
     window.goLeftOneCard();
     trackEvent('Click left arrow');
   }
@@ -1182,7 +1164,7 @@ Template.type_specific_icon.helpers(typeHelpers);
 
 
 Template.share_buttons.events({
-  'click .share-facebook': function(e, t) {
+  'click .share-facebook' (e, t) {
     var width  = 575;
     var height = 400;
     var left   = ($(window).width()  - width)  / 2;
@@ -1197,7 +1179,7 @@ Template.share_buttons.events({
     Meteor.call('countStoryShare', this._id, 'facebook');
     trackEvent('Share on Facebook');
   },
-  'click .share-twitter': function(e, t) {
+  'click .share-twitter' (e, t) {
     var title = $(".story-title").text();
     var width  = 575;
     var height = 400;
@@ -1213,7 +1195,7 @@ Template.share_buttons.events({
     Meteor.call('countStoryShare', this._id, 'twitter');
     trackEvent('Share on Twitter');
   },
-  'click .share-embed': function(e, t) {
+  'click .share-embed' (e, t) {
     notifyFeature('Embedding: coming soon!');
     trackEvent('Click embed button');
   }
@@ -1221,7 +1203,7 @@ Template.share_buttons.events({
 
 
 Template.follow_button.helpers({
-  additionalClasses: function() {
+  additionalClasses () {
     var classes = '';
 
     if (Template.instance().justFollowed.get()){
@@ -1232,10 +1214,10 @@ Template.follow_button.helpers({
     }
     return classes;
   },
-  userFollowing: function(){
+  userFollowing (){
     return Meteor.user() && _.contains(Meteor.user().profile.following, Template.instance().data.userId);
   },
-  isYou: function(){
+  isYou (){
     return Meteor.userId() === Template.instance().data.userId;
   }
 });
@@ -1245,7 +1227,7 @@ Template.follow_button.onCreated(function() {
   this.justUnfollowed = new ReactiveVar();
 });
 Template.follow_button.events({
-  "click .follow": function (e, t) {
+  "click .follow"  (e, t) {
     trackEvent('Click follow button');
 
     if (!Meteor.user()) {
@@ -1268,7 +1250,7 @@ Template.follow_button.events({
     })
 
   },
-  "click .unfollow": function (e, t) {
+  "click .unfollow"  (e, t) {
     t.justUnfollowed.set(true);
     Meteor.setTimeout(function(){
       t.justUnfollowed.set(null);
@@ -1286,7 +1268,7 @@ Template.follow_button.events({
 
 
 Template.favorite_button.helpers({
-  additionalClasses: function() {
+  additionalClasses () {
     var classes = '';
 
     if (Template.instance().justFavorited.get()){
@@ -1304,20 +1286,19 @@ Template.favorite_button.onCreated(function() {
   this.justUnfavorited = new ReactiveVar();
 });
 Template.favorite_button.events({
-  "click .favorite": function (e, t) {
+  "click .favorite"  (e, t) {
     trackEvent('Click favorite button');
 
     if (!Meteor.user()) {
       openSignInOverlay('Thanks for showing your love!\nPlease sign in to favorite this FOLD.');
       return
     }
-    var that = this;
     t.justFavorited.set(true);
-    Meteor.setTimeout(function () {
+    Meteor.setTimeout(() => {
       t.justFavorited.set(null);
     }, 700);
 
-    return Meteor.call('favoriteStory', that._id, function (err) {
+    return Meteor.call('favoriteStory', this._id, (err) => {
       if (err) {
         notifyError(err);
         throw(err);
@@ -1328,7 +1309,7 @@ Template.favorite_button.events({
     })
 
   },
-  "click .unfavorite": function (e, t) {
+  "click .unfavorite"  (e, t) {
     t.justUnfavorited.set(true);
     Meteor.setTimeout(function(){
       t.justUnfavorited.set(null);
@@ -1346,7 +1327,7 @@ Template.favorite_button.events({
 });
 
 Template.editors_pick_button.events({
-  "click .pick": function() {
+  "click .pick" () {
     return Meteor.call('designateEditorsPick', this._id, function(err) {
       if (err) {
         notifyError(err);
@@ -1354,7 +1335,7 @@ Template.editors_pick_button.events({
       }
     });
   },
-  "click .unpick": function() {
+  "click .unpick" () {
     return Meteor.call('stripEditorsPick', this._id, function(err) {
       if (err) {
         notifyError(err);
@@ -1367,13 +1348,13 @@ Template.editors_pick_button.events({
 
 
 Template.remix_bar.helpers({
-  showPopoutButton: function(){
+  showPopoutButton (){
     return this.type === 'audio';
   }
 });
 
 Template.remix_bar.events({
-  'click .remix-button': function(){
+  'click .remix-button' (){
     trackEvent('Remix context card click', _.pick(this, [
       "_id",
       "authorId",
@@ -1387,7 +1368,7 @@ Template.remix_bar.events({
     ]));
     notifyFeature("Remixing cards: coming soon!");
   },
-  'click .popout-button': function(){
+  'click .popout-button' (){
     trackEvent('Pop out card click', _.pick(this, [
       "_id",
       "authorId",
@@ -1405,19 +1386,19 @@ Template.remix_bar.events({
 });
 
 Template.display_twitter_section.events({
-  "click .show-image" : function(e, template) {
+  "click .show-image"  (e, template) {
     template.$('.twitter-text-section').toggleClass('transparent');
   },
-  "click .image-section" : function(e, template) {
+  "click .image-section"  (e, template) {
     template.$('.twitter-text-section').removeClass('transparent');
   },
-  "mouseenter .twitter-section" : function(e, template) {
+  "mouseenter .twitter-section"  (e, template) {
     if (template.data.imgUrl) {
       template.$('.twitter-text-section').addClass('show-corner');
       template.$('.flag').addClass('show-corner');
     }
   },
-  "mouseleave .twitter-section" : function(e, template) {
+  "mouseleave .twitter-section"  (e, template) {
     if (template.data.imgUrl) {
       template.$('.twitter-text-section').removeClass('show-corner');
       template.$('.flag').removeClass('show-corner');
@@ -1737,13 +1718,13 @@ function millisToMinutesAndSeconds(millis) {
 
 
 Template.audio_popout.helpers({
-  title: function(){
+  title (){
     return poppedOutPlayerInfo.get('title');
   },
-  totalTime: function(){
+  totalTime (){
     return millisToMinutesAndSeconds(poppedOutPlayerInfo.get('duration'));
   },
-  currentTime: function(){
+  currentTime (){
     var currentPosition;
     if(currentPosition = poppedOutPlayerInfo.get('currentPosition')){
       return millisToMinutesAndSeconds(currentPosition);
@@ -1751,7 +1732,7 @@ Template.audio_popout.helpers({
       return "0:00"
     }
   },
-  showPauseButton: function(){
+  showPauseButton (){
     return poppedOutPlayerInfo.get('status') === 'playing';
   }
 });
@@ -1767,21 +1748,21 @@ var updateAudioPosition = function(e, t){
 }
 
 Template.audio_popout.events({
-  'click .play': function(){
+  'click .play' (){
     poppedOutWidget.play();
   },
-  'click .pause': function(){
+  'click .pause' (){
     poppedOutWidget.pause();
   },
   'change .progress': updateAudioPosition,
-  'input .progress': function(e,t) {
+  'input .progress' (e,t) {
     if(Meteor.Device.isPhone()){
       poppedOutWidget.pause();
     } else {
       updateAudioPosition(e,t);
     }
   },
-  "click .dismiss-popout": function(e, t) {
+  "click .dismiss-popout" (e, t) {
     Session.set('poppedOutContextId', null);
     poppedOutWidget.pause();
     trackEvent('Click dismiss popout button');
@@ -1789,11 +1770,10 @@ Template.audio_popout.events({
 });
 
 Template.audio_popout.onRendered(function(){
-  var that = this;
-  this.autorun(function(){
+  this.autorun(() => {
     var relativePosition = poppedOutPlayerInfo.get('relativePosition');
     if(typeof relativePosition === 'number'){
-      that.$('input.progress').val(relativePosition * 1000);
+      this.$('input.progress').val(relativePosition * 1000);
     }
   });
 });
@@ -1803,7 +1783,7 @@ Template.audio_popout.onRendered(function(){
 
 
 Template.create_story.events({
-  'click': function(){
+  'click' (){
     if (Meteor.user()){
       var accessPriority = Meteor.user().accessPriority;
       if (accessPriority && accessPriority <= window.createAccessLevel){
@@ -1848,13 +1828,12 @@ Template.read.onCreated(function(){
   });
 
 
-  var that = this;
 
-  this.autorun(function () {
+  this.autorun(() => {
     if(adminMode()){
-      that.subscribe('adminOtherUserPub', that.data.authorId);
+      this.subscribe('adminOtherUserPub', this.data.authorId);
     } else {
-      that.subscribe('minimalUsersPub', [that.data.authorId]);
+      this.subscribe('minimalUsersPub', [this.data.authorId]);
     }
   });
 });
@@ -1967,7 +1946,7 @@ Template.read.onDestroyed(function(){
 
 
 Template.context_overlay.helpers({
-  overlaidContext: function(){
+  overlaidContext (){
     var id = Session.get('contextOverlayId');
     if(Session.get('showDraft')) {
       return ContextBlocks.findOne(id);
@@ -1975,7 +1954,7 @@ Template.context_overlay.helpers({
       return newTypeSpecificContextBlock(_.findWhere(this.contextBlocks, {_id: id}));
     }
   },
-  contextLoaded: function(){
+  contextLoaded (){
     return Template.instance().contextLoaded.get();
   }
 })
@@ -1986,10 +1965,9 @@ Template.context_overlay.onCreated(function(){
 });
 
 Template.context_overlay.onRendered(function(){
-  var that = this;
   this.contextLoaded.set(false);
-  $('img, video').load(function(){
-    that.contextLoaded.set(true);
+  $('img, video').load(() => {
+    this.contextLoaded.set(true);
   });
 });
 
@@ -1998,10 +1976,10 @@ Template.context_overlay.onDestroyed(function(){
 });
 
 Template.context_overlay.events({
-  'click': function () {
+  'click'  () {
     Session.set('contextOverlayId', null);
   },
-  'scroll': function (e) {
+  'scroll'  (e) {
     e.preventDefault();
     e.stopPropagation();
     return false

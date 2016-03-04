@@ -26,7 +26,7 @@ generateActivity = function(type, details){
       break;
     default: // don't allow duplicate activities
       if(details.content){
-        dedupDetails.content = details.content
+        dedupDetails.content = details.content.toString();
       }
       if(Activities.find(dedupDetails, {limit: 1}).count()){
         return // if this is a duplicate. stop here.
@@ -87,17 +87,25 @@ fanoutActivity = function(activity){
       break;
     case 'Follow':
       fanToObject(activity);
+      sendFollowedYouEmail(activity.object.id, activity.actor.id);
       break;
     case 'FollowBack':
       fanToObject(activity);
+      sendFollowedYouBackEmail(activity.object.id, activity.actor.id);
       break;
     case 'Publish':
       var author = Meteor.users.findOne(activity.actor.id, {fields: {followers: 1}}); // fan to followers
-      _.each(author.followers, function(follower){
-        generateActivityFeedItem(follower, activity._id, activity.published);
-      });
+      if(author.followers && author.followers.length){
+        _.each(author.followers, function(follower){
+          generateActivityFeedItem(follower, activity._id, activity.published);
+        });
+        sendFollowingPublishedEmail(author.followers, activity.object.id);
+      }
       break;
     case 'Share':
+      fanToObjectAuthor(activity);
+      break;
+    case 'ViewThreshold':
       fanToObjectAuthor(activity);
       break;
     default:

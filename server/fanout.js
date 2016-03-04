@@ -1,6 +1,6 @@
 var runFanout = function (options) {
   options = options || {};
-  _.defaults(options, {logging: true})
+  _.defaults(options, {logging: true});
   if(options.logging){
     console.log('Running fanout...');
   }
@@ -41,6 +41,7 @@ var runFanout = function (options) {
   }
 
 };
+
 
 var fanOutWaitInSeconds = parseInt(process.env.FANOUT_WAIT) || 5 * 60; // default is every 5 minutes
 

@@ -38,9 +38,9 @@
 
 @card-spacing: 20px;
 
-@home-banner-break-1:  ~"(max-width: 1300px)";
-@home-banner-break-2:  ~"(max-width: 1200px)";
-@home-banner-break-3:  ~"(max-width: 1000px)";
+@home-banner-break-1:  ~"(max-width: 1320px)";
+@home-banner-break-2:  ~"(max-width: 1220px)";
+@home-banner-break-3:  ~"(max-width: 1020px)";
 @home-banner-break-4:  ~"(max-width: 800px)";
 
 
@@ -185,6 +185,20 @@ html {
 }
 
 
+.flex(@string){
+  -webkit-flex: @string;
+  -ms-flex: @string;
+  flex: @string;
+}
+
+
+.display-flex{
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+
 .linear-gradient (@direction, @startColor, @endColor) {
   background: -webkit-linear-gradient(@direction, @startColor, @endColor);
   background: -moz-linear-gradient(@direction, @startColor, @endColor);
@@ -281,6 +295,11 @@ html {
 .hide {
   visibility: hidden !important; // could also use left: -9999px. better than display:none because it still has a non-zero size
   opacity: 0 !important;
+}
+
+
+.display-none {
+  display: none;
 }
 
 
@@ -904,8 +923,12 @@ div.link-section {
         float: left;
         width: 130px;
         height: 130px;
+        overflow: hidden;
+        background-color: @black-color;
         img{
-          .size-to-fit;
+          min-height: 100%;
+          width: 100%;
+          .center-over-parent-div;
         }
       }
       &.top {
@@ -931,7 +954,7 @@ div.link-section {
       overflow:hidden;
 
       &.image-on-left {
-        display: flex;
+        .display-flex;
         align-items: center;
         background-color: @dark-color;
         float: right;
@@ -1194,12 +1217,88 @@ div.horizontal-context {
 
 @context-count-size: 30px;
 
-.context-count {
-  margin-left: 7px;
+
+
+.context-count-details{
+  display: none;
+  height: @magic-styling-distance;
+  background-color: @dark-color;
   position: absolute;
-  top: -0.5 * @context-count-size;
-  width: 100%;
+  left: 0;
+  right: auto;
+  bottom: @magic-styling-distance + 10px;
+  min-width: 75px;
+  &:after{
+    @triangleSize: 14px;
+    content:'';
+    position: absolute;
+    top: 100%;
+    left: 55px;
+    margin-left: -@triangleSize;
+    width: 0;
+    height: 0;
+    border-top: solid @triangleSize @dark-color;
+    border-left: solid @triangleSize transparent;
+    border-right: solid @triangleSize transparent;
+  }
 }
+
+
+.context-count-transparent-bridge{
+  height: 10px;
+  width: 100%;
+  position: absolute;
+  bottom: -10px;
+}
+
+
+.make-context-count-go-below{
+  .context-count-details{
+    top: @magic-styling-distance + 10;
+    &:after{
+      @triangleSize: 14px;
+      top: auto;
+      bottom: 100%;
+      margin-left: -@triangleSize;
+      border-top: none;
+      border-bottom: solid @triangleSize @dark-color;
+      border-left: solid @triangleSize transparent;
+      border-right: solid @triangleSize transparent;
+    }
+  }
+  .context-count-transparent-bridge{
+    top: -10px;
+  }
+  .context-count-icon {
+    &:first-child:nth-last-child(2) {
+      &:before, &:after {
+        display: none;
+      }
+    }
+  }
+}
+
+.story{
+  @media @not-mobile{
+    &:nth-child(2), &:nth-child(3){
+      .make-context-count-go-below;
+    }
+  }
+  &:nth-child(1){
+    .make-context-count-go-below;
+  }
+}
+
+.context-count{
+  overflow: visible;
+  &:hover{
+    .context-count-details{
+      display: inline-block;
+    }
+
+  }
+}
+
 .context-count-text{
   display: none;
 }
@@ -1207,8 +1306,34 @@ div.horizontal-context {
 .context-count-icon {
   display: inline-block;
   position: relative;
+  float: left;
+  &:first-child:nth-last-child(2){
+    float: right;
+    &:before{
+      content:'';
+      position: absolute;
+      left: -40px;
+      bottom:-5px;
+      height: @magic-styling-distance;
+      width: 35px;
+      background-color: @white-color;
+    }
+    &:after{
+      content:'';
+      position: absolute;
+      left: -40px;
+      bottom:-5px;
+      height: @magic-styling-distance - 8px;
+      border-top: 1px solid @medium-color;
+      width: 35px;
+    }
+  }
   .size(@context-count-size);
-  margin-left: 7px;
+  &:first-child{
+    margin-left: 5px;
+  }
+  margin-right: 5px;
+  margin-top: 5px;
   border-radius: @context-count-size;
   background-color: @action-color;
   svg{
@@ -1217,8 +1342,7 @@ div.horizontal-context {
       fill: white;
     }
     .size(@context-count-size + @bonus-size);
-    margin-left: -@bonus-size * 0.5;
-    margin-top: -@bonus-size * 0.5;
+    .center-over-parent-div;
   }
 
   &:hover{
@@ -1226,13 +1350,11 @@ div.horizontal-context {
       display: none;
     }
     .context-count-text {
-      .FFMarkWebBold;
-      font-size: 14px;
-      position: absolute;
+      .FFMagdaCleanMonoWebProRegular;
+      font-size: 13px;
       cursor: default;
       color: @white-color;
-      top: 18%;
-      left: 35%;
+      .center-over-parent-div;
       display: inline;
     }
   }
@@ -1415,9 +1537,7 @@ div.minimap {
   }
 
   .section {
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
+    .display-flex;
 
     -ms-flex-align: center;
     -webkit-align-items: center;
@@ -1810,7 +1930,7 @@ body.konami{
 
 div.loading-container {
   margin-top: 100px;
-  display: flex;
+  .display-flex;
   align-items: center;
   justify-content: center;
   &.header {
@@ -1918,7 +2038,7 @@ div.loading-container {
 
     .user-action {
       background-color: @social-color;
-      @profile-picture-size: 25px;
+      @profile-picture-size: 26px;
       button{
         line-height: @height;
       }
@@ -1932,7 +2052,7 @@ div.loading-container {
       img.profile-picture {
         margin:auto;
         margin-right: 2px;
-        margin-bottom: -9px;
+        margin-bottom: -10px;
         z-index: 10;
         border-radius: @profile-picture-size/2;
         width: @profile-picture-size;
@@ -1993,6 +2113,7 @@ div.loading-container {
     position: fixed;
     right: 0;
     bottom: 0;
+    z-index: 1;
   }
 }
 
@@ -2053,41 +2174,83 @@ div.loading-container {
 
 
 .follow-button{
-  &.flag-style{
-    height: @magic-styling-distance + 10px;
-    width: @magic-styling-distance;
-
-    line-height: 0;
-    button{
-      .size-to-fit;
-      line-height: 0;
-      position: relative;
-      span{
-        .center-over-parent-div;
-      }
-    }
-    .unfollow{
-      .x{
-        opacity: 0;
+  height: @magic-styling-distance;
+  svg{
+    float: left;
+    height: 18px;
+    margin-top: -3px;
+    margin-right: 10px;
+  }
+  button{
+    .FFMarkWebBold;
+    font-size: 13px;
+    .size-to-fit;
+    &.unfollow{
+      color: @social-color;
+      .fg{
+        fill: @social-color;
       }
       &:hover{
-        &:not(.just-followed){
-          .check{
-            opacity: 0;
-          }
-          .x{
-            opacity: 1;
-          }
+        color: @black-color;
+        .fg{
+          fill: @black-color;
+        }
+      }
+    }
+    &.follow{
+      color: @medium-color;
+      .fg{
+        fill: @medium-color;
+      }
+      &:hover{
+        color: @social-color;
+        .fg{
+          fill: @social-color;
+        }
+      }
+    }
+
+    &.unfollow:hover{
+      &:not(.just-followed){
+        span{
+          display: none;
+        }
+        &:after{
+          content: 'Unfollow';
+        }
+        color: @orange-color;
+        .fg{
+          fill: @orange-color;
+        }
+      }
+      &.just-followed{
+        color: @social-color;
+        .fg{
+          fill: @social-color;
         }
       }
     }
   }
-  &:not(.flag-style){
+
+  &.bar-style{
+    button{
+      white-space: nowrap;
+      .FFMagdaCleanMonoWebProRegular;
+      font-size: 13px;
+      padding: 0;
+      text-align: left;
+    }
+    &.unfollow-style{
+      width: 95px;
+    }
+  }
+
+  &:not(.bar-style){
     width: 180px;
-    height: @magic-styling-distance;
     display: inline-block;
     button{
       .FFMarkWebBold;
+      color: @white-color !important;
       font-size: 13px;
       .size-to-fit;
       &.unfollow{
@@ -2108,7 +2271,7 @@ div.loading-container {
           span{
             display: none;
           }
-          &:before{
+          &:after{
             content: 'Unfollow';
           }
           background-color: @orange-color;
@@ -2136,4 +2299,18 @@ div.loading-container {
 
 .amaran-wrapper{
   z-index: 9999999;
+}
+
+.unsubscribe{
+  .rest{
+    padding-top: 150px;
+    text-align: center;
+    button{
+      width: 180px;
+      height: @magic-styling-distance;
+      background-color: @action-color;
+      margin-left: 15px;
+    }
+    .padding-sides(20px);
+  }
 }
