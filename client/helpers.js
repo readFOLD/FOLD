@@ -114,6 +114,9 @@ Handlebars.registerHelper("userFollowing", function(id) {
   return id === Meteor.userId() || Meteor.user() && _.contains(Meteor.user().profile.following, id);
 });
 
+Handlebars.registerHelper("showStorySandwichFooter", function () {
+  return hiddenContextMode() && !Meteor.Device.isPhone();
+});
 
 
 Handlebars.registerHelper("profileImage", function(user, size) {

@@ -7,7 +7,7 @@
         {{> story_header}}
         {{> story}}
         {{> read_options}}
-        {{#if sandwichMode}}
+        {{#if showStorySandwichFooter}}
           {{> story_sandwich_footer}}
         {{/if}}
       {{/if}}
@@ -44,7 +44,7 @@
 <template name="read_options">
   <div class="floating-story-buttons">
     {{#unless isPhone}}
-      {{#unless sandwichMode}}
+      {{#unless showStorySandwichFooter}}
         {{#with reactiveStory}}
           {{> share_buttons}}
           {{> favorite_button}}
