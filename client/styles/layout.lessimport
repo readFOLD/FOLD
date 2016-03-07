@@ -1371,6 +1371,10 @@ div.horizontal-context {
         margin-top: 100px;
         opacity: 1 !important;
         outline: (@card-spacing - 2px) solid @black-color;
+        z-index: 2;
+        &.hide-behind{
+          z-index: 1;
+        }
         &.selected{
           z-index: 9999;
         }

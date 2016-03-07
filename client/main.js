@@ -851,11 +851,6 @@ Template.horizontal_context.helpers({
       }
     });
   },
-  last () {
-    var lastIndex, _ref;
-    lastIndex = ((_ref = Session.get("horizontalSectionsMap")[Session.get("currentY")]) != null ? _ref.horizontal.length : void 0) - 1;
-    return (this.index === lastIndex) && (lastIndex > 0);
-  },
   horizontalSectionInDOM () {
     // on this row, or this card is the current X for another hidden row
     return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId') || this.type === 'audio';
@@ -941,6 +936,36 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 //    );
 //  }
 //});
+
+Template.horizontal_section_block.onRendered(function(){
+  // when cards flip from left to right (or vice-versa), they sometimes go above other cards weirdly. this sends it behind for the duration of the animation
+  //var lastIndex, _ref;
+  //lastIndex = ((_ref = Session.get("horizontalSectionsMap")[this.data.verticalIndex]) != null ? _ref.horizontal.length : void 0) - 1;
+  //var isLast = ((this.data.index === lastIndex) && (lastIndex > 0));
+
+  this.styleObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutationRecord) => {
+      var oldLeft = mutationRecord.oldValue.match(/left\:\W([\-?\d+]+)/)[1];
+      var newLeft = this.firstNode.style.left.match(/([\-?\d+]+)/)[1];
+
+      if ( (oldLeft < 0 && newLeft > 300) || (oldLeft > 300 && newLeft < 0) ){ // if it flips from negative to positive
+        $(this.firstNode).addClass('hide-behind');
+        Meteor.setTimeout(() => {
+          $(this.firstNode).removeClass('hide-behind');
+        }, 200); // this number should be as long as the .left-transition in the css
+      }
+    });
+  });
+
+  this.styleObserver.observe(this.firstNode, { attributes : true, attributeFilter : ['style'], attributeOldValue: true })
+
+});
+
+Template.horizontal_section_block.onDestroyed(function(){
+  if(this.styleObserver){
+    this.styleObserver.disconnect();
+  }
+});
 
 Template.horizontal_section_block.events({
   'click .mobile-context-back-button' (e, t){

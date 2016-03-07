@@ -55,7 +55,6 @@ window.getHorizontalLeft = function() {
 
   if(inHiddenContextMode){
     // we do something different
-    console.log(currentPos)
     var focusCardLeft = (Session.get('windowWidth') - cardWidth) / 2;
     if(currentPos === 0){
       return focusCardLeft
@@ -67,9 +66,18 @@ window.getHorizontalLeft = function() {
     if(numCards <= 3){
       positiveWrapPoint = 1;
       negativeWrapPoint = -1;
-    } else {
+    } else if(numCards <= 4) {
+      positiveWrapPoint = 1;
+      negativeWrapPoint = -2;
+    } else if(numCards <= 5) {
       positiveWrapPoint = 2;
       negativeWrapPoint = -2;
+    } else if(numCards <= 6) {
+      positiveWrapPoint = 2;
+      negativeWrapPoint = -3;
+    } else {
+      positiveWrapPoint = 3;
+      negativeWrapPoint = -3;
     }
 
     if(currentPos > positiveWrapPoint){
