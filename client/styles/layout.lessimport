@@ -187,6 +187,14 @@ html {
   transform: @string;
 }
 
+.filter(@string){
+  -webkit-filter: @string;
+  -moz-filter: @string;
+  -o-filter: @string;
+  -ms-filter: @string;
+  filter: @string;
+}
+
 
 .flex(@string){
   -webkit-flex: @string;
@@ -1254,7 +1262,10 @@ div#banner-overlay {
   .footer-overlay-image, video{
     min-width: 100%;
     position: absolute;
-    top: -350px;
+    bottom: -3px;
+    background-color: @dark-color;
+    .transform(scaleX(-1));
+    .filter(blur(3px));
   }
 
   .left{
