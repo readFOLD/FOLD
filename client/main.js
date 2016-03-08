@@ -1382,6 +1382,7 @@ Template.remix_bar.events({
     ]));
     goRightOneCard();
     Session.set('poppedOutContextId', this._id); // in case there is only one card in the row, force it to pop out
+    Session.set('poppedOutContextType', this.type);
   }
 });
 
@@ -1574,6 +1575,8 @@ window.setPoppedOutWidget = function (id){
 
   poppedOutWidget.activeSource = source;
 
+  Session.set('poppedOutContextType', (source === 'soundcloud') ? 'audio' : 'video');
+
 
   switch(source){
     case 'soundcloud':
@@ -1591,6 +1594,7 @@ window.setPoppedOutWidget = function (id){
 window.popOutMostRecentWidget = function(){
   poppedOutWidget = mostRecentWidget;
   Session.set('poppedOutContextId', mostRecentWidget.id);
+  Session.set('poppedOutContextType', (mostRecentWidget.activeSource === 'soundcloud') ? 'audio' : 'video');
 }
 
 window.setMostRecentWidget = function (id){
@@ -1640,6 +1644,7 @@ Tracker.autorun(function() {
       if(!Meteor.Device.isPhone() || mobileContextView){
         setMostRecentWidget(currentXId);
         Session.set('poppedOutContextId', null);  // new card was previously popped out, so pop it back in
+        Session.set('poppedOutContextType', null);  // new card was previously popped out, so pop it back in
         return
       }
     } else if(mostRecentWidget.activated()){ // otherwise there is a most recent audio card
@@ -1663,6 +1668,7 @@ Tracker.autorun(function() {
 });
 
 Session.set('poppedOutContextId', null);
+Session.set('poppedOutContextType', null);
 
 window.poppedOutPlayerInfo = new ReactiveDict;
 
@@ -1788,6 +1794,7 @@ Template.audio_popout.events({
   },
   "click .dismiss-popout" (e, t) {
     Session.set('poppedOutContextId', null);
+    Session.set('poppedOutContextType', null);
     poppedOutWidget.pause();
     trackEvent('Click dismiss popout button');
   }

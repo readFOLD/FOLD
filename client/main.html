@@ -35,7 +35,7 @@
 
 <template name="story_header">
   {{> top_banner showFilters=showPublished hideMakeAStory=showDraft slim=true}}
-  <div class="title-overlay {{#unless read}}write{{/unless}}">
+  <div class="title-overlay {{#unless read}}write{{/unless}} {{#if videoPopoutExists}}with-video-popout{{/if}}">
     {{#with headerImageVideoObject}}
       {{> looping_video}}
     {{else}}

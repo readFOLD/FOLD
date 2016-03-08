@@ -295,6 +295,7 @@ div.title-overlay {
   @ending-height: @title-overlay-ending-height;
   height: @starting-height;
 
+
   color: @white-color;
   position: relative;
   overflow: hidden;
@@ -422,6 +423,9 @@ div.title-overlay {
     z-index: 30;
     height: @ending-height;
     width: 100%;
+    &.with-video-popout{
+      width: calc(100% ~'-' @fixed-banner-height * 16 / 9);
+    }
     background-color: @dark-color;
 
     img{

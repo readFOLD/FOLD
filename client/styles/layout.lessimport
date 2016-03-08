@@ -38,6 +38,9 @@
 
 @card-spacing: 20px;
 
+@fixed-banner-height: 100px;
+
+
 @home-banner-break-1:  ~"(max-width: 1320px)";
 @home-banner-break-2:  ~"(max-width: 1220px)";
 @home-banner-break-3:  ~"(max-width: 1020px)";
@@ -1155,7 +1158,7 @@ div.twitter-section{
   }
 }
 
-@fixed-banner-height: 100px;
+
 div#banner-overlay {
   width: 100%;
   height: 350px;
@@ -1401,8 +1404,8 @@ div.horizontal-context {
 
       .active-display{
         position: fixed;
-        top: @magic-styling-distance/2 + 60px;
-        right: 100px;
+        top: -10px;
+        right: -89px;
         z-index: 9999999;
         height: @fixed-banner-height * 2;
         width: @fixed-banner-height * 16 / 9 * 2;
