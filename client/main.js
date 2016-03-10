@@ -8,7 +8,7 @@ UI.registerHelper('selectedIf', function(val) {
 
 getCardWidth = function(windowWidth) {
   if (Meteor.Device.isPhone()){
-    return Session.get("windowWidth") * .8 - 2 * Session.get("separation");
+    return Session.get("windowWidth") * .9 - 2 * Session.get("separation");
   } else if (windowWidth <= window.constants.minPageWidth) {
     return 400;
   } else {
@@ -985,6 +985,13 @@ Template.horizontal_section_block.helpers({
 
   hideContainer () {
     return this.type === 'audio' && this._id === Session.get('poppedOutContextId') && !(Session.equals("currentY", this.verticalIndex) || Session.equals("currentY", null) && this.verticalIndex === 0);
+  }
+});
+
+
+Template.horizontal_section_block.events({
+  'click' (){
+    goToX(this.index)
   }
 });
 

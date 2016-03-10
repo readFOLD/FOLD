@@ -57,6 +57,16 @@
   color: @dark-color;
 }
 
+.mobile-context-font{
+  @media @mobile {
+    font-size: 14px;
+    line-height: @mobile-content-line-height;
+  }
+  @media @smaller-mobile {
+    font-size: 13px;
+  }
+}
+
 .ellipsis-text{
   white-space: nowrap;
   overflow-x: hidden;
@@ -165,6 +175,7 @@ html {
 ~"only screen and (min--moz-device-pixel-ratio: 1.5)",
 ~"only screen and (-o-min-device-pixel-ratio: 3/2)",
 ~"only screen and (min-device-pixel-ratio: 1.5)";
+@smaller-mobile:      ~"only screen and (max-device-width: 330px)";
 @mobile:      ~"only screen and (max-device-width: 529px)";
 @not-mobile:  ~"(min-device-width: 530px)";
 @thin-window:  ~"(max-width: 400px)";
@@ -1113,6 +1124,11 @@ div.text-section {
   .text-content{
     overflow-y: hidden;
     height: 264px;
+    @media @mobile {
+      overflow-y: scroll;
+      height: 100%;
+      padding: 20px;
+    }
   }
 
   textarea {
@@ -1590,7 +1606,6 @@ div.horizontal-context {
   position: absolute;
   height: @horizontal-content-height;
   // box-shadow: 3px 3px #848484;
-  pointer-events: none;
   outline: 1px solid @outline-color;
   //min-width: 400px;
   width: 32%;
@@ -1599,12 +1614,18 @@ div.horizontal-context {
   // display: none;
   opacity:  @unselected-opacity;
 
+  a, img, video, .image-section, .link-section, iframe{
+    pointer-events: none;
+  }
+
   &.selected {
     opacity: 1.0;
     @media @mobile {
       visibility: visible;
     }
-    pointer-events: auto;
+    a, img, video, .image-section, .link-section, iframe{
+      pointer-events: auto;
+    }
   }
 
   &.popped-out{
