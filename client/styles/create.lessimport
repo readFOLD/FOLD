@@ -668,12 +668,6 @@ div.browser-offset {
   padding-top: 100px;
 }
 
-div.narrativeView {
-  section {
-    margin-bottom: 0 !important;
-  }
-}
-
 
 div.vertical-narrative {
   z-index: 20;

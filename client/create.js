@@ -446,9 +446,6 @@ Template.story_title.events({
 });
 
 Template.create.helpers({
-  narrativeView () {
-    return Session.get("narrativeView");
-  },
   category () {
     return Session.get("storyCategory");
   },

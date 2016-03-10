@@ -61,9 +61,6 @@ Handlebars.registerHelper("isAuthor", function() {
 });
 
 Handlebars.registerHelper("cardWidth", function() {
-  if (Session.get("narrativeView")) {
-    return 800;
-  }
   return Session.get("cardWidth");
 });
 
