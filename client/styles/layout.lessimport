@@ -825,6 +825,9 @@ div.image-section {
   .size-to-fit;
   position: relative;
   line-height: @horizontal-content-height;
+  @media @mobile {
+    line-height: 0;
+  }
   background-color: @black-color;
   text-align: center;
   &:hover, &.always-show-caption{
@@ -939,6 +942,9 @@ div.image-section {
 
 div.broken-section {
   height: @horizontal-content-height;
+  @media @mobile {
+    height: 100%;
+  }
   width: 100%;
   background-color: @inactive-color;
   position: relative;
@@ -987,7 +993,10 @@ div.oec-section {
 
 div.link-section {
   position: relative;
-  height: 300px;
+  height: @horizontal-content-height;
+  @media @mobile {
+    height: 100%;
+  }
   border-bottom: 7px solid @action-color;
 
   overflow-y: hidden;
@@ -1795,27 +1804,6 @@ div.minimap {
 @border-left: calc(50% ~"-" 0.5px);
 @border-bottom: 50%;
 
-
-.mobile-minimap-vertical{
-  position: fixed;
-  z-index: 24;
-  height: 300px;
-  &:after {
-    content:"";
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    bottom: 0;
-    left: @border-left;
-    border-left: 1px solid @medium-color;
-  }
-}
-.mobile-minimap-vertical-table{
-  .size-to-fit;
-  top: 0px;
-  left: 0px;
-  display:table;
-}
 
 .vertical-marker-row{
   display:table-row;

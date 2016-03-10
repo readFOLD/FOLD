@@ -232,7 +232,7 @@
 
 <template name="horizontal_section_block">
   <div
-      class="narrative-section horizontal-narrative-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if poppedOut}}popped-out selected{{/if}} {{#if hideContainer}}hide-container{{/if}} {{#if editingThisContext}}editing{{/if}} {{#if hide}}hide{{/if}}" data-index="{{index}}" style="width: {{cardWidth}}px; left: {{left}}px;">
+      class="narrative-section horizontal-narrative-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if poppedOut}}popped-out selected{{/if}} {{#if hideContainer}}hide-container{{/if}} {{#if editingThisContext}}editing{{/if}} {{#if hide}}hide{{/if}}" data-index="{{index}}" style="width: {{cardWidth}}px; left: {{left}}px; {{#if cardHeight}}height: {{cardHeight}}px;{{/if}}">
 <section>
 
     {{#if type}}
@@ -377,7 +377,7 @@
   <div class="display-context-section map-section">
     {{#if selected}}
       <div class="active-display">
-        <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
+        <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}"></iframe>
       </div>
     {{/if}}
     <div class="preview">
@@ -413,7 +413,7 @@
 <template name="display_audio_section">
   <div class="display-context-section audio-section" data-context-id="{{_id}}">
     <div class="active-display {{#unless selected}}hide{{/unless}}">
-      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+      <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
     </div>
     <div class="preview">
       <img src="{{previewUrl}}"/>
@@ -436,7 +436,7 @@
   <div class="display-context-section video-section">
     {{#if selected}}
       <div class="active-display">
-        <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+        <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
       </div>
     {{/if}}
     <div class="preview">

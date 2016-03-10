@@ -64,6 +64,10 @@ Handlebars.registerHelper("cardWidth", function() {
   return Session.get("cardWidth");
 });
 
+Handlebars.registerHelper("cardHeight", function() { // for context cards, particularly in mobile
+  return Session.get("cardHeight");
+});
+
 Handlebars.registerHelper("windowWidth", function() {
   return Session.get("windowWidth");
 });

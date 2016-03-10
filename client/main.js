@@ -8,7 +8,7 @@ UI.registerHelper('selectedIf', function(val) {
 
 getCardWidth = function(windowWidth) {
   if (Meteor.Device.isPhone()){
-    return Session.get("windowWidth") - 2 * getVerticalLeft();
+    return Session.get("windowWidth") * .8 - 2 * Session.get("separation");
   } else if (windowWidth <= window.constants.minPageWidth) {
     return 400;
   } else {
@@ -35,12 +35,16 @@ Meteor.startup(function(){
 
     var cardWidth = getCardWidth(windowWidth);
 
+
     Session.set("cardWidth", cardWidth);
 
     if (Meteor.Device.isPhone()) {
       document.body.style.overflowX = "hidden";
       $('body').css('max-width', windowWidth);
       Session.set("mobileMargin", getVerticalLeft(windowWidth));
+
+      var cardHeight = getCardWidth(windowWidth) * 9 / 16;
+      Session.set("cardHeight", cardHeight);
     }
   });
 
@@ -1019,6 +1023,12 @@ Template.display_image_section.events(editableDescriptionEventsBoilerplate('edit
 Template.display_image_section.events({
     'click'  (e, t) {
       if (Session.get('read') && !($(e.target).is('a')) && !Meteor.Device.isPhone()){
+        Session.set('contextOverlayId', this._id);
+        trackEvent('Expand image card');
+      }
+    },
+  'dblclick'  (e, t) {
+      if (Session.get('read') && !($(e.target).is('a'))){ // double click expands card on phone
         Session.set('contextOverlayId', this._id);
         trackEvent('Expand image card');
       }
