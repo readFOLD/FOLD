@@ -1126,7 +1126,6 @@ div.text-section {
     height: 264px;
     @media @mobile {
       overflow-y: scroll;
-      height: 100%;
       padding: 20px;
     }
   }
@@ -1712,6 +1711,10 @@ div.horizontal-context {
           position: absolute;
         }
       }
+    }
+    &.text-card{
+      height: auto !important;
+      max-height: 300px;
     }
   }
 
