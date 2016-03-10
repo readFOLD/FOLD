@@ -1364,6 +1364,9 @@ div.horizontal-context {
     top: -1000px;
     &.hidden-context-shown{
       top: 100px;
+      @media @mobile {
+        top: 40px;
+      }
       margin-top: 0;
       z-index: 50;
       background-color: @light-transparent-color;
@@ -1586,10 +1589,6 @@ div.horizontal-context {
   color: @dark-color;
   // display: none;
   opacity:  @unselected-opacity;
-
-  @media @mobile {
-    visibility: hidden;
-  }
 
   &.selected {
     opacity: 1.0;

@@ -967,13 +967,6 @@ Template.horizontal_section_block.onDestroyed(function(){
   }
 });
 
-Template.horizontal_section_block.events({
-  'click .mobile-context-back-button' (e, t){
-    Session.set('hiddenContextShown', false);
-    trackEvent('Click mobile back button');
-  }
-});
-
 Template.horizontal_section_block.helpers(horizontalBlockHelpers);
 
 // Magic layout function

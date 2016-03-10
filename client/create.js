@@ -403,7 +403,7 @@ Template.vertical_section_block.onCreated(function() {
 });
 
 Template.vertical_section_block.onRendered(function() {
-  if (!Meteor.Device.isPhone()){ // highlight active context card link except on mobile
+  if (!hiddenContextMode()){
     this.autorun(() => {
       Session.get('read') // make reactive to switching between preview and edit
       var currentXId = Session.get('currentXId');

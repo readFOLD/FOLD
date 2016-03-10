@@ -110,7 +110,7 @@
 
       {{> story_footer}}
     </div>
-    <div class="horizontal-context {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}} {{#if hiddenContextShown}}hidden-context-shown{{/if}}">
+    <div class="horizontal-context {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}} {{#if hiddenContextShown}}hidden-context-shown{{/if}} {{#if isPhone}}fixed{{/if}}">
       {{> horizontal_context}}
     </div>
   </article>
@@ -305,13 +305,6 @@
         {{#unless hiddenContextMode}}
           {{> remix_bar}}
         {{/unless}}
-      {{/if}}
-      {{#if isPhone}}
-        {{#if selected}}
-          <button class="mobile-context-back-button">
-            {{> mobile_back_icon }}
-          </button>
-        {{/if}}
       {{/if}}
       </section>
     </div>
