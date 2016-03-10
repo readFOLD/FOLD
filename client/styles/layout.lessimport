@@ -1190,6 +1190,7 @@ div.twitter-section{
     z-index: 1;
   }
   div.twitter-text-section {
+    .mobile-context-font;
     a {
       &:hover {
         color: @action-color;
@@ -1198,6 +1199,10 @@ div.twitter-section{
     padding: 32px 15px 25px 25px;
     .size-to-fit;
     display: table;
+    @media @mobile {
+      display: block;
+      padding: 20px;
+    }
 
     &.image{
       background-color: @light-transparent-color;
@@ -1227,6 +1232,10 @@ div.twitter-section{
       position: relative;
       div.title {
         margin-bottom: 20px;
+        @media @mobile {
+          font-size: 100%;
+          margin-bottom: 15px;
+        }
         div.prof_pic {
           float: left;
         }
@@ -1235,6 +1244,9 @@ div.twitter-section{
           left: 10px;
           div.screenname {
             font-size: 14px;
+            @media @mobile {
+              font-size: 80%;
+            }
             font-weight: 100;
           }
         }
@@ -1244,15 +1256,25 @@ div.twitter-section{
         line-height: 28px;
         padding-bottom: 12px;
         max-width: 480px;
-
+        @media @mobile {
+          font-size: 100%;
+          line-height: 1.5;
+        }
       }
     }
   }
   div.info {
     float: left;
+
   }
   div.actions {
     margin-left: calc(100% ~"-" 55px);
+  }
+  .info, .actions{
+    @media @mobile {
+      font-size: 80%;
+      line-height: 1;
+    }
   }
 }
 
@@ -1678,6 +1700,18 @@ div.horizontal-context {
       }
       background-color: @selected-background-color;
       color: @dark-color;
+    }
+  }
+
+  @media @mobile {
+    &.twitter-card{
+      height: auto !important;
+      .active-display{
+        position: relative;
+        .image-section{
+          position: absolute;
+        }
+      }
     }
   }
 
