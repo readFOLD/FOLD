@@ -806,6 +806,29 @@ Template.horizontal_context.events({
     Session.set('hiddenContextShown', false);
   }
 });
+
+Template.horizontal_context.onRendered(function(){
+  Tracker.autorun(() => {
+    if(mobileOrTablet()) {
+      if(Session.get('hiddenContextShown')){
+        Meteor.defer(()=> {
+          this.$('.hidden-context-overlay').hammer(hammerDoubleTapOptions).bind('doubletap', () => {
+            Session.set('hiddenContextShown', false);
+          });
+        })
+      } else {
+        this.$('.hidden-context-overlay').hammer(hammerDoubleTapOptions).unbind('doubletap');
+      }
+    }
+  })
+});
+
+Template.horizontal_context.onDestroyed(function(){
+  if(mobileOrTablet()) {
+    this.$('.hidden-context-overlay').hammer(hammerDoubleTapOptions).unbind('doubletap');
+  }
+});
+
 Template.horizontal_context.helpers({
   verticalExists () {
     return Session.get("horizontalSectionsMap").length;
@@ -1037,7 +1060,7 @@ Template.display_viz_section.helpers(horizontalBlockHelpers);
 
 Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
 Template.display_image_section.onRendered(function(){
-  if(Meteor.Device.isPhone() || Meteor.Device.isTablet()) {
+  if(mobileOrTablet()) {
     this.$('.image-section').hammer(hammerDoubleTapOptions).bind('doubletap', () => {
       Session.set('contextOverlayId', this.data._id);
       trackEvent('Expand image card');
@@ -1046,7 +1069,7 @@ Template.display_image_section.onRendered(function(){
 });
 
 Template.display_image_section.onDestroyed(function(){
-  if(Meteor.Device.isPhone() || Meteor.Device.isTablet()) {
+  if(mobileOrTablet()) {
     this.$('.image-section').hammer(hammerDoubleTapOptions).unbind('doubletap');
   }
 });
