@@ -190,6 +190,10 @@ window.trackEvent = function(){
   analytics.track.apply(this, arguments);
 };
 
+var preventDefault = function(event) {
+  event.preventDefault();
+};
+
 window.freezePageScroll = function(){
   var b = $('body');
   var normalw = window.innerWidth;
@@ -198,12 +202,20 @@ window.freezePageScroll = function(){
   document.body.style.overflowY = 'hidden';
   document.body.style.marginRight = scrollBarWidth + 'px';
   $('.home-top.fat').width('calc(100% - ' + scrollBarWidth +'px');
+
+  if(Meteor.Device.isPhone() || Meteor.Device.isTablet()){
+    window.document.body.addEventListener("touchmove", preventDefault, false);
+  }
 };
 
 window.unfreezePageScroll = function(){
   document.body.style.overflowY = 'auto';
   document.body.style.marginRight = 0;
   $('.home-top.fat').width('100%');
+
+  if(Meteor.Device.isPhone() || Meteor.Device.isTablet()) {
+    window.document.body.removeEventListener("touchmove", preventDefault, false);
+  }
 };
 
 window.sandwichMode = function(){
