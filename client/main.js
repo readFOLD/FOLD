@@ -180,22 +180,24 @@ window.updateCurrentY = function() {
 
   stickyTitle = 120;
 
-  if(!sandwichMode()){
+  var inSandwichMode = sandwichMode();
+
+  if(!inSandwichMode){
     Session.set("scrollTop", scrollTop);
 
-    if(!Meteor.Device.isPhone()) {
-      $("div#banner-overlay").css({
-        opacity: Math.min(1.0, scrollTop / readMode)
-      });
+    if(!Meteor.Device.isPhone()){
       $(".horizontal-context").css({
         opacity: 0.5 + Math.min(1.0, scrollTop / readMode) / 2
+      });
+      $("div#banner-overlay").css({
+        opacity: Math.min(1.0, scrollTop / readMode)
       });
     }
 
   }
 
   if(!Meteor.Device.isPhone()){
-    if (sandwichMode() || (scrollTop >= readMode)){
+    if (inSandwichMode || (scrollTop >= readMode)){
       $("div.title-author").addClass("c");
       $("div.title-author").removeClass("a");
       $("div.title-author").removeClass("b");
@@ -212,12 +214,12 @@ window.updateCurrentY = function() {
     }
 
 
-    if (sandwichMode() || (scrollTop >= readMode)) {
+    if (inSandwichMode || (scrollTop >= readMode)) {
       $("div.title-overlay, div#banner-overlay").addClass("fixed");
       Session.set("pastHeader", true);
       $("div.horizontal-context").addClass("fixed");
 
-      if(scrollPauseArmed && !sandwichMode()){
+      if(scrollPauseArmed && !inSandwichMode){
         freezePageScroll();
         $(document).scrollTop(readMode);
         Meteor.setTimeout(function () {
@@ -267,6 +269,14 @@ Tracker.autorun(function(){
   if(!Session.get('pastHeader')){
     Session.set('currentY', null);
     Session.set('currentX', null);
+  }
+});
+
+Tracker.autorun(function(){
+  if(Session.get('hiddenContextShown')){
+    $(".horizontal-context").css({
+      opacity: 1
+    });
   }
 });
 
