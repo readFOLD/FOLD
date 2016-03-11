@@ -272,14 +272,6 @@ Tracker.autorun(function(){
   }
 });
 
-Tracker.autorun(function(){
-  if(Session.get('hiddenContextShown')){
-    $(".horizontal-context").css({
-      opacity: 1
-    });
-  }
-});
-
 
 Tracker.autorun(function(){
   var story = Session.get('story');

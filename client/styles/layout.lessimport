@@ -1469,6 +1469,7 @@ div.horizontal-context {
 
   &.hidden-context-mode{
     position: fixed;
+    opacity: 1 !important;
     z-index: -1;
     top: -1000px;
     &.hidden-context-shown{
