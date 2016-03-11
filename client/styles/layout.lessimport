@@ -1765,6 +1765,140 @@ div.horizontal-context {
     }
   }
 
+  .audio-iframe-overlay{
+    position: absolute;
+    top: 60px;
+    left:0;
+    height: calc(100% ~"-" 60px ~"-" 65px);
+    width: 100%;
+  }
+  .audio-iframe-overlay-2{
+    position: absolute;
+    top: 37px;
+    left:60px;
+    height: 30px;
+    width: calc(100% ~"-" 60px);
+  }
+  .audio-iframe-overlay-3{
+    position: absolute;
+    top:0;
+    right:0;
+    height: 60px;
+    width: calc(100% ~"-" 200px);
+  }
+  .audio-iframe-overlay-4{
+    position: absolute;
+    left:0;
+    bottom: 0;
+    height: 37px;
+    width: 100%;
+  }
+  .audio-iframe-overlay-5{
+    position: absolute;
+    left:0;
+    bottom: 0;
+    height: 100%;
+    width: 10px;
+  }
+  .audio-iframe-overlay-6{
+    position: absolute;
+    left:0;
+    top: 0;
+    width: 100%;
+    height: 15px;
+  }
+
+  .video-iframe-overlay-vimeo{
+    position: absolute;
+    top: 0px;
+    left:0;
+    height: 35px;
+    width: 100%;
+    //background-color: black;
+  }
+  .video-iframe-overlay-1{
+    position: absolute;
+    top: 35px;
+    left:0;
+    height: calc(50% ~"-" 35px ~"-" 25px);
+    width: 100%;
+    //background-color: black;
+  }
+  .video-iframe-overlay-5{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 15px;
+    width: 100%;
+    //background-color: black;
+  }
+  .video-iframe-overlay-6{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom:0;
+    width: 15px;
+    @media @not-mobile{
+      width: 8px;
+    }
+    //background-color: black;
+  }
+  .video-iframe-overlay-7{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom:0;
+    width: 15px;
+    @media @not-mobile{
+      width: 8px;
+    }
+    //background-color: black;
+  }
+  .video-iframe-overlay-2{
+    position: absolute;
+    top: 35px;
+    left:0;
+    bottom: 0;
+    width: calc(50% ~"-" 35px);
+    @media @not-mobile{
+      bottom: 80px;
+    }
+    //background-color: black;
+  }
+  .video-iframe-overlay-3{
+    position: absolute;
+    top:35px;
+    bottom: 0;
+    @media @not-mobile{
+      bottom: 80px;
+    }
+    right:0;
+    width: calc(50% ~"-" 35px);
+    //background-color: black;
+  }
+  .video-iframe-overlay-4{
+    position: absolute;
+    left:0;
+    bottom: 0;
+    right: 0;
+    height: calc(50% ~"-" 25px);
+
+    @media @not-mobile{
+      height: calc(50% ~"-" 25px ~"-" 80px);
+      bottom: 80px;
+    }
+    //background-color: black;
+  }
+  .video-iframe-overlay-vimeo-tablet-1{
+    position: absolute;
+    left:0;
+    bottom: 0;
+    right: 0;
+    top: 125px;
+    height: calc(50% ~"-" 25px);
+    //background-color: black;
+  }
+
   @media @mobile {
     &.twitter-card{
       height: auto !important;

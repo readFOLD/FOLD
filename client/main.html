@@ -377,9 +377,11 @@
 <template name="display_map_section">
   <div class="display-context-section map-section">
     {{#if selected}}
-      <div class="active-display">
-        <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}"></iframe>
-      </div>
+      {{#unless mobileOrTablet}}
+        <div class="active-display">
+          <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}"></iframe>
+        </div>
+      {{/unless}}
     {{/if}}
     <div class="preview">
       <img src="{{previewUrl}}"/>
@@ -414,6 +416,14 @@
 <template name="display_audio_section">
   <div class="display-context-section audio-section" data-context-id="{{_id}}">
     <div class="active-display {{#unless selected}}hide{{/unless}}">
+      {{#if mobileOrTablet}}
+        <div class="audio-iframe-overlay"></div>
+        <div class="audio-iframe-overlay-2"></div>
+        <div class="audio-iframe-overlay-3"></div>
+        <div class="audio-iframe-overlay-4"></div>
+        <div class="audio-iframe-overlay-5"></div>
+        <div class="audio-iframe-overlay-6"></div>
+      {{/if}}
       <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
     </div>
     <div class="preview">
@@ -437,6 +447,23 @@
   <div class="display-context-section video-section">
     {{#if selected}}
       <div class="active-display">
+        {{#if mobileOrTablet}}
+          {{#unless vimeoOnTablet}}
+            <div class="video-iframe-overlay video-iframe-overlay-1"></div>
+            <div class="video-iframe-overlay video-iframe-overlay-2"></div>
+            <div class="video-iframe-overlay video-iframe-overlay-3"></div>
+            <div class="video-iframe-overlay video-iframe-overlay-4"></div>
+            <div class="video-iframe-overlay video-iframe-overlay-5"></div>
+            <div class="video-iframe-overlay video-iframe-overlay-6"></div>
+            <div class="video-iframe-overlay video-iframe-overlay-7"></div>
+            {{#if fromVimeo}}
+              <div class="video-iframe-overlay video-iframe-overlay-vimeo"></div>
+            {{/if}}
+          {{/unless}}
+          {{#if vimeoOnTablet}}
+            <div class="video-iframe-overlay video-iframe-overlay-vimeo-tablet-1"></div>
+          {{/if}}
+        {{/if}}
         <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
       </div>
     {{/if}}

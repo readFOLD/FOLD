@@ -1111,6 +1111,20 @@ Template.display_audio_section.helpers(horizontalBlockHelpers);
 
 Template.display_video_section.helpers(horizontalBlockHelpers);
 
+Template.display_video_section.helpers({
+  fromVimeo (){
+    return this.source === 'vimeo'
+  },
+  vimeoOnTablet (){
+    return Meteor.Device.isTablet() && this.source === 'vimeo'
+  }
+});
+Template.display_video_section.events({
+  'click .video-iframe-overlay' (){
+    // TODO play video once have api integration
+  }
+});
+
 Template.display_twitter_section.helpers(horizontalBlockHelpers);
 
 Template.display_map_section.helpers(horizontalBlockHelpers);
