@@ -696,7 +696,6 @@ article{
   position: relative;
   .width-transition;
   .height-transition;
-  overflow-y: hidden;
   width: 100%;
   min-height: @horizontal-content-height + @remix-bar-height;
   color: @unselected-text-color;
@@ -712,21 +711,73 @@ article{
   }
 
   .context-button-container{
+    .fg{
+      fill: @action-color;
+    }
+
+    button{
+      color: @action-color;
+    }
     @media @mobile {
       text-align: right;
       margin-top: 5px;
-      .fg{
-        fill: @action-color;
+      .context-button-container{
+        .fg{
+          fill: @action-color;
+        }
+
+        button{
+          color: @action-color;
+        }
+        @media @mobile {
+          text-align: right;
+          margin-top: 5px;
+          svg{
+            margin-right: 5px;
+          }
+        }
+        @media @not-mobile {
+          position: fixed;
+          display: none;
+          &.selected{
+            display: block;
+          }
+          @top: 150px;
+          top: @top;
+          &.embed-mode{
+            top: @top - @magic-styling-distance;
+          }
+          right: 20px;
+          svg{
+            display: block;
+            margin-bottom: 5px;
+          }
+          text-align: center;
+          font-size: 14px;
+        }
       }
       svg{
         margin-right: 5px;
       }
-      button{
-        color: @action-color;
-      }
     }
     @media @not-mobile {
-
+      position: fixed;
+      display: none;
+      &.selected{
+        display: block;
+      }
+      @top: 150px;
+      top: @top;
+      &.embed-mode{
+        top: @top - @magic-styling-distance;
+      }
+      right: 20px;
+      svg{
+        display: block;
+        margin-bottom: 5px;
+      }
+      text-align: center;
+      font-size: 14px;
     }
   }
 
@@ -770,6 +821,25 @@ article{
 
   &.selected {
     .selected-styling;
+  }
+
+  &.hidden-context-mode{
+    .selected-styling;
+    &.selected{
+      border-left-color: @action-color;
+      &:before {
+        content:"";
+        display:block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left:0;
+        width:0;
+        border-left: 3px solid @action-color;
+      }
+
+
+    }
   }
 
   .edge-to-edge-mode{
@@ -1006,7 +1076,7 @@ div.vertical-narrative {
   &.hidden-context-mode{
     left: @card-spacing;
     @media @not-mobile{
-      width: calc(100% ~'-' @card-spacing * 2) !important;
+      width: calc(100% ~'-' (@card-spacing * 2 + @magic-styling-distance)) !important;
     }
     @media @mobile{
       width: 100% !important;

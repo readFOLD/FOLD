@@ -162,11 +162,11 @@ window.goToY = function(y, options) {
   options = options || {};
   options.complete = options.complete || function(){};
 
-  if(mobileOrTablet()){ // don't actually scroll on mobile
+  if(hiddenContextMode()){ // don't actually scroll in hidden context mode
     Session.set('currentY', y);
     return Meteor.defer(options.complete);
   }
-  
+
   if ((options.force) || Session.get("currentY") !== y){
     var verticalHeights;
     verticalHeights = window.getVerticalHeights();
