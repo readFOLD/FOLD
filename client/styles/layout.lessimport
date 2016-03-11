@@ -179,6 +179,8 @@ html {
 @mobile:      ~"only screen and (max-device-width: 529px)";
 @not-mobile:  ~"(min-device-width: 530px)";
 @thin-window:  ~"(max-width: 400px)";
+@mobile-or-thin-window: ~"only screen and (max-device-width: 529px)", ~"(max-width: 400px)";
+@not-mobile-nor-thin-window:  ~"(min-device-width: 530px) and (min-width: 400px)";
 @tablet:      ~"only screen and (min-device-width: 530px) and (max-device-width: 949px)";
 @desktop:     ~"only screen and (min-device-width: 950px) and (max-device-width: 1128px)";
 @desktop-xl:  ~"only screen and (min-device-width: 1129px)";
@@ -549,13 +551,10 @@ body {
     }
     overflow-x: hidden;
 
-    @media @mobile {
+    @media @mobile-or-thin-window {
       background-color: @unselected-link-color;
     }
 
-    @media @thin-window {
-      background-color: @unselected-link-color;
-    }
   }
 }
 
@@ -721,46 +720,18 @@ article{
     @media @mobile {
       text-align: right;
       margin-top: 5px;
-      .context-button-container{
-        .fg{
-          fill: @action-color;
-        }
-
-        button{
-          color: @action-color;
-        }
-        @media @mobile {
-          text-align: right;
-          margin-top: 5px;
-          svg{
-            margin-right: 5px;
-          }
-        }
-        @media @not-mobile {
-          position: fixed;
-          display: none;
-          &.selected{
-            display: block;
-          }
-          @top: 150px;
-          top: @top;
-          &.embed-mode{
-            top: @top - @magic-styling-distance;
-          }
-          right: 20px;
-          svg{
-            display: block;
-            margin-bottom: 5px;
-          }
-          text-align: center;
-          font-size: 14px;
-        }
-      }
       svg{
         margin-right: 5px;
       }
     }
-    @media @not-mobile {
+    @media @mobile-or-thin-window {
+      text-align: right;
+      margin-top: 5px;
+      svg{
+        margin-right: 5px;
+      }
+    }
+    @media @not-mobile-nor-thin-window {
       position: fixed;
       display: none;
       &.selected{
@@ -826,19 +797,19 @@ article{
   &.hidden-context-mode{
     .selected-styling;
     &.selected{
-      border-left-color: @action-color;
-      &:before {
-        content:"";
-        display:block;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left:0;
-        width:0;
-        border-left: 3px solid @action-color;
+      @media @not-mobile-nor-thin-window{
+        border-left-color: @action-color;
+        &:before {
+          content:"";
+          display:block;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left:0;
+          width:0;
+          border-left: 3px solid @action-color;
+        }
       }
-
-
     }
   }
 
@@ -850,13 +821,10 @@ article{
     }
   }
 
-  @media @mobile {
+  @media @mobile-or-thin-window {
     .edge-to-edge-mode;
   }
 
-  @media @thin-window {
-    .edge-to-edge-mode;
-  }
 }
 
 .narrative-section {
@@ -1074,12 +1042,13 @@ div.vertical-narrative {
   left: @vertical-left;
 
   &.hidden-context-mode{
-    left: @card-spacing;
-    @media @not-mobile{
+    @media @not-mobile-nor-thin-window{
       width: calc(100% ~'-' (@card-spacing * 2 + @magic-styling-distance)) !important;
+      left: @card-spacing;
     }
-    @media @mobile{
+    @media @mobile-or-thin-window {
       width: 100% !important;
+      left: 0;
     }
     background-color: inherit;
   }

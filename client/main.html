@@ -185,12 +185,8 @@
         {{{titleDiv}}}
       {{/if}}
       {{{contentDiv}}}
-      {{#if pastHeader}}
-        {{#if hiddenContextMode}}
-          {{#if contextBlocks.length}}
-            <div class="context-button-container {{#if verticalSelected}}selected{{/if}} {{#if embedMode}}embed-mode{{/if}}"><button class="context-button">{{> remix_icon_bare}}{{contextBlocks.length}}</button></div>
-          {{/if}}
-        {{/if}}
+      {{#if showContextButton}}
+        <div class="context-button-container {{#if verticalSelected}}selected{{/if}} {{#if embedMode}}embed-mode{{/if}}"><button class="context-button">{{> remix_icon_bare}}{{contextBlocks.length}}</button></div>
       {{/if}}
     </section>
   </div>

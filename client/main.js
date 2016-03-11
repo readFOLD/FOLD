@@ -564,6 +564,15 @@ Template.vertical_section_block.helpers({
       // this is contenteditable in edit mode
       return '<div class="editable fold-editable ' + initialClasses + '" placeholder="Type your text here." contenteditable="true" dir="auto">' + cleanVerticalSectionContent(Template.instance().semiReactiveContent.get()) + '</div>';
     }
+  },
+  showContextButton () {
+    if (this.contextBlocks.length && hiddenContextMode()){
+      if(embedMode() || Meteor.Device.isPhone() || Session.get('windowWidth') < 400){
+        return true
+      } else {
+        return Session.get('pastHeader')
+      }
+    }
   }
 });
 
