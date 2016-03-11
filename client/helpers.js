@@ -38,6 +38,10 @@ Handlebars.registerHelper("signingIn", function() {
   return window.signingIn();
 });
 
+Handlebars.registerHelper("currentXReadableIndex", function() {
+  return Session.get("currentX") + 1;
+});
+
 Handlebars.registerHelper("currentYId", function() {
   return Session.get("currentYId");
 });

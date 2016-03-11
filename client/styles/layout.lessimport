@@ -319,6 +319,7 @@ html {
 .hide {
   visibility: hidden !important; // could also use left: -9999px. better than display:none because it still has a non-zero size
   opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 
@@ -1490,8 +1491,17 @@ div.horizontal-context {
         &.selected{
           z-index: 9999;
         }
+        &.hide{
+          opacity: 0 !important;
+        }
       }
 
+    }
+    .card-info{
+      position: absolute;
+      top: @horizontal-content-height + 100px + 20px;
+      width: 100%;
+      text-align: center;
     }
     .hidden-context-overlay{
       background-color: @light-transparent-color;

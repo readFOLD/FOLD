@@ -218,15 +218,23 @@
         {{#if horizontalSectionInDOM}}
           {{> horizontal_section_block}}
         {{/if}}
+
       {{/each}}
       {{#if horizontalShown}}
         {{#unless read}}
           {{add_horizontal}}
         {{/unless}}
+        {{#if hiddenContextShown}}
+          <div class="card-info" style="{{#if cardHeight}}top: calc({{cardHeight}}px + 100px + 10px);{{/if}}">
+            Card {{currentXReadableIndex}} of {{data.length}}
+          </div>
+        {{/if}}
       {{/if}}
+
     {{!-- </div> --}}
 
   {{/each}}
+
 </template>
 
 

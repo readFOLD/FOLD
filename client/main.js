@@ -919,7 +919,7 @@ Template.horizontal_context.helpers({
     return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId') || this.type === 'audio';
   },
   horizontalShown () {
-    return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone());
+    return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0);
   }
 });
 
