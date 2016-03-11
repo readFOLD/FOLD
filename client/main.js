@@ -163,6 +163,10 @@ window.hammerSwipeOptions = {
   velocity:	0.25 // 0.65
 };
 
+window.hammerDoubleTapOptions = {
+  taps:	2
+};
+
 
 var scrollPauseArmed = false;
 var scrollPauseLength = 700;
@@ -617,7 +621,6 @@ Template.story.onDestroyed(function(){
 
 
 Template.story.onRendered(function(){
-  // TODO destroy bindings later?
   if(Meteor.Device.isPhone() || Meteor.Device.isTablet()){
     this.$('.entire-story').hammer(hammerSwipeOptions).bind('swipeleft',function(){
         if(horizontalExists()){
@@ -636,6 +639,15 @@ Template.story.onRendered(function(){
         }
       }
     );
+
+  }
+});
+
+Template.story.onDestroyed(function(){
+  if(Meteor.Device.isPhone() || Meteor.Device.isTablet()){
+    this.$('.entire-story').hammer(hammerSwipeOptions).unbind('swipeleft');
+
+    this.$('.entire-story').hammer(hammerSwipeOptions).unbind('swiperight');
   }
 });
 
@@ -1024,24 +1036,31 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
 Template.display_viz_section.helpers(horizontalBlockHelpers);
 
 Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
-//Template.display_image_section.onCreated(editableDescriptionDestroyedBoilerplate('editHorizontalBlockDescription'));
+Template.display_image_section.onRendered(function(){
+  if(Meteor.Device.isPhone() || Meteor.Device.isTablet()) {
+    this.$('.image-section').hammer(hammerDoubleTapOptions).bind('doubletap', () => {
+      Session.set('contextOverlayId', this.data._id);
+      trackEvent('Expand image card');
+    });
+  }
+});
+
+Template.display_image_section.onDestroyed(function(){
+  if(Meteor.Device.isPhone() || Meteor.Device.isTablet()) {
+    this.$('.image-section').hammer(hammerDoubleTapOptions).unbind('doubletap');
+  }
+});
+
 Template.display_image_section.helpers(horizontalBlockHelpers);
 Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 Template.display_image_section.events({
-    'click'  (e, t) {
-      if (Session.get('read') && !($(e.target).is('a')) && !Meteor.Device.isPhone()){
-        Session.set('contextOverlayId', this._id);
-        trackEvent('Expand image card');
-      }
-    },
-  'dblclick'  (e, t) {
-      if (Session.get('read') && !($(e.target).is('a'))){ // double click expands card on phone
-        Session.set('contextOverlayId', this._id);
-        trackEvent('Expand image card');
-      }
+  'click'  (e, t) {
+    if (Session.get('read') && !($(e.target).is('a')) && !Meteor.Device.isPhone()) {
+      Session.set('contextOverlayId', this._id);
+      trackEvent('Expand image card');
     }
   }
-);
+});
 
 Template.display_audio_section.helpers(horizontalBlockHelpers);
 
