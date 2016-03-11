@@ -165,3 +165,7 @@ Handlebars.registerHelper("sandwichMode", function () {
 Handlebars.registerHelper("embedMode", function () {
   return window.embedMode();
 });
+
+Handlebars.registerHelper("mobileOrTablet", function () {
+  return window.mobileOrTablet();
+});

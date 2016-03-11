@@ -203,7 +203,7 @@ window.freezePageScroll = function(){
   document.body.style.marginRight = scrollBarWidth + 'px';
   $('.home-top.fat').width('calc(100% - ' + scrollBarWidth +'px');
 
-  if(Meteor.Device.isPhone() || Meteor.Device.isTablet()){
+  if(mobileOrTablet()){
     window.document.body.addEventListener("touchmove", preventDefault, false);
   }
 };
@@ -213,7 +213,7 @@ window.unfreezePageScroll = function(){
   document.body.style.marginRight = 0;
   $('.home-top.fat').width('100%');
 
-  if(Meteor.Device.isPhone() || Meteor.Device.isTablet()) {
+  if(mobileOrTablet()) {
     window.document.body.removeEventListener("touchmove", preventDefault, false);
   }
 };
@@ -246,4 +246,8 @@ window.embedMode = function(){
 window.activateEmbedMode = function(){
   window.constants.readModeOffset = 0;
   return Session.set('embedMode', true);
+};
+
+window.mobileOrTablet = function(){
+  return Meteor.Device.isPhone() || Meteor.Device.isTablet()
 };

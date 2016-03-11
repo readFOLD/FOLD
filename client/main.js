@@ -1818,11 +1818,10 @@ Template.context_overlay.helpers({
   contextLoaded (){
     return Template.instance().contextLoaded.get();
   }
-})
+});
 
 Template.context_overlay.onCreated(function(){
   this.contextLoaded = new ReactiveVar();
-  document.body.style.overflow = 'hidden';
 });
 
 Template.context_overlay.onRendered(function(){
@@ -1830,10 +1829,27 @@ Template.context_overlay.onRendered(function(){
   $('img, video').load(() => {
     this.contextLoaded.set(true);
   });
+  freezePageScroll();
+});
+
+Template.context_overlay.onRendered(function(){
+  if(mobileOrTablet()) {
+    this.$('.context-overlay').hammer(hammerDoubleTapOptions).bind('doubletap', () => {
+      Session.set('contextOverlayId', null);
+    });
+  }
 });
 
 Template.context_overlay.onDestroyed(function(){
-  document.body.style.overflow = 'auto';
+  if(mobileOrTablet()) {
+    this.$('.context-overlay').hammer(hammerDoubleTapOptions).unbind('doubletap');
+  }
+});
+
+Template.context_overlay.onDestroyed(function(){
+  if(!hiddenContextMode() && !hiddenContextShown()){
+    unfreezePageScroll();
+  }
 });
 
 Template.context_overlay.events({

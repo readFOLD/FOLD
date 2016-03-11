@@ -335,7 +335,7 @@
 </template>
 
 <template name="display_image_section">
-  <div class="display-context-section image-section {{#unless read}}always-show-caption{{/unless}}{{#if read}}show-expand-icon{{/if}}">
+  <div class="display-context-section image-section {{#unless read}}always-show-caption{{/unless}}{{#if read}}{{#unless mobileOrTablet}}show-expand-icon{{/unless}}{{/if}}">
     {{#if showVideo}}
       {{> looping_video}}
     {{else}}
