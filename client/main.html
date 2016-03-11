@@ -185,8 +185,12 @@
         {{{titleDiv}}}
       {{/if}}
       {{{contentDiv}}}
-      <div class="button">
-      </div>
+      {{#if hiddenContextMode}}
+        {{#if contextBlocks.length}}
+          {{debugContext}}
+          <div class="context-button-container"><button class="context-button">{{> remix_icon_bare}}{{contextBlocks.length}}</button></div>
+        {{/if}}
+      {{/if}}
     </section>
   </div>
 </template>

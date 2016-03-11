@@ -596,11 +596,11 @@ Template.vertical_section_block.events({
       };
       Meteor.setTimeout(() => {
         trackEvent('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
-          verticalIndex: this.index,
+          verticalIndex: t.data.index,
           contextId: contextId,
           contextType: $(e.currentTarget).data('contextType'),
           contextSource: $(e.currentTarget).data('contextSource'),
-          numberOfContextCardsOnVertical: this.contextBlocks.length,
+          numberOfContextCardsOnVertical: t.data.contextBlocks.length,
           inReadMode: Session.get('read')
         }));
       });
@@ -608,6 +608,19 @@ Template.vertical_section_block.events({
 
     goToY(t.data.index, {complete: afterGoToY});
 
+  },
+  "click .context-button" (e, t){
+    afterGoToY = function(){
+      Session.set("hiddenContextShown", true);
+    };
+    Meteor.setTimeout(() => {
+      trackEvent('Click context button', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
+        verticalIndex: t.data.index,
+        numberOfContextCardsOnVertical: t.data.contextBlocks.length
+      }));
+    });
+
+    goToY(t.data.index, {complete: afterGoToY});
   }
 });
 

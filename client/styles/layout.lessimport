@@ -711,6 +711,25 @@ article{
     }
   }
 
+  .context-button-container{
+    @media @mobile {
+      text-align: right;
+      margin-top: 5px;
+      .fg{
+        fill: @action-color;
+      }
+      svg{
+        margin-right: 5px;
+      }
+      button{
+        color: @action-color;
+      }
+    }
+    @media @not-mobile {
+
+    }
+  }
+
   background-color: @unselected-background-color;
 
   .selected-styling {
@@ -986,7 +1005,12 @@ div.vertical-narrative {
 
   &.hidden-context-mode{
     left: @card-spacing;
-    width: calc(100% ~'-' @card-spacing * 2) !important;
+    @media @not-mobile{
+      width: calc(100% ~'-' @card-spacing * 2) !important;
+    }
+    @media @mobile{
+      width: 100% !important;
+    }
     background-color: inherit;
   }
 
