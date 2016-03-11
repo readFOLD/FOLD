@@ -59,7 +59,7 @@
   </div>
   <div class="floating-story-buttons-left">
     {{#if isAuthor}}
-      {{#unless isPhone}}
+      {{#unless mobileOrTablet}}
         {{#linkTo route="edit" data=this}}
           <button type="button" class="link-to-edit button">
             Edit

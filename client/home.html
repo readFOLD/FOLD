@@ -63,7 +63,7 @@
   <div class="banner-buttons {{#if slim}}slim{{else}}fat{{/if}}">
     <div class="action-items {{#if slim}}slim{{else}}fat{{/if}}">
       <ol class="action-item-list">
-        {{#unless isPhone}}
+        {{#unless mobileOrTablet}}
           {{#unless hideMakeAStory}}
             <li class="create-story">
               {{> create_story}}
