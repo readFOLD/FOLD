@@ -75,6 +75,8 @@ Meteor.startup(function(){
         }
       })
     }
+
+    throttledScrollUpdate();
   });
 
   Tracker.autorun(function(){
@@ -224,7 +226,6 @@ window.updateCurrentY = function() {
 
   stickyTitle = 120;
 
-  var inSandwichMode = sandwichMode();
   var inEmbedMode = embedMode();
 
   if(!inEmbedMode){
@@ -292,7 +293,7 @@ window.updateCurrentY = function() {
 
 
   if (inEmbedMode || Meteor.Device.isPhone() || (scrollTop >= readMode)) {
-    if(inEmbedMode && scrollTop < $('.title-overlay').height() - 20){
+    if(inEmbedMode && hiddenContextMode() && (scrollTop < $('.title-overlay').height() - 20)){
       Session.set('pastHeader', false);
       return
     } else {
