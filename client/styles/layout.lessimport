@@ -658,7 +658,7 @@ article{
   width: 100%;
   min-height: @horizontal-content-height + @remix-bar-height;
   color: @unselected-text-color;
-  @media @mobile {
+  &.hidden-context-mode {
     min-height: @magic-styling-distance;
   }
 
@@ -700,7 +700,6 @@ article{
       top: 150px;
       &.embed-mode{
         top: 20px;
-        z-index: -9;
       }
       right: 20px;
       svg{
@@ -837,7 +836,7 @@ article{
     }
   }
 
-  @media @mobile {
+  &.hidden-context-mode {
     .content {
       min-height: @magic-styling-distance !important;
     }
