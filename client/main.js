@@ -7,8 +7,14 @@ UI.registerHelper('selectedIf', function(val) {
 
 
 getCardWidth = function(windowWidth) {
-  if (Meteor.Device.isPhone()){
+  if (Meteor.Device.isPhone()) {
     return Session.get("windowWidth") * .9 - 2 * Session.get("separation");
+  } else if (hiddenContextMode()){
+    if(windowWidth <= 685){ // must match up with @resizing-context
+      return Session.get("windowWidth") * .9 - 2 * Session.get("separation") - 2 * 60;
+    } else {
+      return 520;
+    }
   } else if (windowWidth <= window.constants.minPageWidth) {
     return 400;
   } else {
@@ -53,7 +59,7 @@ Meteor.startup(function(){
         Session.set("cardHeight", cardHeightFromSpaceAvailable);
         Session.set("cardWidth", cardHeightFromSpaceAvailable * 16 / 9);
       } else {
-        if(Meteor.Device.isPhone()){
+        if(cardHeightFromWidth < window.constants.baselineCardHeight){
           Session.set("cardHeight", cardHeightFromWidth);
         } else {
           Session.set("cardHeight", null);
@@ -235,7 +241,7 @@ window.updateCurrentY = function() {
 
   }
 
-  if(!Meteor.Device.isPhone() && inEmbedMode){
+  if(!Meteor.Device.isPhone() && !inEmbedMode){
     if ((scrollTop >= readMode)){
       $("div.title-author").addClass("c");
       $("div.title-author").removeClass("a");
@@ -286,6 +292,12 @@ window.updateCurrentY = function() {
 
 
   if (inEmbedMode || Meteor.Device.isPhone() || (scrollTop >= readMode)) {
+    if(inEmbedMode && scrollTop < $('.title-overlay').height() - 20){
+      Session.set('pastHeader', false);
+      return
+    } else {
+      Session.set('pastHeader', true);
+    }
     _ref = _.map(window.getVerticalHeights(), function(height){ return height + window.constants.selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
@@ -581,10 +593,7 @@ Template.vertical_section_block.helpers({
     return !Session.equals("currentY", 0);
   },
   verticalSelected () {
-    return Session.equals("currentY", this.index) && Session.get("pastHeader") || Session.equals("currentY", null) && this.index === 0;
-  },
-  validTitle () {
-    return this.title === !"title";
+    return Session.equals("currentY", this.index) && Session.get("pastHeader") || Session.equals("currentY", null) && this.index === 0 && !hiddenContextMode();
   },
   titleDiv () {
     var initialClasses = Session.get('showDraft') ? 'title notranslate' : 'title';
@@ -608,7 +617,7 @@ Template.vertical_section_block.helpers({
   },
   showContextButton () {
     if (this.contextBlocks.length && hiddenContextMode()){
-      if(embedMode() || Meteor.Device.isPhone() || Session.get('windowWidth') < 400){
+      if(Meteor.Device.isPhone() || Session.get('windowWidth') < 400){
         return true
       } else {
         return Session.get('pastHeader')
