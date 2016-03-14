@@ -576,6 +576,11 @@ body {
     width: 100%;
     height: auto;
   }
+  &.embed-mode:not(.sandwich-mode) {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
   left: 0;
   right:0;
   display: inline-block;
@@ -692,10 +697,10 @@ article{
       &.selected{
         display: block;
       }
-      @top: 150px;
-      top: @top;
+      top: 150px;
       &.embed-mode{
-        top: @top - @magic-styling-distance;
+        top: 20px;
+        z-index: -9;
       }
       right: 20px;
       svg{
@@ -1006,6 +1011,12 @@ div.vertical-narrative {
       left: 0;
     }
     background-color: inherit;
+
+    &.embed-mode{ // sandwich-mode
+      position: static;
+      margin-top: @card-spacing;
+      margin-left: @card-spacing;
+    }
   }
 
   @media @mobile{
@@ -1303,11 +1314,19 @@ div#banner-overlay {
   opacity: 0.0;
   position: absolute;
 
-  &.fixed, &.sandwich-mode {
+  &.fixed{
+    &:not(.embed-mode){
+      height: @fixed-banner-height;
+    }
+  }
+  &.sandwich-mode {
     height: @fixed-banner-height;
   }
-  &.sandwich-mode{
+  &.embed-mode{
     opacity: 1;
+    &:not(.sandwich-mode){
+      z-index: -1;
+    }
   }
   @media @mobile {
     opacity: 1;
@@ -1405,7 +1424,7 @@ div.horizontal-context {
   .size-to-fit;
   opacity: 0.5;
 
-  &.fixed {
+  &.fixed, &.sandwich-mode {
     position: fixed;
     opacity: 1;
     margin-top: @horizontal-context-margin-top;
@@ -1430,8 +1449,8 @@ div.horizontal-context {
     z-index: -1;
     top: -1000px;
     &.hidden-context-shown{
-      top: 140px;
-      height: calc(100% ~'-' 180px);
+      top: 0px;
+      height: calc(100% ~'-' 40px);
       &.sandwich-mode{
         top: 100px;
         height: calc(100% ~'-' 140px);

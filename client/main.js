@@ -168,7 +168,7 @@ Tracker.autorun(function(){
   if(!Session.get('hiddenContextMode')){
     Session.set('hiddenContextShown', false);
   }
-})
+});
 
 Meteor.startup(function(){
   var inIFrame = function(){
@@ -219,8 +219,9 @@ window.updateCurrentY = function() {
   stickyTitle = 120;
 
   var inSandwichMode = sandwichMode();
+  var inEmbedMode = embedMode();
 
-  if(!inSandwichMode){
+  if(!inEmbedMode){
     Session.set("scrollTop", scrollTop);
 
     if(!Meteor.Device.isPhone()){
@@ -234,8 +235,8 @@ window.updateCurrentY = function() {
 
   }
 
-  if(!Meteor.Device.isPhone()){
-    if (inSandwichMode || (scrollTop >= readMode)){
+  if(!Meteor.Device.isPhone() && inEmbedMode){
+    if ((scrollTop >= readMode)){
       $("div.title-author").addClass("c");
       $("div.title-author").removeClass("a");
       $("div.title-author").removeClass("b");
@@ -252,12 +253,12 @@ window.updateCurrentY = function() {
     }
 
 
-    if (inSandwichMode || (scrollTop >= readMode)) {
+    if ((scrollTop >= readMode)) {
       $("div.title-overlay, div#banner-overlay").addClass("fixed");
       Session.set("pastHeader", true);
       $("div.horizontal-context").addClass("fixed");
 
-      if(scrollPauseArmed && !inSandwichMode){
+      if(scrollPauseArmed && !inEmbedMode){
         freezePageScroll();
         $(document).scrollTop(readMode);
         Meteor.setTimeout(function () {
@@ -284,7 +285,7 @@ window.updateCurrentY = function() {
 
 
 
-  if (sandwichMode() || Meteor.Device.isPhone() || (scrollTop >= readMode)) {
+  if (inEmbedMode || Meteor.Device.isPhone() || (scrollTop >= readMode)) {
     _ref = _.map(window.getVerticalHeights(), function(height){ return height + window.constants.selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];

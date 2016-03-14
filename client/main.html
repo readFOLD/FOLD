@@ -34,18 +34,18 @@
 -->
 
 <template name="story_header">
-  {{#unless sandwichMode}}
+  {{#unless embedMode}}
     {{> top_banner showFilters=showPublished hideMakeAStory=showDraft slim=true}}
   {{/unless}}
-  <div class="title-overlay {{#unless read}}write{{/unless}} {{#if sandwichMode}}sandwich-mode{{/if}}">
+  <div class="title-overlay {{#unless read}}write{{/unless}} {{#if sandwichMode}}sandwich-mode{{/if}} {{#if embedMode}}embed-mode{{/if}}">
     {{#with headerImageVideoObject}}
       {{> looping_video}}
     {{else}}
       <img class="header-overlay-image" src={{headerImageUrl}}>
     {{/with}}
-    <div id="banner-overlay" class="{{#if sandwichMode}}sandwich-mode{{/if}}">
+    <div id="banner-overlay" class="{{#if sandwichMode}}sandwich-mode{{/if}} {{#if embedMode}}embed-mode{{/if}}">
     </div>
-    <div class="title-author">
+    <div class="title-author {{#if sandwichMode}}sandwich-mode{{/if}} {{#if embedMode}}embed-mode{{/if}}">
       {{> story_title }}
       <div class="author">
         <a href="{{profileUrl}}">
@@ -104,7 +104,7 @@
   <!-- Mesh Background Overlay -->
   <!-- <div id="overlay"></div> -->
   <article class="content entire-story">
-    <div class="vertical-narrative {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}"
+    <div class="vertical-narrative {{#if embedMode}}embed-mode{{/if}} {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}"
          style="width: {{cardWidth}}px;">
       {{> vertical_narrative}}
 
@@ -142,7 +142,7 @@
 
 
 <template name="story_footer">
-  <footer class="story-footer">
+  <footer class="story-footer {{#if sandwichMode}}sandwich-mode{{/if}}  {{#if embedMode}}embed-mode{{/if}}">
     {{#if read}}
       <div class="call-to-action vertical-narrative-section">
         <p>Show this writer some thanks!</p>{{> favorite_button }}
@@ -616,12 +616,12 @@
 
 <template name="story_browser">
   {{#if showLeftArrow}}
-    <div class="left story-browser {{#unless read}}edit-mode{{/unless}} {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" style="{{#if cardHeight}}height: {{cardHeight}}px;{{/if}}">
+    <div class="left story-browser {{#unless read}}edit-mode{{/unless}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" style="{{#if cardHeight}}height: {{cardHeight}}px;{{/if}}">
       {{> browse_arrow_left}}
     </div>
   {{/if}}
   {{#if showRightArrow}}
-    <div class="right story-browser {{#unless read}}edit-mode{{/unless}} {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" style="{{#if cardHeight}}height: {{cardHeight}}px;{{/if}}">
+    <div class="right story-browser {{#unless read}}edit-mode{{/unless}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" style="{{#if cardHeight}}height: {{cardHeight}}px;{{/if}}">
       {{> browse_arrow_right}}
     </div>
   {{/if}}

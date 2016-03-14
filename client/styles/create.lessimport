@@ -304,11 +304,14 @@ div.title-overlay {
   @ending-height: @title-overlay-ending-height;
   height: @starting-height;
 
-  @media @mobile {
+  .mobilish-title-overlay{
     min-height: @ending-height;
     max-height: @starting-height;
     height: auto;
     z-index: 0;
+    .header-overlay-image, video {
+      z-index: -2;
+    }
   }
 
   color: @white-color;
@@ -320,11 +323,51 @@ div.title-overlay {
   .header-overlay-image, video{
     position: absolute;
     min-width: 100%;
+  }
+
+
+  &.fixed, &.sandwich-mode {
+    position: fixed;
+    z-index: 30;
+    height: @ending-height;
+    width: 100%;
+    background-color: @dark-color;
+
+    img{
+      top: -(@starting-height - @ending-height);
+    }
     @media @mobile {
-      max-height: 100%;
-      z-index: -2;
+      height: 0;
+      overflow: visible;
+      left: -9999999px;
     }
   }
+
+
+  @media @mobile {
+    .mobilish-title-overlay;
+    .header-overlay-image, video {
+      max-height: 100%;
+    }
+  }
+
+  &.embed-mode{
+    &:not(.sandwich-mode){
+      top: 0;
+      // cancel out a bunch of the .fixed stuff
+      img{
+        top: auto;
+        bottom: 0;
+      }
+      .header-overlay-image, video {
+        max-height: @starting-height;
+      }
+      width: auto;
+      position: relative;
+      .mobilish-title-overlay;
+    }
+  }
+
 
   .audio-popout{
     position: absolute;
@@ -434,23 +477,6 @@ div.title-overlay {
 
   .background-transition;
 
-  &.fixed {
-    position: fixed;
-    z-index: 30;
-    height: @ending-height;
-    width: 100%;
-    background-color: @dark-color;
-
-    img{
-      top: -(@starting-height - @ending-height);
-    }
-    @media @mobile {
-      height: 0;
-      overflow: visible;
-      left: -9999999px;
-    }
-  }
-
 
   &.read:hover, &.embed:hover {
     border-bottom: 1px dashed grey;
@@ -520,7 +546,7 @@ div.title-overlay {
     background-color: @dark-color;
     .background-transition;
 
-    @media @mobile {
+    .mobilish-title-author {
       margin-left: 20px;
       margin-right: 20px;
       max-width: calc(100% ~ "-" 40px);
@@ -530,6 +556,17 @@ div.title-overlay {
       }
       margin-top: 0;
       background-color: transparent;
+    }
+
+    @media @mobile {
+      .mobilish-title-author;
+    }
+
+
+    &.embed-mode {
+      &:not(.sandwich-mode) {
+        .mobilish-title-author;
+      }
     }
 
     .author-image{
@@ -556,7 +593,7 @@ div.title-overlay {
     &.a{
       margin-top: 125px;
     }
-    &.c{
+    &.c, &.sandwich-mode{
       margin-top: 0px;
       .author-image{
         opacity: 1;
@@ -565,10 +602,10 @@ div.title-overlay {
     }
 
 
-    &.b, &.c{
+    &.b, &.c, &.sandwich-mode{
       background-color: transparent;
     }
-    div.story-title {
+    .story-title {
       max-width: 100%;
       .FFMarkWebBold;
       margin-top: 17px;
@@ -584,6 +621,15 @@ div.title-overlay {
       white-space: nowrap;
       @media @mobile {
         white-space: normal;
+      }
+
+    }
+
+    &.embed-mode {
+      &:not(.sandwich-mode) {
+        .story-title{
+          white-space: normal;
+        }
       }
     }
     div.author {

@@ -219,7 +219,7 @@ window.unfreezePageScroll = function(){
 };
 
 window.sandwichMode = function(){
-  return window.embedMode();
+  return window.embedMode() && !window.hiddenContextMode();
 };
 
 

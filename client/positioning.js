@@ -15,6 +15,18 @@ window.getVerticalLeft = function() {
   return 90; // corresponds to css
 };
 
+Tracker.autorun(function(){
+  var inEmbedMode = embedMode();
+  if(inEmbedMode){
+    var inSandwichMode = sandwichMode();
+    if(!inSandwichMode){
+      return window.constants.selectOffset = -110;
+    }
+  }
+
+  window.constants.selectOffset = -210; // original
+});
+
 window.getHorizontalLeft = function() {
   var currentPos, currentHorizontal, cardWidth, numCards, left, offset, pageWidth, verticalRight, addContextBlockWidth, cardSeparation;
   
