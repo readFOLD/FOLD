@@ -120,7 +120,7 @@ Handlebars.registerHelper("userFollowing", function(id) {
 });
 
 Handlebars.registerHelper("showStorySandwichFooter", function () {
-  return hiddenContextMode() && !Meteor.Device.isPhone();
+  return !Meteor.Device.isPhone() && (embedMode() || hiddenContextMode());
 });
 
 
