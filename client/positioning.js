@@ -20,7 +20,8 @@ Tracker.autorun(function(){
   if(inEmbedMode){
     var inSandwichMode = sandwichMode();
     if(!inSandwichMode){
-      return window.constants.selectOffset = -110;
+      window.constants.selectOffset = 0;
+      return
     }
   }
 
