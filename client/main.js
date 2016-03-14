@@ -33,18 +33,41 @@ Meteor.startup(function(){
 
     Session.set("windowWidth", windowWidth);
 
-    var cardWidth = getCardWidth(windowWidth);
 
-
-    Session.set("cardWidth", cardWidth);
 
     if (Meteor.Device.isPhone()) {
       document.body.style.overflowX = "hidden";
       $('body').css('max-width', windowWidth);
       Session.set("mobileMargin", getVerticalLeft(windowWidth));
 
-      var cardHeight = getCardWidth(windowWidth) * 9 / 16;
-      Session.set("cardHeight", cardHeight);
+    }
+
+    var cardWidthFromWindowSize = getCardWidth(windowWidth);
+
+
+    if(hiddenContextMode()){
+      var cardHeightFromWidth = cardWidthFromWindowSize * 9 / 16;
+      var cardHeightFromSpaceAvailable = Math.max($('.horizontal-context').height() - 110, 40);
+
+      if(cardHeightFromSpaceAvailable < cardHeightFromWidth){
+        Session.set("cardHeight", cardHeightFromSpaceAvailable);
+        Session.set("cardWidth", cardHeightFromSpaceAvailable * 16 / 9);
+      } else {
+        if(Meteor.Device.isPhone()){
+          Session.set("cardHeight", cardHeightFromWidth);
+        } else {
+          Session.set("cardHeight", null);
+        }
+        Session.set("cardWidth", cardWidthFromWindowSize);
+      }
+    } else {
+      Session.set("cardWidth", cardWidthFromWindowSize);
+
+      Tracker.nonreactive(() => {
+        if(Session.get("cardHeight")){
+          Session.set("cardHeight", null);
+        }
+      })
     }
   });
 
@@ -141,6 +164,12 @@ Meteor.startup(function(){
   });
 });
 
+Tracker.autorun(function(){
+  if(!Session.get('hiddenContextMode')){
+    Session.set('hiddenContextShown', false);
+  }
+})
+
 Meteor.startup(function(){
   var inIFrame = function(){
     try {
@@ -171,8 +200,17 @@ window.hammerDoubleTapOptions = {
 var scrollPauseArmed = false;
 var scrollPauseLength = 700;
 
+var currentOrientation = window.orientation;
+
 window.updateCurrentY = function() {
   var actualY, h, i, readMode, scrollTop, stickyTitle, vertTop, _i, _len, _ref;
+
+  // if this is actually an orientation-change event, don't do anything
+  var newOrientation = window.orientation;
+  if(newOrientation !== currentOrientation){
+    currentOrientation = newOrientation;
+    return
+  }
 
   scrollTop = $(document).scrollTop();
 
@@ -635,16 +673,11 @@ Template.vertical_section_block.events({
   }
 });
 
-Template.story.onCreated(function(){
-  $(document).on('scroll', throttledScrollUpdate);
-});
-
-Template.story.onDestroyed(function(){
-  $(document).off('scroll', throttledScrollUpdate);
-});
-
 
 Template.story.onRendered(function(){
+
+  $(document).on('scroll', throttledScrollUpdate);
+
   if(Meteor.Device.isPhone() || Meteor.Device.isTablet()){
     this.$('.entire-story').hammer(hammerSwipeOptions).bind('swipeleft',function(){
         if(horizontalExists()){
@@ -665,9 +698,14 @@ Template.story.onRendered(function(){
     );
 
   }
+
+  windowSizeDep.changed(); // trigger window resizing things
+
 });
 
 Template.story.onDestroyed(function(){
+  $(document).off('scroll', throttledScrollUpdate);
+
   if(Meteor.Device.isPhone() || Meteor.Device.isTablet()){
     this.$('.entire-story').hammer(hammerSwipeOptions).unbind('swipeleft');
 

@@ -112,6 +112,11 @@
     </div>
     <div class="horizontal-context {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}} {{#if hiddenContextShown}}hidden-context-shown{{/if}} {{#if isPhone}}fixed{{/if}}">
       {{> horizontal_context}}
+      {{#if horizontalExists}}
+        {{#if showStoryBrowser}}
+          {{> story_browser}}
+        {{/if}}
+      {{/if}}
     </div>
   </article>
 
@@ -123,13 +128,7 @@
     {{#if metaviewOpen}}
       {{> metaview}}
     {{/if}}
-    {{#if horizontalExists}}
-      {{#if showStoryBrowser}}
-          <div class="browser-offset">
-            {{> story_browser}}
-          </div>
-      {{/if}}
-    {{/if}}
+
   {{/if}}
 
   {{#if showContextOverlay}}
@@ -225,8 +224,8 @@
           {{add_horizontal}}
         {{/unless}}
         {{#if hiddenContextShown}}
-          <div class="card-info" style="{{#if cardHeight}}top: calc({{cardHeight}}px + 100px + 10px);{{/if}}">
-            Card {{currentXReadableIndex}} of {{data.length}}
+          <div class="card-info" style="{{#if cardHeight}}top: calc(50% + {{cardHeight}}px / 2 - 40px / 2);{{/if}}">
+            <span>Card {{currentXReadableIndex}} of {{data.length}}</span>
           </div>
         {{/if}}
       {{/if}}
@@ -616,18 +615,16 @@
 
 
 <template name="story_browser">
-  <div class="story-browser {{#unless read}}edit-mode{{/unless}} {{#if sandwichMode}}sandwich-mode{{/if}}">
-    {{#if showLeftArrow}}
-      <div class="left">
-        {{> browse_arrow_left}}
-      </div>
-    {{/if}}
-    {{#if showRightArrow}}
-      <div class="right">
-        {{> browse_arrow_right}}
-      </div>
-    {{/if}}
-  </div>
+  {{#if showLeftArrow}}
+    <div class="left story-browser {{#unless read}}edit-mode{{/unless}} {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" style="{{#if cardHeight}}height: {{cardHeight}}px;{{/if}}">
+      {{> browse_arrow_left}}
+    </div>
+  {{/if}}
+  {{#if showRightArrow}}
+    <div class="right story-browser {{#unless read}}edit-mode{{/unless}} {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" style="{{#if cardHeight}}height: {{cardHeight}}px;{{/if}}">
+      {{> browse_arrow_right}}
+    </div>
+  {{/if}}
 </template>
 
 <template name="metaview">

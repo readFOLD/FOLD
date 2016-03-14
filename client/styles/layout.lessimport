@@ -608,53 +608,6 @@ body {
   width: 100%;
 }
 
-div.story-browser {
-  position: fixed;
-  width: 100%;
-  height: 0px;
-  z-index: 50;
-  div{
-    height: 340px;
-    width: 60px;
-    margin-top: 60px;
-    position: relative;
-    display: inline-block;
-    background-color: @dark-color;
-    cursor: pointer;
-
-    &:hover {
-      background-color: @action-color;
-    }
-    &.right{
-
-      display: inline;
-    }
-  }
-
-  &.edit-mode{
-    div{
-      height: 340px - @remix-bar-height;
-    }
-  }
-
-  &.sandwich-mode{
-    div{
-      margin-top: 20px;
-    }
-  }
-  svg {
-    cursor: pointer;
-    .center-over-parent-div;
-
-    &:hover {
-      background-color: @action-color;
-    }
-  }
-
-  .right {
-    float: right;
-  }
-}
 
 div#overlay {
   background: transparent url("https://res.cloudinary.com/fold/image/upload/v1/static/overlay.png");
@@ -1468,21 +1421,30 @@ div.horizontal-context {
     top: @horizontal-context-top - @magic-styling-distance;
   }
 
+  @card-info-height: 40px;
+
   &.hidden-context-mode{
     position: fixed;
     opacity: 1 !important;
     z-index: -1;
     top: -1000px;
     &.hidden-context-shown{
-      top: 100px;
+      top: 140px;
+      height: calc(100% ~'-' 180px);
+      &.sandwich-mode{
+        top: 100px;
+        height: calc(100% ~'-' 140px);
+      }
       @media @mobile {
         top: 40px;
+        height: calc(100% ~'-' 40px);
       }
       margin-top: 0;
       z-index: 50;
       background-color: @light-transparent-color;
       .narrative-section{
-        margin-top: 100px;
+        top: calc(50% ~'-' @card-info-height / 2);
+        .transform(translate(0, -50%));
         opacity: 1 !important;
         z-index: 2;
         &.hide-behind{
@@ -1498,10 +1460,22 @@ div.horizontal-context {
 
     }
     .card-info{
+      .FFMagdaCleanMonoWebProRegular;
+      font-size: 14px;
       position: absolute;
-      top: @horizontal-content-height + 100px + 20px;
-      width: 100%;
-      text-align: center;
+      top: calc(50% ~'+' @horizontal-content-height / 2 ~'-' @card-info-height / 2);
+      height: @card-info-height;
+      left: 50%;
+      .transform(translate(-50%, 0));
+      width: 130px;
+
+      span{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        left: 0;
+      }
     }
     .hidden-context-overlay{
       background-color: @light-transparent-color;
@@ -1511,6 +1485,48 @@ div.horizontal-context {
       right: 0;
       left: 0;
       bottom: 0;
+    }
+  }
+
+
+  .story-browser {
+    @baseline-height: 340px;
+    position: absolute;
+    z-index: 50;
+    height: @baseline-height;
+    width: 60px;
+    display: inline-block;
+    background-color: @dark-color;
+    cursor: pointer;
+    @media @not-mobile {
+      &:hover {
+        background-color: @action-color;
+      }
+    }
+
+    &.edit-mode {
+      height: @baseline-height - @remix-bar-height;
+    }
+
+    &.hidden-context-mode {
+      top: calc(50% ~'-' @card-info-height / 2);
+      .transform(translate(0, -50%));
+      height: @baseline-height - @remix-bar-height;
+    }
+    svg {
+      cursor: pointer;
+      .center-over-parent-div;
+
+      &:hover {
+        background-color: @action-color;
+      }
+    }
+
+    &.left {
+      left: 0;
+    }
+    &.right {
+      right: 0;
     }
   }
 

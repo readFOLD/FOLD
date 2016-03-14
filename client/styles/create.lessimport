@@ -663,11 +663,6 @@ header.header {
   }
 }
 
-div.browser-offset {
-  .no-select;
-  padding-top: 100px;
-}
-
 
 div.vertical-narrative {
   z-index: 20;

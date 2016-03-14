@@ -421,10 +421,6 @@ div.stories {
     background-color: @action-color;
   }
 
-  div.story-browser {
-    height: 80px;
-  }
-
   div.horizontal-line {
     width: 96%;
     height: 1px;

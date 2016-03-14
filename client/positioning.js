@@ -2,7 +2,8 @@ window.constants = {
   verticalSpacing: 20, // there is css that needs to match this
   readModeOffset: 246,
   minPageWidth: 1024,
-  selectOffset: - 210
+  selectOffset: - 210,
+  baselineCardHeight: 300
 };
 
 if(Meteor.Device.isPhone()){

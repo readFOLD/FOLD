@@ -402,14 +402,14 @@ Template.vertical_section_block.onCreated(function() {
   });
 });
 
-Template.vertical_section_block.onRendered(function() {
-  if (!hiddenContextMode()){
-    this.autorun(() => {
+Template.vertical_section_block.onRendered(function () {
+  this.autorun(() => {
+    if (!hiddenContextMode()) {
       Session.get('read') // make reactive to switching between preview and edit
       var currentXId = Session.get('currentXId');
       var pastHeader = Session.get("pastHeader");
-      if(Session.equals("currentYId", this.data._id) && pastHeader){ // if block is selected
-        if (currentXId){ // if there is a current context card
+      if (Session.equals("currentYId", this.data._id) && pastHeader) { // if block is selected
+        if (currentXId) { // if there is a current context card
           Meteor.setTimeout(() => {
             this.$('a[data-context-id="' + currentXId + '"]').addClass('active');
             this.$('a[data-context-id!="' + currentXId + '"]').removeClass('active');
@@ -420,8 +420,10 @@ Template.vertical_section_block.onRendered(function() {
           this.$('a').removeClass('active');
         }, 0)
       }
-    });
-  }
+    } else {
+      this.$('a').removeClass('active');
+    }
+  });
 });
 
 Template.vertical_section_block.helpers({
