@@ -181,6 +181,7 @@ html {
 @thin-window:  ~"(max-width: 400px)";
 @mobile-or-thin-window: ~"only screen and (max-device-width: 529px)", ~"(max-width: 400px)";
 @not-mobile-nor-thin-window:  ~"(min-device-width: 530px) and (min-width: 400px)";
+@resizing-context:      ~"only screen and (max-device-width: 529px)", ~"(max-height: 570px)";
 @tablet:      ~"only screen and (min-device-width: 530px) and (max-device-width: 949px)";
 @desktop:     ~"only screen and (min-device-width: 950px) and (max-device-width: 1128px)";
 @desktop-xl:  ~"only screen and (min-device-width: 1129px)";
@@ -847,7 +848,7 @@ div.image-section {
   .size-to-fit;
   position: relative;
   line-height: @horizontal-content-height;
-  @media @mobile {
+  @media @resizing-context {
     line-height: 0;
   }
   background-color: @black-color;
@@ -964,7 +965,7 @@ div.image-section {
 
 div.broken-section {
   height: @horizontal-content-height;
-  @media @mobile {
+  @media @resizing-context {
     height: 100%;
   }
   width: 100%;
@@ -1022,7 +1023,7 @@ div.oec-section {
 div.link-section {
   position: relative;
   height: @horizontal-content-height;
-  @media @mobile {
+  @media @resizing-context {
     height: 100%;
   }
   border-bottom: 7px solid @action-color;
@@ -1141,7 +1142,7 @@ div.text-section {
   .text-content{
     overflow-y: hidden;
     height: 264px;
-    @media @mobile {
+    @media @resizing-context {
       overflow-y: scroll;
       padding: 20px;
     }
@@ -1215,7 +1216,7 @@ div.twitter-section{
     padding: 32px 15px 25px 25px;
     .size-to-fit;
     display: table;
-    @media @mobile {
+    @media @resizing-context {
       display: block;
       padding: 20px;
     }
@@ -1248,7 +1249,7 @@ div.twitter-section{
       position: relative;
       div.title {
         margin-bottom: 20px;
-        @media @mobile {
+        @media @resizing-context {
           font-size: 100%;
           margin-bottom: 15px;
         }
@@ -1260,7 +1261,7 @@ div.twitter-section{
           left: 10px;
           div.screenname {
             font-size: 14px;
-            @media @mobile {
+            @media @resizing-context {
               font-size: 80%;
             }
             font-weight: 100;
@@ -1272,7 +1273,7 @@ div.twitter-section{
         line-height: 28px;
         padding-bottom: 12px;
         max-width: 480px;
-        @media @mobile {
+        @media @resizing-context {
           font-size: 100%;
           line-height: 1.5;
         }
@@ -1287,7 +1288,7 @@ div.twitter-section{
     margin-left: calc(100% ~"-" 55px);
   }
   .info, .actions{
-    @media @mobile {
+    @media @resizing-context {
       font-size: 80%;
       line-height: 1;
     }
@@ -1916,7 +1917,7 @@ div.horizontal-context {
     //background-color: black;
   }
 
-  @media @mobile {
+  @media @resizing-context {
     &.twitter-card{
       height: auto !important;
       .active-display{

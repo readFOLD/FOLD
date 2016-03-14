@@ -1296,7 +1296,7 @@ div.text-section {
   margin-top: 25px;
   margin-left: 30px;
   margin-right: 30px;
-  @media @mobile {
+  @media @resizing-context {
     margin-top: 0;
     margin-left: 0;
     margin-right: 0;
