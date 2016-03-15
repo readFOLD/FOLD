@@ -142,6 +142,8 @@ Handlebars.registerHelper("formatDate", window.formatDate);
 Handlebars.registerHelper("formatDateNice", window.formatDateNice);
 Handlebars.registerHelper("formatDateCompact", window.formatDateCompact);
 
+Handlebars.registerHelper("prettyDateInPast", window.prettyDateInPast)
+
 Handlebars.registerHelper('$eq',
   function(v1, v2) {
     return (v1 === v2);
@@ -173,3 +175,4 @@ Handlebars.registerHelper("embedMode", function () {
 Handlebars.registerHelper("mobileOrTablet", function () {
   return window.mobileOrTablet();
 });
+

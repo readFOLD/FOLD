@@ -95,10 +95,10 @@ Template.my_stories.helpers({
     }
   },
   lastEditDate () {
-    return formatDate(this.savedAt);
+    return prettyDateInPast(this.savedAt);
   },
   lastPublishDate () {
-    return formatDate(this.publishedAt);
+    return prettyDateInPast(this.publishedAt);
   }
 });
 

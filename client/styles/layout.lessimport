@@ -677,16 +677,9 @@ article{
     button{
       color: @action-color;
     }
-    @media @mobile {
-      text-align: right;
-      margin-top: 5px;
-      svg{
-        margin-right: 5px;
-      }
-    }
     @media @mobile-or-thin-window {
       text-align: right;
-      margin-top: 5px;
+      margin-top: 13px;
       svg{
         margin-right: 5px;
       }
@@ -1011,16 +1004,18 @@ div.vertical-narrative {
     }
     background-color: inherit;
 
-    &.embed-mode{ // sandwich-mode
+    &.embed-mode{
       position: static;
       margin-top: @card-spacing;
-      margin-left: @card-spacing;
+      @media @not-mobile-nor-thin-window {
+        margin-left: @card-spacing;
+      }
     }
   }
 
   @media @mobile{
     position: static;
-    margin-top: @magic-styling-distance + 10px;
+    margin-top: @magic-styling-distance + 15px;
     float: none;
     width: auto !important;
   }

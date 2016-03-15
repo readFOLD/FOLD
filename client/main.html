@@ -48,20 +48,39 @@
     <div class="title-author {{#if sandwichMode}}sandwich-mode{{/if}} {{#if embedMode}}embed-mode{{/if}}">
       {{> story_title }}
       <div class="author">
-        <a href="{{profileUrl}}">
-          By <span>{{authorName}}</span>
-        </a>
-        {{> follow_button userId=authorId}}
-      </div>
-      {{#if embedMode}}
-        <div class="author-image">
-          <img class="profile-picture" src="{{profileImage author}}"/>
+        {{#if embedMode}}
+          <div class="author-image">
+            <img class="profile-picture" src="{{profileImage author}}"/>
+          </div>
+        {{else}}
+          <a class="author-image" href="{{profileUrl}}">
+            <img class="profile-picture" src="{{profileImage author}}"/>
+          </a>
+        {{/if}}
+        <div class="author-name-section">
+          {{#if embedMode}}
+            <div class="author-name-and-date">
+              <div>
+                By <span>{{authorName}}</span>
+              </div>
+              <div>
+                {{prettyDateInPast publishedAt}}
+              </div>
+            </div>
+          {{else}}
+            <div class="author-name-and-date">
+              <a href="{{profileUrl}}">
+                By <span>{{authorName}}</span>
+              </a>
+              <div>
+                {{prettyDateInPast publishedAt}}
+              </div>
+            </div>
+          {{/if}}
+          {{> follow_button userId=authorId}}
         </div>
-      {{else}}
-        <a class="author-image" href="{{profileUrl}}">
-          <img class="profile-picture" src="{{profileImage author}}"/>
-        </a>
-      {{/if}}
+
+      </div>
     </div>
     {{#if popoutExists}}{{> audio_popout}}{{/if}}
 

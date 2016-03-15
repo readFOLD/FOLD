@@ -614,7 +614,7 @@ Template.story_preview.helpers({
 Template._story_preview_content.helpers({
   lastPublishDate () {
     if(this.publishedAt) {
-      return formatDateNice(this.publishedAt);
+      return prettyDateInPast(this.publishedAt);
     }
   },
   story (){
