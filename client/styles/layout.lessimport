@@ -1392,6 +1392,10 @@ div#banner-overlay {
     right: -20px;
     top: 10px;
     line-height: 0;
+    svg{
+      height: 100%;
+    }
+
     .fg{
       fill: @white-color;
     }

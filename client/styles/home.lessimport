@@ -30,7 +30,7 @@ div.home-top {
   //box-shadow: 0 2px 8px -6px @dark-color;
 
 
-  div.logo-title {
+  .logo-title {
 
     div.title {
       float: left;
@@ -47,13 +47,6 @@ div.home-top {
       }
     }
 
-    @media @mobile{
-      .title {
-        .fold-title {
-          height: @slimHeight;
-        }
-      }
-    }
 
     @media @not-mobile{
       &.fat{
@@ -66,31 +59,32 @@ div.home-top {
       }
       display: inline-block;
       &.fat{
+        width: 310px;
         margin-top: @magic-styling-distance;
       }
       &.slim{
         margin-top: @magic-styling-distance / 4;
       }
       margin-left: @magic-styling-distance;
-      width: 310px;
-      div.title {
+      .title {
         //margin-top: 5px;
         width: 222px;
       }
-
     }
-    @media @mobile{
-      margin:auto;
-      text-align: left;
-      margin-top: @magic-styling-distance / 4;
-      margin-left: @magic-styling-distance / 2;
-      height: 28px;
-      img{
-        height: 100%
-      }
+
+
+    &.alt-slim{
+      .center-over-parent-div;
+      margin-top: 0;
+      margin-left: 0;
       .title {
-        height: 100%;
+        .fold-title {
+          height: @slimHeight;
+        }
+        line-height: 0;
+        width: auto;
       }
+      width: auto;
     }
   }
 
