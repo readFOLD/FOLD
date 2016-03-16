@@ -137,37 +137,40 @@ window.formatDateCompact = function (date) {
 
 };
 
+var oneDay = 1000 * 60 * 60 * 24;
+var oneWeek = oneDay * 7;
+var oneMonth = oneDay * 30;
+
 window.prettyDateInPast = function(date){
-  var oneDay = 1000 * 60 * 60 * 24;
-  var oneWeek = oneDay * 7;
-  var oneMonth = oneDay * 30;
+  if(date){
+    var now = new Date();
 
-  var now = new Date();
-
-  var dayDistance = (now.getDay() - date.getDay());
-  if(dayDistance < 0){
-    dayDistance += 7;
-  }
-
-  var exactDistance = now - date;
-
-  if(exactDistance <= oneDay && dayDistance === 0){
-    return 'Today'
-  } else if (exactDistance <= oneWeek) {
-    if(dayDistance === 0){
-      return 'One week ago'
-    } else if(dayDistance === 1){
-      return 'Yesterday'
-    } else {
-      return dayDistance + ' days ago'
+    var dayDistance = (now.getDay() - date.getDay());
+    if(dayDistance < 0){
+      dayDistance += 7;
     }
-  } else if (exactDistance <= oneWeek * 1.5) {
-    return 'One week ago'
-  } else if (exactDistance <= oneMonth) {
-    return Math.round(new Date(exactDistance).getDate() / 7) + ' weeks ago'
-  } else {
-    return formatDateNice(date);
+
+    var exactDistance = now - date;
+
+    if(exactDistance <= oneDay && dayDistance === 0){
+      return 'Today'
+    } else if (exactDistance <= oneWeek) {
+      if(dayDistance === 0){
+        return 'One week ago'
+      } else if(dayDistance === 1){
+        return 'Yesterday'
+      } else {
+        return dayDistance + ' days ago'
+      }
+    } else if (exactDistance <= oneWeek * 1.5) {
+      return 'One week ago'
+    } else if (exactDistance <= oneMonth) {
+      return Math.round(new Date(exactDistance).getDate() / 7) + ' weeks ago'
+    } else {
+      return formatDateNice(date);
+    }
   }
+
 };
 
 window.trackingInfoFromStory = function(story) {
