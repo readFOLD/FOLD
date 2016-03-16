@@ -1028,12 +1028,16 @@ div.oec-section {
 div.link-section {
   position: relative;
   height: @horizontal-content-height;
-  @media @resizing-context {
-    height: 100%;
-  }
+
   border-bottom: 7px solid @action-color;
 
   overflow-y: hidden;
+
+  @media @resizing-context {
+    height: 100%;
+    border-bottom: none;
+    position: relative;
+  }
 
   div.top {
     .thumbnail {
@@ -1060,6 +1064,30 @@ div.link-section {
         background-size: cover;
         height: 130px;
       }
+
+      @media @resizing-context {
+        &.top, &.left{
+          position: absolute;
+          top:0;
+          left:0;
+          right:0;
+          bottom:0;
+          float: none;
+          .size(auto);
+          z-index: -2;
+        }
+        &:before{
+          content: '';
+          position: absolute;
+          top:0;
+          left:0;
+          right:0;
+          bottom:0;
+          z-index: 1;
+          background-color: fade(@dark-color, 70%);
+        }
+      }
+
     }
     .link-title {
       font-size: 20px;
@@ -1075,15 +1103,32 @@ div.link-section {
       &.image-on-left {
         .display-flex;
         align-items: center;
-        background-color: @dark-color;
         float: right;
         padding-top: 0;
         width: calc(100% ~"-" 130px);
         border-bottom: 1px solid @dark-color;
         background-color: @dark-color;
-        color: white;
+        color: @white-color;
         height: 130px;
       }
+      @media @resizing-context {
+        &.image-on-left, &:not(.image-on-left){
+          background-color: transparent;
+          color: @white-color;
+          padding-left: 20px;
+          padding-bottom: 0px;
+          margin-bottom: 7px;
+          border-bottom: none;
+          float: none;
+          width: 100%;
+          height: auto;
+          align-items: baseline;
+          padding-top: 15px;
+          max-height: 66px;
+          overflow: hidden;
+        }
+      }
+
     }
   }
 
@@ -1107,6 +1152,11 @@ div.link-section {
     }
     &.empty{
       color: @placeholder-color;
+    }
+    @media @resizing-context {
+      color: @white-color;
+      padding-left: 20px;
+      max-height: 110px !important;
     }
   }
 
@@ -1139,6 +1189,15 @@ div.link-section {
         pointer-events: none;
         cursor: inherit;
       }
+    }
+    @media @resizing-context {
+      background-color: transparent;
+      padding-bottom: 10px;
+      padding-left: 20px;
+      a{
+        color: @white-color;
+      }
+      .FFMarkWebBold;
     }
   }
 }
