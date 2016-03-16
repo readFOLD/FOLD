@@ -1027,147 +1027,97 @@ div.oec-section {
 
 div.link-section {
   position: relative;
-  height: @horizontal-content-height;
-
-  border-bottom: 7px solid @action-color;
+  .display-flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   overflow-y: hidden;
+  height: 100%;
+  z-index: 1;
 
-  @media @resizing-context {
-    height: 100%;
-    border-bottom: none;
-    position: relative;
+  .top-link {
+    display: block;
   }
 
-  div.top {
-    .thumbnail {
-      position: relative;
-      &.left {
-        float: left;
-        width: 130px;
-        height: 130px;
-        overflow: hidden;
-        background-color: @black-color;
-        img{
-          min-height: 100%;
-          width: 100%;
-          .center-over-parent-div;
-        }
-      }
-      &.top {
-        background-color: @action-color;
-        background-position: center center;
-        background-repeat: no-repeat;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-        height: 130px;
-      }
-
-      @media @resizing-context {
-        &.top, &.left{
-          position: absolute;
-          top:0;
-          left:0;
-          right:0;
-          bottom:0;
-          float: none;
-          .size(auto);
-          z-index: -2;
-        }
-        &:before{
-          content: '';
-          position: absolute;
-          top:0;
-          left:0;
-          right:0;
-          bottom:0;
-          z-index: 1;
-          background-color: fade(@dark-color, 70%);
-        }
-      }
-
+  .thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    float: none;
+    .size(auto);
+    z-index: -2;
+    background-color: @action-color;
+    background-position: center center;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      background-color: fade(@dark-color, 80%);
     }
-    .link-title {
-      font-size: 20px;
-      .FFMarkWebBold;
-      padding-left: 15px;
-      padding-top: 15px;
-      padding-right: 20px;
-      padding-bottom: 7px;
-      line-height: 26px;
-      background-color: @white-color;
-      overflow:hidden;
-
-      &.image-on-left {
-        .display-flex;
-        align-items: center;
-        float: right;
-        padding-top: 0;
-        width: calc(100% ~"-" 130px);
-        border-bottom: 1px solid @dark-color;
-        background-color: @dark-color;
-        color: @white-color;
-        height: 130px;
-      }
-      @media @resizing-context {
-        &.image-on-left, &:not(.image-on-left){
-          background-color: transparent;
-          color: @white-color;
-          padding-left: 20px;
-          padding-bottom: 0px;
-          margin-bottom: 7px;
-          border-bottom: none;
-          float: none;
-          width: 100%;
-          height: auto;
-          align-items: baseline;
-          padding-top: 15px;
-          max-height: 66px;
-          overflow: hidden;
-        }
-      }
-
+  }
+  .link-title {
+    font-size: 20px;
+    .FFMarkWebBold;
+    margin-top: 28px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 0px;
+    line-height: 26px;
+    margin-bottom: 7px;
+    overflow: hidden;
+    background-color: transparent;
+    color: @white-color;
+    width: 100%;
+    max-height: 50px;
+    .flex(none);
+    @media (max-width: 500px), (max-height: 300px){
+      font-size: 14px;
+      line-height: 1.5;
+      margin-top: 18px;
+      padding-left: 20px;
+      max-height: 60px;
     }
   }
 
   .link-description {
     font-size: 14px;
-    width: 100%;
+    width: calc(100% ~"-" 30px);
     overflow: hidden;
     line-height: inherit;
-
-    padding-left: 15px;
-    padding-right: 15px;
     padding-top: 0px;
-    &.image-on-top {
-      max-height: 80px;
-    }
-
-    &.image-on-left {
-      clear: both;
-      max-height: 110px;
-      padding-top: 15px;
-    }
-    &.empty{
+    &.empty {
       color: @placeholder-color;
     }
-    @media @resizing-context {
-      color: @white-color;
-      padding-left: 20px;
-      max-height: 110px !important;
+    .flex(0 1);
+    margin-bottom: 10px;
+    max-height: 94px;
+    color: @white-color;
+    @media (max-width: 575px), (max-height: 350px){
+      display: none;
     }
   }
+  textarea.link-description{
+    background-color: transparent;
+  }
 
-
-  .click-to-edit{
+  .click-to-edit {
     cursor: pointer;
-    span{
+    span {
       display: inline-block;
     }
-    &:hover{
-      span{
+    &:hover {
+      span {
         background-color: @action-color;
         color: @white-color;
       }
@@ -1175,29 +1125,52 @@ div.link-section {
   }
 
   .bottom {
-    position: absolute;
     bottom: 0;
     padding-top: 13px;
-    padding-left: 15px;
-    padding-bottom: 7px;
-    width: calc(100% ~"-" 15px);
-    background-color: @white-color;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 28px;
+    width: calc(100%);
+    .flex(1);
+    .display-flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
     a {
+      max-height: 45px;
+      .FFMarkWebBold;
+      .flex(none);
       display: block;
-      color: @action-color;
-      &.inactive{
+      color: @white-color;
+      line-height: 1.5;
+
+      &.inactive {
         pointer-events: none;
         cursor: inherit;
       }
     }
-    @media @resizing-context {
-      background-color: transparent;
-      padding-bottom: 10px;
+
+    @media (max-width: 500px), (max-height: 300px){
+      font-size: 12px;
       padding-left: 20px;
-      a{
-        color: @white-color;
-      }
-      .FFMarkWebBold;
+      padding-bottom: 18px;
+    }
+  }
+  input{
+    position: absolute;
+    right:0;
+    bottom:0;
+    height: 30px;
+    width: 100px;
+    &::before {
+      display: inline-block;
+      background: @dark-color;
+      color: @white-color;
+      outline: none;
+      text-align: center;
+      font-size: 12px;
+      width: 100%;
+      line-height: 20px;
     }
   }
 }

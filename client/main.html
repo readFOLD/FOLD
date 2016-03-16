@@ -509,26 +509,9 @@
 
 <template name="display_link_section">
   <div class="display-context-section link-section {{#if isFocused}}focused{{/if}}">
-    <a href="{{url}}" target="_blank">
+
+    <a href="{{url}}" class="top-link" target="_blank">
       <div class="top">
-        {{#if thumbnailUrl}}
-
-          {{#if imageOnLeft}}
-            <div class="thumbnail left">
-              {{#if editThumbnailPrompt}}
-                <input type="file" accept="image/*" class="overlay {{#if uploadingThumbnail}}uploading{{/if}}">
-              {{/if}}
-              <img src="{{thumbnailUrl}}" />
-            </div>
-          {{else}}
-            <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'>
-              {{#if editThumbnailPrompt}}
-                <input type="file" accept="image/*" class="overlay {{#if uploadingThumbnail}}uploading{{/if}}">
-              {{/if}}
-            </div>
-          {{/if}}
-
-        {{/if}}
         {{#if editingTitle}}
           <textarea class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</textarea>
         {{else}}
@@ -536,14 +519,22 @@
         {{/if}}
       </div>
     </a>
-  {{#if editingDescription}}
-    <textarea class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}" rows="5">{{linkDescription}}</textarea>
-  {{else}}
-    <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}} {{#unless linkDescription}}empty{{/unless}}"><span>{{#if linkDescription}}{{linkDescription}}{{else}}{{#unless read}}Click to add a description{{/unless}}{{/if}}</span></div>
-  {{/if}}
     <div class="bottom">
+
+    {{#if editingDescription}}
+      <textarea class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}" rows="5">{{linkDescription}}</textarea>
+    {{else}}
+      <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}} {{#unless linkDescription}}empty{{/unless}}"><span>{{#if linkDescription}}{{linkDescription}}{{else}}{{#unless read}}Click to add a description{{/unless}}{{/if}}</span></div>
+    {{/if}}
       <a class="read-more {{#unless read}}inactive{{/unless}}" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
     </div>
+    {{#if thumbnailUrl}}
+      <div class="thumbnail" style='background-image: url("{{thumbnailUrl}}")'>
+      </div>
+    {{/if}}
+    {{#if editThumbnailPrompt}}
+      <input type="file" accept="image/*" class="image-upload {{#if uploadingThumbnail}}uploading{{/if}}">
+    {{/if}}
   </div>
   {{#unless read}}
     {{> horizontal_section_edit_delete}}

@@ -23,7 +23,6 @@ input[type=file] {
     font-size: 14px;
     width: 100%;
     line-height: 30px;
-
   }
   &:hover::before {
     background-color: @action-color;
@@ -45,6 +44,11 @@ input[type=file] {
   &.image-upload{
     &::before {
       content: 'Upload Image';
+    }
+    &.uploading{
+      &::before {
+        content: 'Uploading...';
+      }
     }
   }
 
