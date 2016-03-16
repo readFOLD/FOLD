@@ -606,11 +606,27 @@ Template.metaview.onRendered(function() {
   this.$(".sortable-rows").sortable({
     stop: saveMetaviewOrdering
   });
+
+  var removingContext;
+
   this.$(".sortable-blocks").sortable({
     connectWith: ".sortable-blocks",
-    stop () {
-      resetXPositionMemory(); // prevent XId stuff from getting all crazy
-      saveMetaviewOrdering();
+    remove (e, ui) { // when a context block is removed from one vertical section and placed in another
+      removingContext = true;
+      var removedContextId = ui.item.data('id');
+      removeAnchorTag($('.vertical-narrative-section .content a[data-context-id="' + removedContextId + '"]')); // remove the broken link
+      Meteor.setTimeout(() => { // then save the ordering just a moment later to ensure the anchor removal makes it to the server first
+        removingContext = null;
+        resetXPositionMemory();
+        saveMetaviewOrdering();
+      }, 200);
+    },
+    stop (e, ui) {
+      if(!removingContext){ // if context is being removed, we handle it above
+        resetXPositionMemory(); // prevent XId stuff from getting all crazy
+        saveMetaviewOrdering();
+      }
+      removingContext = null;
     }
   });
 
