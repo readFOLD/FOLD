@@ -130,13 +130,15 @@ Template.user_profile.onCreated(function(){
   this.pictureId = new ReactiveVar();
 });
 
+Template.user_profile.onRendered(function(){
+  this.$('.bio').linkify({linkAttributes: {rel : 'nofollow'}});
+});
+
 
 var ownProfile = function() {
   var user = Meteor.user();
   return (user && (user.username == this.user.username)) ? true : false
 };
-
-var LINK_DETECTION_REGEX = /((([a-z]+:\/\/)?(([a-z0-9\-]+\.)+([a-z]{2}|aero|arpa|biz|com|cool|coop|design|edu|gov|info|int|jobs|mil|mobi|museum|name|nato|net|org|pro|pizza|travel|local|internal|xyz|top|club|science|site|link|win|online|party|click|space|news))(:[0-9]{1,5})?(\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(\?[a-z0-9+_\-\.%=&amp;]*)?)?(#[a-zA-Z0-9!$&'()*+.=-_~:@/?]*)?)(\s+|$))/gi;
 
 Template.user_profile.helpers({
   editing  () {
@@ -153,7 +155,7 @@ Template.user_profile.helpers({
     return Template.instance().uploadingPicture.get();
   },
   bioHtml (){
-    return _.escape(this.user.profile.bio).replace(LINK_DETECTION_REGEX, "<a href='$1' target='_blank'>$1</a>").replace(/(@\w*)/g, "<a href='https://twitter.com/$1' target='_blank'>$1</a>");
+    return _.escape(this.user.profile.bio).replace(/(@\w*)/g, "<a href='https://twitter.com/$1' target='_blank'>$1</a>");
   }
 });
 
