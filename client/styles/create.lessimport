@@ -1376,7 +1376,6 @@ div.text-section {
 
     &.link-section {
       border: 1px solid @medium-color;
-      border-bottom: 7px solid @action-color;      
     }
 
     &.placeholder{
