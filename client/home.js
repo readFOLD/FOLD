@@ -58,7 +58,6 @@ Template.top_banner.helpers({
     return Session.equals('filterValue', 'newest') && !Session.get('storySearchQuery');
   },
   altSlim (){
-    console.log(Template.instance().data)
     return (Template.instance().data.slim || Meteor.Device.isPhone()) && hiddenContextMode()
   }
 });
