@@ -1081,6 +1081,9 @@ div.link-section {
     width: 100%;
     max-height: 50px;
     .flex(none);
+    @media (max-width: 575px), (max-height: 350px){
+      max-height: 75px;
+    }
     @media (max-width: 500px), (max-height: 300px){
       font-size: 14px;
       line-height: 1.5;
