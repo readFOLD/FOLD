@@ -136,6 +136,8 @@ var ownProfile = function() {
   return (user && (user.username == this.user.username)) ? true : false
 };
 
+var LINK_DETECTION_REGEX = /((([a-z]+:\/\/)?(([a-z0-9\-]+\.)+([a-z]{2}|aero|arpa|biz|com|cool|coop|design|edu|gov|info|int|jobs|mil|mobi|museum|name|nato|net|org|pro|pizza|travel|local|internal|xyz|top|club|science|site|link|win|online|party|click|space|news))(:[0-9]{1,5})?(\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(\?[a-z0-9+_\-\.%=&amp;]*)?)?(#[a-zA-Z0-9!$&'()*+.=-_~:@/?]*)?)(\s+|$))/gi;
+
 Template.user_profile.helpers({
   editing  () {
     return Template.instance().editing.get()
@@ -144,14 +146,14 @@ Template.user_profile.helpers({
   name  () {
     return this.user.profile.name
   },
-  bio  () {
-    return this.user.profile.bio
-  },
   uploadPreview (){
     return Template.instance().uploadPreview.get();
   },
   uploadingPicture (){
     return Template.instance().uploadingPicture.get();
+  },
+  bioHtml (){
+    return _.escape(this.user.profile.bio).replace(LINK_DETECTION_REGEX, "<a href='$1' target='_blank'>$1</a>").replace(/(@\w*)/g, "<a href='https://twitter.com/$1' target='_blank'>$1</a>");
   }
 });
 

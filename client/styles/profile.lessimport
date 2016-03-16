@@ -141,6 +141,9 @@ div.user-profile {
   div.bio {
     .FFMarkWeb;
     line-height: 160%;
+    a{
+      color: @action-color;
+    }
   }
   .edit-profile {
     color: @social-color;
