@@ -155,7 +155,7 @@ Template.user_profile.helpers({
     return Template.instance().uploadingPicture.get();
   },
   bioHtml (){
-    return _.escape(this.user.profile.bio).replace(/(@\w*)/g, "<a href='https://twitter.com/$1' target='_blank'>$1</a>");
+    return _.escape(this.user.profile.bio).replace(/(@\w+)/g, "<a href='https://twitter.com/$1' target='_blank'>$1</a>");
   }
 });
 
