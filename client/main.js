@@ -1147,6 +1147,21 @@ Template.display_image_section.onDestroyed(function(){
   }
 });
 
+Template.display_text_section.onRendered(function(){
+  if(mobileOrTablet()) {
+    this.$('.text-section').hammer(hammerDoubleTapOptions).bind('tap', () => {
+      Session.set('contextOverlayId', this.data._id);
+      trackEvent('Expand text card');
+    });
+  }
+});
+
+Template.display_text_section.onDestroyed(function(){
+  if(mobileOrTablet()) {
+    this.$('.text-section').hammer(hammerDoubleTapOptions).unbind('tap');
+  }
+});
+
 Template.display_image_section.helpers(horizontalBlockHelpers);
 Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 Template.display_image_section.events({
@@ -1296,6 +1311,7 @@ Template.display_link_section.events({
 });
 
 Template.display_text_section.onCreated(editableDescriptionCreatedBoilerplate);
+
 //Template.display_text_section.onDestroyed(editableDescriptionDestroyedBoilerplate('editTextSection'));
 Template.display_text_section.helpers(horizontalBlockHelpers);
 Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
@@ -1907,6 +1923,8 @@ Template.read.onDestroyed(function(){
   // send all existing heartbeats when leave a story
   subtractSentActiveHeartbeatCount(); // in case there is already a count pending don't double-do it
   activeHeartbeatCountSender(true);
+
+  unfreezePageScroll();
 });
 
 Template.read.helpers({
@@ -1927,6 +1945,9 @@ Template.context_overlay.helpers({
   },
   contextLoaded (){
     return Template.instance().contextLoaded.get();
+  },
+  textContent (){
+    return _.escape(this.content).replace(/\n/g, "<br>")
   }
 });
 

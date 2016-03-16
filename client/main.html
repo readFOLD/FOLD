@@ -623,10 +623,16 @@
   {{#with overlaidContext}}
     <div class="context-overlay" style="height: {{windowHeight}}px; width: {{windowWidth}}px;">
       <div class="context-overlay-content">
-        <img src="{{largeUrl}}" />
-        {{#unless contextLoaded}}
-          {{> loading_icon}}
-        {{/unless}}
+        {{#if largeUrl}}
+          <img src="{{largeUrl}}" />
+          {{#unless contextLoaded}}
+            {{> loading_icon}}
+          {{/unless}}
+        {{else}}
+          <div class="text-content">
+            {{{textContent}}}
+          </div>
+        {{/if}}
       </div>
     </div>
   {{/with}}
