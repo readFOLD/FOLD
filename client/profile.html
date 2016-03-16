@@ -61,7 +61,7 @@
       <img class="profile-picture-large" src="{{profileImage user 'large'}}"/>
     </div>
     <div class="name">{{name}}</div>
-    <div class="bio">{{bio}}</div>
+    <div class="bio">{{{bioHtml}}}</div>
     <div class="following-followers">
       <div class="following-total">Following<br>{{#if user.followingTotal}}{{user.followingTotal}}{{else}}0{{/if}}</div>
       <div class="followers-total">Followers<br>{{#if user.followersTotal}}{{user.followersTotal}}{{else}}0{{/if}}</div>

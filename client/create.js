@@ -5,7 +5,7 @@ var saveUpdatedSelection = function () {
   $(window.selectedNode).closest('.content').blur();
 };
 
-var removeAnchorTag = function(tag){
+window.removeAnchorTag = function(tag){
   parentDiv = $(tag).closest('.content');
   $(tag).contents().unwrap();
   parentDiv.blur();
