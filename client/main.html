@@ -513,9 +513,9 @@
     <a href="{{url}}" class="top-link" target="_blank">
       <div class="top">
         {{#if editingTitle}}
-          <textarea class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</textarea>
+          <textarea class="link-title">{{title}}</textarea>
         {{else}}
-          <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}}"><span>{{title}}</span></div>
+          <div class="link-title {{#unless read}}click-to-edit{{/unless}}"><span>{{title}}</span></div>
         {{/if}}
       </div>
     </a>

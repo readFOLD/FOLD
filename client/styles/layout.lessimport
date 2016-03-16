@@ -216,6 +216,21 @@ html {
   flex: @string;
 }
 
+.flex-direction(@string){
+  -webkit-flex-direction: @string;
+  -moz-flex-direction: @string;
+  -ms-flex-direction: @string;
+  -o-flex-direction: @string;
+  flex-direction: @string;
+}
+.justify-content(@string){
+  -webkit-justify-content: @string;
+  -moz-justify-content: @string;
+  -ms-justify-content: @string;
+  -o-justify-content: @string;
+  justify-content: @string;
+}
+
 
 .display-flex{
   display: -ms-flexbox;
@@ -841,15 +856,43 @@ article{
   height: 100%;
 }
 
+.vertically-center-images{ // will need to re-set font inside of the element
+  line-height: 0;
+  font: 0/0 a;
+  &:before {    /* create a full-height inline block pseudo=element */
+    content: '';
+    display: inline-block;
+    vertical-align: middle;  /* vertical alignment of the inline element */
+    height: 100%;
+    width: 0;
+  }
+  .looping-video:before {    /* create a full-height inline block pseudo=element */
+    content: '';
+    display: inline-block;
+    vertical-align: middle;  /* vertical alignment of the inline element */
+    height: 100%;
+    width: 0;
+  }
+  img, video, .looping-video{
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-backface-visibility: hidden; // prevents image jigglin'
+  }
+
+}
+
 div.image-section {
   .size-to-fit;
   position: relative;
-  line-height: @horizontal-content-height;
-  @media @resizing-context {
-    line-height: 0;
-  }
   background-color: @black-color;
   text-align: center;
+
+  .vertically-center-images;
+
+  .text-content{
+    .FFMarkWeb;
+  }
+
   &:hover, &.always-show-caption{
     div.text-content{
       background-color: rgba(0, 0, 0, 0.8);
@@ -906,7 +949,10 @@ div.image-section {
   }
 
   div.attribution {
-    margin-top: -30px;
+    .FFMarkWeb;
+    position: absolute;
+    bottom: 0;
+    right: 0;
     line-height: 30px;
     padding-right: 8px;
     text-shadow: 1px 1px @dark-color;
@@ -961,10 +1007,8 @@ div.image-section {
 }
 
 div.broken-section {
-  height: @horizontal-content-height;
-  @media @resizing-context {
-    height: 100%;
-  }
+  height: 100%;
+
   width: 100%;
   background-color: @inactive-color;
   position: relative;
@@ -1028,8 +1072,8 @@ div.oec-section {
 div.link-section {
   position: relative;
   .display-flex;
-  flex-direction: column;
-  justify-content: space-between;
+  .flex-direction(column);
+  .justify-content(space-between);
 
   overflow-y: hidden;
   height: 100%;
@@ -1102,7 +1146,7 @@ div.link-section {
     &.empty {
       color: @placeholder-color;
     }
-    .flex(0 1);
+    .flex(0 1 auto);
     margin-bottom: 10px;
     max-height: 94px;
     color: @white-color;
@@ -1136,8 +1180,8 @@ div.link-section {
     width: calc(100%);
     .flex(1);
     .display-flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    .flex-direction(column);
+    .justify-content(flex-end);
 
     a {
       max-height: 45px;
