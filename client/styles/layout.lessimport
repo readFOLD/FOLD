@@ -2941,3 +2941,38 @@ div.loading-container {
     }
   }
 }
+
+.menu-overlay, .search-overlay{
+  background-color: @white-color;
+  z-index: 999999;
+  position: fixed;
+  text-align: center;
+  ol{
+    .center-over-parent-div;
+    height: 50%;
+  }
+  li{
+    height: 20%;
+  }
+  button{
+    color: @black-color;
+  }
+  .close{
+    color: @medium-color;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+}
+.search-overlay{
+  input{
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    height: @magic-styling-distance;
+    font-size: 20px;
+  }
+  .clear-search{
+    display: none !important;
+  }
+}

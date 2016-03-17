@@ -88,8 +88,13 @@ window.incrementReactiveVar = function(rv){
 
 
 window.openSignInOverlay = function(str){
-  Session.set('signinStage', 'signup');
-  Session.set('signingIn', str || true);
+  if(str === 'login'){
+    Session.set('signinStage', 'login');
+    Session.set('signingIn', true);
+  } else {
+    Session.set('signinStage', 'signup');
+    Session.set('signingIn', str || true);
+  }
 };
 
 window.closeSignInOverlay = function(){
@@ -286,4 +291,20 @@ window.activateEmbedMode = function(){
 
 window.mobileOrTablet = function(){
   return Meteor.Device.isPhone() || Meteor.Device.isTablet()
+};
+
+window.openSearchOverlay = function(){
+  return Session.set('searchOverlayShown', true);
+};
+
+window.closeSearchOverlay = function(){
+  return Session.set('searchOverlayShown', false);
+};
+
+window.openMenuOverlay = function(){
+  return Session.set('menuOverlayShown', true);
+};
+
+window.closeMenuOverlay = function(){
+  return Session.set('menuOverlayShown', false);
 };

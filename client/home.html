@@ -22,7 +22,7 @@
           {{/unless}}
         {{/if}}
         {{#if altSlim}}
-          <button class="alt-burger-button">
+          <button class="alt-menu-button">
             {{> alt_babyburger_icon}}
           </button>
           <button class="alt-search-button">{{> alt_search_icon}}</button>
@@ -157,7 +157,7 @@
 
 
 <template name="search">
-  <input class="story-search" type="search" placeholder="Search">
+  <input class="story-search" type="search" placeholder="{{#if placeholder}}{{placeholder}}{{else}}Search{{/if}}">
   {{#if showClearSearch}}
     <button class="clear-search">{{> clear_search_icon}}</button>
   {{/if}}

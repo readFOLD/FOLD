@@ -25,7 +25,9 @@
 </head>
 
 <body>
-{{> signin_overlay}}
+  {{> signin_overlay}}
+  {{> search_overlay}}
+  {{> menu_overlay}}
 </body>
 
 
@@ -838,4 +840,28 @@
       <!--{{> loading_icon}}-->
     </div>
   </div>
+</template>
+
+<template name="search_overlay">
+  {{#if searchOverlayShown}}
+    <div class="search-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+      <button class="close">✕</button>
+      {{> search slim=true placeholder='Search FOLD'}}
+    </div>
+  {{/if}}
+</template>
+
+<template name="menu_overlay">
+  {{#if menuOverlayShown}}
+    <div class="menu-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+      <button class="close">✕</button>
+      <ol class="menu">
+        <li><a href="/">Home</a></li>
+        <li><button class="sign-up">Sign up</button></li>
+        <li><button class="log-in">Log in</button></li>
+        <li><button class="search">Search</button></li>
+        <li><a href="/read/FOLD/what-is-fold-TiyWEK6C">About</a></li>
+      </ol>
+    </div>
+  {{/if}}
 </template>

@@ -176,3 +176,14 @@ Handlebars.registerHelper("mobileOrTablet", function () {
   return window.mobileOrTablet();
 });
 
+Handlebars.registerHelper("searchOverlayShown", function () {
+  return Session.get('searchOverlayShown');
+});
+
+
+Handlebars.registerHelper("menuOverlayShown", function () {
+  return Session.get('menuOverlayShown');
+});
+
+
+

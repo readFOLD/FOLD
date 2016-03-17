@@ -89,6 +89,12 @@ Template.top_banner.events({
   },
   "click .alt-signup-button" (d) {
     openSignInOverlay();
+  },
+  "click .alt-search-button" () {
+    openSearchOverlay();
+  },
+  "click .alt-menu-button" () {
+    openMenuOverlay();
   }
 });
 
@@ -205,6 +211,7 @@ Template.search.events({
     Session.set('storySearchQuery', text);
     if(enterPress(e)){
       $(e.target).blur();
+      closeSearchOverlay();
       if(t.data.slim){
         Router.go('/');
       }
@@ -671,5 +678,30 @@ Template.login_buttons.events({
     e.preventDefault();
     Template.instance().showUserInfo.set(false);
     Meteor.logout();
+  }
+});
+
+
+Template.search_overlay.events({
+  'click .close' (){
+    return closeSearchOverlay();
+  }
+});
+
+Template.menu_overlay.events({
+  'click .close' (){
+    return closeMenuOverlay();
+  },
+  'click a, click button' (){
+    return closeMenuOverlay();
+  },
+  'click .search' (){
+    return openSearchOverlay();
+  },
+  'click .sign-up' (){
+    return openSignInOverlay();
+  },
+  'click .log-in' (){
+    return openSignInOverlay('login');
   }
 });
