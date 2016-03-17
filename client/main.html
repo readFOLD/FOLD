@@ -260,6 +260,11 @@
   <div
       class="narrative-section horizontal-narrative-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if poppedOut}}popped-out selected{{/if}} {{#if hideContainer}}hide-container{{/if}} {{#if editingThisContext}}editing{{/if}} {{#if hide}}hide{{/if}}" data-index="{{index}}" style="width: {{cardWidth}}px; left: {{left}}px; {{#if cardHeight}}height: {{cardHeight}}px; min-height: {{cardHeight}}px;{{/if}}">
 <section>
+    {{#if isPhone}}
+      <div class="context-icon">
+        {{> type_specific_icon}}
+      </div>
+    {{/if}}
 
     {{#if type}}
       {{#if text}}
