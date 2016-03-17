@@ -252,6 +252,8 @@ div#login-buttons-and-more {
       height: 100%;
       .FFMarkWebBold;
       color: @social-color;
+      padding-top: 5px;
+      margin-left: 5px;
       .fg{
         fill: @social-color;
       }
@@ -259,6 +261,7 @@ div#login-buttons-and-more {
   }
   .alt-signup-button{
     float: right;
+    margin-right: 5px;
   }
 } 
 

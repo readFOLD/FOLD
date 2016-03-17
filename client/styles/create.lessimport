@@ -125,10 +125,10 @@ div.floating-story-buttons {
       margin: auto;
       .size-to-fit;
       svg{
-        .size(20px);
+        .size(19px);
       }
     }
-    width: @magic-styling-distance * 2;
+    width: @magic-styling-distance;
   }
   .share-buttons{
     margin-right: 10px;

@@ -610,7 +610,7 @@ body {
       font-size: 0px;
       margin-left: 14px;
       button{
-        .size(25px);
+        .size(19px);
       }
     }
     .random-story{
@@ -1436,27 +1436,46 @@ div#banner-overlay {
   color: @white-color;
   line-height: @magic-styling-distance;
 
+  .favorite-icon {
+    height: 18px;
+  }
+
   .open{
     float: left;
     margin-left: 10px;
     width: 40px;
-    height: 100%;
+    height: 90%;
+    margin-top: 2px;
+  }
+
+  .facebook-social-icon {
+    height: 35px;
+    margin-top: 2px;
+  }
+
+  .twitter-social-icon {
+    height: 35px;
+    margin-top: 2px;
+  }
+
+  .embed-icon {
+    height: 35px;
+    margin-left: 7px;
+    margin-top: 2px;
   }
   
   .share-buttons{
     float: left;
-    margin-left: 20px;
-
+    margin-left: 15px;
     div, button{
       float: left;
     }
   }
-  
+
   .favorite-button{
     float: left;
-    height: 100%;
-    margin-top: 10px;
-    margin-left: 10px;
+    margin-top: 12px;
+    margin-left: 20px;
     .favorite .fg{
       fill: @white-color;
     }
@@ -1466,10 +1485,10 @@ div#banner-overlay {
   }
 
   .title{
-    height: 20px;
+    height: 18px;
     position: absolute;
     right: -20px;
-    top: 10px;
+    top: 12px;
     line-height: 0;
     svg{
       height: 100%;
@@ -1874,7 +1893,6 @@ div.horizontal-context {
       right: -8px;
     }
   }
-
 
   &.selected {
     opacity: 1.0;
@@ -2787,19 +2805,19 @@ div.loading-container {
     background-color: @white-color;
     overflow-y: scroll;
     padding: 20px;
-    padding-top: 40px;
+    padding-top: 50px;
+    line-height: 22px;
+    font-size: 13px;
     position: relative;
     &:before{
       content: 'x';
       position: absolute;
-      background-color: @black-color;
-      color: @white-color;
+      color: @medium-color;
       .size(20px);
       top: 20px;
-      right: 20px;
+      right: 15px;
       font-size: 20px;
       font-weight: normal;
-      line-height: 18px;
       text-align: center;
     }
   }
@@ -2995,15 +3013,17 @@ div.loading-container {
   li{
     height: 20%;
   }
-  font-size: 20px;
+  font-size: 25px;
+  color: @action-color;
   button{
-    color: @black-color;
+    color: @action-color;
   }
   .close{
     color: @medium-color;
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 20px;
+    right: 15px;
+    font-size: 20px;
   }
 }
 .search-overlay{
@@ -3013,7 +3033,7 @@ div.loading-container {
     @side-margin: 10%;
     left: @side-margin;
     height: @magic-styling-distance;
-    font-size: 20px;
+    font-size: 25px;
     width: 100% - 2 * @side-margin;
   }
   .clear-search{

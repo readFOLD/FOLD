@@ -207,6 +207,11 @@ i.loading-icon{
   .fg{
     fill: @dark-color
   }
+  &:hover{
+    .fg{
+      fill: @action-color;
+    }
+  }
 }
 
 .fold-title{
