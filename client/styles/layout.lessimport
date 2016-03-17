@@ -3010,9 +3010,11 @@ div.loading-container {
   input{
     position: absolute;
     top: 30%;
-    left: 10%;
+    @side-margin: 10%;
+    left: @side-margin;
     height: @magic-styling-distance;
     font-size: 20px;
+    width: 100% - 2 * @side-margin;
   }
   .clear-search{
     display: none !important;
