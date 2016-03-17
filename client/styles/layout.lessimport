@@ -2954,6 +2954,7 @@ div.loading-container {
   li{
     height: 20%;
   }
+  font-size: 20px;
   button{
     color: @black-color;
   }
