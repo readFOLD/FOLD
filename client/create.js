@@ -432,6 +432,39 @@ Template.vertical_section_block.helpers({
   }
 });
 
+var resizeStoryTitleFont = function(){
+  var titleDiv = $('.story-title');
+  var fontSize = 24;
+  titleDiv.css({'font-size': (fontSize + 'px')});
+
+  while((titleDiv.width() < titleDiv[0].scrollWidth) && fontSize > 12){
+    fontSize -= 1;
+    titleDiv.css({'font-size': (fontSize + 'px')});
+  }
+};
+
+var resetStoryTitleFont = function(){
+  var titleDiv = $('.story-title');
+  var fontSize = 24;
+  titleDiv.css({'font-size': (fontSize + 'px')});
+};
+
+Template.story_title.onRendered(function(){
+  if(Session.get('read') && !window.hiddenContextMode()){
+    Meteor.setTimeout(resizeStoryTitleFont, 100);
+  } else {
+    resetStoryTitleFont();
+  }
+  this.autorun(()=> {
+    if(Session.get('read') && !window.hiddenContextMode()){
+      windowSizeDep.depend();
+      resizeStoryTitleFont();
+    } else {
+      resetStoryTitleFont();
+    }
+  })
+});
+
 Template.story_title.events({
   'paste [contenteditable]': window.plainTextPaste,
   'drop' (e){

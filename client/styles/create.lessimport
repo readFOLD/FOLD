@@ -543,10 +543,11 @@ div.title-overlay {
 
   .title-author {
     position: absolute;
-    margin-left: 23px;
+    @left: 23px;
+    margin-left: @left;
     margin-top: 125px;
     max-height: @title-overlay-ending-height;
-    max-width: 1300px;
+    max-width: calc(100% ~'-' 2 * @left);
     color: @white-color;
     background-color: @dark-color;
     .background-transition;
@@ -654,6 +655,10 @@ div.title-overlay {
       overflow-y: visible;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .story-title-container{
+      .size-to-fit;
     }
 
 

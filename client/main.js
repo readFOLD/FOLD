@@ -24,7 +24,7 @@ getCardWidth = function(windowWidth) {
 
 Session.set("separation", 20);
 
-var windowSizeDep = new Tracker.Dependency();
+window.windowSizeDep = new Tracker.Dependency();
 
 Meteor.startup(function(){
   Tracker.autorun(function(){
