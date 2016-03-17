@@ -86,6 +86,9 @@ Template.top_banner.events({
     t.$("input").val(null);
     t.$(".clear-search").hide();
     $(e.target).prop("disabled", "disabled");
+  },
+  "click .alt-signup-button" (d) {
+    openSignInOverlay();
   }
 });
 

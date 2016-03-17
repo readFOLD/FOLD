@@ -7,8 +7,11 @@ div#login-buttons-and-more {
   left: 15px;
 }
 
-div.home-top {
+.home-top {
   position: fixed;
+  left:0;
+  right:0;
+  top:0;
   &.not-sticky{
     position: absolute;
   }
@@ -239,6 +242,23 @@ div.home-top {
         display: none;
       }
     }
+  }
+
+  &.alt-slim{
+    .left{
+      .size-to-fit;
+    }
+    button{
+      height: 100%;
+      .FFMarkWebBold;
+      color: @social-color;
+      .fg{
+        fill: @social-color;
+      }
+    }
+  }
+  .alt-signup-button{
+    float: right;
   }
 } 
 

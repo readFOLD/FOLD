@@ -1,5 +1,5 @@
 <template name="top_banner">
-  <div class="home-top top-banner {{#if slim}}slim{{else}}fat{{/if}}">
+  <div class="home-top top-banner {{#if slim}}slim{{else}}fat{{/if}} {{#if altSlim}}alt-slim{{/if}}">
     <div class="left">
       <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}} {{#if altSlim}}alt-slim{{/if}}">
         {{#linkTo route="home"}}
@@ -22,6 +22,11 @@
           {{/unless}}
         {{/if}}
         {{#if altSlim}}
+          <button class="alt-burger-button">
+            {{> alt_babyburger_icon}}
+          </button>
+          <button class="alt-search-button">{{> alt_search_icon}}</button>
+          <button class="alt-signup-button">Sign up</button>
         {{else}}
           <div class="search {{#if slim}}slim{{else}}fat{{/if}}">
             {{> search slim=slim}}
