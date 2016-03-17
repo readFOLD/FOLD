@@ -1831,9 +1831,50 @@ div.horizontal-context {
     .context-icon{
       .size(35px);
       top: -28px;
-      right: -10px;
     }
   }
+  &.video-card{
+    .context-icon{
+      .size(33px);
+      top: -27px;
+      right: -9px;
+    }
+  }
+    &.text-card{
+    .context-icon{
+      .size(33px);
+      top: -28px;
+    }
+  }
+    &.map-card{
+    .context-icon{
+      .size(36px);
+      top: -29px;
+      right: -11px;
+    }
+  }
+    &.gif-card{
+    .context-icon{
+      .size(47px);
+      top: -33px;
+      right: -12px;
+    }
+  }
+    &.twitter-card{
+    .context-icon{
+      .size(38px);
+      top: -30px;
+      right: -11px;
+    }
+  }
+    &.audio-card{
+    .context-icon{
+      .size(36px);
+      top: -29px;
+      right: -8px;
+    }
+  }
+
 
   &.selected {
     opacity: 1.0;
