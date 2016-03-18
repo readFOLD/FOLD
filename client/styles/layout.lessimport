@@ -2027,9 +2027,9 @@ div.horizontal-context {
   .audio-iframe-overlay-3{
     position: absolute;
     top:0;
-    right:0;
+    right:43px;
     height: 60px;
-    width: calc(100% ~"-" 200px);
+    width: calc(100% ~"-" 243px);
   }
   .audio-iframe-overlay-4{
     position: absolute;
@@ -2051,6 +2051,14 @@ div.horizontal-context {
     top: 0;
     width: 100%;
     height: 15px;
+  }
+
+  .audio-iframe-overlay-7{
+    position: absolute;
+    right:0;
+    bottom: 0;
+    height: 100%;
+    width: 10px;
   }
 
   .video-iframe-overlay-vimeo{
