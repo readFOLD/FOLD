@@ -97,7 +97,7 @@
 </template>
 
 <template name="audio_popout">
-  <div class="audio-popout">
+  <div class="audio-popout {{#if embedMode}}embed-mode{{/if}} {{#if sandwichMode}}sandwich-mode{{/if}}">
     <div class="title">{{title}}</div>
     <div class="controls">
       {{#if showPauseButton}}

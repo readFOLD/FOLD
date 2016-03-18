@@ -388,15 +388,28 @@ div.title-overlay {
     .padding-sides(15px);
     font-size: 12px;
     font-weight: bold;
-    @media @mobile {
+    input{
+      background-color: transparent;
+    }
+    .lower-corner{
       height: 100px;
       position: fixed;
       right: 0;
       bottom:0;
       top: auto;
-      width: 100%;
       background-color: @dark-color;
       z-index: 100;
+    }
+    @media @mobile {
+      .lower-corner;
+      width: 100%;
+    }
+
+    &.embed-mode{
+      &:not(.sandwich-mode){
+        .lower-corner;
+        bottom:40px;
+      }
     }
     @control-height: 45px;
     @control-spacing: 7px;
