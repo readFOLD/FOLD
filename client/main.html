@@ -168,7 +168,16 @@
       <div class="call-to-action vertical-narrative-section">
         <p>Show this writer some thanks!</p>{{> favorite_button }}
         <br>
+        {{#if isPhone}}
+          {{> share_on_twitter content='Share on Twitter'}}
+          <br>
+          {{> share_on_facebook content='Share on Facebook'}}
+        {{else}}
+          {{> share_buttons}}
+        {{/if}}
+        <br>
         {{> random_story }}
+        <br>
       </div>
     {{/if}}
   </footer>
@@ -780,6 +789,26 @@
       {{> embed_icon}}
     </button>
   </div>
+</template>
+
+<template name="share_on_facebook">
+  <button class="share-facebook">
+    {{#if content}}
+      {{content}}
+    {{else}}
+      {{> facebook_social_icon}}
+    {{/if}}
+  </button>
+</template>
+
+<template name="share_on_twitter">
+  <button class="share-twitter">
+    {{#if content}}
+      {{content}}
+    {{else}}
+      {{> twitter_social_icon}}
+    {{/if}}
+  </button>
 </template>
 
 <template name="follow_button">

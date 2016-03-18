@@ -79,14 +79,24 @@
     {{/with}}
     <div class="footer-overlay">
     </div>
-    <div class="left">
+    <div class="actions">
       {{> favorite_button}}
-      <a class="open" href="{{readPath}}" target="_blank">{{> popout_icon}}</a>
+      {{#if embedMode}}
+        <a class="open" href="{{readPath}}" target="_blank">{{> popout_icon}}</a>
+      {{/if}}
       {{> share_buttons}}
     </div>
 
-    <div class="title">
-      {{> fold_title_icon}}
-    </div>
+    {{#if embedMode}}
+      <a class="title" href="{{readPath}}" target="_blank">
+        {{> fold_title_icon}}
+      </a>
+    {{else}}
+      <div class="title">
+        {{> fold_title_icon}}
+      </div>
+
+    {{/if}}
+
   </div>
 </template>

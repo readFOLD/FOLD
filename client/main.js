@@ -1166,9 +1166,8 @@ Template.display_image_section.onDestroyed(function(){
 if (mobileOrTablet()) {
   Template.display_text_section.events({
     'click'  (e, t) {
-
-        Session.set('contextOverlayId', this._id);
-        trackEvent('Expand text card');
+      Session.set('contextOverlayId', this._id);
+      trackEvent('Expand text card');
     }
   });
 }
@@ -1355,6 +1354,13 @@ Template.type_specific_icon.helpers(typeHelpers);
 
 
 Template.share_buttons.events({
+  'click .share-embed' (e, t) {
+    notifyFeature('Embedding: coming soon!');
+    trackEvent('Click embed button');
+  }
+});
+
+Template.share_on_facebook.events({
   'click .share-facebook' (e, t) {
     var width  = 575;
     var height = 400;
@@ -1369,7 +1375,10 @@ Template.share_buttons.events({
     window.open(url, 'facebook', opts);
     Meteor.call('countStoryShare', this._id, 'facebook');
     trackEvent('Share on Facebook');
-  },
+  }
+});
+
+Template.share_on_twitter.events({
   'click .share-twitter' (e, t) {
     var title = $(".story-title").text();
     var width  = 575;
@@ -1385,10 +1394,6 @@ Template.share_buttons.events({
     window.open(url, 'twitter', opts);
     Meteor.call('countStoryShare', this._id, 'twitter');
     trackEvent('Share on Twitter');
-  },
-  'click .share-embed' (e, t) {
-    notifyFeature('Embedding: coming soon!');
-    trackEvent('Click embed button');
   }
 });
 

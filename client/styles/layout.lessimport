@@ -576,7 +576,8 @@ body {
 }
 
 .story-footer{
-  @height: 500px;
+  .FFMagdaCleanMonoWebProRegular;
+  @height: 550px;
   bottom:-@height;
   height: @height;
   @media @desktop-xtall {
@@ -596,13 +597,22 @@ body {
     width: 100%;
     height: auto;
   }
+  text-align: center;
+  .share-buttons{
+    display: inline-block;
+    width: 300px;
+  }
   left: 0;
   right:0;
   display: inline-block;
   text-align: center;
   .call-to-action{
     background-color: @white-color !important;
-    height: 185px;
+    height: 205px;
+    @media @mobile {
+      height: 260px;
+      margin-bottom: 15px;
+    }
     min-height: 0;
     border: 1px solid @inactive-color;
     color: @black-color;
@@ -614,14 +624,36 @@ body {
       }
     }
     .random-story{
-      margin-top: 20px;
+      margin-top: 10px;
+      @media @mobile {
+        margin-top: 20px;
+      }
       pointer-events: auto;
     }
+
   }
   p{
     display: inline-block;
     margin-top: -10px;
   }
+  @media @mobile {
+    .share-twitter, .share-facebook{
+      .FFMarkWebBold;
+      font-size: 13px;
+      height: @magic-styling-distance;
+      width: 210px;
+    }
+    .share-twitter{
+      margin-top: 10px;
+      background-color: @twitter-color;
+    }
+    .share-facebook{
+      margin-top: 20px;
+      background-color: @facebook-color;
+    }
+  }
+
+
 }
 
 .full-page-width{
@@ -1424,7 +1456,7 @@ div#banner-overlay {
     .filter(blur(3px));
   }
 
-  .left{
+  .actions{
     position: absolute;
     left: 0;
     height: 100%;
@@ -1448,14 +1480,32 @@ div#banner-overlay {
     margin-top: 2px;
   }
 
+  a{
+    &:hover{
+      .fg{
+        fill: @action-color;
+      }
+    }
+  }
+
   .facebook-social-icon {
     height: 35px;
     margin-top: 2px;
+    &:not(:hover){
+      .fg{
+        fill: @white-color;
+      }
+    }
   }
 
   .twitter-social-icon {
     height: 35px;
     margin-top: 2px;
+    &:not(:hover){
+      .fg{
+        fill: @white-color;
+      }
+    }
   }
 
   .embed-icon {
@@ -1478,6 +1528,9 @@ div#banner-overlay {
     margin-left: 20px;
     .favorite .fg{
       fill: @white-color;
+      &:hover{
+        fill: @favorite-color;
+      }
     }
     span{
       display: none;
