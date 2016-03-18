@@ -298,6 +298,7 @@ div#login-buttons-and-more {
     padding: 7px;
     padding-right: 3px;
     img {
+      border-radius: 50%;
       height: 26px;
       display: block;
     }
