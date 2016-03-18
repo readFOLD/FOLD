@@ -314,11 +314,12 @@ div.title-overlay {
     min-height: @ending-height;
     max-height: @starting-height;
     height: auto;
-    z-index: 0;
+    background-color: transparent;
     .header-overlay-image, video {
       z-index: -2;
     }
   }
+
 
   color: @white-color;
   position: relative;
@@ -391,9 +392,11 @@ div.title-overlay {
       height: 100px;
       position: fixed;
       right: 0;
+      bottom:0;
       top: auto;
       width: 100%;
       background-color: @dark-color;
+      z-index: 100;
     }
     @control-height: 45px;
     @control-spacing: 7px;
@@ -453,7 +456,6 @@ div.title-overlay {
       background-color: @dark-color;
     }
   }
-
 
   div.logo {
     .opacity-transition;
