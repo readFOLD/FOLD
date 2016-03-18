@@ -213,6 +213,11 @@
     {{/unless}}
   {{/unless}}
 
+  {{#if hideActivityFeed}}
+    <div class="current-search">
+      <button class="clear-search">{{>clear_search_icon}}</button>Showing results for "{{currentSearch}}"
+    </div>
+  {{/if}}
 
   {{#if currentUser}}
     {{> activity_feed hide=hideActivityFeed}}

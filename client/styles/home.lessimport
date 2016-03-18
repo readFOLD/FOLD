@@ -7,6 +7,27 @@ div#login-buttons-and-more {
   left: 15px;
 }
 
+.current-search{
+  display: none;
+  width: calc(100% ~'-' 40px);
+  .FFMagdaCleanMonoWebProRegular;
+  @media @home-banner-break-4 {
+    display: block;
+  }
+  @media @mobile {
+    display: block;
+  }
+  padding-left: 5px;
+  line-height: 1.5;
+
+  margin-bottom: 20px;
+  .clear-search{
+    float: left;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
 .home-top {
   position: fixed;
   left:0;

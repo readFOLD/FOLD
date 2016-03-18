@@ -104,12 +104,10 @@ Template.search.onCreated(function() {
       $("input").val(null);
     }
   })
-
-
 });
 
 Template.search.onRendered(function() {
-  if(this.data.slim){
+  if(this.data && this.data.slim){
     this.$("button").hide(); // hack to hide button
   } else {
     var storySearchQuery;
@@ -211,13 +209,17 @@ Template.search.events({
   },
   "keyup input": _.throttle(function(e, t) {
     var text = $(e.target).val().trim();
-    Session.set('storySearchQuery', text);
+
     if(enterPress(e)){
       $(e.target).blur();
       closeSearchOverlay();
       if(t.data.slim){
         Router.go('/');
       }
+    }
+
+    if(!Session.get('searchOverlayShown')){
+      Session.set('storySearchQuery', text);
     }
 
     if(!t.data.slim){
@@ -596,6 +598,9 @@ Template.all_stories.events({
   },
   'click .dismiss-box'  (e,t) {
     Session.set('boxDismissed', true);
+  },
+  'click .clear-search'  (e,t) {
+    Session.set('storySearchQuery', null);
   }
 });
 
@@ -613,10 +618,13 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
     return currentHomeStories().count() >= (getCurrentSubscriptionPage() + 1) * PUB_SIZE
   },
   boxDismissed (){
-    return Session.get('boxDismissed')
+    return Session.get('boxDismissed') || Session.get('storySearchQuery')
   },
   hideActivityFeed (){ // we'll hide it so it doesn't need to reload all activities
     return !Session.equals('filterValue', 'mixed') || Session.get('storySearchQuery');
+  },
+  currentSearch (){
+    return Session.get('storySearchQuery')
   }
 });
 
