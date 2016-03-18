@@ -253,6 +253,8 @@ div#login-buttons-and-more {
       .FFMarkWebBold;
       color: @social-color;
       padding-top: 5px;
+      padding-left: 6px;
+      padding-right: 6px;
       margin-left: 5px;
       .fg{
         fill: @social-color;
