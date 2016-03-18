@@ -56,17 +56,22 @@ var sendEmail = function(emailType, userIds, subject, bareMergeVars){
     return
   }
 
-  console.log(Mandrill.messages.sendTemplate({
-    template_name: emailType,
-    template_content: [
-    ],
-    message: {
-      to: to,
-      subject: subject,
-      global_merge_vars: getMergeVarsFromObj(_.extend({ unsubscribeUrl: Meteor.absoluteUrl('unsubscribe?email_type=' + emailTypeForUnsubscribe(emailType))}, bareMergeVars))
-    },
-    preserve_recipients: false
-  }));
+  if(process.env.NODE_ENV === 'production'){
+    Mandrill.messages.sendTemplate({
+      template_name: emailType,
+      template_content: [
+      ],
+      message: {
+        to: to,
+        subject: subject,
+        global_merge_vars: getMergeVarsFromObj(_.extend({ unsubscribeUrl: Meteor.absoluteUrl('unsubscribe?email_type=' + emailTypeForUnsubscribe(emailType))}, bareMergeVars))
+      },
+      preserve_recipients: false
+    });
+  } else {
+    console.log('Would have sent email')
+    console.log(arguments)
+  }
 }
 
 

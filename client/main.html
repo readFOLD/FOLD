@@ -25,7 +25,9 @@
 </head>
 
 <body>
-{{> signin_overlay}}
+  {{> signin_overlay}}
+  {{> search_overlay}}
+  {{> menu_overlay}}
 </body>
 
 
@@ -34,26 +36,53 @@
 -->
 
 <template name="story_header">
-  {{> top_banner showFilters=showPublished hideMakeAStory=showDraft slim=true}}
-  <div class="title-overlay {{#unless read}}write{{/unless}}">
+  {{#unless embedMode}}
+    {{> top_banner showFilters=showPublished hideMakeAStory=showDraft slim=true}}
+  {{/unless}}
+  <div class="title-overlay {{#unless read}}write{{/unless}} {{#if sandwichMode}}sandwich-mode{{/if}} {{#if embedMode}}embed-mode{{/if}}">
     {{#with headerImageVideoObject}}
       {{> looping_video}}
     {{else}}
       <img class="header-overlay-image" src={{headerImageUrl}}>
     {{/with}}
-    <div id="banner-overlay">
+    <div id="banner-overlay" class="{{#if sandwichMode}}sandwich-mode{{/if}} {{#if embedMode}}embed-mode{{/if}}">
     </div>
-    <div class="title-author">
+    <div class="title-author {{#if sandwichMode}}sandwich-mode{{/if}} {{#if embedMode}}embed-mode{{/if}}">
       {{> story_title }}
       <div class="author">
-        <a href="{{profileUrl}}">
-          By <span>{{authorName}}</span>
-        </a>
-        {{> follow_button userId=authorId}}
+        {{#if embedMode}}
+          <div class="author-image">
+            <img class="profile-picture" src="{{profileImage author}}"/>
+          </div>
+        {{else}}
+          <a class="author-image" href="{{profileUrl}}">
+            <img class="profile-picture" src="{{profileImage author}}"/>
+          </a>
+        {{/if}}
+        <div class="author-name-section">
+          {{#if embedMode}}
+            <div class="author-name-and-date">
+              <div>
+                By <span>{{authorName}}</span>
+              </div>
+              <div>
+                {{prettyDateInPast publishedAt}}
+              </div>
+            </div>
+          {{else}}
+            <div class="author-name-and-date">
+              <a href="{{profileUrl}}">
+                By <span>{{authorName}}</span>
+              </a>
+              <div>
+                {{prettyDateInPast publishedAt}}
+              </div>
+            </div>
+          {{/if}}
+          {{> follow_button userId=authorId}}
+        </div>
+
       </div>
-      <a class="author-image" href="{{profileUrl}}">
-        <img class="profile-picture" src="{{profileImage author}}"/>
-      </a>
     </div>
     {{#if popoutExists}}{{> audio_popout}}{{/if}}
 
@@ -68,7 +97,7 @@
 </template>
 
 <template name="audio_popout">
-  <div class="audio-popout" style="{{#if isPhone}}left: {{mobileMargin}}px; bottom: {{mobileMargin}}px;  width: calc(100% - {{mobileMargin}}px); {{/if}}">
+  <div class="audio-popout {{#if embedMode}}embed-mode{{/if}} {{#if sandwichMode}}sandwich-mode{{/if}}">
     <div class="title">{{title}}</div>
     <div class="controls">
       {{#if showPauseButton}}
@@ -87,7 +116,7 @@
 </template>
 
 <template name="story_title">
-  <div>
+  <div class="story-title-container">
     {{{storyTitleDiv}}}
   </div>
 </template>
@@ -96,14 +125,19 @@
   <!-- Mesh Background Overlay -->
   <!-- <div id="overlay"></div> -->
   <article class="content entire-story">
-    <div class="vertical-narrative"
-         style="width: {{cardWidth}}px; left: {{verticalLeft}}px;">
+    <div class="vertical-narrative {{#if embedMode}}embed-mode{{/if}} {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}"
+         style="width: {{cardWidth}}px;">
       {{> vertical_narrative}}
 
       {{> story_footer}}
     </div>
-    <div class="horizontal-context">
+    <div class="horizontal-context {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}} {{#if hiddenContextShown}}hidden-context-shown{{/if}} {{#if isPhone}}fixed{{/if}}">
       {{> horizontal_context}}
+      {{#if horizontalExists}}
+        {{#if showStoryBrowser}}
+          {{> story_browser}}
+        {{/if}}
+      {{/if}}
     </div>
   </article>
 
@@ -112,19 +146,10 @@
     {{#if showMinimap}}
       {{> minimap}}
     {{/if}}
-    {{#if showMobileMinimap}}
-      {{> mobile_minimap}}
-    {{/if}}
     {{#if metaviewOpen}}
       {{> metaview}}
     {{/if}}
-    {{#if horizontalExists}}
-      {{#unless addingContext}}
-        <div class="browser-offset">
-          {{> story_browser}}
-        </div>
-      {{/unless}}
-    {{/if}}
+
   {{/if}}
 
   {{#if showContextOverlay}}
@@ -138,12 +163,21 @@
 
 
 <template name="story_footer">
-  <footer class="story-footer">
+  <footer class="story-footer {{#if sandwichMode}}sandwich-mode{{/if}}  {{#if embedMode}}embed-mode{{/if}}">
     {{#if read}}
       <div class="call-to-action vertical-narrative-section">
         <p>Show this writer some thanks!</p>{{> favorite_button }}
         <br>
+        {{#if isPhone}}
+          {{> share_on_twitter content='Share on Twitter'}}
+          <br>
+          {{> share_on_facebook content='Share on Facebook'}}
+        {{else}}
+          {{> share_buttons}}
+        {{/if}}
+        <br>
         {{> random_story }}
+        <br>
       </div>
     {{/if}}
   </footer>
@@ -162,7 +196,7 @@
 </template>
 
 <template name="vertical_section_block">
-  <div class="narrative-section vertical-narrative-section {{#if verticalSelected}}selected{{/if}} {{#if read}}read{{/if}} {{#if hasTitle}}has-title{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
+  <div class="narrative-section vertical-narrative-section {{#if verticalSelected}}selected{{/if}} {{#if read}}read{{/if}} {{#if hasTitle}}has-title{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
     <section>
       {{#unless read}}
         {{#if verticalSelected}}
@@ -180,14 +214,18 @@
         {{{titleDiv}}}
       {{/if}}
       {{{contentDiv}}}
-      <div class="button">
-      </div>
+      {{#if showContextButton}}
+        <div class="context-button-container {{#if verticalSelected}}selected{{/if}} {{#if embedMode}}embed-mode{{/if}}"><button class="context-button">{{> remix_icon_bare}}{{contextBlocks.length}}</button></div>
+      {{/if}}
     </section>
   </div>
 </template>
 
 
 <template name="horizontal_context">
+  {{#if hiddenContextShown}}
+    <div class="hidden-context-overlay"></div>
+  {{/if}}
   {{#unless read}}
     {{#if verticalExists}}
       {{#if currentYId}}
@@ -209,22 +247,35 @@
         {{#if horizontalSectionInDOM}}
           {{> horizontal_section_block}}
         {{/if}}
+
       {{/each}}
       {{#if horizontalShown}}
         {{#unless read}}
           {{add_horizontal}}
         {{/unless}}
+        {{#if hiddenContextShown}}
+          <div class="card-info" style="{{#if cardHeight}}top: calc(50% + {{cardHeight}}px / 2 - 40px / 2);{{/if}}">
+            <span>Card {{currentXReadableIndex}} of {{data.length}}</span>
+          </div>
+        {{/if}}
       {{/if}}
+
     {{!-- </div> --}}
 
   {{/each}}
+
 </template>
 
 
 <template name="horizontal_section_block">
   <div
-      class="narrative-section horizontal-narrative-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if poppedOut}}popped-out selected{{/if}} {{#if hideContainer}}hide-container{{/if}} {{#if editingThisContext}}editing{{/if}} {{#if hide}}hide{{/if}}" data-index="{{index}}" style="width: {{cardWidth}}px; left: {{left}}px;">
+      class="narrative-section horizontal-narrative-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if poppedOut}}popped-out selected{{/if}} {{#if hideContainer}}hide-container{{/if}} {{#if editingThisContext}}editing{{/if}} {{#if hide}}hide{{/if}}" data-index="{{index}}" style="width: {{cardWidth}}px; left: {{left}}px; {{#if cardHeight}}height: {{cardHeight}}px; min-height: {{cardHeight}}px;{{/if}}">
 <section>
+    {{#if isPhone}}
+      <div class="context-icon">
+        {{> type_specific_icon}}
+      </div>
+    {{/if}}
 
     {{#if type}}
       {{#if text}}
@@ -293,16 +344,9 @@
         {{> display_broken_section}}
       {{/if}}
       {{#if read}}
-        {{#unless isPhone}}
+        {{#unless hiddenContextMode}}
           {{> remix_bar}}
         {{/unless}}
-      {{/if}}
-      {{#if isPhone}}
-        {{#if selected}}
-          <button class="mobile-context-back-button">
-            {{> mobile_back_icon }}
-          </button>
-        {{/if}}
       {{/if}}
       </section>
     </div>
@@ -333,7 +377,7 @@
 </template>
 
 <template name="display_image_section">
-  <div class="display-context-section image-section {{#unless read}}always-show-caption{{/unless}}{{#if read}}show-expand-icon{{/if}}">
+  <div class="display-context-section image-section {{#unless read}}always-show-caption{{/unless}}{{#if read}}{{#unless mobileOrTablet}}show-expand-icon{{/unless}}{{/if}}">
     {{#if showVideo}}
       {{> looping_video}}
     {{else}}
@@ -374,9 +418,11 @@
 <template name="display_map_section">
   <div class="display-context-section map-section">
     {{#if selected}}
-      <div class="active-display">
-        <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}"></iframe>
-      </div>
+      {{#unless mobileOrTablet}}
+        <div class="active-display">
+          <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}"></iframe>
+        </div>
+      {{/unless}}
     {{/if}}
     <div class="preview">
       <img src="{{previewUrl}}"/>
@@ -411,7 +457,16 @@
 <template name="display_audio_section">
   <div class="display-context-section audio-section" data-context-id="{{_id}}">
     <div class="active-display {{#unless selected}}hide{{/unless}}">
-      <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+      {{#if mobileOrTablet}}
+        <div class="audio-iframe-overlay"></div>
+        <div class="audio-iframe-overlay-2"></div>
+        <div class="audio-iframe-overlay-3"></div>
+        <div class="audio-iframe-overlay-4"></div>
+        <div class="audio-iframe-overlay-5"></div>
+        <div class="audio-iframe-overlay-6"></div>
+        <div class="audio-iframe-overlay-7"></div>
+      {{/if}}
+      <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
     </div>
     <div class="preview">
       <img src="{{previewUrl}}"/>
@@ -434,7 +489,24 @@
   <div class="display-context-section video-section">
     {{#if selected}}
       <div class="active-display">
-        <iframe width="100%" height="300" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+        {{#if mobileOrTablet}}
+          {{#unless vimeoOnTablet}}
+            <div class="video-iframe-overlay video-iframe-overlay-1"></div>
+            <div class="video-iframe-overlay video-iframe-overlay-2"></div>
+            <div class="video-iframe-overlay video-iframe-overlay-3"></div>
+            <div class="video-iframe-overlay video-iframe-overlay-4"></div>
+            <div class="video-iframe-overlay video-iframe-overlay-5"></div>
+            <div class="video-iframe-overlay video-iframe-overlay-6"></div>
+            <div class="video-iframe-overlay video-iframe-overlay-7"></div>
+            {{#if fromVimeo}}
+              <div class="video-iframe-overlay video-iframe-overlay-vimeo"></div>
+            {{/if}}
+          {{/unless}}
+          {{#if vimeoOnTablet}}
+            <div class="video-iframe-overlay video-iframe-overlay-vimeo-tablet-1"></div>
+          {{/if}}
+        {{/if}}
+        <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
       </div>
     {{/if}}
     <div class="preview">
@@ -454,41 +526,32 @@
 
 <template name="display_link_section">
   <div class="display-context-section link-section {{#if isFocused}}focused{{/if}}">
-    <a href="{{url}}" target="_blank">
+
+    <a href="{{url}}" class="top-link" target="_blank">
       <div class="top">
-        {{#if thumbnailUrl}}
-
-          {{#if imageOnLeft}}
-            <div class="thumbnail left">
-              {{#if editThumbnailPrompt}}
-                <input type="file" accept="image/*" class="overlay {{#if uploadingThumbnail}}uploading{{/if}}">
-              {{/if}}
-              <img src="{{thumbnailUrl}}" />
-            </div>
-          {{else}}
-            <div class="thumbnail top" style='background-image: url("{{thumbnailUrl}}")'>
-              {{#if editThumbnailPrompt}}
-                <input type="file" accept="image/*" class="overlay {{#if uploadingThumbnail}}uploading{{/if}}">
-              {{/if}}
-            </div>
-          {{/if}}
-
-        {{/if}}
         {{#if editingTitle}}
-          <textarea class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}">{{title}}</textarea>
+          <textarea class="link-title">{{title}}</textarea>
         {{else}}
-          <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}}"><span>{{title}}</span></div>
+          <div class="link-title {{#unless read}}click-to-edit{{/unless}}"><span>{{title}}</span></div>
         {{/if}}
       </div>
     </a>
-  {{#if editingDescription}}
-    <textarea class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}" rows="5">{{linkDescription}}</textarea>
-  {{else}}
-    <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}} {{#unless linkDescription}}empty{{/unless}}"><span>{{#if linkDescription}}{{linkDescription}}{{else}}{{#unless read}}Click to add a description{{/unless}}{{/if}}</span></div>
-  {{/if}}
     <div class="bottom">
+
+    {{#if editingDescription}}
+      <textarea class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}" rows="5">{{linkDescription}}</textarea>
+    {{else}}
+      <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}} {{#unless linkDescription}}empty{{/unless}}"><span>{{#if linkDescription}}{{linkDescription}}{{else}}{{#unless read}}Click to add a description{{/unless}}{{/if}}</span></div>
+    {{/if}}
       <a class="read-more {{#unless read}}inactive{{/unless}}" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
     </div>
+    {{#if thumbnailUrl}}
+      <div class="thumbnail" style='background-image: url("{{thumbnailUrl}}")'>
+      </div>
+    {{/if}}
+    {{#if editThumbnailPrompt}}
+      <input type="file" accept="image/*" class="image-upload {{#if uploadingThumbnail}}uploading{{/if}}">
+    {{/if}}
   </div>
   {{#unless read}}
     {{> horizontal_section_edit_delete}}
@@ -568,10 +631,16 @@
   {{#with overlaidContext}}
     <div class="context-overlay" style="height: {{windowHeight}}px; width: {{windowWidth}}px;">
       <div class="context-overlay-content">
-        <img src="{{largeUrl}}" />
-        {{#unless contextLoaded}}
-          {{> loading_icon}}
-        {{/unless}}
+        {{#if largeUrl}}
+          <img src="{{largeUrl}}" />
+          {{#unless contextLoaded}}
+            {{> loading_icon}}
+          {{/unless}}
+        {{else}}
+          <div class="text-content">
+            {{{textContent}}}
+          </div>
+        {{/if}}
       </div>
     </div>
   {{/with}}
@@ -579,18 +648,16 @@
 
 
 <template name="story_browser">
-  <div class="story-browser {{#unless read}}edit-mode{{/unless}}">
-    {{#if showLeftArrow}}
-      <div class="left">
-        {{> browse_arrow_left}}
-      </div>
-    {{/if}}
-    {{#if showRightArrow}}
-      <div class="right">
-        {{> browse_arrow_right}}
-      </div>
-    {{/if}}
-  </div>
+  {{#if showLeftArrow}}
+    <div class="left story-browser {{#unless read}}edit-mode{{/unless}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" style="{{#if cardHeight}}height: {{cardHeight}}px;{{/if}}">
+      {{> browse_arrow_left}}
+    </div>
+  {{/if}}
+  {{#if showRightArrow}}
+    <div class="right story-browser {{#unless read}}edit-mode{{/unless}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" style="{{#if cardHeight}}height: {{cardHeight}}px;{{/if}}">
+      {{> browse_arrow_right}}
+    </div>
+  {{/if}}
 </template>
 
 <template name="metaview">
@@ -674,34 +741,6 @@
   {{/if}}
 </template>
 
-<template name="mobile_minimap">
-  <div class="mobile-minimap-vertical" style="width: {{mobileMargin}}px; height: {{verticalHeight}}px;">
-    <ol class="mobile-minimap-vertical-table">
-      {{#each verticalSelectedArray}}
-        <li class="vertical-marker-row">
-          <div class="vertical-marker-cell">
-            <div class="vertical-marker {{#if selected}}selected{{/if}}"></div>
-          </div>
-        </li>
-      {{/each}}
-    </ol>
-  </div>
-
-  <div class="mobile-minimap-horizontal" style="width: {{horizontalWidth}}px; height: {{mobileMargin}}px;">
-    <div class="mobile-minimap-horizontal-table">
-      <ol class="horizontal-marker-row">
-        {{#each horizontalSelectedArray}}
-          <li class="horizontal-marker-cell">
-            <div class="horizontal-marker {{#if selected}}selected{{/if}}"></div>
-          </li>
-        {{/each}}
-      </ol>
-    </div>
-  </div>
-
-  <div class="mobile-minimap-corner" style="width: {{mobileMargin}}px; height: {{mobileMargin}}px;"></div>
-</template>
-
 
 <template name="type_specific_icon">
   {{#if twitter}}
@@ -751,6 +790,26 @@
       {{> embed_icon}}
     </button>
   </div>
+</template>
+
+<template name="share_on_facebook">
+  <button class="share-facebook">
+    {{#if content}}
+      {{content}}
+    {{else}}
+      {{> facebook_social_icon}}
+    {{/if}}
+  </button>
+</template>
+
+<template name="share_on_twitter">
+  <button class="share-twitter">
+    {{#if content}}
+      {{content}}
+    {{else}}
+      {{> twitter_social_icon}}
+    {{/if}}
+  </button>
 </template>
 
 <template name="follow_button">
@@ -811,4 +870,28 @@
       <!--{{> loading_icon}}-->
     </div>
   </div>
+</template>
+
+<template name="search_overlay">
+  {{#if searchOverlayShown}}
+    <div class="search-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+      <button class="close">✕</button>
+      {{> search slim=true placeholder='Search FOLD'}}
+    </div>
+  {{/if}}
+</template>
+
+<template name="menu_overlay">
+  {{#if menuOverlayShown}}
+    <div class="menu-overlay" style="width: {{windowWidth}}px; height: {{windowHeight}}px;">
+      <button class="close">✕</button>
+      <ol class="menu">
+        <li><a href="/">Home</a></li>
+        <li><button class="sign-up">Sign up</button></li>
+        <li><button class="log-in">Log in</button></li>
+        <li><button class="search">Search</button></li>
+        <li><a href="/read/FOLD/what-is-fold-TiyWEK6C">About</a></li>
+      </ol>
+    </div>
+  {{/if}}
 </template>

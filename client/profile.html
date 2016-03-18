@@ -98,7 +98,9 @@
         {{#if hasDrafts}}
           <a class="view-drafts" href="/my-stories"><button>View your drafts</button></a>
         {{else}}
-          {{> create_story}}
+          {{#unless mobileOrTablet}}
+            {{> create_story}}
+          {{/unless}}
         {{/if}}
       {{else}}
         {{user.profile.name}} hasn't published any stories yet. Any minute now!

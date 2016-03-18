@@ -7,8 +7,32 @@ div#login-buttons-and-more {
   left: 15px;
 }
 
-div.home-top {
+.current-search{
+  display: none;
+  width: calc(100% ~'-' 40px);
+  .FFMagdaCleanMonoWebProRegular;
+  @media @home-banner-break-4 {
+    display: block;
+  }
+  @media @mobile {
+    display: block;
+  }
+  padding-left: 5px;
+  line-height: 1.5;
+
+  margin-bottom: 20px;
+  .clear-search{
+    float: left;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.home-top {
   position: fixed;
+  left:0;
+  right:0;
+  top:0;
   &.not-sticky{
     position: absolute;
   }
@@ -30,7 +54,7 @@ div.home-top {
   //box-shadow: 0 2px 8px -6px @dark-color;
 
 
-  div.logo-title {
+  .logo-title {
 
     div.title {
       float: left;
@@ -41,56 +65,50 @@ div.home-top {
 
     &.slim{
       .title{
-        img{
+        .fold-title{
           height: @slimHeight;
         }
       }
     }
 
-    @media @mobile{
-      .title {
-        img {
-          height: @slimHeight;
-        }
-      }
-    }
 
     @media @not-mobile{
       &.fat{
         .title{
           margin-top: 5px;
-          img{
+          .fold-title{
             height: @magic-styling-distance * .75;
           }
         }
       }
       display: inline-block;
       &.fat{
+        width: 310px;
         margin-top: @magic-styling-distance;
       }
       &.slim{
         margin-top: @magic-styling-distance / 4;
       }
       margin-left: @magic-styling-distance;
-      width: 310px;
-      div.title {
+      .title {
         //margin-top: 5px;
         width: 222px;
       }
-
     }
-    @media @mobile{
-      margin:auto;
-      text-align: left;
-      margin-top: @magic-styling-distance / 4;
-      margin-left: @magic-styling-distance / 2;
-      height: 28px;
-      img{
-        height: 100%
-      }
+
+
+    &.alt-slim{
+      .center-over-parent-div;
+      margin-top: 0;
+      margin-left: 0;
       .title {
-        height: 100%;
+        .fold-title {
+          height: @slimHeight;
+        }
+        line-height: 0;
+        width: auto;
       }
+      width: auto;
     }
   }
 
@@ -190,6 +208,12 @@ div.home-top {
     position: absolute;
     font-size: 14px;
     width: 180px;
+    form{
+      .size-to-fit;
+    }
+    input{
+      .size-to-fit;
+    }
 
     &.slim{
       top: 0;
@@ -244,6 +268,38 @@ div.home-top {
       @media @mobile{
         display: none;
       }
+    }
+  }
+
+  &.alt-slim{
+    .left{
+      .size-to-fit;
+    }
+    button{
+      height: 100%;
+      .FFMarkWebBold;
+      color: @social-color;
+      padding-top: 5px;
+      padding-left: 6px;
+      padding-right: 6px;
+      margin-left: 5px;
+      .fg{
+        fill: @social-color;
+      }
+    }
+  }
+  .alt-signup-button, .alt-profile-link{
+    float: right;
+    margin-right: 5px;
+  }
+  .alt-profile-link {
+    height: 100%;
+    display: inline-block;
+    padding: 7px;
+    padding-right: 3px;
+    img {
+      height: 26px;
+      display: block;
     }
   }
 } 
@@ -419,10 +475,6 @@ div.stories {
     padding-left: 14px;
     padding-right: 14px;
     background-color: @action-color;
-  }
-
-  div.story-browser {
-    height: 80px;
   }
 
   div.horizontal-line {

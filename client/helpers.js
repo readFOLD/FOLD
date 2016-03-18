@@ -38,6 +38,10 @@ Handlebars.registerHelper("signingIn", function() {
   return window.signingIn();
 });
 
+Handlebars.registerHelper("currentXReadableIndex", function() {
+  return Session.get("currentX") + 1;
+});
+
 Handlebars.registerHelper("currentYId", function() {
   return Session.get("currentYId");
 });
@@ -61,10 +65,11 @@ Handlebars.registerHelper("isAuthor", function() {
 });
 
 Handlebars.registerHelper("cardWidth", function() {
-  if (Session.get("narrativeView")) {
-    return 800;
-  }
   return Session.get("cardWidth");
+});
+
+Handlebars.registerHelper("cardHeight", function() { // for context cards, particularly in mobile
+  return Session.get("cardHeight");
 });
 
 Handlebars.registerHelper("windowWidth", function() {
@@ -76,7 +81,7 @@ Handlebars.registerHelper("windowHeight", function() {
 });
 
 Handlebars.registerHelper("verticalLeft", function() {
-  return Session.get("verticalLeft");
+  return getVerticalLeft();
 });
 
 Handlebars.registerHelper("mobileMargin", function(){
@@ -114,6 +119,9 @@ Handlebars.registerHelper("userFollowing", function(id) {
   return id === Meteor.userId() || Meteor.user() && _.contains(Meteor.user().profile.following, id);
 });
 
+Handlebars.registerHelper("showStorySandwichFooter", function () {
+  return !Meteor.Device.isPhone() && (embedMode() || hiddenContextMode());
+});
 
 
 Handlebars.registerHelper("profileImage", function(user, size) {
@@ -134,6 +142,8 @@ Handlebars.registerHelper("formatDate", window.formatDate);
 Handlebars.registerHelper("formatDateNice", window.formatDateNice);
 Handlebars.registerHelper("formatDateCompact", window.formatDateCompact);
 
+Handlebars.registerHelper("prettyDateInPast", window.prettyDateInPast)
+
 Handlebars.registerHelper('$eq',
   function(v1, v2) {
     return (v1 === v2);
@@ -145,3 +155,35 @@ Handlebars.registerHelper('capitalize',
     return _s.capitalize(s);
   }
 );
+
+Handlebars.registerHelper("hiddenContextMode", function () {
+  return window.hiddenContextMode();
+});
+
+Handlebars.registerHelper("hiddenContextShown", function () {
+  return window.hiddenContextShown();
+});
+
+Handlebars.registerHelper("sandwichMode", function () {
+  return window.sandwichMode();
+});
+
+Handlebars.registerHelper("embedMode", function () {
+  return window.embedMode();
+});
+
+Handlebars.registerHelper("mobileOrTablet", function () {
+  return window.mobileOrTablet();
+});
+
+Handlebars.registerHelper("searchOverlayShown", function () {
+  return Session.get('searchOverlayShown');
+});
+
+
+Handlebars.registerHelper("menuOverlayShown", function () {
+  return Session.get('menuOverlayShown');
+});
+
+
+
