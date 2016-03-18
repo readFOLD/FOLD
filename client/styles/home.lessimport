@@ -267,9 +267,19 @@ div#login-buttons-and-more {
       }
     }
   }
-  .alt-signup-button{
+  .alt-signup-button, .alt-profile-link{
     float: right;
     margin-right: 5px;
+  }
+  .alt-profile-link {
+    height: 100%;
+    display: inline-block;
+    padding: 7px;
+    padding-right: 3px;
+    img {
+      height: 26px;
+      display: block;
+    }
   }
 } 
 

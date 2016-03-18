@@ -26,7 +26,11 @@
             {{> alt_babyburger_icon}}
           </button>
           <button class="alt-search-button">{{> alt_search_icon}}</button>
+        {{#with currentUser}}
+          <a class="alt-profile-link" href="/profile/{{currentUser.displayUsername}}"><img src="{{profileImage this 'small'}}"/></a>
+        {{else}}
           <button class="alt-signup-button">Sign up</button>
+        {{/with}}
         {{else}}
           <div class="search {{#if slim}}slim{{else}}fat{{/if}}">
             {{> search slim=slim}}
