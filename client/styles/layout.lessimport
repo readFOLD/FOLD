@@ -705,7 +705,7 @@ article{
       &.selected{
         display: block;
       }
-      top: 150px;
+      top: 160px;
       &.embed-mode{
         top: 30px;
       }
