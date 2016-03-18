@@ -157,7 +157,10 @@
 
 
 <template name="search">
+  <form action="action">
   <input class="story-search" type="search" placeholder="{{#if placeholder}}{{placeholder}}{{else}}Search{{/if}}">
+  </form>
+
   {{#if showClearSearch}}
     <button class="clear-search">{{> clear_search_icon}}</button>
   {{/if}}

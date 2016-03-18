@@ -187,6 +187,12 @@ div#login-buttons-and-more {
     position: absolute;
     font-size: 14px;
     width: 180px;
+    form{
+      .size-to-fit;
+    }
+    input{
+      .size-to-fit;
+    }
 
     &.slim{
       top: 0;

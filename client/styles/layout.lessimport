@@ -3074,8 +3074,8 @@ div.loading-container {
   .close{
     color: @medium-color;
     position: absolute;
-    top: 20px;
-    right: 15px;
+    top: 25px;
+    right: 5px;
     font-size: 20px;
   }
 }

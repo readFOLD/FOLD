@@ -206,6 +206,9 @@ Template.filters.events({
 });
 
 Template.search.events({
+  "submit" (e, t){
+    e.preventDefault();
+  },
   "keyup input": _.throttle(function(e, t) {
     var text = $(e.target).val().trim();
     Session.set('storySearchQuery', text);
@@ -681,10 +684,15 @@ Template.login_buttons.events({
   }
 });
 
-
 Template.search_overlay.events({
   'click .close' (){
     return closeSearchOverlay();
+  }
+});
+
+Template.search.onRendered(function(){
+  if(Session.get('searchOverlayShown')){
+    this.$('input').focus();
   }
 });
 
