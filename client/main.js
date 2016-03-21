@@ -759,6 +759,12 @@ Template.horizontal_context.events({
     }
   }
 });
+
+var horizontalSectionInDOM = function () {
+  // on this row, or this card is the current X for another hidden row
+  return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId') || this.type === 'audio';
+};
+
 Template.horizontal_context.helpers({
   verticalExists () {
     return Session.get("horizontalSectionsMap").length;
@@ -825,10 +831,7 @@ Template.horizontal_context.helpers({
     lastIndex = ((_ref = Session.get("horizontalSectionsMap")[Session.get("currentY")]) != null ? _ref.horizontal.length : void 0) - 1;
     return (this.index === lastIndex) && (lastIndex > 0);
   },
-  horizontalSectionInDOM () {
-    // on this row, or this card is the current X for another hidden row
-    return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId') || this.type === 'audio';
-  },
+  horizontalSectionInDOM: horizontalSectionInDOM, // TODO, keep and them remove video cards from the dom. a la activeDisplay
   horizontalShown () {
     return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone());
   }
@@ -993,19 +996,16 @@ Template.display_video_section.helpers({
 Template.display_video_section.onCreated(function(){
   this.activeDisplay = new ReactiveVar();
   Tracker.autorun(()=>{
-    console.log(this.data)
-    var isSelected = selected.call(this.data);
-    if(isSelected){
+    var inActiveColumn = this.data.index === getXByYId(this.data.verticalId);
+
+    if(inActiveColumn){
       this.activeDisplay.set(true);
     } else {
       Meteor.setTimeout(()=>{
         var isPoppedOut = poppedOut.call(this.data);
-        console.log('po')
-        console.log(isPoppedOut )
+        var nowInActiveColumn = this.data.index === getXByYId(this.data.verticalId);
 
-        // TODO get rid of race conditions when switching back n forth between cards
-
-        if(!isPoppedOut){
+        if(!isPoppedOut && !nowInActiveColumn){
           this.activeDisplay.set(false);
         }
       }, 500);
@@ -1453,7 +1453,7 @@ createWidget = function(){
           this._soundcloudWidget.play();
           break;
         default:
-          throw new Meteor.Error('popped out widget has no active stream source')
+          throw new Meteor.Error('popped out widget has no active source')
       }
     },
     pause(){
@@ -1468,23 +1468,31 @@ createWidget = function(){
           this._soundcloudWidget.pause();
           break;
         default:
-          throw new Meteor.Error('popped out widget has no active stream source')
+          throw new Meteor.Error('popped out widget has no active source')
       }
     },
     isPlaying(cb){
       switch (this.activeSource) {
         case 'youtube':
-          var playing = _.contains([1,3], this._youTubeWidget.getPlayerState()); // TODO, confirm state 3 (buffering) is a playing-type state
-          return cb(playing);
+          if(this._youTubeWidget && this._youTubeWidget.getPlayerState){
+            var playing = _.contains([1,3], this._youTubeWidget.getPlayerState()); // TODO, confirm state 3 (buffering) is a playing-type state
+            return cb(playing);
+          } else {
+            console.log('yt widget not set up yet')
+            console.log(this._youTubeWidget)
+            return cb(false)
+          }
         case 'vimeo':
           var playing = !this._vimeoWidget.paused();
           return cb(playing);
         case 'soundcloud':
           return this._soundcloudWidget.isPaused(function(paused){
-            return !paused
+            console.log('herehrerere')
+            console.log(!paused)
+            return cb(!paused)
           });
         default:
-          throw new Meteor.Error('popped out widget has no active stream source')
+          throw new Meteor.Error('popped out widget has no active source')
       }
     },
     isPaused(cb){
@@ -1498,7 +1506,7 @@ createWidget = function(){
         case 'soundcloud':
           return this._soundcloudWidget.isPaused(cb);
         default:
-          throw new Meteor.Error('popped out widget has no active stream source')
+          throw new Meteor.Error('popped out widget has no active source')
       }
     },
     getMediaInfo(cb){
@@ -1563,7 +1571,7 @@ window.setPoppedOutWidget = function (id){
   console.log(id)
   console.log(mostRecentRelevantCardId)
 
-  if (id === mostRecentRelevantCardId){ // if this is also the most recent card (probably)
+  if (id === mostRecentWidget.id){ // if this is also the most recent card (probably)
     console.log('just assign')
     poppedOutWidget = mostRecentWidget; // the apis are already set up. just assign it
     return
@@ -1602,33 +1610,38 @@ window.setMostRecentWidget = function (id){
 
   if (id === poppedOutWidget.id){ // if this is also the popped out card
     mostRecentWidget = poppedOutWidget; // the apis are already set up. just assign it
+    mostRecentWidget.activeSource = source; // it make have been deactivated
     return
   }
 
   mostRecentWidget = createWidget();
 
   mostRecentWidget.id = id;
+  console.log('here')
 
-  Meteor.setTimeout(() => {
-
+  if(source === 'soundcloud'){
+    mostRecentWidget._soundcloudWidget = SC.Widget(getAudioIFrame(id));
     mostRecentWidget.activeSource = source;
+  } else {
+    Meteor.setTimeout(() => {
 
-    switch(source){
-      case 'soundcloud':
-        mostRecentWidget._soundcloudWidget = SC.Widget(getAudioIFrame(id));
-        break;
-      case 'youtube':
-        mostRecentWidget._youTubeWidget = new YT.Player(getVideoIFrame(id)); // TODO, this breaks if the same video is assigned twice.
-        break;
-      case 'vimeo':
-        mostRecentWidget._vimeoWidget = $f(getVideoIFrame(id));
-        break;
-    }
-  }, 100); // hack to make sure video is in DOM when assign it.
+      mostRecentWidget.activeSource = source;
+
+      switch(source){
+        case 'youtube':
+          mostRecentWidget._youTubeWidget = new YT.Player(getVideoIFrame(id)); // TODO, this breaks if the same video is assigned twice.
+          break;
+        case 'vimeo':
+          mostRecentWidget._vimeoWidget = $f(getVideoIFrame(id));
+          break;
+      }
+    }, 100); // hack to make sure video is in DOM when assign it.
+  }
+
 };
 
 window.clearMostRecentWidget = function(){
-  mostRecentWidget.activeSource = null;
+  mostRecentWidget = createWidget();
 };
 
 getAudioIFrame = function(contextId){
@@ -1653,6 +1666,13 @@ Tracker.autorun(function() {
       mostRecentWidget.isPlaying(function(playing){
         if (playing){ // and it's playing
           popOutMostRecentWidget();
+          return
+
+          if(mostRecentWidget._id === associatedCardId){
+
+          } else {
+            setPoppedOutWidget(associatedCardId);
+          }
         }
       })
     }
@@ -1681,7 +1701,6 @@ var updatePlayProgress = function (e) {
 Tracker.autorun(function(){
   var poppedOutContextId;
   if(poppedOutContextId = Session.get('poppedOutContextId')) {
-    // TODO get context type & service
     if(poppedOutWidget.id !== poppedOutContextId){
       setPoppedOutWidget(poppedOutContextId);
     }
