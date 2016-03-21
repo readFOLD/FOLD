@@ -1680,7 +1680,8 @@ Template.story.onCreated(function(){
     vimeoScriptLoaded = true;
   }
 
-
+  clearPoppedOutWidget();
+  clearMostRecentWidget();
 });
 
 onYouTubeIframeAPIReady = function(){
@@ -1804,11 +1805,10 @@ createWidget = function(){
       }
     }
   }
-}
+};
 
 window.poppedOutWidget = createWidget();
 window.mostRecentWidget = createWidget();
-
 window.mostRecentRelevantCardId = null;
 
 
@@ -1857,12 +1857,22 @@ window.setPoppedOutWidget = function (id){
 
 window.popInPoppedOutWidget = function(){
   mostRecentWidget = poppedOutWidget;
+  clearPoppedOutWidget();
+};
+
+window.clearPoppedOutWidget = function(){
+  if(poppedOutWidget.activated()){
+    poppedOutWidget.pause();
+  }
   poppedOutWidget = createWidget();
   Session.set('poppedOutContextId', null);
   Session.set('poppedOutContextType', null);
-}
+};
 
 window.popOutMostRecentWidget = function(){
+  if(poppedOutWidget.activated()){
+    poppedOutWidget.pause();
+  }
   poppedOutWidget = mostRecentWidget;
   Session.set('poppedOutContextId', mostRecentWidget.id);
   Session.set('poppedOutContextType', (mostRecentWidget.activeSource === 'soundcloud') ? 'audio' : 'video');
@@ -1880,7 +1890,6 @@ window.setMostRecentWidget = function (id){
   mostRecentWidget = createWidget();
 
   mostRecentWidget.id = id;
-  console.log('here')
 
   if(source === 'soundcloud'){
     mostRecentWidget._soundcloudWidget = SC.Widget(getAudioIFrame(id));
@@ -1916,6 +1925,17 @@ getAudioIFrame = function(contextId){
 Tracker.autorun(function() {
   var currentXId = Session.get('currentXId');
 
+  var setUpNextRecentWidget = () => {
+
+    if (currentXId && (getAudioIFrame(currentXId) || document.querySelector(".video-section[data-context-id='" + currentXId + "']"))){ // also, if the new card is an audio or video card
+      window.mostRecentRelevantCardId = currentXId;
+      setMostRecentWidget(currentXId); // it's now the most recent card
+    } else {
+      window.mostRecentRelevantCardId = null;
+      window.clearMostRecentWidget();
+    }
+  };
+
   Tracker.nonreactive(function(){
     if (currentXId === Session.get('poppedOutContextId')){ // if new card is popped out audio
       if(!hiddenContextMode() || hiddenContextShown()){
@@ -1925,10 +1945,12 @@ Tracker.autorun(function() {
     } else if(mostRecentWidget.activated()){ // otherwise there is a most recent audio card
       var associatedCardId = mostRecentRelevantCardId;
 
+      console.log(mostRecentWidget.id)
+
       mostRecentWidget.isPlaying(function(playing){
-        if (playing){ // and it's playing
+        if (playing){ // and it's playingv
           popOutMostRecentWidget();
-          return
+          return setUpNextRecentWidget()
 
           if(mostRecentWidget._id === associatedCardId){
 
@@ -1936,21 +1958,16 @@ Tracker.autorun(function() {
             setPoppedOutWidget(associatedCardId);
           }
         }
-      })
-    }
 
-    if (currentXId && (getAudioIFrame(currentXId) || document.querySelector(".video-section[data-context-id='" + currentXId + "']"))){ // also, if the new card is an audio or video card
-      window.mostRecentRelevantCardId = currentXId;
-      setMostRecentWidget(currentXId); // it's now the most recent card
+        return setUpNextRecentWidget();
+      })
     } else {
-      window.mostRecentRelevantCardId = null;
-      window.clearMostRecentWidget();
+      setUpNextRecentWidget();
     }
   })
 });
 
-Session.set('poppedOutContextId', null);
-Session.set('poppedOutContextType', null);
+clearPoppedOutWidget();
 
 window.poppedOutPlayerInfo = new ReactiveDict;
 
@@ -2074,9 +2091,7 @@ Template.audio_popout.events({
     }
   },
   "click .dismiss-popout" (e, t) {
-    Session.set('poppedOutContextId', null);
-    Session.set('poppedOutContextType', null);
-    poppedOutWidget.pause();
+    clearPoppedOutWidget();
     trackEvent('Click dismiss popout button');
   }
 });
