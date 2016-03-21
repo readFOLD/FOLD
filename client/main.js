@@ -1060,22 +1060,6 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
   }
 });
 
-// TODO get swipes on context cards to work
-//Template.horizontal_section_block.onRendered(function(){
-//  //
-//  if(Meteor.Device.isPhone()) {
-//    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swipeleft',function(){
-//        window.goRightOneCard();
-//      }
-//    );
-//
-//    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swiperight',function(){
-//        window.goLeftOneCard();
-//      }
-//    );
-//  }
-//});
-
 Template.horizontal_section_block.onRendered(function(){
   // when cards flip from left to right (or vice-versa), they sometimes go above other cards weirdly. this sends it behind for the duration of the animation
   //var lastIndex, _ref;
@@ -1197,6 +1181,18 @@ Template.display_image_section.events({
 
 Template.display_audio_section.helpers(horizontalBlockHelpers);
 
+Template.display_audio_section.events({
+  'click .audio-iframe-overlay' (){
+    if(mostRecentWidget.activated()){
+      mostRecentWidget.isPlaying((playing) => {
+        if(playing){
+          mostRecentWidget.pause();
+        }
+      })
+    }
+  }
+});
+
 Template.display_video_section.helpers(horizontalBlockHelpers);
 Template.display_video_section.helpers({
   showActiveDisplay: function(){
@@ -1206,6 +1202,7 @@ Template.display_video_section.helpers({
 
 Template.display_video_section.onCreated(function(){
   this.activeDisplay = new ReactiveVar();
+  this.randomIFrameId =  Random.id(8);
   Tracker.autorun(()=>{
     var inActiveColumn = this.data.index === getXByYId(this.data.verticalId);
 
@@ -1226,15 +1223,42 @@ Template.display_video_section.onCreated(function(){
 
 Template.display_video_section.helpers({
   fromVimeo (){
-    return this.source === 'vimeo'
+    return this.source === 'vimeo';
   },
   vimeoOnTablet (){
-    return Meteor.Device.isTablet() && this.source === 'vimeo'
+    return Meteor.Device.isTablet() && this.source === 'vimeo';
+  },
+  randomIFrameId (){
+    return Template.instance().randomIFrameId
+  },
+  apiReadyUrl (){
+    if(this.source === 'vimeo'){
+      return this.url() + '&player_id=' + Template.instance().randomIFrameId
+    } else {
+      return this.url()
+    }
   }
 });
 Template.display_video_section.events({
   'click .video-iframe-overlay' (){
-    // TODO play video once have api integration
+    notifyInfo('here is the things!');
+    notifyInfo(mostRecentWidget.activated());
+    if(mostRecentWidget.activated()){
+      console.log(1111)
+      mostRecentWidget.isPlaying((playing) => {
+        console.log(playing)
+        if(playing){
+          mostRecentWidget.pause();
+        } else {
+          mostRecentWidget.isPaused((paused) => {
+            console.log(paused)
+            if (paused) {
+              mostRecentWidget.play();
+            }
+          });
+        }
+      })
+    }
   }
 });
 
@@ -1679,7 +1703,7 @@ createWidget = function(){
           this._youTubeWidget.playVideo();
           break;
         case 'vimeo':
-          this._vimeoWidget.play();
+          this._vimeoWidget.api('play');
           break;
         case 'soundcloud':
           this._soundcloudWidget.play();
@@ -1694,7 +1718,7 @@ createWidget = function(){
           this._youTubeWidget.pauseVideo();
           break;
         case 'vimeo':
-          this._vimeoWidget.pause();
+          this._vimeoWidget.api('pause');
           break;
         case 'soundcloud':
           this._soundcloudWidget.pause();
@@ -1715,12 +1739,11 @@ createWidget = function(){
             return cb(false)
           }
         case 'vimeo':
-          var playing = !this._vimeoWidget.paused();
-          return cb(playing);
+          return this._vimeoWidget.api('paused', function(paused){
+            return cb(!paused)
+          });
         case 'soundcloud':
           return this._soundcloudWidget.isPaused(function(paused){
-            console.log('herehrerere')
-            console.log(!paused)
             return cb(!paused)
           });
         default:
@@ -1730,11 +1753,10 @@ createWidget = function(){
     isPaused(cb){
       switch (this.activeSource) {
         case 'youtube':
-          var paused = this._youTubeWidget.getPlayerState() !== 1;
+          var paused = this._youTubeWidget.getPlayerState() === 2;
           return cb(paused);
         case 'vimeo':
-          var paused = this._vimeoWidget.paused();
-          return cb(paused);
+          return this._vimeoWidget.api('paused', cb);
         case 'soundcloud':
           return this._soundcloudWidget.isPaused(cb);
         default:
@@ -1826,9 +1848,18 @@ window.setPoppedOutWidget = function (id){
       poppedOutWidget._youTubeWidget = new YT.Player(getVideoIFrame(id));
       break;
     case 'vimeo':
-      poppedOutWidget._vimeoWidget = $f(getVideoIFrame(id));
+      $f(getVideoIFrame(id)).addEvent('ready', function (id){
+        poppedOutWidget._vimeoWidget = $f(id);
+      });
       break;
   }
+}
+
+window.popInPoppedOutWidget = function(){
+  mostRecentWidget = poppedOutWidget;
+  poppedOutWidget = createWidget();
+  Session.set('poppedOutContextId', null);
+  Session.set('poppedOutContextType', null);
 }
 
 window.popOutMostRecentWidget = function(){
@@ -1864,7 +1895,9 @@ window.setMostRecentWidget = function (id){
           mostRecentWidget._youTubeWidget = new YT.Player(getVideoIFrame(id)); // TODO, this breaks if the same video is assigned twice.
           break;
         case 'vimeo':
-          mostRecentWidget._vimeoWidget = $f(getVideoIFrame(id));
+          $f(getVideoIFrame(id)).addEvent('ready', function (id){
+            mostRecentWidget._vimeoWidget = $f(id);
+          });
           break;
       }
     }, 100); // hack to make sure video is in DOM when assign it.
@@ -1886,8 +1919,7 @@ Tracker.autorun(function() {
   Tracker.nonreactive(function(){
     if (currentXId === Session.get('poppedOutContextId')){ // if new card is popped out audio
       if(!hiddenContextMode() || hiddenContextShown()){
-        Session.set('poppedOutContextId', null);  // new card was previously popped out, so pop it back in
-        Session.set('poppedOutContextType', null);  // new card was previously popped out, so pop it back in
+        popInPoppedOutWidget();
         return
       }
     } else if(mostRecentWidget.activated()){ // otherwise there is a most recent audio card
