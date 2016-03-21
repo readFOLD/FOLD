@@ -2028,7 +2028,7 @@ div.horizontal-context {
     }
   }
 
-  .audio-iframe-overlay{
+  .audio-iframe-overlay-1{
     position: absolute;
     top: 60px;
     left:0;
