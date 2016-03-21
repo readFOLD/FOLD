@@ -2,16 +2,31 @@ window.constants = {
   verticalSpacing: 20, // there is css that needs to match this
   readModeOffset: 246,
   minPageWidth: 1024,
-  selectOffset: - 210
+  selectOffset: - 210,
+  baselineCardHeight: 300
 };
 
 if(Meteor.Device.isPhone()){
-  window.constants.readModeOffset = window.constants.readModeOffset + 92
+  window.constants.readModeOffset = 0;
+  window.constants.verticalSpacing = 15;
 }
 
 window.getVerticalLeft = function() {
-  return Meteor.Device.isPhone() ? (Session.get('windowWidth') > 340 ? 30 : 20) : (Session.get('windowWidth') / 2 - Session.get('cardWidth') - Session.get('separation'));
+  return 90; // corresponds to css
 };
+
+Tracker.autorun(function(){
+  var inEmbedMode = embedMode();
+  if(inEmbedMode){
+    var inSandwichMode = sandwichMode();
+    if(!inSandwichMode){
+      window.constants.selectOffset = 0;
+      return
+    }
+  }
+
+  window.constants.selectOffset = -210; // original
+});
 
 window.getHorizontalLeft = function() {
   var currentPos, currentHorizontal, cardWidth, numCards, left, offset, pageWidth, verticalRight, addContextBlockWidth, cardSeparation;
@@ -20,8 +35,14 @@ window.getHorizontalLeft = function() {
   cardWidth = Session.get("cardWidth");
   cardSeparation = Session.get("separation");
   addContextBlockWidth = 75;
-  verticalLeft = Session.get("verticalLeft");
+  verticalLeft = getVerticalLeft();
   verticalRight = verticalLeft + cardWidth;
+
+  var currentY = Session.get("currentY");
+  var currentX = Session.get("currentX");
+  var wrap = Session.get("wrap");
+  var horizontalSectionsMap = Session.get("horizontalSectionsMap");
+  var inHiddenContextMode = hiddenContextMode();
 
   // Offset of first card, different on create page because of (+) button
   if (Session.get("read")) {
@@ -33,24 +54,63 @@ window.getHorizontalLeft = function() {
     offset += cardWidth + cardSeparation;
   }
 
-  if(this.verticalIndex === Session.get("currentY")){
-    currentHorizontal = Session.get("horizontalSectionsMap")[Session.get("currentY")];
+  if(this.verticalIndex === currentY){
+    currentHorizontal = horizontalSectionsMap[currentY];
     if (!currentHorizontal) {
       return
     }
-    currentPos = this.index - Session.get("currentX");
+    currentPos = this.index - currentX;
     numCards = currentHorizontal.horizontal.length;
   } else { // card is from another row
     currentPos = this.index - getXByYId(this.verticalId);
-    numCards = Session.get("horizontalSectionsMap")[this.verticalIndex].horizontal.length;
+    numCards = horizontalSectionsMap[this.verticalIndex].horizontal.length;
   }
+
+
+  if(inHiddenContextMode){
+    // we do something different
+    var focusCardLeft = (Session.get('windowWidth') - cardWidth) / 2;
+    if(currentPos === 0){
+      return focusCardLeft
+    }
+
+    var positiveWrapPoint;
+    var negativeWrapPoint;
+
+    if(numCards <= 3){
+      positiveWrapPoint = 1;
+      negativeWrapPoint = -1;
+    } else if(numCards <= 4) {
+      positiveWrapPoint = 1;
+      negativeWrapPoint = -2;
+    } else if(numCards <= 5) {
+      positiveWrapPoint = 2;
+      negativeWrapPoint = -2;
+    } else if(numCards <= 6) {
+      positiveWrapPoint = 2;
+      negativeWrapPoint = -3;
+    } else {
+      positiveWrapPoint = 3;
+      negativeWrapPoint = -3;
+    }
+
+    if(currentPos > positiveWrapPoint){
+      currentPos -= numCards;
+    } else if (currentPos < negativeWrapPoint){
+      currentPos += numCards;
+    }
+
+
+    return (Session.get('windowWidth') - cardWidth) / 2 + currentPos * (cardWidth + cardSeparation)
+  }
+
 
 
   if (numCards === 1){
     return verticalRight + offset + cardSeparation;
   }
 
-  if (Session.get("wrap")[this.verticalId] || numCards === 2) { // wrapping (and always position as if wrapping when two cards)
+  if (wrap[this.verticalId] || numCards === 2) { // wrapping (and always position as if wrapping when two cards)
 
     if (currentPos < 0) { // makes the first card appear at the end of the last card
       currentPos = numCards + currentPos;
@@ -86,7 +146,12 @@ window.getHorizontalLeft = function() {
 
 window.getVerticalHeights = function() {
   var sum, verticalHeights;
-  var offset = Session.get('read') ? constants.readModeOffset : constants.readModeOffset + constants.verticalSpacing;
+  var offset;
+  if(Meteor.Device.isPhone()){
+    offset = constants.readModeOffset + $('.title-overlay').height();
+  } else {
+    offset = Session.get('read') ? constants.readModeOffset : constants.readModeOffset + constants.verticalSpacing;
+  }
   verticalHeights = [offset];
   sum = offset;
   $('.vertical-narrative-section').each(function() {
@@ -110,6 +175,12 @@ window.goToXY = function(x, y) {
 window.goToY = function(y, options) {
   options = options || {};
   options.complete = options.complete || function(){};
+
+  if(hiddenContextMode()){ // don't actually scroll in hidden context mode
+    Session.set('currentY', y);
+    return Meteor.defer(options.complete);
+  }
+
   if ((options.force) || Session.get("currentY") !== y){
     var verticalHeights;
     verticalHeights = window.getVerticalHeights();
@@ -139,8 +210,8 @@ window.goToContext = function(id) {
 
     contextIndex = _.indexOf(_.pluck(Session.get('horizontalSectionsMap')[currentY].horizontal, '_id'), id.toString());
     if (contextIndex >= 0) {
-      if (Meteor.Device.isPhone()){
-        Session.set('mobileContextView', true);
+      if (hiddenContextMode()){
+        Session.set('hiddenContextShown', true);
       }
       return goToX(contextIndex);
     }
@@ -224,7 +295,7 @@ Meteor.startup(function(){
       return
     }
     
-    if ((routeName === 'read' || (routeName === 'edit' && Session.get('read'))) && !signingIn()){
+    if ((routeName === 'read' || routeName === 'embed' || (routeName === 'edit' && Session.get('read'))) && !signingIn()){
       var letter = String.fromCharCode(e.keyCode);
       switch(letter){
         case 'J':

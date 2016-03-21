@@ -5,7 +5,7 @@ var saveUpdatedSelection = function () {
   $(window.selectedNode).closest('.content').blur();
 };
 
-var removeAnchorTag = function(tag){
+window.removeAnchorTag = function(tag){
   parentDiv = $(tag).closest('.content');
   $(tag).contents().unwrap();
   parentDiv.blur();
@@ -402,14 +402,14 @@ Template.vertical_section_block.onCreated(function() {
   });
 });
 
-Template.vertical_section_block.onRendered(function() {
-  if (!Meteor.Device.isPhone()){ // highlight active context card link except on mobile
-    this.autorun(() => {
+Template.vertical_section_block.onRendered(function () {
+  this.autorun(() => {
+    if (!hiddenContextMode()) {
       Session.get('read') // make reactive to switching between preview and edit
       var currentXId = Session.get('currentXId');
       var pastHeader = Session.get("pastHeader");
-      if(Session.equals("currentYId", this.data._id) && pastHeader){ // if block is selected
-        if (currentXId){ // if there is a current context card
+      if (Session.equals("currentYId", this.data._id) && pastHeader) { // if block is selected
+        if (currentXId) { // if there is a current context card
           Meteor.setTimeout(() => {
             this.$('a[data-context-id="' + currentXId + '"]').addClass('active');
             this.$('a[data-context-id!="' + currentXId + '"]').removeClass('active');
@@ -420,14 +420,49 @@ Template.vertical_section_block.onRendered(function() {
           this.$('a').removeClass('active');
         }, 0)
       }
-    });
-  }
+    } else {
+      this.$('a').removeClass('active');
+    }
+  });
 });
 
 Template.vertical_section_block.helpers({
   babyburgerOpen (){
     return Template.instance().babyburgerOpen.get();
   }
+});
+
+var resizeStoryTitleFont = function(){
+  var titleDiv = $('.story-title');
+  var fontSize = 24;
+  titleDiv.css({'font-size': (fontSize + 'px')});
+
+  while((titleDiv.width() < titleDiv[0].scrollWidth) && fontSize > 12){
+    fontSize -= 1;
+    titleDiv.css({'font-size': (fontSize + 'px')});
+  }
+};
+
+var resetStoryTitleFont = function(){
+  var titleDiv = $('.story-title');
+  var fontSize = 24;
+  titleDiv.css({'font-size': (fontSize + 'px')});
+};
+
+Template.story_title.onRendered(function(){
+  if(Session.get('read') && !window.hiddenContextMode()){
+    Meteor.setTimeout(resizeStoryTitleFont, 100);
+  } else {
+    resetStoryTitleFont();
+  }
+  this.autorun(()=> {
+    if(Session.get('read') && !window.hiddenContextMode()){
+      windowSizeDep.depend();
+      resizeStoryTitleFont();
+    } else {
+      resetStoryTitleFont();
+    }
+  })
 });
 
 Template.story_title.events({
@@ -446,9 +481,6 @@ Template.story_title.events({
 });
 
 Template.create.helpers({
-  narrativeView () {
-    return Session.get("narrativeView");
-  },
   category () {
     return Session.get("storyCategory");
   },
@@ -600,7 +632,7 @@ Template.vertical_edit_menu.events({
 
 Template.add_horizontal.helpers({
   left () {
-    return Session.get("verticalLeft") + Session.get("cardWidth") + Session.get("separation");
+    return getVerticalLeft() + Session.get("cardWidth") + Session.get("separation");
   }
 });
 
@@ -678,7 +710,7 @@ Template.create_horizontal_section_block.helpers({
 Template.create_horizontal_section_block.helpers({
   left () {
     var addBlockWidth = 75;
-    return addBlockWidth + Session.get("verticalLeft") + Session.get("cardWidth") + 2 * Session.get("separation");
+    return addBlockWidth + getVerticalLeft() + Session.get("cardWidth") + 2 * Session.get("separation");
   }
 });
 

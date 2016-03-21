@@ -100,10 +100,10 @@ Template.my_stories.helpers({
     }
   },
   lastEditDate () {
-    return formatDate(this.savedAt);
+    return prettyDateInPast(this.savedAt);
   },
   lastPublishDate () {
-    return formatDate(this.publishedAt);
+    return prettyDateInPast(this.publishedAt);
   }
 });
 
@@ -135,6 +135,10 @@ Template.user_profile.onCreated(function(){
   this.pictureId = new ReactiveVar();
 });
 
+Template.user_profile.onRendered(function(){
+  this.$('.bio').linkify({linkAttributes: {rel : 'nofollow'}});
+});
+
 
 var ownProfile = function() {
   var user = Meteor.user();
@@ -149,9 +153,6 @@ Template.user_profile.helpers({
   name  () {
     return this.user.profile.name
   },
-  bio  () {
-    return this.user.profile.bio
-  },
   uploadPreview (){
     return Template.instance().uploadPreview.get();
   },
@@ -160,6 +161,9 @@ Template.user_profile.helpers({
   },
   "email" (){
     return this.user.emails ? this.user.emails[0].address : null;
+  },
+  bioHtml (){
+    return _.escape(this.user.profile.bio).replace(/(@\w+)/g, "<a href='https://twitter.com/$1' target='_blank'>$1</a>");
   }
 });
 

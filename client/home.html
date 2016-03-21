@@ -1,10 +1,10 @@
 <template name="top_banner">
-  <div class="home-top top-banner {{#if slim}}slim{{else}}fat{{/if}}">
+  <div class="home-top top-banner {{#if slim}}slim{{else}}fat{{/if}} {{#if altSlim}}alt-slim{{/if}}">
     <div class="left">
-      <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}}">
+      <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}} {{#if altSlim}}alt-slim{{/if}}">
         {{#linkTo route="home"}}
         <div class="title {{#if slim}}slim{{else}}fat{{/if}}">
-          <img src="{{c.url 'static/foldtitle.svg'}}">
+          {{> fold_title}}
         </div>
         {{/linkTo}}
       </div>
@@ -21,12 +21,27 @@
             </div>
           {{/unless}}
         {{/if}}
-        <div class="search {{#if slim}}slim{{else}}fat{{/if}}">
-          {{> search slim=slim}}
-        </div>
+        {{#if altSlim}}
+          <button class="alt-menu-button">
+            {{> alt_babyburger_icon}}
+          </button>
+          <button class="alt-search-button">{{> alt_search_icon}}</button>
+        {{#with currentUser}}
+          <a class="alt-profile-link" href="/profile/{{currentUser.displayUsername}}"><img src="{{profileImage this 'small'}}"/></a>
+        {{else}}
+          <button class="alt-signup-button">Sign up</button>
+        {{/with}}
+        {{else}}
+          <div class="search {{#if slim}}slim{{else}}fat{{/if}}">
+            {{> search slim=slim}}
+          </div>
+        {{/if}}
       {{/if}}
     </div>
-    {{> banner_buttons slim=slim hideMakeAStory=hideMakeAStory}}
+    {{#if altSlim}}
+    {{else}}
+      {{> banner_buttons slim=slim hideMakeAStory=hideMakeAStory}}
+    {{/if}}
   </div>
 </template>
 
@@ -37,7 +52,7 @@
       <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}}">
         <!--{{#linkTo route="home"}}-->
           <div class="title {{#if slim}}slim{{else}}fat{{/if}}">
-            <img src="{{c.url 'static/foldtitle.svg'}}">
+            {{> fold_title}}
           </div>
         <!--{{/linkTo}}-->
       </div>
@@ -51,7 +66,7 @@
       <div class="logo-title {{#if slim}}slim{{else}}fat{{/if}}">
         {{#linkTo route="home"}}
           <div class="title {{#if slim}}slim{{else}}fat{{/if}}">
-            <img src="{{c.url 'static/foldtitle.svg'}}">
+            {{> fold_title}}
           </div>
         {{/linkTo}}
       </div>
@@ -63,7 +78,7 @@
   <div class="banner-buttons {{#if slim}}slim{{else}}fat{{/if}}">
     <div class="action-items {{#if slim}}slim{{else}}fat{{/if}}">
       <ol class="action-item-list">
-        {{#unless isPhone}}
+        {{#unless mobileOrTablet}}
           {{#unless hideMakeAStory}}
             <li class="create-story">
               {{> create_story}}
@@ -146,7 +161,10 @@
 
 
 <template name="search">
-  <input class="story-search" type="search" placeholder="Search">
+  <form action="action">
+  <input class="story-search" type="search" placeholder="{{#if placeholder}}{{placeholder}}{{else}}Search{{/if}}">
+  </form>
+
   {{#if showClearSearch}}
     <button class="clear-search">{{> clear_search_icon}}</button>
   {{/if}}
@@ -195,6 +213,11 @@
     {{/unless}}
   {{/unless}}
 
+  {{#if hideActivityFeed}}
+    <div class="current-search">
+      <button class="clear-search">{{>clear_search_icon}}</button>Showing results for "{{currentSearch}}"
+    </div>
+  {{/if}}
 
   {{#if currentUser}}
     {{> activity_feed hide=hideActivityFeed}}

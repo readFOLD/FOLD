@@ -196,3 +196,27 @@ i.loading-icon{
     fill: @orange-color;
   }
 }
+
+.social-option-triangle{
+  .fg{
+    fill: @dark-color
+  }
+}
+
+.embed-icon{
+  .fg{
+    fill: @dark-color
+  }
+  &:hover{
+    .fg{
+      fill: @action-color;
+    }
+  }
+}
+
+.fold-title{
+  height: 100%;
+  .fg{
+    fill: @action-color
+  }
+}

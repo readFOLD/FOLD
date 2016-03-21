@@ -88,8 +88,13 @@ window.incrementReactiveVar = function(rv){
 
 
 window.openSignInOverlay = function(str){
-  Session.set('signinStage', 'signup');
-  Session.set('signingIn', str || true);
+  if(str === 'login'){
+    Session.set('signinStage', 'login');
+    Session.set('signingIn', true);
+  } else {
+    Session.set('signinStage', 'signup');
+    Session.set('signingIn', str || true);
+  }
 };
 
 window.closeSignInOverlay = function(){
@@ -133,6 +138,42 @@ window.formatDateNice = function (date) {
 window.formatDateCompact = function (date) {
   if (date){
     return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+  }
+
+};
+
+var oneDay = 1000 * 60 * 60 * 24;
+var oneWeek = oneDay * 7;
+var oneMonth = oneDay * 30;
+
+window.prettyDateInPast = function(date){
+  if(date){
+    var now = new Date();
+
+    var dayDistance = (now.getDay() - date.getDay());
+    if(dayDistance < 0){
+      dayDistance += 7;
+    }
+
+    var exactDistance = now - date;
+
+    if(exactDistance <= oneDay && dayDistance === 0){
+      return 'Today'
+    } else if (exactDistance <= oneWeek) {
+      if(dayDistance === 0){
+        return 'One week ago'
+      } else if(dayDistance === 1){
+        return 'Yesterday'
+      } else {
+        return dayDistance + ' days ago'
+      }
+    } else if (exactDistance <= oneWeek * 1.5) {
+      return 'One week ago'
+    } else if (exactDistance <= oneMonth) {
+      return Math.round(new Date(exactDistance).getDate() / 7) + ' weeks ago'
+    } else {
+      return formatDateNice(date);
+    }
   }
 
 };
@@ -190,6 +231,10 @@ window.trackEvent = function(){
   analytics.track.apply(this, arguments);
 };
 
+var preventDefault = function(event) {
+  event.preventDefault();
+};
+
 window.freezePageScroll = function(){
   var b = $('body');
   var normalw = window.innerWidth;
@@ -198,10 +243,68 @@ window.freezePageScroll = function(){
   document.body.style.overflowY = 'hidden';
   document.body.style.marginRight = scrollBarWidth + 'px';
   $('.home-top.fat').width('calc(100% - ' + scrollBarWidth +'px');
+
+  if(mobileOrTablet()){
+    window.document.body.addEventListener("touchmove", preventDefault, false);
+  }
 };
 
 window.unfreezePageScroll = function(){
   document.body.style.overflowY = 'auto';
   document.body.style.marginRight = 0;
   $('.home-top.fat').width('100%');
-}
+
+  if(mobileOrTablet()) {
+    window.document.body.removeEventListener("touchmove", preventDefault, false);
+  }
+};
+
+window.sandwichMode = function(){
+  return window.embedMode() && !window.hiddenContextMode();
+};
+
+
+window.activateHiddenContextMode = function(){
+  return Session.set('hiddenContextMode', true);
+};
+
+window.deactivateHiddenContextMode = function(){
+  return Session.set('hiddenContextMode', false);
+};
+
+window.hiddenContextMode = function(){
+  return Session.equals('hiddenContextMode', true);
+};
+
+window.hiddenContextShown = function(){
+  return Session.equals('hiddenContextShown', true);
+};
+
+window.embedMode = function(){
+  return Session.equals('embedMode', true);
+};
+
+window.activateEmbedMode = function(){
+  window.constants.readModeOffset = 0;
+  return Session.set('embedMode', true);
+};
+
+window.mobileOrTablet = function(){
+  return Meteor.Device.isPhone() || Meteor.Device.isTablet()
+};
+
+window.openSearchOverlay = function(){
+  return Session.set('searchOverlayShown', true);
+};
+
+window.closeSearchOverlay = function(){
+  return Session.set('searchOverlayShown', false);
+};
+
+window.openMenuOverlay = function(){
+  return Session.set('menuOverlayShown', true);
+};
+
+window.closeMenuOverlay = function(){
+  return Session.set('menuOverlayShown', false);
+};

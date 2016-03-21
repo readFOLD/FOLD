@@ -56,6 +56,9 @@ Template.top_banner.helpers({
   },
   showingLatest () {
     return Session.equals('filterValue', 'newest') && !Session.get('storySearchQuery');
+  },
+  altSlim (){
+    return Template.instance().data && (Template.instance().data.slim || Meteor.Device.isPhone()) && hiddenContextMode()
   }
 });
 
@@ -83,6 +86,15 @@ Template.top_banner.events({
     t.$("input").val(null);
     t.$(".clear-search").hide();
     $(e.target).prop("disabled", "disabled");
+  },
+  "click .alt-signup-button" (d) {
+    openSignInOverlay();
+  },
+  "click .alt-search-button" () {
+    openSearchOverlay();
+  },
+  "click .alt-menu-button" () {
+    openMenuOverlay();
   }
 });
 
@@ -92,12 +104,10 @@ Template.search.onCreated(function() {
       $("input").val(null);
     }
   })
-
-
 });
 
 Template.search.onRendered(function() {
-  if(this.data.slim){
+  if(this.data && this.data.slim){
     this.$("button").hide(); // hack to hide button
   } else {
     var storySearchQuery;
@@ -194,14 +204,22 @@ Template.filters.events({
 });
 
 Template.search.events({
+  "submit" (e, t){
+    e.preventDefault();
+  },
   "keyup input": _.throttle(function(e, t) {
     var text = $(e.target).val().trim();
-    Session.set('storySearchQuery', text);
+
     if(enterPress(e)){
       $(e.target).blur();
+      closeSearchOverlay();
       if(t.data.slim){
         Router.go('/');
       }
+    }
+
+    if(!Session.get('searchOverlayShown')){
+      Session.set('storySearchQuery', text);
     }
 
     if(!t.data.slim){
@@ -580,6 +598,9 @@ Template.all_stories.events({
   },
   'click .dismiss-box'  (e,t) {
     Session.set('boxDismissed', true);
+  },
+  'click .clear-search'  (e,t) {
+    Session.set('storySearchQuery', null);
   }
 });
 
@@ -597,10 +618,13 @@ Template.all_stories.helpers({ // most of these are reactive false, but they wil
     return currentHomeStories().count() >= (getCurrentSubscriptionPage() + 1) * PUB_SIZE
   },
   boxDismissed (){
-    return Session.get('boxDismissed')
+    return Session.get('boxDismissed') || Session.get('storySearchQuery')
   },
   hideActivityFeed (){ // we'll hide it so it doesn't need to reload all activities
     return !Session.equals('filterValue', 'mixed') || Session.get('storySearchQuery');
+  },
+  currentSearch (){
+    return Session.get('storySearchQuery')
   }
 });
 
@@ -614,7 +638,7 @@ Template.story_preview.helpers({
 Template._story_preview_content.helpers({
   lastPublishDate () {
     if(this.publishedAt) {
-      return formatDateNice(this.publishedAt);
+      return prettyDateInPast(this.publishedAt);
     }
   },
   story (){
@@ -665,5 +689,35 @@ Template.login_buttons.events({
     e.preventDefault();
     Template.instance().showUserInfo.set(false);
     Meteor.logout();
+  }
+});
+
+Template.search_overlay.events({
+  'click .close' (){
+    return closeSearchOverlay();
+  }
+});
+
+Template.search.onRendered(function(){
+  if(Session.get('searchOverlayShown')){
+    this.$('input').focus();
+  }
+});
+
+Template.menu_overlay.events({
+  'click .close' (){
+    return closeMenuOverlay();
+  },
+  'click a, click button' (){
+    return closeMenuOverlay();
+  },
+  'click .search' (){
+    return openSearchOverlay();
+  },
+  'click .sign-up' (){
+    return openSignInOverlay();
+  },
+  'click .log-in' (){
+    return openSignInOverlay('login');
   }
 });

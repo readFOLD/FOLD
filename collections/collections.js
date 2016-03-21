@@ -31,6 +31,10 @@ Story = (function() {
     }
   }
 
+  Story.prototype.readPath = function(){
+    return '/read/' + this.userPathSegment + '/' + this.storyPathSegment;
+  };
+
   Story.prototype.contentPreview = function() {
     var content;
     if (content = this.verticalSections[0].content) {

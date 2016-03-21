@@ -7,8 +7,14 @@ UI.registerHelper('selectedIf', function(val) {
 
 
 getCardWidth = function(windowWidth) {
-  if (Meteor.Device.isPhone()){
-    return Session.get("windowWidth") - 2* getVerticalLeft();
+  if (Meteor.Device.isPhone()) {
+    return Session.get("windowWidth") * .9 - 2 * Session.get("separation");
+  } else if (hiddenContextMode()){
+    if(windowWidth <= 685){ // must match up with @resizing-context
+      return Session.get("windowWidth") * .9 - 2 * Session.get("separation") - 2 * 60;
+    } else {
+      return 520;
+    }
   } else if (windowWidth <= window.constants.minPageWidth) {
     return 400;
   } else {
@@ -18,7 +24,7 @@ getCardWidth = function(windowWidth) {
 
 Session.set("separation", 20);
 
-var windowSizeDep = new Tracker.Dependency();
+window.windowSizeDep = new Tracker.Dependency();
 
 Meteor.startup(function(){
   Tracker.autorun(function(){
@@ -33,21 +39,48 @@ Meteor.startup(function(){
 
     Session.set("windowWidth", windowWidth);
 
-    var cardWidth = getCardWidth(windowWidth);
 
-    Session.set("cardWidth", cardWidth);
-
-    Session.set("verticalLeft", Session.get('mobileContextView') ? getVerticalLeft(windowWidth) - cardWidth : getVerticalLeft(windowWidth));
 
     if (Meteor.Device.isPhone()) {
       document.body.style.overflowX = "hidden";
       $('body').css('max-width', windowWidth);
       Session.set("mobileMargin", getVerticalLeft(windowWidth));
+
     }
+
+    var cardWidthFromWindowSize = getCardWidth(windowWidth);
+
+
+    if(hiddenContextMode()){
+      var cardHeightFromWidth = cardWidthFromWindowSize * 9 / 16;
+      var cardHeightFromSpaceAvailable = Math.max($('.horizontal-context').height() - 110, 40);
+
+      if(cardHeightFromSpaceAvailable < cardHeightFromWidth){
+        Session.set("cardHeight", cardHeightFromSpaceAvailable);
+        Session.set("cardWidth", cardHeightFromSpaceAvailable * 16 / 9);
+      } else {
+        if(cardHeightFromWidth < window.constants.baselineCardHeight){
+          Session.set("cardHeight", cardHeightFromWidth);
+        } else {
+          Session.set("cardHeight", null);
+        }
+        Session.set("cardWidth", cardWidthFromWindowSize);
+      }
+    } else {
+      Session.set("cardWidth", cardWidthFromWindowSize);
+
+      Tracker.nonreactive(() => {
+        if(Session.get("cardHeight")){
+          Session.set("cardHeight", null);
+        }
+      })
+    }
+
+    throttledScrollUpdate();
   });
 
   Tracker.autorun(function(){
-    if (Session.get('mobileContextView')){
+    if (Session.get('hiddenContextShown')){
       freezePageScroll();
     } else {
       unfreezePageScroll(); // TODO is this helping
@@ -80,6 +113,36 @@ Meteor.startup(function(){
     justReloaded = false;
   });
 
+  Tracker.autorun(function(){
+    if( Meteor.Device.isPhone()){
+      return activateHiddenContextMode()
+    } else {
+      var windowWidth = Session.get('windowWidth');
+      var read = Session.get("read");
+
+      var inHiddenContextMode;
+      Tracker.nonreactive(function(){
+        inHiddenContextMode = hiddenContextMode();
+        inEmbedMode = embedMode();
+      });
+
+      var cutoff = inEmbedMode || Meteor.Device.isTablet() ? 1000 : 800;
+
+      if (read){
+        if (windowWidth < cutoff){
+          if(!inHiddenContextMode){
+            activateHiddenContextMode();
+          }
+        } else if (inHiddenContextMode) {
+          deactivateHiddenContextMode();
+        }
+      } else if (inHiddenContextMode) {
+        deactivateHiddenContextMode();
+      }
+
+    }
+  });
+
   var restrictFocusToModal = function( event ) {
     var modal = $('.signin-modal');
     if (!modal.has(event.target)[0]) {
@@ -103,11 +166,32 @@ Meteor.startup(function(){
   });
 
   Blaze.addBodyClass(function() {
-    if(Router.current()){
+    if(Router.current() && Router.current().route){
       return Router.current().route.getName();
     }
   });
 });
+
+Tracker.autorun(function(){
+  if(!Session.get('hiddenContextMode')){
+    Session.set('hiddenContextShown', false);
+  }
+});
+
+Meteor.startup(function(){
+  var inIFrame = function(){
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
+  };
+
+  if (inIFrame()){
+    activateEmbedMode();
+  }
+});
+
 
 
 window.hammerSwipeOptions = {
@@ -116,68 +200,105 @@ window.hammerSwipeOptions = {
   velocity:	0.25 // 0.65
 };
 
+window.hammerDoubleTapOptions = {
+  taps:	2
+};
+
 
 var scrollPauseArmed = false;
 var scrollPauseLength = 700;
 
+var currentOrientation = window.orientation;
+
 window.updateCurrentY = function() {
   var actualY, h, i, readMode, scrollTop, stickyTitle, vertTop, _i, _len, _ref;
+
+  // if this is actually an orientation-change event, don't do anything
+  var newOrientation = window.orientation;
+  if(newOrientation !== currentOrientation){
+    currentOrientation = newOrientation;
+    return
+  }
+
   scrollTop = $(document).scrollTop();
-  Session.set("scrollTop", scrollTop);
 
   readMode = window.constants.readModeOffset - 1;
 
   stickyTitle = 120;
-  $("div#banner-overlay").css({
-    opacity: Math.min(1.0, scrollTop / readMode)
-  });
-  $(".horizontal-context").css({
-    opacity: 0.5 + Math.min(1.0, scrollTop / readMode) / 2
-  });
-  if (scrollTop >= readMode){
-    $("div.title-author").addClass("c");
-    $("div.title-author").removeClass("a");
-    $("div.title-author").removeClass("b");
-  } else if (scrollTop >= stickyTitle) {
-    $("div.title-author").addClass("b");
-    $("div.title-author").removeClass("a");
-    $("div.title-author").removeClass("c");
-  } else {
-    scrollPauseArmed = true;
 
-    $("div.title-author").addClass("a");
-    $("div.title-author").removeClass("b");
-    $("div.title-author").removeClass("c");
-  }
+  var inEmbedMode = embedMode();
 
-  if (scrollTop >= readMode) {
-    $("div.title-overlay, div#banner-overlay").addClass("fixed");
-    Session.set("pastHeader", true);
-    $("div.horizontal-context").addClass("fixed");
+  if(!inEmbedMode){
+    Session.set("scrollTop", scrollTop);
 
-    if(scrollPauseArmed){
-      freezePageScroll();
-      $(document).scrollTop(readMode);
-      Meteor.setTimeout(function () {
-        unfreezePageScroll();
-      }, scrollPauseLength);
-      scrollPauseArmed = false;
+    if(!Meteor.Device.isPhone()){
+      $(".horizontal-context").css({
+        opacity: 0.5 + Math.min(1.0, scrollTop / readMode) / 2
+      });
+      $("div#banner-overlay").css({
+        opacity: Math.min(1.0, scrollTop / readMode)
+      });
     }
 
-    $("div.vertical-narrative").removeClass("fixed");
-    $("div.vertical-narrative").addClass("free-scroll");
+  }
+
+  if(!Meteor.Device.isPhone() && !inEmbedMode){
+    if ((scrollTop >= readMode)){
+      $("div.title-author").addClass("c");
+      $("div.title-author").removeClass("a");
+      $("div.title-author").removeClass("b");
+    } else if (scrollTop >= stickyTitle) {
+      $("div.title-author").addClass("b");
+      $("div.title-author").removeClass("a");
+      $("div.title-author").removeClass("c");
+    } else {
+      scrollPauseArmed = true;
+
+      $("div.title-author").addClass("a");
+      $("div.title-author").removeClass("b");
+      $("div.title-author").removeClass("c");
+    }
 
 
-  } else {
-    $("div.title-overlay, div#banner-overlay").removeClass("fixed");
-    Session.set("pastHeader", false);
-    $("div.horizontal-context").removeClass("fixed");
-    $("div.vertical-narrative").removeClass("fixed");
-    $("div.vertical-narrative").removeClass("free-scroll");
+    if ((scrollTop >= readMode)) {
+      $("div.title-overlay, div#banner-overlay").addClass("fixed");
+      Session.set("pastHeader", true);
+      $("div.horizontal-context").addClass("fixed");
+
+      if(scrollPauseArmed && !inEmbedMode){
+        freezePageScroll();
+        $(document).scrollTop(readMode);
+        Meteor.setTimeout(function () {
+          unfreezePageScroll();
+        }, scrollPauseLength);
+        scrollPauseArmed = false;
+      }
+
+      $("div.vertical-narrative").removeClass("fixed");
+      $("div.vertical-narrative").addClass("free-scroll");
+
+
+    } else {
+      $("div.title-overlay, div#banner-overlay").removeClass("fixed");
+      Session.set("pastHeader", false);
+      $("div.horizontal-context").removeClass("fixed");
+      $("div.vertical-narrative").removeClass("fixed");
+      $("div.vertical-narrative").removeClass("free-scroll");
+    }
+
+
   }
 
 
-  if (scrollTop >= readMode) {
+
+
+  if (inEmbedMode || Meteor.Device.isPhone() || (scrollTop >= readMode)) {
+    if(inEmbedMode && hiddenContextMode() && (scrollTop < $('.title-overlay').height() - 20)){
+      Session.set('pastHeader', false);
+      return
+    } else {
+      Session.set('pastHeader', true);
+    }
     _ref = _.map(window.getVerticalHeights(), function(height){ return height + window.constants.selectOffset});
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       h = _ref[i];
@@ -446,13 +567,13 @@ Template.story.helpers({
     return Session.get("metaview")
   },
   showMinimap () {
-    return Session.get("showMinimap") && (!Meteor.Device.isPhone());
-  },
-  showMobileMinimap () {
-    return Session.get("showMinimap") && (Meteor.Device.isPhone());
+    return Session.get("showMinimap") && !hiddenContextMode();
   },
   showContextOverlay (){
     return Session.get('contextOverlayId');
+  },
+  showStoryBrowser (){
+    return !Session.get('addingContext') && (!hiddenContextMode() || hiddenContextShown())
   }
 });
 
@@ -473,10 +594,7 @@ Template.vertical_section_block.helpers({
     return !Session.equals("currentY", 0);
   },
   verticalSelected () {
-    return Session.equals("currentY", this.index) && Session.get("pastHeader") || Session.equals("currentY", null) && this.index === 0;
-  },
-  validTitle () {
-    return this.title === !"title";
+    return Session.equals("currentY", this.index) && Session.get("pastHeader") || Session.equals("currentY", null) && this.index === 0 && !hiddenContextMode();
   },
   titleDiv () {
     var initialClasses = Session.get('showDraft') ? 'title notranslate' : 'title';
@@ -496,6 +614,15 @@ Template.vertical_section_block.helpers({
       // nonReactiveContent preserves browser undo functionality across saves
       // this is contenteditable in edit mode
       return '<div class="editable fold-editable ' + initialClasses + '" placeholder="Type your text here." contenteditable="true" dir="auto">' + cleanVerticalSectionContent(Template.instance().semiReactiveContent.get()) + '</div>';
+    }
+  },
+  showContextButton () {
+    if (this.contextBlocks.length && hiddenContextMode()){
+      if(Meteor.Device.isPhone() || Session.get('windowWidth') < 400){
+        return true
+      } else {
+        return Session.get('pastHeader')
+      }
     }
   }
 });
@@ -529,11 +656,11 @@ Template.vertical_section_block.events({
       };
       Meteor.setTimeout(() => {
         trackEvent('Click context anchor', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
-          verticalIndex: this.index,
+          verticalIndex: t.data.index,
           contextId: contextId,
           contextType: $(e.currentTarget).data('contextType'),
           contextSource: $(e.currentTarget).data('contextSource'),
-          numberOfContextCardsOnVertical: this.contextBlocks.length,
+          numberOfContextCardsOnVertical: t.data.contextBlocks.length,
           inReadMode: Session.get('read')
         }));
       });
@@ -541,42 +668,59 @@ Template.vertical_section_block.events({
 
     goToY(t.data.index, {complete: afterGoToY});
 
+  },
+  "click .context-button" (e, t){
+    afterGoToY = function(){
+      Session.set("hiddenContextShown", true);
+    };
+    Meteor.setTimeout(() => {
+      trackEvent('Click context button', _.extend({}, window.trackingInfoFromStory(Session.get('story')), {
+        verticalIndex: t.data.index,
+        numberOfContextCardsOnVertical: t.data.contextBlocks.length
+      }));
+    });
+
+    goToY(t.data.index, {complete: afterGoToY});
   }
-});
-
-Template.story.onCreated(function(){
-  $(document).on('scroll', throttledScrollUpdate);
-});
-
-Template.story.onDestroyed(function(){
-  $(document).off('scroll', throttledScrollUpdate);
 });
 
 
 Template.story.onRendered(function(){
-  // TODO destroy bindings later?
+
+  $(document).on('scroll', throttledScrollUpdate);
+
   if(Meteor.Device.isPhone() || Meteor.Device.isTablet()){
     this.$('.entire-story').hammer(hammerSwipeOptions).bind('swipeleft',function(){
         if(horizontalExists()){
-          if (Meteor.Device.isTablet() || Session.get('mobileContextView')){
+          if (!hiddenContextMode() || hiddenContextShown()){
             goRightOneCard();
-          } else {
-            Session.set('mobileContextView', true);
           }
         }
       }
     );
 
     this.$('.entire-story').hammer(hammerSwipeOptions).bind('swiperight',function(){
-        if(Meteor.Device.isTablet()){
-          if(horizontalExists()){
+        if(horizontalExists()){
+          if (!hiddenContextMode() || hiddenContextShown()){
             goLeftOneCard();
           }
-        } else {
-          Session.set('mobileContextView', false);
         }
       }
     );
+
+  }
+
+  windowSizeDep.changed(); // trigger window resizing things
+
+});
+
+Template.story.onDestroyed(function(){
+  $(document).off('scroll', throttledScrollUpdate);
+
+  if(Meteor.Device.isPhone() || Meteor.Device.isTablet()){
+    this.$('.entire-story').hammer(hammerSwipeOptions).unbind('swipeleft');
+
+    this.$('.entire-story').hammer(hammerSwipeOptions).unbind('swiperight');
   }
 });
 
@@ -606,11 +750,27 @@ Template.metaview.onRendered(function() {
   this.$(".sortable-rows").sortable({
     stop: saveMetaviewOrdering
   });
+
+  var removingContext;
+
   this.$(".sortable-blocks").sortable({
     connectWith: ".sortable-blocks",
-    stop () {
-      resetXPositionMemory(); // prevent XId stuff from getting all crazy
-      saveMetaviewOrdering();
+    remove (e, ui) { // when a context block is removed from one vertical section and placed in another
+      removingContext = true;
+      var removedContextId = ui.item.data('id');
+      removeAnchorTag($('.vertical-narrative-section .content a[data-context-id="' + removedContextId + '"]')); // remove the broken link
+      Meteor.setTimeout(() => { // then save the ordering just a moment later to ensure the anchor removal makes it to the server first
+        removingContext = null;
+        resetXPositionMemory();
+        saveMetaviewOrdering();
+      }, 200);
+    },
+    stop (e, ui) {
+      if(!removingContext){ // if context is being removed, we handle it above
+        resetXPositionMemory(); // prevent XId stuff from getting all crazy
+        saveMetaviewOrdering();
+      }
+      removingContext = null;
     }
   });
 
@@ -725,38 +885,36 @@ Template.minimap.helpers({
   }
 });
 
-Template.mobile_minimap.helpers({
-  verticalSelectedArray () {
-    var currentYId = Session.get('currentYId')
-    return _.map(this.verticalSections, function(v){
-      return {selected: currentYId === v._id};
-    });
-  },
-  horizontalSelectedArray () {
-    var currentXId = Session.get('currentXId');
-    var currentY = Session.get('currentY');
-    var mobileContextView = Session.get('mobileContextView');
-    if (this.verticalSections[currentY]){
-      return _.map(this.verticalSections[currentY].contextBlocks, function(cId){
-        return {selected: mobileContextView && (currentXId === cId)};
-      });
-    } else {
-      return [];
-    }
-  },
-  horizontalWidth (){
-    return Session.get('windowWidth') - Session.get('mobileMargin');
-  },
-  verticalHeight (){
-    return Session.get('windowHeight') - Session.get('mobileMargin');
-  }
-});
-
 Template.horizontal_context.events({
   click  () {
     if(Session.equals('currentY', null)){
       goToY(0);
     }
+  },
+  'click .hidden-context-overlay' (){
+    Session.set('hiddenContextShown', false);
+  }
+});
+
+Template.horizontal_context.onRendered(function(){
+  Tracker.autorun(() => {
+    if(mobileOrTablet()) {
+      if(Session.get('hiddenContextShown')){
+        Meteor.defer(()=> {
+          this.$('.hidden-context-overlay').hammer(hammerDoubleTapOptions).bind('doubletap', () => {
+            Session.set('hiddenContextShown', false);
+          });
+        })
+      } else {
+        this.$('.hidden-context-overlay').hammer(hammerDoubleTapOptions).unbind('doubletap');
+      }
+    }
+  })
+});
+
+Template.horizontal_context.onDestroyed(function(){
+  if(mobileOrTablet()) {
+    this.$('.hidden-context-overlay').hammer(hammerDoubleTapOptions).unbind('doubletap');
   }
 });
 
@@ -833,7 +991,7 @@ Template.horizontal_context.helpers({
   },
   horizontalSectionInDOM: horizontalSectionInDOM, // TODO, keep and them remove video cards from the dom. a la activeDisplay
   horizontalShown () {
-    return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone());
+    return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0);
   }
 });
 
@@ -918,10 +1076,33 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 //  }
 //});
 
-Template.horizontal_section_block.events({
-  'click .mobile-context-back-button' (e, t){
-    Session.set('mobileContextView', false);
-    trackEvent('Click mobile back button');
+Template.horizontal_section_block.onRendered(function(){
+  // when cards flip from left to right (or vice-versa), they sometimes go above other cards weirdly. this sends it behind for the duration of the animation
+  //var lastIndex, _ref;
+  //lastIndex = ((_ref = Session.get("horizontalSectionsMap")[this.data.verticalIndex]) != null ? _ref.horizontal.length : void 0) - 1;
+  //var isLast = ((this.data.index === lastIndex) && (lastIndex > 0));
+
+  this.styleObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutationRecord) => {
+      var oldLeft = mutationRecord.oldValue.match(/left\:\W([\-?\d+]+)/)[1];
+      var newLeft = this.firstNode.style.left.match(/([\-?\d+]+)/)[1];
+
+      if ( (oldLeft < 0 && newLeft > 300) || (oldLeft > 300 && newLeft < 0) ){ // if it flips from negative to positive
+        $(this.firstNode).addClass('hide-behind');
+        Meteor.setTimeout(() => {
+          $(this.firstNode).removeClass('hide-behind');
+        }, 200); // this number should be as long as the .left-transition in the css
+      }
+    });
+  });
+
+  this.styleObserver.observe(this.firstNode, { attributes : true, attributeFilter : ['style'], attributeOldValue: true })
+
+});
+
+Template.horizontal_section_block.onDestroyed(function(){
+  if(this.styleObserver){
+    this.styleObserver.disconnect();
   }
 });
 
@@ -939,6 +1120,13 @@ Template.horizontal_section_block.helpers({
 
   hideContainer () {
     return this.type === 'audio' && this._id === Session.get('poppedOutContextId') && !(Session.equals("currentY", this.verticalIndex) || Session.equals("currentY", null) && this.verticalIndex === 0);
+  }
+});
+
+
+Template.horizontal_section_block.events({
+  'click' (){
+    goToX(this.index)
   }
 });
 
@@ -971,18 +1159,41 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
 Template.display_viz_section.helpers(horizontalBlockHelpers);
 
 Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
-//Template.display_image_section.onCreated(editableDescriptionDestroyedBoilerplate('editHorizontalBlockDescription'));
+Template.display_image_section.onRendered(function(){
+  if(mobileOrTablet()) {
+    this.$('.image-section').hammer(hammerDoubleTapOptions).bind('doubletap', () => {
+      Session.set('contextOverlayId', this.data._id);
+      trackEvent('Expand image card');
+    });
+  }
+});
+
+Template.display_image_section.onDestroyed(function(){
+  if(mobileOrTablet()) {
+    this.$('.image-section').hammer(hammerDoubleTapOptions).unbind('doubletap');
+  }
+});
+
+if (mobileOrTablet()) {
+  Template.display_text_section.events({
+    'click'  (e, t) {
+      Session.set('contextOverlayId', this._id);
+      trackEvent('Expand text card');
+    }
+  });
+}
+
+
 Template.display_image_section.helpers(horizontalBlockHelpers);
 Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 Template.display_image_section.events({
-    'click'  (e, t) {
-      if (Session.get('read') && !($(e.target).is('a')) && !Meteor.Device.isPhone()){
-        Session.set('contextOverlayId', this._id);
-        trackEvent('Expand image card');
-      }
+  'click'  (e, t) {
+    if (Session.get('read') && !($(e.target).is('a')) && !Meteor.Device.isPhone()) {
+      Session.set('contextOverlayId', this._id);
+      trackEvent('Expand image card');
     }
   }
-);
+});
 
 Template.display_audio_section.helpers(horizontalBlockHelpers);
 
@@ -1011,6 +1222,20 @@ Template.display_video_section.onCreated(function(){
       }, 500);
     }
   })
+});
+
+Template.display_video_section.helpers({
+  fromVimeo (){
+    return this.source === 'vimeo'
+  },
+  vimeoOnTablet (){
+    return Meteor.Device.isTablet() && this.source === 'vimeo'
+  }
+});
+Template.display_video_section.events({
+  'click .video-iframe-overlay' (){
+    // TODO play video once have api integration
+  }
 });
 
 Template.display_twitter_section.helpers(horizontalBlockHelpers);
@@ -1133,6 +1358,7 @@ Template.display_link_section.events({
 });
 
 Template.display_text_section.onCreated(editableDescriptionCreatedBoilerplate);
+
 //Template.display_text_section.onDestroyed(editableDescriptionDestroyedBoilerplate('editTextSection'));
 Template.display_text_section.helpers(horizontalBlockHelpers);
 Template.display_text_section.events(editableDescriptionEventsBoilerplate('editTextSection'));
@@ -1164,6 +1390,13 @@ Template.type_specific_icon.helpers(typeHelpers);
 
 
 Template.share_buttons.events({
+  'click .share-embed' (e, t) {
+    notifyFeature('Embedding: coming soon!');
+    trackEvent('Click embed button');
+  }
+});
+
+Template.share_on_facebook.events({
   'click .share-facebook' (e, t) {
     var width  = 575;
     var height = 400;
@@ -1178,7 +1411,10 @@ Template.share_buttons.events({
     window.open(url, 'facebook', opts);
     Meteor.call('countStoryShare', this._id, 'facebook');
     trackEvent('Share on Facebook');
-  },
+  }
+});
+
+Template.share_on_twitter.events({
   'click .share-twitter' (e, t) {
     var title = $(".story-title").text();
     var width  = 575;
@@ -1194,10 +1430,6 @@ Template.share_buttons.events({
     window.open(url, 'twitter', opts);
     Meteor.call('countStoryShare', this._id, 'twitter');
     trackEvent('Share on Twitter');
-  },
-  'click .share-embed' (e, t) {
-    notifyFeature('Embedding: coming soon!');
-    trackEvent('Click embed button');
   }
 });
 
@@ -1650,12 +1882,10 @@ getAudioIFrame = function(contextId){
 
 Tracker.autorun(function() {
   var currentXId = Session.get('currentXId');
-  var mobileContextView = Session.get('mobileContextView');
 
   Tracker.nonreactive(function(){
-    if (currentXId === Session.get('poppedOutContextId')){ // if new card is popped out
-      if(!Meteor.Device.isPhone() || mobileContextView){
-        setMostRecentWidget(currentXId);
+    if (currentXId === Session.get('poppedOutContextId')){ // if new card is popped out audio
+      if(!hiddenContextMode() || hiddenContextShown()){
         Session.set('poppedOutContextId', null);  // new card was previously popped out, so pop it back in
         Session.set('poppedOutContextType', null);  // new card was previously popped out, so pop it back in
         return
@@ -1947,7 +2177,14 @@ var addActiveHeartbeat = function(key){
 };
 
 Template.read.onRendered(function(){
-  $(window).scrollTop(Session.get('scrollTop'));
+
+  if(sandwichMode()){
+    updateCurrentY();
+  } else {
+    $(window).scrollTop(Session.get('scrollTop'));
+  }
+
+
   this.heartbeatInterval = Meteor.setInterval(function(){
     var currentYId = Session.get('currentYId');
     var currentXId = Session.get('currentXId');
@@ -1992,6 +2229,14 @@ Template.read.onDestroyed(function(){
   // send all existing heartbeats when leave a story
   subtractSentActiveHeartbeatCount(); // in case there is already a count pending don't double-do it
   activeHeartbeatCountSender(true);
+
+  unfreezePageScroll();
+});
+
+Template.read.helpers({
+  showMobileEmbedPlaceholder () {
+    return Meteor.Device.isPhone() && embedMode();
+  }
 });
 
 
@@ -2006,12 +2251,14 @@ Template.context_overlay.helpers({
   },
   contextLoaded (){
     return Template.instance().contextLoaded.get();
+  },
+  textContent (){
+    return _.escape(this.content).replace(/\n/g, "<br>")
   }
-})
+});
 
 Template.context_overlay.onCreated(function(){
   this.contextLoaded = new ReactiveVar();
-  document.body.style.overflow = 'hidden';
 });
 
 Template.context_overlay.onRendered(function(){
@@ -2019,10 +2266,27 @@ Template.context_overlay.onRendered(function(){
   $('img, video').load(() => {
     this.contextLoaded.set(true);
   });
+  freezePageScroll();
+});
+
+Template.context_overlay.onRendered(function(){
+  if(mobileOrTablet()) {
+    this.$('.context-overlay').hammer(hammerDoubleTapOptions).bind('doubletap', () => {
+      Session.set('contextOverlayId', null);
+    });
+  }
 });
 
 Template.context_overlay.onDestroyed(function(){
-  document.body.style.overflow = 'auto';
+  if(mobileOrTablet()) {
+    this.$('.context-overlay').hammer(hammerDoubleTapOptions).unbind('doubletap');
+  }
+});
+
+Template.context_overlay.onDestroyed(function(){
+  if(!hiddenContextMode() && !hiddenContextShown()){
+    unfreezePageScroll();
+  }
 });
 
 Template.context_overlay.events({

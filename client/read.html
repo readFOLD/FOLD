@@ -1,10 +1,24 @@
 <template name="read">
   {{!hasContext suppresses a firefox error when story not found because page gets rendered without any context, probably right before story not found gets shown, should probably not be necessary}}
-  {{#if hasContext}}
-    {{> story_header}}
-    {{> story}}
-    {{> read_options}}
-  {{/if}}
+    {{#if showMobileEmbedPlaceholder}}
+      {{> mobile_embed_placeholder}}
+    {{else}}
+      {{#if hasContext}}
+        {{> story_header}}
+        {{> story}}
+        {{> read_options}}
+        {{#if showStorySandwichFooter}}
+          {{> story_sandwich_footer}}
+        {{/if}}
+      {{/if}}
+    {{/if}}
+
+</template>
+
+<template name="mobile_embed_placeholder">
+  <div class="mobile-embed-placeholder" style="height: {{windowHeight}}px; width: {{windowWidth}}px;">
+    <a class="open" href="{{readPath}}" target="_blank"><span>Please visit the FOLD to view {{title}}</span></a>
+  </div>
 </template>
 
 <template name="read_admin_ui">
@@ -30,20 +44,22 @@
 <template name="read_options">
   <div class="floating-story-buttons">
     {{#unless isPhone}}
-      {{#with reactiveStory}}
-        {{> share_buttons}}
-        {{> favorite_button}}
-        {{#if adminMode}}
-          {{> editors_pick_button}}
-        {{/if}}
-      {{/with}}
+      {{#unless showStorySandwichFooter}}
+        {{#with reactiveStory}}
+          {{> share_buttons}}
+          {{> favorite_button}}
+          {{#if adminMode}}
+            {{> editors_pick_button}}
+          {{/if}}
+        {{/with}}
+      {{/unless}}
     {{/unless}}
 
 
   </div>
   <div class="floating-story-buttons-left">
     {{#if isAuthor}}
-      {{#unless isPhone}}
+      {{#unless mobileOrTablet}}
         {{#linkTo route="edit" data=this}}
           <button type="button" class="link-to-edit button">
             Edit
@@ -51,5 +67,36 @@
         {{/linkTo}}
       {{/unless}}
     {{/if}}
+  </div>
+</template>
+
+<template name="story_sandwich_footer">
+  <div class="story-sandwich-footer">
+    {{#with headerImageVideoObject}}
+      {{> looping_video}}
+    {{else}}
+      <img class="footer-overlay-image" src={{headerImageUrl}}>
+    {{/with}}
+    <div class="footer-overlay">
+    </div>
+    <div class="actions">
+      {{> favorite_button}}
+      {{#if embedMode}}
+        <a class="open" href="{{readPath}}" target="_blank">{{> popout_icon}}</a>
+      {{/if}}
+      {{> share_buttons}}
+    </div>
+
+    {{#if embedMode}}
+      <a class="title" href="{{readPath}}" target="_blank">
+        {{> fold_title_icon}}
+      </a>
+    {{else}}
+      <div class="title">
+        {{> fold_title_icon}}
+      </div>
+
+    {{/if}}
+
   </div>
 </template>
