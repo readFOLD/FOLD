@@ -1059,7 +1059,7 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
 
 var horizontalSectionInDOM = function () {
   // on this row, or this card is the current X for another hidden row
-  return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId') || this.type === 'audio';
+  return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId');
 };
 
 Template.horizontal_section_block.onCreated(function(){
@@ -1070,16 +1070,15 @@ Template.horizontal_section_block.onCreated(function(){
       this.horizontalSectionInDOM.set(true);
     } else {
       Meteor.setTimeout(()=>{
-        var isPoppedOut = poppedOut.call(this.data);
-        var shouldOtherwiseNowBeInDOM = horizontalSectionInDOM.call(this.data);
+        var shouldBeInDOM = horizontalSectionInDOM.call(this.data);
 
-        if(!isPoppedOut && !shouldOtherwiseNowBeInDOM){
+        if(!shouldBeInDOM ){
           this.horizontalSectionInDOM.set(false);
         }
       }, 500);
     }
   })
-})
+});
 
 Template.horizontal_section_block.onRendered(function(){
   // when cards flip from left to right (or vice-versa), they sometimes go above other cards weirdly. this sends it behind for the duration of the animation
@@ -1833,7 +1832,6 @@ createWidget = function(){
 
 window.poppedOutWidget = createWidget();
 window.mostRecentWidget = createWidget();
-window.mostRecentRelevantCardId = null;
 
 
 
@@ -1911,8 +1909,7 @@ window.setMostRecentWidget = function (id){
 
   mostRecentWidget.id = id;
 
-  if(source === 'soundcloud'){
-    mostRecentWidget._soundcloudWidget = SC.Widget(getAudioIFrame(id));
+  if(source === 'soundfdsfsdfcloud'){
     mostRecentWidget.activeSource = source;
   } else {
     Meteor.setTimeout(() => {
@@ -1928,8 +1925,13 @@ window.setMostRecentWidget = function (id){
             mostRecentWidget._vimeoWidget = $f(id);
           });
           break;
+        case 'soundcloud':
+          mostRecentWidget._soundcloudWidget = SC.Widget(getAudioIFrame(id));
+          break;
       }
-    }, 100); // hack to make sure video is in DOM when assign it.
+
+      console.log('api assigned')
+    }, 150); // hack to make sure video is in DOM when assign it.
   }
 
 };
@@ -1947,14 +1949,9 @@ Tracker.autorun(function() {
 
   var setUpNextRecentWidget = () => {
 
-    console.log(currentXId)
-    console.log(document.querySelector(".video-section[data-context-id='" + currentXId + "']"))
-
-    if (currentXId && (getAudioIFrame(currentXId) || document.querySelector(".video-section[data-context-id='" + currentXId + "']"))){ // also, if the new card is an audio or video card
-      window.mostRecentRelevantCardId = currentXId;
+    if (currentXId && (document.querySelector(".audio-section[data-context-id='" + currentXId + "']") || document.querySelector(".video-section[data-context-id='" + currentXId + "']"))){ // also, if the new card is an audio or video card
       setMostRecentWidget(currentXId); // it's now the most recent card
     } else {
-      window.mostRecentRelevantCardId = null;
       window.clearMostRecentWidget();
     }
   };
@@ -1966,22 +1963,11 @@ Tracker.autorun(function() {
         return
       }
     } else if(mostRecentWidget.activated()){ // otherwise there is a most recent audio card
-      var associatedCardId = mostRecentRelevantCardId;
-
-      console.log(mostRecentWidget.id)
 
       mostRecentWidget.isPlaying(function(playing){
         if (playing){ // and it's playingv
           popOutMostRecentWidget();
-          return setUpNextRecentWidget()
-
-          if(mostRecentWidget._id === associatedCardId){
-
-          } else {
-            setPoppedOutWidget(associatedCardId);
-          }
         }
-
         return setUpNextRecentWidget();
       })
     } else {
