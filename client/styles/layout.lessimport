@@ -1967,6 +1967,33 @@ div.horizontal-context {
       display: none;
     }
 
+    opacity: 1;
+
+    &:not(.in-current-row){
+      background-color: transparent;
+      pointer-events: none;
+      @media @mobile {
+        visibility: visible;
+      }
+      a, img, video, .image-section, .link-section, iframe{
+        pointer-events: auto;
+      }
+      .remix-bar{
+        display: none;
+      }
+      .popout-message{
+        display: none;
+      }
+      outline: none;
+    }
+
+    &.in-current-row{
+      .remix-bar{
+        opacity: @unselected-opacity;
+      }
+      outline-color: fade(@outline-color, @unselected-opacity * 100);
+    }
+
     .video-section{
 
       .active-display{
@@ -1983,12 +2010,6 @@ div.horizontal-context {
       }
     }
 
-    &.selected{ // hack for when still on the row
-      .remix-bar{
-        opacity: @unselected-opacity;
-      }
-      outline-color: fade(@outline-color, @unselected-opacity * 100);
-    }
   }
 
   .popout-message{

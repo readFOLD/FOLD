@@ -365,6 +365,10 @@ Tracker.autorun(function(){
   if(typeof currentX === 'number'){
     var currentContextBlockId = verticalSection.contextBlocks[currentX];
     if (currentContextBlockId) {
+
+      Tracker.nonreactive(function(){
+        Session.set('previousXId', Session.get('currentXId'));
+      });
       return Session.set('currentXId', currentContextBlockId);
     }
   }
@@ -1020,8 +1024,8 @@ var selected = function() {
   // return Session.equals("currentX", this.index) && !Session.get("addingContext");
   //    return this.index === getXByYId(this.verticalId) && !Session.get("addingContext") || this._id === Session.get('poppedOutContextId');
   //console.log(this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId))
-  return (this.index === getXByYId(Session.get('currentYId')) || (this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId)) && !Session.get("addingContext"))
-    || this._id === Session.get('poppedOutContextId');
+  var currentYId = Session.get('currentYId');
+  return ((this.verticalId === currentYId && this.index === getXByYId(currentYId)) || (this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId)) && !Session.get("addingContext"));
 }
 
 var poppedOut = function(){
@@ -1127,7 +1131,11 @@ Template.horizontal_section_block.helpers({
   },
   horizontalSectionInDOM () {
     return Template.instance().horizontalSectionInDOM.get();
-  } // TODO, keep and them remove video cards from the dom. a la activeDisplay. This is needed to keep videos across rows
+  },
+  inCurrentRow (){
+    var currentY = Session.get('currentY');
+    return (this.verticalIndex === 0 && currentY == null) || this.verticalIndex === currentY;
+  }
 });
 
 
@@ -1217,31 +1225,9 @@ Template.display_audio_section.events({
 });
 
 Template.display_video_section.helpers(horizontalBlockHelpers);
-Template.display_video_section.helpers({
-  showActiveDisplay: function(){
-    return Template.instance().activeDisplay.get();
-  }
-});
 
 Template.display_video_section.onCreated(function(){
-  this.activeDisplay = new ReactiveVar();
   this.randomIFrameId =  Random.id(8);
-  Tracker.autorun(()=>{
-    var inActiveColumn = this.data.index === getXByYId(this.data.verticalId);
-
-    if(inActiveColumn){
-      this.activeDisplay.set(true);
-    } else {
-      Meteor.setTimeout(()=>{
-        var isPoppedOut = poppedOut.call(this.data);
-        var nowInActiveColumn = this.data.index === getXByYId(this.data.verticalId);
-
-        if(!isPoppedOut && !nowInActiveColumn){
-          this.activeDisplay.set(false);
-        }
-      }, 500);
-    }
-  })
 });
 
 Template.display_video_section.helpers({
@@ -1888,6 +1874,7 @@ window.clearPoppedOutWidget = function(){
 };
 
 window.popOutMostRecentWidget = function(){
+  console.log('this is being called')
   if(poppedOutWidget.activated()){
     poppedOutWidget.pause();
   }
@@ -1947,34 +1934,97 @@ getAudioIFrame = function(contextId){
 Tracker.autorun(function() {
   var currentXId = Session.get('currentXId');
 
-  var setUpNextRecentWidget = () => {
+  if(mostRecentWidget.activated() && currentXId === mostRecentWidget.id){ // otherwise there is a most recent audio card
 
-    if (currentXId && (document.querySelector(".audio-section[data-context-id='" + currentXId + "']") || document.querySelector(".video-section[data-context-id='" + currentXId + "']"))){ // also, if the new card is an audio or video card
-      setMostRecentWidget(currentXId); // it's now the most recent card
-    } else {
-      window.clearMostRecentWidget();
-    }
-  };
+  }
+});
 
-  Tracker.nonreactive(function(){
-    if (currentXId === Session.get('poppedOutContextId')){ // if new card is popped out audio
-      if(!hiddenContextMode() || hiddenContextShown()){
-        popInPoppedOutWidget();
-        return
-      }
-    } else if(mostRecentWidget.activated()){ // otherwise there is a most recent audio card
+var widgetSetup = function(){
+  this.autorun(() => {
+    console.log('222')
+    var currentXId = Session.get('currentXId');
 
-      mostRecentWidget.isPlaying(function(playing){
-        if (playing){ // and it's playingv
-          popOutMostRecentWidget();
+    Tracker.nonreactive(() => {
+
+      var previousXId = Session.get('previousXId');
+
+      var isCurrent = this.data._id === currentXId;
+      var isPoppedOut = this.data._id === Session.get('poppedOutContextId');
+      var isMostRecent = this.data._id === mostRecentWidget.id;
+      var isPrevious = this.data._id === previousXId;
+
+      if(isCurrent){
+        if (isPoppedOut){ // if this card was popped out
+          if(!hiddenContextMode() || hiddenContextShown()){
+            console.log('pop it in!')
+            popInPoppedOutWidget(); // pop it back in
+            return
+          }
+        } else {
+
+          console.log('set most recent widget to ' + currentXId)
+          setMostRecentWidget(currentXId); // it's now the most recent card
         }
-        return setUpNextRecentWidget();
-      })
+      } else {
+        if((isPrevious || !previousXId) && isMostRecent && mostRecentWidget.activated()){ // if this is the current widget
+          mostRecentWidget.isPlaying(function(playing){
+            if (playing){ // and it's playing
+              console.log('pop out widghet')
+              popOutMostRecentWidget();
+            }
+          })
+        }
+      }
+
+    })
+
+
+  });
+};
+
+var widgetBreakdown= function(){
+  if(mostRecentWidget.id === this.data.id){
+    window.clearMostRecentWidget();
+  }
+};
+
+var activeDisplayHelpers = {
+  showActiveDisplay (){
+    return Template.instance().activeDisplay.get();
+  }
+};
+
+var activeDisplayWorker = function(){
+  this.activeDisplay = new ReactiveVar();
+  Tracker.autorun(()=>{
+    var inActiveColumn = this.data.index === getXByYId(this.data.verticalId);
+
+    if(inActiveColumn){
+      this.activeDisplay.set(true);
     } else {
-      setUpNextRecentWidget();
+      Meteor.setTimeout(()=>{
+        var isPoppedOut = poppedOut.call(this.data);
+        var nowInActiveColumn = this.data.index === getXByYId(this.data.verticalId);
+
+        if(!isPoppedOut && !nowInActiveColumn){
+          this.activeDisplay.set(false);
+        }
+      }, 500);
     }
   })
-});
+};
+
+Template.display_audio_section.onCreated(activeDisplayWorker);
+Template.display_video_section.onCreated(activeDisplayWorker);
+
+Template.display_audio_section.onRendered(widgetSetup);
+Template.display_video_section.onRendered(widgetSetup);
+
+Template.display_audio_section.onDestroyed(widgetBreakdown);
+Template.display_video_section.onDestroyed(widgetBreakdown);
+
+Template.display_audio_section.helpers(activeDisplayHelpers);
+Template.display_video_section.helpers(activeDisplayHelpers);
 
 clearPoppedOutWidget();
 
