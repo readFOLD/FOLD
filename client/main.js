@@ -1950,11 +1950,9 @@ Tracker.autorun(function() {
 
 var widgetSetup = function(){
   this.autorun(() => {
-    console.log('222')
     var currentXId = Session.get('currentXId');
 
     Tracker.nonreactive(() => {
-
       var previousXId = Session.get('previousXId');
 
       var isCurrent = this.data._id === currentXId;
@@ -1965,29 +1963,22 @@ var widgetSetup = function(){
       if(isCurrent){
         if (isPoppedOut){ // if this card was popped out
           if(!hiddenContextMode() || hiddenContextShown()){
-            console.log('pop it in!')
             popInPoppedOutWidget(); // pop it back in
             return
           }
         } else {
-
-          console.log('set most recent widget to ' + currentXId)
           setMostRecentWidget(currentXId); // it's now the most recent card
         }
       } else {
         if((isPrevious || !previousXId) && isMostRecent && mostRecentWidget.activated()){ // if this is the current widget
           mostRecentWidget.isPlaying(function(playing){
             if (playing){ // and it's playing
-              console.log('pop out widghet')
               popOutMostRecentWidget();
             }
           })
         }
       }
-
-    })
-
-
+    });
   });
 };
 
