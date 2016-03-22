@@ -918,10 +918,7 @@ Template.horizontal_context.onDestroyed(function(){
   }
 });
 
-var horizontalSectionInDOM = function () {
-  // on this row, or this card is the current X for another hidden row
-  return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId') || this.type === 'audio';
-};
+
 
 Template.horizontal_context.helpers({
   verticalExists () {
@@ -989,7 +986,6 @@ Template.horizontal_context.helpers({
     lastIndex = ((_ref = Session.get("horizontalSectionsMap")[Session.get("currentY")]) != null ? _ref.horizontal.length : void 0) - 1;
     return (this.index === lastIndex) && (lastIndex > 0);
   },
-  horizontalSectionInDOM: horizontalSectionInDOM, // TODO, keep and them remove video cards from the dom. a la activeDisplay
   horizontalShown () {
     return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0);
   }
@@ -1060,6 +1056,31 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
   }
 });
 
+
+var horizontalSectionInDOM = function () {
+  // on this row, or this card is the current X for another hidden row
+  return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId') || this.type === 'audio';
+};
+
+Template.horizontal_section_block.onCreated(function(){
+  this.horizontalSectionInDOM = new ReactiveVar();
+
+  Tracker.autorun(()=>{
+    if(horizontalSectionInDOM.call(this.data)){
+      this.horizontalSectionInDOM.set(true);
+    } else {
+      Meteor.setTimeout(()=>{
+        var isPoppedOut = poppedOut.call(this.data);
+        var shouldOtherwiseNowBeInDOM = horizontalSectionInDOM.call(this.data);
+
+        if(!isPoppedOut && !shouldOtherwiseNowBeInDOM){
+          this.horizontalSectionInDOM.set(false);
+        }
+      }, 500);
+    }
+  })
+})
+
 Template.horizontal_section_block.onRendered(function(){
   // when cards flip from left to right (or vice-versa), they sometimes go above other cards weirdly. this sends it behind for the duration of the animation
   //var lastIndex, _ref;
@@ -1104,7 +1125,10 @@ Template.horizontal_section_block.helpers({
 
   hideContainer () {
     return this.type === 'audio' && this._id === Session.get('poppedOutContextId') && !(Session.equals("currentY", this.verticalIndex) || Session.equals("currentY", null) && this.verticalIndex === 0);
-  }
+  },
+  horizontalSectionInDOM () {
+    return Template.instance().horizontalSectionInDOM.get();
+  } // TODO, keep and them remove video cards from the dom. a la activeDisplay. This is needed to keep videos across rows
 });
 
 
@@ -1732,7 +1756,7 @@ createWidget = function(){
       switch (this.activeSource) {
         case 'youtube':
           if(this._youTubeWidget && this._youTubeWidget.getPlayerState){
-            var playing = _.contains([1,3], this._youTubeWidget.getPlayerState()); // TODO, confirm state 3 (buffering) is a playing-type state
+            var playing = _.contains([1,3], this._youTubeWidget.getPlayerState());
             return cb(playing);
           } else {
             console.log('yt widget not set up yet')
@@ -1823,7 +1847,6 @@ window.setPoppedOutWidget = function (id){
   console.log('set popped out')
 
   console.log(id)
-  console.log(mostRecentRelevantCardId)
 
   if (id === mostRecentWidget.id){ // if this is also the most recent card (probably)
     console.log('just assign')
@@ -1861,9 +1884,6 @@ window.popInPoppedOutWidget = function(){
 };
 
 window.clearPoppedOutWidget = function(){
-  if(poppedOutWidget.activated()){
-    poppedOutWidget.pause();
-  }
   poppedOutWidget = createWidget();
   Session.set('poppedOutContextId', null);
   Session.set('poppedOutContextType', null);
@@ -1901,7 +1921,7 @@ window.setMostRecentWidget = function (id){
 
       switch(source){
         case 'youtube':
-          mostRecentWidget._youTubeWidget = new YT.Player(getVideoIFrame(id)); // TODO, this breaks if the same video is assigned twice.
+          mostRecentWidget._youTubeWidget = new YT.Player(getVideoIFrame(id));
           break;
         case 'vimeo':
           $f(getVideoIFrame(id)).addEvent('ready', function (id){
@@ -1926,6 +1946,9 @@ Tracker.autorun(function() {
   var currentXId = Session.get('currentXId');
 
   var setUpNextRecentWidget = () => {
+
+    console.log(currentXId)
+    console.log(document.querySelector(".video-section[data-context-id='" + currentXId + "']"))
 
     if (currentXId && (getAudioIFrame(currentXId) || document.querySelector(".video-section[data-context-id='" + currentXId + "']"))){ // also, if the new card is an audio or video card
       window.mostRecentRelevantCardId = currentXId;
