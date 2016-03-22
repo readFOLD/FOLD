@@ -1281,6 +1281,13 @@ Template.display_video_section.events({
         }
       })
     }
+  },
+  "click .dismiss-popout" (e, t) {
+    if(poppedOutWidget.activated()){
+      poppedOutWidget.pause();
+    }
+    clearPoppedOutWidget();
+    trackEvent('Click dismiss popout button');
   }
 });
 
@@ -2002,14 +2009,14 @@ var activeDisplayHelpers = {
 var activeDisplayWorker = function(){
   this.activeDisplay = new ReactiveVar();
   Tracker.autorun(()=>{
-    var inActiveColumn = this.data.index === getXByYId(this.data.verticalId);
+    var inActiveColumn = this.data.index === getXByYId(this.data.verticalId) && (!hiddenContextMode() || hiddenContextShown());
 
     if(inActiveColumn){
       this.activeDisplay.set(true);
     } else {
       Meteor.setTimeout(()=>{
         var isPoppedOut = poppedOut.call(this.data);
-        var nowInActiveColumn = this.data.index === getXByYId(this.data.verticalId);
+        var nowInActiveColumn = this.data.index === getXByYId(this.data.verticalId) && (!hiddenContextMode() || hiddenContextShown());
 
         if(!isPoppedOut && !nowInActiveColumn){
           this.activeDisplay.set(false);

@@ -340,7 +340,7 @@ div.title-overlay {
     background-color: @dark-color;
 
     &.with-video-popout{
-      width: calc(100% ~'-' @fixed-banner-height * 16 / 9);
+      width: calc(100% ~'-' @fixed-banner-height * 16 / 9 ~'-' 20px);
     }
 
     img{
@@ -379,99 +379,6 @@ div.title-overlay {
   }
 
 
-  .audio-popout{
-    position: absolute;
-    z-index: 50;
-    right: 0;
-    top: 0;
-    height: @title-overlay-ending-height;
-    width: @popout-width;
-    padding-top: 12px;
-    @side-padding: 15px;
-    .padding-sides(15px);
-    font-size: 12px;
-    font-weight: bold;
-    input{
-      background-color: transparent;
-    }
-    .lower-corner{
-      height: 100px;
-      position: fixed;
-      right: 0;
-      bottom:0;
-      top: auto;
-      background-color: @dark-color;
-      z-index: 100;
-    }
-    @media @mobile {
-      .lower-corner;
-      width: 100%;
-    }
-
-    &.embed-mode{
-      &:not(.sandwich-mode){
-        .lower-corner;
-        bottom:40px;
-      }
-    }
-    @control-height: 45px;
-    @control-spacing: 7px;
-    @time-width: 35px;
-    .title{
-      .ellipsis-text;
-      width: calc(100% ~"-" 35px);
-    }
-    .controls{
-      margin-top: 5px;
-      display: table;
-      height: @control-height;
-      width: 100%;
-    }
-    .play, .pause, .progress, .current-time, .total-time {
-      float: left;
-      display: table-cell;
-      height: 100%;
-      line-height: @control-height;
-      vertical-align: middle;
-      margin-right: @control-spacing;
-    }
-    .current-time, .total-time{
-      width: @time-width;
-    }
-    .current-time{
-      text-align: right;
-    }
-    input{
-      width: calc(100% ~"-" (@control-height + @control-spacing * 3 + 2 * @time-width + @side-padding));
-    }
-    .play, .pause{
-      .size(@control-height);
-      border-radius: 50%;
-      line-height: @control-height;
-      font-size: @control-height/2;
-      text-align: left;
-      background-color: @orange-color;
-    }
-    .play{
-      padding-left: 15px;
-    }
-    .pause{
-      padding-left: 12px;
-    }
-    .dismiss-popout{
-      top: 15px;
-      right: 15px;
-      .size(26px);
-      border-radius: 50%;
-      svg{
-        .center-over-parent-div;
-        .size(13px);
-      }
-      padding: 0;
-      position: absolute;
-      background-color: @dark-color;
-    }
-  }
 
   div.logo {
     .opacity-transition;
@@ -695,6 +602,100 @@ div.title-overlay {
 
   }
 
+}
+
+
+.audio-popout{
+  color: @white-color;
+  position: absolute;
+  z-index: 50;
+  right: 0;
+  top: 0;
+  height: @title-overlay-ending-height;
+  width: @popout-width;
+  padding-top: 12px;
+  @side-padding: 15px;
+  .padding-sides(15px);
+  font-size: 12px;
+  font-weight: bold;
+  input{
+    background-color: transparent;
+  }
+  .lower-corner{
+    height: 100px;
+    position: fixed;
+    right: 0;
+    bottom:0;
+    top: auto;
+    background-color: @dark-color;
+    z-index: 100;
+  }
+  @media @mobile {
+    .lower-corner;
+    width: 100%;
+  }
+
+  &.hidden-context-mode{
+    .lower-corner;
+    bottom:40px;
+  }
+  @control-height: 45px;
+  @control-spacing: 7px;
+  @time-width: 35px;
+  .title{
+    .ellipsis-text;
+    width: calc(100% ~"-" 35px);
+  }
+  .controls{
+    margin-top: 5px;
+    display: table;
+    height: @control-height;
+    width: 100%;
+  }
+  .play, .pause, .progress, .current-time, .total-time {
+    float: left;
+    display: table-cell;
+    height: 100%;
+    line-height: @control-height;
+    vertical-align: middle;
+    margin-right: @control-spacing;
+  }
+  .current-time, .total-time{
+    width: @time-width;
+  }
+  .current-time{
+    text-align: right;
+  }
+  input{
+    width: calc(100% ~"-" (@control-height + @control-spacing * 3 + 2 * @time-width + @side-padding));
+  }
+  .play, .pause{
+    .size(@control-height);
+    border-radius: 50%;
+    line-height: @control-height;
+    font-size: @control-height/2;
+    text-align: left;
+    background-color: @orange-color;
+  }
+  .play{
+    padding-left: 15px;
+  }
+  .pause{
+    padding-left: 12px;
+  }
+  .dismiss-popout{
+    top: 15px;
+    right: 15px;
+    .size(26px);
+    border-radius: 50%;
+    svg{
+      .center-over-parent-div;
+      .size(13px);
+    }
+    padding: 0;
+    position: absolute;
+    background-color: @dark-color;
+  }
 }
 
 div.button-options {

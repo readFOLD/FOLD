@@ -1996,14 +1996,35 @@ div.horizontal-context {
       .active-display{
         position: fixed;
         top: -10px;
-        right: -89px;
+        right: -99px;
         z-index: 9999999;
         height: @fixed-banner-height * 2;
-        width: ceil(@fixed-banner-height * 16 / 9 * 2);
+        width: ceil(@fixed-banner-height * 16 / 9 * 2 + 40px);
         .transform(scale(0.5)); // use this transform scale trick so ads don't cover the whole darn thing. youtube videos might suck smaller than 200px
       }
       iframe{
-        .size-to-fit;
+        height: 100%;
+        width: ceil(@fixed-banner-height * 16 / 9 * 2);
+        float: left;
+      }
+      .dismiss-popout-section{
+        height: 100%;
+        width: 40px;
+        background-color: @dark-color;
+        float: left;
+        text-align: center;
+        button{
+          margin-top: 20px;
+        }
+      }
+    }
+
+    &.embed-mode{
+      .video-section{
+        .active-display {
+          top: auto;
+          bottom: -10px;
+        }
       }
     }
 
