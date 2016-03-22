@@ -2114,6 +2114,9 @@ Template.audio_popout.events({
     }
   },
   "click .dismiss-popout" (e, t) {
+    if(poppedOutWidget.activated()){
+      poppedOutWidget.pause();
+    }
     clearPoppedOutWidget();
     trackEvent('Click dismiss popout button');
   }
