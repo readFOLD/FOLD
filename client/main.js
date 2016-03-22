@@ -267,7 +267,7 @@ window.updateCurrentY = function() {
 
       if(scrollPauseArmed && !inEmbedMode){
         freezePageScroll();
-        $(document).scrollTop(readMode);
+        $(document).scrollTop(readMode + 1);
         Meteor.setTimeout(function () {
           unfreezePageScroll();
         }, scrollPauseLength);
