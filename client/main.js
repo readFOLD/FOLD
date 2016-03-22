@@ -1819,7 +1819,18 @@ createWidget = function(){
 window.poppedOutWidget = createWidget();
 window.mostRecentWidget = createWidget();
 
-
+var makeYouTubeWidget = function(iframe, cb){
+  if(ytApiReady.get()){
+    cb(new YT.Player(iframe));
+  } else {
+    Tracker.autorun((c) =>{
+      if(ytApiReady.get()){
+        cb(new YT.Player(iframe));
+        c.stop();
+      }
+    });
+  }
+}
 
 window.setPoppedOutWidget = function (id){
   //var section =  document.querySelector(".audio-section[data-context-id='" + contextId + "']");
@@ -1828,34 +1839,31 @@ window.setPoppedOutWidget = function (id){
 
   poppedOutWidget.id = id;
 
-  console.log('set popped out')
-
-  console.log(id)
-
   if (id === mostRecentWidget.id){ // if this is also the most recent card (probably)
-    console.log('just assign')
     poppedOutWidget = mostRecentWidget; // the apis are already set up. just assign it
     return
   }
 
-  console.log('do something else ')
-
   poppedOutWidget = createWidget();
 
-  poppedOutWidget.activeSource = source;
 
   Session.set('poppedOutContextType', (source === 'soundcloud') ? 'audio' : 'video');
 
 
   switch(source){
     case 'soundcloud':
+      poppedOutWidget.activeSource = source;
       poppedOutWidget._soundcloudWidget = SC.Widget(getAudioIFrame(id));
       break;
     case 'youtube':
-      poppedOutWidget._youTubeWidget = new YT.Player(getVideoIFrame(id));
+      makeYouTubeWidget(getVideoIFrame(id), (widget) => {
+        poppedOutWidget.activeSource = source;
+        poppedOutWidget._youTubeWidget = widget;
+      });
       break;
     case 'vimeo':
       $f(getVideoIFrame(id)).addEvent('ready', function (id){
+        poppedOutWidget.activeSource = source;
         poppedOutWidget._vimeoWidget = $f(id);
       });
       break;
@@ -1874,7 +1882,6 @@ window.clearPoppedOutWidget = function(){
 };
 
 window.popOutMostRecentWidget = function(){
-  console.log('this is being called')
   if(poppedOutWidget.activated()){
     poppedOutWidget.pause();
   }
@@ -1905,7 +1912,9 @@ window.setMostRecentWidget = function (id){
 
       switch(source){
         case 'youtube':
-          mostRecentWidget._youTubeWidget = new YT.Player(getVideoIFrame(id));
+          makeYouTubeWidget(getVideoIFrame(id), (widget) => {
+            mostRecentWidget._youTubeWidget = widget;
+          });
           break;
         case 'vimeo':
           $f(getVideoIFrame(id)).addEvent('ready', function (id){

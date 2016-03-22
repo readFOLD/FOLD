@@ -1597,7 +1597,7 @@ div.horizontal-context {
   &.hidden-context-mode{
     position: fixed;
     opacity: 1 !important;
-    z-index: -1;
+    z-index: 50;
     top: -1000px;
     &.hidden-context-shown{
       top: 0px;
@@ -1611,7 +1611,6 @@ div.horizontal-context {
         height: calc(100% ~'-' 40px);
       }
       margin-top: 0;
-      z-index: 50;
       background-color: @light-transparent-color;
       .narrative-section{
         top: calc(50% ~'-' @card-info-height / 2);
@@ -1968,6 +1967,9 @@ div.horizontal-context {
     }
 
     opacity: 1;
+    iframe{
+      pointer-events: auto;
+    }
 
     &:not(.in-current-row){
       background-color: transparent;
@@ -1975,9 +1977,7 @@ div.horizontal-context {
       @media @mobile {
         visibility: visible;
       }
-      a, img, video, .image-section, .link-section, iframe{
-        pointer-events: auto;
-      }
+
       .remix-bar{
         display: none;
       }
