@@ -343,17 +343,19 @@ Tracker.autorun(function(){
 
 
 Tracker.autorun(function(){
+
   var currentYId = Session.get("currentYId");
+
   if (currentYId){
     Session.set("currentX", getXByYId(currentYId));
   }
 });
 
-
 Tracker.autorun(function(){
   var story = Session.get('story');
   var currentY = Session.get("currentY");
   var currentXByYId = Session.get("currentXByYId"); // for reactivity
+
   if(!story || !story.verticalSections){
     return
   }
@@ -361,18 +363,29 @@ Tracker.autorun(function(){
   if(!verticalSection){
     return
   }
-  var currentX = getXByYId(verticalSection._id);
-  if(typeof currentX === 'number'){
-    var currentContextBlockId = verticalSection.contextBlocks[currentX];
-    if (currentContextBlockId) {
 
-      Tracker.nonreactive(function(){
-        Session.set('previousXId', Session.get('currentXId'));
-      });
-      return Session.set('currentXId', currentContextBlockId);
+  if((hiddenContextMode() && !hiddenContextShown())){
+    //Session.set("currentX", null);
+    Tracker.nonreactive(function(){
+      Session.set('previousXId', Session.get('currentXId'));
+    });
+    return Session.set("currentXId", null);
+  } else {
+    var currentX = getXByYId(verticalSection._id);
+
+    if(typeof currentX === 'number'){
+      var currentContextBlockId = verticalSection.contextBlocks[currentX];
+      if (currentContextBlockId) {
+
+        Tracker.nonreactive(function(){
+          Session.set('previousXId', Session.get('currentXId'));
+        });
+        return Session.set('currentXId', currentContextBlockId);
+      }
     }
+
+    return Session.set('currentXId', null);
   }
-  return Session.set('currentXId', null);
 });
 
 
@@ -1940,14 +1953,6 @@ getAudioIFrame = function(contextId){
   return document.querySelector(".audio-section[data-context-id='" + contextId + "'] iframe");
 };
 
-Tracker.autorun(function() {
-  var currentXId = Session.get('currentXId');
-
-  if(mostRecentWidget.activated() && currentXId === mostRecentWidget.id){ // otherwise there is a most recent audio card
-
-  }
-});
-
 var widgetSetup = function(){
   this.autorun(() => {
     var currentXId = Session.get('currentXId');
@@ -1970,7 +1975,7 @@ var widgetSetup = function(){
           setMostRecentWidget(currentXId); // it's now the most recent card
         }
       } else {
-        if((isPrevious || !previousXId) && isMostRecent && mostRecentWidget.activated()){ // if this is the current widget
+        if((isPrevious || !previousXId) && !isPoppedOut && isMostRecent && mostRecentWidget.activated()){ // if this is the current widget
           mostRecentWidget.isPlaying(function(playing){
             if (playing){ // and it's playing
               popOutMostRecentWidget();

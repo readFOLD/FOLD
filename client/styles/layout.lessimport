@@ -1613,8 +1613,7 @@ div.horizontal-context {
       margin-top: 0;
       background-color: @light-transparent-color;
       .narrative-section{
-        top: calc(50% ~'-' @card-info-height / 2);
-        .transform(translate(0, -50%));
+        top: calc(50% ~'-' @card-info-height / 2 ~'-' @horizontal-content-height / 2);
         opacity: 1 !important;
         z-index: 2;
         &.hide-behind{
@@ -1660,10 +1659,9 @@ div.horizontal-context {
 
 
   .story-browser {
-    @baseline-height: 340px;
     position: absolute;
     z-index: 50;
-    height: @baseline-height;
+    height: @horizontal-content-height + @remix-bar-height;
     width: 60px;
     display: inline-block;
     background-color: @dark-color;
@@ -1675,13 +1673,12 @@ div.horizontal-context {
     }
 
     &.edit-mode {
-      height: @baseline-height - @remix-bar-height;
+      height: @horizontal-content-height;
     }
 
     &.hidden-context-mode {
-      top: calc(50% ~'-' @card-info-height / 2);
-      .transform(translate(0, -50%));
-      height: @baseline-height - @remix-bar-height;
+      top: calc(50% ~'-' @card-info-height / 2 ~'-' @horizontal-content-height / 2);
+      height: @horizontal-content-height;
     }
     svg {
       cursor: pointer;
