@@ -2002,7 +2002,7 @@ div.horizontal-context {
         right: -89px;
         z-index: 9999999;
         height: @fixed-banner-height * 2;
-        width: @fixed-banner-height * 16 / 9 * 2;
+        width: ceil(@fixed-banner-height * 16 / 9 * 2);
         .transform(scale(0.5)); // use this transform scale trick so ads don't cover the whole darn thing. youtube videos might suck smaller than 200px
       }
       iframe{
