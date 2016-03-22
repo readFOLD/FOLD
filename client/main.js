@@ -2023,10 +2023,12 @@ Template.display_audio_section.onCreated(activeDisplayWorker);
 Template.display_video_section.onCreated(activeDisplayWorker);
 
 Template.display_audio_section.onRendered(widgetSetup);
-Template.display_video_section.onRendered(widgetSetup);
-
 Template.display_audio_section.onDestroyed(widgetBreakdown);
-Template.display_video_section.onDestroyed(widgetBreakdown);
+
+if(!Meteor.Device.isPhone()){
+  Template.display_video_section.onRendered(widgetSetup);
+  Template.display_video_section.onDestroyed(widgetBreakdown);
+}
 
 Template.display_audio_section.helpers(activeDisplayHelpers);
 Template.display_video_section.helpers(activeDisplayHelpers);
