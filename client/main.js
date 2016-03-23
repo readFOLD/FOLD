@@ -1187,8 +1187,8 @@ Template.display_viz_section.helpers(horizontalBlockHelpers);
 
 Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
 Template.display_image_section.onCreated(function(){
+  this.showMobileCaption = new ReactiveVar();
   if(mobileOrTablet()){
-    this.showMobileCaption = new ReactiveVar();
     this.autorun(() => {
       if(!Session.equals('contextOverlayId', this.data._id)){
         this.showMobileCaption.set(false);
