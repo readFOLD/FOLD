@@ -205,6 +205,8 @@ window.hammerDoubleTapOptions = {
 };
 
 
+delete Hammer.defaults.cssProps.userSelect; // prevent hammer from preventing text-select on mobile
+
 var scrollPauseArmed = false;
 var scrollPauseLength = 700;
 
