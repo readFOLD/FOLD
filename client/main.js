@@ -1189,18 +1189,14 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
 Template.display_viz_section.helpers(horizontalBlockHelpers);
 
 Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
-Template.display_image_section.onRendered(function(){
-  if(mobileOrTablet()) {
-    this.$('.image-section').hammer(hammerDoubleTapOptions).bind('doubletap', () => {
-      Session.set('contextOverlayId', this.data._id);
-      trackEvent('Expand image card');
-    });
-  }
-});
-
-Template.display_image_section.onDestroyed(function(){
-  if(mobileOrTablet()) {
-    this.$('.image-section').hammer(hammerDoubleTapOptions).unbind('doubletap');
+Template.display_image_section.onCreated(function(){
+  if(mobileOrTablet()){
+    this.showMobileCaption = new ReactiveVar();
+    this.autorun(() => {
+      if(!Session.equals('contextOverlayId', this.data._id)){
+        this.showMobileCaption.set(false);
+      }
+    })
   }
 });
 
@@ -1215,10 +1211,18 @@ if (mobileOrTablet()) {
 
 
 Template.display_image_section.helpers(horizontalBlockHelpers);
+Template.display_image_section.helpers({
+  showMobileCaption () {
+    return Template.instance().showMobileCaption.get();
+  }
+});
 Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 Template.display_image_section.events({
   'click'  (e, t) {
-    if (Session.get('read') && !($(e.target).is('a')) && !Meteor.Device.isPhone()) {
+    if(mobileOrTablet() && this.description && !Template.instance().showMobileCaption.get()){
+      return Template.instance().showMobileCaption.set(true);
+    }
+    if (Session.get('read') && !($(e.target).is('a'))) {
       Session.set('contextOverlayId', this._id);
       trackEvent('Expand image card');
     }

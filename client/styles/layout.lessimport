@@ -928,7 +928,7 @@ div.image-section {
     .FFMarkWeb;
   }
 
-  &:hover, &.always-show-caption{
+  &:hover, &.always-show-caption, &.show-mobile-caption{
     div.text-content{
       background-color: rgba(0, 0, 0, 0.8);
       opacity: 0.8;
