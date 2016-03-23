@@ -1036,16 +1036,13 @@ editableDescriptionCreatedBoilerplate = function() {
 //};
 
 var selected = function() {
-  // return Session.equals("currentX", this.index) && !Session.get("addingContext");
-  //    return this.index === getXByYId(this.verticalId) && !Session.get("addingContext") || this._id === Session.get('poppedOutContextId');
-  //console.log(this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId))
   var currentYId = Session.get('currentYId');
   return ((this.verticalId === currentYId && this.index === getXByYId(currentYId)) || (this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId)) && !Session.get("addingContext"));
-}
+};
 
 var poppedOut = function(){
   return _.contains(['audio','video'], this.type) && this._id === Session.get('poppedOutContextId');
-}
+};
 
 horizontalBlockHelpers = _.extend({}, typeHelpers, {
   selected: selected,
@@ -1269,17 +1266,12 @@ Template.display_video_section.helpers({
 });
 Template.display_video_section.events({
   'click .video-iframe-overlay' (){
-    notifyInfo('here is the things!');
-    notifyInfo(mostRecentWidget.activated());
     if(mostRecentWidget.activated()){
-      console.log(1111)
       mostRecentWidget.isPlaying((playing) => {
-        console.log(playing)
         if(playing){
           mostRecentWidget.pause();
         } else {
           mostRecentWidget.isPaused((paused) => {
-            console.log(paused)
             if (paused) {
               mostRecentWidget.play();
             }
@@ -1771,7 +1763,6 @@ createWidget = function(){
             return cb(playing);
           } else {
             console.log('yt widget not set up yet')
-            console.log(this._youTubeWidget)
             return cb(false)
           }
         case 'vimeo':
@@ -1951,8 +1942,6 @@ window.setMostRecentWidget = function (id){
           mostRecentWidget._soundcloudWidget = SC.Widget(getAudioIFrame(id));
           break;
       }
-
-      console.log('api assigned')
     }, 150); // hack to make sure video is in DOM when assign it.
   }
 
