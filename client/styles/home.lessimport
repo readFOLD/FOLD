@@ -46,6 +46,7 @@ div#login-buttons-and-more {
     img{
       vertical-align: middle;
     }
+    .no-select;
   }
   width: 100%;
   border-bottom: 1px solid @inactive-color;

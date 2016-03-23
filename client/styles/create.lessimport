@@ -359,6 +359,7 @@ div.title-overlay {
     .header-overlay-image, video {
       max-height: 100%;
     }
+    .no-select;
   }
 
   &.embed-mode{
