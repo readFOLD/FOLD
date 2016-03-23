@@ -609,7 +609,7 @@ VideoBlock = (function (_super) {
 
   VideoBlock.prototype.url = function () {
     if (this.source === 'youtube') {
-      return '//www.youtube.com/embed/' + this.reference.id + '?fs=1&enablejsapi=1';
+      return '//www.youtube.com/embed/' + this.reference.id + '?fs=0&enablejsapi=1';
     } else if (this.source === 'vimeo') {
       return '//player.vimeo.com/video/' + this.reference.id + '?api=1';
     }
