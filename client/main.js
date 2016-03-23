@@ -586,7 +586,7 @@ Template.story.helpers({
     return Session.get("metaview")
   },
   showMinimap () {
-    return Session.get("showMinimap") && !hiddenContextMode();
+    return Session.get("showMinimap") && !hiddenContextMode() && !(embedMode() && Session.get('poppedOutContextId'));
   },
   showContextOverlay (){
     return Session.get('contextOverlayId');

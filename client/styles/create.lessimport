@@ -339,8 +339,8 @@ div.title-overlay {
     width: 100%;
     background-color: @dark-color;
 
-    &.with-video-popout{
-      width: calc(100% ~'-' @fixed-banner-height * 16 / 9 ~'-' 20px);
+    &.with-video-popout:not(.embed-mode){
+      width: calc(100% ~'-' @fixed-banner-height * 16 / 9 ~'-' 35px);
     }
 
     img{
@@ -687,15 +687,18 @@ div.title-overlay {
   .dismiss-popout{
     top: 15px;
     right: 15px;
-    .size(26px);
-    border-radius: 50%;
-    svg{
-      .center-over-parent-div;
-      .size(13px);
-    }
-    padding: 0;
     position: absolute;
     background-color: @dark-color;
+  }
+}
+
+.dismiss-popout{
+  .size(26px);
+  border-radius: 50%;
+  padding: 0;
+  svg{
+    .center-over-parent-div;
+    width: 50%;
   }
 }
 
