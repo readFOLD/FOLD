@@ -1971,7 +1971,10 @@ div.horizontal-context {
     }
 
     opacity: 1;
-    .active-display, iframe{
+    .active-display{
+      pointer-events: none;
+    }
+    .dismiss-popout, iframe{
       pointer-events: auto;
     }
 
