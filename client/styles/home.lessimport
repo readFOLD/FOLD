@@ -46,6 +46,7 @@ div#login-buttons-and-more {
     img{
       vertical-align: middle;
     }
+    .no-select;
   }
   width: 100%;
   border-bottom: 1px solid @inactive-color;
@@ -571,6 +572,8 @@ div.stories {
       width: 100%;
       min-height: 100%;
     }
+    background-position: center top;
+    background-size: cover;
   }
 
   .headline {

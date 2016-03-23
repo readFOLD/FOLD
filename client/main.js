@@ -205,6 +205,8 @@ window.hammerDoubleTapOptions = {
 };
 
 
+Hammer.defaults.cssProps.userSelect = 'text'; // prevent hammer from preventing text-select on mobile
+
 var scrollPauseArmed = false;
 var scrollPauseLength = 700;
 
@@ -267,7 +269,7 @@ window.updateCurrentY = function() {
 
       if(scrollPauseArmed && !inEmbedMode){
         freezePageScroll();
-        $(document).scrollTop(readMode);
+        $(document).scrollTop(readMode + 1);
         Meteor.setTimeout(function () {
           unfreezePageScroll();
         }, scrollPauseLength);
@@ -343,17 +345,19 @@ Tracker.autorun(function(){
 
 
 Tracker.autorun(function(){
+
   var currentYId = Session.get("currentYId");
+
   if (currentYId){
     Session.set("currentX", getXByYId(currentYId));
   }
 });
 
-
 Tracker.autorun(function(){
   var story = Session.get('story');
   var currentY = Session.get("currentY");
   var currentXByYId = Session.get("currentXByYId"); // for reactivity
+
   if(!story || !story.verticalSections){
     return
   }
@@ -361,14 +365,29 @@ Tracker.autorun(function(){
   if(!verticalSection){
     return
   }
-  var currentX = getXByYId(verticalSection._id);
-  if(typeof currentX === 'number'){
-    var currentContextBlockId = verticalSection.contextBlocks[currentX];
-    if (currentContextBlockId) {
-      return Session.set('currentXId', currentContextBlockId);
+
+  if((hiddenContextMode() && !hiddenContextShown())){
+    //Session.set("currentX", null);
+    Tracker.nonreactive(function(){
+      Session.set('previousXId', Session.get('currentXId'));
+    });
+    return Session.set("currentXId", null);
+  } else {
+    var currentX = getXByYId(verticalSection._id);
+
+    if(typeof currentX === 'number'){
+      var currentContextBlockId = verticalSection.contextBlocks[currentX];
+      if (currentContextBlockId) {
+
+        Tracker.nonreactive(function(){
+          Session.set('previousXId', Session.get('currentXId'));
+        });
+        return Session.set('currentXId', currentContextBlockId);
+      }
     }
+
+    return Session.set('currentXId', null);
   }
-  return Session.set('currentXId', null);
 });
 
 
@@ -567,7 +586,7 @@ Template.story.helpers({
     return Session.get("metaview")
   },
   showMinimap () {
-    return Session.get("showMinimap") && !hiddenContextMode();
+    return Session.get("showMinimap") && !hiddenContextMode() && !(embedMode() && Session.get('poppedOutContextId'));
   },
   showContextOverlay (){
     return Session.get('contextOverlayId');
@@ -918,6 +937,8 @@ Template.horizontal_context.onDestroyed(function(){
   }
 });
 
+
+
 Template.horizontal_context.helpers({
   verticalExists () {
     return Session.get("horizontalSectionsMap").length;
@@ -979,9 +1000,10 @@ Template.horizontal_context.helpers({
       }
     });
   },
-  horizontalSectionInDOM () {
-    // on this row, or this card is the current X for another hidden row
-    return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId') || this.type === 'audio';
+  last () {
+    var lastIndex, _ref;
+    lastIndex = ((_ref = Session.get("horizontalSectionsMap")[Session.get("currentY")]) != null ? _ref.horizontal.length : void 0) - 1;
+    return (this.index === lastIndex) && (lastIndex > 0);
   },
   horizontalShown () {
     return Session.equals("currentY", this.index) || (Session.equals("currentY", null) && this.verticalIndex === 0);
@@ -1013,17 +1035,18 @@ editableDescriptionCreatedBoilerplate = function() {
 //  }
 //};
 
+var selected = function() {
+  var currentYId = Session.get('currentYId');
+  return ((this.verticalId === currentYId && this.index === getXByYId(currentYId)) || (this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId)) && !Session.get("addingContext"));
+};
+
+var poppedOut = function(){
+  return _.contains(['audio','video'], this.type) && this._id === Session.get('poppedOutContextId');
+};
+
 horizontalBlockHelpers = _.extend({}, typeHelpers, {
-  selected () {
-    // return Session.equals("currentX", this.index) && !Session.get("addingContext");
-    //    return this.index === getXByYId(this.verticalId) && !Session.get("addingContext") || this._id === Session.get('poppedOutContextId');
-    //console.log(this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId))
-    return (this.index === getXByYId(Session.get('currentYId')) || (this.verticalIndex === 0 && Session.get('currentY') == null && this.index === getXByYId(this.verticalId)) && !Session.get("addingContext"))
-      || this._id === Session.get('poppedOutContextId');
-  },
-  poppedOut (){
-    return this.type === 'audio' && this._id === Session.get('poppedOutContextId');
-  },
+  selected: selected,
+  poppedOut: poppedOut,
   textContent () {
     var textContent, rows;
     if (this.type === 'text'){
@@ -1049,21 +1072,29 @@ horizontalBlockHelpers = _.extend({}, typeHelpers, {
   }
 });
 
-// TODO get swipes on context cards to work
-//Template.horizontal_section_block.onRendered(function(){
-//  //
-//  if(Meteor.Device.isPhone()) {
-//    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swipeleft',function(){
-//        window.goRightOneCard();
-//      }
-//    );
-//
-//    this.$('.horizontal-narrative-section').first().hammer(hammerSwipeOptions).bind('swiperight',function(){
-//        window.goLeftOneCard();
-//      }
-//    );
-//  }
-//});
+
+var horizontalSectionInDOM = function () {
+  // on this row, or this card is the current X for another hidden row
+  return Session.equals("currentY", this.verticalIndex) || (Session.equals("currentY", null) && this.verticalIndex === 0 && !Meteor.Device.isPhone() && !window.isSafari) || this._id === Session.get('poppedOutContextId');
+};
+
+Template.horizontal_section_block.onCreated(function(){
+  this.horizontalSectionInDOM = new ReactiveVar();
+
+  Tracker.autorun(()=>{
+    if(horizontalSectionInDOM.call(this.data)){
+      this.horizontalSectionInDOM.set(true);
+    } else {
+      Meteor.setTimeout(()=>{
+        var shouldBeInDOM = horizontalSectionInDOM.call(this.data);
+
+        if(!shouldBeInDOM ){
+          this.horizontalSectionInDOM.set(false);
+        }
+      }, 500);
+    }
+  })
+});
 
 Template.horizontal_section_block.onRendered(function(){
   // when cards flip from left to right (or vice-versa), they sometimes go above other cards weirdly. this sends it behind for the duration of the animation
@@ -1109,6 +1140,13 @@ Template.horizontal_section_block.helpers({
 
   hideContainer () {
     return this.type === 'audio' && this._id === Session.get('poppedOutContextId') && !(Session.equals("currentY", this.verticalIndex) || Session.equals("currentY", null) && this.verticalIndex === 0);
+  },
+  horizontalSectionInDOM () {
+    return Template.instance().horizontalSectionInDOM.get();
+  },
+  inCurrentRow (){
+    var currentY = Session.get('currentY');
+    return (this.verticalIndex === 0 && currentY == null) || this.verticalIndex === currentY;
   }
 });
 
@@ -1120,7 +1158,7 @@ Template.horizontal_section_block.events({
 });
 
 editableDescriptionEventsBoilerplate = function(meteorMethod) {
-  return { 
+  return {
     "blur .text-content.editable" (d, template) {
       if (!Session.get('read') && !Session.get('addingContext')) {
         var textContent = template.$('textarea[name=content]').val();
@@ -1148,18 +1186,14 @@ editableDescriptionEventsBoilerplate = function(meteorMethod) {
 Template.display_viz_section.helpers(horizontalBlockHelpers);
 
 Template.display_image_section.onCreated(editableDescriptionCreatedBoilerplate);
-Template.display_image_section.onRendered(function(){
-  if(mobileOrTablet()) {
-    this.$('.image-section').hammer(hammerDoubleTapOptions).bind('doubletap', () => {
-      Session.set('contextOverlayId', this.data._id);
-      trackEvent('Expand image card');
-    });
-  }
-});
-
-Template.display_image_section.onDestroyed(function(){
-  if(mobileOrTablet()) {
-    this.$('.image-section').hammer(hammerDoubleTapOptions).unbind('doubletap');
+Template.display_image_section.onCreated(function(){
+  if(mobileOrTablet()){
+    this.showMobileCaption = new ReactiveVar();
+    this.autorun(() => {
+      if(!Session.equals('contextOverlayId', this.data._id)){
+        this.showMobileCaption.set(false);
+      }
+    })
   }
 });
 
@@ -1174,10 +1208,18 @@ if (mobileOrTablet()) {
 
 
 Template.display_image_section.helpers(horizontalBlockHelpers);
+Template.display_image_section.helpers({
+  showMobileCaption () {
+    return Template.instance().showMobileCaption.get();
+  }
+});
 Template.display_image_section.events(editableDescriptionEventsBoilerplate('editHorizontalBlockDescription'));
 Template.display_image_section.events({
   'click'  (e, t) {
-    if (Session.get('read') && !($(e.target).is('a')) && !Meteor.Device.isPhone()) {
+    if(mobileOrTablet() && this.description && !Template.instance().showMobileCaption.get()){
+      return Template.instance().showMobileCaption.set(true);
+    }
+    if (Session.get('read') && !($(e.target).is('a'))) {
       Session.set('contextOverlayId', this._id);
       trackEvent('Expand image card');
     }
@@ -1186,19 +1228,64 @@ Template.display_image_section.events({
 
 Template.display_audio_section.helpers(horizontalBlockHelpers);
 
+Template.display_audio_section.events({
+  'click .audio-iframe-overlay' (){
+    if(mostRecentWidget.activated()){
+      mostRecentWidget.isPlaying((playing) => {
+        if(playing){
+          mostRecentWidget.pause();
+        }
+      })
+    }
+  }
+});
+
 Template.display_video_section.helpers(horizontalBlockHelpers);
+
+Template.display_video_section.onCreated(function(){
+  this.randomIFrameId =  Random.id(8);
+});
 
 Template.display_video_section.helpers({
   fromVimeo (){
-    return this.source === 'vimeo'
+    return this.source === 'vimeo';
   },
   vimeoOnTablet (){
-    return Meteor.Device.isTablet() && this.source === 'vimeo'
+    return Meteor.Device.isTablet() && this.source === 'vimeo';
+  },
+  randomIFrameId (){
+    return Template.instance().randomIFrameId
+  },
+  apiReadyUrl (){
+    if(this.source === 'vimeo'){
+      return this.url() + '&player_id=' + Template.instance().randomIFrameId
+    } else {
+      return this.url()
+    }
   }
 });
 Template.display_video_section.events({
   'click .video-iframe-overlay' (){
-    // TODO play video once have api integration
+    if(mostRecentWidget.activated()){
+      mostRecentWidget.isPlaying((playing) => {
+        if(playing){
+          mostRecentWidget.pause();
+        } else {
+          mostRecentWidget.isPaused((paused) => {
+            if (paused) {
+              mostRecentWidget.play();
+            }
+          });
+        }
+      })
+    }
+  },
+  "click .dismiss-popout" (e, t) {
+    if(poppedOutWidget.activated()){
+      poppedOutWidget.pause();
+    }
+    clearPoppedOutWidget();
+    trackEvent('Click dismiss popout button');
   }
 });
 
@@ -1545,7 +1632,7 @@ Template.editors_pick_button.events({
 
 Template.remix_bar.helpers({
   showPopoutButton (){
-    return this.type === 'audio';
+    return _.contains(['audio', 'video'], this.type);
   }
 });
 
@@ -1578,6 +1665,7 @@ Template.remix_bar.events({
     ]));
     goRightOneCard();
     Session.set('poppedOutContextId', this._id); // in case there is only one card in the row, force it to pop out
+    Session.set('poppedOutContextType', this.type);
   }
 });
 
@@ -1603,43 +1691,351 @@ Template.display_twitter_section.events({
 });
 
 
-window.poppedOutAudioCardWidget = null;
+var ytScriptLoaded;
+var vimeoScriptLoaded;
 
-window.mostRecentAudioCardWidget = null;
-window.mostRecentAudioCardId = null;
+var ytApiReady = new ReactiveVar(false);
+
+Template.story.onCreated(function(){
+  if(!ytScriptLoaded){
+    $.getScript('https://www.youtube.com/iframe_api', function () {});
+    ytScriptLoaded = true;
+  }
+
+  if(!vimeoScriptLoaded){
+    $.getScript('https://f.vimeocdn.com/js/froogaloop2.min.js', function () {});
+    vimeoScriptLoaded = true;
+  }
+
+  clearPoppedOutWidget();
+  clearMostRecentWidget();
+});
+
+onYouTubeIframeAPIReady = function(){
+  ytApiReady.set(true);
+};
+
+getVideoIFrame = function(contextId){
+  return document.querySelector(".video-section[data-context-id='" + contextId + "'] iframe");
+};
+
+
+createWidget = function(){
+  return {
+    activated: function () {
+      return this.activeSource ? true : false;
+    },
+    play(){
+      switch (this.activeSource) {
+        case 'youtube':
+          this._youTubeWidget.playVideo();
+          break;
+        case 'vimeo':
+          this._vimeoWidget.api('play');
+          break;
+        case 'soundcloud':
+          this._soundcloudWidget.play();
+          break;
+        default:
+          throw new Meteor.Error('popped out widget has no active source')
+      }
+    },
+    pause(){
+      switch (this.activeSource) {
+        case 'youtube':
+          this._youTubeWidget.pauseVideo();
+          break;
+        case 'vimeo':
+          this._vimeoWidget.api('pause');
+          break;
+        case 'soundcloud':
+          this._soundcloudWidget.pause();
+          break;
+        default:
+          throw new Meteor.Error('popped out widget has no active source')
+      }
+    },
+    isPlaying(cb){
+      switch (this.activeSource) {
+        case 'youtube':
+          if(this._youTubeWidget && this._youTubeWidget.getPlayerState){
+            var playing = _.contains([1,3], this._youTubeWidget.getPlayerState());
+            return cb(playing);
+          } else {
+            console.log('yt widget not set up yet')
+            return cb(false)
+          }
+        case 'vimeo':
+          return this._vimeoWidget.api('paused', function(paused){
+            return cb(!paused)
+          });
+        case 'soundcloud':
+          return this._soundcloudWidget.isPaused(function(paused){
+            return cb(!paused)
+          });
+        default:
+          throw new Meteor.Error('popped out widget has no active source')
+      }
+    },
+    isPaused(cb){
+      switch (this.activeSource) {
+        case 'youtube':
+          var paused = this._youTubeWidget.getPlayerState() === 2;
+          return cb(paused);
+        case 'vimeo':
+          return this._vimeoWidget.api('paused', cb);
+        case 'soundcloud':
+          return this._soundcloudWidget.isPaused(cb);
+        default:
+          throw new Meteor.Error('popped out widget has no active source')
+      }
+    },
+    getMediaInfo(cb){
+      switch (this.activeSource) {
+        case 'soundcloud':
+          return this._soundcloudWidget.getCurrentSound(cb);
+      }
+    },
+    getPosition(cb){
+      switch (this.activeSource) {
+        case 'soundcloud':
+          return this._soundcloudWidget.getPosition(cb);
+      }
+    },
+    bind(){
+      switch (this.activeSource) {
+        case 'soundcloud':
+          return this._soundcloudWidget.bind.apply(this._soundcloudWidget, arguments);
+      }
+    },
+    unbind(){
+      switch (this.activeSource) {
+        case 'soundcloud':
+          return this._soundcloudWidget.unbind.apply(this._soundcloudWidget, arguments);
+      }
+    },
+    hasOwnPlayer(){
+      switch (this.activeSource) {
+        case 'soundcloud':
+          return true;
+        default:
+          return false
+      }
+    },
+    seekTo(millis){
+      switch (this.activeSource) {
+        case 'soundcloud':
+          return this._soundcloudWidget.seekTo(millis);
+        default:
+          return false
+      }
+    }
+  }
+};
+
+window.poppedOutWidget = createWidget();
+window.mostRecentWidget = createWidget();
+
+var makeYouTubeWidget = function(iframe, cb){
+  if(ytApiReady.get()){
+    cb(new YT.Player(iframe));
+  } else {
+    Tracker.autorun((c) =>{
+      if(ytApiReady.get()){
+        cb(new YT.Player(iframe));
+        c.stop();
+      }
+    });
+  }
+}
+
+window.setPoppedOutWidget = function (id){
+  //var section =  document.querySelector(".audio-section[data-context-id='" + contextId + "']");
+
+  var source = $(".display-context-section[data-context-id='" + id + "']").data('contextSource');
+
+  poppedOutWidget.id = id;
+
+  if (id === mostRecentWidget.id){ // if this is also the most recent card (probably)
+    poppedOutWidget = mostRecentWidget; // the apis are already set up. just assign it
+    return
+  }
+
+  poppedOutWidget = createWidget();
+
+
+  Session.set('poppedOutContextType', (source === 'soundcloud') ? 'audio' : 'video');
+
+
+  switch(source){
+    case 'soundcloud':
+      poppedOutWidget.activeSource = source;
+      poppedOutWidget._soundcloudWidget = SC.Widget(getAudioIFrame(id));
+      break;
+    case 'youtube':
+      makeYouTubeWidget(getVideoIFrame(id), (widget) => {
+        poppedOutWidget.activeSource = source;
+        poppedOutWidget._youTubeWidget = widget;
+      });
+      break;
+    case 'vimeo':
+      $f(getVideoIFrame(id)).addEvent('ready', function (id){
+        poppedOutWidget.activeSource = source;
+        poppedOutWidget._vimeoWidget = $f(id);
+      });
+      break;
+  }
+}
+
+window.popInPoppedOutWidget = function(){
+  mostRecentWidget = poppedOutWidget;
+  clearPoppedOutWidget();
+};
+
+window.clearPoppedOutWidget = function(){
+  poppedOutWidget = createWidget();
+  Session.set('poppedOutContextId', null);
+  Session.set('poppedOutContextType', null);
+};
+
+window.popOutMostRecentWidget = function(){
+  if(poppedOutWidget.activated()){
+    poppedOutWidget.pause();
+  }
+  poppedOutWidget = mostRecentWidget;
+  Session.set('poppedOutContextId', mostRecentWidget.id);
+  Session.set('poppedOutContextType', (mostRecentWidget.activeSource === 'soundcloud') ? 'audio' : 'video');
+}
+
+window.setMostRecentWidget = function (id){
+  var source = $(".display-context-section[data-context-id='" + id + "']").data('contextSource');
+
+  if (id === poppedOutWidget.id){ // if this is also the popped out card
+    mostRecentWidget = poppedOutWidget; // the apis are already set up. just assign it
+    mostRecentWidget.activeSource = source; // it make have been deactivated
+    return
+  }
+
+  mostRecentWidget = createWidget();
+
+  mostRecentWidget.id = id;
+
+  if(source === 'soundfdsfsdfcloud'){
+    mostRecentWidget.activeSource = source;
+  } else {
+    Meteor.setTimeout(() => {
+
+      mostRecentWidget.activeSource = source;
+
+      switch(source){
+        case 'youtube':
+          makeYouTubeWidget(getVideoIFrame(id), (widget) => {
+            mostRecentWidget._youTubeWidget = widget;
+          });
+          break;
+        case 'vimeo':
+          $f(getVideoIFrame(id)).addEvent('ready', function (id){
+            mostRecentWidget._vimeoWidget = $f(id);
+          });
+          break;
+        case 'soundcloud':
+          mostRecentWidget._soundcloudWidget = SC.Widget(getAudioIFrame(id));
+          break;
+      }
+    }, 150); // hack to make sure video is in DOM when assign it.
+  }
+
+};
+
+window.clearMostRecentWidget = function(){
+  mostRecentWidget = createWidget();
+};
 
 getAudioIFrame = function(contextId){
   return document.querySelector(".audio-section[data-context-id='" + contextId + "'] iframe");
 };
 
-Tracker.autorun(function() {
-  var currentXId = Session.get('currentXId');
+var widgetSetup = function(){
+  this.autorun(() => {
+    var currentXId = Session.get('currentXId');
 
-  Tracker.nonreactive(function(){
-    if (currentXId === Session.get('poppedOutContextId')){ // if new card is popped out audio
-      if(!hiddenContextMode() || hiddenContextShown()){
-        Session.set('poppedOutContextId', null);  // new card was previously popped out, so pop it back in
-      }
-    } else if(mostRecentAudioCardWidget){ // otherwise there is a most recent audio card
-      var associatedAudioCardId = mostRecentAudioCardId;
-      mostRecentAudioCardWidget.isPaused(function(paused){
-        if (!paused){ // and it's playing
-          Session.set('poppedOutContextId', associatedAudioCardId);  // pop it out
+    Tracker.nonreactive(() => {
+      var previousXId = Session.get('previousXId');
+
+      var isCurrent = this.data._id === currentXId;
+      var isPoppedOut = this.data._id === Session.get('poppedOutContextId');
+      var isMostRecent = this.data._id === mostRecentWidget.id;
+      var isPrevious = this.data._id === previousXId;
+
+      if(isCurrent){
+        if (isPoppedOut){ // if this card was popped out
+          if(!hiddenContextMode() || hiddenContextShown()){
+            popInPoppedOutWidget(); // pop it back in
+            return
+          }
+        } else {
+          setMostRecentWidget(currentXId); // it's now the most recent card
         }
-      })
-    }
-    var audioIFrame;
-    if (currentXId && (audioIFrame = getAudioIFrame(currentXId))){ // also, if the new card is an audio card
-      window.mostRecentAudioCardWidget = SC.Widget(audioIFrame); // it's now the most recent audio card
-      window.mostRecentAudioCardId = currentXId;
+      } else {
+        if((isPrevious || !previousXId) && !isPoppedOut && isMostRecent && mostRecentWidget.activated()){ // if this is the current widget
+          mostRecentWidget.isPlaying(function(playing){
+            if (playing){ // and it's playing
+              popOutMostRecentWidget();
+            }
+          })
+        }
+      }
+    });
+  });
+};
+
+var widgetBreakdown= function(){
+  if(mostRecentWidget.id === this.data.id){
+    window.clearMostRecentWidget();
+  }
+};
+
+var activeDisplayHelpers = {
+  showActiveDisplay (){
+    return Template.instance().activeDisplay.get();
+  }
+};
+
+var activeDisplayWorker = function(){
+  this.activeDisplay = new ReactiveVar();
+  Tracker.autorun(()=>{
+    var inActiveColumn = this.data.index === getXByYId(this.data.verticalId) && (!hiddenContextMode() || hiddenContextShown());
+
+    if(inActiveColumn){
+      this.activeDisplay.set(true);
     } else {
-      window.mostRecentAudioCardWidget = null;
-      window.mostRecentAudioCardId = null;
+      Meteor.setTimeout(()=>{
+        var isPoppedOut = poppedOut.call(this.data);
+        var nowInActiveColumn = this.data.index === getXByYId(this.data.verticalId) && (!hiddenContextMode() || hiddenContextShown());
+
+        if(!isPoppedOut && !nowInActiveColumn){
+          this.activeDisplay.set(false);
+        }
+      }, 500);
     }
   })
-});
+};
 
-Session.set('poppedOutContextId', null);
+Template.display_audio_section.onCreated(activeDisplayWorker);
+Template.display_video_section.onCreated(activeDisplayWorker);
+
+Template.display_audio_section.onRendered(widgetSetup);
+Template.display_audio_section.onDestroyed(widgetBreakdown);
+
+if(!Meteor.Device.isPhone()){
+  Template.display_video_section.onRendered(widgetSetup);
+  Template.display_video_section.onDestroyed(widgetBreakdown);
+}
+
+Template.display_audio_section.helpers(activeDisplayHelpers);
+Template.display_video_section.helpers(activeDisplayHelpers);
+
+clearPoppedOutWidget();
 
 window.poppedOutPlayerInfo = new ReactiveDict;
 
@@ -1648,55 +2044,64 @@ var updatePlayProgress = function (e) {
   poppedOutPlayerInfo.set('relativePosition', e.relativePosition);
 };
 
+
 Tracker.autorun(function(){
   var poppedOutContextId;
   if(poppedOutContextId = Session.get('poppedOutContextId')) {
-    poppedOutAudioCardWidget = SC.Widget(getAudioIFrame(poppedOutContextId));
-    var updateBasicPlayerInfo = function(){
-      poppedOutAudioCardWidget.getCurrentSound(function (currentSound) {
-        poppedOutPlayerInfo.set('title', currentSound.title);
-        poppedOutPlayerInfo.set('duration', currentSound.duration);
-        poppedOutAudioCardWidget.isPaused(function(isPaused){
-          poppedOutPlayerInfo.set('status', isPaused ? 'paused' : 'playing');
+    if(poppedOutWidget.id !== poppedOutContextId){
+      setPoppedOutWidget(poppedOutContextId);
+    }
+
+    if(poppedOutWidget.hasOwnPlayer()){
+      var updateBasicPlayerInfo = function(){
+        poppedOutWidget.getMediaInfo(function (currentSound) {
+          poppedOutPlayerInfo.set('title', currentSound.title);
+          poppedOutPlayerInfo.set('duration', currentSound.duration);
+          poppedOutWidget.isPlaying(function(isPlaying){
+            poppedOutPlayerInfo.set('status', isPlaying ? 'playing' : 'paused');
+          });
+          poppedOutWidget.getPosition(function(position){
+            poppedOutPlayerInfo.set('currentPosition', position);
+            poppedOutPlayerInfo.set('relativePosition', position / currentSound.duration);
+          });
         });
-        poppedOutAudioCardWidget.getPosition(function(position){
-          poppedOutPlayerInfo.set('currentPosition', position);
-          poppedOutPlayerInfo.set('relativePosition', position / currentSound.duration);
-        });
+      };
+    }
+
+    trackEvent('Context popped out', { nonInteraction: 1 }); // we can't be sure the user initiated // TODO, be more specific about audio or video perhaps
+
+    if(poppedOutWidget.hasOwnPlayer()) {
+      // this only works for audio for now, but only audio has its own player
+      updateBasicPlayerInfo();
+
+      poppedOutWidget.bind(SC.Widget.Events.READY, updateBasicPlayerInfo);
+
+      poppedOutWidget.bind(SC.Widget.Events.PLAY, function (e) {
+        poppedOutPlayerInfo.set('status', 'playing');
+        trackEvent('Popped out audio playing', { nonInteraction: 1 }); // we can't be sure the user initiated
       });
-    };
 
-    trackEvent('Audio popped out', { nonInteraction: 1 }); // we can't be sure the user initiated
+      poppedOutWidget.bind(SC.Widget.Events.PAUSE, function (e) {
+        poppedOutPlayerInfo.set('status', 'paused');
+        trackEvent('Popped out audio pausing', { nonInteraction: 1 }); // we can't be sure the user initiated
+      });
 
-    updateBasicPlayerInfo();
+      poppedOutWidget.bind(SC.Widget.Events.FINISH, function (e) {
+        poppedOutPlayerInfo.set('status', 'paused');
+        poppedOutPlayerInfo.set('currentPosition', poppedOutPlayerInfo.get('duration'));
+        poppedOutPlayerInfo.set('relativePosition', 1);
+        trackEvent('Popped out audio finished', { nonInteraction: 1 });
+      });
 
-    poppedOutAudioCardWidget.bind(SC.Widget.Events.READY, updateBasicPlayerInfo);
-
-    poppedOutAudioCardWidget.bind(SC.Widget.Events.PLAY, function (e) {
-      poppedOutPlayerInfo.set('status', 'playing');
-      trackEvent('Popped out audio playing', { nonInteraction: 1 }); // we can't be sure the user initiated
-    });
-
-    poppedOutAudioCardWidget.bind(SC.Widget.Events.PAUSE, function (e) {
-      poppedOutPlayerInfo.set('status', 'paused');
-      trackEvent('Popped out audio pausing', { nonInteraction: 1 }); // we can't be sure the user initiated
-    });
-
-    poppedOutAudioCardWidget.bind(SC.Widget.Events.FINISH, function (e) {
-      poppedOutPlayerInfo.set('status', 'paused');
-      poppedOutPlayerInfo.set('currentPosition', poppedOutPlayerInfo.get('duration'));
-      poppedOutPlayerInfo.set('relativePosition', 1);
-      trackEvent('Popped out audio finished', { nonInteraction: 1 });
-    });
-
-    poppedOutAudioCardWidget.bind(SC.Widget.Events.PLAY_PROGRESS, _.throttle(updatePlayProgress, 200))
+      poppedOutWidget.bind(SC.Widget.Events.PLAY_PROGRESS, _.throttle(updatePlayProgress, 200))
+    }
   } else {
-    if (poppedOutAudioCardWidget){
-      poppedOutAudioCardWidget.unbind(SC.Widget.Events.READY);
-      poppedOutAudioCardWidget.unbind(SC.Widget.Events.PLAY);
-      poppedOutAudioCardWidget.unbind(SC.Widget.Events.PAUSE);
-      poppedOutAudioCardWidget.unbind(SC.Widget.Events.FINISH);
-      poppedOutAudioCardWidget.unbind(SC.Widget.Events.PLAY_PROGRESS);
+    if (poppedOutWidget.hasOwnPlayer()){
+      poppedOutWidget.unbind(SC.Widget.Events.READY);
+      poppedOutWidget.unbind(SC.Widget.Events.PLAY);
+      poppedOutWidget.unbind(SC.Widget.Events.PAUSE);
+      poppedOutWidget.unbind(SC.Widget.Events.FINISH);
+      poppedOutWidget.unbind(SC.Widget.Events.PLAY_PROGRESS);
     }
   }
 });
@@ -1730,32 +2135,34 @@ Template.audio_popout.helpers({
 
 var updateAudioPosition = function(e, t){
   var millis = Math.min(e.currentTarget.value / 1000, 0.99) * poppedOutPlayerInfo.get('duration'); // min prevents scrub to end weirdness
-  poppedOutAudioCardWidget.seekTo(millis);
-  poppedOutAudioCardWidget.isPaused(function(isPaused){
-    if(isPaused){
-      poppedOutAudioCardWidget.play();
+  poppedOutWidget.seekTo(millis);
+  poppedOutWidget.isPlaying(function(isPlaying){
+    if(!isPlaying){
+      poppedOutWidget.play();
     }
   });
 }
 
 Template.audio_popout.events({
   'click .play' (){
-    poppedOutAudioCardWidget.play();
+    poppedOutWidget.play();
   },
   'click .pause' (){
-    poppedOutAudioCardWidget.pause();
+    poppedOutWidget.pause();
   },
   'change .progress': updateAudioPosition,
   'input .progress' (e,t) {
     if(Meteor.Device.isPhone()){
-      poppedOutAudioCardWidget.pause();
+      poppedOutWidget.pause();
     } else {
       updateAudioPosition(e,t);
     }
   },
   "click .dismiss-popout" (e, t) {
-    Session.set('poppedOutContextId', null);
-    poppedOutAudioCardWidget.pause();
+    if(poppedOutWidget.activated()){
+      poppedOutWidget.pause();
+    }
+    clearPoppedOutWidget();
     trackEvent('Click dismiss popout button');
   }
 });

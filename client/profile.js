@@ -12,6 +12,11 @@ formatDate = function(date) {
 
 Template.profile.onCreated(function(){
   this.sectionToShow = new ReactiveVar('latest');
+  this.autorun(() => {
+    if(adminMode()){
+      this.subscribe('adminOtherUserPub', this.data.user._id);
+    }
+  });
 });
 
 Template.profile.events({
@@ -153,6 +158,9 @@ Template.user_profile.helpers({
   },
   uploadingPicture (){
     return Template.instance().uploadingPicture.get();
+  },
+  "email" (){
+    return this.user.emails ? this.user.emails[0].address : null;
   },
   bioHtml (){
     return _.escape(this.user.profile.bio).replace(/(@\w+)/g, "<a href='https://twitter.com/$1' target='_blank'>$1</a>");

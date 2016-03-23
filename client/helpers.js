@@ -92,8 +92,12 @@ Handlebars.registerHelper("adminMode", function() {
   return adminMode();
 });
 
-Handlebars.registerHelper("popoutExists", function() {
-  return Session.get('poppedOutContextId') ? true : false;
+Handlebars.registerHelper("audioPopoutExists", function() {
+  return Session.equals('poppedOutContextType', 'audio');
+});
+
+Handlebars.registerHelper("videoPopoutExists", function() {
+  return Session.equals('poppedOutContextType', 'video');
 });
 
 Handlebars.registerHelper("reactiveStory", function(){

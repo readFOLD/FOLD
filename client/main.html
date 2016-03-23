@@ -39,7 +39,7 @@
   {{#unless embedMode}}
     {{> top_banner showFilters=showPublished hideMakeAStory=showDraft slim=true}}
   {{/unless}}
-  <div class="title-overlay {{#unless read}}write{{/unless}} {{#if sandwichMode}}sandwich-mode{{/if}} {{#if embedMode}}embed-mode{{/if}}">
+  <div class="title-overlay {{#unless read}}write{{/unless}} {{#if videoPopoutExists}}with-video-popout{{/if}} {{#if sandwichMode}}sandwich-mode{{/if}} {{#if embedMode}}embed-mode{{/if}}">
     {{#with headerImageVideoObject}}
       {{> looping_video}}
     {{else}}
@@ -84,7 +84,7 @@
 
       </div>
     </div>
-    {{#if popoutExists}}{{> audio_popout}}{{/if}}
+    {{#if audioPopoutExists}}{{#unless hiddenContextMode}}{{> audio_popout}}{{/unless}}{{/if}}
 
     {{#unless isPhone}}
       {{#if headerImageAttribution}}
@@ -94,10 +94,11 @@
       {{/if}}
     {{/unless}}
   </div>
+  {{#if audioPopoutExists}}{{#if hiddenContextMode}}{{> audio_popout}}{{/if}}{{/if}}
 </template>
 
 <template name="audio_popout">
-  <div class="audio-popout {{#if embedMode}}embed-mode{{/if}} {{#if sandwichMode}}sandwich-mode{{/if}}">
+  <div class="audio-popout {{#if embedMode}}embed-mode{{/if}} {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}">
     <div class="title">{{title}}</div>
     <div class="controls">
       {{#if showPauseButton}}
@@ -244,9 +245,7 @@
   {{#each horizontalSections}}
     {{!-- <div class="inline-block {{#unless horizontalShown}}hide{{/unless}}"> --}}
       {{#each data}}
-        {{#if horizontalSectionInDOM}}
           {{> horizontal_section_block}}
-        {{/if}}
 
       {{/each}}
       {{#if horizontalShown}}
@@ -268,8 +267,10 @@
 
 
 <template name="horizontal_section_block">
-  <div
-      class="narrative-section horizontal-narrative-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if poppedOut}}popped-out selected{{/if}} {{#if hideContainer}}hide-container{{/if}} {{#if editingThisContext}}editing{{/if}} {{#if hide}}hide{{/if}}" data-index="{{index}}" style="width: {{cardWidth}}px; left: {{left}}px; {{#if cardHeight}}height: {{cardHeight}}px; min-height: {{cardHeight}}px;{{/if}}">
+{{#if horizontalSectionInDOM}}
+
+    <div
+      class="narrative-section horizontal-narrative-section {{#if type}}{{type}}-card{{/if}} {{#if selected}}selected{{/if}} {{#if poppedOut}}popped-out{{/if}} {{#if embedMode}}embed-mode{{/if}} {{#if inCurrentRow}}in-current-row{{/if}} {{#if hideContainer}}hide-container{{/if}} {{#if editingThisContext}}editing{{/if}} {{#if hide}}hide{{/if}}" data-index="{{index}}" style="width: {{cardWidth}}px; left: {{left}}px; {{#if cardHeight}}height: {{cardHeight}}px; min-height: {{cardHeight}}px; top: calc(50% - 40px / 2 - {{cardHeight}}px / 2){{/if}}">
 <section>
     {{#if isPhone}}
       <div class="context-icon">
@@ -350,6 +351,7 @@
       {{/if}}
       </section>
     </div>
+  {{/if}}
   </template>
 
 <template name="remix_bar">
@@ -359,7 +361,7 @@
       {{> remix_icon_square }}
     </button>
     {{#if showPopoutButton}}
-      <button title="Pop-out audio" class="popout-button">
+      <button title="Pop-out audio or video" class="popout-button">
         {{> popout_icon}}
       </button>
     {{/if}}
@@ -377,7 +379,7 @@
 </template>
 
 <template name="display_image_section">
-  <div class="display-context-section image-section {{#unless read}}always-show-caption{{/unless}}{{#if read}}{{#unless mobileOrTablet}}show-expand-icon{{/unless}}{{/if}}">
+  <div class="display-context-section image-section {{#unless read}}always-show-caption{{/unless}}{{#if showMobileCaption}}show-mobile-caption{{/if}}{{#if read}}{{#unless mobileOrTablet}}show-expand-icon{{/unless}}{{/if}}">
     {{#if showVideo}}
       {{> looping_video}}
     {{else}}
@@ -455,19 +457,22 @@
 
 
 <template name="display_audio_section">
-  <div class="display-context-section audio-section" data-context-id="{{_id}}">
-    <div class="active-display {{#unless selected}}hide{{/unless}}">
-      {{#if mobileOrTablet}}
-        <div class="audio-iframe-overlay"></div>
-        <div class="audio-iframe-overlay-2"></div>
-        <div class="audio-iframe-overlay-3"></div>
-        <div class="audio-iframe-overlay-4"></div>
-        <div class="audio-iframe-overlay-5"></div>
-        <div class="audio-iframe-overlay-6"></div>
-        <div class="audio-iframe-overlay-7"></div>
-      {{/if}}
-      <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
-    </div>
+  <div class="display-context-section audio-section" data-context-id="{{_id}}" data-context-source="{{source}}">
+    {{#if showActiveDisplay}}
+
+      <div class="active-display {{#unless selected}}hide{{/unless}}">
+        {{#if mobileOrTablet}}
+          <div class="audio-iframe-overlay audio-iframe-overlay-1"></div>
+          <div class="audio-iframe-overlay audio-iframe-overlay-2"></div>
+          <div class="audio-iframe-overlay audio-iframe-overlay-3"></div>
+          <div class="audio-iframe-overlay audio-iframe-overlay-4"></div>
+          <div class="audio-iframe-overlay audio-iframe-overlay-5"></div>
+          <div class="audio-iframe-overlay audio-iframe-overlay-6"></div>
+          <div class="audio-iframe-overlay audio-iframe-overlay-7"></div>
+        {{/if}}
+        <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+      </div>
+    {{/if}}
     <div class="preview">
       <img src="{{previewUrl}}"/>
     </div>
@@ -486,8 +491,8 @@
 </template>
 
 <template name="display_video_section">
-  <div class="display-context-section video-section">
-    {{#if selected}}
+  <div class="display-context-section video-section" data-context-id="{{_id}}" data-context-source="{{source}}">
+    {{#if showActiveDisplay}}
       <div class="active-display">
         {{#if mobileOrTablet}}
           {{#unless vimeoOnTablet}}
@@ -506,12 +511,27 @@
             <div class="video-iframe-overlay video-iframe-overlay-vimeo-tablet-1"></div>
           {{/if}}
         {{/if}}
-        <iframe width="100%" height="100%" frameborder="0" style="border:0" src="{{url}}" allowfullscreen></iframe>
+        <iframe id="{{randomIFrameId}}" width="100%" height="100%" frameborder="0" style="border:0" src="{{apiReadyUrl}}" allowfullscreen></iframe>
+        {{#if poppedOut}}
+          <div class="dismiss-popout-section">
+            <button title="Stop playback and dismiss" class="dismiss-popout">
+              {{> x_icon}}
+            </button>
+          </div>
+        {{/if}}
       </div>
     {{/if}}
     <div class="preview">
       <img src="{{previewUrl}}"/>
     </div>
+    {{#if poppedOut}}
+      <div class="popout-message">
+        <p>Currently watching:
+          <br>
+          <em>{{title}}</em>
+        </p>
+      </div>
+    {{/if}}
     {{#if description}}
         <div class="description-overlay" dir="auto">
           {{! description}}
@@ -649,12 +669,12 @@
 
 <template name="story_browser">
   {{#if showLeftArrow}}
-    <div class="left story-browser {{#unless read}}edit-mode{{/unless}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" style="{{#if cardHeight}}height: {{cardHeight}}px;{{/if}}">
+    <div class="left story-browser {{#unless read}}edit-mode{{/unless}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" style=" {{#if cardHeight}}height: {{cardHeight}}px; top: calc(50% - 40px / 2 - {{cardHeight}}px / 2){{/if}}">
       {{> browse_arrow_left}}
     </div>
   {{/if}}
   {{#if showRightArrow}}
-    <div class="right story-browser {{#unless read}}edit-mode{{/unless}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" style="{{#if cardHeight}}height: {{cardHeight}}px;{{/if}}">
+    <div class="right story-browser {{#unless read}}edit-mode{{/unless}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" style=" {{#if cardHeight}}height: {{cardHeight}}px; top: calc(50% - 40px / 2 - {{cardHeight}}px / 2){{/if}}">
       {{> browse_arrow_right}}
     </div>
   {{/if}}
@@ -780,12 +800,8 @@
     <div class="text">
       Share this Story {{> social_option_triangle}}
     </div>
-    <button class="share-facebook">
-      {{> facebook_social_icon}}
-    </button>
-    <button class="share-twitter">
-      {{> twitter_social_icon}}
-    </button>
+    {{> share_on_facebook}}
+    {{> share_on_twitter}}
     <button class="share-embed">
       {{> embed_icon}}
     </button>
