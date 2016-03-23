@@ -2967,10 +2967,33 @@ div.loading-container {
 
 .context-overlay-content{
   .center-over-parent-div;
-  width: 80%;
-  height: 80%;
+  &.image{
+    width: 80%;
+    height: 80%;
+  }
+  &.text{
+    width: 60%;
+    max-height: 90%;
+  }
+
   @media @mobile {
-    .size-to-fit;
+    &.image {
+      .size-to-fit;
+    }
+    &.text {
+      .size-to-fit;
+      max-height: 100%;
+    }
+  }
+  @media @tablet {
+    &.image {
+      .size-to-fit;
+    }
+
+    &.text {
+      .size-to-fit;
+      max-height: 100%;
+    }
   }
 
   img, video {

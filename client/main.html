@@ -650,7 +650,7 @@
 <template name="context_overlay">
   {{#with overlaidContext}}
     <div class="context-overlay" style="height: {{windowHeight}}px; width: {{windowWidth}}px;">
-      <div class="context-overlay-content">
+      <div class="context-overlay-content {{#if largeUrl}}image{{else}}text{{/if}}">
         {{#if largeUrl}}
           <img src="{{largeUrl}}" />
           {{#unless contextLoaded}}

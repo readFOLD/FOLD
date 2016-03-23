@@ -1197,14 +1197,12 @@ Template.display_image_section.onCreated(function(){
   }
 });
 
-if (mobileOrTablet()) {
-  Template.display_text_section.events({
-    'click'  (e, t) {
-      Session.set('contextOverlayId', this._id);
-      trackEvent('Expand text card');
-    }
-  });
-}
+Template.display_text_section.events({
+  'click'  (e, t) {
+    Session.set('contextOverlayId', this._id);
+    trackEvent('Expand text card');
+  }
+});
 
 
 Template.display_image_section.helpers(horizontalBlockHelpers);
