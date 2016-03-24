@@ -106,28 +106,20 @@ Meteor.methods({
   countStoryAnalytics: function(storyId, analytics) {
     this.unblock();
     check(storyId, String);
-    console.log(analytics)
+
     var activeHeartbeatCountMap = analytics.activeHeartbeats;
-    console.log(activeHeartbeatCountMap.story)
     checkCountMap(activeHeartbeatCountMap);
 
-
     var anchorClickCountMap = analytics.anchorClicks;
-
     checkCountMap(anchorClickCountMap);
-
     var maxClicks = Math.ceil(activeHeartbeatCountMap.story / 5);
-
     _.keys(anchorClickCountMap, (k) => {
       anchorClickCountMap[k] = Math.min(anchorClickCountMap[k], maxClicks)
     });
 
     var contextInteractionCountMap = analytics.contextInteractions;
-
     checkCountMap(contextInteractionCountMap);
-
     var maxInteractions = Math.ceil(activeHeartbeatCountMap.story / 5);
-
     _.keys(contextInteractionCountMap, (k) => {
       contextInteractionCountMap[k] = Math.min(contextInteractionCountMap[k], maxInteractions)
     });
@@ -136,13 +128,11 @@ Meteor.methods({
     _.each(_.keys(activeHeartbeatCountMap), function (k) {
       incMap['analytics.heartbeats.active.' + k] = activeHeartbeatCountMap[k];
     });
-
     if(!_.isEmpty(anchorClickCountMap)){
       _.each(_.keys(anchorClickCountMap), function (k) {
         incMap['analytics.anchorClicks.' + k] = anchorClickCountMap[k];
       });
     }
-
     if(!_.isEmpty(contextInteractionCountMap)){
       _.each(_.keys(contextInteractionCountMap), function (k) {
         incMap['analytics.contextInteractions.' + k] = contextInteractionCountMap[k];
