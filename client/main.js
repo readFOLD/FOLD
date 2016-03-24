@@ -1876,18 +1876,47 @@ createWidget = function(){
 window.poppedOutWidget = createWidget();
 window.mostRecentWidget = createWidget();
 
-var makeYouTubeWidget = function(iframe, cb){
+var makeYouTubeWidget = function(id, cb){
+  var iframe = getVideoIFrame(id);
+  var options = {
+    events: {
+      onStateChange: (e) => {
+        if (e.data === YT.PlayerState.PLAYING) {
+          countContextInteraction(id);
+        }
+      }
+    }
+  };
+
+
   if(ytApiReady.get()){
-    cb(new YT.Player(iframe));
+    cb(new YT.Player(iframe, options));
   } else {
     Tracker.autorun((c) =>{
       if(ytApiReady.get()){
-        cb(new YT.Player(iframe));
+        cb(new YT.Player(iframe, options));
         c.stop();
       }
     });
   }
-}
+};
+
+var makeVimeoWidget = function(id, cb){
+  $f(getVideoIFrame(id)).addEvent('ready', (iframeCSSId) => {
+    var widget = $f(iframeCSSId);
+    widget.addEvent('play', () => { countContextInteraction(id); });
+
+    cb(widget);
+  });
+};
+
+var makeSoundcloudWidget = function(id, cb){
+  var widget = SC.Widget(getAudioIFrame(id));
+  widget.bind(SC.Widget.Events.PLAY, function (e) {
+    countContextInteraction(id);
+  });
+  cb(widget)
+};
 
 window.setPoppedOutWidget = function (id){
   //var section =  document.querySelector(".audio-section[data-context-id='" + contextId + "']");
@@ -1909,19 +1938,21 @@ window.setPoppedOutWidget = function (id){
 
   switch(source){
     case 'soundcloud':
-      poppedOutWidget.activeSource = source;
-      poppedOutWidget._soundcloudWidget = SC.Widget(getAudioIFrame(id));
+      makeSoundcloudWidget(id, (widget) => {
+        poppedOutWidget.activeSource = source;
+        poppedOutWidget._soundcloudWidget = widget;
+      });
       break;
     case 'youtube':
-      makeYouTubeWidget(getVideoIFrame(id), (widget) => {
+      makeYouTubeWidget(id, (widget) => {
         poppedOutWidget.activeSource = source;
         poppedOutWidget._youTubeWidget = widget;
       });
       break;
     case 'vimeo':
-      $f(getVideoIFrame(id)).addEvent('ready', function (id){
+      makeVimeoWidget(id, (widget) => {
         poppedOutWidget.activeSource = source;
-        poppedOutWidget._vimeoWidget = $f(id);
+        poppedOutWidget._vimeoWidget = widget;
       });
       break;
   }
@@ -1945,7 +1976,7 @@ window.popOutMostRecentWidget = function(){
   poppedOutWidget = mostRecentWidget;
   Session.set('poppedOutContextId', mostRecentWidget.id);
   Session.set('poppedOutContextType', (mostRecentWidget.activeSource === 'soundcloud') ? 'audio' : 'video');
-}
+};
 
 window.setMostRecentWidget = function (id){
   var source = $(".display-context-section[data-context-id='" + id + "']").data('contextSource');
@@ -1960,30 +1991,31 @@ window.setMostRecentWidget = function (id){
 
   mostRecentWidget.id = id;
 
-  if(source === 'soundfdsfsdfcloud'){
-    mostRecentWidget.activeSource = source;
-  } else {
-    Meteor.setTimeout(() => {
+  Meteor.setTimeout(() => {
 
-      mostRecentWidget.activeSource = source;
 
-      switch(source){
-        case 'youtube':
-          makeYouTubeWidget(getVideoIFrame(id), (widget) => {
-            mostRecentWidget._youTubeWidget = widget;
-          });
-          break;
-        case 'vimeo':
-          $f(getVideoIFrame(id)).addEvent('ready', function (id){
-            mostRecentWidget._vimeoWidget = $f(id);
-          });
-          break;
-        case 'soundcloud':
-          mostRecentWidget._soundcloudWidget = SC.Widget(getAudioIFrame(id));
-          break;
-      }
-    }, 150); // hack to make sure video is in DOM when assign it.
-  }
+    switch(source){
+      case 'youtube':
+        makeYouTubeWidget(id, (widget) => {
+          mostRecentWidget.activeSource = source;
+          mostRecentWidget._youTubeWidget = widget;
+        });
+        break;
+      case 'vimeo':
+        makeVimeoWidget(id, (widget) => {
+          mostRecentWidget.activeSource = source;
+          mostRecentWidget._vimeoWidget = widget;
+        });
+        break;
+      case 'soundcloud':
+        makeSoundcloudWidget(id, (widget) => {
+          mostRecentWidget.activeSource = source;
+          mostRecentWidget._soundcloudWidget = widget;
+        });
+
+        break;
+    }
+  }, 150); // hack to make sure video is in DOM when assign it.
 
 };
 

@@ -119,7 +119,7 @@ Meteor.methods({
 
     var contextInteractionCountMap = analytics.contextInteractions;
     checkCountMap(contextInteractionCountMap);
-    var maxInteractions = Math.ceil(activeHeartbeatCountMap.story / 5);
+    var maxInteractions = Math.ceil(activeHeartbeatCountMap.story / 10);
     _.keys(contextInteractionCountMap, (k) => {
       contextInteractionCountMap[k] = Math.min(contextInteractionCountMap[k], maxInteractions)
     });
