@@ -628,7 +628,33 @@ Template.vertical_section_block.helpers({
   contentDiv () {
     var initialClasses = Session.get('showDraft') ? 'content notranslate' : 'content';
     if (Session.get('read')) {
-      return '<div class="' + initialClasses + '" dir="auto">' + cleanVerticalSectionContent(this.content) + '</div>';
+      var content = cleanVerticalSectionContent(this.content);
+
+      var html = '<div class="' + initialClasses + '" dir="auto">' + content + '</div>';
+
+      if(adminMode()){
+        var story = new Story(Session.get('story'));
+        var maxAnchorClicks= story.maxAnchorClicks();
+
+        var heroContextId = this.contextBlocks[0];
+
+        jqHtml = $(html);
+        jqHtml.find('a').each(function(){
+          let contextId = $(this).data('contextId');
+          let anchorClicks = story.analytics.anchorClicks ? story.analytics.anchorClicks[contextId] || 0 : 0;
+          let activityLevel = Math.pow( anchorClicks / maxAnchorClicks , 0.5) * 100;
+          $(this).css({'background-color': 'hsl(14, ' + activityLevel + '%, 80%)'});
+
+          if(contextId === heroContextId){
+            $(this).addClass('hero');
+            $(this).attr('title', 'This is a link to the hero card, so people dont need to click a link to see it.');
+          }
+
+        });
+        return jqHtml.html()
+      } else {
+        return html
+      }
     } else {
       // nonReactiveContent preserves browser undo functionality across saves
       // this is contenteditable in edit mode

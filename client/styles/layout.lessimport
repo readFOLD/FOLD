@@ -803,6 +803,18 @@ article{
     .selected-styling;
   }
 
+  &.analytics-mode{
+    a.active {
+      color: black;
+      outline: 1px dotted @action-color;
+    }
+    a.hero {
+      color: white;
+      pointer-events: auto;
+      background-color: @action-color !important;
+    }
+  }
+
   &.hidden-context-mode{
     .selected-styling;
     &.selected{
