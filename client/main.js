@@ -1236,6 +1236,7 @@ Template.display_image_section.onCreated(function(){
 Template.display_text_section.events({
   'click'  (e, t) {
     Session.set('contextOverlayId', this._id);
+    countContextInteraction(this._id);
     trackEvent('Expand text card');
   }
 });
@@ -1251,11 +1252,15 @@ Template.display_image_section.events(editableDescriptionEventsBoilerplate('edit
 Template.display_image_section.events({
   'click'  (e, t) {
     if(mobileOrTablet() && this.description && !Template.instance().showMobileCaption.get()){
+      countContextInteraction(this._id);
       return Template.instance().showMobileCaption.set(true);
     }
     if (Session.get('read') && !($(e.target).is('a'))) {
       Session.set('contextOverlayId', this._id);
       trackEvent('Expand image card');
+      if(!(mobileOrTablet() && this.description)){ // we count the showing caption on mobile
+        countContextInteraction(this._id);
+      }
     }
   }
 });
@@ -1356,6 +1361,7 @@ Template.display_link_section.events({
       return false
     }
     var url = e.currentTarget.href;
+    countContextInteraction(this._id);
     trackEvent('Click external link in link card', {
       label: url,
       url: url,
@@ -2348,7 +2354,6 @@ window.addActiveHeartbeat = function(key){
 
 window.countAnchorClick = function(key){
   analyticsCount.anchorClicks[key] = (analyticsCount.anchorClicks[key] || 0) + 1;
-  console.log(analyticsCount.anchorClicks[key])
 };
 
 window.countContextInteraction = function(key){
