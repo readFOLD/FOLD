@@ -649,7 +649,7 @@ Template.vertical_section_block.helpers({
           let contextId = $(this).data('contextId');
           let anchorClicks = story.analytics.anchorClicks ? story.analytics.anchorClicks[contextId] || 0 : 0;
           let activityLevel = Math.pow( anchorClicks / maxAnchorClicks , 0.5) * 100;
-          $(this).css({'background-color': 'hsl(155, ' + activityLevel + '%, 80%)'});
+          $(this).css({'background-color': 'hsl(155, ' + activityLevel + '%, 39%)'});
 
           if(contextId === heroContextId){
             $(this).addClass('hero');
@@ -936,7 +936,7 @@ Template.minimap.helpers({
     var story = new Story(Session.get('story'));
     var activeHeartbeats = (this.activeHeartbeats || 0);
     var maxActiveHeartbeats = story.maxActiveHeartbeats();
-    return Math.pow( activeHeartbeats / maxActiveHeartbeats , 0.5) * 100;
+    return Math.pow( activeHeartbeats / maxActiveHeartbeats , 0.5) * 62; // 62 if the saturation that matches social color
   }
 });
 
