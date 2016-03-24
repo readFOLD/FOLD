@@ -784,12 +784,13 @@ article{
         .background-transition;
       }
       &.active {
-        background-color: @action-color;
-        .background-transition;
-        color: white;
-        cursor: inherit;
-        pointer-events: none;
-
+        &:not(.hero){
+          background-color: @action-color;
+          .background-transition;
+          color: white;
+          cursor: inherit;
+          pointer-events: none;
+        }
       }
       &.placeholder {
         background-color: @social-color;
@@ -809,9 +810,11 @@ article{
       outline: 1px dotted @action-color;
     }
     a.hero {
-      color: white;
-      pointer-events: auto;
-      background-color: @action-color !important;
+      &:not(:hover){
+        color: white;
+        pointer-events: auto;
+        background-color: @dark-color !important;
+      }
     }
   }
 

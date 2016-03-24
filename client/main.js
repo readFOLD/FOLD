@@ -649,7 +649,7 @@ Template.vertical_section_block.helpers({
           let contextId = $(this).data('contextId');
           let anchorClicks = story.analytics.anchorClicks ? story.analytics.anchorClicks[contextId] || 0 : 0;
           let activityLevel = Math.pow( anchorClicks / maxAnchorClicks , 0.5) * 100;
-          $(this).css({'background-color': 'hsl(14, ' + activityLevel + '%, 80%)'});
+          $(this).css({'background-color': 'hsl(155, ' + activityLevel + '%, 80%)'});
 
           if(contextId === heroContextId){
             $(this).addClass('hero');
@@ -701,7 +701,9 @@ Template.vertical_section_block.events({
     } else if (enclosingAnchor = $(e.target).closest('a')){
       var contextId = $(enclosingAnchor).data('contextId');
 
-      countAnchorClick(contextId);
+      if(!adminMode()){ // this should check for analytics mode
+        countAnchorClick(contextId);
+      }
 
       e.preventDefault();
       afterGoToY = function(){

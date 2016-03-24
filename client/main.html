@@ -197,7 +197,7 @@
 </template>
 
 <template name="vertical_section_block">
-  <div class="narrative-section vertical-narrative-section {{#if verticalSelected}}selected{{/if}} {{#if read}}read{{#if adminMode}}{{#unless showDraft}}analytics-mode{{/unless}}{{/if}}{{/if}} {{#if hasTitle}}has-title{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
+  <div class="narrative-section vertical-narrative-section {{#if verticalSelected}}selected{{/if}} {{#if read}}read{{#if adminMode}}{{#unless showDraft}} analytics-mode{{/unless}}{{/if}}{{/if}} {{#if hasTitle}}has-title{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
     <section>
       {{#unless read}}
         {{#if verticalSelected}}
@@ -749,10 +749,10 @@
     <div class="expand"><i class="fa fa-expand"></i></div>
     {{#each horizontalSectionsMap}}
     <div class="section {{#if selectedY}}selected-section{{/if}}" style="{{#if responsive}}height: {{sectionHeight}}px; margin-bottom: {{sectionMargin}}px;{{/if}}">
-      <div class="vertical block {{#if selectedY}}selected-block{{/if}} {{#if showActivity}}activity-shown{{/if}}" style="{{#if responsive}}width: {{verticalCardWidth}}px;{{/if}}{{#if showActivity}}background-color: hsl(14, {{activityLevel}}%, 55%);{{/if}}">
+      <div class="vertical block {{#if selectedY}}selected-block{{/if}} {{#if showActivity}}activity-shown{{/if}}" style="{{#if responsive}}width: {{verticalCardWidth}}px;{{/if}}{{#if showActivity}}background-color: hsl(257, {{activityLevel}}%, 55%);{{/if}}">
       </div>
       {{#each horizontal}}
-          <div class="horizontal block {{#if selectedX}}selected-block{{/if}} {{#if showActivity}}activity-shown{{/if}}" style="{{#if responsive}}width: {{horizontalCardWidth}}px;{{/if}}{{#if showActivity}}background-color: hsl(14, {{activityLevel}}%, 55%);{{/if}}">
+          <div class="horizontal block {{#if selectedX}}selected-block{{/if}} {{#if showActivity}}activity-shown{{/if}}" style="{{#if responsive}}width: {{horizontalCardWidth}}px;{{/if}}{{#if showActivity}}background-color: hsl(257, {{activityLevel}}%, 55%);{{/if}}">
           </div>
       {{/each}}
     </div>
