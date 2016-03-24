@@ -101,6 +101,16 @@ Story = (function() {
       .value()
   };
 
+  Story.prototype.maxAnchorClicks = function(){
+    if(!this.analytics.anchorClicks){
+      return 0
+    }
+    return _.chain(this.analytics.anchorClicks)
+      .values()
+      .max()
+      .value()
+  };
+
   Story.getHeaderImageUrl = function(headerImageId, size){
     var image, imageFormat, url;
     image = headerImageId;
@@ -2047,6 +2057,16 @@ Schema.Stories = new SimpleSchema(_.extend({}, sharedStorySchema(), {
       optional: true,
       blackbox: true
     },
+    'analytics.contextInteractions': {
+      type: Object,
+      optional: true,
+      blackbox: true
+    },
+    'analytics.anchorClicks': {
+      type: Object,
+      optional: true,
+      blackbox: true
+    },
     contextBlocks: {
       type: [ContextBlock], // TODO this should really be Schema.ContextBlocks, but would need to be converted to a regular object, otherwise simple-schema complains
       minCount: 0,
@@ -2151,6 +2171,16 @@ Schema.StoryStats = new SimpleSchema({
     optional: true
   },
   'analytics.heartbeats.active': {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  'analytics.contextInteractions': {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  'analytics.anchorClicks': {
     type: Object,
     optional: true,
     blackbox: true

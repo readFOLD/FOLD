@@ -184,7 +184,7 @@ html {
 @thin-window:  ~"(max-width: 400px)";
 @mobile-or-thin-window: ~"only screen and (max-device-width: 529px)", ~"(max-width: 400px)";
 @not-mobile-nor-thin-window:  ~"(min-device-width: 530px) and (min-width: 400px)";
-@resizing-context:      ~"only screen and (max-device-width: 529px)", ~"(max-height: 570px)", ~"(max-width: 685px)";
+@resizing-context:      ~"only screen and (max-device-width: 529px)", ~"(max-height: 570px) and (max-width: 800px)", ~"(max-width: 685px)";
 @tablet:      ~"only screen and (min-device-width: 530px) and (max-device-width: 949px)";
 @desktop:     ~"only screen and (min-device-width: 950px) and (max-device-width: 1128px)";
 @desktop-xl:  ~"only screen and (min-device-width: 1129px)";
@@ -784,12 +784,13 @@ article{
         .background-transition;
       }
       &.active {
-        background-color: @action-color;
-        .background-transition;
-        color: white;
-        cursor: inherit;
-        pointer-events: none;
-
+        &:not(.hero){
+          background-color: @action-color;
+          .background-transition;
+          color: white;
+          cursor: inherit;
+          pointer-events: none;
+        }
       }
       &.placeholder {
         background-color: @social-color;
@@ -801,6 +802,20 @@ article{
 
   &.selected {
     .selected-styling;
+  }
+
+  &.analytics-mode{
+    a.active {
+      color: black;
+      outline: 1px dotted @action-color;
+    }
+    a.hero {
+      &:not(:hover){
+        color: white;
+        pointer-events: auto;
+        background-color: @dark-color !important;
+      }
+    }
   }
 
   &.hidden-context-mode{

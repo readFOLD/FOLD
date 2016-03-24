@@ -626,9 +626,41 @@ Template.vertical_section_block.helpers({
   },
   // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
   contentDiv () {
-    var initialClasses = Session.get('showDraft') ? 'content notranslate' : 'content';
+
+    var showDraft = Session.get('showDraft');
+    var initialClasses = showDraft ? 'content notranslate' : 'content';
     if (Session.get('read')) {
-      return '<div class="' + initialClasses + '" dir="auto">' + cleanVerticalSectionContent(this.content) + '</div>';
+      var content = cleanVerticalSectionContent(this.content);
+
+      var html = '<div class="' + initialClasses + '" dir="auto">' + content + '</div>';
+
+      if(!showDraft && adminMode()){ // show link analytics
+        var story = new Story(Session.get('story'));
+        var maxAnchorClicks= story.maxAnchorClicks();
+
+        if(!maxAnchorClicks){
+          return html;
+        }
+
+        var heroContextId = this.contextBlocks[0];
+
+        jqHtml = $(html);
+        jqHtml.find('a').each(function(){
+          let contextId = $(this).data('contextId');
+          let anchorClicks = story.analytics.anchorClicks ? story.analytics.anchorClicks[contextId] || 0 : 0;
+          let activityLevel = Math.pow( anchorClicks / maxAnchorClicks , 0.5) * 100;
+          $(this).css({'background-color': 'hsl(155, ' + activityLevel + '%, 80%)'});
+
+          if(contextId === heroContextId){
+            $(this).addClass('hero');
+            $(this).attr('title', 'This is a link to the hero card, so people dont need to click a link to see it.');
+          }
+
+        });
+        return jqHtml[0].outerHTML;
+      } else {
+        return html;
+      }
     } else {
       // nonReactiveContent preserves browser undo functionality across saves
       // this is contenteditable in edit mode
@@ -668,6 +700,10 @@ Template.vertical_section_block.events({
       // do nothing
     } else if (enclosingAnchor = $(e.target).closest('a')){
       var contextId = $(enclosingAnchor).data('contextId');
+
+      if(!adminMode()){ // this should check for analytics mode
+        countAnchorClick(contextId);
+      }
 
       e.preventDefault();
       afterGoToY = function(){
@@ -2234,50 +2270,68 @@ Template.read.onCreated(function(){
   });
 });
 
-var activeHeartbeatCount = {};
-var activeHeartbeatCountSent = {};
-incrementActiveHeartbeatCount = function(id){
-  activeHearbeatCount[id] = (activeHearbeatCount[id] || 0) + 1;
+
+var activityAnalyticsKeys = ['activeHeartbeats', 'anchorClicks', 'contextInteractions'];
+
+var analyticsCount = {
+  'activeHeartbeats': {},
+  'anchorClicks':{},
+  'contextInteractions': {}
+};
+var analyticsCountSent = {
+  'activeHeartbeats': {},
+  'anchorClicks':{},
+  'contextInteractions': {}
 };
 
-subtractSentActiveHeartbeatCount = function(){
-  _.each(_.keys(activeHeartbeatCountSent), function(k){
-    activeHeartbeatCount[k] = activeHeartbeatCount[k] - activeHeartbeatCountSent[k];
-    if(!activeHeartbeatCount[k]){
-      delete activeHeartbeatCount[k]
-    }
+subtractSentAnalyticsCount = function(){
+  _.each(activityAnalyticsKeys, function(topLevelKey){
+    _.each(_.keys(analyticsCountSent[topLevelKey]), function(k){
+      analyticsCount[topLevelKey][k] = analyticsCount[topLevelKey][k] - analyticsCountSent[topLevelKey][k];
+      if(!analyticsCount[topLevelKey][k]){
+        delete analyticsCount[topLevelKey][k]
+      }
+    });
   });
-  activeHeartbeatCountSent = {}; // this makes the function safe to run multiple times
+
+  analyticsCountSent = {
+    'activeHeartbeats': {},
+    'anchorClicks':{},
+    'contextInteractions': {}
+  }; // this makes the function safe to run multiple times
 };
 
-var sendHeartbeatsInterval = 30000;
+var sendAnalyticsInterval = 30000;
 
 
-activeHeartbeatCountSender = function(doOnce){
-  if(_.isEmpty(activeHeartbeatCount)){
+analyticsCountSender = function(doOnce){
+  if(_.chain(analyticsCount).values().all(_.isEmpty).value()){
     console.log('nothing to send')
+    if(!doOnce){
+      Meteor.setTimeout(analyticsCountSender, sendAnalyticsInterval);
+    }
     return
   }
-  activeHeartbeatCountSent = _.clone(activeHeartbeatCount);
+  analyticsCountSent = _.clone(analyticsCount);
   console.log('sending:')
-  console.log(activeHeartbeatCountSent)
-  Meteor.call('countStoryActiveHeartbeats', Session.get('storyId'), activeHeartbeatCountSent, function(err){
+  console.log(analyticsCountSent)
+  Meteor.call('countStoryAnalytics', Session.get('storyId'), analyticsCountSent, function(err){
     if(err){
-      console.warn('Failed to send heartbeats');
+      console.warn('Failed to send analytics');
     } else {
-      subtractSentActiveHeartbeatCount();
+      subtractSentAnalyticsCount();
     }
     if(!doOnce){
-      Meteor.setTimeout(activeHeartbeatCountSender, sendHeartbeatsInterval);
+      Meteor.setTimeout(analyticsCountSender, sendAnalyticsInterval);
     }
   });
 };
 
 Meteor.startup(function(){
-  Meteor.setTimeout(activeHeartbeatCountSender, sendHeartbeatsInterval);
+  Meteor.setTimeout(analyticsCountSender, sendAnalyticsInterval);
   $(window).bind('beforeunload', function(){
-    subtractSentActiveHeartbeatCount(); // in case there is already a count pending don't double-do it
-    activeHeartbeatCountSender(true);
+    subtractSentAnalyticsCount(); // in case there is already a count pending don't double-do it
+    analyticsCountSender(true);
   })
 });
 
@@ -2288,8 +2342,17 @@ $(window).bind('mousemove mouseup touchstart touchend touchmove keyup scroll res
   userInactiveCount = 0;
 });
 
-var addActiveHeartbeat = function(key){
-  activeHeartbeatCount[key] = (activeHeartbeatCount[key] || 0) + 1;
+window.addActiveHeartbeat = function(key){
+  analyticsCount.activeHeartbeats[key] = (analyticsCount.activeHeartbeats[key] || 0) + 1;
+};
+
+window.countAnchorClick = function(key){
+  analyticsCount.anchorClicks[key] = (analyticsCount.anchorClicks[key] || 0) + 1;
+  console.log(analyticsCount.anchorClicks[key])
+};
+
+window.countContextInteraction = function(key){
+  analyticsCount.contextInteractions[key] = (analyticsCount.contextInteractions[key] || 0) + 1;
 };
 
 Template.read.onRendered(function(){
@@ -2343,8 +2406,8 @@ Template.read.onDestroyed(function(){
   Meteor.clearInterval(this.heartbeatInterval);
 
   // send all existing heartbeats when leave a story
-  subtractSentActiveHeartbeatCount(); // in case there is already a count pending don't double-do it
-  activeHeartbeatCountSender(true);
+  subtractSentAnalyticsCount(); // in case there is already a count pending don't double-do it
+  analyticsCountSender(true);
 
   unfreezePageScroll();
 });
