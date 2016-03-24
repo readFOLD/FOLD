@@ -626,15 +626,21 @@ Template.vertical_section_block.helpers({
   },
   // NOTE: contentDiv is weird because the user edits its content but it's not reactive. be careful. if it's made reactive without updating it's semi-reactive contents accordingly, user will lose content
   contentDiv () {
-    var initialClasses = Session.get('showDraft') ? 'content notranslate' : 'content';
+
+    var showDraft = Session.get('showDraft');
+    var initialClasses = showDraft ? 'content notranslate' : 'content';
     if (Session.get('read')) {
       var content = cleanVerticalSectionContent(this.content);
 
       var html = '<div class="' + initialClasses + '" dir="auto">' + content + '</div>';
 
-      if(adminMode()){
+      if(!showDraft && adminMode()){ // show link analytics
         var story = new Story(Session.get('story'));
         var maxAnchorClicks= story.maxAnchorClicks();
+
+        if(!maxAnchorClicks){
+          return html;
+        }
 
         var heroContextId = this.contextBlocks[0];
 
@@ -651,9 +657,9 @@ Template.vertical_section_block.helpers({
           }
 
         });
-        return jqHtml.html()
+        return jqHtml[0].outerHTML;
       } else {
-        return html
+        return html;
       }
     } else {
       // nonReactiveContent preserves browser undo functionality across saves
@@ -2398,8 +2404,8 @@ Template.read.onDestroyed(function(){
   Meteor.clearInterval(this.heartbeatInterval);
 
   // send all existing heartbeats when leave a story
-  subtractSentActiveHeartbeatCount(); // in case there is already a count pending don't double-do it
-  activeHeartbeatCountSender(true);
+  subtractSentAnalyticsCount(); // in case there is already a count pending don't double-do it
+  analyticsCountSender(true);
 
   unfreezePageScroll();
 });

@@ -102,6 +102,9 @@ Story = (function() {
   };
 
   Story.prototype.maxAnchorClicks = function(){
+    if(!this.analytics.anchorClicks){
+      return 0
+    }
     return _.chain(this.analytics.anchorClicks)
       .values()
       .max()
