@@ -71,6 +71,22 @@ var countStat = function(storyId, stat, details) {
   StoryStats.upsert( {storyId: storyId} , {$inc: inc, $addToSet: addToSet, $push: push} );
 };
 
+var checkCountMap = function(countMap){
+  check(countMap, Object);
+  _.keys(countMap, function (e) {
+    check(e, String); // these should be ids
+    check(e, Match.Where(function (str) {
+      return (/^[^.]*$/).test(str); // check has no periods
+    }))
+  });
+  _.values(countMap, function (e) {
+    check(e, Number);
+    check(e, Match.Where(function (num) {
+      return num > 0; // check only positive numbers
+    }));
+  });
+};
+
 Meteor.methods({
   countStoryView: function(storyId) {
     this.unblock();
@@ -87,24 +103,51 @@ Meteor.methods({
     check(storyId, String);
     countStat.call(this, storyId, 'reads', {service: service});
   },
-  countStoryActiveHeartbeats: function(storyId, countMap) {
+  countStoryAnalytics: function(storyId, analytics) {
     this.unblock();
     check(storyId, String);
-    check(countMap, Object);
-    _.keys(countMap, function (e) {
-      check(e, String); // these should be ids
-      check(e, Match.Where(function (str) {
-        return (/^[^.]*$/).test(str); // check has no periods
-      }))
+    console.log(analytics)
+    var activeHeartbeatCountMap = analytics.activeHeartbeats;
+    console.log(activeHeartbeatCountMap.story)
+    checkCountMap(activeHeartbeatCountMap);
+
+
+    var anchorClickCountMap = analytics.anchorClicks;
+
+    checkCountMap(anchorClickCountMap);
+
+    var maxClicks = Math.ceil(activeHeartbeatCountMap.story / 5);
+
+    _.keys(anchorClickCountMap, (k) => {
+      anchorClickCountMap[k] = Math.min(anchorClickCountMap[k], maxClicks)
     });
-    _.values(countMap, function (e) {
-      check(e, Number);
+
+    var contextInteractionCountMap = analytics.contextInteractions;
+
+    checkCountMap(contextInteractionCountMap);
+
+    var maxInteractions = Math.ceil(activeHeartbeatCountMap.story / 5);
+
+    _.keys(contextInteractionCountMap, (k) => {
+      contextInteractionCountMap[k] = Math.min(contextInteractionCountMap[k], maxInteractions)
     });
 
     var incMap = {};
-    _.each(_.keys(countMap), function (k) {
-      incMap['analytics.heartbeats.active.' + k] = countMap[k];
+    _.each(_.keys(activeHeartbeatCountMap), function (k) {
+      incMap['analytics.heartbeats.active.' + k] = activeHeartbeatCountMap[k];
     });
+
+    if(!_.isEmpty(anchorClickCountMap)){
+      _.each(_.keys(anchorClickCountMap), function (k) {
+        incMap['analytics.anchorClicks.' + k] = anchorClickCountMap[k];
+      });
+    }
+
+    if(!_.isEmpty(contextInteractionCountMap)){
+      _.each(_.keys(contextInteractionCountMap), function (k) {
+        incMap['analytics.contextInteractions.' + k] = contextInteractionCountMap[k];
+      });
+    }
 
     StoryStats.upsert({storyId: storyId}, {$inc: incMap});
     return Stories.update({_id: storyId}, {$inc: incMap});

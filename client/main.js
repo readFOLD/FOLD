@@ -669,6 +669,8 @@ Template.vertical_section_block.events({
     } else if (enclosingAnchor = $(e.target).closest('a')){
       var contextId = $(enclosingAnchor).data('contextId');
 
+      countAnchorClick(contextId);
+
       e.preventDefault();
       afterGoToY = function(){
         goToContext(contextId);
@@ -2234,50 +2236,68 @@ Template.read.onCreated(function(){
   });
 });
 
-var activeHeartbeatCount = {};
-var activeHeartbeatCountSent = {};
-incrementActiveHeartbeatCount = function(id){
-  activeHearbeatCount[id] = (activeHearbeatCount[id] || 0) + 1;
+
+var activityAnalyticsKeys = ['activeHeartbeats', 'anchorClicks', 'contextInteractions'];
+
+var analyticsCount = {
+  'activeHeartbeats': {},
+  'anchorClicks':{},
+  'contextInteractions': {}
+};
+var analyticsCountSent = {
+  'activeHeartbeats': {},
+  'anchorClicks':{},
+  'contextInteractions': {}
 };
 
-subtractSentActiveHeartbeatCount = function(){
-  _.each(_.keys(activeHeartbeatCountSent), function(k){
-    activeHeartbeatCount[k] = activeHeartbeatCount[k] - activeHeartbeatCountSent[k];
-    if(!activeHeartbeatCount[k]){
-      delete activeHeartbeatCount[k]
-    }
+subtractSentAnalyticsCount = function(){
+  _.each(activityAnalyticsKeys, function(topLevelKey){
+    _.each(_.keys(analyticsCountSent[topLevelKey]), function(k){
+      analyticsCount[topLevelKey][k] = analyticsCount[topLevelKey][k] - analyticsCountSent[topLevelKey][k];
+      if(!analyticsCount[topLevelKey][k]){
+        delete analyticsCount[topLevelKey][k]
+      }
+    });
   });
-  activeHeartbeatCountSent = {}; // this makes the function safe to run multiple times
+
+  analyticsCountSent = {
+    'activeHeartbeats': {},
+    'anchorClicks':{},
+    'contextInteractions': {}
+  }; // this makes the function safe to run multiple times
 };
 
-var sendHeartbeatsInterval = 30000;
+var sendAnalyticsInterval = 30000;
 
 
-activeHeartbeatCountSender = function(doOnce){
-  if(_.isEmpty(activeHeartbeatCount)){
+analyticsCountSender = function(doOnce){
+  if(_.chain(analyticsCount).values().all(_.isEmpty).value()){
     console.log('nothing to send')
+    if(!doOnce){
+      Meteor.setTimeout(analyticsCountSender, sendAnalyticsInterval);
+    }
     return
   }
-  activeHeartbeatCountSent = _.clone(activeHeartbeatCount);
+  analyticsCountSent = _.clone(analyticsCount);
   console.log('sending:')
-  console.log(activeHeartbeatCountSent)
-  Meteor.call('countStoryActiveHeartbeats', Session.get('storyId'), activeHeartbeatCountSent, function(err){
+  console.log(analyticsCountSent)
+  Meteor.call('countStoryAnalytics', Session.get('storyId'), analyticsCountSent, function(err){
     if(err){
-      console.warn('Failed to send heartbeats');
+      console.warn('Failed to send analytics');
     } else {
-      subtractSentActiveHeartbeatCount();
+      subtractSentAnalyticsCount();
     }
     if(!doOnce){
-      Meteor.setTimeout(activeHeartbeatCountSender, sendHeartbeatsInterval);
+      Meteor.setTimeout(analyticsCountSender, sendAnalyticsInterval);
     }
   });
 };
 
 Meteor.startup(function(){
-  Meteor.setTimeout(activeHeartbeatCountSender, sendHeartbeatsInterval);
+  Meteor.setTimeout(analyticsCountSender, sendAnalyticsInterval);
   $(window).bind('beforeunload', function(){
-    subtractSentActiveHeartbeatCount(); // in case there is already a count pending don't double-do it
-    activeHeartbeatCountSender(true);
+    subtractSentAnalyticsCount(); // in case there is already a count pending don't double-do it
+    analyticsCountSender(true);
   })
 });
 
@@ -2288,8 +2308,17 @@ $(window).bind('mousemove mouseup touchstart touchend touchmove keyup scroll res
   userInactiveCount = 0;
 });
 
-var addActiveHeartbeat = function(key){
-  activeHeartbeatCount[key] = (activeHeartbeatCount[key] || 0) + 1;
+window.addActiveHeartbeat = function(key){
+  analyticsCount.activeHeartbeats[key] = (analyticsCount.activeHeartbeats[key] || 0) + 1;
+};
+
+window.countAnchorClick = function(key){
+  analyticsCount.anchorClicks[key] = (analyticsCount.anchorClicks[key] || 0) + 1;
+  console.log(analyticsCount.anchorClicks[key])
+};
+
+window.countContextInteraction = function(key){
+  analyticsCount.contextInteractions[key] = (analyticsCount.contextInteractions[key] || 0) + 1;
 };
 
 Template.read.onRendered(function(){
