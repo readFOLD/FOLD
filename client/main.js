@@ -586,7 +586,7 @@ Template.story.helpers({
     return Session.get("metaview")
   },
   showMinimap () {
-    return Session.get("showMinimap") && !hiddenContextMode() && !(embedMode() && Session.get('poppedOutContextId'));
+    return Session.get("showMinimap") && !hiddenContextMode() && !(embedMode() && Session.get('poppedOutContextId')) && !analyticsMode();
   },
   showContextOverlay (){
     return Session.get('contextOverlayId');
@@ -634,13 +634,10 @@ Template.vertical_section_block.helpers({
 
       var html = '<div class="' + initialClasses + '" dir="auto">' + content + '</div>';
 
-      if(!showDraft && adminMode()){ // show link analytics
-        var story = new Story(Session.get('story'));
-        var maxAnchorClicks= story.maxAnchorClicks();
+      if(!showDraft && analyticsMode()){ // show link analytics
 
-        if(!maxAnchorClicks){
-          return html;
-        }
+        console.log('laalalalalal')
+        var story = new Story(Session.get('story'));
 
         var heroContextId = this.contextBlocks[0];
 
@@ -648,13 +645,18 @@ Template.vertical_section_block.helpers({
         jqHtml.find('a').each(function(){
           let contextId = $(this).data('contextId');
           let anchorClicks = story.analytics.anchorClicks ? story.analytics.anchorClicks[contextId] || 0 : 0;
-          let activityLevel = Math.pow( anchorClicks / maxAnchorClicks , 0.5) * 100;
-          $(this).css({'background-color': 'hsl(155, ' + activityLevel + '%, 39%)'});
+
 
           if(contextId === heroContextId){
-            $(this).addClass('hero');
-            $(this).attr('title', 'This is a link to the hero card, so people dont need to click a link to see it.');
+            additionalClasses = ' hero';
+            additionalAttributes = "title = 'This is a link to the hero card, so people usually dont need to click a link to see it.'";
+          } else {
+            additionalClasses = '';
+            additionalAttributes = "";
           }
+
+          $(this).after("<span class='link-activity" + additionalClasses + "'" + additionalAttributes +">" + anchorClicks + "</span>");
+
 
         });
         return jqHtml[0].outerHTML;
@@ -701,7 +703,7 @@ Template.vertical_section_block.events({
     } else if (enclosingAnchor = $(e.target).closest('a')){
       var contextId = $(enclosingAnchor).data('contextId');
 
-      if(!adminMode()){ // this should check for analytics mode
+      if(!analyticsMode() && Session.get('read') && !Session.get('showDraft')){
         countAnchorClick(contextId);
       }
 
@@ -936,7 +938,16 @@ Template.minimap.helpers({
     var story = new Story(Session.get('story'));
     var activeHeartbeats = (this.activeHeartbeats || 0);
     var maxActiveHeartbeats = story.maxActiveHeartbeats();
-    return Math.pow( activeHeartbeats / maxActiveHeartbeats , 0.5) * 62; // 62 if the saturation that matches social color
+    return Math.pow( activeHeartbeats / maxActiveHeartbeats , 0.3) * 100;
+  },
+  activityMinutes (){
+    return Math.round(this.activeHeartbeats / 60);
+  },
+  activityLevelForLuminance (){
+    var story = new Story(Session.get('story'));
+    var activeHeartbeats = (this.activeHeartbeats || 0);
+    var maxActiveHeartbeats = story.maxActiveHeartbeats();
+    return 100 - Math.pow( activeHeartbeats / maxActiveHeartbeats , 0.2) * 45;
   }
 });
 

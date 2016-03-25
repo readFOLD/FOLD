@@ -784,13 +784,11 @@ article{
         .background-transition;
       }
       &.active {
-        &:not(.hero){
-          background-color: @action-color;
-          .background-transition;
-          color: white;
-          cursor: inherit;
-          pointer-events: none;
-        }
+        background-color: @action-color;
+        .background-transition;
+        color: white;
+        cursor: inherit;
+        pointer-events: none;
       }
       &.placeholder {
         background-color: @social-color;
@@ -805,15 +803,19 @@ article{
   }
 
   &.analytics-mode{
-    a.active {
-      color: black;
-      outline: 1px dotted @action-color;
-    }
-    a.hero {
-      &:not(:hover){
-        color: white;
-        pointer-events: auto;
-        background-color: @dark-color !important;
+    .link-activity{
+      .FFMarkWebBold;
+      font-size: 13px;
+      background-color: @action-color;
+      color: @white-color;
+      padding-top: 8px;
+
+      padding-bottom: 4.5px;
+      .padding-sides(8px);
+      margin-left: 5px;
+
+      &.hero{
+        background-color: @dark-color;
       }
     }
   }
@@ -3221,5 +3223,53 @@ div.loading-container {
   }
   .clear-search{
     display: none !important;
+  }
+}
+
+.read-analytics-ui{
+  z-index: 100;
+  color: @white-color;
+  background-color: @dark-color;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  height: 300px;
+  padding: 20px;
+  .text-and-controls{
+    float: left;
+  }
+  h3{
+    margin-top: 0;
+  }
+
+  p{
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: bold;
+  }
+  button{
+    font-weight: bold;
+    height: 30px;
+    width: 140px;
+    display: block;
+    margin-bottom: 10px;
+    &.card-data{
+      background-color: @social-color;
+    }
+    &.link-activity{
+      background-color: @action-color;
+    }
+  }
+
+  .minimap{
+    float: left;
+    position: static;
+  }
+  .close{
+    .size(30px);
+    background-color: transparent;
+    position: absolute;
+    top: 5px;
+    right: 5px;
   }
 }

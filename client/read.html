@@ -41,13 +41,44 @@
     </ol>
   </div>
 </template>
+
+<template name="read_analytics_ui">
+  <div class="read-analytics-ui">
+    <div class="text-and-controls">
+      <h3>Story stats</h3>
+      <p>{{analytics.views.byIP}} people viewed this story</p>
+      <p>{{analytics.reads.byIP}} of readers finished this story</p>
+      <p>This story has been favorited {{favoritedTotal}} times</p>
+      <br>
+      <h3>Analytics (beta)</h3>
+      <p>Which links are people clicking?</p>
+      {{#if linkActivityShown}}<button class="show-link-activity link-activity">Show link activity</button>{{else}}<button class="hide-link-activity link-activity">Hide link activity</button>{{/if}}
+      <p>Which cards are people spending the most time on?</p>
+      {{#if cardDataShown}}<button class="show-card-data card-data">Show card data</button>{{else}}<button class="hide-card-data card-data">Hide card data</button>{{/if}}
+    </div>
+    {{> minimap}}
+    <button class="close">{{> x_icon}}</button>
+  </div>
+</template>
+
 <template name="read_options">
   <div class="floating-story-buttons">
     {{#unless isPhone}}
       {{#unless showStorySandwichFooter}}
         {{#with reactiveStory}}
-          {{> share_buttons}}
-          {{> favorite_button}}
+          <!--TODO only if author-->
+          {{#if isAuthorOrAdmin}}
+            <button class="activate-analytics">Show Analytics</button>
+          {{/if}}
+          {{#if analyticsMode}}
+            {{#if isAuthorOrAdmin}}
+              {{> read_analytics_ui}}
+            {{else}}
+            {{/if}}
+          {{else}}
+            {{> share_buttons}}
+            {{> favorite_button}}
+          {{/if}}
           {{#if adminMode}}
             {{> editors_pick_button}}
           {{/if}}

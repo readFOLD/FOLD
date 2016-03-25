@@ -64,6 +64,16 @@ Handlebars.registerHelper("isAuthor", function() {
   return userId && userId === this.authorId;
 });
 
+Handlebars.registerHelper("isAuthorOrAdmin", function() {
+  var userId = Meteor.userId();
+  if (userId && userId === this.authorId){
+    return true
+  } else {
+    var user = Meteor.user();
+    return user && user.admin;
+  }
+});
+
 Handlebars.registerHelper("cardWidth", function() {
   return Session.get("cardWidth");
 });
@@ -189,5 +199,6 @@ Handlebars.registerHelper("menuOverlayShown", function () {
   return Session.get('menuOverlayShown');
 });
 
-
-
+Handlebars.registerHelper("analyticsMode", function () {
+  return window.analyticsMode();
+});

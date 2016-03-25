@@ -308,3 +308,15 @@ window.openMenuOverlay = function(){
 window.closeMenuOverlay = function(){
   return Session.set('menuOverlayShown', false);
 };
+
+window.analyticsMode = function(){
+  return adminMode();
+};
+
+window.activateAnalyticsMode = function(){
+  return Session.set('adminMode', true);
+};
+
+window.deactivateAnalyticsMode = function(){
+  return Session.set('adminMode', false);
+};
