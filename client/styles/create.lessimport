@@ -135,6 +135,23 @@ div.floating-story-buttons {
     color: @black-color;
   }
 
+  &.is-author{
+    .favorite-button {
+      width: @magic-styling-distance + 20px;
+      position: relative;
+      button{
+        text-align: left;
+        padding-left: 10px;
+      }
+      span{
+        font-size: 13px;
+        position: absolute;
+        top: 15px;
+        right: 10px;
+      }
+    }
+  }
+
 
   position: fixed;
   bottom: 0px;

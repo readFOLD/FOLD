@@ -322,7 +322,7 @@ window.deactivateAnalyticsMode = function(){
 };
 
 window.linkActivityShown = function () {
-  return window.analyticsMode() && !Session.get('hideLinkActivity');
+  return window.analyticsMode() && Session.get('showLinkActivity');
 };
 
 window.cardDataShown = function () {

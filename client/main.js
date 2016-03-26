@@ -884,12 +884,14 @@ Template.minimap.events({
       Session.set("metaview", true);
       trackEvent('Click minimap in create mode');
     } else {
-      notifyFeature('Zoom-out mode: coming soon!');
-      trackEvent('Click minimap in read mode');
+      if(!cardDataShown()){
+        notifyFeature('Zoom-out mode: coming soon!');
+        trackEvent('Click minimap in read mode');
+      }
     }
   },
   "click .vertical.block.activity-shown" (e, t) {
-    goToY(this.verticalIndex)
+    goToY(this.verticalIndex);
     e.stopPropagation();
   },
   "click .horizontal.block.activity-shown" (e, t) {
@@ -2547,10 +2549,10 @@ Template.read_options.events({
 
 Template.read_analytics_ui.events({
   'click .show-link-activity' () {
-    Session.set('hideLinkActivity', false);
+    Session.set('showLinkActivity', true);
   },
   'click .hide-link-activity' () {
-    Session.set('hideLinkActivity', true);
+    Session.set('showLinkActivity', false);
   },
   'click .show-card-data' () {
     Session.set('hideCardData', false);

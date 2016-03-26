@@ -45,7 +45,7 @@
 <template name="read_analytics_ui">
   <div class="read-analytics-ui">
     <div class="text-and-controls">
-      <h3>Analytics (beta)</h3>
+      <h3><span>Story Stats (beta)</span><span class="analytics-question-mark">?</span></h3>
       <p>{{analytics.views.byIP}} people viewed this story</p>
       <p>{{readPercentage}}% of these were reads</p>
       <br>
@@ -63,13 +63,13 @@
 </template>
 
 <template name="read_options">
-  <div class="floating-story-buttons">
+  <div class="floating-story-buttons {{#if isAuthor}}is-author{{/if}}">
     {{#unless isPhone}}
       {{#unless showStorySandwichFooter}}
         {{#with reactiveStory}}
           {{#if isAuthorOrAdmin}}
             {{#unless analyticsMode}}
-              <button title='Stats (beta)' class="activate-analytics">Story Stats</button>
+              <button title='Story Stats (beta)' class="activate-analytics">Story Stats</button>
             {{/unless}}
           {{/if}}
           {{#if analyticsMode}}

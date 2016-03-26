@@ -2408,6 +2408,9 @@ div.minimap {
     .background-transition;
     display: inline-block;
     background-color: @medium-color;
+    &.activity-shown{
+      cursor: pointer;
+    }
   }
 
   .vertical.block {
@@ -3251,6 +3254,8 @@ div.loading-container {
     margin-right: 40px;
   }
   h3{
+    position: relative;
+    display: inline-block;
     margin-top: 0;
     margin-bottom: 10px;
   }
@@ -3278,19 +3283,28 @@ div.loading-container {
 
   .minimap-section{
     float: left;
-    position: relative;
   }
   .minimap{
     position: static;
-    bottom: 0;
-    right: 0;
   }
   .close{
     .size(30px);
     margin-top: 0px;
     background-color: transparent;
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 15px;
+    right: 15px;
+  }
+  .analytics-question-mark{
+    display: inline-block;
+    text-align: center;
+    .size(20px);
+    background-color: @white-color;
+    color: @dark-color;
+    border-radius: 50%;
+    font-size: 14px;
+    position: absolute;
+    top: 0;
+    right: -30px;
   }
 }
