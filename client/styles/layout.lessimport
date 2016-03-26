@@ -2409,7 +2409,7 @@ div.minimap {
     .background-transition;
     display: inline-block;
     background-color: @medium-color;
-    &.activity-shown{
+    &.analytics-mode{
       cursor: pointer;
     }
   }
