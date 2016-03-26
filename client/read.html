@@ -45,18 +45,19 @@
 <template name="read_analytics_ui">
   <div class="read-analytics-ui">
     <div class="text-and-controls">
-      <h3>Story stats</h3>
-      <p>{{analytics.views.byIP}} people viewed this story</p>
-      <p>{{analytics.reads.byIP}} of readers finished this story</p>
-      <p>This story has been favorited {{favoritedTotal}} times</p>
-      <br>
       <h3>Analytics (beta)</h3>
+      <p>{{analytics.views.byIP}} people viewed this story</p>
+      <p>{{readPercentage}}% of these were reads</p>
+      <br>
       <p>Which links are people clicking?</p>
-      {{#if linkActivityShown}}<button class="show-link-activity link-activity">Show link activity</button>{{else}}<button class="hide-link-activity link-activity">Hide link activity</button>{{/if}}
+      {{#if linkActivityShown}}<button class="hide-link-activity link-activity">Hide link activity</button>{{else}}<button class="show-link-activity link-activity">Show link activity</button>{{/if}}
+      <br>
       <p>Which cards are people spending the most time on?</p>
-      {{#if cardDataShown}}<button class="show-card-data card-data">Show card data</button>{{else}}<button class="hide-card-data card-data">Hide card data</button>{{/if}}
+      {{#if cardDataShown}}<button class="hide-card-data card-data">Hide card data</button>{{else}}<button class="show-card-data card-data">Show card data</button>{{/if}}
     </div>
-    {{> minimap}}
+    <div class="minimap-section">
+      {{> minimap}}
+    </div>
     <button class="close">{{> x_icon}}</button>
   </div>
 </template>
@@ -66,9 +67,10 @@
     {{#unless isPhone}}
       {{#unless showStorySandwichFooter}}
         {{#with reactiveStory}}
-          <!--TODO only if author-->
           {{#if isAuthorOrAdmin}}
-            <button class="activate-analytics">Show Analytics</button>
+            {{#unless analyticsMode}}
+              <button title='Stats (beta)' class="activate-analytics">Story Stats</button>
+            {{/unless}}
           {{/if}}
           {{#if analyticsMode}}
             {{#if isAuthorOrAdmin}}

@@ -634,11 +634,9 @@ Template.vertical_section_block.helpers({
 
       var html = '<div class="' + initialClasses + '" dir="auto">' + content + '</div>';
 
-      if(!showDraft && analyticsMode()){ // show link analytics
+      if(!showDraft && linkActivityShown()){ // show link analytics
 
-        console.log('laalalalalal')
         var story = new Story(Session.get('story'));
-
         var heroContextId = this.contextBlocks[0];
 
         jqHtml = $(html);
@@ -889,6 +887,14 @@ Template.minimap.events({
       notifyFeature('Zoom-out mode: coming soon!');
       trackEvent('Click minimap in read mode');
     }
+  },
+  "click .vertical.block.activity-shown" (e, t) {
+    goToY(this.verticalIndex)
+    e.stopPropagation();
+  },
+  "click .horizontal.block.activity-shown" (e, t) {
+    goToXY(this.horizontalIndex, this.verticalIndex);
+    e.stopPropagation();
   }
 });
 
@@ -904,16 +910,18 @@ Template.minimap.helpers({
   },
   minimapLargeEnough () {
     // Ensure minimap height is greater than 0 and sections are at least 5 pixels tall
-    if (Session.get("minimapMaxHeight") <= 0 || (Session.get("minimapMaxHeight") / Session.get("horizontalSectionsMap").length < 5)) {
+    if (Session.get("minimapMaxHeight") <= 0 || ((Session.get("minimapMaxHeight") / Session.get("horizontalSectionsMap").length < 5) && !analyticsMode())) {
       return false;
     } else {
       return true;
     }
   },
   responsive () {
-    var maxHeight = Session.get("minimapMaxHeight");
-    var defaultSectionHeight = 17 + 5;  // Section height + margin-bottom
-    return (Session.get("horizontalSectionsMap").length * defaultSectionHeight >= maxHeight)
+    if(!analyticsMode()){
+      var maxHeight = Session.get("minimapMaxHeight");
+      var defaultSectionHeight = 17 + 5;  // Section height + margin-bottom
+      return (Session.get("horizontalSectionsMap").length * defaultSectionHeight >= maxHeight)
+    }
   },
   sectionHeight () {
     var maxHeight = Session.get("minimapMaxHeight");
@@ -932,7 +940,7 @@ Template.minimap.helpers({
     return (maxHeight / Session.get("horizontalSectionsMap").length) * 0.25;  // 25% of available space (33% of section)
   },
   showActivity (){
-    return adminMode();
+    return cardDataShown();
   },
   activityLevel (){
     var story = new Story(Session.get('story'));
@@ -2529,4 +2537,38 @@ Template.context_overlay.events({
 
 Template.loading_page.onRendered(function(){
   $(window).scrollTop(0);
+});
+
+Template.read_options.events({
+  'click .activate-analytics' () {
+    activateAnalyticsMode();
+  }
+});
+
+Template.read_analytics_ui.events({
+  'click .show-link-activity' () {
+    Session.set('hideLinkActivity', false);
+  },
+  'click .hide-link-activity' () {
+    Session.set('hideLinkActivity', true);
+  },
+  'click .show-card-data' () {
+    Session.set('hideCardData', false);
+  },
+  'click .hide-card-data' () {
+    Session.set('hideCardData', true);
+  },
+  'click .close' () {
+    deactivateAnalyticsMode();
+  },
+});
+
+Template.read_analytics_ui.helpers({
+  readPercentage () {
+    if(this.analyticsBeforeReads){
+      return Math.round(this.analytics.reads.byIP / (this.analytics.views.byIP - this.analyticsBeforeReads.views.byIP) * 100);
+    } else {
+      return Math.round(this.analytics.reads.byIP / this.analytics.views.byIP * 100);
+    }
+  }
 });

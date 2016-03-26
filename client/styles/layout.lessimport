@@ -2389,7 +2389,15 @@ div.minimap {
           background-color: @action-color;
         }
         &.activity-shown{
-          outline: 1px dotted @black-color;
+          position: relative;
+          &::after{
+            content: '';
+            .size(20%);
+            padding-bottom: 20%;
+            background-color: @dark-color;
+            border-radius: 50%;
+            .center-over-parent-div;
+          }
         }
       }
 
@@ -3229,44 +3237,57 @@ div.loading-container {
 .read-analytics-ui{
   z-index: 100;
   color: @white-color;
+  .FFMarkWebMedium;
   background-color: @dark-color;
   position: fixed;
+  font-size: 14px;
   right: 0;
   bottom: 0;
-  height: 300px;
-  padding: 20px;
+  min-height: 340px;
+  padding: 40px;
   .text-and-controls{
     float: left;
+    width: 240px;
+    margin-right: 40px;
   }
   h3{
     margin-top: 0;
+    margin-bottom: 10px;
   }
 
   p{
     margin-top: 0;
     margin-bottom: 0;
-    font-weight: bold;
   }
   button{
-    font-weight: bold;
     height: 30px;
     width: 140px;
     display: block;
-    margin-bottom: 10px;
-    &.card-data{
+    margin-top: 10px;
+    background-color: @white-color;
+    color: @dark-color;
+    &.hide-card-data{
       background-color: @social-color;
+      color: @white-color;
     }
-    &.link-activity{
+    &.hide-link-activity{
       background-color: @action-color;
+      color: @white-color;
     }
   }
 
-  .minimap{
+  .minimap-section{
     float: left;
+    position: relative;
+  }
+  .minimap{
     position: static;
+    bottom: 0;
+    right: 0;
   }
   .close{
     .size(30px);
+    margin-top: 0px;
     background-color: transparent;
     position: absolute;
     top: 5px;

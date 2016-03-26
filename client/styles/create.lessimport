@@ -142,6 +142,19 @@ div.floating-story-buttons {
 
 }
 
+.activate-analytics{
+  float: left;
+  height: 40px;
+  background-color: @dark-color;
+  color: @white-color;
+  margin-right: 20px;
+  font-size: 14px;
+  width: 120px;
+  &:hover{
+    background-color: @action-color;
+  }
+}
+
 .share-buttons{
   @height: 40px;
   height: @height;

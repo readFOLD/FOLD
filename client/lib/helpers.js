@@ -310,13 +310,21 @@ window.closeMenuOverlay = function(){
 };
 
 window.analyticsMode = function(){
-  return adminMode();
+  return Session.get('analyticsMode', true);
 };
 
 window.activateAnalyticsMode = function(){
-  return Session.set('adminMode', true);
+  return Session.set('analyticsMode', true);
 };
 
 window.deactivateAnalyticsMode = function(){
-  return Session.set('adminMode', false);
+  return Session.set('analyticsMode', false);
+};
+
+window.linkActivityShown = function () {
+  return window.analyticsMode() && !Session.get('hideLinkActivity');
+};
+
+window.cardDataShown = function () {
+  return window.analyticsMode() && !Session.get('hideCardData');
 };

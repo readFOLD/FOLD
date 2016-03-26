@@ -167,9 +167,10 @@ window.slideCurrentYIntoPlace = function(){
 
 window.goToXY = function(x, y) {
   if (y !== Session.get("currentY")) {
-    goToY(y);
+    goToY(y, {complete: goToX.bind(this, x)})
+  } else {
+    goToX(x);
   }
-  return goToX(x);
 };
 
 window.goToY = function(y, options) {

@@ -202,3 +202,11 @@ Handlebars.registerHelper("menuOverlayShown", function () {
 Handlebars.registerHelper("analyticsMode", function () {
   return window.analyticsMode();
 });
+
+Handlebars.registerHelper("linkActivityShown", function () {
+  return window.linkActivityShown();
+});
+
+Handlebars.registerHelper("cardDataShown", function () {
+  return window.cardDataShown();
+});
