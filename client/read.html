@@ -67,7 +67,8 @@
     {{#unless isPhone}}
       {{#unless showStorySandwichFooter}}
         {{#with reactiveStory}}
-          {{#if isAuthorOrAdmin}}
+          <!--{{#if isAuthorOrAdmin}}-->
+          {{#if adminMode}}
             {{#unless analyticsMode}}
               <button title='Story Stats (beta)' class="activate-analytics">Story Stats</button>
             {{/unless}}

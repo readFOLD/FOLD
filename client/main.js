@@ -958,7 +958,7 @@ Template.minimap.helpers({
   activityLevel (){
     var story = new Story(Session.get('story'));
     var activeHeartbeats = (this.activeHeartbeats || 0);
-    var maxActiveHeartbeats = story.maxActiveHeartbeats();
+    var maxActiveHeartbeats = (typeof this.horizontalIndex === 'number') ? story.maxActiveContextHeartbeats() : story.maxActiveNarrativeHeartbeats();
     return Math.pow( activeHeartbeats / maxActiveHeartbeats , 0.3) * 100;
   },
   showActivityMinutes (){
@@ -972,7 +972,7 @@ Template.minimap.helpers({
   activityLevelForLuminance (){
     var story = new Story(Session.get('story'));
     var activeHeartbeats = (this.activeHeartbeats || 0);
-    var maxActiveHeartbeats = story.maxActiveHeartbeats();
+    var maxActiveHeartbeats = this.horizontalIndex ? story.maxActiveContextHeartbeats() : story.maxActiveNarrativeHeartbeats();
     return 100 - Math.pow( activeHeartbeats / maxActiveHeartbeats , 0.2) * 45;
   }
 });

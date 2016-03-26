@@ -101,6 +101,22 @@ Story = (function() {
       .value()
   };
 
+  Story.prototype.maxActiveNarrativeHeartbeats = function(){
+    return _.chain(this.analytics.heartbeats.active)
+      .pick(_.pluck(this.verticalSections, '_id'))
+      .values()
+      .max()
+      .value()
+  };
+
+  Story.prototype.maxActiveContextHeartbeats = function(){
+    return _.chain(this.analytics.heartbeats.active)
+      .pick(this.contextBlockIds)
+      .values()
+      .max()
+      .value()
+  };
+
   Story.prototype.maxAnchorClicks = function(){
     if(!this.analytics.anchorClicks){
       return 0
