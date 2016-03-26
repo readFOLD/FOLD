@@ -2454,7 +2454,9 @@ Template.read.onRendered(function(){
 
     if(userActive){
       if(currentYId){
-        addActiveHeartbeat(currentYId);
+        if(!Session.get('contextOverlayId') && !hiddenContextShown()){
+          addActiveHeartbeat(currentYId);
+        }
 
         if(currentXId){ // can only truly have active context if have active narrative. currentXId may have a value when viewing header
           addActiveHeartbeat(currentXId);
