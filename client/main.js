@@ -417,7 +417,7 @@ Tracker.autorun(function(){
   var totalLength = story.verticalSections.length;
 
   if (typeof currentY === 'number'){
-    if((currentY + 1) >= totalLength * 0.67){
+    if((currentY + 1) >= totalLength * 0.66){
       Session.set('storyRead', id);
       console.log('read')
       Meteor.call('countStoryRead', id);
