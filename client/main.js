@@ -642,7 +642,13 @@ Template.vertical_section_block.helpers({
         jqHtml = $(html);
         jqHtml.find('a').each(function(){
           let contextId = $(this).data('contextId');
-          let anchorClicks = story.analytics.anchorClicks ? story.analytics.anchorClicks[contextId] || 0 : 0;
+          var haveFullData = story.firstPublishedAt > new Date('March 25, 2016') // this is when we started recording
+          if(haveFullData){
+            var anchorClicks = story.analytics.anchorClicks ? story.analytics.anchorClicks[contextId] || 0 : 0;
+          } else {
+            var anchorClicks = '--';
+          }
+
 
 
           if(contextId === heroContextId){
@@ -650,7 +656,7 @@ Template.vertical_section_block.helpers({
             additionalAttributes = "title = 'This is a link to the hero card, so people usually dont need to click a link to see it.'";
           } else {
             additionalClasses = '';
-            additionalAttributes = "";
+            additionalAttributes = haveFullData ? '' : "title = 'This data is only available for stories published after March 25, 2016.'";
           }
 
           $(this).after("<span class='link-activity" + additionalClasses + "'" + additionalAttributes +">" + anchorClicks + "</span>");
@@ -884,19 +890,21 @@ Template.minimap.events({
       Session.set("metaview", true);
       trackEvent('Click minimap in create mode');
     } else {
-      if(!cardDataShown()){
+      if(!analyticsMode()){
         notifyFeature('Zoom-out mode: coming soon!');
         trackEvent('Click minimap in read mode');
       }
     }
   },
-  "click .vertical.block.activity-shown" (e, t) {
-    goToY(this.verticalIndex);
-    e.stopPropagation();
+  "click .vertical.block" (e, t) {
+    if(analyticsMode()){
+      goToY(this.verticalIndex);
+    }
   },
-  "click .horizontal.block.activity-shown" (e, t) {
-    goToXY(this.horizontalIndex, this.verticalIndex);
-    e.stopPropagation();
+  "click .horizontal.block" (e, t) {
+    if(analyticsMode()){
+      goToXY(this.horizontalIndex, this.verticalIndex);
+    }
   }
 });
 
@@ -950,8 +958,13 @@ Template.minimap.helpers({
     var maxActiveHeartbeats = story.maxActiveHeartbeats();
     return Math.pow( activeHeartbeats / maxActiveHeartbeats , 0.3) * 100;
   },
+  showActivityMinutes (){
+    if(cardDataShown()){
+      return Session.get('story').firstPublishedAt > new Date('January 27, 2016'); // this is when we started recording card data
+    }
+  },
   activityMinutes (){
-    return Math.round(this.activeHeartbeats / 60);
+    return Math.round(this.activeHeartbeats / 60) || 0;
   },
   activityLevelForLuminance (){
     var story = new Story(Session.get('story'));
@@ -2555,10 +2568,10 @@ Template.read_analytics_ui.events({
     Session.set('showLinkActivity', false);
   },
   'click .show-card-data' () {
-    Session.set('hideCardData', false);
+    Session.set('showCardData', true);
   },
   'click .hide-card-data' () {
-    Session.set('hideCardData', true);
+    Session.set('showCardData', false);
   },
   'click .close' () {
     deactivateAnalyticsMode();

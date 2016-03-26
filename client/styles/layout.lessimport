@@ -805,6 +805,7 @@ article{
   &.analytics-mode{
     .link-activity{
       .FFMarkWebBold;
+      cursor: default;
       font-size: 13px;
       background-color: @action-color;
       color: @white-color;
@@ -3297,6 +3298,7 @@ div.loading-container {
   }
   .analytics-question-mark{
     display: inline-block;
+    cursor: default;
     text-align: center;
     .size(20px);
     background-color: @white-color;

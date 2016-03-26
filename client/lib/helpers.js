@@ -326,5 +326,5 @@ window.linkActivityShown = function () {
 };
 
 window.cardDataShown = function () {
-  return window.analyticsMode() && !Session.get('hideCardData');
+  return window.analyticsMode() && Session.get('showCardData');
 };
