@@ -801,6 +801,7 @@ Template.context_anchor_option.events = {
     temporaryAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
     temporaryAnchorElement.attr('data-context-type', this.type);
     temporaryAnchorElement.attr('data-context-source', this.source);
+    temporaryAnchorElement.attr('data-anchor-id', Random.id(8));
 
     temporaryAnchorElement.addClass('active'); // add active class because we go to this context and if we're already there it won't get the class
 

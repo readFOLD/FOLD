@@ -642,9 +642,10 @@ Template.vertical_section_block.helpers({
         jqHtml = $(html);
         jqHtml.find('a').each(function(){
           let contextId = $(this).data('contextId');
+          let anchorId = $(this).data('anchorId');
           var haveFullData = story.firstPublishedAt > new Date('March 25, 2016') // this is when we started recording
-          if(haveFullData){
-            var anchorClicks = story.analytics.anchorClicks ? story.analytics.anchorClicks[contextId] || 0 : 0;
+          if(haveFullData && story.analytics.anchorClicks){
+            var anchorClicks = story.analytics.anchorClicks[anchorId || contextId] || 0; // prefer anchor id if available. default to contextId for older stories
           } else {
             var anchorClicks = '--';
           }
@@ -706,9 +707,11 @@ Template.vertical_section_block.events({
       // do nothing
     } else if (enclosingAnchor = $(e.target).closest('a')){
       var contextId = $(enclosingAnchor).data('contextId');
+      var anchorId = $(enclosingAnchor).data('anchorId');
 
       if(!analyticsMode() && Session.get('read') && !Session.get('showDraft')){
-        countAnchorClick(contextId);
+        countAnchorClick(contextId); // record both, can sort it out later
+        countAnchorClick(anchorId);
       }
 
       e.preventDefault();

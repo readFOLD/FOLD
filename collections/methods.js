@@ -261,6 +261,7 @@ Meteor.methods({
           placeholderAnchorElement.attr('data-context-id', contextId); // set data attributes correctly
           placeholderAnchorElement.attr('data-context-type', contextBlock.type);
           placeholderAnchorElement.attr('data-context-source', contextBlock.source);
+          placeholderAnchorElement.attr('data-anchor-id', Random.id(8));
 
           placeholderAnchorElement.removeClass('placeholder'); // add active class because we go to this context and if we're already there it won't get the class
         }
