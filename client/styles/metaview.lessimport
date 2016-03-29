@@ -2,12 +2,13 @@
 
 .metaview {
   position: fixed;
+  overflow: scroll;
   padding-top: @metaview-padding;
   padding-left: @metaview-padding;
-  width: 100%;
-  height: 100%;
   background-color: rgba(0,0,0,0.9);
   z-index: 100;
+  min-height: 100%;
+  min-width: 100%;
 
   button.close {
    position: absolute;
@@ -18,27 +19,15 @@
   }
 }
 
-.placeholder-row {
-  height: 60px;
-  width: 80px;
-  background-color: @action-color;
-  margin-bottom: 5px;
-}
-
-.placeholder-block {
-  height: 40px;
-  width: 50px;
-  background-color: @action-color;
-}
 
 .cards {
-  position: fixed;
+
   margin: 0 auto;
   overflow: scroll;
-  height: calc(100% ~"-" @metaview-padding);
+  display: inline-block;
 
   .vertical-block, .horizontal-block {
-    cursor: pointer;
+    cursor: move;
     background-color: @medium-color;
     border: 2px solid transparent;
 
@@ -48,15 +37,24 @@
     }
   }
 
+  h4{
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+
+  p{
+    margin-top: 4px;
+  }
+
   .row {
-    display: block;
+    display: table;
     height: 100px;
     margin-bottom: 5px;
 
     .vertical-block {
       padding: 5px 3px;
       font-size: 10px;
-      height: 100px;
+      height: 100%;
       width: 160px;
       float: left;
       white-space: normal;      
@@ -68,22 +66,39 @@
     .horizontal-section {
       display: inline-block;
       min-width: 100px;
-      @height: 90px;
-      min-height: @height;
+      height: 90px;
       .horizontal-block {
         margin-top: 5px;
         margin-left: 5px;
-        height: @height;
+        height: 80px;
         width: 120px;
         display: inline-block;
         white-space: normal;      
         line-height: 14px;
         font-size: 12px;
         overflow: auto;
+        position: relative;
+
+        &.has-image{
+          .vertically-center-images;
+          text-align: center;
+          background-color: @dark-color;
+        }
+
+        background-position: center center;
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
 
         img {
-          width: 100%;
-          height: 100%;
+          width: auto;
+          max-width: 100%;
+          margin: auto;
+          vertical-align: middle;
+          display: inline-block;
+          max-height: 100%;
         }
       }
     }

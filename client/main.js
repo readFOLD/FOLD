@@ -809,9 +809,65 @@ var saveMetaviewOrdering = function() {
   Meteor.call('reorderStory', Session.get("storyId"), idMap, saveCallback);
 };
 
+var makeTransformScale = function(ratio){
+  return {
+      "-webkit-transform": 'scale(' + ratio + ')',
+    "-moz-transform": 'scale(' + ratio + ')',
+    "-ms-transform": 'scale(' + ratio + ')',
+    "-o-transform": 'scale(' + ratio + ')',
+    "transform": 'scale(' + ratio + ')'
+  }
+};
+
+
+window.metaviewScale = 1;
+
+var resizeMetaview = function(){
+  var metaviewDiv = $('.cards');
+
+  var heightRatio =  (metaviewDiv.height()) / (Session.get('windowHeight') - 100);
+  var widthRatio =  (metaviewDiv.width()) / (Session.get('windowWidth') - 100);
+
+  metaviewScale = 1;
+
+  var doAtLeastOnce = true;
+
+  while(doAtLeastOnce || (heightRatio >= 1 || widthRatio >= 1) && metaviewScale >= 0.01){
+    doAtLeastOnce = false;
+    window.vBlockHeight = metaviewScale * 100;
+    window.vBlockWidth = metaviewScale * 160;
+    window.hBlockMargin = metaviewScale * 5;
+    window.hBlockHeight = metaviewScale * 90;
+    window.hBlockWidth = metaviewScale * 120;
+    window.hBlockWidth = metaviewScale * 120;
+
+    $('.metaview .row').css({height: vBlockHeight + 'px'});
+    $('.metaview .vertical-block').css({width: vBlockWidth + 'px', height: vBlockHeight + 'px'});
+    $('.metaview .horizontal-block').css({width: hBlockWidth + 'px', 'margin-top': hBlockMargin + 'px', 'margin-left': hBlockMargin + 'px', 'height': hBlockHeight + 'px'});
+    $('.metaview .horizontal-section').css({'height': hBlockHeight + 'px'});
+
+    heightRatio = (metaviewDiv.height()) / (Session.get('windowHeight') - 100);
+    widthRatio = (metaviewDiv.width()) / (Session.get('windowWidth') - 100);
+    metaviewScale *= 0.9;
+  }
+
+};
+
+Template.metaview.onRendered(function(){
+  Meteor.setTimeout(() => {
+    this.autorun(()=> {
+      resizeMetaview();
+    })
+  }, 100);
+});
+
+
 Template.metaview.onRendered(function() {
   document.body.style.overflow = 'hidden'; // prevent document scroll while in metaview
   this.$(".sortable-rows").sortable({
+    start: function(e, ui){
+      ui.placeholder.height(ui.item.height());
+    },
     stop: saveMetaviewOrdering
   });
 
@@ -819,6 +875,12 @@ Template.metaview.onRendered(function() {
 
   this.$(".sortable-blocks").sortable({
     connectWith: ".sortable-blocks",
+    start: function(e, ui){
+      ui.placeholder.css({'margin-top': ui.item.css('margin-top')});
+      ui.placeholder.css({'margin-left': ui.item.css('margin-left')});
+      ui.placeholder.width(ui.item.width());
+      ui.placeholder.height(ui.item.height());
+    },
     remove (e, ui) { // when a context block is removed from one vertical section and placed in another
       removingContext = true;
       var removedContextId = ui.item.data('id');

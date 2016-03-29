@@ -693,9 +693,7 @@
           </div>
           <ul class="horizontal-section sortable-blocks ui-state-default">
             {{#each horizontalSections}}
-              <li class="horizontal-block ui-state-default" data-id="{{_id}}">
                 {{> metaview_context_block}}
-              </li>
             {{/each}}
           </ul>
         </li>
@@ -708,6 +706,9 @@
 </template>
 
 <template name="metaview_context_block">
+  <li class="horizontal-block ui-state-default {{#if image}}has-image{{/if}} {{#if video}}has-image{{/if}} {{#if gif}}has-image{{/if}}
+    {{#if gif}}has-image{{/if}} {{#if map}}has-image{{/if}}"  style='{{#if link}}background-image: url("{{thumbnailUrl}}"){{/if}}' data-id="{{_id}}">
+
   {{#if video}}
     <img src="{{thumbnailUrl}}"/>
   {{/if}}
@@ -735,12 +736,12 @@
 
 
   {{#if link}}
-    {{#if thumbnailUrl}}
-     <img src="{{thumbnailUrl}}" />
-    {{else}}
+    {{#unless thumbnailUrl}}
       {{title}}
-    {{/if}}
+    {{/unless}}
   {{/if}}
+  </li>
+
 </template>
 
 <template name="minimap">
