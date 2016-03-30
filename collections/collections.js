@@ -157,7 +157,9 @@ Story = (function() {
         var headerAtmosphereName = headerAtmosphereMap[image];
 
         if (!headerAtmosphereName){
-          throw new Meteor.Error('Header atmosphere not found');
+          Meteor.defer(function(){
+            throw new Meteor.Error('Header atmosphere not found');
+          })
         }
 
         url = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_north,h_' + maxHeight + ',w_' + maxWidth + '/static/header_atmosphere_' + headerAtmosphereName
@@ -1489,7 +1491,9 @@ LinkBlock = (function (_super) {
     var atmosphereName = atmosphereMap[this.reference.thumbnailFallback];
 
     if (!atmosphereName){
-      throw new Meteor.Error('Header atmosphere not found');
+      Meteor.defer(function(){
+        throw new Meteor.Error('Header atmosphere not found');
+      })
     }
 
     return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_north,h_' + maxHeight + ',w_' + maxWidth + '/static/header_atmosphere_' + atmosphereName
