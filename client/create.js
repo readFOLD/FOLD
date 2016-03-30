@@ -757,6 +757,10 @@ Template.create_horizontal_section_block.events({
   'click .remix-button' (d, t) {
     return Session.set('newHorizontalDataType', 'remix');
   },
+  'click .add-action-button' (d, t) {
+    addContext({type: 'action'});
+    hideNewHorizontalUI();
+  },
   'mouseenter .horizontal-narrative-section' () {
     document.body.style.overflow = 'hidden';
   },

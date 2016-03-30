@@ -524,6 +524,9 @@ typeHelpers = {
   },
   link () {
     return this.type === "link";
+  },
+  action () {
+    return this.type === "action";
   }
 };
 
@@ -1439,6 +1442,23 @@ Template.display_video_section.events({
 Template.display_twitter_section.helpers(horizontalBlockHelpers);
 
 Template.display_map_section.helpers(horizontalBlockHelpers);
+
+Template.display_action_section.helpers(horizontalBlockHelpers);
+
+Template.display_action_section.events({
+  'click a'  (e, t) {
+    if (!Session.get('read') && !$(e.target).is('input')) {
+      e.preventDefault();
+      return false
+    }
+    var url = e.currentTarget.href;
+    countContextInteraction(this._id);
+    trackEvent('Click action button in action card', {
+      label: this.actionButtonText(),
+      url: url
+    })
+  }
+})
 
 Template.display_link_section.helpers(horizontalBlockHelpers);
 Template.display_link_section.onCreated(function(){

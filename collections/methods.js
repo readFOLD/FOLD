@@ -371,7 +371,7 @@ Meteor.methods({
     check(content, String);
     return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"override.description": content.replace(/\n/g, "") }});
   },
-  editLinkThumbnail (horizontalId, cloudinaryImageInfo) {
+  editLinkThumbnail (horizontalId, cloudinaryImageInfo) { // also used for action card
     check(horizontalId, String);
     check(cloudinaryImageInfo, Object);
     check(cloudinaryImageInfo.id, String);
@@ -385,6 +385,26 @@ Meteor.methods({
       "override.thumbnailHeight": cloudinaryImageInfo.height,
       "override.thumbnailFileExtension": cloudinaryImageInfo.fileExtension
     }});
+  },
+  editActionTitle (horizontalId, content) {
+    check(horizontalId, String);
+    check(content, String);
+    return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"reference.title": content.replace(/\n/g, "") }});
+  },
+  editActionDescription (horizontalId, content) {
+    check(horizontalId, String);
+    check(content, String);
+    return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"reference.description": content.replace(/\n/g, "") }});
+  },
+  editActionButtonText (horizontalId, content) {
+    check(horizontalId, String);
+    check(content, String);
+    return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"reference.buttonText": content.replace(/\n/g, "") }});
+  },
+  editActionButtonUrl (horizontalId, content) {
+    check(horizontalId, String);
+    check(content, String);
+    return updateContextBlocks.call(this, {"_id": horizontalId }, {"$set": {"reference.buttonUrl": content.replace(/\n/g, "") }});
   },
   reorderStory (storyId, idMap) {
     check(storyId, String);

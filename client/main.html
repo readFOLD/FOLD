@@ -341,6 +341,13 @@
           {{> display_link_section}}
         {{/if}}
       {{/if}}
+      {{#if action}}
+        {{#unless read}}
+          {{> create_action_section}}
+        {{else}}
+          {{> display_action_section}}
+        {{/unless}}
+      {{/if}}
       {{else}}
         {{> display_broken_section}}
       {{/if}}
@@ -571,6 +578,21 @@
     {{/if}}
     {{#if editThumbnailPrompt}}
       <input type="file" accept="image/*" class="image-upload {{#if uploadingThumbnail}}uploading{{/if}}">
+    {{/if}}
+  </div>
+  {{#unless read}}
+    {{> horizontal_section_edit_delete}}
+  {{/unless}}
+</template>
+
+<template name="display_action_section">
+  <div class="display-context-section action-section {{#if isFocused}}focused{{/if}}">
+    <div class="title">{{title}}</div>
+    <div class="description {{#unless actionDescription}}empty{{/unless}}">{{actionDescription}}</div>
+    <a href="{{actionButtonUrl}}" target="_blank"><button>{{actionButtonText}}</button></a>
+    {{#if thumbnailUrl}}
+      <div class="thumbnail" style='background-image: url("{{thumbnailUrl}}")'>
+      </div>
     {{/if}}
   </div>
   {{#unless read}}

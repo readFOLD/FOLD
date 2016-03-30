@@ -680,6 +680,84 @@ Template.create_text_section.events({
   }
 });
 
+
+
+Template.create_action_section.onCreated(function(){
+  this.editingThumbnail = new ReactiveVar();
+  this.uploadingThumbnail = new ReactiveVar();
+});
+Template.create_action_section.helpers({
+  uploadingThumbnail (){
+    return Template.instance().uploadingThumbnail.get();
+  }
+});
+Template.create_action_section.events({
+  'blur textarea.title' (e,t){
+    Session.set('saveState', 'saving');
+    Meteor.call('editActionTitle', this._id, t.$('textarea.title').val(), (err, result) => {
+      saveCallback(err, result)
+    });
+  },
+  'blur textarea.description' (e,t){
+    Session.set('saveState', 'saving');
+    Meteor.call('editActionDescription', this._id, t.$('textarea.description').val(), (err, result) => {
+      saveCallback(err, result)
+    });
+  },
+  'blur textarea.button-text' (e,t){
+    Session.set('saveState', 'saving');
+    Meteor.call('editActionButtonText', this._id, t.$('textarea.button-text').val(), (err, result) => {
+      saveCallback(err, result)
+    });
+  },
+  'blur textarea.button-url' (e,t){
+    Session.set('saveState', 'saving');
+    Meteor.call('editActionButtonUrl', this._id, t.$('textarea.button-url').val(), (err, result) => {
+      saveCallback(err, result)
+    });
+  },
+  "click input[type=file]" (d, template) {
+    return template.editingThumbnail.set(true);
+  },
+  "change input[type=file]" (e, template){
+    var finish = function(){
+      template.uploadingThumbnail.set(false);
+      return template.editingThumbnail.set(false);
+    };
+
+    var file = _.first(e.target.files);
+    if (file) {
+      if(file.size > CLOUDINARY_FILE_SIZE){
+        notifyImageSizeError();
+        return finish()
+      }
+      template.uploadingThumbnail.set(true);
+      Cloudinary.upload([file], {}, (err, doc) => {
+        if(err){
+          var input = template.$('input[type=file]');
+          input.val(null);
+          input.change();
+          saveCallback(err);
+          return finish();
+        } else {
+          var cloudinaryImageInfo = {
+            id: doc.public_id,
+            fileExtension: doc.format,
+            width: doc.width,
+            height: doc.height
+          };
+          Meteor.call('editLinkThumbnail', this._id, cloudinaryImageInfo, (err, result) => {
+            saveCallback(err, result);
+            return finish()
+          });
+        }
+      })
+    } else {
+      return finish()
+    }
+  }
+});
+
 Template.search_form.events({
   'change, keydown' (){
     searchDep.changed();

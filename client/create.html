@@ -150,6 +150,11 @@
       <button class='remix-button {{#if remix}}active{{/if}}'>
         {{> remix_icon }}
       </button>
+      {{#if adminMode}}
+        <button class='add-action-button'>
+          Add Action
+        </button>
+      {{/if}}
     </div>
     {{#if addingContext}}
       {{#if type}}
@@ -586,6 +591,33 @@
       </button>
     {{/if}}
   </div>
+</template>
+
+<template name="create_action_section">
+  <div class="display-context-section create action-section {{#if isFocused}}focused{{/if}}">
+    <label>Title</label>
+    <textarea class="title">{{title}}</textarea>
+    <label>Description</label>
+    <textarea class="description " rows="5">{{actionDescription}}</textarea>
+
+    <label>Button Text</label>
+    <textarea class="button-text">{{actionButtonText}}</textarea>
+
+    <label>Button Url</label>
+    <textarea class="button-url">{{actionButtonUrl}}</textarea>
+
+
+    {{#if thumbnailUrl}}
+      <div class="thumbnail" style='background-image: url("{{thumbnailUrl}}")'>
+      </div>
+    {{/if}}
+
+    <input type="file" accept="image/*" class="image-upload {{#if uploadingThumbnail}}uploading{{/if}}">
+
+  </div>
+  {{#unless read}}
+    {{> horizontal_section_edit_delete}}
+  {{/unless}}
 </template>
 
 <template name="horizontal_section_edit_delete">

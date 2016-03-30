@@ -1579,6 +1579,53 @@ NewsBlock = (function (_super) {
 })(ContextBlock);
 
 
+
+ActionBlock = (function (_super) {
+  __extends(ActionBlock, _super);
+
+  function ActionBlock(doc) {
+    ActionBlock.__super__.constructor.call(this, doc);
+    this.type = 'action';
+  }
+
+  ActionBlock.prototype.title = function () {
+    return this.reference.title;
+  };
+
+  ActionBlock.prototype.actionDescription = function () {
+    return this.reference.description || '';
+  };
+
+  ActionBlock.prototype.thumbnailUrl = function () {
+    if(!this.override.thumbnailId){
+      return
+    }
+    var url;
+    url = '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_center,h_130,w_520/' + this.override.thumbnailId;
+
+    if(this.override.thumbnailFileExtension === 'gif'){
+      url += '.jpg'
+    }
+
+    return url
+  };
+
+  ActionBlock.prototype.actionButtonText = function () {
+    return this.reference.buttonText;
+  };
+
+  ActionBlock.prototype.actionButtonUrl = function () {
+    return this.reference.buttonUrl;
+  };
+
+  ActionBlock.prototype.anchorMenuSnippet = function () {
+    return this.title();
+  };
+
+  return ActionBlock;
+
+})(ContextBlock);
+
 Schema.ContextReferenceProfile = new SimpleSchema({
   id: {
     type: String,
@@ -1761,6 +1808,7 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   embedlyType: { type: String, optional: true },
   imageOnLeft: { type: Boolean, optional: true },
 
+
   // Rich or Extract
   html: { type: String, optional: true },
 
@@ -1803,6 +1851,9 @@ Schema.ContextReferenceProfile = new SimpleSchema({
     optional: true
   },
 
+  // Action
+  buttonText: { type: String, optional: true },
+  buttonUrl: { type: String, optional: true },
 
 });
 
