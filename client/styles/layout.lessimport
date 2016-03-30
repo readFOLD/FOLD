@@ -1084,6 +1084,7 @@ div.vertical-narrative {
   width: 400px;
   &.fixed {
     position: fixed;
+    -webkit-backface-visibility: hidden; // prevents image jigglin'
     top: 334px;
   }
 
