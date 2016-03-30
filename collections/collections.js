@@ -1463,8 +1463,9 @@ LinkBlock = (function (_super) {
   };
 
   LinkBlock.prototype.thumbnailFallback = function () {
-
-
+    if(!this.reference.thumbnailFallback){
+      return
+    }
 
     var maxWidth = 2048; // make it like the header images
     var maxHeight = 350; // make it like the header images
