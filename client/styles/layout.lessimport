@@ -861,6 +861,10 @@ article{
     padding: 0 15px;
   }
 
+  section{
+    line-height: 0; // fix for .content as an inline-block
+  }
+
   div.vertical-nav-container {
     position: absolute;
     top: 24px;
@@ -891,6 +895,8 @@ article{
   div.content {
     overflow: hidden;
     word-wrap: break-word;
+    display: inline-block;
+    width: 100%;
     .content-font;
     min-height: @normalContentHeight + @titleHeight + @titleMarginBottom;
     &.minimized {

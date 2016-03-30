@@ -190,9 +190,16 @@ var matchBlankAnchors = /<a href="javascript:void\(0\);">(.*?)<\/a>/gm; // match
 
 cleanVerticalSectionContent = function(html) {
 
+  var preClean = html // this fixes issues with line-breaks at the edge of other tags
+    .replace(new RegExp('<br />', 'g'), '<br>') // just in case
+    .replace(new RegExp('<br></strong>', 'g'), '</strong><br>')
+    .replace(new RegExp('<br></em>', 'g'), '</em><br>')
+    .replace(new RegExp('<br></u>', 'g'), '</u><br>')
+    .replace(new RegExp('<br></b>', 'g'), '</b><br>')
+    .replace(new RegExp('<br></i>', 'g'), '</i><br>');
 
-  var initialClean = $.htmlClean(html, _.extend({}, _.omit(cleanHtmlOptions, 'allowedTags'), {allowEmpty: ['div']})); // do all cleaning except tag removal. allowEmpty means <div><br></div> turns into <div></div> instead of being deleted entirely
-  
+  var initialClean = $.htmlClean(preClean, _.extend({}, _.omit(cleanHtmlOptions, 'allowedTags'), {allowEmpty: ['div']})); // do all cleaning except tag removal. allowEmpty means <div><br></div> turns into <div></div> instead of being deleted entirely
+
   var linebreakClean = initialClean
     .replace(new RegExp('<br />', 'g'), '<br>')
     .replace(new RegExp('<div><br></div>', 'g'), '<br>')
