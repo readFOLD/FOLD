@@ -896,6 +896,9 @@ article{
     overflow: hidden;
     word-wrap: break-word;
     display: inline-block;
+    &:empty{
+      display: block;
+    }
     width: 100%;
     .content-font;
     min-height: @normalContentHeight + @titleHeight + @titleMarginBottom;
