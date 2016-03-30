@@ -150,7 +150,7 @@ window.getVerticalHeights = function() {
   if(Meteor.Device.isPhone()){
     offset = constants.readModeOffset + $('.title-overlay').height();
   } else {
-    offset = Session.get('read') ? constants.readModeOffset : constants.readModeOffset + constants.verticalSpacing;
+    offset = constants.readModeOffset;
   }
   verticalHeights = [offset];
   sum = offset;
