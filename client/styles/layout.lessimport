@@ -1602,6 +1602,7 @@ div.horizontal-context {
 
   &.fixed, &.sandwich-mode {
     position: fixed;
+    -webkit-backface-visibility: hidden; // prevents image jigglin'
     opacity: 1;
     margin-top: @horizontal-context-margin-top;
     top: @horizontal-context-top;
@@ -2335,6 +2336,7 @@ div.horizontal-context {
 div.minimap {
   .background-transition;
   position: fixed;
+  -webkit-backface-visibility: hidden; // prevents image jigglin'
   overflow: hidden;
   z-index: 60;
   right: @minimap-right-buffer;
@@ -2423,113 +2425,6 @@ div.minimap {
     height: 76.47%;
     width: 17px * 0.7647 * 1.53333;
     margin-left: 3px;
-  }
-}
-
-@border-left: calc(50% ~"-" 0.5px);
-@border-bottom: 50%;
-
-
-.vertical-marker-row{
-  display:table-row;
-  height: 10px;
-  margin: auto;
-  width: 100%;
-}
-
-.vertical-marker-cell{
-  display: table-cell;
-  width: 100%;
-  vertical-align: middle;
-  text-align: center;
-}
-
-@marker-width: 9px;
-@marker-height: 5px;
-
-.vertical-marker{
-  width: @marker-width;
-  margin: auto;
-  height: @marker-height;
-  background-color: @medium-color;
-  &.selected{
-    background-color: @action-color;
-  }
-}
-
-.mobile-minimap-horizontal{
-  position: fixed;
-  background-color: @background-color;
-  bottom:0;
-  right:0;
-  z-index: 22;
-  .box-shadow(0px -3px 8px 0px rgba(0,0,0,0.2));
-  &:after {
-    content:"";
-    position: absolute;
-    z-index: -1;
-    left: 0;
-    right: 0;
-    bottom: @border-bottom;
-    border-bottom: 1px solid @medium-color;
-  }
-}
-
-.mobile-minimap-horizontal-table{
-  .size-to-fit;
-  display: table;
-  bottom: 0px;
-  right: 0px;
-}
-
-
-.horizontal-marker-row{
-  height: 100%;
-  display: table-row;
-}
-
-.horizontal-marker-cell{
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-}
-
-.horizontal-marker{
-  width: @marker-width;
-  margin: auto;
-  height: @marker-height;
-  background-color: @medium-color;
-  &.selected{
-    background-color: @action-color;
-  }
-}
-
-
-.mobile-minimap-corner{
-  position: fixed;
-  z-index: 24;
-  background-color: @background-color;
-  bottom: 0;
-  left: 0;
-  &:before { // complete vertical line
-    content:"";
-    position: absolute;
-    z-index: -1;
-    left: @border-left;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    border-left: 1px solid @medium-color;
-  }
-  &:after { // complete horizontal line
-    content:"";
-    position: absolute;
-    z-index: -1;
-    left: @border-left;
-    right: 0;
-    top: 0;
-    bottom: @border-bottom;
-    border-bottom: 1px solid @medium-color;
   }
 }
 

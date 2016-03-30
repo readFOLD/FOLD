@@ -154,6 +154,7 @@ div.floating-story-buttons {
 
 
   position: fixed;
+  -webkit-backface-visibility: hidden; // prevents image jigglin'
   bottom: 0px;
   right: 0px;
 
@@ -231,6 +232,7 @@ div.floating-story-buttons {
     }
   }
   position: fixed;
+  -webkit-backface-visibility: hidden; // prevents image jigglin'
   bottom: 0px;
   right: 0px;
 }
@@ -243,7 +245,6 @@ div.floating-story-buttons {
   button{
     width: 85px;
   }
-  position: fixed;
   bottom: 0px;
   left: 0px;
 }
@@ -253,7 +254,6 @@ div.floating-story-buttons {
   .publish-story{
     width: 140px;
   }
-  position: fixed;
   bottom: 0px;
   right: 0px;
 
@@ -364,6 +364,8 @@ div.title-overlay {
 
   &.fixed, &.sandwich-mode {
     position: fixed;
+    -webkit-backface-visibility: hidden; // prevents image jigglin'
+
     z-index: 30;
     height: @ending-height;
     width: 100%;
