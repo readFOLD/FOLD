@@ -367,14 +367,26 @@ Template.vertical_section_block.events({
   },
   'blur .content[contenteditable]' : saveVerticalSectionContent,
   'keyup .content[contenteditable]' : throttledSaveVerticalSectionContent,
-  'paste .fold-editable' (e) {
+  'paste .fold-editable' (e, t) {
     var clipboardData, html;
     e.preventDefault();
     clipboardData = (e.originalEvent || e).clipboardData;
     if (!clipboardData){return}
     html = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
 
-    document.execCommand('insertHTML', false, window.cleanVerticalSectionContent(html));
+    var cleanedHtml = window.cleanVerticalSectionContent(html);
+
+    jqHtml = $('<div>' + cleanedHtml + '</div>');
+    jqHtml.find('a').each(function(){
+      let contextId = $(this).data('contextId');
+
+      if(!_.contains(t.data.contextBlocks, contextId)){ // if this link isn't to a context card in this row
+        $(this).contents().unwrap();
+      }
+    });
+    var htmlToPaste = jqHtml.html();
+
+    document.execCommand('insertHTML', false, htmlToPaste);
     trackEvent('Paste into fold-editable area');
   },
   'drop' (e){
