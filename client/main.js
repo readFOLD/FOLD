@@ -316,7 +316,16 @@ window.updateCurrentY = function() {
   }
 };
 
-window.throttledScrollUpdate = _.throttle(window.updateCurrentY, 20);
+var updateSlow = _.throttle(window.updateCurrentY, 20);
+var updateFast = _.throttle(window.updateCurrentY, 1);
+
+window.throttledScrollUpdate = function(){
+  if(scrollPauseArmed){
+    updateFast();
+  } else {
+    updateSlow();
+  }
+};
 
 
 Tracker.autorun(function(){
