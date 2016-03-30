@@ -212,22 +212,20 @@ window.enterPress = function(e){
   return e.keyCode === 13
 };
 
-window.trackingInfoFromPage = function () {
+Tracker.autorun(function(){
   var currentRoute = Router.current();
-  var info = {
-    currentRoutePath: window.location.pathname
-  };
+  var info = {};
   if(currentRoute && currentRoute.route){
     _.extend(info, {
       currentRouteName: currentRoute.route.getName()
     })
   }
-  return info
-};
+  window.trackingInfoFromPage = info;
+});
 
 window.trackEvent = function(){
   arguments[1] = arguments[1] || {};
-  _.extend(arguments[1], trackingInfoFromPage());
+  _.extend(arguments[1], trackingInfoFromPage, { currentRoutePath: window.location.pathname });
   analytics.track.apply(this, arguments);
 };
 
