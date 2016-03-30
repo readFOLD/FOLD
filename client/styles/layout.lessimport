@@ -1773,6 +1773,7 @@ div.horizontal-context {
       .close{
         right: 20px;
         position: absolute;
+        background-color: transparent;
         padding: 0;
         @media @mobile{
           top: 20px;
