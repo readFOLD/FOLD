@@ -1249,22 +1249,23 @@ Template.horizontal_section_block.onRendered(function(){
   //lastIndex = ((_ref = Session.get("horizontalSectionsMap")[this.data.verticalIndex]) != null ? _ref.horizontal.length : void 0) - 1;
   //var isLast = ((this.data.index === lastIndex) && (lastIndex > 0));
 
-  this.styleObserver = new MutationObserver((mutations) => {
-    mutations.forEach((mutationRecord) => {
-      var oldLeft = mutationRecord.oldValue.match(/left\:\W([\-?\d+]+)/)[1];
-      var newLeft = this.firstNode.style.left.match(/([\-?\d+]+)/)[1];
+  if(typeof MutationObserver !== undefined){
+    this.styleObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutationRecord) => {
+        var oldLeft = mutationRecord.oldValue.match(/left\:\W([\-?\d+]+)/)[1];
+        var newLeft = this.firstNode.style.left.match(/([\-?\d+]+)/)[1];
 
-      if ( (oldLeft < 0 && newLeft > 300) || (oldLeft > 300 && newLeft < 0) ){ // if it flips from negative to positive
-        $(this.firstNode).addClass('hide-behind');
-        Meteor.setTimeout(() => {
-          $(this.firstNode).removeClass('hide-behind');
-        }, 200); // this number should be as long as the .left-transition in the css
-      }
+        if ( (oldLeft < 0 && newLeft > 300) || (oldLeft > 300 && newLeft < 0) ){ // if it flips from negative to positive
+          $(this.firstNode).addClass('hide-behind');
+          Meteor.setTimeout(() => {
+            $(this.firstNode).removeClass('hide-behind');
+          }, 200); // this number should be as long as the .left-transition in the css
+        }
+      });
     });
-  });
 
-  this.styleObserver.observe(this.firstNode, { attributes : true, attributeFilter : ['style'], attributeOldValue: true })
-
+    this.styleObserver.observe(this.firstNode, { attributes : true, attributeFilter : ['style'], attributeOldValue: true })
+  }
 });
 
 Template.horizontal_section_block.onDestroyed(function(){
