@@ -476,6 +476,10 @@ Template.create_link_section.onCreated(function() {
           thumbnailHeight: result.thumbnail_height,
           embedlyType: result.type
         });
+
+        if(!newObj.reference.thumbnailUrl){
+          newObj.reference.thumbnailFallback = _.random(1,13).toString();
+        }
         return newObj
       };
 

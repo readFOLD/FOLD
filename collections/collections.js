@@ -1459,7 +1459,39 @@ LinkBlock = (function (_super) {
   };
 
   LinkBlock.prototype.thumbnailUrl = function () {
-    return this.thumbnailOverrideUrl() || this.reference.thumbnailUrl || '//res.cloudinary.com/fold/image/upload/v1/static/LINK_SQUARE.svg';
+    return this.thumbnailOverrideUrl() || this.reference.thumbnailUrl || this.thumbnailFallback() || '//res.cloudinary.com/fold/image/upload/v1/static/LINK_SQUARE.svg';
+  };
+
+  LinkBlock.prototype.thumbnailFallback = function () {
+
+
+
+    var maxWidth = 2048; // make it like the header images
+    var maxHeight = 350; // make it like the header images
+
+    var atmosphereMap = {
+      1: "SAUCERS",
+      2: "OCEAN",
+      3: "FLOWERS",
+      4: "BUILDING",
+      5: "LIGHTNING",
+      6: "DANCER",
+      7: "CUBES",
+      8: "COMPUTER",
+      9: "MARSH",
+      10: "RINGS",
+      11: "MOTH",
+      12: "MOUNTAINS",
+      13: "AERIAL"
+    };
+
+    var atmosphereName = atmosphereMap[this.reference.thumbnailFallback];
+
+    if (!atmosphereName){
+      throw new Meteor.Error('Header atmosphere not found');
+    }
+
+    return '//res.cloudinary.com/' + Meteor.settings['public'].CLOUDINARY_CLOUD_NAME + '/image/upload/c_lfill,g_north,h_' + maxHeight + ',w_' + maxWidth + '/static/header_atmosphere_' + atmosphereName
   };
 
   LinkBlock.prototype.imageOnLeft = function () {
@@ -1717,6 +1749,7 @@ Schema.ContextReferenceProfile = new SimpleSchema({
   // Link
   title: { type: String, optional: true },
   thumbnailUrl: { type: String, optional: true },
+  thumbnailFallback: { type: String, optional: true },
   url: { type: String, optional: true },
   originalUrl: { type: String, optional: true },
   providerName: { type: String, optional: true },
