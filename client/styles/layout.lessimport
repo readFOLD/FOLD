@@ -1685,11 +1685,32 @@ div.horizontal-context {
     .hidden-context-overlay{
       background-color: @light-transparent-color;
       position: absolute;
+      cursor: pointer;
       z-index: -2;
       top: 0;
       right: 0;
       left: 0;
       bottom: 0;
+      .close{
+        right: 20px;
+        position: absolute;
+        padding: 0;
+        @media @mobile{
+          top: 20px;
+        }
+
+        @media @not-mobile{
+          top: 60px;
+          &.embed-mode{
+            top: 20px;
+          }
+        }
+
+        .size(15px);
+        .fg{
+          fill: @medium-color;
+        }
+      }
     }
   }
 
@@ -1988,6 +2009,12 @@ div.horizontal-context {
     }
     a, img, video, .image-section, .link-section, iframe{
       pointer-events: auto;
+    }
+  }
+
+  &.in-current-row{
+    &:not(.selected){
+      cursor: pointer;
     }
   }
 
