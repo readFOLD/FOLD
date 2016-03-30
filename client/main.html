@@ -126,7 +126,7 @@
   <!-- Mesh Background Overlay -->
   <!-- <div id="overlay"></div> -->
   <article class="content entire-story">
-    <div class="vertical-narrative {{#if embedMode}}embed-mode{{/if}} {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}"
+    <div class="vertical-narrative {{#if embedMode}}embed-mode{{/if}} {{#if sandwichMode}}sandwich-mode{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}} {{#unless read}}edit-mode{{/unless}}"
          style="width: {{cardWidth}}px;">
       {{> vertical_narrative}}
 

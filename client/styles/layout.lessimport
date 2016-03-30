@@ -1096,6 +1096,9 @@ div.vertical-narrative {
 
   &.free-scroll{
     top: 471px;
+    &.edit-mode{
+      top: 451px;
+    }
   }
 
   &.sandwich-mode{
