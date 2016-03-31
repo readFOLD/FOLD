@@ -1,26 +1,10 @@
-var getCardWidth, horizontalBlockHelpers, throttledResize, typeHelpers;
+var horizontalBlockHelpers, throttledResize, typeHelpers;
 
 
 UI.registerHelper('selectedIf', function(val) {
   return val ? 'selected' : '';
 });
 
-
-getCardWidth = function(windowWidth) {
-  if (Meteor.Device.isPhone()) {
-    return Session.get("windowWidth") * .9 - 2 * Session.get("separation");
-  } else if (hiddenContextMode()){
-    if(windowWidth <= 685){ // must match up with @resizing-context
-      return Session.get("windowWidth") * .9 - 2 * Session.get("separation") - 2 * 60;
-    } else {
-      return 520;
-    }
-  } else if (windowWidth <= window.constants.minPageWidth) {
-    return 400;
-  } else {
-    return Math.min(520, (windowWidth - (16 * 3) - (88 * 2)) / 2);
-  }
-};
 
 Session.set("separation", 20);
 
@@ -44,8 +28,6 @@ Meteor.startup(function(){
     if (Meteor.Device.isPhone()) {
       document.body.style.overflowX = "hidden";
       $('body').css('max-width', windowWidth);
-      Session.set("mobileMargin", getVerticalLeft(windowWidth));
-
     }
 
     var cardWidthFromWindowSize = getCardWidth(windowWidth);
@@ -126,7 +108,7 @@ Meteor.startup(function(){
         inEmbedMode = embedMode();
       });
 
-      var cutoff = inEmbedMode || Meteor.Device.isTablet() ? 1000 : 800;
+      var cutoff = inEmbedMode || Meteor.Device.isTablet() ? 1000 : 840;
 
       if (read){
         if (windowWidth < cutoff){

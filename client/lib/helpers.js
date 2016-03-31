@@ -308,3 +308,19 @@ window.openMenuOverlay = function(){
 window.closeMenuOverlay = function(){
   return Session.set('menuOverlayShown', false);
 };
+
+window.getCardWidth = function(windowWidth) {
+  if (Meteor.Device.isPhone()) {
+    return Session.get("windowWidth") * .9 - 2 * Session.get("separation");
+  } else if (hiddenContextMode()){
+    if(windowWidth <= 685){ // must match up with @resizing-context
+      return Session.get("windowWidth") * .9 - 2 * Session.get("separation") - 2 * 60;
+    } else {
+      return 520;
+    }
+  } else if (windowWidth <= window.constants.minPageWidth) {
+    return 400;
+  } else {
+    return Math.min(520, (windowWidth - (16 * 3) - (88 * 2)) / 2);
+  }
+};
