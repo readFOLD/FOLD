@@ -695,6 +695,11 @@ article{
 .vertical-narrative-section {
   padding: @nonMobileNarrativeSectionPadding;
 
+  section{
+    line-height: 0; // fix for .content as an inline-block
+  }
+
+
   @media @mobile {
     padding: 20px;
   }
@@ -859,10 +864,6 @@ article{
   display: inline-block;
   &.new-section{
     padding: 0 15px;
-  }
-
-  section{
-    line-height: 0; // fix for .content as an inline-block
   }
 
   div.vertical-nav-container {
