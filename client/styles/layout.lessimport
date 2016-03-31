@@ -606,6 +606,7 @@ body {
     position: static;
     width: 100%;
     height: auto;
+    margin-bottom: 60px;
   }
   text-align: center;
   .share-buttons{
@@ -1777,7 +1778,7 @@ div.horizontal-context {
       left: 0;
       bottom: 0;
       .close{
-        right: 20px;
+        right: 23px;
         position: absolute;
         background-color: transparent;
         padding: 0;
@@ -1788,7 +1789,7 @@ div.horizontal-context {
         @media @not-mobile{
           top: 60px;
           &.embed-mode{
-            top: 20px;
+            top: 33px;
           }
         }
 
@@ -3298,6 +3299,10 @@ div.loading-container {
       background-color: @action-color;
       color: @white-color;
     }
+  }
+
+  .has-hover-state{
+    cursor: default;
   }
 
   .minimap-section{
