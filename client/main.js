@@ -2462,8 +2462,7 @@ var sendAnalyticsInterval = 30000;
 
 
 analyticsCountSender = function(doOnce){
-  console.log(_.chain(analyticsCount).values().all(_.isEmpty).value())
-  console.log(analyticsCount)
+
   if(_.chain(analyticsCount).values().all(_.isEmpty).value()){
     console.log('nothing to send')
     if(!doOnce){
@@ -2471,6 +2470,7 @@ analyticsCountSender = function(doOnce){
     }
     return
   }
+
   analyticsCountSent = _.clone(analyticsCount);
   console.log('sending:')
   console.log(analyticsCountSent)
@@ -2501,16 +2501,26 @@ $(window).bind('mousemove mouseup touchstart touchend touchmove keyup scroll res
   userInactiveCount = 0;
 });
 
+var onReadPage = function(){
+  return Session.get('read') && !Session.get('showDraft')
+};
+
 window.addActiveHeartbeat = function(key){
-  analyticsCount.activeHeartbeats[key] = (analyticsCount.activeHeartbeats[key] || 0) + 1;
+  if(onReadPage()){
+    analyticsCount.activeHeartbeats[key] = (analyticsCount.activeHeartbeats[key] || 0) + 1;
+  }
 };
 
 window.countAnchorClick = function(key){
-  analyticsCount.anchorClicks[key] = (analyticsCount.anchorClicks[key] || 0) + 1;
+  if(onReadPage()){
+    analyticsCount.anchorClicks[key] = (analyticsCount.anchorClicks[key] || 0) + 1;
+  }
 };
 
 window.countContextInteraction = function(key){
-  analyticsCount.contextInteractions[key] = (analyticsCount.contextInteractions[key] || 0) + 1;
+  if(onReadPage()){
+    analyticsCount.contextInteractions[key] = (analyticsCount.contextInteractions[key] || 0) + 1;
+  }
 };
 
 Template.read.onRendered(function(){
