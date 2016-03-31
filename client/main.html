@@ -60,25 +60,15 @@
           </a>
         {{/if}}
         <div class="author-name-section">
-          {{#if embedMode}}
-            <div class="author-name-and-date">
-              <div>
-                By <span>{{authorName}}</span>
-              </div>
-              <div>
-                {{prettyDateInPast publishedAt}}
-              </div>
+
+          <div class="author-name-and-date">
+            <a href="{{profileUrl}}" target="{{#if embedMode}}_blank{{else}}_self{{/if}}">
+              By <span>{{authorName}}</span>
+            </a>
+            <div>
+              {{prettyDateInPast publishedAt}}
             </div>
-          {{else}}
-            <div class="author-name-and-date">
-              <a href="{{profileUrl}}">
-                By <span>{{authorName}}</span>
-              </a>
-              <div>
-                {{prettyDateInPast publishedAt}}
-              </div>
-            </div>
-          {{/if}}
+          </div>
           {{> follow_button userId=authorId}}
         </div>
 
