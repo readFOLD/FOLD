@@ -602,14 +602,14 @@
 
 <template name="display_twitter_section">
   <div class="display-context-section twitter-section">
-      <div class="active-display">
+      <div class="active-display" style="{{#if cardHeight}}min-height: {{cardHeight}}px;{{/if}}">
       {{#if imgUrl}}
         <div class='image-section'>
           <img src='{{imgUrl}}'>
         </div>
         <button class="show-image"></button>
       {{/if}}
-        <div class="twitter-text-section {{#if selected}} selected {{/if}} {{#if imgUrl}}image{{/if}} ">
+        <div class="twitter-text-section {{#if selected}} selected {{/if}} {{#if imgUrl}}image{{/if}} " style="{{#if cardHeight}}min-height: {{cardHeight}}px;{{/if}}">
           <div class="flag {{#if selected}} selected {{/if}} {{#if imgUrl}}image{{/if}}"></div>
           <div class='tweet-card'>
             <div class='title'>
