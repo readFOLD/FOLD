@@ -36,7 +36,6 @@
 
 @magic-styling-distance: 40px;
 
-@vertical-left: 90px;
 @card-spacing: 20px;
 @mobile-card-spacing: 15px;
 
@@ -1107,8 +1106,6 @@ div.vertical-narrative {
   &.sandwich-mode{
     top: 185px;
   }
-
-  left: @vertical-left;
 
   &.hidden-context-mode{
     @media @not-mobile-nor-thin-window{

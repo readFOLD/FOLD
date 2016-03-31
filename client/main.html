@@ -189,7 +189,7 @@
 </template>
 
 <template name="vertical_section_block">
-  <div class="narrative-section vertical-narrative-section {{#if verticalSelected}}selected{{/if}} {{#if read}}read{{#if analyticsMode}}{{#unless showDraft}} analytics-mode{{/unless}}{{/if}}{{/if}} {{#if hasTitle}}has-title{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}">
+  <div class="narrative-section vertical-narrative-section {{#if verticalSelected}}selected{{/if}} {{#if read}}read{{#if analyticsMode}}{{#unless showDraft}} analytics-mode{{/unless}}{{/if}}{{/if}} {{#if hasTitle}}has-title{{/if}} {{#if hiddenContextMode}}hidden-context-mode{{/if}}" data-vertical-index="{{index}}" data-vertical-id="{{_id}}" style="{{#unless hiddenContextMode}} left: {{verticalLeft}}px;{{/unless}}">
     <section>
       {{#unless read}}
         {{#if verticalSelected}}

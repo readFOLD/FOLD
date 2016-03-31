@@ -12,7 +12,8 @@ if(Meteor.Device.isPhone()){
 }
 
 window.getVerticalLeft = function() {
-  return 90; // corresponds to css
+  var windowWidth = Session.get('windowWidth');
+  return Math.min(90, (windowWidth - 2 * getCardWidth(windowWidth) - constants.verticalSpacing) / 2);
 };
 
 Tracker.autorun(function(){
