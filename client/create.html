@@ -251,11 +251,11 @@
             <div class="transparent-cover"></div>
             <a href="{{url}}" class="top-link" target="_blank">
               <div class="top">
-                <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}}"><span>{{title}}</span></div>
+                <div class="link-title {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}}"><span>{{title}}</span></div>
               </div>
             </a>
             <div class="bottom">
-              <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless read}}click-to-edit{{/unless}} {{#unless linkDescription}}empty{{/unless}}"><span>{{#if linkDescription}}{{linkDescription}}{{else}}{{#unless read}}Click to add a description{{/unless}}{{/if}}</span></div>
+              <div class="link-description {{#if imageOnLeft}}image-on-left{{else}}image-on-top{{/if}} {{#unless linkDescription}}empty{{/unless}}"><span>{{#if linkDescription}}{{linkDescription}}{{/if}}</span></div>
               <a class="read-more {{#unless read}}inactive{{/unless}}" href="{{url}}" target="_blank">Read more on {{providerTruncatedUrl}}</a>
             </div>
             {{#if thumbnailUrl}}
