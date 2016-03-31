@@ -1567,6 +1567,12 @@ div#fold-editor{
   }
 }
 
+.editing{
+  .create-section{
+    line-height: 23px;
+  }
+}
+
 .create-section {
   border: 1px solid @unselected-background-color;
   .search-section, .add-desc-section {
