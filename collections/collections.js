@@ -175,7 +175,7 @@ Story = (function() {
   };
 
   Story.prototype.embedCode = function(){
-    return '<iframe width="100%" height="600" src="' + Meteor.absoluteUrl(this.userPathSegment + '/' + this.storyPathSegment) + '" frameborder="0" allowfullscreen></iframe>'
+    return '<iframe width="100%" height="600" src="' + Meteor.absoluteUrl('embed/' + this.userPathSegment + '/' + this.storyPathSegment) + '" frameborder="0" allowfullscreen></iframe>'
   };
 
   return Story;
