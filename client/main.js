@@ -1335,9 +1335,11 @@ Template.display_image_section.onCreated(function(){
 
 Template.display_text_section.events({
   'click'  (e, t) {
-    Session.set('contextOverlayId', this._id);
-    countContextInteraction(this._id);
-    trackEvent('Expand text card');
+    if(Session.get('read')){
+      Session.set('contextOverlayId', this._id);
+      countContextInteraction(this._id);
+      trackEvent('Expand text card');
+    }
   }
 });
 
