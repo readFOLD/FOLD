@@ -458,11 +458,19 @@ Tracker.autorun(function(){
     return
   }
 
+  var countStoryView = function(){
+    Session.set('storyViewed', id);
+    Session.set('storyRead', null); // should reset whether story was read whenever switch which story was viewed so views and reads are comparable
+    Meteor.call('countStoryView', id);
+    trackEvent('View story', _.extend({}, trackingInfoFromStory(story), { nonInteraction: 1 }));
+  };
 
-  Session.set('storyViewed', id);
-  Session.set('storyRead', null); // should reset whether story was read whenever switch which story was viewed so views and reads are comparable
-  Meteor.call('countStoryView', id);
-  trackEvent('View story', _.extend({}, trackingInfoFromStory(story), { nonInteraction: 1 }));
+  if(embedMode()){ // in embed mode, wait for a scroll before counting a view
+    $(window).one('scroll', countStoryView)
+  } else {
+    countStoryView();
+  }
+
 });
 
 
@@ -2472,6 +2480,8 @@ var sendAnalyticsInterval = 30000;
 
 
 analyticsCountSender = function(doOnce){
+  console.log(_.chain(analyticsCount).values().all(_.isEmpty).value())
+  console.log(analyticsCount)
   if(_.chain(analyticsCount).values().all(_.isEmpty).value()){
     console.log('nothing to send')
     if(!doOnce){
@@ -2529,44 +2539,52 @@ Template.read.onRendered(function(){
     $(window).scrollTop(Session.get('scrollTop'));
   }
 
+  var startCountingHeartbeats = () => {
+    this.heartbeatInterval = Meteor.setInterval(function(){
+      var currentYId = Session.get('currentYId');
+      var currentXId = Session.get('currentXId');
+      var poppedOutContextId = Session.get('poppedOutContextId');
 
-  this.heartbeatInterval = Meteor.setInterval(function(){
-    var currentYId = Session.get('currentYId');
-    var currentXId = Session.get('currentXId');
-    var poppedOutContextId = Session.get('poppedOutContextId');
+      var poppedOutPlayerActive = poppedOutContextId && poppedOutPlayerInfo.get('status') === 'playing';
+      var userActive = !document.hidden && userInactiveCount < inactiveThreshold;
 
-    var poppedOutPlayerActive = poppedOutContextId && poppedOutPlayerInfo.get('status') === 'playing';
-    var userActive = !document.hidden && userInactiveCount < inactiveThreshold;
+      userInactiveCount += 1;
 
-    userInactiveCount += 1;
+      if(poppedOutPlayerActive) {
+        addActiveHeartbeat(poppedOutContextId);
+      }
 
-    if(poppedOutPlayerActive) {
-      addActiveHeartbeat(poppedOutContextId);
-    }
+      if(userActive){
+        if(currentYId){
+          if(!Session.get('contextOverlayId') && !hiddenContextShown()){
+            addActiveHeartbeat(currentYId);
+          }
 
-    if(userActive){
-      if(currentYId){
-        if(!Session.get('contextOverlayId') && !hiddenContextShown()){
-          addActiveHeartbeat(currentYId);
-        }
-
-        if(currentXId){ // can only truly have active context if have active narrative. currentXId may have a value when viewing header
-          addActiveHeartbeat(currentXId);
-        }
-      } else {
-        if (!Session.get('pastHeader')){
-          addActiveHeartbeat('header');
-        } else if (Session.get("currentY")) { // if no currentYId, but there is currentY, then it's at the footer
-          addActiveHeartbeat('footer');
+          if(currentXId){ // can only truly have active context if have active narrative. currentXId may have a value when viewing header
+            addActiveHeartbeat(currentXId);
+          }
+        } else {
+          if (!Session.get('pastHeader')){
+            addActiveHeartbeat('header');
+          } else if (Session.get("currentY")) { // if no currentYId, but there is currentY, then it's at the footer
+            addActiveHeartbeat('footer');
+          }
         }
       }
-    }
 
-    if (userActive || poppedOutPlayerActive){
-      addActiveHeartbeat('story');
-    }
+      if (userActive || poppedOutPlayerActive){
+        addActiveHeartbeat('story');
+      }
 
-  }, 1000);
+    }, 1000);
+  };
+
+  if(embedMode()){ // in embed mode, wait for a scroll before counting
+    $(window).one('scroll', startCountingHeartbeats);
+  } else {
+    startCountingHeartbeats();
+  }
+
 });
 
 Template.read.onDestroyed(function(){
