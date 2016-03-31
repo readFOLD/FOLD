@@ -724,6 +724,7 @@ Template.create_horizontal_section_block.helpers({
   actionCardPrivileges (){
     var user = Meteor.user();
     return (user && user.admin && user.privileges && user.privileges.actionCard)
+  }
 });
 
 Template.create_horizontal_section_block.events({
