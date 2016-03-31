@@ -720,7 +720,10 @@ Template.create_horizontal_section_block.helpers({
   left () {
     var addBlockWidth = 75;
     return addBlockWidth + getVerticalLeft() + Session.get("cardWidth") + 2 * Session.get("separation");
-  }
+  },
+  actionCardPrivileges (){
+    var user = Meteor.user();
+    return (user && user.admin && user.privileges && user.privileges.actionCard)
 });
 
 Template.create_horizontal_section_block.events({

@@ -148,10 +148,16 @@
       <button class='remix-button {{#if remix}}active{{/if}}'>
         {{> remix_icon }}
       </button>
-      {{#if adminMode}}
+      {{#if actionCardPrivileges}}
         <button class='add-action-button'>
           Add Action
         </button>
+        {{else}}
+        {{#if adminMode}}
+          <button class='add-action-button'>
+            Add Action
+          </button>
+        {{/if}}
       {{/if}}
     </div>
     {{#if addingContext}}
