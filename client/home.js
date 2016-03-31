@@ -710,3 +710,32 @@ Template.embed_overlay.events({
     return t.$('.embed-code').select();
   }
 });
+
+Template.how_to_overlay.onCreated(function(){
+  this.totalSlides = 5;
+  this.currentSlide = new ReactiveVar(3);
+});
+Template.how_to_overlay.events({
+  'click .close' (){
+    return closeHowToOverlay();
+  },
+  'click .right' (e, t){
+    return t.currentSlide.set((t.currentSlide.get() + 1) % t.totalSlides);
+  },
+  'click .left' (e, t){
+    var currentSlide = t.currentSlide.get();
+    if (currentSlide === 0){
+      return t.currentSlide.set(t.totalSlides);
+    } else {
+      return t.currentSlide.set( (currentSlide - 1) % t.totalSlides);
+    }
+  },
+  'click .bullet' (e, t){
+    t.currentSlide.set($(e.currentTarget).data('slide'));
+  }
+});
+Template.how_to_overlay.helpers({
+  'currentSlide' (){
+    return Template.instance().currentSlide.get();
+  }
+});

@@ -269,29 +269,16 @@ div.floating-story-buttons {
   right: 400px;
 }
 
-.feedback{
+.how-to{
   color: @white-color;
   background-color: @dark-color;
   height: @magic-styling-distance;
   div{
     float: left;
   }
-  .icon{
-    width: @magic-styling-distance;
-    text-align: center;
-    font-weight: bold;
-  }
-  .text{
-    width: 0;
+  button:hover{
     height: 100%;
-    overflow-x: hidden;
-    .width-transition;
-  }
-  &:hover{
     background-color: @action-color;
-    .text{
-      width: 150px;
-    }
   }
   font-size: 13px;
   position: fixed;

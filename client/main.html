@@ -149,7 +149,13 @@
 
   {{> embed_overlay}}
 
-  {{#if adminMode}}
+  {{#if showDraft}}
+    {{#if howToOverlayShown}}
+      {{> how_to_overlay}}
+    {{/if}}
+  {{/if}}
+
+    {{#if adminMode}}
     {{> read_admin_ui}}
   {{/if}}
 </template>
@@ -939,5 +945,39 @@
 
   </div>
 {{/if}}
+
+</template>
+
+<template name="how_to_overlay">
+
+    <div class="how-to-overlay">
+      <div class="how-to-overlay-center">
+        <button class="close">✕</button>
+        <h2>Tips for using FOLD</h2>
+        <div id="how-to-slider">
+          <a class="buttons left" href="#">&#60;</a>
+          <div class="viewport">
+            <ul class="how-to-ul" data-current-slide="{{currentSlide}}">
+              <li class="slide"><img src="http://res.cloudinary.com/fold/image/upload/v1/static/DRAFTS_GIF.gif"/><div class="text">All stories on FOLD are saved automatically. If you leave, you can find them on your "My drafts and stories" page. After you publish a story, you can still edit it.</div></li>
+              <li class="slide"><img src="http://res.cloudinary.com/fold/image/upload/v1/static/LINK_GIF.gif"/><div class="text">
+                All stories on FOLD are saved automatically. If you leave, you can find them on your "My drafts and stories" page. After you publish a story, you can still edit it.</div></li>
+              <li class="slide"><img src="http://res.cloudinary.com/fold/image/upload/v1/static/MINIMAP_GIF.gif"/><div class="text">Want to change the order of your cards? Click on the “minimap” in the corner while editing your story for drag-and-drop reordering.</div></li>
+              <li class="slide"><img src="http://res.cloudinary.com/fold/image/upload/v1/static/TITLE_GIF.gif"/><div class="text">You can add a title to any section of the text. Just hover over the small “hamburger” menu in the top right corner of each card.</div></li>
+              <li class="slide"><div class="center-text">Still have questions or feedback? E-mail us at info@fold.cm, or give us a shout on Twitter @readFOLD</div></li>
+            </ul>
+          </div>
+          <a class="buttons right" href="#">&#62;</a>
+          <ul class="bullets" data-current-slide="{{currentSlide}}">
+            <li><button class="bullet" data-slide="0"></button></li>
+            <li><button class="bullet" data-slide="1"></button></li>
+            <li><button class="bullet" data-slide="2"></button></li>
+            <li><button class="bullet" data-slide="3"></button></li>
+            <li><button class="bullet" data-slide="4"></button></li>
+          </ul>
+        </div>
+
+      </div>
+
+  </div>
 
 </template>

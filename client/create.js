@@ -881,6 +881,9 @@ Template.create_options.events({
       Session.set('read', true);
       trackEvent('Click toggle preview on');
     }
+  },
+  "click .how-to-button" (){
+    openHowToOverlay();
   }
 });
 

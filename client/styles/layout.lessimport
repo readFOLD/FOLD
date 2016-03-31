@@ -3102,6 +3102,121 @@ div.loading-container {
   top: 0;
 }
 
+.how-to-overlay {
+  position: fixed;
+  z-index: 300;
+  background-color: fade(@white-color, 95%);
+  color: @white-color;
+
+  @media @mobile {
+    background-color: @dark-color;
+  }
+  .close{
+    position: absolute;
+    top: 25px;
+    right: 20px;
+  }
+
+  .how-to-overlay-center{
+    .center-over-parent-div;
+    width: 800px;
+    max-width: 100%;
+    height: 500px;
+    background-color: @black-color;
+    padding: @magic-styling-distance;
+  }
+  h2{
+    height: 50px;
+  }
+  .viewport{
+    height: 100%;
+  }
+  .how-to-ul{
+    height: 100%;
+    li{
+      display: none;
+      height: 100%;
+    }
+  }
+
+  ul{
+    &[data-current-slide='0']{
+      li:nth-of-type(1){
+        &.slide{
+          display: block;
+        }
+        .bullet{
+          background-color: @action-color;
+        }
+      }
+    }
+    &[data-current-slide='1']{
+      li:nth-of-type(2){
+        &.slide{
+          display: block;
+        }
+        .bullet{
+          background-color: @action-color;
+        }
+      }
+    }
+    &[data-current-slide='2']{
+      li:nth-of-type(3){
+        &.slide{
+          display: block;
+        }
+        .bullet{
+          background-color: @action-color;
+        }
+      }
+    }
+    &[data-current-slide='3']{
+      li:nth-of-type(4){
+        &.slide{
+          display: block;
+        }
+        .bullet{
+          background-color: @action-color;
+        }
+      }
+    }
+    &[data-current-slide='4']{
+      li:nth-of-type(5){
+        &.slide{
+          display: block;
+        }
+        .bullet{
+          background-color: @action-color;
+        }
+      }
+    }
+  }
+
+  .bullets{
+    width: 100%;
+    text-align: center;
+    li{
+      display: inline-block;
+    }
+  }
+  .bullet{
+    .size(20px);
+    border-radius: 50%;
+    background-color: @medium-color;
+  }
+  img{
+    height: 80%;
+  }
+  #how-to-slider{
+    width: 100%;
+    height: calc(100% ~'-' 200px);
+  }
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 0;
+}
+
 
 .follow-button{
   height: @magic-styling-distance;

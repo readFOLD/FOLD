@@ -315,6 +315,14 @@ window.closeEmbedOverlay = function(){
   return Session.set('embedOverlayShown', false);
 };
 
+window.openHowToOverlay = function(){
+  return Session.set('howToOverlayShown', true);
+};
+
+window.closeHowToOverlay = function(){
+  return Session.set('howToOverlayShown', false);
+};
+
 window.analyticsMode = function(){
   return Session.get('analyticsMode', true);
 };
