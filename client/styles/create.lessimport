@@ -879,6 +879,7 @@ div.create-section.link-twitter{
 
 
 div.horizontal-context {
+  position: absolute;
   section {
     padding: 0;
   }
