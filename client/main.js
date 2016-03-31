@@ -666,7 +666,7 @@ Template.vertical_section_block.helpers({
 
           if(contextId === heroContextId){
             additionalClasses = ' hero';
-            additionalAttributes = "title = 'This is a link to the hero card, so people usually dont need to click a link to see it.'";
+            additionalAttributes = haveFullData ? "title = 'This is a link to the hero card, so people usually dont need to click a link to see it.'" :  "title = 'This data is only available for stories published after March 25, 2016.'";
           } else {
             additionalClasses = '';
             additionalAttributes = haveFullData ? '' : "title = 'This data is only available for stories published after March 25, 2016.'";
@@ -2682,5 +2682,8 @@ Template.read_analytics_ui.helpers({
     } else {
       return Math.round(this.analytics.reads.byIP / this.analytics.views.byIP * 100);
     }
+  },
+  showReadPercentage () {
+    return Session.get('story').firstPublishedAt > new Date('January 27, 2016')
   }
 });

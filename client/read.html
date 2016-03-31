@@ -47,7 +47,11 @@
     <div class="text-and-controls">
       <h3><span>Story Stats (beta)</span><span class="analytics-question-mark" title="Below you’ll find how many unique views your story received, the percentage of people who read at least 2/3 of the way through, and some data about how readers are interacting with the content.">?</span></h3>
       <p>{{analytics.views.byIP}} people viewed this story</p>
-      <p>{{readPercentage}}% of them stuck around</p>
+      {{#if showReadPercentage}}
+        <p>{{readPercentage}}% of them stuck around</p>
+      {{else}}
+        <p title="This data is only available for stories published after January 27, 2016">--% of them stuck around</p>
+      {{/if}}
       <br>
       <p>Which links are people clicking?</p>
       {{#if linkActivityShown}}<button class="hide-link-activity link-activity">Hide link activity</button>{{else}}<button class="show-link-activity link-activity">Show link activity</button>{{/if}}
