@@ -2597,8 +2597,8 @@ Template.read.onDestroyed(function(){
 });
 
 Template.read.helpers({
-  showMobileEmbedPlaceholder () {
-    return Meteor.Device.isPhone() && embedMode();
+  showEmbedPlaceholder () {
+    return embedMode() && (Meteor.Device.isPhone() || Session.get('windowWidth') < 300 || Session.get('windowHeight') < 300)
   }
 });
 

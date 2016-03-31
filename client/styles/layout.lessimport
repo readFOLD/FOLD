@@ -3206,13 +3206,57 @@ div.loading-container {
   }
 }
 
-.mobile-embed-placeholder{
-  background-color: @action-color;
+.embed-placeholder{
+  color: @white-color;
+  .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -2;
+    background-color: @action-color;
+    background-position: center center;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      background-color: fade(@dark-color, 80%);
+    }
+  }
   a{
+    padding: 40px;
     .size-to-fit;
     display: block;
-    span{
-      .center-over-parent-div;
+    position: relative;
+  }
+  .title{
+    .FFMarkWebBold;
+    font-size: 23px;
+    margin-bottom: 10px;
+  }
+  .launch{
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    height: 40px;
+    line-height: 40px;
+    svg{
+      float: left;
+      .size(40px);
+    }
+    .text{
+
+      float: left;
     }
   }
 }

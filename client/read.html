@@ -1,7 +1,7 @@
 <template name="read">
   {{!hasContext suppresses a firefox error when story not found because page gets rendered without any context, probably right before story not found gets shown, should probably not be necessary}}
-    {{#if showMobileEmbedPlaceholder}}
-      {{> mobile_embed_placeholder}}
+    {{#if showEmbedPlaceholder}}
+      {{> embed_placeholder}}
     {{else}}
       {{#if hasContext}}
         {{> story_header}}
@@ -15,9 +15,14 @@
 
 </template>
 
-<template name="mobile_embed_placeholder">
-  <div class="mobile-embed-placeholder" style="height: {{windowHeight}}px; width: {{windowWidth}}px;">
-    <a class="open" href="{{readPath}}" target="_blank"><span>Please visit the FOLD to view {{title}}</span></a>
+<template name="embed_placeholder">
+  <div class="embed-placeholder" style='height: {{windowHeight}}px; width: {{windowWidth}}px;'>
+    <div class="background" style='background-image:url("{{headerImageUrl}}")'></div>
+    <a class="open" href="{{readPath}}" target="_blank">
+      <div class="title">{{title}}</div>
+      <div class="author">By {{authorName}}</div>
+      <div class="launch">{{> popout_icon}}<div class="text">Launch FOLD story!</div></div>
+    </a>
   </div>
 </template>
 
