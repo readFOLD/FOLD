@@ -3289,7 +3289,7 @@ div.loading-container {
   .launch{
     position: absolute;
     bottom: 40px;
-    left: 40x;
+    left: 40px;
     height: 40px;
     margin-left: -10px;
     line-height: 40px;
