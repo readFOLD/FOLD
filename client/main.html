@@ -147,6 +147,8 @@
     {{> context_overlay}}
   {{/if}}
 
+  {{> embed_overlay}}
+
   {{#if adminMode}}
     {{> read_admin_ui}}
   {{/if}}
@@ -923,4 +925,19 @@
       </ol>
     </div>
   {{/if}}
+</template>
+
+<template name="embed_overlay">
+{{#if embedOverlayShown}}
+
+    <div class="embed-overlay">
+      <div class="embed-overlay-center">
+        <button class="close">✕</button>
+        <label for="embed-code">Embed code</label>
+        <textarea id="embed-code" class="embed-code" rows="3">{{embedCode}}</textarea>
+      </div>
+
+  </div>
+{{/if}}
+
 </template>

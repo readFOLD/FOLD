@@ -199,6 +199,10 @@ Handlebars.registerHelper("menuOverlayShown", function () {
   return Session.get('menuOverlayShown');
 });
 
+Handlebars.registerHelper("embedOverlayShown", function () {
+  return Session.get('embedOverlayShown');
+});
+
 Handlebars.registerHelper("analyticsMode", function () {
   return window.analyticsMode();
 });

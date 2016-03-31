@@ -307,6 +307,14 @@ window.closeMenuOverlay = function(){
   return Session.set('menuOverlayShown', false);
 };
 
+window.openEmbedOverlay = function(){
+  return Session.set('embedOverlayShown', true);
+};
+
+window.closeEmbedOverlay = function(){
+  return Session.set('embedOverlayShown', false);
+};
+
 window.analyticsMode = function(){
   return Session.get('analyticsMode', true);
 };

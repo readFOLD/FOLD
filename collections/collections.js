@@ -172,7 +172,11 @@ Story = (function() {
       url += '.jpg'; // TODO, this could conflict with headerImageVideoObject if conditional changes
     }
     return url
-  }
+  };
+
+  Story.prototype.embedCode = function(){
+    return '<iframe width="100%" height="600" src="' + Meteor.absoluteUrl(this.userPathSegment + '/' + this.storyPathSegment) + '" frameborder="0" allowfullscreen></iframe>'
+  };
 
   return Story;
 

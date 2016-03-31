@@ -698,3 +698,15 @@ Template.menu_overlay.events({
     return openSignInOverlay('login');
   }
 });
+
+Template.embed_overlay.onRendered(function(){
+  this.$('.embed-code').select();
+});
+Template.embed_overlay.events({
+  'click .close' (){
+    return closeEmbedOverlay();
+  },
+  'click' (e, t){
+    return t.$('.embed-code').select();
+  }
+});

@@ -1617,7 +1617,7 @@ Template.type_specific_icon.helpers(typeHelpers);
 
 Template.share_buttons.events({
   'click .share-embed' (e, t) {
-    notifyFeature('Embedding: coming soon!');
+    openEmbedOverlay();
     trackEvent('Click embed button');
   }
 });
