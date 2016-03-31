@@ -493,9 +493,6 @@ Template.story_title.events({
 });
 
 Template.create.helpers({
-  category () {
-    return Session.get("storyCategory");
-  },
   publishing () {
     return Template.instance().publishing.get();
   },

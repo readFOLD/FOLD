@@ -182,18 +182,6 @@
   </span>
 </template>
 
-<template name="categories">
-  <span class="categories">
-    <select>
-      {{#each categories}}
-        <option class="category {{#if selected}}selected{{/if}}" data-category="{{this}}">
-          {{this}}
-        </option>
-      {{/each}}
-    </select>
-  </span>
-</template>
-
 <template name="all_stories">
   {{#unless loggingIn}}
     {{#unless currentUser}}

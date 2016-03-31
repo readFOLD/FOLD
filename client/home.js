@@ -25,14 +25,8 @@ Template.home.helpers({
   user () {
     return Meteor.user();
   },
-  filterOpen () {
-    return Session.get("filterOpen");
-  },
   filter () {
     return Session.get("filter");
-  },
-  category () {
-    return Session.get("category");
   }
 });
 
@@ -142,23 +136,6 @@ Template.search.events({
   }
 });
 
-
-Template.categories.helpers({
-  categories () {
-    return ['all', 'news', 'history', 'art', 'technology', 'politics', 'e-sports', 'music', 'gaming', 'sponsored'];
-  },
-  selected () {
-    return Session.equals("category", this.toString());
-  }
-});
-
-Template.categories.events({
-  "click li" (d) {
-    var srcE;
-    srcE = d.srcElement ? d.srcElement : d.target;
-    return Session.set('category', $(srcE).data('category'));
-  }
-});
 
 Template.filters.onRendered(function() {
   var options = {};

@@ -477,9 +477,7 @@ Tracker.autorun(function(){
 
 
 Meteor.startup(function() {
-  Session.setDefault("filterOpen", false);
   Session.setDefault("filter", "curated");
-  Session.setDefault("category", "all");
   Session.setDefault("pastY", []);
   Session.setDefault("pastX", []);
   Session.setDefault("currentY", void 0);
