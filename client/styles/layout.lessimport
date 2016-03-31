@@ -860,8 +860,6 @@ article{
 }
 
 .narrative-section {
-  float: left;
-  display: inline-block;
   &.new-section{
     padding: 0 15px;
   }
@@ -1145,6 +1143,7 @@ div.oec-section {
 
 div.link-section {
   position: relative;
+  line-height: 23px;
   .display-flex;
   .flex-direction(column);
   .justify-content(space-between);
@@ -1470,6 +1469,9 @@ div.twitter-section{
         .linear-gradient(135deg, @light-transparent-color, @light-transparent-color);
         .linear-gradient(225deg, transparent 22px, @light-transparent-color 22px);
       }
+      .flag{
+        position: absolute;
+      }
       .flag.show-corner.selected {
         position: absolute;
         top: 0;
@@ -1684,8 +1686,8 @@ div#banner-overlay {
 @horizontal-context-margin-top: 20px;
 @horizontal-context-top: @fixed-banner-height + 60px - @horizontal-context-margin-top;
 div.horizontal-context {
-  float: right;
   top: 350px;
+  line-height: 0;
 
 
   margin-top: @horizontal-context-margin-top + 40px;
