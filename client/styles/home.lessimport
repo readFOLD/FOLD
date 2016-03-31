@@ -193,10 +193,6 @@ div#login-buttons-and-more {
     }
     .sod_label{
     }
-
-    span.categories {
-      margin-left: 10px;
-    }
   }
   &.slim{
     .action-items{

@@ -762,30 +762,6 @@ div.button-options {
   }
 }
 
-header.header {
-  div.story-title {
-    float: left;
-  }
-  div.category {
-    display: inline;
-    font-size: 14px;
-    margin-left: 50px;
-  }
-  div.analytics {
-    display: inline;
-    font-size: 14px;
-    margin-left: 30px;
-  }
-  div.username {
-    display: inline;
-    position: absolute;
-    right: 145px;
-    text-align: right;
-    top: 25px;
-  }
-}
-
-
 div.vertical-narrative {
   z-index: 20;
 
