@@ -3243,19 +3243,26 @@ div.loading-container {
     .FFMarkWebBold;
     font-size: 23px;
     margin-bottom: 10px;
+    line-height: 30px;
+  }
+  .author{
+    .FFMagdaCleanMonoWebProRegular;
   }
   .launch{
     position: absolute;
     bottom: 40px;
-    left: 40px;
+    left: 40x;
     height: 40px;
+    margin-left: -10px;
     line-height: 40px;
     svg{
       float: left;
       .size(40px);
     }
     .text{
-
+      font-size: 14px;
+      margin-left: 5px;
+      margin-top: 2px;
       float: left;
     }
   }
