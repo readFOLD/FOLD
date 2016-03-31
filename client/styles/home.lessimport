@@ -523,7 +523,7 @@ div.stories {
       .flex(1);
     }
     .favorite-count{
-      .flex(0 0 46px);
+      .flex(0 0 48px);
     }
     .favorite-button{
       .size-to-fit;
