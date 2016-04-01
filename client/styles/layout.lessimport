@@ -3137,12 +3137,13 @@ div.loading-container {
 
   .left {
     position: absolute;
+    left: 30px;
     top: 290px;
   }
 
   .right {
     position: absolute;
-    right: 40px;
+    right: 30px;
     top: 290px;
   }
 
