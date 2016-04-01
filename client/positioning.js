@@ -13,7 +13,7 @@ if(Meteor.Device.isPhone()){
 
 window.getVerticalLeft = function() {
   var windowWidth = Session.get('windowWidth');
-  return (windowWidth - 2 * getCardWidth(windowWidth) - constants.verticalSpacing) / 2);
+  return (windowWidth - 2 * getCardWidth(windowWidth) - constants.verticalSpacing) / 2;
 };
 
 Tracker.autorun(function(){
