@@ -273,12 +273,11 @@ div.floating-story-buttons {
   color: @white-color;
   background-color: @dark-color;
   height: @magic-styling-distance;
-  div{
-    float: left;
-  }
+
   button {
-  height: 100%;
-  &:hover{
+    display: block;
+    height: 100%;
+    &:hover{
       background-color: @action-color;
     }
   }

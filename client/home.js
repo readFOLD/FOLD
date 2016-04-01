@@ -713,7 +713,7 @@ Template.embed_overlay.events({
 
 Template.how_to_overlay.onCreated(function(){
   this.totalSlides = 5;
-  this.currentSlide = new ReactiveVar(3);
+  this.currentSlide = new ReactiveVar(0);
 });
 Template.how_to_overlay.events({
   'click .close' (){
@@ -725,7 +725,7 @@ Template.how_to_overlay.events({
   'click .left' (e, t){
     var currentSlide = t.currentSlide.get();
     if (currentSlide === 0){
-      return t.currentSlide.set(t.totalSlides);
+      return t.currentSlide.set(t.totalSlides - 1);
     } else {
       return t.currentSlide.set( (currentSlide - 1) % t.totalSlides);
     }
