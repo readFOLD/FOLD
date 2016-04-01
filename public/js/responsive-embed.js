@@ -15,7 +15,7 @@ var forEach = function (array, callback, scope) {
 };
 
 var iterateOverFoldIFrames = function(cb){
-  forEach(document.querySelectorAll('iframe[src*="192.168.0.117:3000"]'), cb)
+  forEach(document.querySelectorAll('iframe[src*="//fold.cm"]'), cb)
 };
 
 // from underscorejs.org
