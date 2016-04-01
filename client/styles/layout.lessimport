@@ -582,6 +582,15 @@ body {
     }
 
   }
+  &.embed-mode{
+    @media @mobile{
+      overflow-x: hidden !important;
+      overflow-y: hidden !important;
+      height: 200px;
+      width: 300px;
+      min-height: 0;
+    }
+  }
 }
 
 .story-footer{
@@ -3396,6 +3405,11 @@ div.loading-container {
 }
 
 .embed-placeholder{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   color: @white-color;
   .background {
     position: absolute;
@@ -3422,34 +3436,36 @@ div.loading-container {
       background-color: fade(@dark-color, 80%);
     }
   }
+  @padding: 10vmin;
   a{
-    padding: 40px;
+    padding: @padding;
     .size-to-fit;
     display: block;
     position: relative;
   }
   .title{
     .FFMarkWebBold;
-    font-size: 23px;
-    margin-bottom: 10px;
-    line-height: 30px;
+    font-size: 9vmin;
+    line-height: 1.6;
   }
   .author{
-    .FFMagdaCleanMonoWebProRegular;
+    margin-top: 3vmin;
+    font-size: 13px;
   }
   .launch{
     position: absolute;
-    bottom: 40px;
-    left: 40px;
-    height: 40px;
-    margin-left: -10px;
-    line-height: 40px;
+    @height: 40px;
+    height: @height;
+    left: calc(@padding ~'-' @height / 5);
+    bottom: calc(@padding ~'-' 10px);
+    line-height: @height;
+    font-size: 5vmin;
     svg{
       float: left;
-      .size(40px);
+      .size(@height);
     }
     .text{
-      font-size: 14px;
+      font-size: 13px;
       margin-left: 5px;
       margin-top: 2px;
       float: left;

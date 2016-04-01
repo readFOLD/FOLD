@@ -16,11 +16,11 @@
 </template>
 
 <template name="embed_placeholder">
-  <div class="embed-placeholder" style='height: {{windowHeight}}px; width: {{windowWidth}}px;'>
+  <div class="embed-placeholder">
     <div class="background" style='background-image:url("{{headerImageUrl}}")'></div>
     <a class="open" href="{{readPath}}" target="_blank">
       <div class="title">{{title}}</div>
-      <div class="author">By {{authorName}}</div>
+      <!--<div class="author">By {{authorName}}</div>-->
       <div class="launch">{{> popout_icon}}<div class="text">Launch FOLD story!</div></div>
     </a>
   </div>

@@ -284,6 +284,7 @@ window.embedMode = function(){
 
 window.activateEmbedMode = function(){
   window.constants.readModeOffset = 0;
+  $('body').addClass('embed-mode');
   return Session.set('embedMode', true);
 };
 
