@@ -261,7 +261,7 @@ div.floating-story-buttons {
 
 .saved-text{
   color: @black-color;
-  font-size: 13px;
+  font-size: 14px;
   position: fixed;
   z-index: 200;
   top: 0px;
@@ -276,11 +276,13 @@ div.floating-story-buttons {
   div{
     float: left;
   }
-  button:hover{
-    height: 100%;
-    background-color: @action-color;
+  button {
+  height: 100%;
+  &:hover{
+      background-color: @action-color;
+    }
   }
-  font-size: 13px;
+  font-size: 14px;
   position: fixed;
   z-index: 200;
   left: 0px;

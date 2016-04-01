@@ -3117,16 +3117,47 @@ div.loading-container {
     right: 20px;
   }
 
+  .text {
+    font-size: 15px;
+    line-height: 21px;
+    margin-top: 380px;
+    height: auto;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .left {
+    position: absolute;
+    top: 290px;
+  }
+
+  .right {
+    position: absolute;
+    right: 40px;
+    top: 290px;
+  }
+
   .how-to-overlay-center{
     .center-over-parent-div;
-    width: 800px;
+    width: 900px;
     max-width: 100%;
-    height: 500px;
-    background-color: @black-color;
+    height: 600px;
+    background-color: @dark-color;
     padding: @magic-styling-distance;
   }
   h2{
-    height: 50px;
+    height: 40px;
+    margin: 0px;
+    font-size: 25px;
+    text-align: center;
+  }
+
+  .center-text {
+    .center-over-parent-div;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 32px;
   }
   .viewport{
     height: 100%;
@@ -3193,19 +3224,23 @@ div.loading-container {
   }
 
   .bullets{
-    width: 100%;
+    width: calc(100% ~'-' @magic-styling-distance * 2);
+    position: absolute;
+    bottom: 35px;
     text-align: center;
     li{
       display: inline-block;
     }
   }
   .bullet{
-    .size(20px);
+    .size(15px);
     border-radius: 50%;
-    background-color: @medium-color;
+    background-color: @white-color;
   }
   img{
-    height: 80%;
+    .center-over-parent-div;
+    height: 55%;
+    margin-top: -25px;
   }
   #how-to-slider{
     width: 100%;
