@@ -94,6 +94,9 @@ Story = (function() {
   };
 
   Story.prototype.maxActiveHeartbeats = function(){
+    if(!this.analytics.heartbeats){
+      return 0;
+    }
     return _.chain(this.analytics.heartbeats.active)
       .omit(['story', 'header', 'footer'])
       .values()
@@ -102,6 +105,9 @@ Story = (function() {
   };
 
   Story.prototype.maxActiveNarrativeHeartbeats = function(){
+    if(!this.analytics.heartbeats){
+      return 0;
+    }
     return _.chain(this.analytics.heartbeats.active)
       .pick(_.pluck(this.verticalSections, '_id'))
       .values()
@@ -110,6 +116,9 @@ Story = (function() {
   };
 
   Story.prototype.maxActiveContextHeartbeats = function(){
+    if(!this.analytics.heartbeats){
+      return 0;
+    }
     return _.chain(this.analytics.heartbeats.active)
       .pick(this.contextBlockIds)
       .values()
