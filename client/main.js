@@ -1237,7 +1237,7 @@ Template.horizontal_section_block.onRendered(function(){
   //lastIndex = ((_ref = Session.get("horizontalSectionsMap")[this.data.verticalIndex]) != null ? _ref.horizontal.length : void 0) - 1;
   //var isLast = ((this.data.index === lastIndex) && (lastIndex > 0));
 
-  if(typeof MutationObserver !== undefined){
+  if(typeof MutationObserver !== "undefined"){
     this.styleObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutationRecord) => {
         var oldLeft = mutationRecord.oldValue.match(/left\:\W([\-?\d+]+)/)[1];
