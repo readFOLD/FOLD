@@ -2663,24 +2663,30 @@ Template.loading_page.onRendered(function(){
 
 Template.read_options.events({
   'click .activate-analytics' () {
+    trackEvent('Click show story stats');
     activateAnalyticsMode();
   }
 });
 
 Template.read_analytics_ui.events({
   'click .show-link-activity' () {
+    trackEvent('Click show link activity');
     Session.set('showLinkActivity', true);
   },
   'click .hide-link-activity' () {
+    trackEvent('Click hide link data');
     Session.set('showLinkActivity', false);
   },
   'click .show-card-data' () {
+    trackEvent('Click show card data');
     Session.set('showCardData', true);
   },
   'click .hide-card-data' () {
+    trackEvent('Click hide card data');
     Session.set('showCardData', false);
   },
   'click .close' () {
+    trackEvent('Click show story stats');
     deactivateAnalyticsMode();
   },
 });
