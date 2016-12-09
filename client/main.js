@@ -2686,7 +2686,7 @@ Template.read_analytics_ui.events({
     Session.set('showCardData', false);
   },
   'click .close' () {
-    trackEvent('Click show story stats');
+    trackEvent('Click hide story stats');
     deactivateAnalyticsMode();
   },
 });
