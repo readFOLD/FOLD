@@ -31,7 +31,6 @@ meteorhacks:subs-manager
 fold:fast-render@2.10.0
 force-ssl
 fold:iron-router@=1.0.10
-standard-minifiers
 meteor-base
 mobile-experience
 mongo
@@ -53,3 +52,5 @@ wylio:mandrill
 london:body-class
 ecmascript
 fastclick
+standard-minifier-css
+standard-minifier-js
