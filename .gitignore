@@ -8,6 +8,8 @@
 
 settings.json
 
+node_modules/
+
 .idea/workspace.xml
 
 # User-specific stuff:

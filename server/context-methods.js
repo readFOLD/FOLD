@@ -13,8 +13,9 @@ var VIMEO_API_SECRET = Meteor.settings.VIMEO_API_SECRET;
 var VIMEO_ACCESS_TOKEN = Meteor.settings.VIMEO_ACCESS_TOKEN;
 
 
-var Twit = Meteor.npmRequire('twit');
-var Vimeo = Meteor.npmRequire('vimeo-api').Vimeo;
+import Twit from 'twit';
+import Vimeo from 'vimeo-api';
+//var Vimeo = Meteor.npmRequire('vimeo-api').Vimeo;
 
 if (!GOOGLE_API_SERVER_KEY) {
   console.error('Settings must be loaded for apis to work');

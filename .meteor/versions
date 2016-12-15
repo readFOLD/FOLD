@@ -67,11 +67,9 @@ logging@1.0.14
 london:body-class@2.3.0
 meteor@1.1.16
 meteor-base@1.0.4
-meteorhacks:async@1.0.0
 meteorhacks:inject-data@1.4.1
 meteorhacks:kadira@2.26.3
 meteorhacks:meteorx@1.4.1
-meteorhacks:npm@1.5.0
 meteorhacks:picker@1.0.3
 meteorhacks:search-source@1.4.2
 meteorhacks:subs-manager@1.6.2
@@ -89,7 +87,6 @@ mongo-livedata@1.0.12
 mystor:device-detection@0.2.0
 natestrauser:font-awesome@4.4.0
 npm-bcrypt@0.8.6_3
-npm-container@1.2.0
 npm-mongo@1.4.45
 oauth@1.1.11
 oauth1@1.1.10

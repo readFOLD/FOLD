@@ -1,7 +1,7 @@
 var TWITTER_API_KEY = process.env.TWITTER_API_KEY || Meteor.settings.TWITTER_API_KEY;
 var TWITTER_API_SECRET = process.env.TWITTER_API_SECRET || Meteor.settings.TWITTER_API_SECRET;
 
-var Twit = Meteor.npmRequire('twit');
+import Twit from 'twit';
 
 var makeTwitterCall = function (apiCall, params) {
   var res;

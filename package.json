@@ -1,0 +1,24 @@
+{
+  "name": "fold",
+  "version": "1.0.0",
+  "description": "FOLD is a platform allowing storytellers to structure and contextualize stories",
+  "main": "./start",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/readFOLD/FOLD.git"
+  },
+  "author": "Joe Goldbeck & Alexis Hope",
+  "bugs": {
+    "url": "https://github.com/readFOLD/FOLD/issues"
+  },
+  "homepage": "https://fold.cm",
+  "dependencies": {
+    "twit": "1.1.20",
+    "vimeo-api": "1.1.2",
+    "prerender-node": "2.0.2",
+    "cheerio": "0.19.0"
+  }
+}

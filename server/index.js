@@ -1,3 +1,5 @@
+import prerenderIO from 'prerender-node';
+
 // If use ssl, will need to check that too
 // TO-DO change this to a 301 redirect once totally sure
 WebApp.connectHandlers.use(function(req, res, next) {
@@ -16,7 +18,7 @@ if (_.contains([true, 'true'], process.env.ALLOW_BOTS)){
   robots.addLine('User-agent: *\nDisallow: /');
 }
 
-WebApp.connectHandlers.use(Meteor.npmRequire("prerender-node"));
+WebApp.connectHandlers.use(prerenderIO);
 
 // if (process.env.PRERENDER_TOKEN) {
 //   prerenderio.set('prerenderToken', process.env.PRERENDER_TOKEN);

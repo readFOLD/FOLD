@@ -17,7 +17,6 @@ aldeed:collection2
 service-configuration
 meteorhacks:kadira
 gadicohen:robots-txt
-meteorhacks:npm
 facts
 chaosbohne:twitter-text
 percolatestudio:segment.io@=1.2.2_1
@@ -45,7 +44,6 @@ spacebars
 check
 
 
-npm-container
 lepozepo:cloudinary
 meteorhacks:search-source
 wylio:mandrill
