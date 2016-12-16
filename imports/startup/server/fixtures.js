@@ -1,3 +1,9 @@
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
+import { ServiceConfiguration } from 'meteor/service-configuration';
+import { Stories } from '../../api/stories/stories.js';
+import { ContextBlocks } from '../../api/context-blocks/context-blocks.js';
+
 var authorId, authorProfile;
 
 if (Meteor.users.find().count() === 0) {
