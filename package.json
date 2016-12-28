@@ -16,9 +16,12 @@
   },
   "homepage": "https://fold.cm",
   "dependencies": {
-    "twit": "1.1.20",
-    "vimeo-api": "1.1.2",
+    "babel-runtime": "^6.20.0",
+    "bcrypt": "^1.0.1",
+    "cheerio": "0.19.0",
+    "meteor-node-stubs": "^0.2.4",
     "prerender-node": "2.0.2",
-    "cheerio": "0.19.0"
+    "twit": "1.1.20",
+    "vimeo-api": "1.1.2"
   }
 }
