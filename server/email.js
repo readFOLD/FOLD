@@ -72,7 +72,7 @@ var sendEmail = function(emailType, userIds, subject, bareMergeVars){
     console.log('Would have sent email')
     console.log(arguments)
   }
-}
+};
 
 
 sendFollowingPublishedEmail = function(userIds, storyId){

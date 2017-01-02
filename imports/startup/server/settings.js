@@ -1,3 +1,7 @@
+import { Meteor } from 'meteor/meteor';
+import Mandrill from 'meteor/wylio:mandrill';
+import Cloudinary from 'meteor/lepozepo:cloudinary';
+
 // get segment key to the client, while allowing it to be set from environment variable
 // NOTE: this hack may not be 100% reliable (for ex when initially deploy won't update clients)
 if (process.env.SEGMENT_WRITE_KEY){
@@ -9,7 +13,7 @@ if (process.env.NODE_ENV){
 }
 
 // SMTP Config
-smtp = {
+const smtp = {
   username: Meteor.settings.SMTP_USERNAME,
   password: Meteor.settings.SMTP_API_KEY,
   server: Meteor.settings.SMTP_SERVER,

@@ -1,7 +1,7 @@
+import '../imports/startup/server';
+
 import { WebApp } from 'meteor/webapp';
 import prerenderIO from 'prerender-node';
-
-import '../imports/startup/server';
 
 // If use ssl, will need to check that too
 // TO-DO change this to a 301 redirect once totally sure

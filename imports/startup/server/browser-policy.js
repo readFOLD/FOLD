@@ -1,3 +1,5 @@
+import { BrowserPolicy } from 'meteor/browser-policy-common';
+
 BrowserPolicy.framing.allowAll(); // allow all sites to embed FOLD
 BrowserPolicy.content.disallowInlineScripts(); // this provides a backstop against XSS
 BrowserPolicy.content.disallowEval(); // never allow eval
