@@ -212,17 +212,6 @@ window.enterPress = function(e){
   return e.keyCode === 13
 };
 
-//Tracker.autorun(function(){
-//  var currentRoute = Router.current();
-//  var info = {};
-//  if(currentRoute && currentRoute.route){
-//    _.extend(info, {
-//      currentRouteName: currentRoute.route.getName()
-//    })
-//  }
-//  window.trackingInfoFromPage = info;
-//});
-
 window.trackEvent = function(action){
   arguments[1] = arguments[1] || {};
   var params = _.extend({eventAction: action, eventCategory: 'FOLD'}, arguments[1]); // event category not really used, but required in new ga api
