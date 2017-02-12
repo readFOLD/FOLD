@@ -212,21 +212,21 @@ window.enterPress = function(e){
   return e.keyCode === 13
 };
 
-Tracker.autorun(function(){
-  var currentRoute = Router.current();
-  var info = {};
-  if(currentRoute && currentRoute.route){
-    _.extend(info, {
-      currentRouteName: currentRoute.route.getName()
-    })
-  }
-  window.trackingInfoFromPage = info;
-});
+//Tracker.autorun(function(){
+//  var currentRoute = Router.current();
+//  var info = {};
+//  if(currentRoute && currentRoute.route){
+//    _.extend(info, {
+//      currentRouteName: currentRoute.route.getName()
+//    })
+//  }
+//  window.trackingInfoFromPage = info;
+//});
 
-window.trackEvent = function(){
+window.trackEvent = function(action){
   arguments[1] = arguments[1] || {};
-  _.extend(arguments[1], trackingInfoFromPage, { currentRoutePath: window.location.pathname });
-  analytics.track.apply(this, arguments);
+  var params = _.extend({eventAction: action, eventCategory: 'FOLD'}, arguments[1]); // event category not really used, but required in new ga api
+  ga('send', 'event', params);
 };
 
 var preventDefault = function(event) {

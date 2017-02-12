@@ -32,7 +32,7 @@ To run the FOLD server, API keys are needed for the various search integrations.
 "SMTP_PORT"
 "public": {
   "GOOGLE_API_CLIENT_KEY" // used for google maps integration (https://console.developers.google.com/ turn on the Maps API)
-  "SEGMENT_WRITE_KEY" // used for analytics.not required otherwise. (https://segment.com/)
+  "GA_TRACKING_KEY" // used for analytics.not required otherwise. (https://segment.com/)
   "CLOUDINARY_CLOUD_NAME" // allows user to upload their own image for headers and context cards (https://cloudinary.com)
   "PUBLISH_ACCESS_LEVEL" // (99999 is a good default) The maximum access priority a user can have and still be allowed to publish
   "CREATE_ACCESS_LEVEL" // (99999 is a good default) The maximum access priority a user can have and still be allowed to create a new story

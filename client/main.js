@@ -412,7 +412,7 @@ Tracker.autorun(function(){
       Session.set('storyRead', id);
       console.log('read')
       Meteor.call('countStoryRead', id);
-      analytics.track('Read story', _.extend({}, trackingInfoFromStory(story), { nonInteraction: 1 }));
+      trackEvent('Read story', _.extend({}, trackingInfoFromStory(story), { nonInteraction: 1 }));
     }
   }
 });

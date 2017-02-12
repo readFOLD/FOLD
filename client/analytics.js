@@ -1,10 +1,25 @@
 
-analytics.load(Meteor.settings["public"].SEGMENT_WRITE_KEY);
+// Google Analytics Snippet //
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+// End Snippet //
+
+
+// Initiate Google Analytics
+ga('create', Meteor.settings["public"].GA_TRACKING_KEY, 'auto');
+
 
 Router.onRun(function() {
   Meteor.setTimeout(() => {
     $('meta[property="og:url"]').attr('content', window.location.href);
-    analytics.page(this.route.getName()); // maybe should be more page info here
+    console.log(window.location.href)
+    ga('send', 'pageview', {
+      title: this.route.getName(),
+      location: window.location.href
+  }); // maybe should be more page info here
   }, 100); // this might even be ok when set to 0
 
   this.next()
@@ -16,11 +31,7 @@ window.trackTiming = function(category, str, time){  // mobile safari doesn't ha
     nonInteraction: 1
   });
 
-  analytics.ready(function(){
-    if(window.ga){
-      ga('send', 'timing', category, str, time);
-    }
-  });
+  ga('send', 'timing', category, str, time);
 };
 
 var jsLoadTime = Date.now() - startTime;
@@ -42,22 +53,11 @@ Meteor.startup(function() {
       if (! Router.current() || ! Router.current().ready())
         return;
 
-      var user = Meteor.user();
-      if (! user)
+      var userId = Meteor.userId();
+      if (! userId)
         return;
 
-      var identificationInfo = {};
-
-      if (user.profile.name){
-        identificationInfo.name = user.profile.name;
-      }
-      if (user.emails && user.emails.length){
-        identificationInfo.email = user.emails[0].address;
-      }
-
-      if (user._id){
-        analytics.identify(user._id, identificationInfo);
-      }
+      ga('set', 'userId', userId);
 
       c.stop();
     });

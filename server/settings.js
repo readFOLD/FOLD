@@ -1,7 +1,7 @@
 // get segment key to the client, while allowing it to be set from environment variable
 // NOTE: this hack may not be 100% reliable (for ex when initially deploy won't update clients)
-if (process.env.SEGMENT_WRITE_KEY){
-  Meteor.settings['public'].SEGMENT_WRITE_KEY = process.env.SEGMENT_WRITE_KEY;
+if (process.env.GA_TRACKING_KEY){
+  Meteor.settings['public'].GA_TRACKING_KEY = process.env.GA_TRACKING_KEY;
 }
 
 if (process.env.NODE_ENV){
