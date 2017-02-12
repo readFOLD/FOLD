@@ -15,11 +15,11 @@ ga('create', Meteor.settings["public"].GA_TRACKING_KEY, 'auto');
 Router.onRun(function() {
   Meteor.setTimeout(() => {
     $('meta[property="og:url"]').attr('content', window.location.href);
-    console.log(window.location.href)
+
     ga('send', 'pageview', {
       title: this.route.getName(),
       location: window.location.href
-  }); // maybe should be more page info here
+    }); // maybe should be more page info here
   }, 100); // this might even be ok when set to 0
 
   this.next()
