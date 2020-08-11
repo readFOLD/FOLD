@@ -4,7 +4,7 @@ FOLD
 
 FOLD is a context creation platform for journalists and storytellers, allowing them to structure and craft complex stories.
 
-**FOLD is live at [fold.cm](https://fold.cm)**
+**FOLD is live at [readfold.com](https://readfold.com)**
 
 If you have bug reports, please file issues [here](https://github.com/readFOLD/FOLD/issues).
 If you have feature requests, please post them on [our trello board](https://trello.com/b/ImxWYbBy/fold-roadmap)
