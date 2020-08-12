@@ -6,7 +6,7 @@ Template.unsubscribe.onCreated(function(){
     if(Meteor.userId()){
       Meteor.call('unsubscribe', Router.current().params.query.email_type, (err, success) => {
         if(err || !success){
-          notifyError('Unsubscribe failed. Please email us at info@fold.cm')
+          notifyError('Unsubscribe failed. Please email us at info@readfold.com')
         } else {
           this.unsubscribed.set(true);
         }
@@ -22,7 +22,7 @@ Template.unsubscribe.events({
   'click .resubscribe'  (e, t){
     Meteor.call('resubscribe', Router.current().params.query.email_type, (err, success) => {
       if (err) {
-        notifyError('Resubscribe failed. Please email us at info@fold.cm')
+        notifyError('Resubscribe failed. Please email us at info@readfold.com')
       } else {
         t.resubscribed.set(true);
       }
