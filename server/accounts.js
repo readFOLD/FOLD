@@ -47,8 +47,8 @@ Accounts.onCreateUser(function(options, user) {
 });
 
 // Password Reset E-mail
-Accounts.emailTemplates.from = 'FOLD Accounts <info@fold.cm>';
-Accounts.emailTemplates.siteName = 'fold.cm',
+Accounts.emailTemplates.from = 'FOLD Accounts <info@readfold.com>';
+Accounts.emailTemplates.siteName = 'readfold.com',
 
 Accounts.emailTemplates.resetPassword.subject = function(user, url) {
   return 'FOLD Password Reset';
@@ -56,5 +56,5 @@ Accounts.emailTemplates.resetPassword.subject = function(user, url) {
 
 Accounts.emailTemplates.resetPassword.text = function(user, url) {
   url = url.replace('#/', '')
-  return "To reset your password, simply click the link below:\n\n" + url + "\n\n" + "Happy FOLDing!\nFOLD Team\nhttp://fold.cm";
+  return "To reset your password, simply click the link below:\n\n" + url + "\n\n" + "Happy FOLDing!\nFOLD Team\nhttp://readfold.com";
 };
