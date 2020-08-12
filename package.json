@@ -14,7 +14,7 @@
   "bugs": {
     "url": "https://github.com/readFOLD/FOLD/issues"
   },
-  "homepage": "https://fold.cm",
+  "homepage": "https://readfold.com",
   "dependencies": {
     "babel-runtime": "^6.20.0",
     "bcrypt": "^1.0.1",
