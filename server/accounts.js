@@ -56,5 +56,5 @@ Accounts.emailTemplates.resetPassword.subject = function(user, url) {
 
 Accounts.emailTemplates.resetPassword.text = function(user, url) {
   url = url.replace('#/', '')
-  return "To reset your password, simply click the link below:\n\n" + url + "\n\n" + "Happy FOLDing!\nFOLD Team\nhttp://readfold.com";
+  return "To reset your password, simply click the link below:\n\n" + url + "\n\n" + "Happy FOLDing!\nFOLD Team\nhttps://readfold.com";
 };
