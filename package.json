@@ -17,7 +17,7 @@
   "homepage": "https://readfold.com",
   "dependencies": {
     "babel-runtime": "^6.20.0",
-    "bcrypt": "^1.0.1",
+    "bcrypt": "^5.0.0",
     "cheerio": "0.19.0",
     "meteor-node-stubs": "^0.2.4",
     "prerender-node": "2.0.2",
